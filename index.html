@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simulador de decisiones</title>
+</head>
+<body>
+  <h1>Simulador de decisiones</h1>
+
+  <textarea id="input" placeholder="Describe la situación..."></textarea>
+  <br><br>
+
+  <button onclick="simulate()">Simular</button>
+
+  <p id="result"></p>
+
+  <script>
+    async function simulate() {
+      const input = document.getElementById("input").value;
+
+      const res = await fetch("/api/simulate", {
+        method: "POST",
+        body: JSON.stringify({ input })
+      });
+
+      const data = await res.json();
+      document.getElementById("result").innerText = data.result;
+    }
+  </script>
+</body>
+</html>
