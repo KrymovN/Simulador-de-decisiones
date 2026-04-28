@@ -10,37 +10,60 @@ export default function Home() {
   const [lang, setLang] = useState("es");
 
   const run = async () => {
+    if (!input.trim()) return;
+
     setLoading(true);
     setResult(null);
     setStage(0);
 
-    // визуальные этапы "мышления"
+    // fake thinking animation
     setTimeout(() => setStage(1), 300);
     setTimeout(() => setStage(2), 800);
     setTimeout(() => setStage(3), 1300);
 
-    const res = await fetch("/api/simulate", {
-      method: "POST",
-      body: JSON.stringify({ input }),
-    });
+    try {
+      const res = await fetch("/api/simulate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ input, lang }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    setTimeout(() => {
-      setResult(data);
-      setLoading(false);
-    }, 1500);
+      // защита от падений
+      setTimeout(() => {
+        setResult({
+          analysis: data?.analysis || {
+            summary: "Sin datos disponibles",
+            conclusion: "No se pudo generar un análisis completo",
+          },
+          options: Array.isArray(data?.options) ? data.options : [],
+        });
+
+        setLoading(false);
+      }, 1200);
+    } catch (e) {
+      setTimeout(() => {
+        setResult({
+          analysis: {
+            summary: "Error de conexión",
+            conclusion: "No se pudo conectar con el servidor",
+          },
+          options: [],
+        });
+        setLoading(false);
+      }, 800);
+    }
   };
 
   return (
     <div style={styles.page}>
-      {/* фон */}
       <div style={styles.bg} />
 
       <div style={styles.container}>
-        {/* header */}
+        {/* HEADER */}
         <div style={styles.header}>
-          <div style={styles.logo}>Levio</div>
+          <div style={styles.logo}>Levio.es</div>
 
           <select
             value={lang}
@@ -53,7 +76,7 @@ export default function Home() {
           </select>
         </div>
 
-        {/* card */}
+        {/* CARD */}
         <div style={styles.card}>
           <textarea
             value={input}
@@ -66,7 +89,7 @@ export default function Home() {
             Iniciar análisis
           </button>
 
-          {/* thinking */}
+          {/* THINKING */}
           {loading && (
             <div style={styles.thinking}>
               {stage >= 1 && <p>Analizando contexto...</p>}
@@ -75,13 +98,15 @@ export default function Home() {
             </div>
           )}
 
-          {/* result */}
+          {/* RESULT */}
           {result && (
             <div style={styles.result}>
-              <p style={styles.summary}>{result.analysis.summary}</p>
+              <p style={styles.summary}>
+                {result?.analysis?.summary}
+              </p>
 
               <div style={styles.options}>
-                {result.options.map((o: any, i: number) => (
+                {(result?.options || []).map((o: any, i: number) => (
                   <div key={i} style={styles.option}>
                     <div style={styles.title}>{o.title}</div>
                     <div style={styles.text}>{o.description}</div>
@@ -92,7 +117,7 @@ export default function Home() {
               </div>
 
               <div style={styles.conclusion}>
-                {result.analysis.conclusion}
+                {result?.analysis?.conclusion}
               </div>
             </div>
           )}
@@ -114,13 +139,15 @@ const styles: any = {
     padding: 20,
     position: "relative",
     overflow: "hidden",
+    fontFamily: "Arial, sans-serif",
   },
 
   bg: {
     position: "absolute",
     width: "600px",
     height: "600px",
-    background: "radial-gradient(circle, rgba(255,0,0,0.25), transparent 60%)",
+    background:
+      "radial-gradient(circle, rgba(255,0,0,0.25), transparent 60%)",
     top: "-200px",
     left: "-200px",
     filter: "blur(80px)",
@@ -139,7 +166,7 @@ const styles: any = {
   },
 
   logo: {
-    fontSize: 24,
+    fontSize: 26,
     color: "#ff2d2d",
     fontWeight: "bold",
   },
@@ -148,8 +175,8 @@ const styles: any = {
     background: "#111",
     color: "white",
     border: "1px solid #333",
-    padding: "5px 10px",
-    borderRadius: 6,
+    padding: "6px 10px",
+    borderRadius: 8,
   },
 
   card: {
