@@ -1,3 +1,4 @@
+console.log("NEW BUILD TEST");
 "use client";
 
 import { useState } from "react";
