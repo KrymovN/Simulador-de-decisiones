@@ -1,35 +1,38 @@
 export default function Page() {
   return (
-    <main className="min-h-screen text-white relative overflow-hidden bg-black">
-      
-      {/* фоновые glow-слои */}
-      <div className="absolute inset-0 bg-gradient-to-br from-red-600/20 via-black to-green-500/20 animate-pulse" />
-      
-      <div className="absolute inset-0 opacity-30 blur-3xl">
-        <div className="absolute top-20 left-20 w-72 h-72 bg-red-500 rounded-full mix-blend-screen animate-bounce" />
-        <div className="absolute bottom-20 right-20 w-72 h-72 bg-green-500 rounded-full mix-blend-screen animate-pulse" />
+    <main className="relative min-h-screen overflow-hidden bg-black text-white flex items-center justify-center">
+
+      {/* animated background */}
+      <div className="absolute inset-0">
+        <div className="absolute top-[-200px] left-[-200px] w-[500px] h-[500px] bg-red-600/30 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-[-200px] right-[-200px] w-[500px] h-[500px] bg-green-500/30 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-black to-black opacity-80" />
       </div>
 
+      {/* noise / tech overlay */}
+      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:20px_20px]" />
+
       {/* header */}
-      <header className="relative flex justify-between items-center px-8 py-6 z-10">
-        <h1 className="text-2xl font-bold tracking-wide">
+      <header className="absolute top-0 left-0 w-full flex justify-between items-center px-8 py-6 z-10">
+        <h1 className="text-xl font-semibold tracking-widest">
           levia.es
         </h1>
 
-        <button className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur border border-white/20 transition">
+        <button className="px-4 py-2 rounded-full border border-white/20 bg-white/5 backdrop-blur hover:bg-white/10 transition">
           Login
         </button>
       </header>
 
-      {/* content */}
-      <section className="relative flex flex-col items-center justify-center text-center h-[80vh] z-10">
-        <h2 className="text-5xl font-bold mb-4 animate-pulse">
-          Digital Experience Layer
-        </h2>
-        <p className="text-white/70 max-w-xl">
-          Modern high-tech interface with dynamic breathing UI and immersive visual design.
+      {/* center content */}
+      <section className="relative z-10 text-center">
+        <h1 className="text-5xl font-bold tracking-tight animate-pulse">
+          Breathing Interface
+        </h1>
+        <p className="mt-4 text-white/60 max-w-md mx-auto">
+          A living UI system with continuous motion, glow and adaptive depth.
         </p>
       </section>
+
     </main>
   );
 }
