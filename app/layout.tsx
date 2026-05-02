@@ -1,14 +1,22 @@
 import type { ReactNode } from "react";
+import { Inter } from "next/font/google";
+import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata = {
+  title: "levia.es",
+  description: "Modern high-tech platform",
+};
 
 export default function RootLayout({
   children,
 }: {
   children: ReactNode;
 }) {
-  console.log("UPDATED"); // 👈 добавь это
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
