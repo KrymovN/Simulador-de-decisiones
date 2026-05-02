@@ -1,4 +1,3 @@
-console.log("TEST CHANGE ACTIVE");
 "use client";
 
 import { useState } from "react";
