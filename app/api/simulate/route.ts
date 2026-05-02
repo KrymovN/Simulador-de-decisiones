@@ -1,43 +1,48 @@
 export async function POST(req: Request) {
-  try {
-    const body = await req.json();
-    const input = body?.input || "";
+  const { input, lang } = await req.json();
 
-    const variants = [
-      {
-        title: "Escenario estable",
-        description: "Mantener situación actual",
-        risk: "Bajo",
-        benefit: "Estabilidad",
-      },
-      {
-        title: "Escenario de cambio",
-        description: "Evolución progresiva",
-        risk: "Medio",
-        benefit: "Crecimiento",
-      },
-      {
-        title: "Escenario agresivo",
-        description: "Cambio radical",
-        risk: "Alto",
-        benefit: "Alto potencial",
-      },
-    ];
+  const dict: any = {
+    es: ["Estable", "Equilibrado", "Agresivo"],
+    en: ["Stable", "Balanced", "Aggressive"],
+    fr: ["Stable", "Équilibré", "Agressif"],
+    de: ["Stabil", "Ausgewogen", "Aggressiv"],
+    ar: ["مستقر", "متوازن", "هجومي"],
+    zh: ["稳定", "平衡", "激进"],
+  };
 
-    return Response.json({
-      input,
-      options: variants,
-      analysis: {
-        summary: "Sistema analizando la situación...",
-        conclusion: "Existen múltiples escenarios posibles.",
-      },
-    });
-  } catch (error) {
-    return Response.json(
+  const labels = dict[lang] || dict.en;
+
+  return Response.json({
+    input,
+    options: [
       {
-        error: "Request failed",
+        id: "stable",
+        title: labels[0],
+        description: labels[0],
+        risk: "Low",
+        reward: "Low",
+        color: "#22c55e",
       },
-      { status: 500 }
-    );
-  }
+      {
+        id: "balanced",
+        title: labels[1],
+        description: labels[1],
+        risk: "Medium",
+        reward: "Medium",
+        color: "#facc15",
+      },
+      {
+        id: "aggressive",
+        title: labels[2],
+        description: labels[2],
+        risk: "High",
+        reward: "High",
+        color: "#ef4444",
+      },
+    ],
+    meta: {
+      lang,
+      safeRender: true,
+    },
+  });
 }
