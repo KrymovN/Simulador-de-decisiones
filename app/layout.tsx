@@ -5,7 +5,6 @@ export default function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  console.log("layout updated"); // 👈 добавь это
   return (
     <html lang="en">
       <body>{children}</body>
