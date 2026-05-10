@@ -1,9 +1,23 @@
-import type { ReactNode } from "react";
+import './globals.css';
+import type { Metadata } from 'next';
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export const metadata: Metadata = {
+  title: 'Levio',
+  description: 'AI-powered platform',
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <div className="background"></div>
+        <div className="overlay"></div>
+        {children}
+      </body>
     </html>
   );
 }
