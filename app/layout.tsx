@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'levio.es',
-  description: 'AI-powered platform',
+  description: 'Motor de simulación de decisiones con IA',
 };
 
 export default function RootLayout({
