@@ -326,6 +326,8 @@ textarea:focus {
 }
 
 button,
+.button-link,
+.row-action-link,
 .final-cta a {
   border: 0;
   border-radius: 16px;
@@ -348,7 +350,19 @@ button {
   font-weight: 700;
 }
 
+.button-link,
+.row-action-link {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  font-weight: 700;
+}
+
 button:hover,
+.button-link:hover,
+.row-action-link:hover,
 .final-cta a:hover {
   transform: translateY(-2px);
   filter: saturate(1.1);
@@ -1159,6 +1173,11 @@ button:hover,
   padding: 22px;
 }
 
+.signal-card p {
+  margin: 10px 0 0;
+  font-size: 0.9rem;
+}
+
 .dashboard-card h2 {
   margin-bottom: 18px;
   font-size: clamp(1.5rem, 2.4vw, 2.35rem);
@@ -1203,6 +1222,178 @@ button:hover,
   font-weight: 700;
 }
 
+.dashboard-engine {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr) minmax(260px, 0.62fr);
+  gap: 24px;
+  align-items: center;
+  padding: clamp(24px, 4vw, 38px);
+  background:
+    radial-gradient(circle at 12% 50%, rgba(255, 137, 77, 0.16), transparent 28%),
+    radial-gradient(circle at 76% 16%, rgba(109, 67, 171, 0.16), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.024)),
+    rgba(18, 13, 18, 0.8);
+}
+
+.dashboard-engine h2,
+.simulation-detail-hero h2,
+.scenario-detail-card h2 {
+  margin-bottom: 16px;
+  font-size: clamp(1.75rem, 3vw, 2.85rem);
+  line-height: 1.05;
+}
+
+.engine-status-core {
+  position: relative;
+  width: min(148px, 36vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(255, 245, 226, 0.2), transparent 16%),
+    conic-gradient(from 160deg, rgba(255, 138, 61, 0.72), rgba(113, 71, 178, 0.28), rgba(192, 28, 51, 0.62), rgba(255, 138, 61, 0.72));
+  box-shadow:
+    0 0 60px rgba(255, 91, 54, 0.24),
+    inset 0 0 42px rgba(255, 233, 216, 0.09);
+  animation: coreBreath 6s ease-in-out infinite;
+}
+
+.engine-status-core::before,
+.engine-status-core::after {
+  content: "";
+  position: absolute;
+  inset: 18%;
+  border: 1px solid rgba(255, 220, 202, 0.2);
+  border-radius: inherit;
+}
+
+.engine-status-core::after {
+  inset: 36%;
+  background: radial-gradient(circle, #fff8ec, #ff985b 28%, #b71934 62%, transparent 74%);
+  box-shadow: 0 0 40px rgba(255, 97, 58, 0.72);
+}
+
+.engine-status-core span {
+  position: absolute;
+  inset: -12%;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 192, 112, 0.12);
+  animation: orbitSpin 18s linear infinite;
+}
+
+.engine-stage-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.engine-stage,
+.radar-card,
+.active-simulation-panel,
+.detail-metric,
+.simulation-signal,
+.impact-row,
+.detail-timeline div,
+.mini-timeline div {
+  border: 1px solid rgba(255, 220, 207, 0.12);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.engine-stage {
+  min-height: 92px;
+  padding: 14px;
+}
+
+.engine-stage span,
+.radar-card span,
+.active-simulation-panel span,
+.detail-metric span,
+.scenario-score span,
+.impact-row span,
+.detail-timeline span,
+.mini-timeline span {
+  display: block;
+  color: rgba(255, 230, 222, 0.64);
+  font-size: 0.82rem;
+}
+
+.engine-stage strong,
+.radar-card strong,
+.active-simulation-panel strong {
+  display: block;
+  margin-top: 8px;
+  color: #fff7f2;
+}
+
+.active-simulation-panel {
+  padding: 18px;
+}
+
+.active-simulation-panel p,
+.radar-card p,
+.impact-row p,
+.detail-timeline p,
+.mini-timeline p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.signal-track,
+.impact-bar {
+  position: relative;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.signal-track {
+  margin: 18px 0;
+}
+
+.signal-track span,
+.impact-bar span {
+  display: block;
+  width: var(--value);
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ff6a3f, #ffc070);
+  box-shadow: 0 0 22px rgba(255, 122, 65, 0.42);
+}
+
+.decision-radar {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.radar-card {
+  padding: 20px;
+}
+
+.compact-list a {
+  display: inline-flex;
+  margin-top: 8px;
+  color: #ffd7c9;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.compact-list a:hover {
+  color: white;
+}
+
+.mini-timeline {
+  display: grid;
+  gap: 12px;
+}
+
+.mini-timeline div {
+  padding: 14px;
+}
+
 .simulation-list {
   display: grid;
   gap: 14px;
@@ -1210,10 +1401,28 @@ button:hover,
 
 .simulation-row {
   display: grid;
-  grid-template-columns: minmax(210px, 0.85fr) minmax(0, 1fr) auto;
+  grid-template-columns: minmax(210px, 0.75fr) minmax(0, 0.85fr) minmax(230px, 0.7fr) auto;
   gap: 18px;
   align-items: center;
   padding: 20px;
+}
+
+.simulation-signal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.simulation-signal {
+  min-height: 76px;
+  padding: 12px;
+}
+
+.simulation-signal strong {
+  display: block;
+  margin-top: 8px;
+  color: #fff7f2;
+  font-size: 1rem;
 }
 
 .row-actions {
@@ -1226,6 +1435,131 @@ button:hover,
   min-height: 46px;
   min-width: auto;
   padding: 0 14px;
+}
+
+.row-action-link {
+  white-space: nowrap;
+}
+
+.simulation-detail-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.56fr);
+  gap: 24px;
+  align-items: end;
+  padding: clamp(26px, 4.8vw, 48px);
+}
+
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.detail-tags span {
+  border: 1px solid rgba(255, 220, 207, 0.16);
+  border-radius: 999px;
+  padding: 8px 12px;
+  color: rgba(255, 242, 236, 0.84);
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 0.86rem;
+}
+
+.detail-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.detail-metric {
+  min-height: 102px;
+  padding: 16px;
+}
+
+.detail-metric strong {
+  display: block;
+  margin-top: 8px;
+  color: #fff7f2;
+  font-size: 1.55rem;
+}
+
+.detail-scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.scenario-detail-card {
+  min-height: 310px;
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+}
+
+.scenario-detail-card p {
+  margin-bottom: 18px;
+  color: #ffad9c;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.scenario-detail-card small {
+  display: block;
+  margin-top: auto;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.scenario-score {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin: 8px 0 20px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(255, 220, 207, 0.12);
+  border-bottom: 1px solid rgba(255, 220, 207, 0.12);
+}
+
+.scenario-score strong {
+  color: #fff7f2;
+}
+
+.simulation-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.impact-list,
+.detail-timeline {
+  display: grid;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.impact-row,
+.detail-timeline div {
+  padding: 16px;
+}
+
+.impact-row > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+}
+
+.impact-row strong,
+.detail-timeline strong {
+  color: #fff7f2;
+}
+
+.impact-bar {
+  margin-top: 12px;
 }
 
 .rights-grid {
@@ -1461,10 +1795,19 @@ button:hover,
   .mobile-section,
   .dashboard-header,
   .dashboard-grid,
+  .dashboard-engine,
+  .decision-radar,
   .dashboard-two-column,
+  .detail-scenario-grid,
+  .simulation-detail-hero,
+  .simulation-detail-layout,
   .privacy-layout,
   .security-layout {
     grid-template-columns: 1fr;
+  }
+
+  .engine-stage-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hero-section {
@@ -1557,6 +1900,9 @@ button:hover,
   .input-row,
   .analysis-grid,
   .rights-grid,
+  .engine-stage-list,
+  .simulation-signal-grid,
+  .detail-metrics,
   .dashboard-sidebar nav {
     grid-template-columns: 1fr;
   }
