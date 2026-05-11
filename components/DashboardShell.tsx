@@ -7,8 +7,10 @@ import { clearMockSession } from "./MockAuthGate";
 
 const navigationItems = [
   { href: "/dashboard", label: "Resumen" },
-  { href: "/dashboard/profile", label: "Perfil" },
+  { href: "/dashboard/decisions", label: "Decisiones" },
   { href: "/dashboard/simulations", label: "Simulaciones" },
+  { href: "/dashboard/memory", label: "Memoria" },
+  { href: "/dashboard/profile", label: "Perfil" },
   { href: "/dashboard/privacy", label: "Privacidad" },
   { href: "/dashboard/security", label: "Seguridad" },
 ];
@@ -34,6 +36,14 @@ export default function DashboardShell({
     router.replace("/login");
   }
 
+  function isActiveRoute(href: string) {
+    if (href === "/dashboard") {
+      return pathname === href;
+    }
+
+    return pathname === href || pathname.startsWith(`${href}/`);
+  }
+
   return (
     <main className="dashboard-shell">
       <aside className="dashboard-sidebar section-frame">
@@ -44,8 +54,8 @@ export default function DashboardShell({
         <nav aria-label="Navegación del área personal">
           {navigationItems.map((item) => (
             <Link
-              aria-current={pathname === item.href ? "page" : undefined}
-              className={pathname === item.href ? "active" : ""}
+              aria-current={isActiveRoute(item.href) ? "page" : undefined}
+              className={isActiveRoute(item.href) ? "active" : ""}
               href={item.href}
               key={item.href}
             >
@@ -53,6 +63,11 @@ export default function DashboardShell({
             </Link>
           ))}
         </nav>
+        <div className="dashboard-sidebar-status">
+          <span>Sesión</span>
+          <strong>Demo segura</strong>
+          <small>Auth productivo pendiente</small>
+        </div>
         <button className="ghost-button" onClick={handleLogout} type="button">
           Cerrar sesión
         </button>

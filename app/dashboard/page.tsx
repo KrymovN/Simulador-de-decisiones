@@ -3,12 +3,13 @@ import Link from "next/link";
 import DashboardShell from "../../components/DashboardShell";
 import MockAuthGate from "../../components/MockAuthGate";
 import { mockSimulations } from "../../lib/mockSimulations";
+import { memorySettings, savedDecisions } from "../../lib/personalArea";
 
 const summaryCards = [
   { label: "Simulaciones guardadas", value: "12", detail: "3 listas para revisar" },
-  { label: "Decisiones activas", value: "4", detail: "2 con señales sensibles" },
+  { label: "Decisiones activas", value: String(savedDecisions.length), detail: "2 con señales sensibles" },
   { label: "Idioma activo", value: "Español", detail: "Base i18n preparada" },
-  { label: "Memoria personalizada", value: "Pausable", detail: "Consentimiento configurable" },
+  { label: "Memoria personalizada", value: memorySettings.state, detail: "Consentimiento configurable" },
 ];
 
 const engineStages = [
@@ -111,6 +112,9 @@ export default function DashboardPage() {
                 </div>
               ))}
             </div>
+            <Link className="dashboard-action" href="/dashboard/simulations">
+              Ver historial completo
+            </Link>
           </article>
 
           <article className="dashboard-card section-frame">
@@ -127,6 +131,37 @@ export default function DashboardPage() {
             <a className="dashboard-action" href="/#decision-input">
               Nueva simulación
             </a>
+          </article>
+        </section>
+
+        <section className="dashboard-two-column">
+          <article className="dashboard-card section-frame">
+            <h2>Decisiones guardadas</h2>
+            <div className="compact-list">
+              {savedDecisions.slice(0, 3).map((decision) => (
+                <div key={decision.id}>
+                  <strong>{decision.title}</strong>
+                  <span>{decision.nextAction}</span>
+                </div>
+              ))}
+            </div>
+            <Link className="dashboard-action" href="/dashboard/decisions">
+              Revisar decisiones
+            </Link>
+          </article>
+
+          <article className="dashboard-card section-frame">
+            <h2>Memoria personalizada</h2>
+            <p>
+              {memorySettings.mode}. La memoria puede pausarse, revisarse o eliminarse cuando exista backend productivo.
+            </p>
+            <div className="memory-status-strip">
+              <span>{memorySettings.consent}</span>
+              <strong>{memorySettings.lastUpdated}</strong>
+            </div>
+            <Link className="dashboard-action" href="/dashboard/memory">
+              Gestionar memoria
+            </Link>
           </article>
         </section>
       </DashboardShell>

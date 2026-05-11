@@ -1115,6 +1115,28 @@ button:hover,
   color: white;
 }
 
+.dashboard-sidebar-status {
+  display: grid;
+  gap: 5px;
+  margin-top: auto;
+  padding: 14px;
+  border: 1px solid rgba(255, 220, 207, 0.12);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 138, 61, 0.09), transparent 38%),
+    rgba(255, 255, 255, 0.04);
+}
+
+.dashboard-sidebar-status span,
+.dashboard-sidebar-status small {
+  color: rgba(255, 230, 222, 0.62);
+  font-size: 0.82rem;
+}
+
+.dashboard-sidebar-status strong {
+  color: #fff7f2;
+}
+
 .ghost-button {
   border: 1px solid rgba(255, 220, 207, 0.2);
   background:
@@ -1188,6 +1210,8 @@ button:hover,
 }
 
 .dashboard-two-column,
+.profile-layout,
+.memory-layout,
 .privacy-layout,
 .security-layout {
   display: grid;
@@ -1392,6 +1416,273 @@ button:hover,
 
 .mini-timeline div {
   padding: 14px;
+}
+
+.memory-status-strip {
+  display: grid;
+  gap: 6px;
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid rgba(255, 220, 207, 0.12);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.memory-status-strip strong {
+  margin-top: 0;
+  font-size: 1rem;
+}
+
+.profile-overview,
+.decision-command,
+.memory-hero {
+  display: grid;
+  gap: 24px;
+  align-items: center;
+  padding: clamp(26px, 4.8vw, 48px);
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 141, 75, 0.14), transparent 34%),
+    radial-gradient(circle at 84% 10%, rgba(109, 67, 171, 0.15), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.024)),
+    rgba(18, 13, 18, 0.82);
+}
+
+.profile-overview {
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.7fr);
+}
+
+.profile-identity {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+
+.profile-avatar,
+.memory-core {
+  position: relative;
+  flex: 0 0 auto;
+  width: 116px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(255, 246, 232, 0.2), transparent 16%),
+    conic-gradient(from 120deg, rgba(255, 138, 61, 0.62), rgba(116, 72, 178, 0.24), rgba(188, 25, 51, 0.58), rgba(255, 138, 61, 0.62));
+  box-shadow:
+    0 0 58px rgba(255, 91, 54, 0.24),
+    inset 0 0 34px rgba(255, 233, 216, 0.09);
+  animation: coreBreath 6s ease-in-out infinite;
+}
+
+.profile-avatar span,
+.memory-core span {
+  position: absolute;
+  inset: 34%;
+  border-radius: inherit;
+  background: radial-gradient(circle, #fff8ec, #ff985b 30%, #b71934 62%, transparent 74%);
+  box-shadow: 0 0 36px rgba(255, 97, 58, 0.68);
+}
+
+.profile-overview h2,
+.decision-command h2,
+.memory-hero h2 {
+  margin-bottom: 12px;
+  font-size: clamp(1.9rem, 3.1vw, 3.15rem);
+  line-height: 1.05;
+}
+
+.profile-state-grid,
+.decision-stat-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.profile-state-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.profile-state-grid div,
+.decision-stat,
+.profile-signal-list div,
+.memory-state-panel,
+.memory-scope,
+.remembered-patterns div,
+.decision-review {
+  border: 1px solid rgba(255, 220, 207, 0.12);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.profile-state-grid div,
+.decision-stat,
+.memory-state-panel,
+.decision-review {
+  padding: 16px;
+}
+
+.profile-state-grid span,
+.decision-stat span,
+.decision-card-header span,
+.decision-card-header small,
+.decision-bars span,
+.decision-review span,
+.decision-review small,
+.memory-state-panel span,
+.memory-state-panel small,
+.memory-scope small,
+.remembered-patterns span,
+.profile-signal-list span {
+  display: block;
+  color: rgba(255, 230, 222, 0.64);
+  font-size: 0.82rem;
+}
+
+.profile-state-grid strong,
+.decision-stat strong,
+.decision-bars strong,
+.decision-review strong,
+.memory-state-panel strong,
+.memory-scope strong,
+.remembered-patterns strong,
+.profile-signal-list strong {
+  display: block;
+  margin-top: 7px;
+  color: #fff7f2;
+}
+
+.profile-state-grid strong {
+  font-size: clamp(1rem, 1.5vw, 1.3rem);
+}
+
+.profile-side,
+.profile-signal-list,
+.memory-scope-list,
+.remembered-patterns {
+  display: grid;
+  gap: 14px;
+}
+
+.profile-signal-list div,
+.remembered-patterns div {
+  padding: 14px;
+}
+
+.profile-signal-list p,
+.decision-command p,
+.decision-stat p,
+.saved-decision-card p,
+.memory-hero p,
+.memory-state-panel p,
+.memory-scope p,
+.remembered-patterns p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.decision-command {
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.75fr);
+}
+
+.decision-stat-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.saved-decision-grid,
+.memory-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.saved-decision-card {
+  min-height: 430px;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.decision-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.saved-decision-card h2 {
+  margin-bottom: 12px;
+  font-size: clamp(1.45rem, 2.2vw, 2.25rem);
+  line-height: 1.08;
+}
+
+.decision-bars {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.decision-bars > div {
+  display: grid;
+  gap: 9px;
+}
+
+.decision-bars > div > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.decision-bars small {
+  display: block;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, #ff6a3f, #ffc070) 0 0 / var(--value) 100% no-repeat,
+    rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 220, 207, 0.05);
+}
+
+.decision-review {
+  display: grid;
+  gap: 5px;
+  margin-top: 18px;
+}
+
+.decision-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 22px;
+}
+
+.memory-hero {
+  grid-template-columns: 130px minmax(0, 1fr) minmax(260px, 0.52fr);
+}
+
+.memory-core {
+  width: 124px;
+}
+
+.memory-state-panel strong {
+  font-size: 1.45rem;
+}
+
+.memory-scope {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 14px;
+}
+
+.memory-scope input {
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  accent-color: var(--red);
 }
 
 .simulation-list {
@@ -1798,6 +2089,13 @@ button:hover,
   .dashboard-engine,
   .decision-radar,
   .dashboard-two-column,
+  .profile-overview,
+  .profile-layout,
+  .decision-command,
+  .saved-decision-grid,
+  .memory-hero,
+  .memory-layout,
+  .memory-actions,
   .detail-scenario-grid,
   .simulation-detail-hero,
   .simulation-detail-layout,
@@ -1901,10 +2199,22 @@ button:hover,
   .analysis-grid,
   .rights-grid,
   .engine-stage-list,
+  .profile-state-grid,
+  .decision-stat-grid,
   .simulation-signal-grid,
   .detail-metrics,
   .dashboard-sidebar nav {
     grid-template-columns: 1fr;
+  }
+
+  .profile-identity {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .decision-action-row .button-link,
+  .decision-action-row button {
+    width: 100%;
   }
 
   button {
