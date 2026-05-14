@@ -44,14 +44,35 @@ export default function DashboardShell({
     return pathname === href || pathname.startsWith(`${href}/`);
   }
 
+  const activeItem = navigationItems.find((item) => isActiveRoute(item.href)) ?? navigationItems[0];
+
   return (
     <main className="dashboard-shell">
       <aside className="dashboard-sidebar section-frame">
-        <Link className="dashboard-brand" href="/">
-          levio.es
+        <Link className="dashboard-brand brand-lockup" href="/">
+          <span className="brand-logo brand-logo-mini" aria-hidden="true"></span>
+          <span>levio.es</span>
         </Link>
         <p>Área personal del motor de simulación de decisiones.</p>
-        <nav aria-label="Navegación del área personal">
+        <details className="dashboard-nav-menu">
+          <summary>
+            <span>Vista actual</span>
+            <strong>{activeItem.label}</strong>
+          </summary>
+          <nav aria-label="Navegación compacta del área personal">
+            {navigationItems.map((item) => (
+              <Link
+                aria-current={isActiveRoute(item.href) ? "page" : undefined}
+                className={isActiveRoute(item.href) ? "active" : ""}
+                href={item.href}
+                key={item.href}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        </details>
+        <nav aria-label="Navegación del área personal" className="dashboard-sidebar-nav">
           {navigationItems.map((item) => (
             <Link
               aria-current={isActiveRoute(item.href) ? "page" : undefined}

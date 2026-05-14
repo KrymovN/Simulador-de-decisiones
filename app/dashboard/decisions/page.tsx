@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
 import DashboardShell from "../../../components/DashboardShell";
+import MockFeedbackButton from "../../../components/MockFeedbackButton";
 import MockAuthGate from "../../../components/MockAuthGate";
 import { savedDecisions } from "../../../lib/personalArea";
 
@@ -93,9 +94,11 @@ export default function DecisionsPage() {
                 <Link className="button-link" href={`/dashboard/simulations/${decision.linkedSimulationId}`}>
                   Abrir mapa
                 </Link>
-                <button className="ghost-button" type="button">
-                  Marcar revisión
-                </button>
+                <MockFeedbackButton
+                  className="ghost-button"
+                  label="Guardar decisión"
+                  feedback="Decisión guardada para revisión demo."
+                />
               </div>
             </article>
           ))}

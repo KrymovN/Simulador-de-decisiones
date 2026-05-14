@@ -17,11 +17,12 @@ export default function AuthShell({
   return (
     <main className="auth-shell">
       <section className="auth-visual section-frame">
-        <Link className="auth-brand" href="/">
-          levio.es
+        <Link className="auth-brand brand-lockup" href="/">
+          <span className="brand-logo brand-logo-mini" aria-hidden="true"></span>
+          <span>levio.es</span>
         </Link>
         <div className="auth-core" aria-hidden="true">
-          <span></span>
+          <span className="brand-logo brand-logo-auth"></span>
         </div>
         <p className="eyebrow brand-mark">{eyebrow}</p>
         <h1>{title}</h1>

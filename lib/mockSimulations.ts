@@ -4,6 +4,12 @@ export type SimulationScenario = {
   copy: string;
   signal: string;
   score: string;
+  probability?: string;
+  riskLevel?: "Bajo" | "Medio" | "Alto";
+  potentialBenefit?: string;
+  consequences?: string[];
+  warnings?: string[];
+  recommendation?: string;
 };
 
 export type SimulationImpact = {

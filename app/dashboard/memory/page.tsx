@@ -1,4 +1,5 @@
 import DashboardShell from "../../../components/DashboardShell";
+import MockFeedbackButton from "../../../components/MockFeedbackButton";
 import MockAuthGate from "../../../components/MockAuthGate";
 import { memoryScopes, memorySettings, rememberedPatterns } from "../../../lib/personalArea";
 
@@ -83,7 +84,14 @@ export default function MemoryPage() {
             <article className="dashboard-card section-frame" key={action.title}>
               <h3>{action.title}</h3>
               <p>{action.copy}</p>
-              <button type="button">Preparar acción</button>
+              <MockFeedbackButton
+                label={action.title === "Eliminar memoria" ? "Limpiar memoria" : "Preparar acción"}
+                feedback={
+                  action.title === "Eliminar memoria"
+                    ? "Memoria limpiada en modo demo."
+                    : "Preferencia de memoria actualizada en demo."
+                }
+              />
             </article>
           ))}
         </section>

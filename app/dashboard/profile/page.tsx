@@ -1,4 +1,5 @@
 import DashboardShell from "../../../components/DashboardShell";
+import MockFeedbackButton from "../../../components/MockFeedbackButton";
 import MockAuthGate from "../../../components/MockAuthGate";
 import { accountSignals, activityLog, futureLanguages, userProfile } from "../../../lib/personalArea";
 
@@ -69,7 +70,7 @@ export default function ProfilePage() {
                 Cambiar contraseña
                 <input placeholder="Nueva contraseña" type="password" />
               </label>
-              <button type="button">Guardar cambios</button>
+              <MockFeedbackButton label="Guardar cambios" feedback="Perfil guardado en modo demo." />
             </form>
           </article>
 

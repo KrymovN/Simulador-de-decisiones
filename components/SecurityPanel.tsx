@@ -1,3 +1,5 @@
+import MockFeedbackButton from "./MockFeedbackButton";
+
 const sessions = [
   {
     device: "MacBook Air",
@@ -35,7 +37,7 @@ export default function SecurityPanel() {
             </div>
           ))}
         </div>
-        <button type="button">Cerrar sesión en todos los dispositivos</button>
+        <MockFeedbackButton label="Cerrar sesión en todos los dispositivos" feedback="Sesiones demo marcadas para cierre." />
       </section>
     </div>
   );

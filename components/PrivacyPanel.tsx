@@ -1,3 +1,5 @@
+import MockFeedbackButton from "./MockFeedbackButton";
+
 const privacyRights = [
   "Derecho de acceso",
   "Derecho de rectificación",
@@ -48,7 +50,7 @@ export default function PrivacyPanel() {
           <article className="dashboard-card section-frame" key={action.title}>
             <h3>{action.title}</h3>
             <p>{action.copy}</p>
-            <button type="button">Solicitar</button>
+            <MockFeedbackButton label="Solicitar" feedback="Solicitud registrada en modo demo." />
           </article>
         ))}
       </section>

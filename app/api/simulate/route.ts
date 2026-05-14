@@ -1,48 +1,28 @@
+import { buildMockSimulation } from "../../../lib/simulationEngine";
+
 export async function POST(req: Request) {
-  const { input, lang } = await req.json();
+  const body = await req.json().catch(() => ({}));
+  const input = typeof body.input === "string" ? body.input.trim() : "";
 
-  const dict: any = {
-    es: ["Estable", "Equilibrado", "Agresivo"],
-    en: ["Stable", "Balanced", "Aggressive"],
-    fr: ["Stable", "Équilibré", "Agressif"],
-    de: ["Stabil", "Ausgewogen", "Aggressiv"],
-    ar: ["مستقر", "متوازن", "هجومي"],
-    zh: ["稳定", "平衡", "激进"],
-  };
+  if (!input) {
+    return Response.json(
+      {
+        error: "Describe una situación para poder simular escenarios.",
+      },
+      { status: 400 },
+    );
+  }
 
-  const labels = dict[lang] || dict.en;
+  const response = buildMockSimulation(input);
 
   return Response.json({
-    input,
-    options: [
-      {
-        id: "stable",
-        title: labels[0],
-        description: labels[0],
-        risk: "Low",
-        reward: "Low",
-        color: "#22c55e",
-      },
-      {
-        id: "balanced",
-        title: labels[1],
-        description: labels[1],
-        risk: "Medium",
-        reward: "Medium",
-        color: "#facc15",
-      },
-      {
-        id: "aggressive",
-        title: labels[2],
-        description: labels[2],
-        risk: "High",
-        reward: "High",
-        color: "#ef4444",
-      },
-    ],
+    ...response,
     meta: {
-      lang,
+      lang: "es",
       safeRender: true,
+      mockOnly: true,
+      apiReady: true,
+      note: "Respuesta mock en español. Sustituir buildMockSimulation por un proveedor real cuando el MVP pase a backend.",
     },
   });
 }

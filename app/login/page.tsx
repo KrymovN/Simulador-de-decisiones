@@ -38,7 +38,7 @@ export default function LoginPage() {
 
       <div className="auth-links">
         <Link href="/register">Crear cuenta</Link>
-        <Link href="/login">He olvidado mi contraseña</Link>
+        <Link href="/forgot-password">He olvidado mi contraseña</Link>
       </div>
     </AuthShell>
   );

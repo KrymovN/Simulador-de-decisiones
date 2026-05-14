@@ -1,3 +1,7 @@
+import Link from "next/link";
+import HomeSimulator from "../components/HomeSimulator";
+import SingularityVisual from "../components/SingularityVisual";
+
 const engineSteps = [
   "Situación",
   "Análisis",
@@ -8,63 +12,75 @@ const engineSteps = [
 
 const scenarioCards = [
   {
-    label: "Escenario optimista",
-    title: "La decisión abre tracción",
-    copy: "El sistema proyecta una cadena de ventajas si actúas en el momento adecuado y proteges los puntos sensibles.",
-    signal: "Probabilidad alta",
+    label: "Escenario de oportunidad",
+    title: "La decisión abre crecimiento",
+    copy: "El motor detecta una ruta con tracción si proteges el timing, la energía disponible y los puntos sensibles.",
+    signal: "Ventaja alta",
+    tone: "opportunity",
   },
   {
     label: "Escenario de riesgo",
     title: "La presión se acumula",
-    copy: "levio.es detecta fricción operativa, desgaste emocional y costes invisibles que pueden aparecer tarde.",
+    copy: "levio.es separa señales de tensión, costes invisibles y fricciones que pueden aparecer cuando ya estás dentro.",
     signal: "Riesgo medio",
+    tone: "risk",
   },
   {
     label: "Consecuencia retrasada",
     title: "El efecto real llega después",
-    copy: "Algunas decisiones no fallan de inmediato. El motor revela impactos que emergen semanas o meses después.",
+    copy: "Algunas decisiones no fallan de inmediato. El mapa revela impactos que emergen semanas o meses más tarde.",
     signal: "Latencia crítica",
+    tone: "amber",
   },
   {
     label: "Alternativa estratégica",
     title: "Una ruta más inteligente",
-    copy: "La simulación propone un movimiento menos obvio, con menor exposición y mejor posición futura.",
+    copy: "La simulación propone un movimiento menos obvio, con menor exposición y una posición futura más fuerte.",
     signal: "Ventaja oculta",
+    tone: "emerald",
   },
 ];
 
 const analysisBlocks = [
-  "Riesgos",
-  "Ventajas",
-  "Impacto emocional",
-  "Impacto financiero",
-  "Impacto estratégico",
+  { label: "Riesgos", tone: "risk" },
+  { label: "Ventajas", tone: "opportunity" },
+  { label: "Impacto emocional", tone: "amber" },
+  { label: "Impacto financiero", tone: "emerald" },
+  { label: "Impacto estratégico", tone: "lime" },
 ];
 
 const accountFeatures = [
-  "Historial de simulaciones",
+  "Mis simulaciones",
+  "Perfil personal",
+  "Configurar idioma",
   "Decisiones guardadas",
-  "Perfil del usuario",
-  "Patrones de decisiones",
   "Memoria personalizada de IA",
+  "Consecuencias en vigilancia",
 ];
 
-const futureLanguages = [
-  "Español",
-  "English",
-  "Ucraniano",
-  "Ruso",
-  "Árabe",
-  "Chino",
-  "Francés",
-  "Alemán",
-  "Portugués",
-  "Italiano",
+const dashboardSignals = [
+  { label: "Oportunidad", value: "68%", tone: "opportunity" },
+  { label: "Riesgo", value: "42%", tone: "risk" },
+  { label: "Latencia", value: "3 meses", tone: "amber" },
 ];
 
 export default function Home() {
   return (
     <main className="site-shell">
+      <header className="site-header section-frame">
+        <Link className="brand-lockup" href="/" aria-label="levio.es">
+          <span className="brand-logo brand-logo-nav" aria-hidden="true"></span>
+          <span>levio.es</span>
+        </Link>
+        <nav className="site-nav" aria-label="Acceso principal">
+          <Link href="/dashboard">Mi espacio</Link>
+          <Link href="/login">Entrar</Link>
+          <Link className="nav-cta" href="/register">
+            Crear cuenta
+          </Link>
+        </nav>
+      </header>
+
       <section className="hero-section section-frame" aria-labelledby="hero-title">
         <div className="hero-atmosphere" aria-hidden="true">
           <span className="particle particle-a"></span>
@@ -72,70 +88,61 @@ export default function Home() {
           <span className="particle particle-c"></span>
           <span className="particle particle-d"></span>
         </div>
+        <span className="brand-watermark" aria-hidden="true"></span>
+
+        <div className="ai-core-stage" aria-label="Singularidad viva de levio.es">
+          <SingularityVisual />
+          {dashboardSignals.map((metric, index) => (
+            <div className={`core-metric metric-${index + 1} tone-${metric.tone}`} key={metric.label}>
+              <span>{metric.label}</span>
+              <strong>{metric.value}</strong>
+            </div>
+          ))}
+        </div>
 
         <div className="hero-copy">
-          <p className="eyebrow brand-mark">levio.es / Motor de simulación estratégica</p>
-          <h1 id="hero-title">Simula tu decisión antes de vivir sus consecuencias.</h1>
+          <p className="eyebrow brand-mark">levio.es / Sistema operativo para decisiones humanas</p>
+          <h1 id="hero-title">
+            Simula decisiones. <span>Entiende consecuencias.</span> Elige mejor.
+          </h1>
           <p className="hero-subtitle">
-            No es un chat. Es un motor de IA que modela escenarios futuros,
+            levio.es es una plataforma de simulación con IA para ver escenarios,
             riesgos, beneficios, consecuencias retrasadas y rutas estratégicas
             antes de actuar.
           </p>
 
-          <div className="decision-console" aria-label="Simulador inicial de decisión">
-            <label htmlFor="decision-input">Describe la situación que quieres simular</label>
-            <div className="input-row">
-              <textarea
-                id="decision-input"
-                placeholder="Ejemplo: aceptar una oferta, lanzar un producto, cambiar de país, invertir en una nueva dirección..."
-              />
-              <button type="button">Simular decisión</button>
-            </div>
-            <div className="console-status" aria-hidden="true">
-              <span></span>
-              <p>Motor preparando escenarios, riesgos y consecuencias latentes</p>
-            </div>
+          <div className="hero-actions" aria-label="Accesos principales">
+            <Link className="button-link" href="/dashboard">
+              Acceder al panel
+            </Link>
+            <Link className="button-link secondary-button" href="/login">
+              Entrar
+            </Link>
+            <Link className="text-link" href="/register">
+              Crear cuenta
+            </Link>
           </div>
+
+          <HomeSimulator />
         </div>
 
-        <div className="ai-core-stage" aria-label="Visualización del núcleo de decisión">
-          <div className="orbit orbit-one"></div>
-          <div className="orbit orbit-two"></div>
-          <div className="orbit orbit-three"></div>
-          <div className="core-ring">
-            <div className="core-pulse"></div>
-            <div className="core-eye"></div>
-          </div>
-          <div className="core-metric metric-one">
-            <span>Riesgo</span>
-            <strong>42%</strong>
-          </div>
-          <div className="core-metric metric-two">
-            <span>Ventaja</span>
-            <strong>68%</strong>
-          </div>
-          <div className="core-metric metric-three">
-            <span>Latencia</span>
-            <strong>3 meses</strong>
-          </div>
-        </div>
       </section>
 
       <section className="story-section two-column section-frame" aria-labelledby="what-title">
         <div>
           <p className="eyebrow">Qué es la plataforma</p>
-          <h2 id="what-title">Pensamiento visual para decisiones que importan.</h2>
+          <h2 id="what-title">Un mapa vivo para decisiones que importan.</h2>
         </div>
         <div className="text-stack">
           <p>
-            levio.es no responde como un chatbot. No intenta sonar humano ni
-            improvisar consejos. Observa una situación, la descompone y proyecta
-            caminos posibles.
+            No es un chatbot. levio.es descompone una situación, modela futuros
+            posibles y separa oportunidad, tensión, coste emocional y efecto
+            estratégico.
           </p>
           <p>
-            Cada simulación muestra cómo una decisión puede evolucionar: lo que
-            ganas, lo que arriesgas, lo que se retrasa y lo que tal vez no estás
-            viendo todavía.
+            Cada simulación muestra qué puedes ganar, qué conviene proteger y
+            qué consecuencia puede llegar tarde si decides sin ver el sistema
+            completo.
           </p>
         </div>
       </section>
@@ -164,7 +171,7 @@ export default function Home() {
 
         <div className="scenario-grid">
           {scenarioCards.map((card) => (
-            <article className="scenario-card" key={card.label}>
+            <article className={`scenario-card tone-${card.tone}`} key={card.label}>
               <p>{card.label}</p>
               <h3>{card.title}</h3>
               <span>{card.signal}</span>
@@ -176,6 +183,7 @@ export default function Home() {
 
       <section className="analysis-section section-frame" aria-labelledby="analysis-title">
         <div className="analysis-visual" aria-hidden="true">
+          <span className="brand-logo brand-logo-analysis"></span>
           <div className="analysis-bars">
             <span></span>
             <span></span>
@@ -186,11 +194,11 @@ export default function Home() {
         </div>
         <div>
           <p className="eyebrow">Riesgo y beneficio</p>
-          <h2 id="analysis-title">No basta con saber si algo conviene. Hay que saber que transforma.</h2>
+          <h2 id="analysis-title">No basta con saber si algo conviene. Hay que saber qué transforma.</h2>
           <div className="analysis-grid">
             {analysisBlocks.map((block) => (
-              <div className="analysis-chip" key={block}>
-                {block}
+              <div className={`analysis-chip tone-${block.tone}`} key={block.label}>
+                {block.label}
               </div>
             ))}
           </div>
@@ -204,13 +212,22 @@ export default function Home() {
         </div>
 
         <div className="ecosystem-layout">
-          <div className="profile-panel">
-            <div className="profile-orb"></div>
-            <h3>Cuenta personal levio.es</h3>
-            <p>
-              Los futuros usuarios podrán crear su perfil, elegir idioma,
-              guardar simulaciones y construir una memoria estratégica propia.
-            </p>
+          <div className="dashboard-preview-panel">
+            <div className="dashboard-preview-top">
+              <span className="brand-logo brand-logo-panel" aria-hidden="true"></span>
+              <div>
+                <strong>Mi espacio</strong>
+                <span>Panel privado de simulación</span>
+              </div>
+            </div>
+            <div className="dashboard-preview-grid">
+              {dashboardSignals.map((signal) => (
+                <div className={`dashboard-preview-card tone-${signal.tone}`} key={signal.label}>
+                  <span>{signal.label}</span>
+                  <strong>{signal.value}</strong>
+                </div>
+              ))}
+            </div>
           </div>
           <div className="feature-list">
             {accountFeatures.map((feature) => (
@@ -218,18 +235,12 @@ export default function Home() {
             ))}
           </div>
         </div>
-
-        <div className="language-strip" aria-label="Idiomas preparados para futuras cuentas">
-          {futureLanguages.map((language) => (
-            <span key={language}>{language}</span>
-          ))}
-        </div>
       </section>
 
       <section className="mobile-section section-frame" aria-labelledby="mobile-title">
         <div className="phone-visual" aria-hidden="true">
           <div className="phone-screen">
-            <span></span>
+            <span className="brand-logo brand-logo-phone"></span>
             <strong>Continuidad</strong>
             <p>Simulación sincronizada</p>
           </div>
@@ -238,18 +249,36 @@ export default function Home() {
           <p className="eyebrow">Ecosistema móvil</p>
           <h2 id="mobile-title">Decisiones complejas, disponibles donde ocurre la vida.</h2>
           <p>
-            La evolución natural de levio.es conecta escritorio, móvil y cuenta
-            personal con sincronización multiplataforma, continuidad entre
-            dispositivos y futuras apps para App Store y Google Play.
+            levio.es conecta escritorio, móvil y cuenta personal con continuidad
+            entre dispositivos, preferencias de idioma y una memoria estratégica
+            preparada para evolucionar contigo.
           </p>
         </div>
       </section>
 
       <section className="final-cta section-frame" aria-labelledby="final-title">
+        <span className="brand-logo brand-logo-final" aria-hidden="true"></span>
         <p className="eyebrow">Antes de actuar</p>
         <h2 id="final-title">Explora escenarios, riesgos, beneficios y consecuencias antes de decidir.</h2>
-        <a href="#decision-input">Iniciar una simulación</a>
+        <div className="final-actions">
+          <a href="#decision-input">Iniciar una simulación</a>
+          <Link className="secondary-button" href="/dashboard">
+            Mi espacio
+          </Link>
+        </div>
       </section>
+
+      <footer className="site-footer">
+        <Link className="brand-lockup" href="/" aria-label="levio.es">
+          <span className="brand-logo brand-logo-footer" aria-hidden="true"></span>
+          <span>levio.es</span>
+        </Link>
+        <div>
+          <Link href="/login">Entrar</Link>
+          <Link href="/register">Crear cuenta</Link>
+          <Link href="/dashboard">Acceder al panel</Link>
+        </div>
+      </footer>
     </main>
   );
 }

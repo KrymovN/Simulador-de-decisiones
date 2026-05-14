@@ -1,4 +1,5 @@
 import DashboardShell from "../../../components/DashboardShell";
+import MockFeedbackButton from "../../../components/MockFeedbackButton";
 import MockAuthGate from "../../../components/MockAuthGate";
 import SecurityPanel from "../../../components/SecurityPanel";
 
@@ -22,14 +23,14 @@ export default function SecurityPage() {
                 Nueva contraseña
                 <input placeholder="••••••••" type="password" />
               </label>
-              <button type="button">Actualizar contraseña</button>
+              <MockFeedbackButton label="Actualizar contraseña" feedback="Cambio de seguridad registrado en demo." />
             </form>
           </article>
 
           <article className="dashboard-card section-frame">
             <h2>Autenticación en dos pasos</h2>
             <p>Preparado para activar verificación adicional cuando exista auth provider productivo.</p>
-            <button type="button">Preparar 2FA</button>
+            <MockFeedbackButton label="Preparar 2FA" feedback="Preferencia 2FA preparada para futura autenticación real." />
           </article>
         </section>
         <SecurityPanel />
