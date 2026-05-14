@@ -1,6 +1,7 @@
 import Link from "next/link";
+import DecisionSingularity from "../components/DecisionSingularity";
 import HomeSimulator from "../components/HomeSimulator";
-import SingularityVisual from "../components/SingularityVisual";
+import LevioMark from "../components/LevioMark";
 
 const engineSteps = [
   "Situación",
@@ -41,6 +42,41 @@ const scenarioCards = [
   },
 ];
 
+const heroMetrics = [
+  { label: "Scenarios", value: "24", trend: "Future paths" },
+  { label: "Risks", value: "7", trend: "Hidden signals" },
+  { label: "Insights", value: "18", trend: "Strategic findings" },
+  { label: "Confidence", value: "87%", trend: "Model clarity" },
+];
+
+const heroFeatures = [
+  {
+    title: "Model Any Situation",
+    copy: "Describe a decision and Levio builds a dynamic map of possible futures.",
+    icon: "model",
+  },
+  {
+    title: "Explore Scenarios",
+    copy: "See multiple outcomes and how one choice can change everything.",
+    icon: "paths",
+  },
+  {
+    title: "Reveal Risks",
+    copy: "Detect hidden risks, threats and weak signals before they arrive.",
+    icon: "risk",
+  },
+  {
+    title: "Discover Opportunities",
+    copy: "Uncover hidden advantages, strong paths and high-impact alternatives.",
+    icon: "target",
+  },
+  {
+    title: "Choose with Confidence",
+    copy: "Decide from analysis and consequence, not guesswork or noise.",
+    icon: "check",
+  },
+];
+
 const analysisBlocks = [
   { label: "Riesgos", tone: "risk" },
   { label: "Ventajas", tone: "opportunity" },
@@ -69,14 +105,17 @@ export default function Home() {
     <main className="site-shell">
       <header className="site-header section-frame">
         <Link className="brand-lockup" href="/" aria-label="levio.es">
-          <span className="brand-logo brand-logo-nav" aria-hidden="true"></span>
-          <span>levio.es</span>
+          <LevioMark size="lg" />
+          <span className="brand-name">LEVIO<span>.ES</span></span>
         </Link>
         <nav className="site-nav" aria-label="Acceso principal">
-          <Link href="/dashboard">Mi espacio</Link>
-          <Link href="/login">Entrar</Link>
+          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/dashboard/simulations">Scenarios</Link>
+          <Link href="/dashboard/decisions">Analysis</Link>
+          <Link href="/dashboard/security">Risks</Link>
+          <Link href="/dashboard/memory">MindSpace</Link>
           <Link className="nav-cta" href="/register">
-            Crear cuenta
+            My Space
           </Link>
         </nav>
       </header>
@@ -90,42 +129,61 @@ export default function Home() {
         </div>
         <span className="brand-watermark" aria-hidden="true"></span>
 
-        <div className="ai-core-stage" aria-label="Singularidad viva de levio.es">
-          <SingularityVisual />
-          {dashboardSignals.map((metric, index) => (
-            <div className={`core-metric metric-${index + 1} tone-${metric.tone}`} key={metric.label}>
-              <span>{metric.label}</span>
-              <strong>{metric.value}</strong>
-            </div>
-          ))}
-        </div>
-
         <div className="hero-copy">
-          <p className="eyebrow brand-mark">levio.es / Sistema operativo para decisiones humanas</p>
+          <p className="eyebrow brand-mark">AI Decision Simulation</p>
           <h1 id="hero-title">
-            Simula decisiones. <span>Entiende consecuencias.</span> Elige mejor.
+            Simulate. Understand. Decide with <span>Clarity.</span>
           </h1>
           <p className="hero-subtitle">
-            levio.es es una plataforma de simulación con IA para ver escenarios,
-            riesgos, beneficios, consecuencias retrasadas y rutas estratégicas
-            antes de actuar.
+            Levio models future scenarios, reveals hidden consequences, risks
+            and opportunities, then helps you choose the strongest path before
+            you act.
           </p>
 
           <div className="hero-actions" aria-label="Accesos principales">
-            <Link className="button-link" href="/dashboard">
-              Acceder al panel
-            </Link>
-            <Link className="button-link secondary-button" href="/login">
-              Entrar
-            </Link>
-            <Link className="text-link" href="/register">
-              Crear cuenta
+            <a className="button-link" href="#decision-input">
+              Start New Simulation
+            </a>
+            <Link className="button-link secondary-button" href="/dashboard/simulations">
+              Explore Scenarios
             </Link>
           </div>
 
-          <HomeSimulator />
+          <div className="hero-trust-row" aria-label="Estado del motor">
+            <span className="engine-online">AI Engine Online</span>
+            <span>Your data is private and secure</span>
+          </div>
         </div>
 
+        <div className="ai-core-stage" aria-label="Decision Singularity visual">
+          <DecisionSingularity />
+        </div>
+
+        <aside className="singularity-metrics" aria-label="Métricas del sistema">
+          {heroMetrics.map((metric) => (
+            <div className="core-metric" key={metric.label}>
+              <span>{metric.label}</span>
+              <strong>{metric.value}</strong>
+              <small>{metric.trend}</small>
+            </div>
+          ))}
+        </aside>
+
+        <div className="hero-feature-strip" aria-label="Capacidades principales">
+          {heroFeatures.map((feature) => (
+            <article className={`hero-feature-card feature-${feature.icon}`} key={feature.title}>
+              <span aria-hidden="true"></span>
+              <div>
+                <h3>{feature.title}</h3>
+                <p>{feature.copy}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="hero-console-slot">
+          <HomeSimulator />
+        </div>
       </section>
 
       <section className="story-section two-column section-frame" aria-labelledby="what-title">
@@ -270,8 +328,8 @@ export default function Home() {
 
       <footer className="site-footer">
         <Link className="brand-lockup" href="/" aria-label="levio.es">
-          <span className="brand-logo brand-logo-footer" aria-hidden="true"></span>
-          <span>levio.es</span>
+          <LevioMark size="md" />
+          <span className="brand-name">LEVIO<span>.ES</span></span>
         </Link>
         <div>
           <Link href="/login">Entrar</Link>
