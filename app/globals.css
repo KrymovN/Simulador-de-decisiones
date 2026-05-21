@@ -272,8 +272,7 @@ h3 {
 
 .hero-subtitle,
 .text-stack p,
-.mobile-section p,
-.profile-panel p {
+.mobile-section p {
   color: var(--muted);
   font-size: clamp(1.02rem, 1.7vw, 1.24rem);
   line-height: 1.65;
@@ -411,80 +410,6 @@ button:hover,
   place-items: center;
 }
 
-.core-ring,
-.core-ring::before,
-.core-ring::after,
-.orbit,
-.core-pulse {
-  position: absolute;
-  border-radius: 50%;
-}
-
-.core-ring {
-  width: clamp(250px, 34vw, 410px);
-  aspect-ratio: 1;
-  border: 1px solid rgba(255, 221, 202, 0.24);
-  background:
-    radial-gradient(circle at 50% 48%, rgba(255, 231, 204, 0.2), transparent 13%),
-    radial-gradient(circle, rgba(255, 129, 76, 0.48), rgba(174, 24, 50, 0.23) 31%, rgba(80, 40, 105, 0.2) 52%, transparent 72%),
-    conic-gradient(from 120deg, transparent, rgba(255, 90, 50, 0.7), rgba(255, 171, 82, 0.24), rgba(131, 78, 255, 0.36), transparent);
-  box-shadow:
-    0 0 110px rgba(255, 76, 48, 0.34),
-    0 0 170px rgba(120, 52, 170, 0.16),
-    inset 0 0 68px rgba(255, 225, 201, 0.11);
-  animation: coreBreath 5.8s ease-in-out infinite;
-}
-
-.core-ring::before {
-  content: "";
-  inset: 12%;
-  border: 1px solid rgba(255, 224, 209, 0.18);
-  box-shadow:
-    inset 0 0 38px rgba(255, 83, 50, 0.18),
-    0 0 54px rgba(255, 125, 62, 0.09);
-}
-
-.core-ring::after {
-  content: "";
-  inset: 31%;
-  background: radial-gradient(circle, #fff8e9 0%, #ffb56c 13%, #ff5239 28%, #bd1733 50%, transparent 73%);
-  box-shadow:
-    0 0 54px rgba(255, 91, 54, 0.98),
-    0 0 98px rgba(255, 171, 88, 0.32);
-  animation: innerPulse 2.8s ease-in-out infinite;
-}
-
-.core-pulse {
-  inset: -18%;
-  border: 1px solid rgba(255, 128, 72, 0.28);
-  animation: pulseExpand 4.7s ease-in-out infinite;
-}
-
-.orbit {
-  border: 1px solid rgba(255, 224, 207, 0.17);
-  box-shadow: 0 0 26px rgba(255, 91, 55, 0.08);
-}
-
-.orbit-one {
-  width: 73%;
-  aspect-ratio: 1;
-  animation: orbitSpin 24s linear infinite;
-}
-
-.orbit-two {
-  width: 54%;
-  aspect-ratio: 1;
-  transform: rotate(62deg) scaleY(0.52);
-  animation: orbitSpin 17s linear infinite reverse;
-}
-
-.orbit-three {
-  width: 88%;
-  aspect-ratio: 1;
-  transform: rotate(-26deg) scaleY(0.38);
-  animation: orbitSpin 31s linear infinite;
-}
-
 .core-metric {
   position: absolute;
   width: 138px;
@@ -511,21 +436,6 @@ button:hover,
   margin-top: 4px;
   color: #fff3ef;
   font-size: 1.2rem;
-}
-
-.metric-one {
-  left: 5%;
-  top: 22%;
-}
-
-.metric-two {
-  right: 4%;
-  top: 34%;
-}
-
-.metric-three {
-  left: 22%;
-  bottom: 10%;
 }
 
 .two-column,
@@ -734,8 +644,7 @@ button:hover,
 }
 
 .analysis-chip,
-.feature-list div,
-.language-strip span {
+.feature-list div {
   border: 1px solid rgba(255, 220, 207, 0.18);
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.072), rgba(255, 255, 255, 0.026)),
@@ -764,27 +673,6 @@ button:hover,
   align-items: stretch;
 }
 
-.profile-panel {
-  min-height: 360px;
-  padding: 28px;
-  border: 1px solid rgba(255, 222, 207, 0.2);
-  border-radius: 24px;
-  background:
-    radial-gradient(circle at 28% 22%, rgba(255, 125, 65, 0.22), transparent 36%),
-    radial-gradient(circle at 85% 10%, rgba(103, 58, 150, 0.14), transparent 34%),
-    rgba(255, 255, 255, 0.052);
-}
-
-.profile-orb {
-  width: 82px;
-  height: 82px;
-  margin-bottom: 28px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #fff0e8 0%, #ff6848 24%, #791024 60%, transparent 72%);
-  box-shadow: 0 0 42px rgba(255, 75, 49, 0.5);
-  animation: innerPulse 3.8s ease-in-out infinite;
-}
-
 .feature-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -797,19 +685,6 @@ button:hover,
   align-items: flex-end;
   padding: 18px;
   border-radius: 18px;
-}
-
-.language-strip {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 24px;
-}
-
-.language-strip span {
-  padding: 9px 12px;
-  border-radius: 999px;
-  font-size: 0.84rem;
 }
 
 .mobile-section {
@@ -2061,13 +1936,8 @@ button:hover,
   animation: logoBreath 5.8s ease-in-out infinite;
 }
 
-.brand-logo-nav,
 .brand-logo-mini {
   width: 42px;
-}
-
-.brand-logo-footer {
-  width: 38px;
 }
 
 .site-nav {
@@ -2574,21 +2444,6 @@ button:disabled {
   box-shadow: 0 0 28px rgba(47, 242, 138, 0.08);
 }
 
-.metric-1 {
-  left: 5%;
-  top: 20%;
-}
-
-.metric-2 {
-  right: 4%;
-  top: 36%;
-}
-
-.metric-3 {
-  left: 22%;
-  bottom: 10%;
-}
-
 .tone-opportunity,
 .tone-emerald {
   --tone-rgb: 47, 242, 138;
@@ -2736,10 +2591,6 @@ button:disabled {
   display: block;
   color: rgba(220, 255, 230, 0.62);
   font-size: 0.86rem;
-}
-
-.brand-logo-panel {
-  width: 76px;
 }
 
 .dashboard-preview-grid {
@@ -3058,7 +2909,6 @@ h2 {
 .hero-subtitle,
 .text-stack p,
 .mobile-section p,
-.profile-panel p,
 .auth-visual p:not(.eyebrow),
 .dashboard-header p,
 .dashboard-sidebar p,
@@ -3607,7 +3457,6 @@ textarea:focus,
 }
 
 .auth-core > .brand-logo-auth,
-.brand-logo-hero,
 .brand-logo-analysis,
 .brand-logo-phone,
 .brand-logo-final {
@@ -4037,36 +3886,6 @@ textarea:focus,
   .core-metric {
     width: 118px;
     padding: 11px 12px;
-  }
-
-  .metric-one {
-    left: 0;
-    top: 18%;
-  }
-
-  .metric-1 {
-    left: 0;
-    top: 18%;
-  }
-
-  .metric-two {
-    right: 0;
-    top: 42%;
-  }
-
-  .metric-2 {
-    right: 0;
-    top: 42%;
-  }
-
-  .metric-three {
-    left: 8%;
-    bottom: 8%;
-  }
-
-  .metric-3 {
-    left: 8%;
-    bottom: 8%;
   }
 
   .phone-visual {
@@ -4788,7 +4607,6 @@ textarea::placeholder {
 .hero-subtitle,
 .text-stack p,
 .mobile-section p,
-.profile-panel p,
 .auth-visual p:not(.eyebrow),
 .dashboard-header p,
 .dashboard-sidebar p,
@@ -5208,7 +5026,6 @@ h3,
 .hero-subtitle,
 .text-stack p,
 .mobile-section p,
-.profile-panel p,
 .auth-visual p:not(.eyebrow),
 .dashboard-header p,
 .dashboard-sidebar p,
@@ -5705,7 +5522,6 @@ h3,
 .hero-subtitle,
 .text-stack p,
 .mobile-section p,
-.profile-panel p,
 .auth-visual p:not(.eyebrow),
 .dashboard-header p,
 .dashboard-sidebar p,
@@ -6334,24 +6150,6 @@ select:focus-visible {
     padding: 10px;
   }
 
-  .metric-1,
-  .metric-one {
-    left: -4px;
-    top: 14%;
-  }
-
-  .metric-2,
-  .metric-two {
-    right: -4px;
-    top: 38%;
-  }
-
-  .metric-3,
-  .metric-three {
-    left: 8%;
-    bottom: 2%;
-  }
-
   .home-scenario-card,
   .scenario-card,
   .saved-decision-card {
@@ -6578,7 +6376,6 @@ h3,
 .hero-subtitle,
 .text-stack p,
 .mobile-section p,
-.profile-panel p,
 .auth-visual p:not(.eyebrow),
 .dashboard-header p,
 .dashboard-sidebar p,
