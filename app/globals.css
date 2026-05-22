@@ -6659,13 +6659,28 @@ textarea::placeholder {
 
   .hero-section {
     min-height: auto;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
       "copy"
       "core"
       "metrics"
       "features"
       "console";
+  }
+
+  .hero-section > *,
+  .hero-copy,
+  .ai-core-stage,
+  .hero-actions,
+  .hero-trust-row {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .dashboard-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
   }
 
   .ai-core-stage {
@@ -6682,6 +6697,7 @@ textarea::placeholder {
   }
 
   .privacy-state {
+    justify-self: stretch;
     max-width: none;
   }
 }
