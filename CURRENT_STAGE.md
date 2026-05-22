@@ -11,6 +11,8 @@ Completed Stage 2 stabilization commits:
 - `8eeb150` - Stage 2.1, motion.css extraction.
 - `959ffe5` - Stage 2.2, dashboard.css extraction.
 - `7ea3e61` - Stage 2.3, auth.css extraction.
+- `c9a86da` - Stage 2.4, simulator.css extraction.
+- Stage 2.5 visual regression QA completed after `c9a86da`.
 
 ## Current CSS Architecture
 
@@ -19,18 +21,19 @@ Current style files:
 - `app/styles/motion.css`
 - `app/styles/dashboard.css`
 - `app/styles/auth.css`
+- `app/styles/simulator.css`
 - `app/globals.css`
 
 Import/cascade policy:
 
-- `dashboard.css` and `auth.css` are intentionally imported before `globals.css`.
+- `dashboard.css`, `auth.css` and `simulator.css` are intentionally imported before `globals.css`.
 - `globals.css` remains the canonical final dark-gold cascade layer.
 - `motion.css` is keyframes-only and separate from selector cascade concerns.
 - Do not remove or relocate final dark-gold cascade locks without a dedicated visual regression plan.
 
 ## Current Stable Status
 
-Stable after Stage 2.1-2.3:
+Stable after Stage 2.5:
 
 - cinematic dark-gold baseline preserved;
 - desktop stable;
@@ -38,11 +41,12 @@ Stable after Stage 2.1-2.3:
 - dashboard mobile navigation stable;
 - auth routes stable;
 - mock auth flow stable;
+- home simulator interaction stable;
 - no visual regressions detected;
 - working tree was clean before this documentation update;
 - `stash@{0}: pre-stage-1.5-existing-changes` exists and has not been applied.
 
-## QA Baseline From Stage 2.1-2.3
+## QA Baseline From Stage 2.1-2.5
 
 Stage 2.1:
 
@@ -74,12 +78,35 @@ Stage 2.3:
 - Spanish UI preserved;
 - mock login flow stable.
 
+Stage 2.4:
+
+- simulator extraction completed in `c9a86da`;
+- simulator base styles moved to `app/styles/simulator.css`;
+- `simulator.css` is imported before `globals.css`;
+- production `HomeSimulator`, `DecisionSingularity`, WebGL and simulator business logic were not rewritten.
+
+Stage 2.5:
+
+- visual regression QA completed;
+- desktop `1440x900` public/auth/dashboard routes stable;
+- mobile `390x844` home/auth/dashboard checks stable;
+- mobile dashboard compact nav opens and shows 7 links;
+- home simulator interaction stable:
+  - textarea input accepted;
+  - `POST /api/simulate` returned `200`;
+  - result rendered with 4 scenario cards;
+- no console errors observed;
+- no horizontal overflow detected;
+- `npm run lint` passed;
+- `./node_modules/.bin/tsc --noEmit` passed;
+- `npm run build` compiled successfully, completed type/lint validation and generated `19/19` static pages, then stayed on `Collecting build traces` for several minutes and was stopped manually. This is a local build-trace caveat, not a visual regression.
+
 ## Roadmap
 
 Stable frontend stabilization phase:
 
-- Stage 2.4 - simulator CSS stabilization.
-- Stage 2.5 - visual regression QA.
+- Stage 2.4 - simulator CSS stabilization - completed in `c9a86da`.
+- Stage 2.5 - visual regression QA - completed.
 - Stage 2.6 - checkpoint + context sync.
 - Stage 2.7-prep - visual engine preparation.
 

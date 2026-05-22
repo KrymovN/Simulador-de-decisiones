@@ -4,7 +4,7 @@
 
 23 мая 2026, Europe/Madrid.
 
-Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после завершения Stage 2.1-2.3. Это основной актуальный handoff-файл. `LEVIO_CURRENT_STATE.md` должен оставаться синхронизированной копией этого документа.
+Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после завершения Stage 2.5 visual regression QA. Это основной актуальный handoff-файл. `LEVIO_CURRENT_STATE.md` должен оставаться синхронизированной копией этого документа.
 
 ## 1. Краткое описание проекта
 
@@ -30,20 +30,23 @@ Stage 2 progress:
 - Stage 2.1 completed: `8eeb150` - motion.css extraction.
 - Stage 2.2 completed: `959ffe5` - dashboard.css extraction.
 - Stage 2.3 completed: `7ea3e61` - auth.css extraction.
+- Stage 2.4 completed: `c9a86da` - simulator.css extraction.
+- Stage 2.5 completed: visual regression QA checkpoint.
 
-Stage 2.1-2.3 result:
+Stage 2.1-2.5 result:
 
 - motion keyframes moved to `app/styles/motion.css`;
 - dashboard base styles moved to `app/styles/dashboard.css`;
 - auth base styles moved to `app/styles/auth.css`;
+- simulator base styles moved to `app/styles/simulator.css`;
 - `app/globals.css` remains the canonical final dark-gold cascade layer;
-- selector-bearing extracted CSS (`dashboard.css`, `auth.css`) is intentionally imported before `globals.css`;
+- selector-bearing extracted CSS (`dashboard.css`, `auth.css`, `simulator.css`) is intentionally imported before `globals.css`;
 - `motion.css` is keyframes-only and remains separate from selector cascade concerns;
 - production visual baseline remains protected.
 
 ## 3. Current Stable Status
 
-Stable status after Stage 2.1-2.3:
+Stable status after Stage 2.5:
 
 - cinematic dark-gold baseline preserved;
 - desktop QA stable;
@@ -51,7 +54,8 @@ Stable status after Stage 2.1-2.3:
 - dashboard mobile navigation stable;
 - auth routes stable;
 - mock auth flow stable;
-- no visual regressions detected in completed Stage 2.1-2.3 QA;
+- home simulator interaction stable;
+- no visual regressions detected in completed Stage 2.5 QA;
 - working tree was clean before this documentation update;
 - `stash@{0}: pre-stage-1.5-existing-changes` remains untouched and must not be applied without explicit permission.
 
@@ -66,6 +70,7 @@ Current global style entry order in `app/layout.tsx`:
 ```ts
 import './styles/dashboard.css';
 import './styles/auth.css';
+import './styles/simulator.css';
 import './globals.css';
 import './styles/motion.css';
 ```
@@ -74,6 +79,7 @@ CSS responsibilities:
 
 - `app/styles/dashboard.css` - base dashboard shell, navigation, dashboard content primitives, personal area modules, simulations/detail/privacy/security/loading dashboard styles.
 - `app/styles/auth.css` - base auth shell/form styles for `/login`, `/register`, `/forgot-password`.
+- `app/styles/simulator.css` - base home simulator/decision console styles.
 - `app/styles/motion.css` - extracted animation keyframes/motion tokens.
 - `app/globals.css` - canonical global layer and final dark-gold cascade locks. It still contains historical/final visual overrides and must remain authoritative for the active visual baseline.
 - `components/DecisionSingularity.module.css` - scoped CSS module for production `DecisionSingularity`.
@@ -200,8 +206,8 @@ Stable frontend stabilization phase:
 - Stage 2.1 - motion CSS stabilization - completed in `8eeb150`.
 - Stage 2.2 - dashboard CSS stabilization - completed in `959ffe5`.
 - Stage 2.3 - auth CSS stabilization - completed in `7ea3e61`.
-- Stage 2.4 - simulator CSS stabilization.
-- Stage 2.5 - visual regression QA.
+- Stage 2.4 - simulator CSS stabilization - completed in `c9a86da`.
+- Stage 2.5 - visual regression QA - completed.
 - Stage 2.6 - checkpoint + context sync.
 - Stage 2.7-prep - visual engine preparation.
 
@@ -313,11 +319,58 @@ Stage 2.3:
 - no console errors;
 - no horizontal overflow.
 
+Stage 2.4:
+
+- simulator CSS extraction completed in `c9a86da`;
+- base home simulator/decision console styles moved to `app/styles/simulator.css`;
+- `simulator.css` is imported before `globals.css`;
+- `globals.css` remains the canonical final dark-gold cascade layer;
+- production `HomeSimulator`, `DecisionSingularity`, WebGL and simulator business logic were not rewritten.
+
+Stage 2.5:
+
+- visual regression QA completed after Stage 2.4;
+- desktop `1440x900` QA stable:
+  - `/`
+  - `/login`
+  - `/register`
+  - `/forgot-password`
+  - `/dashboard`
+  - `/dashboard/profile`
+  - `/dashboard/privacy`
+  - `/dashboard/security`
+  - `/dashboard/simulations`
+  - `/dashboard/simulations/oferta-premium`
+  - `/dashboard/decisions`
+  - `/dashboard/memory`
+- mobile `390x844` QA stable:
+  - `/`
+  - `/login`
+  - `/register`
+  - `/forgot-password`
+  - `/dashboard`
+- mobile dashboard compact nav opens and shows 7 links;
+- home simulator interaction stable:
+  - textarea input accepted;
+  - `POST /api/simulate` returned `200`;
+  - result rendered with 4 scenario cards;
+- no console errors observed;
+- no horizontal overflow detected;
+- cinematic dark-gold visual baseline preserved.
+
+Build note:
+
+- `npm run lint` passed;
+- `./node_modules/.bin/tsc --noEmit` passed;
+- `npm run build` compiled successfully, completed type/lint validation and generated `19/19` static pages, then stayed on `Collecting build traces` for several minutes and was stopped manually. Treat this as a local build-trace caveat, not a Stage 2.5 visual regression.
+
 ## 14. Git State At This Context Update
 
 Latest local commits before this documentation update:
 
 ```text
+c9a86da Stabilize simulator CSS structure for Stage 2
+41c34bc Update Levio project context after Stage 2 stabilization
 7ea3e61 Stabilize auth CSS structure for Stage 2
 959ffe5 Stabilize dashboard CSS structure for Stage 2
 8eeb150 Begin safe CSS consolidation for Stage 2
@@ -330,7 +383,7 @@ Stash:
 stash@{0}: On main: pre-stage-1.5-existing-changes
 ```
 
-The stash was not applied during Stage 2.1-2.3 and must not be applied without explicit permission.
+The stash was not applied during Stage 2.1-2.5 and must not be applied without explicit permission.
 
 ## 15. Instruction For New Codex Chat
 
