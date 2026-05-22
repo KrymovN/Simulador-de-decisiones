@@ -16,22 +16,22 @@ Levio.es — испаноязычная платформа симуляции р
 
 # CURRENT DEVELOPMENT STAGE
 
-Stage 1 — Technical stabilization, CSS consolidation and QA.
+Stage 1 — Technical stabilization, CSS consolidation and QA — COMPLETED.
 
 Stage status:
 
 - Stage 1.4 completed: `9e9bb08 Safe CSS stabilization for Levio visual baseline`.
 - Stage 1.5 completed: `652cd71 Organize globals CSS into safe structural sections`.
-- Stage 1.6 is the QA/regression-protection pass; Stage 1 is almost closed, with only explicitly scoped follow-up fixes remaining.
+- Stage 1.6 completed: `0e1e534 Stage 1 QA regression fixes`.
+- Stage 1.7 closes the stable Stage 1 baseline and prepares the project for Stage 2.
 
-Current priority:
+Stage 1 result:
 
-- stabilize `app/globals.css`;
-- preserve cinematic dark-gold identity;
-- reduce architectural fragility;
-- avoid visual regressions;
-- do not connect real backend/auth/database/AI yet;
-- do not start new product features before stabilization is complete.
+- `app/globals.css` is stabilized and structurally mapped by sections;
+- legacy CSS remains partly layered, but the active dark-gold baseline is protected;
+- mobile hero clipping and dashboard mobile header/privacy-card collapse are fixed;
+- QA baseline is green across the main public/auth/dashboard routes;
+- Stage 2 must start only after a fresh context window and a new plan.
 
 # CRITICAL COMPONENTS — DO NOT REWRITE BLINDLY
 
@@ -88,15 +88,19 @@ Public UI default:
 - mock protected personal area;
 - localStorage-based simulation saving;
 - mobile hero stabilization.
-
-[IN PROGRESS]
-
 - technical stabilization;
 - CSS consolidation;
 - architectural cleanup;
 - anti-regression protection;
 - context/handoff documentation.
 - route QA and regression protection.
+- Stage 1 stable baseline closure.
+
+[NEXT]
+
+- Stage 2 planning in a fresh context window.
+- Localization/content pass for remaining public English UI text.
+- Real backend/auth/AI planning only after explicit Stage 2 decision.
 
 [LOCKED / DO NOT START YET]
 
@@ -109,7 +113,7 @@ Public UI default:
 - production privacy/security implementation.
 
 Reason:
-These locked features must not be started until the current MVP is technically stabilized and the architecture is protected from regressions.
+These locked features must not be started until Stage 2 is explicitly planned.
 
 # VISUAL IDENTITY LOCK
 
@@ -444,7 +448,7 @@ Fallback: если fetch `/api/simulate` в `HomeSimulator` падает, ком
 - Реальная авторизация отсутствует.
 - База данных отсутствует.
 - Все персональные данные и симуляции в текущем MVP являются demo/mock/localStorage.
-- `app/globals.css` всё ещё большой и исторически слоистый, но Stage 1.5 добавил безопасную структурную карту секций, а Stage 1.6 закрыл найденные mobile layout-регрессии без редизайна.
+- `app/globals.css` всё ещё большой и исторически слоистый, но Stage 1.5 добавил безопасную структурную карту секций, а Stage 1.6 закрыл найденные mobile layout-регрессии без редизайна. Stage 1 считается завершённым stable baseline.
 - Старые visual sections внутри `app/globals.css` всё ещё требуют осторожности: порядок каскада является частью текущего поведения.
 - `PROJECT_CONTEXT_LEVIO.md` остаётся старым summary.
 - `components/SingularityVisual.tsx` присутствует, но не является текущим основным visual component.
@@ -452,6 +456,7 @@ Fallback: если fetch `/api/simulate` в `HomeSimulator` падает, ком
 - `node_modules/next/dist/docs/` отсутствует, хотя `AGENTS.md` требует читать Next.js guide-файлы из этого каталога.
 - Stage 1.6 Browser QA покрыл заданные desktop/mobile маршруты, но не является полной визуальной регрессией по всем scroll-depth состояниям и всем возможным длинным данным.
 - QA Stage 1.6 зафиксировал, что текущая committed baseline главной страницы всё ещё содержит видимые английские public UI-тексты (`Simulate. Understand. Decide with Clarity.`, nav/CTA/trust copy). Это не результат CSS-группировки Stage 1.5 и не исправлялось в Stage 1.6, где scope был QA/layout-regression protection.
+- Known localization issue для Stage 2: часть public UI-текстов остаётся на английском. Это не regression bug Stage 1; вынести в отдельный Stage 2 localization/content pass.
 - Технические имена вроде `mock-feedback`, `mock-auth`, route/id `oferta-premium` остаются в коде; они не считаются видимым пользовательским UI.
 
 ## 12. Последние стабильные Stage 1 commits
@@ -461,9 +466,10 @@ Fallback: если fetch `/api/simulate` в `HomeSimulator` падает, ком
 ```text
 9e9bb08 Safe CSS stabilization for Levio visual baseline
 652cd71 Organize globals CSS into safe structural sections
+0e1e534 Stage 1 QA regression fixes
 ```
 
-`9e9bb08` завершил Stage 1.4 и закрепил визуальный CSS baseline. `652cd71` завершил Stage 1.5 и добавил безопасную структурную группировку `app/globals.css` только через комментарии.
+`9e9bb08` завершил Stage 1.4 и закрепил визуальный CSS baseline. `652cd71` завершил Stage 1.5 и добавил безопасную структурную группировку `app/globals.css` только через комментарии. `0e1e534` завершил Stage 1.6 QA/regression fixes.
 
 Старые незакоммиченные изменения изолированы и не применены:
 
@@ -471,21 +477,21 @@ Fallback: если fetch `/api/simulate` в `HomeSimulator` падает, ком
 stash@{0}: On main: pre-stage-1.5-existing-changes
 ```
 
-## 13. Git status
+## 13. Git and stash status
 
-Состояние на старте Stage 1.6:
+Состояние на старте Stage 1.7:
 
 ```text
 On branch main
-Your branch is ahead of 'origin/main' by 4 commits.
+Your branch is ahead of 'origin/main' by 5 commits.
 nothing to commit, working tree clean
 ```
 
-Stage 1.6 не применял stash. Исправления Stage 1.6 ограничены реальными QA-регрессиями mobile layout в `app/globals.css` и обновлением этого контекстного файла.
+Stage 1.7 не применял stash и не делал push. `stash@{0}: pre-stage-1.5-existing-changes` существует; рассматривать его отдельно после закрытия Stage 1.
 
 ## 14. Проверки
 
-Stage 1.6 обязательные проверки:
+Stage 1.7 финальные проверки:
 
 ```text
 npm run lint
@@ -499,6 +505,16 @@ npx tsc --noEmit
 - `npm run build` прошёл успешно.
 - `npx tsc --noEmit` прошёл успешно.
 - Build сгенерировал 19 app routes.
+
+QA baseline Stage 1:
+
+- Проверены 12 маршрутов.
+- Desktop viewport: `1280x720`.
+- Mobile viewport: `390x844`.
+- HTTP `200` по всем маршрутам.
+- Console errors отсутствуют.
+- Horizontal overflow отсутствует.
+- Mock auth flow работает.
 
 HTTP route status на `localhost:3000`:
 
@@ -533,9 +549,9 @@ Browser QA result:
 
 Рекомендуемый следующий этап:
 
-1. Закрыть Stage 1 после review Stage 1.6 diff и commit.
-2. Отдельным scoped этапом решить публичную локализацию главной страницы: текущая committed baseline всё ещё показывает английские public UI-тексты.
-3. Продолжать CSS-консолидацию только малыми проверяемыми шагами:
+1. Начинать Stage 2 только после нового контекстного окна и свежего плана.
+2. Первым Stage 2 candidate вынести localization/content pass: текущая committed baseline всё ещё показывает английские public UI-тексты.
+3. Продолжать любые CSS-изменения только малыми проверяемыми шагами:
    - не менять `DecisionSingularity` без крайней необходимости;
    - не переставлять крупные CSS-блоки без browser QA;
    - после каждого шага проверять desktop/mobile hero и dashboard.
