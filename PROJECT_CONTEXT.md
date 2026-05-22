@@ -1,41 +1,92 @@
-# LEVIO.ES — АКТУАЛЬНОЕ СОСТОЯНИЕ ПРОЕКТА
+# LEVIO.ES - АКТУАЛЬНОЕ СОСТОЯНИЕ ПРОЕКТА
 
 ## Дата обновления
 
-22 мая 2026, Europe/Madrid.
+23 мая 2026, Europe/Madrid.
 
-Документ обновлён по текущему локальному состоянию проекта в `/Users/s3/Documents/New project` после ревизии структуры, git-состояния, ключевых страниц, компонентов, API route, визуального слоя и результатов проверок.
+Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после завершения Stage 2.1-2.3. Это основной актуальный handoff-файл. `LEVIO_CURRENT_STATE.md` должен оставаться синхронизированной копией этого документа.
 
 ## 1. Краткое описание проекта
 
-Levio.es — испаноязычная платформа симуляции решений с AI-позиционированием. Продукт помогает пользователю описать сложную ситуацию, увидеть возможные сценарии, риски, преимущества, отложенные последствия и стратегическую рекомендацию до принятия решения.
+Levio.es - испаноязычная cinematic MVP/demo платформа симуляции решений. Продукт помогает пользователю описать сложную ситуацию и увидеть возможные сценарии, риски, преимущества, отложенные последствия и стратегическую рекомендацию до принятия решения.
 
-Текущая версия — cinematic MVP/demo: интерфейс выглядит как премиальный “движок мышления”, но backend, авторизация, база данных и реальная AI-интеграция пока заменены локальными mock-слоями и `localStorage`.
+Текущая версия сохраняет премиальную dark-gold visual identity и mock-архитектуру: backend, авторизация, база данных и реальная AI-интеграция пока не подключены. Авторизация и сохранение симуляций работают через demo/localStorage flows.
 
-Ключевая идея продукта: не чатбот и не обычный SaaS-dashboard, а визуальный симулятор будущих последствий решений. Публичный сайт и личный кабинет должны оставаться на испанском языке.
+Публичный UI и личный кабинет должны оставаться на испанском языке. Технические отчеты для разработчика пишутся на русском.
 
-# CURRENT DEVELOPMENT STAGE
+## 2. Current Development Stage
 
-Stage 1 — Technical stabilization, CSS consolidation and QA — COMPLETED.
+Stage 2 - frontend CSS stabilization and architectural sync - IN PROGRESS.
 
-Stage status:
+Stage 1 stable baseline завершен ранее:
 
-- Stage 1.4 completed: `9e9bb08 Safe CSS stabilization for Levio visual baseline`.
-- Stage 1.5 completed: `652cd71 Organize globals CSS into safe structural sections`.
-- Stage 1.6 completed: `0e1e534 Stage 1 QA regression fixes`.
-- Stage 1.7 closes the stable Stage 1 baseline and prepares the project for Stage 2.
+- `9e9bb08` - Safe CSS stabilization for Levio visual baseline.
+- `652cd71` - Organize globals CSS into safe structural sections.
+- `0e1e534` - Stage 1 QA regression fixes.
+- `0777b7e` - Finalize Stage 1 stable baseline.
 
-Stage 1 result:
+Stage 2 progress:
 
-- `app/globals.css` is stabilized and structurally mapped by sections;
-- legacy CSS remains partly layered, but the active dark-gold baseline is protected;
-- mobile hero clipping and dashboard mobile header/privacy-card collapse are fixed;
-- QA baseline is green across the main public/auth/dashboard routes;
-- Stage 2 must start only after a fresh context window and a new plan.
+- Stage 2.1 completed: `8eeb150` - motion.css extraction.
+- Stage 2.2 completed: `959ffe5` - dashboard.css extraction.
+- Stage 2.3 completed: `7ea3e61` - auth.css extraction.
 
-# CRITICAL COMPONENTS — DO NOT REWRITE BLINDLY
+Stage 2.1-2.3 result:
 
-Do not fully rewrite without explicit decision:
+- motion keyframes moved to `app/styles/motion.css`;
+- dashboard base styles moved to `app/styles/dashboard.css`;
+- auth base styles moved to `app/styles/auth.css`;
+- `app/globals.css` remains the canonical final dark-gold cascade layer;
+- selector-bearing extracted CSS (`dashboard.css`, `auth.css`) is intentionally imported before `globals.css`;
+- `motion.css` is keyframes-only and remains separate from selector cascade concerns;
+- production visual baseline remains protected.
+
+## 3. Current Stable Status
+
+Stable status after Stage 2.1-2.3:
+
+- cinematic dark-gold baseline preserved;
+- desktop QA stable;
+- mobile `390px` QA stable;
+- dashboard mobile navigation stable;
+- auth routes stable;
+- mock auth flow stable;
+- no visual regressions detected in completed Stage 2.1-2.3 QA;
+- working tree was clean before this documentation update;
+- `stash@{0}: pre-stage-1.5-existing-changes` remains untouched and must not be applied without explicit permission.
+
+Known content issue:
+
+- part of the public UI still contains English text. This is a known localization/content pass item, not a Stage 2.1-2.3 regression.
+
+## 4. Current CSS Architecture
+
+Current global style entry order in `app/layout.tsx`:
+
+```ts
+import './styles/dashboard.css';
+import './styles/auth.css';
+import './globals.css';
+import './styles/motion.css';
+```
+
+CSS responsibilities:
+
+- `app/styles/dashboard.css` - base dashboard shell, navigation, dashboard content primitives, personal area modules, simulations/detail/privacy/security/loading dashboard styles.
+- `app/styles/auth.css` - base auth shell/form styles for `/login`, `/register`, `/forgot-password`.
+- `app/styles/motion.css` - extracted animation keyframes/motion tokens.
+- `app/globals.css` - canonical global layer and final dark-gold cascade locks. It still contains historical/final visual overrides and must remain authoritative for the active visual baseline.
+- `components/DecisionSingularity.module.css` - scoped CSS module for production `DecisionSingularity`.
+
+Cascade rule:
+
+- selector-bearing extracted files are loaded before `globals.css` so the final dark-gold locks in `globals.css` keep priority;
+- do not move final cascade locks out of `globals.css` without a dedicated visual regression plan;
+- do not delete historical/final override blocks just because they look duplicated.
+
+## 5. Critical Components - Do Not Rewrite Blindly
+
+Do not fully rewrite or replace without explicit decision:
 
 - `components/DecisionSingularity.tsx`
 - `components/DecisionSingularity.module.css`
@@ -44,78 +95,29 @@ Do not fully rewrite without explicit decision:
 - `lib/simulationEngine.ts`
 - `SimulationResponse` contract
 - `app/globals.css` canonical dark-gold layer
-- localStorage architecture:
+- localStorage keys:
   - `levio_es_mock_session`
   - `levio_es_saved_simulations`
   - `levio_es_language`
 
-Purpose:
-These parts currently hold the working cinematic MVP, visual identity, mock simulation flow, dashboard structure and demo persistence. They may be improved carefully, but not replaced or simplified blindly.
+These parts hold the working cinematic MVP, visual identity, mock simulation flow, dashboard structure and demo persistence.
 
-# CORE PRODUCT PRINCIPLES
+## 6. Product And Visual Principles
 
-Levio.es is NOT:
+Levio.es is not:
 
 - a chatbot;
 - a generic SaaS dashboard;
 - a template AI assistant;
-- a white clean corporate interface;
-- a simple form + button website.
+- a white clean corporate UI;
+- a game UI.
 
-Levio.es IS:
+Levio.es is:
 
 - a cinematic AI decision simulator;
 - a visual thinking engine;
-- an emotional-intellectual experience;
-- a future-consequence simulation platform;
-- a product where the user observes and feels the reasoning process, not just reads an answer.
-
-Public UI default:
-
-- Spanish language first.
-- No visible English UI text.
-- Technical reports for the developer may be written in Russian.
-
-# ROADMAP STATUS
-
-[COMPLETED]
-
-- cinematic MVP foundation;
-- mock simulator;
-- dashboard foundation;
-- Spanish UI stabilization;
-- singularity visual system;
-- mock protected personal area;
-- localStorage-based simulation saving;
-- mobile hero stabilization.
-- technical stabilization;
-- CSS consolidation;
-- architectural cleanup;
-- anti-regression protection;
-- context/handoff documentation.
-- route QA and regression protection.
-- Stage 1 stable baseline closure.
-
-[NEXT]
-
-- Stage 2 planning in a fresh context window.
-- Localization/content pass for remaining public English UI text.
-- Real backend/auth/AI planning only after explicit Stage 2 decision.
-
-[LOCKED / DO NOT START YET]
-
-- real AI backend;
-- OpenAI API integration;
-- Supabase/Auth.js/Clerk authentication;
-- database;
-- payments;
-- production persistence;
-- production privacy/security implementation.
-
-Reason:
-These locked features must not be started until Stage 2 is explicitly planned.
-
-# VISUAL IDENTITY LOCK
+- a premium minimal decision-simulation experience;
+- a future-consequence simulation platform.
 
 Mandatory visual rules:
 
@@ -126,463 +128,228 @@ Mandatory visual rules:
 - glowing energy effects;
 - event-horizon / black-hole / singularity metaphor;
 - glass-like panels;
-- premium but not generic SaaS aesthetics;
-- no white UI redesign;
-- no generic startup gradients;
-- no template dashboard aesthetics;
-- no replacement of `DecisionSingularity` with a static image;
-- no simplification that removes the emotional “living thinking” effect.
+- premium minimalism;
+- no gaming UI direction;
+- no white redesign;
+- no generic startup gradient direction;
+- no replacement of production `DecisionSingularity` with a static image.
 
-# DEVELOPMENT WORKFLOW
+## 7. Implemented Product Surface
 
-After every meaningful stage:
+Implemented and currently stable:
 
-1. Run:
-   - `npm run build`
-   - `npx tsc --noEmit`
+- public home page with cinematic Levio visual system;
+- hero simulator and local fallback simulation flow;
+- POST `/api/simulate` mock route;
+- structured `SimulationResponse` mock contract;
+- saved simulations through `levio_es_saved_simulations`;
+- mock auth pages:
+  - `/login`
+  - `/register`
+  - `/forgot-password`
+- mock protected dashboard through `MockAuthGate`;
+- dashboard overview;
+- dashboard simulations list;
+- simulation detail page;
+- decisions page;
+- memory page;
+- profile page;
+- privacy page;
+- security page;
+- desktop dashboard sidebar;
+- mobile compact dashboard `<details>` navigation;
+- demo feedback controls.
 
-2. If lint script exists, also run:
-   - `npm run lint`
+## 8. Technical Stack
 
-3. Manual browser QA:
-   - desktop hero;
-   - mobile hero around 390px width;
-   - simulator input/result flow;
-   - dashboard overview;
-   - profile/privacy/security/simulations/detail/memory/decisions pages.
-
-4. Review git diff before commit.
-
-5. Commit only after successful checks.
-
-6. Update:
-   - `PROJECT_CONTEXT.md`
-   - `LEVIO_CURRENT_STATE.md` if it is used as the external handoff copy;
-   - `CURRENT_STAGE.md` if it exists;
-   - `CHANGELOG.md` if it exists.
-
-7. Technical explanations and work reports must be written in Russian.
-8. Visible user interface must remain in Spanish.
-
-## 2. Текущий технический стек
-
-- Next.js `14.2.5` с App Router.
+- Next.js `14.2.5` with App Router.
 - React `18.2.0`.
 - TypeScript `6.0.3`.
-- Глобальные стили: `app/globals.css`.
-- CSS module для центральной сингулярности: `components/DecisionSingularity.module.css`.
-- Mock API route: `app/api/simulate/route.ts`.
-- Mock simulation engine: `lib/simulationEngine.ts`.
-- Demo/personal-area data: `lib/mockSimulations.ts`, `lib/personalArea.ts`.
-- Mock-авторизация через `localStorage`: `components/MockAuthGate.tsx`.
-- i18n-заготовка: `lib/i18n.ts`.
-- Выбор языка в профиле: `components/LanguagePreference.tsx`.
-- Скрипты: `npm run dev`, `npm run build`, `npm start`.
-- `lint` script в `package.json` отсутствует.
-- Remote: `origin/main` указывает на `git@github.com:KrymovN/Simulador-de-decisiones.git` по предыдущему контексту.
+- Main global CSS architecture:
+  - `app/styles/dashboard.css`
+  - `app/styles/auth.css`
+  - `app/globals.css`
+  - `app/styles/motion.css`
+- Scoped singularity CSS:
+  - `components/DecisionSingularity.module.css`
+- Mock API:
+  - `app/api/simulate/route.ts`
+- Mock simulation engine:
+  - `lib/simulationEngine.ts`
+- Demo/personal data:
+  - `lib/mockSimulations.ts`
+  - `lib/personalArea.ts`
+- Mock auth:
+  - `components/MockAuthGate.tsx`
+- Scripts:
+  - `npm run dev`
+  - `npm run lint`
+  - `npm run build`
+  - `npx tsc --noEmit`
 
-Важно по `AGENTS.md`: проект предупреждает, что это “не тот Next.js”, и перед изменением Next.js-кода нужно читать релевантные guide-файлы в `node_modules/next/dist/docs/`. В текущей установке каталог `node_modules/next/dist/docs/` отсутствует, команда `ls node_modules/next/dist/docs` возвращает `No such file or directory`.
+Important `AGENTS.md` note:
 
-## 3. Структура проекта
+- the project warns that this is "not the Next.js you know";
+- before Next.js code changes, read relevant guides in `node_modules/next/dist/docs/`;
+- in the current install this directory has previously been absent, so document the absence if checked.
 
-Ключевая структура на 15 мая 2026:
+## 9. Roadmap
 
-```text
-app/
-  layout.tsx
-  page.tsx
-  globals.css
-  api/simulate/route.ts
-  login/page.tsx
-  register/page.tsx
-  forgot-password/page.tsx
-  dashboard/page.tsx
-  dashboard/decisions/page.tsx
-  dashboard/memory/page.tsx
-  dashboard/privacy/page.tsx
-  dashboard/profile/page.tsx
-  dashboard/security/page.tsx
-  dashboard/simulations/page.tsx
-  dashboard/simulations/[id]/page.tsx
+Stable frontend stabilization phase:
 
-components/
-  AuthShell.tsx
-  DashboardShell.tsx
-  DecisionSingularity.tsx
-  DecisionSingularity.module.css
-  HomeSimulator.tsx
-  LanguagePreference.tsx
-  LevioMark.tsx
-  MockAuthGate.tsx
-  MockFeedbackButton.tsx
-  PrivacyPanel.tsx
-  SecurityPanel.tsx
-  SimulationDetailClient.tsx
-  SimulationsList.tsx
-  SingularityVisual.tsx
+- Stage 2.1 - motion CSS stabilization - completed in `8eeb150`.
+- Stage 2.2 - dashboard CSS stabilization - completed in `959ffe5`.
+- Stage 2.3 - auth CSS stabilization - completed in `7ea3e61`.
+- Stage 2.4 - simulator CSS stabilization.
+- Stage 2.5 - visual regression QA.
+- Stage 2.6 - checkpoint + context sync.
+- Stage 2.7-prep - visual engine preparation.
 
-lib/
-  i18n.ts
-  mockSimulations.ts
-  personalArea.ts
-  simulationEngine.ts
+Experimental visual engine phase:
 
-public/
-  apple-icon.png
-  favicon.ico
-  icon.png
-  icon-192.png
-  singularity-reference.jpg
-```
+- Stage 2.7.1-2.7.6 - isolated experimental WebGL track.
 
-В корне также есть `AGENTS.md`, `CLAUDE.md`, `LEVIO_CURRENT_STATE.md`, `PROJECT_CONTEXT_LEVIO.md`, `README.md`, `package.json`, `package-lock.json`, `next.config.js`, `tsconfig.json`, `tsconfig.tsbuildinfo`.
+Locked until explicit later stages:
 
-`PROJECT_CONTEXT.md` является актуальным основным русскоязычным handoff-файлом. `LEVIO_CURRENT_STATE.md` должен оставаться синхронизированной копией этого контекста для external handoff/Desktop-copy workflow. `PROJECT_CONTEXT_LEVIO.md` остаётся старым summary и не должен использоваться как основной источник без явной просьбы.
+- real AI backend;
+- OpenAI API integration;
+- Supabase/Auth.js/Clerk authentication;
+- database;
+- payments;
+- production persistence;
+- production privacy/security implementation.
 
-## 4. Что реализовано
+## 10. Critical Experimental Rules
 
-- Публичная главная страница Levio.es на испанском языке.
-- Первый экран с брендом `LEVIO.ES`, испанской навигацией, hero-текстом `Simula. Comprende. Decide con claridad.`, CTA, trust-row и встроенным симулятором.
-- Центральная визуальная метафора: animated event-horizon / black-hole / decision singularity.
-- Canvas particle field внутри `DecisionSingularity`.
-- Компактный hero simulator на desktop и полноширинный mobile simulator.
-- POST `/api/simulate`, который валидирует input и возвращает структурированный mock-результат на испанском.
-- Thinking stages: понимание ситуации, переменные, сценарии, риски/beneficios, стратегическая рекомендация.
-- Вывод сценариев: вероятность, уровень риска, потенциальная выгода, последствия, предупреждения, рекомендация.
-- Локальное сохранение симуляций в `localStorage` по ключу `levio_es_saved_simulations`.
-- Demo session flow через `levio_es_mock_session`.
-- Auth pages: `/login`, `/register`, `/forgot-password`.
-- Mock-protected dashboard через `MockAuthGate`.
-- Dashboard shell с desktop sidebar и compact `<details>` navigation на mobile.
-- Разделы личного кабинета: overview, simulations, simulation detail, decisions, memory, profile, privacy, security.
-- Demo feedback actions через `MockFeedbackButton`.
-- Privacy/GDPR-like панели, но в интерфейсе термин приведён к испанскому `RGPD`.
-- Security panel с демонстрационной защитой, сессиями и 2FA-prep.
-- Метаданные и иконки для домена `levio.es`.
-- Language preference logic: регистрация и профиль сохраняют выбранный язык в `levio_es_language`.
-- Важная текущая особенность i18n: даже если сохранён `en`, `ru` или `uk`, видимый публичный и приватный интерфейс сейчас остаётся на испанском, чтобы не появлялся смешанный English + Spanish UI.
+These rules are mandatory:
 
-## 5. Что изменилось за последний рабочий этап
+- WebGL experiments are forbidden before Stage 2.7-prep.
+- Production `DecisionSingularity` must not be directly replaced by WebGL.
+- WebGL work must run through an isolated sandbox/experimental track.
+- Simulator business logic is protected.
+- `SimulationResponse` contract is protected.
+- Mobile performance baseline is critical and must be measured/protected.
+- No gaming UI direction.
+- Cinematic premium minimalism must remain.
+- Experimental visual engine work must not contaminate the stable frontend stabilization phase.
 
-Последний рабочий этап был посвящён стабилизации фронтенда и полному удалению английских пользовательских текстов из UI.
+## 11. Stage Separation
 
-Сделано:
+Stable frontend stabilization phase:
 
-- Полностью проверены указанные зоны: `app/page.tsx`, `HomeSimulator`, `DashboardShell`, auth pages, dashboard pages, `lib/i18n.ts`, `lib/personalArea.ts`, `lib/mockSimulations.ts`, `lib/simulationEngine.ts`.
-- Исправлены видимые англоязычные/англицизированные тексты:
-  - `Confianza mock` → `Confianza estimada`;
-  - `Crear sesión demo` → `Crear sesión de prueba`;
-  - `Auth productivo pendiente` → `Autenticación real pendiente`;
-  - `auth provider productivo` → `proveedor de autenticación productivo`;
-  - `backend productivo` → `servidor productivo`;
-  - `Local demo` → `Demostración local`;
-  - `Mock MVP` → `Prototipo de demostración`;
-  - `AI decision-simulation platform` → `Plataforma de simulación de decisiones con IA`;
-  - `English` → `Inglés`;
-  - `GDPR` → `RGPD`;
-  - `timing` → `momento`;
-  - `momentum` → `impulso`;
-  - `chatbot` → `asistente conversacional`;
-  - `premium` в видимых demo-данных → `avanzada` / `clientes de alto valor`.
-- `lib/i18n.ts` пересобран вокруг `spanishInterface`: языковые коды и preference сохраняются, но все словари возвращают испанский UI.
-- `app/layout.tsx` metadata description переведён на испанский.
-- `app/api/simulate/route.ts` meta note переведён на испанский без англоязычного backend/MVP wording.
-- `HomeSimulator` теперь использует испанские label/placeholder из `getDictionary("es")`.
-- В `app/globals.css` добавлен финальный consolidated stability layer:
-  - canonical dark-gold design tokens;
-  - panel/border/shadow/radius variables;
-  - mobile-safe grids;
-  - контраст для форм, sidebar status и ghost buttons;
-  - исправления для dashboard mobile;
-  - безопасная single-column hero layout на mobile.
-- Исправлена mobile-регрессия hero headline: заголовок больше не ломается по буквам.
-- `DecisionSingularity.module.css` стабилизирован:
-  - уменьшены размеры и max-height;
-  - добавлен `contain: layout paint`;
-  - снижена opacity particle canvas;
-  - ослаблены blur/glow на mobile;
-  - исправлена лишняя закрывающая скобка, из-за которой `npm run build` падал.
-- Browser QA показал испанский UI на desktop hero, mobile hero, auth pages и dashboard sections.
+- focuses on CSS consolidation, route QA, layout stability, documentation sync and regression prevention;
+- must preserve the current production visual system;
+- must not introduce new product architecture or backend systems.
 
-## 6. Текущее визуальное состояние
+Experimental visual engine phase:
 
-Интерфейс сайта описывается как испаноязычный.
+- starts only after Stage 2.7-prep;
+- must be isolated from production routes/components until explicitly approved;
+- may explore WebGL/advanced rendering only inside a sandbox path or clearly separated experimental module.
 
-Главная страница открывается с:
+## 12. Workflow Rules
 
-- брендом `LEVIO.ES`;
-- испанской навигацией: `Inicio`, `Escenarios`, `Análisis`, `Riesgos`, `Perspectivas`, `Espacio personal`;
-- hero-текстом `Simula. Comprende. Decide con claridad.`;
-- CTA `Iniciar nueva simulación` и `Explorar escenarios`;
-- trust-row `Motor de IA activo` и `Tus datos son privados y seguros`;
-- visual core в стиле event-horizon / black-hole;
-- метриками `Escenarios`, `Riesgos`, `Perspectivas`, `Confianza`;
-- feature cards на испанском;
-- compact simulator input.
+Before any meaningful change:
 
-Визуальный стиль:
+1. Check `git status`.
+2. Confirm `stash@{0}: pre-stage-1.5-existing-changes` is not being applied.
+3. Keep edits scoped to the current stage.
+4. Do not modify production code during documentation-only tasks.
 
-- cinematic dark-gold;
-- deep black / warm graphite base;
-- gold, amber, bronze и cream accents;
-- glass-like panels;
-- тонкие золотые линии;
-- мягкие glow effects без чрезмерного blur на mobile;
-- центральная сингулярность как основной first-viewport signal;
-- dashboard остаётся utilitarian/premium, без marketing-hero подхода.
+After every meaningful implementation stage:
 
-`app/globals.css` остаётся большим и исторически слоистым. В нём есть несколько старых visual refresh sections, включая тёмно-красные, зелёные/кислотные, светлые bright/premium блоки и финальные dark-gold locks. Последний рабочий этап добавил финальный стабилизирующий слой поверх каскада, но полная консолидация CSS ещё не завершена.
+1. Run:
+   - `npm run lint`
+   - `npm run build`
+   - `npx tsc --noEmit`
+2. Run browser QA for affected routes on desktop and mobile `390px`.
+3. Check for console errors and horizontal overflow.
+4. Review `git diff`.
+5. Commit only after successful checks.
+6. Do not push unless explicitly requested.
+7. Update context docs when stage boundaries change:
+   - `PROJECT_CONTEXT.md`
+   - `LEVIO_CURRENT_STATE.md`
+   - `CURRENT_STAGE.md`
 
-## 7. Страницы и маршруты
+## 13. Latest Verified QA Baseline
 
-Реализованные routes:
+Stage 2.1:
+
+- motion extraction completed;
+- keyframes moved to `app/styles/motion.css`;
+- lint/build/tsc passed;
+- route QA showed no horizontal overflow or console errors.
+
+Stage 2.2:
+
+- dashboard CSS extraction completed;
+- desktop and mobile `390px` dashboard routes stable:
+  - `/dashboard`
+  - `/dashboard/profile`
+  - `/dashboard/privacy`
+  - `/dashboard/security`
+  - `/dashboard/simulations`
+  - `/dashboard/simulations/oferta-premium`
+  - `/dashboard/decisions`
+  - `/dashboard/memory`
+- dashboard mobile nav stable:
+  - compact menu visible at `390px`;
+  - sidebar nav hidden at mobile;
+  - menu opens;
+  - links visible;
+  - click to `/dashboard/simulations` works.
+
+Stage 2.3:
+
+- auth CSS extraction completed;
+- desktop and mobile `390px` auth routes stable:
+  - `/login`
+  - `/register`
+  - `/forgot-password`
+- Spanish labels/buttons/links preserved;
+- mock login flow stable:
+  - `/login?next=/dashboard` opens `/dashboard` after `Entrar`;
+- no console errors;
+- no horizontal overflow.
+
+## 14. Git State At This Context Update
+
+Latest local commits before this documentation update:
 
 ```text
-/                                      главная страница
-/login                                 вход
-/register                              регистрация
-/forgot-password                       восстановление пароля
-/dashboard                             overview личного кабинета
-/dashboard/decisions                   сохранённые решения
-/dashboard/memory                      память решений
-/dashboard/privacy                     приватность и права пользователя
-/dashboard/profile                     профиль и язык
-/dashboard/security                    безопасность
-/dashboard/simulations                 история симуляций
-/dashboard/simulations/[id]            detail page симуляции
-/api/simulate                          mock API route
+7ea3e61 Stabilize auth CSS structure for Stage 2
+959ffe5 Stabilize dashboard CSS structure for Stage 2
+8eeb150 Begin safe CSS consolidation for Stage 2
+0777b7e Finalize Stage 1 stable baseline
 ```
 
-Static params для detail routes:
-
-```text
-/dashboard/simulations/oferta-premium
-/dashboard/simulations/cambio-pais
-/dashboard/simulations/nueva-linea-producto
-```
-
-Последний `npm run build` показал 19 app routes: статические страницы, SSG detail route и dynamic `/api/simulate`.
-
-## 8. Компоненты
-
-Ключевые компоненты:
-
-- `LevioMark` — кодовый brand mark с grid/core/orbits/nodes.
-- `DecisionSingularity` — клиентский animated event-horizon visual с canvas particle field.
-- `DecisionSingularity.module.css` — CSS module для black-hole/accretion-plane/photon-ring visual.
-- `HomeSimulator` — клиентский simulator на главной; отправляет POST на `/api/simulate`, имеет local fallback через `buildMockSimulation`, показывает thinking stages и сохраняет результат в `localStorage`.
-- `AuthShell` — shell для login/register/forgot-password с испанским security note.
-- `MockAuthGate` — mock guard для dashboard pages через `localStorage`.
-- `DashboardShell` — общий layout личного кабинета, desktop sidebar, mobile compact nav, logout, privacy-state.
-- `LanguagePreference` — выбор языка в profile/demo-mode, сохраняет `levio_es_language` и отправляет событие `levio-language-change`.
-- `SimulationsList` — объединяет demo simulations и localStorage simulations, умеет скрывать/удалять симуляции из текущей demo-view.
-- `SimulationDetailClient` — detail page; ищет simulation по demo data или `localStorage`.
-- `MockFeedbackButton` — временная кнопка для backend-less действий с inline feedback.
-- `PrivacyPanel` — права пользователя и privacy actions.
-- `SecurityPanel` — demo security score и sessions.
-- `SingularityVisual` — файл присутствует, но текущим основным hero visual является `DecisionSingularity`.
-
-## 9. API и логика симуляции
-
-`POST /api/simulate`:
-
-- читает JSON body;
-- ожидает строковое поле `input`;
-- при пустом input возвращает `400` с испанской ошибкой `Describe una situación para poder simular escenarios.`;
-- вызывает `buildMockSimulation(input)`;
-- возвращает response с:
-  - `meta.lang = "es"`;
-  - `safeRender: true`;
-  - `mockOnly: true`;
-  - `apiReady: true`;
-  - испанской note о демонстрационном ответе.
-
-`lib/simulationEngine.ts`:
-
-- строит deterministic-ish mock response на основе hash input;
-- определяет категорию: `Negocio`, `Finanzas`, `Vida`, `Estrategia`;
-- рассчитывает `risk`, `advantage`, `confidence`, `latency`;
-- генерирует thinking stages на испанском;
-- генерирует 4 сценария:
-  - `Ruta de crecimiento`;
-  - `Ruta de exposición`;
-  - `Consecuencia retrasada`;
-  - `Alternativa estratégica`;
-- добавляет impacts и timeline;
-- возвращает `SimulationResponse` с `lang: "es"`.
-
-Fallback: если fetch `/api/simulate` в `HomeSimulator` падает, компонент локально вызывает `buildMockSimulation(situation)`.
-
-Реальной AI-интеграции, OpenAI API, streaming, базы данных и server-side persistence пока нет.
-
-## 10. Авторизация и личный кабинет
-
-Авторизация сейчас demo-only:
-
-- `createMockSession()` пишет `levio_es_mock_session` в `localStorage`;
-- session содержит `provider`, `createdAt`, `language`, `privacyMode`;
-- `createMockSession()` также пишет `levio_es_language`;
-- `MockAuthGate` проверяет наличие session и редиректит на `/login?next=...`, если session нет;
-- `clearMockSession()` удаляет только mock session;
-- login form не валидирует реальные credentials;
-- register form создаёт mock session и сохраняет выбранный язык;
-- forgot-password показывает demo-сообщение без отправки email.
-
-Личный кабинет:
-
-- `/dashboard` показывает summary cards, engine state, priority simulation, radar, latest simulations, timeline, saved decisions и memory preview.
-- `/dashboard/simulations` показывает demo + local simulations.
-- `/dashboard/simulations/[id]` показывает сценарии, метрики, impacts, timeline, privacy state.
-- `/dashboard/decisions` показывает saved decisions, clarity/exposure bars и review state.
-- `/dashboard/memory` показывает consent-like memory controls, scopes, remembered patterns и memory actions.
-- `/dashboard/profile` показывает identity/profile form, `LanguagePreference`, account signals, activity log.
-- `/dashboard/privacy` показывает privacy cards и `PrivacyPanel`.
-- `/dashboard/security` показывает password form, 2FA-prep и `SecurityPanel`.
-
-Нельзя считать это production auth, production privacy implementation или production persistence.
-
-## 11. Ошибки, ограничения и проблемы
-
-- Реальный backend отсутствует.
-- Реальная AI-интеграция отсутствует.
-- Реальная авторизация отсутствует.
-- База данных отсутствует.
-- Все персональные данные и симуляции в текущем MVP являются demo/mock/localStorage.
-- `app/globals.css` всё ещё большой и исторически слоистый, но Stage 1.5 добавил безопасную структурную карту секций, а Stage 1.6 закрыл найденные mobile layout-регрессии без редизайна. Stage 1 считается завершённым stable baseline.
-- Старые visual sections внутри `app/globals.css` всё ещё требуют осторожности: порядок каскада является частью текущего поведения.
-- `PROJECT_CONTEXT_LEVIO.md` остаётся старым summary.
-- `components/SingularityVisual.tsx` присутствует, но не является текущим основным visual component.
-- `npm run lint` присутствует и проходит через `next lint`.
-- `node_modules/next/dist/docs/` отсутствует, хотя `AGENTS.md` требует читать Next.js guide-файлы из этого каталога.
-- Stage 1.6 Browser QA покрыл заданные desktop/mobile маршруты, но не является полной визуальной регрессией по всем scroll-depth состояниям и всем возможным длинным данным.
-- QA Stage 1.6 зафиксировал, что текущая committed baseline главной страницы всё ещё содержит видимые английские public UI-тексты (`Simulate. Understand. Decide with Clarity.`, nav/CTA/trust copy). Это не результат CSS-группировки Stage 1.5 и не исправлялось в Stage 1.6, где scope был QA/layout-regression protection.
-- Known localization issue для Stage 2: часть public UI-текстов остаётся на английском. Это не regression bug Stage 1; вынести в отдельный Stage 2 localization/content pass.
-- Технические имена вроде `mock-feedback`, `mock-auth`, route/id `oferta-premium` остаются в коде; они не считаются видимым пользовательским UI.
-
-## 12. Последние стабильные Stage 1 commits
-
-Ключевые commits текущей стабилизации:
-
-```text
-9e9bb08 Safe CSS stabilization for Levio visual baseline
-652cd71 Organize globals CSS into safe structural sections
-0e1e534 Stage 1 QA regression fixes
-```
-
-`9e9bb08` завершил Stage 1.4 и закрепил визуальный CSS baseline. `652cd71` завершил Stage 1.5 и добавил безопасную структурную группировку `app/globals.css` только через комментарии. `0e1e534` завершил Stage 1.6 QA/regression fixes.
-
-Старые незакоммиченные изменения изолированы и не применены:
+Stash:
 
 ```text
 stash@{0}: On main: pre-stage-1.5-existing-changes
 ```
 
-## 13. Git and stash status
+The stash was not applied during Stage 2.1-2.3 and must not be applied without explicit permission.
 
-Состояние на старте Stage 1.7:
+## 15. Instruction For New Codex Chat
 
-```text
-On branch main
-Your branch is ahead of 'origin/main' by 5 commits.
-nothing to commit, working tree clean
-```
-
-Stage 1.7 не применял stash и не делал push. `stash@{0}: pre-stage-1.5-existing-changes` существует; рассматривать его отдельно после закрытия Stage 1.
-
-## 14. Проверки
-
-Stage 1.7 финальные проверки:
-
-```text
-npm run lint
-npm run build
-npx tsc --noEmit
-```
-
-Результат:
-
-- `npm run lint` прошёл успешно: `No ESLint warnings or errors`.
-- `npm run build` прошёл успешно.
-- `npx tsc --noEmit` прошёл успешно.
-- Build сгенерировал 19 app routes.
-
-QA baseline Stage 1:
-
-- Проверены 12 маршрутов.
-- Desktop viewport: `1280x720`.
-- Mobile viewport: `390x844`.
-- HTTP `200` по всем маршрутам.
-- Console errors отсутствуют.
-- Horizontal overflow отсутствует.
-- Mock auth flow работает.
-
-HTTP route status на `localhost:3000`:
-
-- Все заданные маршруты вернули `200`.
-
-Stage 1.6 Browser QA routes:
-
-- `/`
-- `/login`
-- `/register`
-- `/forgot-password`
-- `/dashboard`
-- `/dashboard/profile`
-- `/dashboard/privacy`
-- `/dashboard/security`
-- `/dashboard/simulations`
-- `/dashboard/simulations/oferta-premium`
-- `/dashboard/decisions`
-- `/dashboard/memory`
-
-Browser QA result:
-
-- Desktop `1280x720`: no console errors, no 404/500 surfaces, no horizontal overflow, dark-gold cinematic layer present.
-- Mobile `390x844`: no console errors, no 404/500 surfaces, no document horizontal overflow after fixes.
-- Mock auth flow verified: protected `/dashboard` redirects to `/login?next=%2Fdashboard` when logged out; clicking `Entrar` creates demo session and opens dashboard; `Cerrar sesión` returns to `/login`.
-- Dashboard compact navigation is visible on mobile.
-- Stage 1.6 fixed two real mobile layout regressions:
-  - public hero grid no longer clips content inside the section at 390px;
-  - dashboard privacy card no longer collapses into a narrow strip on mobile.
-
-## 15. Следующие задачи
-
-Рекомендуемый следующий этап:
-
-1. Начинать Stage 2 только после нового контекстного окна и свежего плана.
-2. Первым Stage 2 candidate вынести localization/content pass: текущая committed baseline всё ещё показывает английские public UI-тексты.
-3. Продолжать любые CSS-изменения только малыми проверяемыми шагами:
-   - не менять `DecisionSingularity` без крайней необходимости;
-   - не переставлять крупные CSS-блоки без browser QA;
-   - после каждого шага проверять desktop/mobile hero и dashboard.
-4. Не подключать реальный backend, OpenAI API, Supabase, Auth.js/NextAuth, Clerk, payments или database до отдельного решения.
-5. При дальнейших Next.js-изменениях снова проверять наличие `node_modules/next/dist/docs/`; сейчас каталога нет.
-
-## 16. Инструкция для нового чата Codex
-
-Новый чат должен начать так:
+Start the next chat with:
 
 ```text
 Прочитай PROJECT_CONTEXT.md в корне проекта Levio.es.
 Используй его как основной актуальный контекст проекта.
-Продолжай разработку строго от состояния, описанного в этом файле.
+Продолжай строго от описанного состояния.
 Не начинай проект заново.
-Не меняй архитектуру без необходимости.
-Все технические отчёты и объяснения пиши на русском языке.
-Интерфейс сайта должен оставаться на испанском языке.
+Не применяй stash без отдельного разрешения.
+Не меняй production code во время documentation-only задач.
+Все технические отчеты пиши на русском.
+Видимый UI должен оставаться на испанском.
 ```
 
-Критические правила для следующего этапа:
+Critical reminder:
 
-- Не ломать `/api/simulate` mock flow.
-- Не ломать `HomeSimulator` local fallback.
-- Не ломать `MockAuthGate` demo-protection.
-- Не менять localStorage keys:
-  - `levio_es_mock_session`;
-  - `levio_es_saved_simulations`;
-  - `levio_es_language`.
-- Не заменять `DecisionSingularity` картинкой.
-- Сохранять event-horizon / black-hole visual metaphor.
-- Не возвращать английские пользовательские тексты в UI.
-- Не подключать real backend/auth/database/payments/AI на следующем мелком этапе без отдельного решения.
-- Перед следующими изменениями проверить `git status` и убедиться, что `stash@{0}: pre-stage-1.5-existing-changes` не применяется без отдельного разрешения.
+- stable frontend stabilization and experimental visual engine work are separate phases;
+- WebGL is not allowed until Stage 2.7-prep;
+- production `DecisionSingularity` remains protected;
+- simulator logic and `SimulationResponse` contract remain protected.

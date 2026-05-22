@@ -1,33 +1,59 @@
-# CURRENT STAGE — LEVIO.ES
+# CURRENT STAGE - LEVIO.ES
 
-Date: 22 May 2026, Europe/Madrid.
+Date: 23 May 2026, Europe/Madrid.
 
-Current stage:
+## Current Stage
 
-Stage 1 — Technical stabilization, CSS consolidation and QA — COMPLETED.
+Stage 2 - frontend CSS stabilization and architectural sync - IN PROGRESS.
 
-Stage 1 stable baseline commits:
+Completed Stage 2 stabilization commits:
 
-- `9e9bb08` — Safe CSS stabilization for Levio visual baseline.
-- `652cd71` — Organize globals CSS into safe structural sections.
-- `0e1e534` — Stage 1 QA regression fixes.
+- `8eeb150` - Stage 2.1, motion.css extraction.
+- `959ffe5` - Stage 2.2, dashboard.css extraction.
+- `7ea3e61` - Stage 2.3, auth.css extraction.
 
-Stage 1 result:
+## Current CSS Architecture
 
-- `app/globals.css` stabilized and structurally grouped by safe section comments.
-- Legacy CSS remains partly layered, but the active dark-gold cinematic baseline is protected.
-- Mobile hero clipping fixed.
-- Dashboard mobile header/privacy-state collapse fixed.
-- `DecisionSingularity` was not rewritten.
-- No real backend/auth/database/payments/AI was introduced.
+Current style files:
 
-QA baseline:
+- `app/styles/motion.css`
+- `app/styles/dashboard.css`
+- `app/styles/auth.css`
+- `app/globals.css`
 
-- 12 routes checked:
-  - `/`
-  - `/login`
-  - `/register`
-  - `/forgot-password`
+Import/cascade policy:
+
+- `dashboard.css` and `auth.css` are intentionally imported before `globals.css`.
+- `globals.css` remains the canonical final dark-gold cascade layer.
+- `motion.css` is keyframes-only and separate from selector cascade concerns.
+- Do not remove or relocate final dark-gold cascade locks without a dedicated visual regression plan.
+
+## Current Stable Status
+
+Stable after Stage 2.1-2.3:
+
+- cinematic dark-gold baseline preserved;
+- desktop stable;
+- mobile `390px` stable;
+- dashboard mobile navigation stable;
+- auth routes stable;
+- mock auth flow stable;
+- no visual regressions detected;
+- working tree was clean before this documentation update;
+- `stash@{0}: pre-stage-1.5-existing-changes` exists and has not been applied.
+
+## QA Baseline From Stage 2.1-2.3
+
+Stage 2.1:
+
+- motion extraction completed in `8eeb150`;
+- lint/build/tsc passed;
+- route QA found no console errors or horizontal overflow.
+
+Stage 2.2:
+
+- dashboard extraction completed in `959ffe5`;
+- desktop and mobile `390px` dashboard routes stable:
   - `/dashboard`
   - `/dashboard/profile`
   - `/dashboard/privacy`
@@ -36,35 +62,45 @@ QA baseline:
   - `/dashboard/simulations/oferta-premium`
   - `/dashboard/decisions`
   - `/dashboard/memory`
-- Desktop viewport: `1280x720`.
-- Mobile viewport: `390x844`.
-- HTTP status: `200` on checked routes.
-- Console errors: none.
-- Horizontal overflow: none.
-- Mock auth flow works.
-- Required checks pass:
-  - `npm run lint`
-  - `npm run build`
-  - `npx tsc --noEmit`
+- mobile dashboard nav stable.
 
-Stash status:
+Stage 2.3:
 
-- `stash@{0}: pre-stage-1.5-existing-changes` exists.
-- The stash has not been applied.
-- Review the stash separately after Stage 1 closure.
+- auth extraction completed in `7ea3e61`;
+- desktop and mobile `390px` auth routes stable:
+  - `/login`
+  - `/register`
+  - `/forgot-password`
+- Spanish UI preserved;
+- mock login flow stable.
 
-Known issue for Stage 2:
+## Roadmap
 
-- Some public UI text is still in English.
-- This is not treated as a Stage 1 regression bug.
-- Move it to a Stage 2 localization/content pass.
+Stable frontend stabilization phase:
 
-Stage 2 readiness:
+- Stage 2.4 - simulator CSS stabilization.
+- Stage 2.5 - visual regression QA.
+- Stage 2.6 - checkpoint + context sync.
+- Stage 2.7-prep - visual engine preparation.
 
-- The project is ready to move to Stage 2.
-- Start Stage 2 only in a fresh context window with a new plan.
+Experimental visual engine phase:
 
-Locked until explicit Stage 2 planning:
+- Stage 2.7.1-2.7.6 - isolated experimental WebGL track.
+
+## Critical Experimental Rules
+
+- WebGL experiments are forbidden before Stage 2.7-prep.
+- Production `DecisionSingularity` must not be directly replaced.
+- WebGL must run through an isolated sandbox/experimental track.
+- Simulator business logic is protected.
+- `SimulationResponse` contract is protected.
+- Mobile performance baseline is critical.
+- No gaming UI direction.
+- Cinematic premium minimalism must remain.
+
+## Locked Areas
+
+Do not start without explicit approval:
 
 - real AI backend;
 - OpenAI API integration;
@@ -74,9 +110,7 @@ Locked until explicit Stage 2 planning:
 - production persistence;
 - production privacy/security implementation.
 
-Critical protection:
-
-Do not fully rewrite without explicit decision:
+Do not rewrite blindly:
 
 - `components/DecisionSingularity.tsx`
 - `components/DecisionSingularity.module.css`
@@ -90,10 +124,9 @@ Do not fully rewrite without explicit decision:
   - `levio_es_saved_simulations`
   - `levio_es_language`
 
-Developer reporting language:
+## Reporting
 
-Russian.
-
-Visible user interface language:
-
-Spanish.
+- Developer reports: Russian.
+- Visible UI: Spanish.
+- Do not push unless explicitly requested.
+- Do not apply `stash@{0}` without explicit permission.
