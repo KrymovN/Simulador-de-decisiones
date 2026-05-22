@@ -1,5 +1,6 @@
 import './styles/dashboard.css';
 import './styles/auth.css';
+import './styles/simulator.css';
 import './globals.css';
 import './styles/motion.css';
 import type { Metadata } from 'next';
