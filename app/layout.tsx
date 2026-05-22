@@ -1,3 +1,4 @@
+import './styles/dashboard.css';
 import './globals.css';
 import './styles/motion.css';
 import type { Metadata } from 'next';
