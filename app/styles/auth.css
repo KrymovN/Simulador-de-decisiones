@@ -1,0 +1,169 @@
+/* Auth base styles. Imported before globals.css so final cascade locks remain authoritative. */
+
+/* ==========================================================================
+   Auth shell and form surfaces
+   ========================================================================== */
+
+.auth-shell {
+  position: relative;
+  width: min(1180px, calc(100% - 36px));
+  margin: 0 auto;
+  padding: 28px 0 72px;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(380px, 0.75fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.auth-visual,
+.auth-card {
+  padding: clamp(28px, 5vw, 64px);
+}
+
+.auth-visual {
+  min-height: 680px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background:
+    radial-gradient(circle at 50% 22%, rgba(255, 126, 66, 0.24), transparent 34%),
+    radial-gradient(circle at 18% 12%, rgba(255, 205, 142, 0.11), transparent 32%),
+    radial-gradient(circle at 86% 18%, rgba(113, 64, 164, 0.2), transparent 34%),
+    linear-gradient(145deg, rgba(42, 34, 39, 0.92), rgba(18, 13, 18, 0.86) 48%, rgba(37, 11, 20, 0.86));
+}
+
+.auth-brand {
+  color: #fff4ee;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-decoration: none;
+  text-shadow: 0 0 30px rgba(255, 104, 74, 0.36);
+  position: absolute;
+  top: 24px;
+  right: 30px;
+  font-size: 1.15rem;
+}
+
+.auth-core {
+  position: absolute;
+  top: 11%;
+  right: 10%;
+  width: min(360px, 44vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(255, 244, 224, 0.22), transparent 12%),
+    radial-gradient(circle, rgba(255, 111, 64, 0.45), rgba(158, 21, 46, 0.2) 38%, transparent 72%),
+    conic-gradient(from 90deg, transparent, rgba(255, 122, 65, 0.56), rgba(120, 73, 190, 0.32), transparent);
+  box-shadow:
+    0 0 100px rgba(255, 74, 52, 0.22),
+    inset 0 0 60px rgba(255, 229, 205, 0.1);
+  animation: coreBreath 6s ease-in-out infinite;
+}
+
+.auth-core span {
+  position: absolute;
+  inset: 38%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff8e9, #ff9a58 24%, #c51b36 54%, transparent 72%);
+  box-shadow: 0 0 54px rgba(255, 98, 55, 0.92);
+}
+
+.auth-visual h1 {
+  max-width: 760px;
+}
+
+.auth-visual p:not(.eyebrow),
+.security-note span {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.security-note {
+  display: grid;
+  gap: 8px;
+  max-width: 680px;
+  margin-top: 28px;
+  padding: 18px;
+  border: 1px solid rgba(255, 219, 203, 0.18);
+  border-radius: 18px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.024)),
+    rgba(27, 19, 24, 0.68);
+}
+
+.security-note strong {
+  color: #ffe6d7;
+}
+
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-form {
+  display: grid;
+  gap: 16px;
+}
+
+.auth-form label {
+  display: grid;
+  gap: 8px;
+  color: #f9ded5;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.auth-form input,
+.auth-form select {
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid rgba(255, 226, 214, 0.17);
+  border-radius: 15px;
+  outline: none;
+  padding: 0 15px;
+  background: rgba(10, 7, 10, 0.48);
+  color: var(--text);
+  transition: border-color 220ms ease, box-shadow 220ms ease, background 220ms ease;
+}
+
+.auth-form select {
+  color: #fff1ec;
+}
+
+.auth-form input:focus,
+.auth-form select:focus {
+  border-color: rgba(255, 129, 87, 0.72);
+  background: rgba(12, 8, 12, 0.64);
+  box-shadow: 0 0 0 4px rgba(255, 91, 54, 0.1);
+}
+
+.checkbox-row {
+  grid-template-columns: 18px 1fr;
+  align-items: start;
+  color: rgba(255, 238, 232, 0.82);
+  font-weight: 500;
+}
+
+.checkbox-row input {
+  min-height: 18px;
+  accent-color: var(--red);
+}
+
+.auth-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.auth-links a {
+  color: #ffd7c9;
+  text-decoration: none;
+}
+
+.auth-links a:hover {
+  color: white;
+}
