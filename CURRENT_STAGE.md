@@ -14,6 +14,8 @@ Completed Stage 2 stabilization commits:
 - `c9a86da` - Stage 2.4, simulator.css extraction.
 - Stage 2.5 visual regression QA completed after `c9a86da`.
 - `aeace9f` - Stage 2.6, checkpoint + context sync.
+- `c81a9c8` - Stage 2.6 documentation closure.
+- Stage 2.7-prep visual engine preparation completed.
 
 ## Current CSS Architecture
 
@@ -34,7 +36,7 @@ Import/cascade policy:
 
 ## Current Stable Status
 
-Stable after Stage 2.6:
+Stable after Stage 2.7-prep:
 
 - cinematic dark-gold baseline preserved;
 - desktop stable;
@@ -45,10 +47,16 @@ Stable after Stage 2.6:
 - home simulator interaction stable;
 - no visual regressions detected;
 - context files synchronized after Stage 2.5 QA;
+- stable frontend baseline backup branch created: `stable/stage-2-frontend-baseline`;
+- mobile performance baseline stable at `390x844`;
+- build-trace caveat did not reproduce: `npm run build` completed successfully;
+- no npm install was performed;
+- no Three.js, React Three Fiber or WebGL dependency was installed;
+- no WebGL components, `/visual-lab`, hero redesign or production UI redesign were created;
 - working tree was clean before this documentation update;
 - `stash@{0}: pre-stage-1.5-existing-changes` exists and has not been applied.
 
-## QA Baseline From Stage 2.1-2.6
+## QA Baseline From Stage 2.1-2.7-prep
 
 Stage 2.1:
 
@@ -106,9 +114,34 @@ Stage 2.5:
 Stage 2.6:
 
 - checkpoint + context sync completed in `aeace9f`;
+- Stage 2 documentation closure completed in `c81a9c8`;
 - `PROJECT_CONTEXT.md`, `LEVIO_CURRENT_STATE.md` and `CURRENT_STAGE.md` were synchronized after Stage 2.5 visual QA;
 - no production code was changed;
 - next planned stage is Stage 2.7-prep, visual engine preparation.
+
+Stage 2.7-prep:
+
+- visual engine preparation completed as a protective checkpoint before future experiments;
+- backup branch created: `stable/stage-2-frontend-baseline`;
+- `npm run build` passed successfully and the previous `Collecting build traces` caveat did not reproduce;
+- `npm run lint` passed with no warnings or errors;
+- `./node_modules/.bin/tsc --noEmit` passed;
+- mobile performance baseline at `390x844` stable:
+  - `/` rendered without horizontal overflow;
+  - `/dashboard` rendered after mock login without horizontal overflow;
+  - mobile dashboard compact nav opens and shows 7 links;
+  - home simulator accepted input, called `POST /api/simulate`, rendered 5 thinking steps and 4 scenario cards;
+  - console errors were empty;
+  - animations were subjectively stable with no obvious jank or layout shift;
+- stable frontend foundation is protected before Stage 2.7.1;
+- no npm install was performed;
+- no Three.js or React Three Fiber dependency was installed;
+- no WebGL components were created;
+- `/visual-lab` was not created;
+- hero and production UI were not redesigned;
+- production `DecisionSingularity` remains protected;
+- production `HomeSimulator`, simulator logic and `SimulationResponse` contract remain protected;
+- WebGL remains forbidden in production until isolated architecture approval.
 
 ## Roadmap
 
@@ -116,16 +149,17 @@ Stable frontend stabilization phase:
 
 - Stage 2.4 - simulator CSS stabilization - completed in `c9a86da`.
 - Stage 2.5 - visual regression QA - completed.
-- Stage 2.6 - checkpoint + context sync - completed in `aeace9f`.
-- Stage 2.7-prep - visual engine preparation.
+- Stage 2.6 - checkpoint + context sync - completed in `c81a9c8`.
+- Stage 2.7-prep - visual engine preparation - completed.
 
 Experimental visual engine phase:
 
-- Stage 2.7.1-2.7.6 - isolated experimental WebGL track.
+- Stage 2.7.1 - WebGL architecture research.
+- Stage 2.7.2-2.7.6 - isolated experimental WebGL track.
 
 ## Critical Experimental Rules
 
-- WebGL experiments are forbidden before Stage 2.7-prep.
+- WebGL is forbidden in production until isolated architecture approval.
 - Production `DecisionSingularity` must not be directly replaced.
 - WebGL must run through an isolated sandbox/experimental track.
 - Simulator business logic is protected.

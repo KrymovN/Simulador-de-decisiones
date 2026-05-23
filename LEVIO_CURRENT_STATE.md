@@ -4,7 +4,7 @@
 
 23 мая 2026, Europe/Madrid.
 
-Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после завершения Stage 2.6 checkpoint + context sync. Это основной актуальный handoff-файл. `LEVIO_CURRENT_STATE.md` должен оставаться синхронизированной копией этого документа.
+Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после завершения Stage 2.7-prep visual engine preparation. Это основной актуальный handoff-файл. `LEVIO_CURRENT_STATE.md` должен оставаться синхронизированной копией этого документа.
 
 ## 1. Краткое описание проекта
 
@@ -32,9 +32,10 @@ Stage 2 progress:
 - Stage 2.3 completed: `7ea3e61` - auth.css extraction.
 - Stage 2.4 completed: `c9a86da` - simulator.css extraction.
 - Stage 2.5 completed: visual regression QA checkpoint.
-- Stage 2.6 completed: `aeace9f` - checkpoint + context sync.
+- Stage 2.6 completed: `c81a9c8` - checkpoint documentation closure.
+- Stage 2.7-prep completed: visual engine baseline preparation.
 
-Stage 2.1-2.6 result:
+Stage 2.1-2.7-prep result:
 
 - motion keyframes moved to `app/styles/motion.css`;
 - dashboard base styles moved to `app/styles/dashboard.css`;
@@ -43,11 +44,12 @@ Stage 2.1-2.6 result:
 - `app/globals.css` remains the canonical final dark-gold cascade layer;
 - selector-bearing extracted CSS (`dashboard.css`, `auth.css`, `simulator.css`) is intentionally imported before `globals.css`;
 - `motion.css` is keyframes-only and remains separate from selector cascade concerns;
-- production visual baseline remains protected.
+- production visual baseline remains protected;
+- stable frontend baseline backup branch created: `stable/stage-2-frontend-baseline`.
 
 ## 3. Current Stable Status
 
-Stable status after Stage 2.6:
+Stable status after Stage 2.7-prep:
 
 - cinematic dark-gold baseline preserved;
 - desktop QA stable;
@@ -58,12 +60,18 @@ Stable status after Stage 2.6:
 - home simulator interaction stable;
 - no visual regressions detected in completed Stage 2.5 QA;
 - Stage 2.6 context files synchronized;
+- Stage 2.7-prep protective baseline completed;
+- mobile performance baseline stable at `390x844`;
+- build-trace caveat did not reproduce during Stage 2.7-prep: `npm run build` completed successfully;
+- no npm install was performed;
+- no Three.js, React Three Fiber or WebGL dependency was installed;
+- no WebGL components, `/visual-lab`, hero redesign or production UI redesign were created;
 - working tree was clean before this documentation update;
 - `stash@{0}: pre-stage-1.5-existing-changes` remains untouched and must not be applied without explicit permission.
 
 Known content issue:
 
-- part of the public UI still contains English text. This is a known localization/content pass item, not a Stage 2.1-2.6 regression.
+- part of the public UI still contains English text. This is a known localization/content pass item, not a Stage 2.1-2.7-prep regression.
 
 ## 4. Current CSS Architecture
 
@@ -210,12 +218,13 @@ Stable frontend stabilization phase:
 - Stage 2.3 - auth CSS stabilization - completed in `7ea3e61`.
 - Stage 2.4 - simulator CSS stabilization - completed in `c9a86da`.
 - Stage 2.5 - visual regression QA - completed.
-- Stage 2.6 - checkpoint + context sync - completed in `aeace9f`.
-- Stage 2.7-prep - visual engine preparation.
+- Stage 2.6 - checkpoint + context sync - completed in `c81a9c8`.
+- Stage 2.7-prep - visual engine preparation - completed.
 
 Experimental visual engine phase:
 
-- Stage 2.7.1-2.7.6 - isolated experimental WebGL track.
+- Stage 2.7.1 - WebGL architecture research.
+- Stage 2.7.2-2.7.6 - isolated experimental WebGL track.
 
 Locked until explicit later stages:
 
@@ -369,15 +378,41 @@ Build note:
 Stage 2.6:
 
 - checkpoint + context sync completed in `aeace9f`;
+- Stage 2 documentation closure completed in `c81a9c8`;
 - `PROJECT_CONTEXT.md`, `LEVIO_CURRENT_STATE.md` and `CURRENT_STAGE.md` were synchronized after Stage 2.5 visual QA;
 - no production code was changed;
 - next planned stage is Stage 2.7-prep, visual engine preparation.
+
+Stage 2.7-prep:
+
+- visual engine preparation completed as a protective checkpoint before future experiments;
+- backup branch created: `stable/stage-2-frontend-baseline`;
+- `npm run build` passed successfully and the previous `Collecting build traces` caveat did not reproduce;
+- `npm run lint` passed with no warnings or errors;
+- `./node_modules/.bin/tsc --noEmit` passed;
+- mobile performance baseline at `390x844` stable:
+  - `/` rendered without horizontal overflow;
+  - `/dashboard` rendered after mock login without horizontal overflow;
+  - mobile dashboard compact nav opens and shows 7 links;
+  - home simulator accepted input, called `POST /api/simulate`, rendered 5 thinking steps and 4 scenario cards;
+  - console errors were empty;
+  - animations were subjectively stable with no obvious jank or layout shift;
+- stable frontend foundation is protected before Stage 2.7.1;
+- no npm install was performed;
+- no Three.js or React Three Fiber dependency was installed;
+- no WebGL components were created;
+- `/visual-lab` was not created;
+- hero and production UI were not redesigned;
+- production `DecisionSingularity` remains protected;
+- production `HomeSimulator`, simulator logic and `SimulationResponse` contract remain protected;
+- WebGL remains forbidden in production until isolated architecture approval.
 
 ## 14. Git State At This Context Update
 
 Latest local commits before this documentation update:
 
 ```text
+c81a9c8 Finalize Stage 2 checkpoint documentation
 aeace9f Sync Stage 2 visual QA checkpoint
 c9a86da Stabilize simulator CSS structure for Stage 2
 41c34bc Update Levio project context after Stage 2 stabilization
@@ -391,6 +426,12 @@ Stash:
 
 ```text
 stash@{0}: On main: pre-stage-1.5-existing-changes
+```
+
+Backup branch:
+
+```text
+stable/stage-2-frontend-baseline
 ```
 
 The stash was not applied during Stage 2.1-2.5 and must not be applied without explicit permission.
