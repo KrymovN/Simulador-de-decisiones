@@ -116,6 +116,26 @@ Stage 2.7.5 correction:
 - thermal behavior has not been measured on real devices;
 - full adaptive quality tiers and reduced mobile mode remain future work if validation requires them.
 
+Stage 2.7.5b Safari/iPhone validation checklist:
+
+- status: prepared checklist only; Stage 2.7.5 is not complete until real Safari/iPhone validation is actually performed and documented;
+- test scope: isolated `/visual-lab` WebGL sandbox only, no production hero integration;
+- test URL: record exact URL used for real-device testing, for example `http://<local-network-ip>:3000/visual-lab` or deployed preview `/visual-lab`;
+- device model: record exact iPhone model and chip generation if known;
+- iOS version: record exact iOS version from Settings;
+- Safari version: record Safari/WebKit version if available, otherwise record iOS version as proxy;
+- viewport/orientation: test portrait and landscape, including Safari address bar collapsed/expanded states where possible;
+- FPS observation: record visible debug-panel FPS after initial settle, after 60 seconds, after scroll, and after orientation changes;
+- scroll/layout stability: verify no horizontal overflow, no clipped debug panel, no text overlap, stable canvas sizing and readable lab copy;
+- resize/orientation behavior: rotate portrait to landscape and back at least 3 times, observe canvas resize, DPR cap, FPS recovery and visual continuity;
+- memory/thermal behavior: run at least 5-10 minutes, watch for reloads, WebGL context loss, tab termination, jank increase or visible throttling;
+- battery/heat notes: record starting/ending battery percentage if practical and subjective device heat level: cool, warm, hot;
+- console errors: if connected to Mac Safari Web Inspector, record console errors, WebGL warnings, context loss/restore events and network errors;
+- visual quality notes: evaluate whether the singularity remains cinematic, calm, premium, non-gaming and visually coherent in mobile-safe mode;
+- pass criteria: no crash, no blank canvas unless graceful fallback appears, no console errors indicating runtime failure, no horizontal overflow, stable orientation recovery, readable UI, acceptable heat, and sustained FPS without severe degradation;
+- fail criteria: repeated context loss, tab reload/termination, persistent blank canvas without fallback, severe FPS collapse after initial settle, layout overflow, unreadable UI, excessive heat, or Safari-specific runtime errors;
+- decision gate for Stage 2.7.5c: proceed to adaptive quality / reduced mobile mode only if real-device results show FPS, heat, memory, orientation or Safari-specific instability that cannot be accepted for an experimental sandbox.
+
 Stage 2.7.6 correction:
 
 - current completed Stage 2.7.6 must be treated as read-only verification / no-integration confirmation, not a full integration decision;
@@ -285,7 +305,7 @@ Experimental visual engine phase:
 - Stage 2.7.4 - isolated WebGL performance profiling and stress testing - completed, no file changes/commit needed.
 - Stage 2.7.5 - isolated WebGL mobile safety optimization - completed in `89e534c`; not full Safari/iPhone validation.
 - Stage 2.7.6 - read-only verification / no-integration confirmation - completed; not a full integration decision.
-- Stage 2.7.5b - real Safari/iPhone validation checklist.
+- Stage 2.7.5b - real Safari/iPhone validation checklist prepared; validation results still need to be executed and documented.
 - Stage 2.7.5c - adaptive quality / reduced mobile mode if validation requires it.
 - Stage 2.7.6b - formal integration decision after real-device data.
 
@@ -315,6 +335,7 @@ These rules are mandatory:
 - `VISUAL_ENGINE_PLAN.md` conclusion is binding for the current stage: do not implement WebGL now; preserve production baseline.
 - Stage 2.7.4 result is binding: `/visual-lab` is experimental-only and must not be integrated into production hero before performance optimization and real-device Mobile Safari validation.
 - Stage 2.7.5 correction is binding: current mobile work is safety optimization only, not completed Safari validation.
+- Stage 2.7.5b is binding as a real-device checklist only: it does not complete Safari/iPhone validation until results are recorded.
 - Stage 2.7.6 correction is binding: current verification is no-integration confirmation only, not approval for production replacement.
 
 ## 11. Stage Separation
