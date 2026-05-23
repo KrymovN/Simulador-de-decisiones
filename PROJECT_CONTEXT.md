@@ -4,7 +4,7 @@
 
 23 мая 2026, Europe/Madrid.
 
-Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после завершения Stage 2.7.1 WebGL architecture research. Это основной актуальный handoff-файл. `LEVIO_CURRENT_STATE.md` должен оставаться синхронизированной копией этого документа.
+Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после завершения Stage 2.7.4 isolated WebGL performance profiling and stress testing. Это основной актуальный handoff-файл. `LEVIO_CURRENT_STATE.md` должен оставаться синхронизированной копией этого документа.
 
 ## 1. Краткое описание проекта
 
@@ -35,8 +35,11 @@ Stage 2 progress:
 - Stage 2.6 completed: `c81a9c8` - checkpoint documentation closure.
 - Stage 2.7-prep completed: `0cec475` - visual engine baseline preparation.
 - Stage 2.7.1 completed: `3d8ef6e` - Levio identity core and WebGL architecture research plan.
+- Stage 2.7.2 completed: `0781b46` - isolated WebGL sandbox prototype.
+- Stage 2.7.3 completed: `5553455` - isolated WebGL visual quality iteration.
+- Stage 2.7.4 completed: isolated WebGL performance profiling and stress testing; no file changes, no commit needed.
 
-Stage 2.1-2.7.1 result:
+Stage 2.1-2.7.4 result:
 
 - motion keyframes moved to `app/styles/motion.css`;
 - dashboard base styles moved to `app/styles/dashboard.css`;
@@ -49,11 +52,12 @@ Stage 2.1-2.7.1 result:
 - stable frontend baseline backup branch created: `stable/stage-2-frontend-baseline`;
 - `LEVIO_IDENTITY_CORE.md` added as the product/visual identity source of truth;
 - `VISUAL_ENGINE_PLAN.md` added as the Stage 2.7.1 WebGL architecture research document;
-- WebGL remains research-only and is not integrated into production.
+- `/visual-lab` added as an isolated WebGL sandbox route;
+- WebGL remains experimental-only and is not integrated into production.
 
 ## 3. Current Stable Status
 
-Stable status after Stage 2.7.1:
+Stable status after Stage 2.7.4:
 
 - cinematic dark-gold baseline preserved;
 - desktop QA stable;
@@ -66,14 +70,34 @@ Stable status after Stage 2.7.1:
 - Stage 2.6 context files synchronized;
 - Stage 2.7-prep protective baseline completed;
 - Stage 2.7.1 research-only documentation completed;
+- Stage 2.7.2 isolated `/visual-lab` sandbox created;
+- Stage 2.7.3 isolated WebGL visual quality iteration completed;
+- Stage 2.7.4 isolated WebGL performance profiling completed with no file changes;
 - mobile performance baseline stable at `390x844`;
 - build-trace caveat did not reproduce during Stage 2.7-prep: `npm run build` completed successfully;
 - Stage 2.7.1 checks passed: `npm run lint`, `npm run build`, `./node_modules/.bin/tsc --noEmit`;
+- Stage 2.7.4 checks passed: `npm run lint`, `npm run build`, `./node_modules/.bin/tsc --noEmit`;
 - no npm install was performed;
 - no Three.js, React Three Fiber or WebGL dependency was installed;
-- no WebGL components, `/visual-lab`, hero redesign or production UI redesign were created;
-- production code was not changed during Stage 2.7.1;
+- no hero redesign or production UI redesign was created;
+- production code was not changed during Stage 2.7.1-2.7.4;
 - `stash@{0}: pre-stage-1.5-existing-changes` remains untouched and must not be applied without explicit permission.
+
+Stage 2.7.4 performance notes:
+
+- `/visual-lab` works as an isolated sandbox route;
+- no file changes were made during profiling, so no Stage 2.7.4 implementation commit is needed;
+- console errors were absent;
+- horizontal overflow was absent;
+- desktop FPS in Codex in-app browser was approximately `20-21`;
+- mobile `390x844` FPS was approximately `26`;
+- resize stress at `820x760` produced a low sample around `6 FPS`;
+- DPR cap works with max `1.5`;
+- First Load JS for `/visual-lab`: `90.9 kB`;
+- cleanup/remount was checked through route transition;
+- hidden-tab pause could not be fully verified because of in-app browser limitations;
+- Mobile Safari real-device testing has not been performed yet;
+- conclusion: WebGL sandbox remains experimental-only; do not integrate into production hero before further optimization and real-device Safari validation.
 
 Known content issue:
 
@@ -231,7 +255,10 @@ Stable frontend stabilization phase:
 
 Experimental visual engine phase:
 
-- Stage 2.7.2-2.7.6 - isolated experimental WebGL track.
+- Stage 2.7.2 - isolated WebGL sandbox prototype - completed in `0781b46`.
+- Stage 2.7.3 - isolated WebGL visual quality iteration - completed in `5553455`.
+- Stage 2.7.4 - isolated WebGL performance profiling and stress testing - completed, no file changes/commit needed.
+- Stage 2.7.5-2.7.6 - isolated experimental WebGL track.
 
 Locked until explicit later stages:
 
@@ -257,6 +284,7 @@ These rules are mandatory:
 - Cinematic premium minimalism must remain.
 - Experimental visual engine work must not contaminate the stable frontend stabilization phase.
 - `VISUAL_ENGINE_PLAN.md` conclusion is binding for the current stage: do not implement WebGL now; preserve production baseline.
+- Stage 2.7.4 result is binding: `/visual-lab` is experimental-only and must not be integrated into production hero before performance optimization and real-device Mobile Safari validation.
 
 ## 11. Stage Separation
 
