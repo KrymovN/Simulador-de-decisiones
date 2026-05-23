@@ -200,6 +200,19 @@
     width: 100%;
     min-height: auto;
     aspect-ratio: 0.86;
+    box-shadow:
+      0 28px 90px rgba(0, 0, 0, 0.68),
+      0 0 52px rgba(216, 168, 74, 0.08),
+      inset 0 0 62px rgba(216, 168, 74, 0.07),
+      inset 0 0 110px rgba(0, 0, 0, 0.52);
+  }
+
+  .stage::before {
+    opacity: 0.32;
+  }
+
+  .stage::after {
+    opacity: 0.2;
   }
 }
 
