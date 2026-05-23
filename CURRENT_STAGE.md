@@ -15,7 +15,8 @@ Completed Stage 2 stabilization commits:
 - Stage 2.5 visual regression QA completed after `c9a86da`.
 - `aeace9f` - Stage 2.6, checkpoint + context sync.
 - `c81a9c8` - Stage 2.6 documentation closure.
-- Stage 2.7-prep visual engine preparation completed.
+- `0cec475` - Stage 2.7-prep visual engine preparation completed.
+- `3d8ef6e` - Stage 2.7.1 WebGL architecture research completed.
 
 ## Current CSS Architecture
 
@@ -36,7 +37,7 @@ Import/cascade policy:
 
 ## Current Stable Status
 
-Stable after Stage 2.7-prep:
+Stable after Stage 2.7.1:
 
 - cinematic dark-gold baseline preserved;
 - desktop stable;
@@ -50,10 +51,13 @@ Stable after Stage 2.7-prep:
 - stable frontend baseline backup branch created: `stable/stage-2-frontend-baseline`;
 - mobile performance baseline stable at `390x844`;
 - build-trace caveat did not reproduce: `npm run build` completed successfully;
+- Stage 2.7.1 research documentation completed in `VISUAL_ENGINE_PLAN.md`;
+- Levio product/visual identity source of truth added in `LEVIO_IDENTITY_CORE.md`;
+- Stage 2.7.1 checks passed: `npm run lint`, `npm run build`, `./node_modules/.bin/tsc --noEmit`;
 - no npm install was performed;
 - no Three.js, React Three Fiber or WebGL dependency was installed;
 - no WebGL components, `/visual-lab`, hero redesign or production UI redesign were created;
-- working tree was clean before this documentation update;
+- production code was not changed during Stage 2.7.1;
 - `stash@{0}: pre-stage-1.5-existing-changes` exists and has not been applied.
 
 ## QA Baseline From Stage 2.1-2.7-prep
@@ -143,6 +147,21 @@ Stage 2.7-prep:
 - production `HomeSimulator`, simulator logic and `SimulationResponse` contract remain protected;
 - WebGL remains forbidden in production until isolated architecture approval.
 
+Stage 2.7.1:
+
+- WebGL architecture research completed in `3d8ef6e`;
+- `VISUAL_ENGINE_PLAN.md` created as the research artifact;
+- Three.js and React Three Fiber were evaluated at architecture level only;
+- Next.js App Router, hydration/SSR, Mobile Safari and weak-device GPU risks were documented;
+- conclusion is explicit: do not implement WebGL now, preserve production baseline;
+- no npm install was performed;
+- no dependencies were added;
+- no production code was changed;
+- `npm run lint` passed with no warnings or errors;
+- `npm run build` passed;
+- `./node_modules/.bin/tsc --noEmit` passed;
+- next possible stage is only an isolated experimental WebGL track, not production hero integration.
+
 ## Roadmap
 
 Stable frontend stabilization phase:
@@ -150,16 +169,17 @@ Stable frontend stabilization phase:
 - Stage 2.4 - simulator CSS stabilization - completed in `c9a86da`.
 - Stage 2.5 - visual regression QA - completed.
 - Stage 2.6 - checkpoint + context sync - completed in `c81a9c8`.
-- Stage 2.7-prep - visual engine preparation - completed.
+- Stage 2.7-prep - visual engine preparation - completed in `0cec475`.
+- Stage 2.7.1 - WebGL architecture research - completed in `3d8ef6e`.
 
 Experimental visual engine phase:
 
-- Stage 2.7.1 - WebGL architecture research.
 - Stage 2.7.2-2.7.6 - isolated experimental WebGL track.
 
 ## Critical Experimental Rules
 
 - WebGL is forbidden in production until isolated architecture approval.
+- `VISUAL_ENGINE_PLAN.md` conclusion is binding for the current stage: do not implement WebGL now; preserve production baseline.
 - Production `DecisionSingularity` must not be directly replaced.
 - WebGL must run through an isolated sandbox/experimental track.
 - Simulator business logic is protected.

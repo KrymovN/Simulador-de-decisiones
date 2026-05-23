@@ -4,7 +4,7 @@
 
 23 мая 2026, Europe/Madrid.
 
-Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после завершения Stage 2.7-prep visual engine preparation. Это основной актуальный handoff-файл. `LEVIO_CURRENT_STATE.md` должен оставаться синхронизированной копией этого документа.
+Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после завершения Stage 2.7.1 WebGL architecture research. Это основной актуальный handoff-файл. `LEVIO_CURRENT_STATE.md` должен оставаться синхронизированной копией этого документа.
 
 ## 1. Краткое описание проекта
 
@@ -33,9 +33,10 @@ Stage 2 progress:
 - Stage 2.4 completed: `c9a86da` - simulator.css extraction.
 - Stage 2.5 completed: visual regression QA checkpoint.
 - Stage 2.6 completed: `c81a9c8` - checkpoint documentation closure.
-- Stage 2.7-prep completed: visual engine baseline preparation.
+- Stage 2.7-prep completed: `0cec475` - visual engine baseline preparation.
+- Stage 2.7.1 completed: `3d8ef6e` - Levio identity core and WebGL architecture research plan.
 
-Stage 2.1-2.7-prep result:
+Stage 2.1-2.7.1 result:
 
 - motion keyframes moved to `app/styles/motion.css`;
 - dashboard base styles moved to `app/styles/dashboard.css`;
@@ -45,11 +46,14 @@ Stage 2.1-2.7-prep result:
 - selector-bearing extracted CSS (`dashboard.css`, `auth.css`, `simulator.css`) is intentionally imported before `globals.css`;
 - `motion.css` is keyframes-only and remains separate from selector cascade concerns;
 - production visual baseline remains protected;
-- stable frontend baseline backup branch created: `stable/stage-2-frontend-baseline`.
+- stable frontend baseline backup branch created: `stable/stage-2-frontend-baseline`;
+- `LEVIO_IDENTITY_CORE.md` added as the product/visual identity source of truth;
+- `VISUAL_ENGINE_PLAN.md` added as the Stage 2.7.1 WebGL architecture research document;
+- WebGL remains research-only and is not integrated into production.
 
 ## 3. Current Stable Status
 
-Stable status after Stage 2.7-prep:
+Stable status after Stage 2.7.1:
 
 - cinematic dark-gold baseline preserved;
 - desktop QA stable;
@@ -61,12 +65,14 @@ Stable status after Stage 2.7-prep:
 - no visual regressions detected in completed Stage 2.5 QA;
 - Stage 2.6 context files synchronized;
 - Stage 2.7-prep protective baseline completed;
+- Stage 2.7.1 research-only documentation completed;
 - mobile performance baseline stable at `390x844`;
 - build-trace caveat did not reproduce during Stage 2.7-prep: `npm run build` completed successfully;
+- Stage 2.7.1 checks passed: `npm run lint`, `npm run build`, `./node_modules/.bin/tsc --noEmit`;
 - no npm install was performed;
 - no Three.js, React Three Fiber or WebGL dependency was installed;
 - no WebGL components, `/visual-lab`, hero redesign or production UI redesign were created;
-- working tree was clean before this documentation update;
+- production code was not changed during Stage 2.7.1;
 - `stash@{0}: pre-stage-1.5-existing-changes` remains untouched and must not be applied without explicit permission.
 
 Known content issue:
@@ -184,6 +190,7 @@ Implemented and currently stable:
 - Main global CSS architecture:
   - `app/styles/dashboard.css`
   - `app/styles/auth.css`
+  - `app/styles/simulator.css`
   - `app/globals.css`
   - `app/styles/motion.css`
 - Scoped singularity CSS:
@@ -201,7 +208,7 @@ Implemented and currently stable:
   - `npm run dev`
   - `npm run lint`
   - `npm run build`
-  - `npx tsc --noEmit`
+  - `./node_modules/.bin/tsc --noEmit`
 
 Important `AGENTS.md` note:
 
@@ -219,11 +226,11 @@ Stable frontend stabilization phase:
 - Stage 2.4 - simulator CSS stabilization - completed in `c9a86da`.
 - Stage 2.5 - visual regression QA - completed.
 - Stage 2.6 - checkpoint + context sync - completed in `c81a9c8`.
-- Stage 2.7-prep - visual engine preparation - completed.
+- Stage 2.7-prep - visual engine preparation - completed in `0cec475`.
+- Stage 2.7.1 - WebGL architecture research - completed in `3d8ef6e`.
 
 Experimental visual engine phase:
 
-- Stage 2.7.1 - WebGL architecture research.
 - Stage 2.7.2-2.7.6 - isolated experimental WebGL track.
 
 Locked until explicit later stages:
@@ -249,6 +256,7 @@ These rules are mandatory:
 - No gaming UI direction.
 - Cinematic premium minimalism must remain.
 - Experimental visual engine work must not contaminate the stable frontend stabilization phase.
+- `VISUAL_ENGINE_PLAN.md` conclusion is binding for the current stage: do not implement WebGL now; preserve production baseline.
 
 ## 11. Stage Separation
 
