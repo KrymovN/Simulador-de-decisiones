@@ -20,6 +20,8 @@ Completed Stage 2 stabilization commits:
 - `0781b46` - Stage 2.7.2 isolated WebGL sandbox prototype completed.
 - `5553455` - Stage 2.7.3 isolated WebGL visual quality iteration completed.
 - Stage 2.7.4 isolated WebGL performance profiling and stress testing completed with no file changes and no implementation commit needed.
+- `89e534c` - Stage 2.7.5 isolated WebGL mobile safety optimization completed; this is not full Safari/iPhone validation.
+- Stage 2.7.6 read-only sandbox state verification / no-integration confirmation completed; this is not a full production integration decision.
 
 ## Current CSS Architecture
 
@@ -63,13 +65,18 @@ Stable after Stage 2.7.4:
 - Stage 2.7.4 performance samples: desktop `20-21 FPS`, mobile `390x844` about `26 FPS`, resize `820x760` low sample about `6 FPS`;
 - DPR cap works with max `1.5`;
 - First Load JS for `/visual-lab`: `90.9 kB`;
+- post Stage 2.7.5 build output observed First Load JS for `/visual-lab`: `91.2 kB`;
 - cleanup/remount checked through route transition;
 - hidden-tab pause not fully verified because of in-app browser limitations;
 - Mobile Safari real-device testing has not been performed yet;
+- Stage 2.7.5 mobile safety optimization completed only inside isolated WebGL sandbox files;
+- Stage 2.7.5 implemented mobile-safe DPR cap, mobile-safe quality state, lower-power WebGL context preference, reduced-motion handling, hidden-tab pause path and softer mobile shader intensity;
+- Stage 2.7.6 verified the no-integration state: `/visual-lab` remains isolated and production replacement is not approved;
 - no npm install was performed;
 - no Three.js, React Three Fiber or WebGL dependency was installed;
 - no hero redesign or production UI redesign was created;
-- production code was not changed during Stage 2.7.1-2.7.4;
+- production code was not changed during Stage 2.7.1-2.7.6;
+- Stage 2.7.5 changed only `components/DecisionSingularityWebGL.tsx` and `components/DecisionSingularityWebGL.module.css`;
 - `stash@{0}: pre-stage-1.5-existing-changes` exists and has not been applied.
 
 ## QA Baseline From Stage 2.1-2.7-prep
@@ -206,6 +213,37 @@ Stage 2.7.4:
 - Mobile Safari real-device testing has not been performed yet;
 - conclusion: WebGL sandbox remains experimental-only; do not integrate into production hero before performance optimization and real-device Safari validation.
 
+Stage 2.7.5 correction:
+
+- current completed Stage 2.7.5 is mobile safety optimization, not full Safari validation;
+- already done:
+  - mobile-safe DPR cap lowered to `1.15` for mobile mode;
+  - mobile-safe quality state added to the debug/status surface;
+  - WebGL context now requests lower-power preference;
+  - reduced-motion and hidden-tab pause paths remain part of the sandbox;
+  - mobile shader intensity was softened;
+  - changes stayed inside isolated `DecisionSingularityWebGL` files;
+- not done:
+  - real-device iPhone Safari validation;
+  - thermal/throttling measurement on real devices;
+  - formal device matrix;
+  - full adaptive quality tiers beyond the current mobile-safe mode;
+  - production integration.
+
+Stage 2.7.6 correction:
+
+- current completed Stage 2.7.6 is read-only verification / no-integration confirmation, not a full integration decision;
+- already done:
+  - working tree cleanliness and stash presence were checked;
+  - `/visual-lab` existence was confirmed;
+  - `DecisionSingularityWebGL` sandbox files were confirmed;
+  - current production baseline remains active;
+- not done:
+  - formal choice between old singularity, hybrid, partial integration or future replacement;
+  - production feature flag / kill switch design;
+  - production integration approval.
+- conclusion: production replacement is not approved; existing production `DecisionSingularity` remains active; WebGL remains isolated in `/visual-lab`.
+
 ## Roadmap
 
 Stable frontend stabilization phase:
@@ -221,13 +259,31 @@ Experimental visual engine phase:
 - Stage 2.7.2 - isolated WebGL sandbox prototype - completed in `0781b46`.
 - Stage 2.7.3 - isolated WebGL visual quality iteration - completed in `5553455`.
 - Stage 2.7.4 - isolated WebGL performance profiling and stress testing - completed, no file changes/commit needed.
-- Stage 2.7.5-2.7.6 - isolated experimental WebGL track.
+- Stage 2.7.5 - isolated WebGL mobile safety optimization - completed in `89e534c`; not full Safari/iPhone validation.
+- Stage 2.7.6 - read-only verification / no-integration confirmation - completed; not a full integration decision.
+- Stage 2.7.5b - real Safari/iPhone validation checklist:
+  - test iPhone Safari portrait/landscape;
+  - test scroll, touch latency, resize/address bar behavior and orientation changes;
+  - observe FPS stability, context loss/restore and console errors;
+  - document thermal/throttling behavior during longer sessions.
+- Stage 2.7.5c - adaptive quality / reduced mobile mode if validation requires it:
+  - add stricter quality tiers only if real-device data justifies them;
+  - keep all work isolated from production hero;
+  - preserve CSS/DOM production fallback.
+- Stage 2.7.6b - formal integration decision after real-device data:
+  - keep old singularity;
+  - hybrid;
+  - partial integration;
+  - future replacement;
+  - no automatic production replacement.
 
 ## Critical Experimental Rules
 
 - WebGL is forbidden in production until isolated architecture approval.
 - `VISUAL_ENGINE_PLAN.md` conclusion is binding for the current stage: do not implement WebGL now; preserve production baseline.
 - Stage 2.7.4 result is binding: `/visual-lab` is experimental-only and must not be integrated into production hero before performance optimization and real-device Mobile Safari validation.
+- Stage 2.7.5 correction is binding: current mobile work is safety optimization only, not completed Safari validation.
+- Stage 2.7.6 correction is binding: current verification is no-integration confirmation only, not approval for production replacement.
 - Production `DecisionSingularity` must not be directly replaced.
 - WebGL must run through an isolated sandbox/experimental track.
 - Simulator business logic is protected.

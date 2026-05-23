@@ -4,7 +4,7 @@
 
 23 мая 2026, Europe/Madrid.
 
-Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после завершения Stage 2.7.4 isolated WebGL performance profiling and stress testing. Это основной актуальный handoff-файл. `LEVIO_CURRENT_STATE.md` должен оставаться синхронизированной копией этого документа.
+Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после Stage 2.7.5 isolated WebGL mobile safety optimization и Stage 2.7.6 read-only verification / no-integration confirmation. Это основной актуальный handoff-файл. `LEVIO_CURRENT_STATE.md` должен оставаться синхронизированной копией этого документа.
 
 ## 1. Краткое описание проекта
 
@@ -38,6 +38,8 @@ Stage 2 progress:
 - Stage 2.7.2 completed: `0781b46` - isolated WebGL sandbox prototype.
 - Stage 2.7.3 completed: `5553455` - isolated WebGL visual quality iteration.
 - Stage 2.7.4 completed: isolated WebGL performance profiling and stress testing; no file changes, no commit needed.
+- Stage 2.7.5 completed: `89e534c` - isolated WebGL mobile safety optimization; this is not full Safari/iPhone validation.
+- Stage 2.7.6 completed: read-only sandbox state verification / no-integration confirmation; this is not a full production integration decision.
 
 Stage 2.1-2.7.4 result:
 
@@ -53,6 +55,7 @@ Stage 2.1-2.7.4 result:
 - `LEVIO_IDENTITY_CORE.md` added as the product/visual identity source of truth;
 - `VISUAL_ENGINE_PLAN.md` added as the Stage 2.7.1 WebGL architecture research document;
 - `/visual-lab` added as an isolated WebGL sandbox route;
+- isolated WebGL mobile safety work stayed inside `components/DecisionSingularityWebGL.tsx` and `components/DecisionSingularityWebGL.module.css`;
 - WebGL remains experimental-only and is not integrated into production.
 
 ## 3. Current Stable Status
@@ -73,6 +76,8 @@ Stable status after Stage 2.7.4:
 - Stage 2.7.2 isolated `/visual-lab` sandbox created;
 - Stage 2.7.3 isolated WebGL visual quality iteration completed;
 - Stage 2.7.4 isolated WebGL performance profiling completed with no file changes;
+- Stage 2.7.5 isolated mobile safety optimization completed in `89e534c`;
+- Stage 2.7.6 read-only verification / no-integration confirmation completed;
 - mobile performance baseline stable at `390x844`;
 - build-trace caveat did not reproduce during Stage 2.7-prep: `npm run build` completed successfully;
 - Stage 2.7.1 checks passed: `npm run lint`, `npm run build`, `./node_modules/.bin/tsc --noEmit`;
@@ -80,7 +85,10 @@ Stable status after Stage 2.7.4:
 - no npm install was performed;
 - no Three.js, React Three Fiber or WebGL dependency was installed;
 - no hero redesign or production UI redesign was created;
-- production code was not changed during Stage 2.7.1-2.7.4;
+- production code was not changed during Stage 2.7.1-2.7.6;
+- Stage 2.7.5 changed only isolated experimental WebGL files:
+  - `components/DecisionSingularityWebGL.tsx`;
+  - `components/DecisionSingularityWebGL.module.css`;
 - `stash@{0}: pre-stage-1.5-existing-changes` remains untouched and must not be applied without explicit permission.
 
 Stage 2.7.4 performance notes:
@@ -94,10 +102,27 @@ Stage 2.7.4 performance notes:
 - resize stress at `820x760` produced a low sample around `6 FPS`;
 - DPR cap works with max `1.5`;
 - First Load JS for `/visual-lab`: `90.9 kB`;
+- post Stage 2.7.5 build output observed First Load JS for `/visual-lab`: `91.2 kB`;
 - cleanup/remount was checked through route transition;
 - hidden-tab pause could not be fully verified because of in-app browser limitations;
 - Mobile Safari real-device testing has not been performed yet;
 - conclusion: WebGL sandbox remains experimental-only; do not integrate into production hero before further optimization and real-device Safari validation.
+
+Stage 2.7.5 correction:
+
+- current completed Stage 2.7.5 must be treated as mobile safety optimization, not full Safari validation;
+- implemented safety measures include mobile-safe DPR cap `1.15`, mobile-safe quality state, lower-power WebGL context preference, reduced-motion handling, hidden-tab pause path and softer mobile shader intensity;
+- real iPhone/Safari validation has not been performed yet;
+- thermal behavior has not been measured on real devices;
+- full adaptive quality tiers and reduced mobile mode remain future work if validation requires them.
+
+Stage 2.7.6 correction:
+
+- current completed Stage 2.7.6 must be treated as read-only verification / no-integration confirmation, not a full integration decision;
+- production replacement is not approved;
+- existing production `DecisionSingularity` remains active;
+- WebGL remains isolated in `/visual-lab`;
+- possible future direction is hybrid or partial integration only after real-device validation and a formal integration decision.
 
 Known content issue:
 
@@ -258,7 +283,11 @@ Experimental visual engine phase:
 - Stage 2.7.2 - isolated WebGL sandbox prototype - completed in `0781b46`.
 - Stage 2.7.3 - isolated WebGL visual quality iteration - completed in `5553455`.
 - Stage 2.7.4 - isolated WebGL performance profiling and stress testing - completed, no file changes/commit needed.
-- Stage 2.7.5-2.7.6 - isolated experimental WebGL track.
+- Stage 2.7.5 - isolated WebGL mobile safety optimization - completed in `89e534c`; not full Safari/iPhone validation.
+- Stage 2.7.6 - read-only verification / no-integration confirmation - completed; not a full integration decision.
+- Stage 2.7.5b - real Safari/iPhone validation checklist.
+- Stage 2.7.5c - adaptive quality / reduced mobile mode if validation requires it.
+- Stage 2.7.6b - formal integration decision after real-device data.
 
 Locked until explicit later stages:
 
@@ -285,6 +314,8 @@ These rules are mandatory:
 - Experimental visual engine work must not contaminate the stable frontend stabilization phase.
 - `VISUAL_ENGINE_PLAN.md` conclusion is binding for the current stage: do not implement WebGL now; preserve production baseline.
 - Stage 2.7.4 result is binding: `/visual-lab` is experimental-only and must not be integrated into production hero before performance optimization and real-device Mobile Safari validation.
+- Stage 2.7.5 correction is binding: current mobile work is safety optimization only, not completed Safari validation.
+- Stage 2.7.6 correction is binding: current verification is no-integration confirmation only, not approval for production replacement.
 
 ## 11. Stage Separation
 
