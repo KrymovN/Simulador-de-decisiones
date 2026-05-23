@@ -43,55 +43,92 @@ const fragmentShaderSource = `
     return 1.0 - smoothstep(width, width + 0.018, abs(length(point) - radius));
   }
 
+  float ellipseRing(vec2 point, vec2 scale, float radius, float width) {
+    return ring(point * scale, radius, width);
+  }
+
+  float softCore(vec2 point, float radius, float softness) {
+    return 1.0 - smoothstep(radius, radius + softness, length(point));
+  }
+
   void main() {
     vec2 uv = v_uv * 2.0 - 1.0;
     uv.x *= u_resolution.x / max(u_resolution.y, 1.0);
 
     float motion = 1.0 - u_reducedMotion;
     float time = u_time * motion;
-    vec2 core = vec2(0.0, 0.02);
+    float breath = 0.86 + 0.14 * sin(time * 0.58);
+    float slowDrift = sin(time * 0.13) * 0.012;
+    vec2 core = vec2(slowDrift, 0.015);
     vec2 point = uv - core;
     float radius = length(point);
     float angle = atan(point.y, point.x);
 
-    vec3 deepSpace = vec3(0.006, 0.005, 0.004);
-    vec3 graphite = vec3(0.028, 0.025, 0.022);
-    vec3 amber = vec3(1.0, 0.66, 0.22);
-    vec3 gold = vec3(1.0, 0.82, 0.46);
-    vec3 ember = vec3(0.74, 0.24, 0.08);
+    vec3 voidBlack = vec3(0.001, 0.001, 0.001);
+    vec3 deepGraphite = vec3(0.012, 0.011, 0.010);
+    vec3 graphite = vec3(0.042, 0.036, 0.028);
+    vec3 amber = vec3(1.0, 0.58, 0.18);
+    vec3 gold = vec3(1.0, 0.78, 0.38);
+    vec3 cream = vec3(1.0, 0.92, 0.68);
+    vec3 ember = vec3(0.62, 0.18, 0.055);
 
-    float subtleNoise =
-      sin((uv.x * 28.0) + time * 0.18) *
-      sin((uv.y * 22.0) - time * 0.16) * 0.5 + 0.5;
+    float grain =
+      sin(uv.x * 34.0 + time * 0.07) *
+      sin(uv.y * 29.0 - time * 0.05) * 0.5 + 0.5;
 
-    vec3 color = mix(deepSpace, graphite, smoothstep(1.36, 0.08, radius) * 0.44);
-    color += amber * pow(max(0.0, 1.0 - radius), 5.2) * 0.18;
+    float field = smoothstep(1.62, 0.12, radius);
+    vec3 color = mix(voidBlack, graphite, field * 0.56);
+    color += deepGraphite * smoothstep(1.42, 0.28, length(uv)) * 0.44;
 
-    float diskY = point.y + sin(point.x * 2.4 + time * 0.16) * 0.025;
-    float disk = exp(-abs(diskY) * 15.0) * smoothstep(0.86, 0.14, abs(point.x));
-    float diskMask = smoothstep(0.16, 0.28, radius) * smoothstep(1.08, 0.42, radius);
-    float diskPulse = 0.72 + 0.28 * sin(angle * 3.0 - time * 0.75);
-    color += mix(ember, gold, diskPulse) * disk * diskMask * 0.54;
+    float gravityWell = pow(max(0.0, 1.0 - radius), 4.8);
+    float outerHalo = smoothstep(1.22, 0.18, radius) * (0.09 + breath * 0.055);
+    float amberMist = smoothstep(0.96, 0.2, radius) * (0.055 + grain * 0.035);
+    color += gold * outerHalo;
+    color += amber * amberMist;
+    color += cream * gravityWell * 0.04;
 
-    float photonOne = ring(point * vec2(0.78, 2.2), 0.48, 0.028);
-    float photonTwo = ring(point * vec2(0.82, 2.7), 0.34, 0.018);
-    color += gold * photonOne * 0.22;
-    color += amber * photonTwo * 0.2;
+    float diskWave = sin(point.x * 4.4 - time * 0.32) * 0.018;
+    float diskY = point.y + diskWave;
+    float disk = exp(-abs(diskY) * 18.0) * smoothstep(0.98, 0.12, abs(point.x));
+    float diskMask = smoothstep(0.17, 0.31, radius) * smoothstep(1.18, 0.42, radius);
+    float diskLensing = 0.68 + 0.32 * sin(angle * 2.0 - time * 0.42);
+    color += mix(ember, gold, diskLensing) * disk * diskMask * 0.62;
 
-    float horizon = ring(point, 0.255 + sin(time * 0.28) * 0.006, 0.035);
-    float coreShadow = smoothstep(0.32, 0.14, radius);
-    color = mix(color, vec3(0.0, 0.0, 0.0), coreShadow * 0.92);
-    color += gold * horizon * 0.36;
+    float backDisk = exp(-abs(point.y + 0.07) * 24.0) * smoothstep(0.92, 0.1, abs(point.x));
+    color += ember * backDisk * diskMask * 0.12;
 
-    float lens = smoothstep(0.96, 0.24, radius) * (0.08 + subtleNoise * 0.035);
-    color += amber * lens;
+    float photonOne = ellipseRing(point, vec2(0.74, 2.05), 0.48, 0.025);
+    float photonTwo = ellipseRing(point, vec2(0.86, 2.62), 0.34, 0.016);
+    float photonThree = ellipseRing(point, vec2(0.68, 1.58), 0.74, 0.012);
+    color += cream * photonOne * (0.18 + breath * 0.08);
+    color += gold * photonTwo * 0.21;
+    color += amber * photonThree * 0.1;
 
-    float dataArc = ring(point * vec2(0.9, 1.55), 0.72, 0.012);
-    float gate = step(0.72, sin(angle * 18.0 + time * 0.36));
-    color += gold * dataArc * gate * 0.09;
+    float horizonRadius = 0.252 + sin(time * 0.34) * 0.006;
+    float horizon = ring(point, horizonRadius, 0.032);
+    float innerGravity = softCore(point, 0.225, 0.13);
+    float eventShadow = smoothstep(0.36, 0.13, radius);
+    color = mix(color, voidBlack, eventShadow * 0.94);
+    color += cream * horizon * (0.24 + breath * 0.14);
+    color += amber * ring(point, 0.31, 0.022) * 0.11;
+    color -= vec3(0.18, 0.15, 0.12) * innerGravity;
 
-    float vignette = smoothstep(1.54, 0.36, radius);
+    float lensTop = exp(-abs(point.y - 0.19) * 12.0) * smoothstep(0.72, 0.18, abs(point.x));
+    float lensBottom = exp(-abs(point.y + 0.19) * 10.0) * smoothstep(0.76, 0.16, abs(point.x));
+    color += gold * lensTop * 0.09;
+    color += amber * lensBottom * 0.12;
+
+    float dataArc = ellipseRing(point, vec2(0.88, 1.48), 0.72, 0.01);
+    float arcGate = smoothstep(0.62, 0.98, sin(angle * 10.0 + time * 0.18));
+    float arcBreath = 0.45 + 0.55 * breath;
+    color += cream * dataArc * arcGate * arcBreath * 0.06;
+
+    float verticalDepth = smoothstep(1.05, -0.12, abs(uv.y)) * smoothstep(1.5, 0.32, length(uv));
+    color += vec3(0.08, 0.055, 0.028) * verticalDepth * 0.22;
+
+    float vignette = smoothstep(1.55, 0.32, length(uv));
     color *= vignette;
+    color = pow(max(color, vec3(0.0)), vec3(0.92));
 
     gl_FragColor = vec4(color, 1.0);
   }
@@ -408,11 +445,11 @@ export default function DecisionSingularityWebGL() {
     <main className={styles.labShell}>
       <section className={styles.hero} aria-labelledby="visual-lab-title">
         <div className={styles.copy}>
-          <p className={styles.eyebrow}>Stage 2.7.2 · isolated sandbox</p>
+          <p className={styles.eyebrow}>Stage 2.7.3 · visual quality iteration</p>
           <h1 id="visual-lab-title">Levio Visual Lab</h1>
           <p>
-            Prototipo WebGL aislado para explorar una singularidad cinematica sin
-            tocar el hero, el simulador ni el flujo de produccion.
+            Prototipo WebGL aislado para observar una singularidad mas profunda,
+            atmosferica y serena sin tocar el hero ni el flujo de produccion.
           </p>
         </div>
 

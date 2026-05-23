@@ -1,11 +1,14 @@
 .labShell {
+  box-sizing: border-box;
   min-height: 100vh;
+  overflow-x: hidden;
   padding: clamp(28px, 5vw, 72px);
   color: #f8edcf;
   background:
-    radial-gradient(circle at 50% 18%, rgba(216, 168, 74, 0.14), transparent 32%),
-    radial-gradient(circle at 78% 72%, rgba(117, 63, 24, 0.16), transparent 34%),
-    linear-gradient(145deg, #030303 0%, #100d09 44%, #040404 100%);
+    radial-gradient(circle at 50% 20%, rgba(255, 211, 106, 0.13), transparent 30%),
+    radial-gradient(circle at 70% 72%, rgba(143, 71, 24, 0.15), transparent 34%),
+    radial-gradient(circle at 16% 78%, rgba(216, 168, 74, 0.08), transparent 30%),
+    linear-gradient(145deg, #020202 0%, #0d0b08 42%, #030303 100%);
 }
 
 .hero {
@@ -58,14 +61,17 @@
   justify-self: center;
   aspect-ratio: 1.08;
   overflow: hidden;
-  border: 1px solid rgba(216, 168, 74, 0.22);
+  border: 1px solid rgba(216, 168, 74, 0.26);
   border-radius: 8px;
   background:
-    radial-gradient(circle at 50% 50%, rgba(255, 211, 106, 0.12), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+    radial-gradient(circle at 50% 48%, rgba(255, 226, 148, 0.16), transparent 28%),
+    radial-gradient(circle at 50% 56%, rgba(93, 43, 12, 0.18), transparent 58%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
   box-shadow:
-    0 34px 120px rgba(0, 0, 0, 0.62),
-    inset 0 0 70px rgba(216, 168, 74, 0.08);
+    0 38px 140px rgba(0, 0, 0, 0.72),
+    0 0 92px rgba(216, 168, 74, 0.1),
+    inset 0 0 86px rgba(216, 168, 74, 0.09),
+    inset 0 0 140px rgba(0, 0, 0, 0.48);
   isolation: isolate;
 }
 
@@ -78,24 +84,26 @@
 }
 
 .stage::before {
-  inset: 9%;
+  inset: 7%;
   border-radius: 50%;
   background:
-    radial-gradient(circle, transparent 0 34%, rgba(255, 211, 106, 0.16) 35%, transparent 38% 100%),
-    repeating-conic-gradient(from 12deg, rgba(255, 211, 106, 0.22) 0 1deg, transparent 1deg 13deg);
-  opacity: 0.34;
-  transform: scaleY(0.48) rotate(-7deg);
+    radial-gradient(circle, transparent 0 32%, rgba(255, 226, 148, 0.18) 34%, transparent 38% 100%),
+    repeating-conic-gradient(from 18deg, rgba(255, 211, 106, 0.2) 0 1deg, transparent 1deg 14deg);
+  opacity: 0.4;
+  transform: scaleY(0.45) rotate(-7deg);
   mix-blend-mode: screen;
+  animation: labBreath 8.5s ease-in-out infinite;
 }
 
 .stage::after {
   inset: 0;
   background:
-    linear-gradient(rgba(255, 211, 106, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 211, 106, 0.035) 1px, transparent 1px);
-  background-size: 42px 42px;
-  mask-image: radial-gradient(circle at 50% 50%, black 0 58%, transparent 76%);
-  opacity: 0.22;
+    linear-gradient(rgba(255, 211, 106, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 211, 106, 0.028) 1px, transparent 1px),
+    radial-gradient(circle at 50% 50%, transparent 0 34%, rgba(255, 211, 106, 0.08) 35%, transparent 38% 100%);
+  background-size: 42px 42px, 42px 42px, 100% 100%;
+  mask-image: radial-gradient(circle at 50% 50%, black 0 56%, transparent 78%);
+  opacity: 0.26;
 }
 
 .canvas {
@@ -117,7 +125,9 @@
   gap: 12px;
   padding: 32px;
   text-align: center;
-  background: radial-gradient(circle at 50% 48%, rgba(216, 168, 74, 0.18), rgba(3, 3, 3, 0.78) 64%);
+  background:
+    radial-gradient(circle at 50% 48%, rgba(255, 211, 106, 0.22), rgba(3, 3, 3, 0.8) 64%),
+    linear-gradient(145deg, rgba(18, 14, 8, 0.94), rgba(0, 0, 0, 0.88));
 }
 
 .fallback strong {
@@ -162,6 +172,19 @@
   backdrop-filter: blur(14px);
 }
 
+@keyframes labBreath {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scaleY(0.45) rotate(-7deg) scale(0.985);
+  }
+
+  50% {
+    opacity: 0.46;
+    transform: scaleY(0.45) rotate(-7deg) scale(1.015);
+  }
+}
+
 @media (max-width: 840px) {
   .labShell {
     padding: 22px;
@@ -191,6 +214,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .stage::before {
+    animation: none;
     opacity: 0.24;
   }
 }
