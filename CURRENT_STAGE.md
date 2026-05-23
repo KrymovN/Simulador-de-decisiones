@@ -13,6 +13,7 @@ Completed Stage 2 stabilization commits:
 - `7ea3e61` - Stage 2.3, auth.css extraction.
 - `c9a86da` - Stage 2.4, simulator.css extraction.
 - Stage 2.5 visual regression QA completed after `c9a86da`.
+- `aeace9f` - Stage 2.6, checkpoint + context sync.
 
 ## Current CSS Architecture
 
@@ -33,7 +34,7 @@ Import/cascade policy:
 
 ## Current Stable Status
 
-Stable after Stage 2.5:
+Stable after Stage 2.6:
 
 - cinematic dark-gold baseline preserved;
 - desktop stable;
@@ -43,10 +44,11 @@ Stable after Stage 2.5:
 - mock auth flow stable;
 - home simulator interaction stable;
 - no visual regressions detected;
+- context files synchronized after Stage 2.5 QA;
 - working tree was clean before this documentation update;
 - `stash@{0}: pre-stage-1.5-existing-changes` exists and has not been applied.
 
-## QA Baseline From Stage 2.1-2.5
+## QA Baseline From Stage 2.1-2.6
 
 Stage 2.1:
 
@@ -101,13 +103,20 @@ Stage 2.5:
 - `./node_modules/.bin/tsc --noEmit` passed;
 - `npm run build` compiled successfully, completed type/lint validation and generated `19/19` static pages, then stayed on `Collecting build traces` for several minutes and was stopped manually. This is a local build-trace caveat, not a visual regression.
 
+Stage 2.6:
+
+- checkpoint + context sync completed in `aeace9f`;
+- `PROJECT_CONTEXT.md`, `LEVIO_CURRENT_STATE.md` and `CURRENT_STAGE.md` were synchronized after Stage 2.5 visual QA;
+- no production code was changed;
+- next planned stage is Stage 2.7-prep, visual engine preparation.
+
 ## Roadmap
 
 Stable frontend stabilization phase:
 
 - Stage 2.4 - simulator CSS stabilization - completed in `c9a86da`.
 - Stage 2.5 - visual regression QA - completed.
-- Stage 2.6 - checkpoint + context sync.
+- Stage 2.6 - checkpoint + context sync - completed in `aeace9f`.
 - Stage 2.7-prep - visual engine preparation.
 
 Experimental visual engine phase:
