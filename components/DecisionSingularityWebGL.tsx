@@ -4,9 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./DecisionSingularityWebGL.module.css";
 
 type DebugState = {
+  animationTime: number;
   dpr: number;
   fps: number;
   mode: "initializing" | "webgl" | "fallback";
+  motionState: "running" | "reduced" | "paused";
   quality: "desktop" | "mobile-safe";
   reducedMotion: boolean;
   size: string;
@@ -40,7 +42,11 @@ const vertexShaderSource = `
 `;
 
 const fragmentShaderSource = `
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+  precision highp float;
+#else
   precision mediump float;
+#endif
 
   uniform vec2 u_resolution;
   uniform float u_time;
@@ -66,10 +72,11 @@ const fragmentShaderSource = `
 
     float mobileSoftness = mix(1.0, 0.82, u_mobileMode);
     float motion = 1.0 - u_reducedMotion;
-    float time = u_time * motion * mix(1.0, 0.72, u_mobileMode);
-    float breath = 0.86 + 0.14 * sin(time * 0.58);
-    float slowDrift = sin(time * 0.13) * 0.012;
-    vec2 core = vec2(slowDrift, 0.015);
+    float time = u_time * motion * mix(1.0, 1.08, u_mobileMode);
+    float breath = 0.84 + 0.16 * sin(time * 0.78);
+    float safariPulse = 0.5 + 0.5 * sin(time * 1.12);
+    float slowDrift = sin(time * 0.22) * mix(0.012, 0.018, u_mobileMode);
+    vec2 core = vec2(slowDrift, 0.015 + sin(time * 0.31) * 0.006);
     vec2 point = uv - core;
     float radius = length(point);
     float angle = atan(point.y, point.x);
@@ -91,17 +98,17 @@ const fragmentShaderSource = `
     color += deepGraphite * smoothstep(1.42, 0.28, length(uv)) * 0.44;
 
     float gravityWell = pow(max(0.0, 1.0 - radius), 4.8);
-    float outerHalo = smoothstep(1.22, 0.18, radius) * (0.09 + breath * 0.055);
+    float outerHalo = smoothstep(1.22, 0.18, radius) * (0.085 + breath * 0.062 + safariPulse * 0.024);
     float amberMist = smoothstep(0.96, 0.2, radius) * (0.055 + grain * 0.035);
     color += gold * outerHalo * mobileSoftness;
     color += amber * amberMist * mobileSoftness;
     color += cream * gravityWell * 0.04;
 
-    float diskWave = sin(point.x * 4.4 - time * 0.32) * 0.018;
+    float diskWave = sin(point.x * 4.4 - time * mix(0.5, 0.74, u_mobileMode)) * mix(0.018, 0.026, u_mobileMode);
     float diskY = point.y + diskWave;
     float disk = exp(-abs(diskY) * 18.0) * smoothstep(0.98, 0.12, abs(point.x));
     float diskMask = smoothstep(0.17, 0.31, radius) * smoothstep(1.18, 0.42, radius);
-    float diskLensing = 0.68 + 0.32 * sin(angle * 2.0 - time * 0.42);
+    float diskLensing = 0.66 + 0.34 * sin(angle * 2.0 - time * 0.68);
     color += mix(ember, gold, diskLensing) * disk * diskMask * 0.62 * mobileSoftness;
 
     float backDisk = exp(-abs(point.y + 0.07) * 24.0) * smoothstep(0.92, 0.1, abs(point.x));
@@ -113,8 +120,10 @@ const fragmentShaderSource = `
     color += cream * photonOne * (0.18 + breath * 0.08) * mobileSoftness;
     color += gold * photonTwo * 0.21 * mobileSoftness;
     color += amber * photonThree * 0.1 * mobileSoftness;
+    float energySweep = smoothstep(0.72, 1.0, sin(angle * 3.0 - time * 0.96));
+    color += gold * photonOne * energySweep * 0.09 * mobileSoftness;
 
-    float horizonRadius = 0.252 + sin(time * 0.34) * 0.006;
+    float horizonRadius = 0.252 + sin(time * 0.72) * 0.012;
     float horizon = ring(point, horizonRadius, 0.032);
     float innerGravity = softCore(point, 0.225, 0.13);
     float eventShadow = smoothstep(0.36, 0.13, radius);
@@ -129,7 +138,7 @@ const fragmentShaderSource = `
     color += amber * lensBottom * 0.12;
 
     float dataArc = ellipseRing(point, vec2(0.88, 1.48), 0.72, 0.01);
-    float arcGate = smoothstep(0.62, 0.98, sin(angle * 10.0 + time * 0.18));
+    float arcGate = smoothstep(0.62, 0.98, sin(angle * 10.0 + time * 0.46));
     float arcBreath = 0.45 + 0.55 * breath;
     color += cream * dataArc * arcGate * arcBreath * 0.06 * mobileSoftness;
 
@@ -261,9 +270,11 @@ function removeMediaQueryListener(
 export default function DecisionSingularityWebGL() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [debug, setDebug] = useState<DebugState>({
+    animationTime: 0,
     dpr: 1,
     fps: 0,
     mode: "initializing",
+    motionState: "running",
     quality: "desktop",
     reducedMotion: false,
     size: "0x0",
@@ -281,6 +292,8 @@ export default function DecisionSingularityWebGL() {
     let disposed = false;
     let frameCount = 0;
     let lastFpsUpdate = performance.now();
+    let loopStartedAt = performance.now();
+    let shaderTime = 0;
     let gl: WebGLRenderingContext | null = null;
     let resources: WebGLResources = {
       buffer: null,
@@ -308,9 +321,11 @@ export default function DecisionSingularityWebGL() {
 
     function setFallback(status: string) {
       updateDebug({
+        animationTime: shaderTime,
         dpr,
         fps: 0,
         mode: "fallback",
+        motionState: "paused",
         quality: mobileMode ? "mobile-safe" : "desktop",
         reducedMotion,
         size: `${canvasWidth}x${canvasHeight}`,
@@ -368,13 +383,14 @@ export default function DecisionSingularityWebGL() {
       }
 
       resize();
+      shaderTime = Math.max(0, ((time - loopStartedAt) * 0.001) % 120);
       gl.useProgram(resources.program);
 
       gl.bindBuffer(gl.ARRAY_BUFFER, resources.buffer);
       gl.enableVertexAttribArray(resources.positionLocation);
       gl.vertexAttribPointer(resources.positionLocation, 2, gl.FLOAT, false, 0, 0);
       gl.uniform2f(resources.resolutionLocation, canvasWidth, canvasHeight);
-      gl.uniform1f(resources.timeLocation, time * 0.001);
+      gl.uniform1f(resources.timeLocation, shaderTime);
       gl.uniform1f(resources.reducedLocation, reducedMotion ? 1 : 0);
       gl.uniform1f(resources.mobileModeLocation, mobileMode ? 1 : 0);
       gl.drawArrays(gl.TRIANGLES, 0, 6);
@@ -386,13 +402,19 @@ export default function DecisionSingularityWebGL() {
         frameCount = 0;
         lastFpsUpdate = time;
         updateDebug({
+          animationTime: shaderTime,
           dpr,
           fps: reducedMotion ? 0 : fps,
           mode: "webgl",
+          motionState: reducedMotion ? "reduced" : "running",
           quality: mobileMode ? "mobile-safe" : "desktop",
           reducedMotion,
           size: `${canvasWidth}x${canvasHeight}`,
-          status: reducedMotion ? "WebGL listo · movimiento reducido" : "WebGL activo",
+          status: reducedMotion
+            ? "WebGL listo · movimiento reducido"
+            : mobileMode
+              ? "WebGL activo · Safari-safe motion"
+              : "WebGL activo",
         });
       }
 
@@ -406,15 +428,23 @@ export default function DecisionSingularityWebGL() {
       resize();
       frameCount = 0;
       lastFpsUpdate = performance.now();
+      loopStartedAt = lastFpsUpdate;
+      shaderTime = 0;
 
       updateDebug({
+        animationTime: shaderTime,
         dpr,
         fps: 0,
         mode: gl ? "webgl" : "fallback",
+        motionState: reducedMotion ? "reduced" : "running",
         quality: mobileMode ? "mobile-safe" : "desktop",
         reducedMotion,
         size: `${canvasWidth}x${canvasHeight}`,
-        status: reducedMotion ? "WebGL listo · movimiento reducido" : "WebGL activo",
+        status: reducedMotion
+          ? "WebGL listo · movimiento reducido"
+          : mobileMode
+            ? "WebGL activo · Safari-safe motion"
+            : "WebGL activo",
       });
 
       if (document.hidden) {
@@ -431,7 +461,7 @@ export default function DecisionSingularityWebGL() {
     function handleVisibilityChange() {
       if (document.hidden) {
         window.cancelAnimationFrame(animationFrame);
-        updateDebug({ fps: 0, status: "Pausado por pestaña oculta" });
+        updateDebug({ fps: 0, motionState: "paused", status: "Pausado por pestaña oculta" });
         return;
       }
 
@@ -471,9 +501,11 @@ export default function DecisionSingularityWebGL() {
 
       resources = createProgram(gl);
       updateDebug({
+        animationTime: shaderTime,
         dpr,
         fps: 0,
         mode: "webgl",
+        motionState: reducedMotion ? "reduced" : "running",
         reducedMotion,
         status: "WebGL activo",
       });
@@ -541,7 +573,8 @@ export default function DecisionSingularityWebGL() {
               {debug.quality === "mobile-safe" ? MOBILE_DPR_CAP : DESKTOP_DPR_CAP}
             </span>
             <span>Canvas: {debug.size}</span>
-            <span>Motion: {debug.reducedMotion ? "reducido" : "normal"}</span>
+            <span>Motion: {debug.motionState}</span>
+            <span>Time: {debug.animationTime.toFixed(1)}s</span>
             <span>Quality: {debug.quality}</span>
           </div>
         </div>

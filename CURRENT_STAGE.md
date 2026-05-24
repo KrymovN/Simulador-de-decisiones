@@ -66,9 +66,11 @@ Stable after Stage 2.7.4:
 - DPR cap works with max `1.5`;
 - First Load JS for `/visual-lab`: `90.9 kB`;
 - post Stage 2.7.5 build output observed First Load JS for `/visual-lab`: `91.2 kB`;
+- post Safari-safe motion fix build output observed First Load JS for `/visual-lab`: `91.4 kB`;
 - cleanup/remount checked through route transition;
 - hidden-tab pause not fully verified because of in-app browser limitations;
-- Mobile Safari real-device testing has not been performed yet;
+- initial iPhone Safari real-device testing started: `/visual-lab` opened, WebGL rendered, FPS was stable around `60`, layout/orientation/no-overflow/heat checks passed, but visible WebGL animation failed before the Safari-safe motion fix;
+- iPhone Safari retest after Safari-safe motion fix passed: motion overlay exists, `Time` counter updates, visual animation is visible as breathing zoom plus slight horizontal drift, FPS stayed around `60`, no heat was observed and the page remained stable after `1-2` minutes;
 - Stage 2.7.5 mobile safety optimization completed only inside isolated WebGL sandbox files;
 - Stage 2.7.5 implemented mobile-safe DPR cap, mobile-safe quality state, lower-power WebGL context preference, reduced-motion handling, hidden-tab pause path and softer mobile shader intensity;
 - Stage 2.7.6 verified the no-integration state: `/visual-lab` remains isolated and production replacement is not approved;
@@ -224,7 +226,7 @@ Stage 2.7.5 correction:
   - mobile shader intensity was softened;
   - changes stayed inside isolated `DecisionSingularityWebGL` files;
 - not done:
-  - real-device iPhone Safari validation;
+  - completed real-device iPhone Safari validation after the Safari-safe motion fix;
   - thermal/throttling measurement on real devices;
   - formal device matrix;
   - full adaptive quality tiers beyond the current mobile-safe mode;
@@ -287,6 +289,37 @@ Stage 2.7.5b Safari/iPhone validation checklist:
   - if results pass, keep `/visual-lab` isolated and continue to Stage 2.7.6b formal integration decision only after documented real-device data;
   - production replacement remains not approved.
 
+Stage 2.7.5b initial iPhone Safari result and blocker fix:
+
+- real iPhone Safari opened `/visual-lab` correctly after the earlier local-server-root blocker was resolved;
+- WebGL rendered;
+- FPS overlay reported approximately `60 FPS`;
+- layout stability passed;
+- orientation change stability passed;
+- horizontal overflow was absent;
+- no heat was observed in the initial check;
+- blocker found: the visual WebGL singularity appeared static even though FPS was updating;
+- likely technical cause: shader motion used absolute `requestAnimationFrame` time with mobile fragment precision risk, so subtle time-based shader changes could visually collapse on iPhone Safari;
+- fix applied only inside `components/DecisionSingularityWebGL.tsx`:
+  - bounded local shader time instead of absolute RAF timestamp;
+  - fragment `highp` precision when available;
+  - Safari-safe motion status and animation time diagnostics;
+  - slightly clearer but still subtle cinematic breathing, depth, glow and energy-flow motion;
+- retest result:
+  - `/visual-lab` opened on iPhone Safari;
+  - motion overlay exists;
+  - `Time` counter updates;
+  - visual animation is now visible;
+  - motion reads as breathing zoom plus slight horizontal drift;
+  - FPS remained stable around `60`;
+  - no heat was observed;
+  - page remained stable after `1-2` minutes;
+- no production files were changed;
+- WebGL remains isolated in `/visual-lab`;
+- previous animation blocker is resolved in the isolated sandbox;
+- Stage 2.7.5b can be marked completed;
+- Stage 2.7.5 overall is not fully complete until the adaptive quality / reduced mobile mode decision is made if required.
+
 Stage 2.7.6 correction:
 
 - current completed Stage 2.7.6 is read-only verification / no-integration confirmation, not a full integration decision;
@@ -318,7 +351,7 @@ Experimental visual engine phase:
 - Stage 2.7.4 - isolated WebGL performance profiling and stress testing - completed, no file changes/commit needed.
 - Stage 2.7.5 - isolated WebGL mobile safety optimization - completed in `89e534c`; not full Safari/iPhone validation.
 - Stage 2.7.6 - read-only verification / no-integration confirmation - completed; not a full integration decision.
-- Stage 2.7.5b - real Safari/iPhone validation checklist prepared; validation results still need to be executed and documented:
+- Stage 2.7.5b - real Safari/iPhone validation completed after Safari-safe motion retest:
   - test iPhone Safari portrait/landscape;
   - test scroll, touch latency, resize/address bar behavior and orientation changes;
   - observe FPS stability, context loss/restore and console errors;
@@ -340,7 +373,7 @@ Experimental visual engine phase:
 - `VISUAL_ENGINE_PLAN.md` conclusion is binding for the current stage: do not implement WebGL now; preserve production baseline.
 - Stage 2.7.4 result is binding: `/visual-lab` is experimental-only and must not be integrated into production hero before performance optimization and real-device Mobile Safari validation.
 - Stage 2.7.5 correction is binding: current mobile work is safety optimization only, not completed Safari validation.
-- Stage 2.7.5b is binding as a real-device checklist only: it does not complete Safari/iPhone validation until results are recorded.
+- Stage 2.7.5b result is binding: iPhone Safari retest passed after the isolated Safari-safe motion fix; Stage 2.7.5 overall still awaits the Stage 2.7.5c adaptive-quality/reduced-mobile-mode decision if required.
 - Stage 2.7.6 correction is binding: current verification is no-integration confirmation only, not approval for production replacement.
 - Production `DecisionSingularity` must not be directly replaced.
 - WebGL must run through an isolated sandbox/experimental track.
