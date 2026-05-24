@@ -155,6 +155,17 @@ Stage 2.7.5b initial iPhone Safari result and blocker fix:
 - Stage 2.7.5b can be marked completed;
 - Stage 2.7.5 overall is not fully complete until the adaptive quality / reduced mobile mode decision is made if required.
 
+Stage 2.7.5c adaptive quality / reduced mobile mode decision:
+
+- decision: no additional adaptive quality or reduced mobile mode implementation is required now;
+- decision gate used: add stricter reduced mode only if real iPhone Safari data shows sustained FPS degradation, heat, memory pressure, context loss, orientation/layout instability, horizontal overflow or unreadable/failed motion;
+- current iPhone Safari result after the Safari-safe motion fix does not trigger that gate: FPS stayed around `60`, motion is visible, no heat was observed, layout/orientation stayed stable and the page remained stable after `1-2` minutes;
+- current sandbox already includes conservative mobile safeguards: small/mobile viewport detection, mobile-safe DPR cap `1.15`, lower-power WebGL context preference, reduced-motion path, hidden-tab pause path, softened mobile shader intensity and debug overlay with quality mode, DPR/pixel ratio, motion state and animation time;
+- reduced mobile mode active: no, beyond the existing mobile-safe quality mode;
+- no new WebGL code changes are needed for Stage 2.7.5c;
+- Stage 2.7.5 can be considered complete for the current isolated sandbox validation scope;
+- longer thermal profiling remains recommended before any production integration or formal Stage 2.7.6b integration decision, but it is not a blocker for the current Stage 2.7.5c decision.
+
 Stage 2.7.6 correction:
 
 - current completed Stage 2.7.6 must be treated as read-only verification / no-integration confirmation, not a full integration decision;
@@ -325,7 +336,7 @@ Experimental visual engine phase:
 - Stage 2.7.5 - isolated WebGL mobile safety optimization - completed in `89e534c`; not full Safari/iPhone validation.
 - Stage 2.7.6 - read-only verification / no-integration confirmation - completed; not a full integration decision.
 - Stage 2.7.5b - real Safari/iPhone validation completed after Safari-safe motion retest.
-- Stage 2.7.5c - adaptive quality / reduced mobile mode if validation requires it.
+- Stage 2.7.5c - adaptive quality / reduced mobile mode decision completed; no extra reduced mode required now.
 - Stage 2.7.6b - formal integration decision after real-device data.
 
 Locked until explicit later stages:
@@ -355,6 +366,7 @@ These rules are mandatory:
 - Stage 2.7.4 result is binding: `/visual-lab` is experimental-only and must not be integrated into production hero before performance optimization and real-device Mobile Safari validation.
 - Stage 2.7.5 correction is binding: current mobile work is safety optimization only, not completed Safari validation.
 - Stage 2.7.5b result is binding: iPhone Safari retest passed after the isolated Safari-safe motion fix; Stage 2.7.5 overall still awaits the Stage 2.7.5c adaptive-quality/reduced-mobile-mode decision if required.
+- Stage 2.7.5c result is binding: current real-device data does not require additional adaptive quality or reduced mobile mode; Stage 2.7.5 is complete for the isolated sandbox scope, with longer thermal profiling still recommended before any production integration decision.
 - Stage 2.7.6 correction is binding: current verification is no-integration confirmation only, not approval for production replacement.
 
 ## 11. Stage Separation
