@@ -1,5 +1,20 @@
 # LEVIO.ES — PROJECT IDENTITY CORE
 
+## CURRENT TRANSITION CONSTRAINT - 24 May 2026
+
+- Active stage: Stage 2.7.3b.
+- The isolated `/visual-lab` WebGL sandbox is not yet the premium cinematic Levio target.
+- Current WebGL work is a lightweight shader prototype with a visual ceiling, not production identity implementation.
+- Real iPhone Safari retest after `fa5dfd9` passed technical safety but did not produce enough perceived cinematic-depth improvement.
+- Stage 2.7.3b remains active; do not close it or claim the cinematic target is achieved.
+- The current single-pass lightweight shader ceiling is now confirmed more strongly.
+- Next visual progress likely requires controlled advanced rendering research, not more micro-tweaks in the same shader path.
+- Stage 2.7.4 is blocked until Stage 2.7.3b closes.
+- Stage 2.7.5 is provisional only and cannot justify production integration.
+- Stage 2.7.6 and any Stage 2.7.7 escalation remain blocked/provisional until the visual-quality path is explicitly approved.
+- Production `DecisionSingularity` remains protected.
+- No production integration, rendering experiment, stash apply, or architecture escalation is allowed during transition documentation work.
+
 ## WHAT LEVIO.ES IS
 
 Levio.es is not a chatbot.

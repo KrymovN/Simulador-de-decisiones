@@ -2,6 +2,24 @@
 
 Date: 23 May 2026, Europe/Madrid.
 
+## Authoritative Transition State - 24 May 2026
+
+This section is the handoff source of truth for the next Codex context window. If older historical notes below describe Stage 2.7.4, Stage 2.7.5 or Stage 2.7.6 as completed, treat those notes as superseded by this transition state.
+
+- Active stage: Stage 2.7.3b - isolated lightweight shader cinematic-depth correction and validation.
+- Stage 2.7.3b is not complete. Real iPhone Safari after `fa5dfd9` confirmed technical safety, but did not confirm enough perceived cinematic-depth improvement.
+- Stage 2.7.4 is blocked until Stage 2.7.3b closes.
+- Stage 2.7.5 is provisional only: existing mobile-safety work is useful but not a final validation stage and not a production-integration basis.
+- Stage 2.7.6 and any Stage 2.7.7 escalation remain blocked/provisional until Stage 2.7.3b has a real visual-quality path forward.
+- Current WebGL sandbox is isolated in `/visual-lab` and must stay isolated.
+- Current sandbox is not yet premium cinematic quality. The `fa5dfd9` retest confirms more strongly that the current single-pass lightweight shader has a visual ceiling.
+- Current engineering direction: preserve production `DecisionSingularity`, keep WebGL lab-only, and do not integrate production hero.
+- Next visual progress likely requires controlled advanced rendering research, not more isolated micro-tweaks to the same lightweight shader.
+- Strict stage discipline: no skipped stages, no retroactive completion, no production code changes during documentation-only work.
+- Quota protection: before opening a new context, avoid rendering experiments, long browser QA loops, new builds, or broad analysis unless explicitly requested.
+- Production protection: do not modify `components/DecisionSingularity.tsx`, `components/DecisionSingularity.module.css`, `components/HomeSimulator.tsx`, simulator logic, `SimulationResponse`, or `app/globals.css` without explicit approval.
+- Stash protection: do not apply `stash@{0}` without explicit permission.
+
 ## Current Stage
 
 Stage 2 - frontend CSS stabilization and architectural sync - IN PROGRESS.
@@ -19,9 +37,12 @@ Completed Stage 2 stabilization commits:
 - `3d8ef6e` - Stage 2.7.1 WebGL architecture research completed.
 - `0781b46` - Stage 2.7.2 isolated WebGL sandbox prototype completed.
 - `5553455` - Stage 2.7.3 isolated WebGL visual quality iteration completed.
+- Stage 2.7.3 corrective closure status: isolated shader cinematic pass applied; local `/visual-lab` route QA passed; strict closure remains pending post-pass real iPhone Safari retest.
+- Stage 2.7.3 corrective pass 2 status: real iPhone Safari retest after the first corrective pass stayed technically stable but did not improve perceived cinematic depth; second isolated shader depth pass applied; strict closure remains pending another real iPhone Safari visual-quality retest.
+- `fa5dfd9` - Stage 2.7.3b controlled depth-contrast iteration committed; real iPhone Safari retest passed technical safety but visual improvement was almost not noticeable, so Stage 2.7.3b remains active.
 - Stage 2.7.4 isolated WebGL performance profiling and stress testing completed with no file changes and no implementation commit needed.
 - `89e534c` - Stage 2.7.5 isolated WebGL mobile safety optimization completed; this is not full Safari/iPhone validation.
-- Stage 2.7.6 read-only sandbox state verification / no-integration confirmation completed; this is not a full production integration decision.
+- Stage 2.7.6 formal integration decision completed: keep production `DecisionSingularity`, keep WebGL isolated in `/visual-lab`, no production replacement approved.
 
 ## Current CSS Architecture
 
@@ -61,12 +82,16 @@ Stable after Stage 2.7.4:
 - Stage 2.7.1 checks passed: `npm run lint`, `npm run build`, `./node_modules/.bin/tsc --noEmit`;
 - Stage 2.7.2 isolated `/visual-lab` sandbox created in `0781b46`;
 - Stage 2.7.3 isolated WebGL visual quality iteration completed in `5553455`;
+- Stage 2.7.3 corrective cinematic rendering pass improved glow, simulated bloom, layered fog, animated depth, volumetric feeling and living core motion inside the isolated sandbox;
+- Stage 2.7.3 corrective pass 2 further strengthened central gravity/depth, layered atmospheric fog, amber/gold bloom, volumetric halo and internal energy illusion inside the isolated sandbox;
+- `fa5dfd9` depth-contrast iteration passed real iPhone Safari technical safety, but did not produce enough perceived cinematic depth or emotional gravity improvement;
 - Stage 2.7.4 profiling completed: `/visual-lab` works, no console errors, no horizontal overflow;
 - Stage 2.7.4 performance samples: desktop `20-21 FPS`, mobile `390x844` about `26 FPS`, resize `820x760` low sample about `6 FPS`;
 - DPR cap works with max `1.5`;
 - First Load JS for `/visual-lab`: `90.9 kB`;
 - post Stage 2.7.5 build output observed First Load JS for `/visual-lab`: `91.2 kB`;
 - post Safari-safe motion fix build output observed First Load JS for `/visual-lab`: `91.4 kB`;
+- post Stage 2.7.3 corrective cinematic pass build output observed First Load JS for `/visual-lab`: `91.7 kB`;
 - cleanup/remount checked through route transition;
 - hidden-tab pause not fully verified because of in-app browser limitations;
 - initial iPhone Safari real-device testing started: `/visual-lab` opened, WebGL rendered, FPS was stable around `60`, layout/orientation/no-overflow/heat checks passed, but visible WebGL animation failed before the Safari-safe motion fix;
@@ -74,7 +99,7 @@ Stable after Stage 2.7.4:
 - Stage 2.7.5c adaptive quality / reduced mobile mode decision completed: no additional reduced mode is required now because current real-device data does not trigger the decision gate;
 - Stage 2.7.5 mobile safety optimization completed only inside isolated WebGL sandbox files;
 - Stage 2.7.5 implemented mobile-safe DPR cap, mobile-safe quality state, lower-power WebGL context preference, reduced-motion handling, hidden-tab pause path and softer mobile shader intensity;
-- Stage 2.7.6 verified the no-integration state: `/visual-lab` remains isolated and production replacement is not approved;
+- Stage 2.7.6 formal integration decision completed: current production `DecisionSingularity` remains active, production hero is not replaced, `/visual-lab` remains isolated and no automatic production replacement is approved;
 - no npm install was performed;
 - no Three.js, React Three Fiber or WebGL dependency was installed;
 - no hero redesign or production UI redesign was created;
@@ -198,6 +223,118 @@ Stage 2.7.3:
 - visual iteration stayed inside `components/DecisionSingularityWebGL.tsx` and `components/DecisionSingularityWebGL.module.css`;
 - production code was not changed;
 - dependencies were not added.
+
+Stage 2.7.3 corrective cinematic rendering audit:
+
+- original visual goals:
+  - glow;
+  - bloom;
+  - layered fog;
+  - animated depth;
+  - volumetric feeling;
+  - living core effect;
+  - no gaming UI.
+- achieved before corrective pass:
+  - dark-gold singularity direction;
+  - event-horizon core;
+  - ring structure;
+  - mobile-safe motion;
+  - restrained non-gaming behavior.
+- partially achieved before corrective pass:
+  - simulated bloom;
+  - atmospheric layering;
+  - volumetric depth;
+  - emotional gravity.
+- missing cinematic qualities before corrective pass:
+  - stronger layered fog;
+  - broader soft bloom;
+  - deeper atmospheric stacking;
+  - subtler volumetric veils;
+  - more immersive gravity field.
+- corrective improvement applied only inside `components/DecisionSingularityWebGL.tsx`:
+  - soft fog veils;
+  - depth lensing;
+  - simulated horizon bloom;
+  - outer depth arc;
+  - calmer cinematic atmospheric layering.
+- current feel after corrective pass:
+  - more cinematic;
+  - more premium;
+  - more singularity-like;
+  - more alive;
+  - more emotionally immersive than the previous technical prototype;
+  - still lab-only and not production-ready.
+- local QA:
+  - `npm run dev -- -p 3001` served `/visual-lab` from the correct repo;
+  - `curl` returned `200`;
+  - dev server was stopped after QA.
+- iPhone Safari safety note:
+  - previous iPhone Safari validation passed before this corrective visual pass;
+  - real iPhone Safari has not yet been re-tested after the new fog/bloom/depth shader changes.
+- strict closure status:
+  - visually corrected;
+  - still blocked until post-pass real iPhone Safari retest confirms FPS, heat, layout/orientation and visible motion remain safe.
+
+Stage 2.7.3 corrective pass 2:
+
+- real iPhone Safari retest after the first corrective pass:
+  - `/visual-lab` opened;
+  - animation was visible;
+  - breathing zoom plus slight horizontal drift worked;
+  - FPS stayed around `60`;
+  - no heat after `2-3` minutes;
+  - orientation was stable;
+  - vertical scroll existed;
+  - horizontal overflow was absent;
+  - no white screen, `404`, freeze or crash occurred.
+- blocker remained:
+  - visual quality did not feel deeper or more cinematic;
+  - sandbox still read as simple motion instead of a premium cinematic singularity.
+- conclusion:
+  - Stage 2.7.3 remains blocked despite good technical stability.
+- second isolated shader pass applied only to `components/DecisionSingularityWebGL.tsx`;
+- pass 2 visual focus:
+  - stronger central gravity/depth;
+  - more visible layered atmospheric fog;
+  - richer amber/gold bloom;
+  - subtle volumetric halo;
+  - more premium cinematic contrast;
+  - better internal energy illusion.
+- constraints preserved:
+  - no Three.js;
+  - no R3F;
+  - no npm install;
+  - existing DPR/mobile-safe behavior preserved;
+  - no particle overload;
+  - no gaming HUD;
+  - no chaotic neon;
+  - no aggressive motion.
+- strict closure status:
+  - Stage 2.7.3 must not be marked completed until another real iPhone Safari retest confirms perceived cinematic depth improvement while FPS, heat, layout/orientation and visible motion remain safe.
+
+Stage 2.7.3b fa5dfd9 iPhone Safari retest:
+
+- commit tested: `fa5dfd9` - controlled WebGL sandbox depth-contrast iteration;
+- scope: isolated `/visual-lab` only, no production integration;
+- technical result: pass;
+- real iPhone Safari opened `/visual-lab`;
+- WebGL stayed active;
+- fallback did not appear;
+- blank canvas did not occur;
+- FPS stayed around `60`;
+- DPR reported `1.15 / cap 1.15`;
+- canvas reported `409x476`;
+- motion stayed running;
+- portrait and landscape orientation changes stayed stable;
+- visible lag was not observed;
+- visual result: warning/blocker;
+- perceived cinematic depth improvement was almost not noticeable;
+- center did not feel significantly deeper or heavier;
+- visual appearance was almost the same as before `fa5dfd9`;
+- conclusion: `fa5dfd9` is technically safe but visually insufficient;
+- Stage 2.7.3b remains active and must not be closed;
+- current single-pass lightweight shader ceiling is now confirmed more strongly;
+- next meaningful visual progress likely requires controlled advanced rendering research, not more micro-tweaks in the same shader path.
 
 Stage 2.7.4:
 
@@ -347,19 +484,28 @@ Stage 2.7.5c adaptive quality / reduced mobile mode decision:
 - Stage 2.7.5 can be considered complete for the current isolated sandbox validation scope;
 - longer thermal profiling remains recommended before any production integration or formal Stage 2.7.6b integration decision, but it is not a blocker for the current Stage 2.7.5c decision.
 
-Stage 2.7.6 correction:
+Stage 2.7.6 formal integration decision:
 
-- current completed Stage 2.7.6 is read-only verification / no-integration confirmation, not a full integration decision;
-- already done:
-  - working tree cleanliness and stash presence were checked;
-  - `/visual-lab` existence was confirmed;
-  - `DecisionSingularityWebGL` sandbox files were confirmed;
-  - current production baseline remains active;
-- not done:
-  - formal choice between old singularity, hybrid, partial integration or future replacement;
-  - production feature flag / kill switch design;
-  - production integration approval.
-- conclusion: production replacement is not approved; existing production `DecisionSingularity` remains active; WebGL remains isolated in `/visual-lab`.
+- decision:
+  - keep current production `DecisionSingularity`;
+  - do not replace the production hero;
+  - keep WebGL in `/visual-lab` only;
+  - no automatic production replacement.
+- reason:
+  - iPhone Safari isolated sandbox validation passed;
+  - visual animation is visible;
+  - FPS stayed around `60`;
+  - no heat was observed in the short test;
+  - layout and orientation stayed stable.
+- production integration still requires:
+  - stronger cinematic quality review;
+  - longer thermal profiling;
+  - production rollback plan;
+  - visual regression QA.
+- future direction:
+  - possible hybrid or partial integration later;
+  - any such work needs a separate explicit approval stage;
+  - production `DecisionSingularity` remains protected until then.
 
 ## Roadmap
 
@@ -375,9 +521,13 @@ Experimental visual engine phase:
 
 - Stage 2.7.2 - isolated WebGL sandbox prototype - completed in `0781b46`.
 - Stage 2.7.3 - isolated WebGL visual quality iteration - completed in `5553455`.
-- Stage 2.7.4 - isolated WebGL performance profiling and stress testing - completed, no file changes/commit needed.
-- Stage 2.7.5 - isolated WebGL mobile safety optimization - completed in `89e534c`; not full Safari/iPhone validation.
-- Stage 2.7.6 - read-only verification / no-integration confirmation - completed; not a full integration decision.
+- Stage 2.7.3 corrective closure - visually corrected, pending post-pass iPhone Safari retest.
+- Stage 2.7.3 corrective pass 2 - applied after failed cinematic-depth retest, pending another real iPhone Safari visual-quality retest.
+- Stage 2.7.3b - `fa5dfd9` technical iPhone Safari safety passed, but visual depth improvement failed; stage remains active.
+- Stage 2.7.4 - blocked until Stage 2.7.3b closes under strict stage discipline, despite older profiling notes.
+- Stage 2.7.5 - provisional mobile safety work in `89e534c`; not a final validation stage or production-integration basis.
+- Stage 2.7.6 - provisional/no-production decision only; production replacement remains blocked.
+- Stage 2.7.7 - blocked; no escalation stage is approved.
 - Stage 2.7.5b - real Safari/iPhone validation completed after Safari-safe motion retest:
   - test iPhone Safari portrait/landscape;
   - test scroll, touch latency, resize/address bar behavior and orientation changes;
@@ -388,11 +538,9 @@ Experimental visual engine phase:
   - current mobile-safe sandbox path is sufficient for observed iPhone Safari data;
   - keep all work isolated from production hero;
   - preserve CSS/DOM production fallback.
-- Stage 2.7.6b - formal integration decision after real-device data:
-  - keep old singularity;
-  - hybrid;
-  - partial integration;
-  - future replacement;
+- Stage 2.7.6b - reserved for a future production integration proposal only if hybrid or partial integration is explicitly requested later:
+  - current production singularity remains active;
+  - WebGL stays isolated;
   - no automatic production replacement.
 
 ## Critical Experimental Rules
@@ -400,10 +548,15 @@ Experimental visual engine phase:
 - WebGL is forbidden in production until isolated architecture approval.
 - `VISUAL_ENGINE_PLAN.md` conclusion is binding for the current stage: do not implement WebGL now; preserve production baseline.
 - Stage 2.7.4 result is binding: `/visual-lab` is experimental-only and must not be integrated into production hero before performance optimization and real-device Mobile Safari validation.
+- Stage 2.7.3 corrective closure is binding: isolated sandbox visuals are improved, but strict completion remains blocked until post-pass iPhone Safari retest passes.
+- Stage 2.7.3 corrective pass 2 is binding: do not mark Stage 2.7.3 completed until real iPhone Safari confirms the new pass improves perceived cinematic depth safely.
+- Stage 2.7.3b `fa5dfd9` result is binding: technical iPhone Safari safety passed, but perceived cinematic depth did not improve enough; do not close the stage.
+- The current single-pass lightweight shader visual ceiling is confirmed; more micro-tweaks are unlikely to produce the next meaningful cinematic step.
+- Any next visual progress requires a separate, controlled advanced rendering research stage before implementation.
 - Stage 2.7.5 correction is binding: current mobile work is safety optimization only, not completed Safari validation.
 - Stage 2.7.5b result is binding: iPhone Safari retest passed after the isolated Safari-safe motion fix; Stage 2.7.5 overall still awaits the Stage 2.7.5c adaptive-quality/reduced-mobile-mode decision if required.
 - Stage 2.7.5c result is binding: current real-device data does not require additional adaptive quality or reduced mobile mode; Stage 2.7.5 is complete for the isolated sandbox scope, with longer thermal profiling still recommended before any production integration decision.
-- Stage 2.7.6 correction is binding: current verification is no-integration confirmation only, not approval for production replacement.
+- Stage 2.7.6 formal decision is binding: keep current production `DecisionSingularity`, do not replace production hero, keep WebGL isolated in `/visual-lab`, and require separate approval before any hybrid or partial production integration.
 - Production `DecisionSingularity` must not be directly replaced.
 - WebGL must run through an isolated sandbox/experimental track.
 - Simulator business logic is protected.
