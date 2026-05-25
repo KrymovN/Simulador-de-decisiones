@@ -88,31 +88,72 @@ const fragmentShaderSource = `
     vec3 gold = vec3(1.0, 0.78, 0.38);
     vec3 cream = vec3(1.0, 0.92, 0.68);
     vec3 ember = vec3(0.62, 0.18, 0.055);
+    vec3 bronze = vec3(0.28, 0.105, 0.032);
 
     float grain =
       sin(uv.x * 34.0 + time * 0.07) *
       sin(uv.y * 29.0 - time * 0.05) * 0.5 + 0.5;
+    float fogFlow = 0.5 + 0.5 * sin(uv.x * 2.2 + uv.y * 1.35 + time * 0.16);
+    float farMist = smoothstep(1.46, 0.14, radius) * (0.38 + fogFlow * 0.62);
+    float upperVeil =
+      exp(-abs(uv.y - 0.24 - sin(uv.x * 1.7 + time * 0.18) * 0.045) * 3.1) *
+      smoothstep(1.24, 0.08, abs(uv.x));
+    float lowerVeil =
+      exp(-abs(uv.y + 0.28 + sin(uv.x * 1.4 - time * 0.13) * 0.035) * 3.8) *
+      smoothstep(1.18, 0.08, abs(uv.x));
+    float rearFog =
+      exp(-abs((point.x * 0.42 + point.y * 1.05) + sin(time * 0.11) * 0.06) * 2.15) *
+      smoothstep(1.42, 0.14, radius);
+    float frontFog =
+      exp(-abs((point.x * -0.34 + point.y * 1.22) - sin(time * 0.09) * 0.05) * 2.45) *
+      smoothstep(1.12, 0.08, radius);
+    float densityControl = mix(1.0, 0.68, u_mobileMode);
+    float rearMass =
+      exp(-abs(point.y + 0.16 + sin(point.x * 1.2 + time * 0.08) * 0.025) * 4.6) *
+      smoothstep(0.92, 0.18, radius) *
+      smoothstep(1.18, 0.2, abs(point.x));
+    float foregroundVeil =
+      exp(-abs(point.y - 0.2 - sin(point.x * 1.55 - time * 0.07) * 0.022) * 5.2) *
+      smoothstep(0.88, 0.16, abs(point.x)) *
+      smoothstep(0.95, 0.22, radius);
 
     float field = smoothstep(1.62, 0.12, radius);
-    vec3 color = mix(voidBlack, graphite, field * 0.56);
+    float deepPocket = smoothstep(0.9, 0.08, radius);
+    vec3 color = mix(voidBlack, graphite, field * 0.5);
     color += deepGraphite * smoothstep(1.42, 0.28, length(uv)) * 0.44;
+    color -= voidBlack * deepPocket * 0.16;
+    color += vec3(0.1, 0.064, 0.028) * farMist * 0.15 * mobileSoftness;
+    color += gold * upperVeil * 0.046 * mobileSoftness;
+    color += ember * lowerVeil * 0.052 * mobileSoftness;
+    color += bronze * rearFog * 0.12 * mobileSoftness;
+    color += gold * frontFog * 0.05 * mobileSoftness;
+    color -= vec3(0.06, 0.046, 0.034) * rearMass * 0.48 * densityControl;
+    color += gold * foregroundVeil * 0.036 * mobileSoftness * densityControl;
 
     float gravityWell = pow(max(0.0, 1.0 - radius), 4.8);
-    float outerHalo = smoothstep(1.22, 0.18, radius) * (0.085 + breath * 0.062 + safariPulse * 0.024);
-    float amberMist = smoothstep(0.96, 0.2, radius) * (0.055 + grain * 0.035);
-    color += gold * outerHalo * mobileSoftness;
+    float gravityGradient = pow(max(0.0, 1.0 - radius * 0.82), 3.2);
+    float outerHalo = smoothstep(1.26, 0.18, radius) * (0.12 + breath * 0.082 + safariPulse * 0.036);
+    float innerHalo = smoothstep(0.72, 0.12, radius) * (0.08 + breath * 0.055);
+    float amberMist = smoothstep(1.04, 0.18, radius) * (0.07 + grain * 0.045);
+    color += gold * outerHalo * mobileSoftness * 0.86;
+    color += amber * innerHalo * mobileSoftness * 0.94;
     color += amber * amberMist * mobileSoftness;
-    color += cream * gravityWell * 0.04;
+    color += cream * gravityWell * 0.06;
+    color += bronze * gravityGradient * 0.08 * mobileSoftness;
 
-    float diskWave = sin(point.x * 4.4 - time * mix(0.5, 0.74, u_mobileMode)) * mix(0.018, 0.026, u_mobileMode);
+    float diskWave = sin(point.x * 4.4 - time * mix(0.5, 0.74, u_mobileMode)) * mix(0.02, 0.028, u_mobileMode);
     float diskY = point.y + diskWave;
     float disk = exp(-abs(diskY) * 18.0) * smoothstep(0.98, 0.12, abs(point.x));
+    float thickDisk = exp(-abs(diskY) * 7.2) * smoothstep(1.08, 0.08, abs(point.x));
     float diskMask = smoothstep(0.17, 0.31, radius) * smoothstep(1.18, 0.42, radius);
     float diskLensing = 0.66 + 0.34 * sin(angle * 2.0 - time * 0.68);
-    color += mix(ember, gold, diskLensing) * disk * diskMask * 0.62 * mobileSoftness;
+    color += mix(ember, gold, diskLensing) * disk * diskMask * 0.72 * mobileSoftness;
+    color += bronze * thickDisk * diskMask * 0.2 * mobileSoftness;
+    float depthLens = exp(-abs(point.y) * 3.3) * smoothstep(1.12, 0.1, abs(point.x)) * smoothstep(1.0, 0.16, radius);
+    color += vec3(0.28, 0.16, 0.055) * depthLens * 0.2 * mobileSoftness;
 
     float backDisk = exp(-abs(point.y + 0.07) * 24.0) * smoothstep(0.92, 0.1, abs(point.x));
-    color += ember * backDisk * diskMask * 0.12;
+    color += ember * backDisk * diskMask * 0.18;
 
     float photonOne = ellipseRing(point, vec2(0.74, 2.05), 0.48, 0.025);
     float photonTwo = ellipseRing(point, vec2(0.86, 2.62), 0.34, 0.016);
@@ -121,16 +162,30 @@ const fragmentShaderSource = `
     color += gold * photonTwo * 0.21 * mobileSoftness;
     color += amber * photonThree * 0.1 * mobileSoftness;
     float energySweep = smoothstep(0.72, 1.0, sin(angle * 3.0 - time * 0.96));
-    color += gold * photonOne * energySweep * 0.09 * mobileSoftness;
+    color += gold * photonOne * energySweep * 0.14 * mobileSoftness;
+    float outerDepthArc = ellipseRing(point + vec2(sin(time * 0.1) * 0.018, -0.02), vec2(0.56, 1.34), 0.92, 0.03);
+    float farDepthArc = ellipseRing(point + vec2(-0.03, 0.03), vec2(0.48, 1.12), 1.12, 0.035);
+    color += amber * outerDepthArc * (0.06 + breath * 0.036) * mobileSoftness;
+    color += bronze * farDepthArc * 0.055 * mobileSoftness;
 
     float horizonRadius = 0.252 + sin(time * 0.72) * 0.012;
     float horizon = ring(point, horizonRadius, 0.032);
+    float horizonBloom = exp(-abs(radius - horizonRadius) * 4.4) * (0.16 + breath * 0.12);
+    float gravityShadow = smoothstep(0.52, 0.16, radius);
+    float localOcclusion =
+      smoothstep(0.68, 0.18, radius) *
+      (0.58 + 0.42 * smoothstep(-0.34, 0.34, -point.y));
+    float horizonTonality = exp(-abs(radius - horizonRadius) * 8.2);
     float innerGravity = softCore(point, 0.225, 0.13);
     float eventShadow = smoothstep(0.36, 0.13, radius);
-    color = mix(color, voidBlack, eventShadow * 0.94);
-    color += cream * horizon * (0.24 + breath * 0.14) * mobileSoftness;
-    color += amber * ring(point, 0.31, 0.022) * 0.11 * mobileSoftness;
-    color -= vec3(0.18, 0.15, 0.12) * innerGravity;
+    color = mix(color, voidBlack, eventShadow * 0.96);
+    color -= vec3(0.12, 0.09, 0.065) * gravityShadow * 0.22;
+    color -= vec3(0.08, 0.062, 0.047) * localOcclusion * 0.28 * densityControl;
+    color += gold * horizonBloom * 0.13 * mobileSoftness;
+    color += bronze * horizonTonality * 0.13 * densityControl;
+    color += cream * horizon * (0.32 + breath * 0.15) * mobileSoftness;
+    color += amber * ring(point, 0.31, 0.024) * 0.18 * mobileSoftness;
+    color -= vec3(0.2, 0.16, 0.11) * innerGravity;
 
     float lensTop = exp(-abs(point.y - 0.19) * 12.0) * smoothstep(0.72, 0.18, abs(point.x));
     float lensBottom = exp(-abs(point.y + 0.19) * 10.0) * smoothstep(0.76, 0.16, abs(point.x));
