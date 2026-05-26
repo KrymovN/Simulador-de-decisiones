@@ -5,10 +5,10 @@
   padding: clamp(28px, 5vw, 72px);
   color: #f8edcf;
   background:
-    radial-gradient(circle at 50% 20%, rgba(255, 211, 106, 0.13), transparent 30%),
-    radial-gradient(circle at 70% 72%, rgba(143, 71, 24, 0.15), transparent 34%),
-    radial-gradient(circle at 16% 78%, rgba(216, 168, 74, 0.08), transparent 30%),
-    linear-gradient(145deg, #020202 0%, #0d0b08 42%, #030303 100%);
+    radial-gradient(circle at 50% 20%, rgba(255, 211, 106, 0.11), transparent 30%),
+    radial-gradient(circle at 78% 72%, rgba(143, 71, 24, 0.14), transparent 34%),
+    radial-gradient(circle at 14% 82%, rgba(216, 168, 74, 0.07), transparent 31%),
+    linear-gradient(145deg, #020202 0%, #0b0907 45%, #030303 100%);
 }
 
 .hero {
@@ -61,87 +61,210 @@
   justify-self: center;
   aspect-ratio: 1.08;
   overflow: hidden;
-  border: 1px solid rgba(216, 168, 74, 0.26);
+  border: 1px solid rgba(216, 168, 74, 0.24);
   border-radius: 8px;
   background:
-    radial-gradient(circle at 50% 48%, rgba(255, 226, 148, 0.16), transparent 28%),
-    radial-gradient(circle at 50% 56%, rgba(93, 43, 12, 0.18), transparent 58%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
+    radial-gradient(circle at 50% 49%, rgba(255, 226, 148, 0.12), transparent 31%),
+    radial-gradient(circle at 50% 55%, rgba(93, 43, 12, 0.18), transparent 58%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.012));
   box-shadow:
     0 38px 140px rgba(0, 0, 0, 0.72),
     0 0 92px rgba(216, 168, 74, 0.1),
-    inset 0 0 86px rgba(216, 168, 74, 0.09),
-    inset 0 0 140px rgba(0, 0, 0, 0.48);
+    inset 0 0 86px rgba(216, 168, 74, 0.08),
+    inset 0 0 140px rgba(0, 0, 0, 0.5);
   isolation: isolate;
 }
 
-.stage::before,
-.stage::after {
-  content: "";
+.staticBase,
+.motionOverlays,
+.staticFallback,
+.visualAsset,
+.orbitalField,
+.accretionRing,
+.gravityCore,
+.trajectoryDust,
+.breathingGlow,
+.opacityPulse,
+.radialShimmer,
+.minimalOrbit,
+.atmosphericVeil,
+.fallbackCore {
   position: absolute;
   pointer-events: none;
+}
+
+.staticBase,
+.motionOverlays,
+.staticFallback {
+  inset: 0;
+}
+
+.staticBase {
   z-index: 1;
+  overflow: hidden;
+  background: #020202;
 }
 
-.stage::before {
-  inset: 7%;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle, transparent 0 32%, rgba(255, 226, 148, 0.18) 34%, transparent 38% 100%),
-    repeating-conic-gradient(from 18deg, rgba(255, 211, 106, 0.2) 0 1deg, transparent 1deg 14deg);
-  opacity: 0.4;
-  transform: scaleY(0.45) rotate(-7deg);
-  mix-blend-mode: screen;
-  animation: labBreath 8.5s ease-in-out infinite;
-}
-
-.stage::after {
+.visualAsset {
   inset: 0;
-  background:
-    linear-gradient(rgba(255, 211, 106, 0.032) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 211, 106, 0.028) 1px, transparent 1px),
-    radial-gradient(circle at 50% 50%, transparent 0 34%, rgba(255, 211, 106, 0.08) 35%, transparent 38% 100%);
-  background-size: 42px 42px, 42px 42px, 100% 100%;
-  mask-image: radial-gradient(circle at 50% 50%, black 0 56%, transparent 78%);
-  opacity: 0.26;
-}
-
-.canvas {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
+  z-index: 1;
   width: 100%;
   height: 100%;
   display: block;
+  object-fit: cover;
+  object-position: 50% 50%;
+  opacity: 0.98;
+  transform: scale(1.012);
+  transform-origin: 50% 50%;
+  animation: visualBreath 14s ease-in-out infinite;
+  user-select: none;
 }
 
-.fallback {
+.staticBase::before,
+.staticBase::after {
+  content: "";
   position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.staticBase::before {
   inset: 0;
-  z-index: 3;
-  display: grid;
-  place-items: center;
-  align-content: center;
-  gap: 12px;
-  padding: 32px;
-  text-align: center;
   background:
-    radial-gradient(circle at 50% 48%, rgba(255, 211, 106, 0.22), rgba(3, 3, 3, 0.8) 64%),
+    radial-gradient(circle at 50% 50%, transparent 0 38%, rgba(255, 198, 89, 0.08) 54%, transparent 72%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.18), transparent 34%, rgba(0, 0, 0, 0.2));
+  opacity: 0.58;
+}
+
+.staticBase::after {
+  inset: -4%;
+  background:
+    linear-gradient(118deg, transparent 0 22%, rgba(255, 228, 164, 0.045) 42%, transparent 58%),
+    radial-gradient(ellipse at 50% 50%, transparent 0 58%, rgba(0, 0, 0, 0.36) 100%);
+  opacity: 0.64;
+  animation: depthDrift 18s ease-in-out infinite;
+}
+
+.orbitalField {
+  inset: 5%;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(
+      from 24deg,
+      rgba(255, 231, 166, 0.32) 0deg 0.55deg,
+      transparent 0.8deg 8deg,
+      rgba(220, 116, 39, 0.18) 8.4deg 9deg,
+      transparent 9.4deg 16deg
+    );
+  mask-image: radial-gradient(ellipse at 50% 50%, transparent 0 24%, black 35% 72%, transparent 83%);
+  opacity: 0.58;
+  transform: scaleY(0.52) rotate(-7deg);
+}
+
+.accretionRing {
+  left: 3%;
+  right: 3%;
+  top: 37%;
+  height: 24%;
+  border-radius: 50%;
+  background:
+    linear-gradient(90deg, transparent 0 8%, rgba(255, 222, 143, 0.88) 17%, #ffe69c 48%, rgba(233, 114, 37, 0.76) 72%, transparent 94%),
+    radial-gradient(ellipse at 50% 50%, rgba(255, 242, 186, 0.72), rgba(226, 101, 31, 0.18) 42%, transparent 64%);
+  filter: blur(0.4px);
+  opacity: 0.92;
+  transform: rotate(-5deg);
+  box-shadow:
+    0 0 18px rgba(255, 215, 124, 0.28),
+    0 0 54px rgba(218, 107, 34, 0.18);
+}
+
+.gravityCore {
+  left: 50%;
+  top: 50%;
+  width: 34%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #000 0 56%, rgba(0, 0, 0, 0.96) 63%, rgba(255, 226, 148, 0.22) 68%, transparent 76%);
+  box-shadow:
+    0 0 0 1px rgba(255, 226, 148, 0.16),
+    0 0 46px rgba(255, 210, 110, 0.18),
+    inset 0 0 42px rgba(0, 0, 0, 0.96);
+  transform: translate(-50%, -52%);
+}
+
+.trajectoryDust {
+  inset: 10%;
+  background:
+    linear-gradient(12deg, transparent 0 36%, rgba(255, 236, 176, 0.22) 37%, transparent 38% 100%),
+    linear-gradient(-18deg, transparent 0 42%, rgba(222, 120, 43, 0.2) 43%, transparent 44% 100%),
+    linear-gradient(34deg, transparent 0 56%, rgba(255, 210, 111, 0.18) 57%, transparent 58% 100%);
+  mask-image: radial-gradient(ellipse at 50% 52%, black 0 70%, transparent 83%);
+  opacity: 0.38;
+  transform: rotate(-4deg);
+}
+
+.motionOverlays {
+  z-index: 2;
+  mix-blend-mode: screen;
+}
+
+.breathingGlow {
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 224, 145, 0.16), rgba(231, 115, 36, 0.06) 44%, transparent 74%);
+  animation: breathingGlow 9.5s ease-in-out infinite;
+}
+
+.opacityPulse {
+  left: 8%;
+  right: 8%;
+  top: 36%;
+  height: 24%;
+  border-radius: 50%;
+  background: linear-gradient(94deg, transparent, rgba(255, 232, 165, 0.18), rgba(224, 108, 34, 0.12), transparent);
+  transform: rotate(-7deg);
+  animation: opacityPulse 8.4s ease-in-out infinite;
+}
+
+.radialShimmer {
+  inset: -12%;
+  background: conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(255, 215, 126, 0.045) 46deg, transparent 88deg, rgba(216, 111, 39, 0.05) 142deg, transparent 210deg, rgba(255, 235, 178, 0.04) 284deg, transparent 360deg);
+  mask-image: radial-gradient(ellipse at 50% 50%, transparent 0 25%, black 34% 74%, transparent 85%);
+  opacity: 0.38;
+  animation: radialShimmer 30s linear infinite;
+}
+
+.minimalOrbit {
+  left: 12%;
+  top: 22%;
+  width: 76%;
+  height: 56%;
+  border: 1px solid rgba(255, 231, 160, 0.12);
+  border-radius: 50%;
+  transform: rotate(-16deg);
+  animation: minimalOrbit 22s ease-in-out infinite;
+}
+
+.atmosphericVeil {
+  inset: -8% -4%;
+  background:
+    linear-gradient(115deg, transparent 0 20%, rgba(255, 223, 151, 0.045) 34%, transparent 48%),
+    linear-gradient(18deg, transparent 0 38%, rgba(124, 55, 17, 0.08) 52%, transparent 66%);
+  opacity: 0.52;
+  animation: atmosphericVeil 18s ease-in-out infinite;
+}
+
+.staticFallback {
+  z-index: 0;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 213, 118, 0.2), transparent 35%),
     linear-gradient(145deg, rgba(18, 14, 8, 0.94), rgba(0, 0, 0, 0.88));
 }
 
-.fallback strong {
-  color: #fff8e7;
-  font-size: clamp(1.1rem, 3vw, 1.6rem);
-}
-
-.fallback span:last-child {
-  max-width: 360px;
-  color: rgba(248, 237, 207, 0.72);
-  line-height: 1.55;
-}
-
 .fallbackCore {
+  left: 50%;
+  top: 50%;
   width: min(180px, 44vw);
   aspect-ratio: 1;
   border-radius: 50%;
@@ -151,6 +274,7 @@
   box-shadow:
     0 0 52px rgba(255, 178, 62, 0.18),
     inset 0 0 42px rgba(0, 0, 0, 0.95);
+  transform: translate(-50%, -50%);
 }
 
 .debugPanel {
@@ -158,7 +282,7 @@
   left: 16px;
   bottom: 16px;
   z-index: 4;
-  width: min(320px, calc(100% - 32px));
+  width: min(340px, calc(100% - 32px));
   display: grid;
   gap: 6px;
   padding: 12px 14px;
@@ -172,16 +296,85 @@
   backdrop-filter: blur(14px);
 }
 
-@keyframes labBreath {
+@keyframes breathingGlow {
   0%,
   100% {
-    opacity: 0.3;
-    transform: scaleY(0.45) rotate(-7deg) scale(0.985);
+    opacity: 0.42;
+    transform: scale(0.985);
   }
 
   50% {
-    opacity: 0.46;
-    transform: scaleY(0.45) rotate(-7deg) scale(1.015);
+    opacity: 0.68;
+    transform: scale(1.018);
+  }
+}
+
+@keyframes visualBreath {
+  0%,
+  100% {
+    transform: scale(1.012) translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: scale(1.028) translate3d(0.4%, -0.3%, 0);
+  }
+}
+
+@keyframes depthDrift {
+  0%,
+  100% {
+    transform: translate3d(-0.8%, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0.8%, -0.6%, 0);
+  }
+}
+
+@keyframes opacityPulse {
+  0%,
+  100% {
+    opacity: 0.32;
+  }
+
+  50% {
+    opacity: 0.58;
+  }
+}
+
+@keyframes radialShimmer {
+  from {
+    transform: rotate(0deg) scaleY(0.68);
+  }
+
+  to {
+    transform: rotate(360deg) scaleY(0.68);
+  }
+}
+
+@keyframes minimalOrbit {
+  0%,
+  100% {
+    opacity: 0.18;
+    transform: rotate(-19deg) scale(0.992);
+  }
+
+  50% {
+    opacity: 0.34;
+    transform: rotate(-16deg) scale(1.012);
+  }
+}
+
+@keyframes atmosphericVeil {
+  0%,
+  100% {
+    opacity: 0.52;
+    transform: translate3d(-1.2%, 0, 0);
+  }
+
+  50% {
+    opacity: 0.82;
+    transform: translate3d(1.2%, -0.8%, 0);
   }
 }
 
@@ -207,16 +400,40 @@
       inset 0 0 110px rgba(0, 0, 0, 0.52);
   }
 
-  .stage::before {
-    opacity: 0.32;
+  .visualAsset {
+    object-position: 50% 50%;
+    transform: scale(1.2);
+    animation-name: visualBreathMobile;
   }
 
-  .stage::after {
-    opacity: 0.2;
+  .orbitalField {
+    inset: 0;
+    opacity: 0.46;
+    transform: scaleY(0.72) rotate(-7deg);
+  }
+
+  .accretionRing {
+    left: -8%;
+    right: -8%;
+    top: 40%;
+    height: 18%;
+  }
+
+  .gravityCore {
+    width: 46%;
+    top: 48%;
+  }
+
+  .debugPanel {
+    background: rgba(5, 4, 3, 0.82);
   }
 }
 
 @media (max-width: 480px) {
+  .copy h1 {
+    font-size: clamp(2.1rem, 13vw, 3.6rem);
+  }
+
   .debugPanel {
     left: 10px;
     bottom: 10px;
@@ -226,8 +443,39 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stage::before {
+  .visualAsset,
+  .staticBase::after,
+  .breathingGlow,
+  .opacityPulse,
+  .radialShimmer,
+  .minimalOrbit,
+  .atmosphericVeil {
     animation: none;
+  }
+
+  .visualAsset {
+    transform: scale(1.12);
+  }
+
+  .breathingGlow {
+    opacity: 0.44;
+  }
+
+  .opacityPulse,
+  .radialShimmer,
+  .minimalOrbit,
+  .atmosphericVeil {
     opacity: 0.24;
+  }
+}
+
+@keyframes visualBreathMobile {
+  0%,
+  100% {
+    transform: scale(1.2) translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: scale(1.225) translate3d(0.3%, -0.3%, 0);
   }
 }
