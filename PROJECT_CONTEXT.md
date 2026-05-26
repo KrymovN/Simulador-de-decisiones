@@ -270,6 +270,62 @@ Stage 2.7.3b research-gate boundary:
 - Stage 2.7.4 cannot start yet because Stage 2.7.3b has not closed and the visual-quality gate failed;
 - Stage 2.7.3b should move toward documentation closure, not implementation.
 
+Stage 2.7.3b reference-target visual gap:
+
+- the uploaded reference screenshot is the current visual benchmark for the intended premium cinematic singularity direction;
+- the current `/visual-lab` lightweight WebGL sandbox is technically safe, but does not match the benchmark;
+- the gap is not only parameter tuning; it is a visual architecture gap;
+- required target qualities:
+  - dense orbital field;
+  - black gravity core;
+  - amber-gold accretion ring;
+  - high optical density;
+  - layered cinematic depth;
+  - fine trajectory detail;
+  - premium dark atmosphere;
+- candidate future research directions:
+  - hybrid static + animated architecture;
+  - asset-backed visual layers;
+  - multi-layer compositing;
+  - controlled orbit/particle system;
+  - multi-pass/post-processing research;
+- no implementation is approved;
+- production `DecisionSingularity` remains protected;
+- `/visual-lab` remains isolated;
+- Stage 2.7.4 remains blocked;
+- future rendering work requires explicit approval.
+
+Stage 2.7.3b preferred next research path:
+
+- hybrid static + lightweight animated architecture is now the preferred next research path over additional lightweight shader micro-tuning;
+- reason:
+  - the current shader path is technically safe but visually insufficient;
+  - the reference target depends on high-density detail that is better handled by a base visual asset;
+- preferred direction:
+  - static/reference-quality base layer;
+  - lightweight overlays only;
+- static candidates:
+  - dense orbital field;
+  - black gravity core;
+  - amber-gold accretion ring;
+  - fine trajectory detail;
+  - cinematic dark atmosphere;
+- animated candidates:
+  - breathing glow;
+  - subtle opacity pulse;
+  - slow radial shimmer;
+  - minimal orbit drift;
+  - light atmospheric veil;
+- constraints:
+  - sandbox-only;
+  - owned, licensed or generated asset required;
+  - no production integration;
+  - no dependency change by default;
+  - reduced-motion fallback;
+  - static fallback;
+  - mobile Safari safety budget;
+- Stage 2.7.4 remains blocked until Stage 2.7.3b documentation closure and explicit next-path approval.
+
 Known content issue:
 
 - part of the public UI still contains English text. This is a known localization/content pass item, not a Stage 2.1-2.7-prep regression.
