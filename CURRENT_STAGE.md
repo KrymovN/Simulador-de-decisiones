@@ -20,6 +20,19 @@ This section is the handoff source of truth for the next Codex context window. I
 - Production protection: do not modify `components/DecisionSingularity.tsx`, `components/DecisionSingularity.module.css`, `components/HomeSimulator.tsx`, simulator logic, `SimulationResponse`, or `app/globals.css` without explicit approval.
 - Stash protection: do not apply `stash@{0}` without explicit permission.
 
+## Stage 2.7.3b Direction Checkpoint - 26 May 2026
+
+This checkpoint supersedes the previous hybrid static image direction for the active `/visual-lab` implementation.
+
+- Active/checkpointed stage: Stage 2.7.3b - isolated CSS-only black-gold sphere/prognosis sandbox direction.
+- The hybrid static image + lightweight overlays direction has been visually rejected and must not be continued as the current direction.
+- `public/visual-lab/singularity-hybrid-reference.png` remains a tracked asset, but it is no longer the dominant base layer for `/visual-lab`.
+- Current accepted sandbox direction: CSS-only black-gold living sphere with forecast/risk/value labels, soft orbit drift, breathing glow and calm premium cinematic motion.
+- Current `/visual-lab` implementation uses no WebGL, no canvas, no Three.js, no React Three Fiber and no new dependencies.
+- Production remains untouched: no production hero integration and no changes to `DecisionSingularity`, `HomeSimulator`, simulator logic, `app/page.tsx`, `app/layout.tsx` or `app/globals.css`.
+- `/visual-lab` remains an isolated sandbox route and is not linked into production navigation.
+- Stage 2.7.4 remains blocked and must not start from this checkpoint.
+
 ## Current Stage
 
 Stage 2 - frontend CSS stabilization and architectural sync - IN PROGRESS.
@@ -40,6 +53,7 @@ Completed Stage 2 stabilization commits:
 - Stage 2.7.3 corrective closure status: isolated shader cinematic pass applied; local `/visual-lab` route QA passed; strict closure remains pending post-pass real iPhone Safari retest.
 - Stage 2.7.3 corrective pass 2 status: real iPhone Safari retest after the first corrective pass stayed technically stable but did not improve perceived cinematic depth; second isolated shader depth pass applied; strict closure remains pending another real iPhone Safari visual-quality retest.
 - `fa5dfd9` - Stage 2.7.3b controlled depth-contrast iteration committed; real iPhone Safari retest passed technical safety but visual improvement was almost not noticeable, so Stage 2.7.3b remains active.
+- Stage 2.7.3b direction checkpoint: hybrid static image direction rejected; `/visual-lab` now holds an isolated CSS-only black-gold living sphere/prognosis sandbox with forecast/risk/value labels and no WebGL/canvas/Three.js/R3F.
 - Stage 2.7.4 isolated WebGL performance profiling and stress testing completed with no file changes and no implementation commit needed.
 - `89e534c` - Stage 2.7.5 isolated WebGL mobile safety optimization completed; this is not full Safari/iPhone validation.
 - Stage 2.7.6 formal integration decision completed: keep production `DecisionSingularity`, keep WebGL isolated in `/visual-lab`, no production replacement approved.
