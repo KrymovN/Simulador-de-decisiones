@@ -336,6 +336,27 @@ Stage 2.7.3b fa5dfd9 iPhone Safari retest:
 - current single-pass lightweight shader ceiling is now confirmed more strongly;
 - next meaningful visual progress likely requires controlled advanced rendering research, not more micro-tweaks in the same shader path.
 
+Stage 2.7.3b research-gate boundary:
+
+- current single-pass lightweight shader path is technically safe but visually insufficient;
+- additional micro-tweaks are no longer approved as the default continuation path;
+- next decision must be explicit before any next stage:
+  - abandon the current shader path;
+  - continue only as controlled research;
+  - or approve a new isolated research branch;
+- minimum information required before any future rendering experiment:
+  - explicit approval;
+  - one research direction only;
+  - sandbox-only scope;
+  - visual success criteria defined before implementation;
+  - mobile Safari safety budget;
+  - rollback checkpoint;
+  - stop condition if visual gain is not validated;
+  - dependency policy;
+  - confirmation of no production imports, routes or navigation exposure;
+- Stage 2.7.4 cannot start yet because Stage 2.7.3b has not closed and the visual-quality gate failed;
+- Stage 2.7.3b should move toward documentation closure, not implementation.
+
 Stage 2.7.4:
 
 - isolated WebGL performance profiling and stress testing completed;
