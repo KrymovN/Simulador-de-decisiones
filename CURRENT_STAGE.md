@@ -33,6 +33,42 @@ This checkpoint supersedes the previous hybrid static image direction for the ac
 - `/visual-lab` remains an isolated sandbox route and is not linked into production navigation.
 - Stage 2.7.4 remains blocked and must not start from this checkpoint.
 
+## Transition checkpoint - 27 May 2026
+
+This block is the final handoff checkpoint before continuing work in a new Codex context window.
+
+- Authoritative project path: `/Users/s3/Documents/New project`.
+- Current Stage 2.7.3b checkpoint commit: `31d8902` - `Checkpoint Stage 2.7.3b sphere sandbox direction`.
+- Current stage status: Stage 2.7.3b is checkpointed around the accepted isolated `/visual-lab` direction; Stage 2.7.4 has not started from this checkpoint and remains blocked.
+- Accepted `/visual-lab` direction: CSS-only black-gold living sphere/prognosis sandbox with small forecast/risk/value labels, slow orbit/drift, soft breathing glow and premium calm motion.
+- Blocked/provisional stages: Stage 2.7.4 blocked; Stage 2.7.5 provisional only; Stage 2.7.6 provisional only; Stage 2.7.7 blocked.
+- Production protection rules remain active: do not change `app/page.tsx`, `app/layout.tsx`, `app/globals.css`, `components/DecisionSingularity.tsx`, `components/HomeSimulator.tsx`, simulator logic, dependencies, lockfiles, git remotes or deployment configuration without separate approval.
+- `New project` is the current working source for this Codex thread and the accepted sandbox checkpoint.
+- Older production/GitHub/Vercel source is presumed to be `/Users/s3/levio-app`; it requires a separate migration audit before any update to `levio.es`.
+- `levio.es` currently shows the older production site state and must not be updated from this checkpoint without an approved migration/deployment plan.
+- Next technical stage: Stage 2.8 - repository/deployment migration preparation.
+
+## Next context recovery
+
+In the next Codex context window, recover state before doing any work:
+
+- Read `PROJECT_CONTEXT.md`, `CURRENT_STAGE.md` and `LEVIO_CURRENT_STATE.md`.
+- Run `git status --short`, `git branch --show-current` and `git log --oneline -10` from `/Users/s3/Documents/New project`.
+- Confirm that Stage 2.7.3b is checkpointed, `/visual-lab` remains isolated, production files are untouched and Stage 2.7.4 remains blocked.
+- Do not immediately start Stage 2.7.4, migration, deploy, push, remote changes, dependency changes, file copying between repositories or production integration.
+- Next safe step: begin Stage 2.8 with a read-only repository/deployment migration preparation audit.
+
+## Stage 2.8 first task
+
+Stage 2.8 must begin as read-only preparation only:
+
+- Audit `/Users/s3/Documents/New project`.
+- Audit `/Users/s3/levio-app`.
+- Identify the GitHub remote(s) and branch relationships.
+- Identify which local folder is connected to the current production/Vercel source.
+- Prepare a backup and migration plan before any file transfer, remote change, push or deploy.
+- Do not copy, delete, move, deploy, push or migrate anything without separate explicit approval.
+
 ## Current Stage
 
 Stage 2 - frontend CSS stabilization and architectural sync - IN PROGRESS.
