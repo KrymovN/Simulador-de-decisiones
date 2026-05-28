@@ -1,5 +1,5 @@
 import Link from "next/link";
-import DecisionSingularity from "../components/DecisionSingularity";
+import DecisionSphereVisual from "../components/DecisionSphereVisual";
 import HomeSimulator from "../components/HomeSimulator";
 import LevioMark from "../components/LevioMark";
 
@@ -43,36 +43,36 @@ const scenarioCards = [
 ];
 
 const heroMetrics = [
-  { label: "Scenarios", value: "24", trend: "Future paths" },
-  { label: "Risks", value: "7", trend: "Hidden signals" },
-  { label: "Insights", value: "18", trend: "Strategic findings" },
-  { label: "Confidence", value: "87%", trend: "Model clarity" },
+  { label: "Escenarios", value: "24", trend: "Rutas futuras" },
+  { label: "Riesgos", value: "7", trend: "Señales ocultas" },
+  { label: "Hallazgos", value: "18", trend: "Lectura estratégica" },
+  { label: "Claridad", value: "87%", trend: "Confianza del mapa" },
 ];
 
 const heroFeatures = [
   {
-    title: "Model Any Situation",
-    copy: "Describe a decision and Levio builds a dynamic map of possible futures.",
+    title: "Modela cualquier decisión",
+    copy: "Describe una situación y Levio construye un mapa dinámico de futuros posibles.",
     icon: "model",
   },
   {
-    title: "Explore Scenarios",
-    copy: "See multiple outcomes and how one choice can change everything.",
+    title: "Explora escenarios",
+    copy: "Compara resultados y entiende cómo una elección puede mover todo el sistema.",
     icon: "paths",
   },
   {
-    title: "Reveal Risks",
-    copy: "Detect hidden risks, threats and weak signals before they arrive.",
+    title: "Detecta riesgos",
+    copy: "Separa amenazas, fricciones y señales débiles antes de que aparezcan.",
     icon: "risk",
   },
   {
-    title: "Discover Opportunities",
-    copy: "Uncover hidden advantages, strong paths and high-impact alternatives.",
+    title: "Encuentra oportunidades",
+    copy: "Descubre ventajas ocultas, rutas fuertes y alternativas con mejor exposición.",
     icon: "target",
   },
   {
-    title: "Choose with Confidence",
-    copy: "Decide from analysis and consequence, not guesswork or noise.",
+    title: "Decide con criterio",
+    copy: "Elige desde análisis y consecuencia, no desde ruido o intuición aislada.",
     icon: "check",
   },
 ];
@@ -109,13 +109,13 @@ export default function Home() {
           <span className="brand-name">LEVIO<span>.ES</span></span>
         </Link>
         <nav className="site-nav" aria-label="Acceso principal">
-          <Link href="/dashboard">Dashboard</Link>
-          <Link href="/dashboard/simulations">Scenarios</Link>
-          <Link href="/dashboard/decisions">Analysis</Link>
-          <Link href="/dashboard/security">Risks</Link>
-          <Link href="/dashboard/memory">MindSpace</Link>
+          <Link href="/dashboard">Panel</Link>
+          <Link href="/dashboard/simulations">Simulaciones</Link>
+          <Link href="/dashboard/decisions">Decisiones</Link>
+          <Link href="/dashboard/security">Riesgos</Link>
+          <Link href="/dashboard/memory">Memoria</Link>
           <Link className="nav-cta" href="/register">
-            My Space
+            Mi espacio
           </Link>
         </nav>
       </header>
@@ -130,33 +130,33 @@ export default function Home() {
         <span className="brand-watermark" aria-hidden="true"></span>
 
         <div className="hero-copy">
-          <p className="eyebrow brand-mark">AI Decision Simulation</p>
+          <p className="eyebrow brand-mark">Simulación estratégica con IA</p>
           <h1 id="hero-title">
-            Simulate. Understand. Decide with <span>Clarity.</span>
+            Simula. Entiende. Decide con <span>claridad.</span>
           </h1>
           <p className="hero-subtitle">
-            Levio models future scenarios, reveals hidden consequences, risks
-            and opportunities, then helps you choose the strongest path before
-            you act.
+            Levio modela escenarios futuros, revela consecuencias ocultas,
+            riesgos y oportunidades, y te ayuda a elegir la ruta más fuerte
+            antes de actuar.
           </p>
 
           <div className="hero-actions" aria-label="Accesos principales">
             <a className="button-link" href="#decision-input">
-              Start New Simulation
+              Iniciar simulación
             </a>
             <Link className="button-link secondary-button" href="/dashboard/simulations">
-              Explore Scenarios
+              Ver escenarios
             </Link>
           </div>
 
           <div className="hero-trust-row" aria-label="Estado del motor">
-            <span className="engine-online">AI Engine Online</span>
-            <span>Your data is private and secure</span>
+            <span className="engine-online">Motor IA en línea</span>
+            <span>Tus datos permanecen privados y seguros</span>
           </div>
         </div>
 
-        <div className="ai-core-stage" aria-label="Decision Singularity visual">
-          <DecisionSingularity />
+        <div className="ai-core-stage" aria-label="Visual predictivo de Levio">
+          <DecisionSphereVisual ariaLabel="Esfera predictiva con señales de decisión" />
         </div>
 
         <aside className="singularity-metrics" aria-label="Métricas del sistema">
