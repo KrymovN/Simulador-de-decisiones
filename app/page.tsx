@@ -121,16 +121,8 @@ export default function Home() {
       </header>
 
       <section className="hero-section section-frame" aria-labelledby="hero-title">
-        <div className="hero-atmosphere" aria-hidden="true">
-          <span className="particle particle-a"></span>
-          <span className="particle particle-b"></span>
-          <span className="particle particle-c"></span>
-          <span className="particle particle-d"></span>
-        </div>
-        <span className="brand-watermark" aria-hidden="true"></span>
-
         <div className="hero-copy">
-          <p className="eyebrow brand-mark">Simulación estratégica con IA</p>
+          <p className="eyebrow brand-mark">Sistema de inteligencia de decisiones con IA</p>
           <h1 id="hero-title">
             Simula. Entiende. Decide con <span>claridad.</span>
           </h1>

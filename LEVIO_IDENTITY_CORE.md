@@ -1,5 +1,16 @@
 # LEVIO.ES — PROJECT IDENTITY CORE
 
+## STRATEGIC VISUAL PIVOT - 28 May 2026
+
+- Current strategic direction: Premium Black-Gold Minimal AI Decision Intelligence UI.
+- Levio.es is an AI Decision Intelligence System, not a chatbot and not a heavy visual-effects site.
+- The interface should feel expensive, fast, simple, reliable, technological, calm and intelligent.
+- Heavy cinematic/WebGL/shader work remains non-production and must not be treated as the achieved product identity.
+- Use deep black / near-black foundations with restrained amber-gold accents for icons, borders, active states and focus states.
+- Avoid gaming/neon/sci-fi chaos, excessive glow, particle systems and multi-layer visual noise.
+- A lightweight singularity mark may support the concept, but it must not dominate the product interface.
+- Stage 2.7.3b remains open unless separately closed with explicit validation.
+
 ## CURRENT TRANSITION CONSTRAINT - 24 May 2026
 
 - Active stage: Stage 2.7.3b.

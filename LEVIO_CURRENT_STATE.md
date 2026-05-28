@@ -73,6 +73,20 @@ Stage 2.8 must begin as read-only preparation only:
 - Prepare a backup and migration plan before any file transfer, remote change, push or deploy.
 - Do not copy, delete, move, deploy, push or migrate anything without separate explicit approval.
 
+## 0.5 Strategic visual pivot - 28 May 2026
+
+This checkpoint records a controlled production homepage pivot away from heavy cinematic effects.
+
+- New strategic direction: Premium Black-Gold Minimal AI Decision Intelligence UI.
+- Levio.es should feel expensive, fast, calm, reliable, technological and serious, not like a visual-effects showcase.
+- Heavy cinematic/WebGL/shader direction is not the production target; WebGL remains forbidden in production.
+- Stage 2.7.3b is not closed by this pivot and the previous cinematic target must not be claimed as achieved.
+- Production homepage now favors a lightweight black-gold product interface and a minimal SVG/CSS singularity mark.
+- Removed from the production hero path: particle DOM layers, heavy sandbox sphere layers, large blur/glow stack and multi-layer orbit animation.
+- Preserved: Spanish visible UI, `HomeSimulator`, simulator/API contracts, auth/dashboard logic, no new dependencies.
+- `/visual-lab` remains available as a sandbox route, but its current visual is also refocused toward a lighter mark for consistency.
+- Remaining caveat: `app/globals.css` still contains historical visual CSS sections; production homepage has scoped override rules, but a later CSS cleanup stage may remove legacy unused blocks after visual QA.
+
 ## 1. Краткое описание проекта
 
 Levio.es - испаноязычная cinematic MVP/demo платформа симуляции решений. Продукт помогает пользователю описать сложную ситуацию и увидеть возможные сценарии, риски, преимущества, отложенные последствия и стратегическую рекомендацию до принятия решения.
