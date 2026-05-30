@@ -1,20 +1,32 @@
 # CURRENT STAGE - LEVIO.ES
 
-Date: 23 May 2026, Europe/Madrid.
+Date: 30 May 2026, Europe/Madrid.
 
-## Authoritative Transition State - 24 May 2026
+## Current Authoritative Stage - 30 May 2026
 
-This section is the handoff source of truth for the next Codex context window. If older historical notes below describe Stage 2.7.4, Stage 2.7.5 or Stage 2.7.6 as completed, treat those notes as superseded by this transition state.
+This section supersedes older Stage 2.7.x visual-research notes below wherever they conflict with the current plan.
 
-- Active stage: Stage 2.7.3b - isolated lightweight shader cinematic-depth correction and validation.
-- Stage 2.7.3b is not complete. Real iPhone Safari after `fa5dfd9` confirmed technical safety, but did not confirm enough perceived cinematic-depth improvement.
-- Stage 2.7.4 is blocked until Stage 2.7.3b closes.
+- Active stage: Stage 2.8 - documentation/current-state synchronization, production state alignment and MVP preparation after strategic visual pivot.
+- Current product direction: Premium Black-Gold AI Decision Intelligence System.
+- Stage 2.7.x is completed as research and direction discovery. Its cinematic/WebGL/shader work remains historical context, not the current production target.
+- Heavy production WebGL is rejected for the current MVP path. Do not integrate WebGL/canvas/Three.js/R3F into production without a new explicit approval.
+- Current production checkpoint: `78913da` - `Refocus Levio homepage toward premium black-gold product UI`.
+- Stage 2.8 priorities: synchronize documentation, verify production after the black-gold pivot, plan legacy heavy visual CSS cleanup, and prepare MVP decision-flow polish.
+- Protected areas remain protected: simulator logic, API contracts, auth/dashboard logic, dependency files and deployment settings.
+
+## Superseded Transition State - 24 May 2026
+
+Historical note: this was the handoff source of truth before the Stage 2.8 synchronization and the 30 May 2026 product pivot. Treat it as superseded by `Current Authoritative Stage - 30 May 2026`.
+
+- Historical active stage at that time: Stage 2.7.3b - isolated lightweight shader cinematic-depth correction and validation.
+- Historical status at that time: Stage 2.7.3b was not complete. Real iPhone Safari after `fa5dfd9` confirmed technical safety, but did not confirm enough perceived cinematic-depth improvement.
+- Historical status at that time: Stage 2.7.4 was blocked until Stage 2.7.3b closed.
 - Stage 2.7.5 is provisional only: existing mobile-safety work is useful but not a final validation stage and not a production-integration basis.
 - Stage 2.7.6 and any Stage 2.7.7 escalation remain blocked/provisional until Stage 2.7.3b has a real visual-quality path forward.
 - Current WebGL sandbox is isolated in `/visual-lab` and must stay isolated.
 - Current sandbox is not yet premium cinematic quality. The `fa5dfd9` retest confirms more strongly that the current single-pass lightweight shader has a visual ceiling.
 - Current engineering direction: preserve production `DecisionSingularity`, keep WebGL lab-only, and do not integrate production hero.
-- Next visual progress likely requires controlled advanced rendering research, not more isolated micro-tweaks to the same lightweight shader.
+- Historical conclusion at that time: the lightweight shader path had a visual ceiling. The current Stage 2.8 direction is the Premium Black-Gold MVP path, not advanced rendering research.
 - Strict stage discipline: no skipped stages, no retroactive completion, no production code changes during documentation-only work.
 - Quota protection: before opening a new context, avoid rendering experiments, long browser QA loops, new builds, or broad analysis unless explicitly requested.
 - Production protection: do not modify `components/DecisionSingularity.tsx`, `components/DecisionSingularity.module.css`, `components/HomeSimulator.tsx`, simulator logic, `SimulationResponse`, or `app/globals.css` without explicit approval.
@@ -33,9 +45,9 @@ This checkpoint supersedes the previous hybrid static image direction for the ac
 - `/visual-lab` remains an isolated sandbox route and is not linked into production navigation.
 - Stage 2.7.4 remains blocked and must not start from this checkpoint.
 
-## Transition checkpoint - 27 May 2026
+## Historical transition checkpoint - 27 May 2026
 
-This block is the final handoff checkpoint before continuing work in a new Codex context window.
+Historical note: this block was the final handoff checkpoint before the repository/deployment migration and production homepage pivot. It is retained for history and superseded by the 30 May 2026 current stage.
 
 - Authoritative project path: `/Users/s3/Documents/New project`.
 - Current Stage 2.7.3b checkpoint commit: `31d8902` - `Checkpoint Stage 2.7.3b sphere sandbox direction`.
@@ -46,11 +58,11 @@ This block is the final handoff checkpoint before continuing work in a new Codex
 - `New project` is the current working source for this Codex thread and the accepted sandbox checkpoint.
 - Older production/GitHub/Vercel source is presumed to be `/Users/s3/levio-app`; it requires a separate migration audit before any update to `levio.es`.
 - `levio.es` currently shows the older production site state and must not be updated from this checkpoint without an approved migration/deployment plan.
-- Next technical stage: Stage 2.8 - repository/deployment migration preparation.
+- Historical next technical stage at that time: Stage 2.8 - repository/deployment migration preparation.
 
-## Next context recovery
+## Historical next context recovery
 
-In the next Codex context window, recover state before doing any work:
+Historical recovery instructions from the 27 May handoff:
 
 - Read `PROJECT_CONTEXT.md`, `CURRENT_STAGE.md` and `LEVIO_CURRENT_STATE.md`.
 - Run `git status --short`, `git branch --show-current` and `git log --oneline -10` from `/Users/s3/Documents/New project`.
@@ -58,9 +70,9 @@ In the next Codex context window, recover state before doing any work:
 - Do not immediately start Stage 2.7.4, migration, deploy, push, remote changes, dependency changes, file copying between repositories or production integration.
 - Next safe step: begin Stage 2.8 with a read-only repository/deployment migration preparation audit.
 
-## Stage 2.8 first task
+## Historical Stage 2.8 first task
 
-Stage 2.8 must begin as read-only preparation only:
+Historical first task for the original Stage 2.8 migration-preparation pass:
 
 - Audit `/Users/s3/Documents/New project`.
 - Audit `/Users/s3/levio-app`.
@@ -85,7 +97,14 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 
 ## Current Stage
 
-Stage 2 - frontend CSS stabilization and architectural sync - IN PROGRESS.
+Stage 2.8 - documentation/current-state synchronization, production state alignment and MVP preparation after strategic visual pivot - ACTIVE.
+
+Roadmap from the current checkpoint:
+
+- Stage 2.7.x: completed research track covering visual-engine exploration, `/visual-lab`, WebGL/shader testing, mobile safety checks and the final strategic pivot away from heavy cinematic production visuals.
+- Stage 2.8: active documentation, production-state alignment and MVP preparation around the Premium Black-Gold AI Decision Intelligence System direction.
+- Stage 2.9: provisional production QA, legacy visual CSS cleanup and homepage flow hardening after explicit approval.
+- Stage 3: provisional backend/auth/storage/real AI integration planning after the frontend MVP direction is stable.
 
 Completed Stage 2 stabilization commits:
 
@@ -102,7 +121,7 @@ Completed Stage 2 stabilization commits:
 - `5553455` - Stage 2.7.3 isolated WebGL visual quality iteration completed.
 - Stage 2.7.3 corrective closure status: isolated shader cinematic pass applied; local `/visual-lab` route QA passed; strict closure remains pending post-pass real iPhone Safari retest.
 - Stage 2.7.3 corrective pass 2 status: real iPhone Safari retest after the first corrective pass stayed technically stable but did not improve perceived cinematic depth; second isolated shader depth pass applied; strict closure remains pending another real iPhone Safari visual-quality retest.
-- `fa5dfd9` - Stage 2.7.3b controlled depth-contrast iteration committed; real iPhone Safari retest passed technical safety but visual improvement was almost not noticeable, so Stage 2.7.3b remains active.
+- `fa5dfd9` - Stage 2.7.3b controlled depth-contrast iteration committed; real iPhone Safari retest passed technical safety but visual improvement was almost not noticeable. This is now historical evidence for the later pivot, not an active-stage marker.
 - Stage 2.7.3b direction checkpoint: hybrid static image direction rejected; `/visual-lab` now holds an isolated CSS-only black-gold living sphere/prognosis sandbox with forecast/risk/value labels and no WebGL/canvas/Three.js/R3F.
 - Stage 2.7.4 isolated WebGL performance profiling and stress testing completed with no file changes and no implementation commit needed.
 - `89e534c` - Stage 2.7.5 isolated WebGL mobile safety optimization completed; this is not full Safari/iPhone validation.
@@ -396,9 +415,9 @@ Stage 2.7.3b fa5dfd9 iPhone Safari retest:
 - center did not feel significantly deeper or heavier;
 - visual appearance was almost the same as before `fa5dfd9`;
 - conclusion: `fa5dfd9` is technically safe but visually insufficient;
-- Stage 2.7.3b remains active and must not be closed;
+- historical conclusion at that time: Stage 2.7.3b remained active and required explicit closure;
 - current single-pass lightweight shader ceiling is now confirmed more strongly;
-- next meaningful visual progress likely requires controlled advanced rendering research, not more micro-tweaks in the same shader path.
+- current conclusion after the later pivot: do not continue micro-tweaks in the same shader path for MVP; advanced rendering would require a separate approved future stage.
 
 Stage 2.7.3b research-gate boundary:
 
@@ -686,14 +705,12 @@ Experimental visual engine phase:
 
 ## Critical Experimental Rules
 
-- WebGL is forbidden in production until isolated architecture approval.
-- `VISUAL_ENGINE_PLAN.md` conclusion is binding for the current stage: do not implement WebGL now; preserve production baseline.
-- Stage 2.7.4 result is binding: `/visual-lab` is experimental-only and must not be integrated into production hero before performance optimization and real-device Mobile Safari validation.
-- Stage 2.7.3 corrective closure is binding: isolated sandbox visuals are improved, but strict completion remains blocked until post-pass iPhone Safari retest passes.
-- Stage 2.7.3 corrective pass 2 is binding: do not mark Stage 2.7.3 completed until real iPhone Safari confirms the new pass improves perceived cinematic depth safely.
-- Stage 2.7.3b `fa5dfd9` result is binding: technical iPhone Safari safety passed, but perceived cinematic depth did not improve enough; do not close the stage.
-- The current single-pass lightweight shader visual ceiling is confirmed; more micro-tweaks are unlikely to produce the next meaningful cinematic step.
-- Any next visual progress requires a separate, controlled advanced rendering research stage before implementation.
+- WebGL/canvas/Three.js/R3F are forbidden in production for the current MVP path unless a future explicit approval creates a new rendering stage.
+- `VISUAL_ENGINE_PLAN.md` remains historical research context; it must not override the current Premium Black-Gold AI Decision Intelligence System direction.
+- Stage 2.7.x visual-engine findings are historical evidence for the pivot: `/visual-lab` remains experimental-only and heavy rendering must not be integrated into production hero.
+- Stage 2.7.3/2.7.3b corrective passes remain documented as research outcomes, not active blockers for Stage 2.8.
+- The single-pass lightweight shader visual ceiling is confirmed; do not spend MVP effort on more micro-tweaks in that direction.
+- Any future advanced rendering research requires a separate approved stage and must not displace the current Premium Black-Gold MVP path.
 - Stage 2.7.5 correction is binding: current mobile work is safety optimization only, not completed Safari validation.
 - Stage 2.7.5b result is binding: iPhone Safari retest passed after the isolated Safari-safe motion fix; Stage 2.7.5 overall still awaits the Stage 2.7.5c adaptive-quality/reduced-mobile-mode decision if required.
 - Stage 2.7.5c result is binding: current real-device data does not require additional adaptive quality or reduced mobile mode; Stage 2.7.5 is complete for the isolated sandbox scope, with longer thermal profiling still recommended before any production integration decision.

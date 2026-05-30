@@ -1,82 +1,41 @@
-# LEVIO.ES — PROJECT IDENTITY CORE
+# LEVIO.ES - PROJECT IDENTITY CORE
 
-## STRATEGIC VISUAL PIVOT - 28 May 2026
+## CURRENT IDENTITY - 30 May 2026
 
-- Current strategic direction: Premium Black-Gold Minimal AI Decision Intelligence UI.
-- Levio.es is an AI Decision Intelligence System, not a chatbot and not a heavy visual-effects site.
-- The interface should feel expensive, fast, simple, reliable, technological, calm and intelligent.
-- Heavy cinematic/WebGL/shader work remains non-production and must not be treated as the achieved product identity.
-- Use deep black / near-black foundations with restrained amber-gold accents for icons, borders, active states and focus states.
-- Avoid gaming/neon/sci-fi chaos, excessive glow, particle systems and multi-layer visual noise.
-- A lightweight singularity mark may support the concept, but it must not dominate the product interface.
-- Stage 2.7.3b remains open unless separately closed with explicit validation.
+Levio.es is a Premium Black-Gold AI Decision Intelligence System.
 
-## CURRENT TRANSITION CONSTRAINT - 24 May 2026
+Levio helps a user describe a difficult situation, compare possible actions, understand risks, model consequences and see strategic outcomes before acting.
 
-- Active stage: Stage 2.7.3b.
-- The isolated `/visual-lab` WebGL sandbox is not yet the premium cinematic Levio target.
-- Current WebGL work is a lightweight shader prototype with a visual ceiling, not production identity implementation.
-- Real iPhone Safari retest after `fa5dfd9` passed technical safety but did not produce enough perceived cinematic-depth improvement.
-- Stage 2.7.3b remains active; do not close it or claim the cinematic target is achieved.
-- The current single-pass lightweight shader ceiling is now confirmed more strongly.
-- Next visual progress likely requires controlled advanced rendering research, not more micro-tweaks in the same shader path.
-- Stage 2.7.4 is blocked until Stage 2.7.3b closes.
-- Stage 2.7.5 is provisional only and cannot justify production integration.
-- Stage 2.7.6 and any Stage 2.7.7 escalation remain blocked/provisional until the visual-quality path is explicitly approved.
-- Production `DecisionSingularity` remains protected.
-- No production integration, rendering experiment, stash apply, or architecture escalation is allowed during transition documentation work.
+The product should feel:
 
-## WHAT LEVIO.ES IS
-
-Levio.es is not a chatbot.
-
-Levio.es is not a generic SaaS dashboard.
-
-Levio.es is not a gaming interface.
-
-Levio.es is not a white startup landing page.
-
-Levio.es is not a template AI assistant.
-
-Levio.es is a cinematic AI decision simulator.
-
-The platform exists to simulate decisions, consequences, future scenarios, risks, emotional outcomes, and strategic possibilities through a visual thinking experience.
-
-The user should feel like they are observing an intelligent system thinking in real time.
-
----
-
-# CORE PRODUCT FEELING
-
-The core emotional experience of Levio.es must feel:
-
-- cinematic;
-- intelligent;
-- atmospheric;
-- emotionally immersive;
-- premium;
-- futuristic;
-- minimal;
-- alive;
+- expensive;
+- fast;
 - calm;
-- strategic.
+- reliable;
+- intelligent;
+- strategic;
+- technologically precise;
+- visually restrained.
 
-The system should never feel:
+Levio must not feel like:
 
-- cheap;
-- template-based;
-- childish;
-- overloaded;
-- game-like;
-- chaotic;
-- corporate SaaS;
-- generic AI chat.
+- a chatbot;
+- a generic SaaS dashboard;
+- a visual effects showcase;
+- a WebGL experiment;
+- a gaming interface;
+- a neon sci-fi demo;
+- a template AI assistant.
+
+The current visual and product direction is not heavy cinematic spectacle. The approved direction is disciplined premium product UI with a deep black base, bright gold accents, strong typography, clean hierarchy and lightweight symbolic motion.
 
 ---
 
-# CORE PRODUCT IDEA
+# PRODUCT DEFINITION
 
-A user describes:
+Levio.es is an AI Decision Intelligence System.
+
+The user gives the system:
 
 - a situation;
 - a problem;
@@ -84,23 +43,68 @@ A user describes:
 - a future possibility;
 - a strategic dilemma.
 
-The system performs a visual simulation of thinking.
+The system helps generate and organize:
 
-The AI generates:
-
-- future scenarios;
+- possible scenarios;
 - consequences;
-- risks;
+- risk signals;
 - advantages;
+- tradeoffs;
 - emotional implications;
-- strategic observations;
-- final conclusions.
+- future outcomes;
+- strategic conclusions.
 
-The user should feel:
+The user should not feel that they are chatting with a bot. They should feel that they are using a serious analytical system that helps them think before they act.
 
-not that they received an answer,
+---
 
-but that they observed a thinking process.
+# CORE PRODUCT FEELING
+
+The core experience must feel:
+
+- premium;
+- focused;
+- analytical;
+- calm;
+- trustworthy;
+- intelligent;
+- minimal;
+- high-contrast;
+- future-aware without being theatrical.
+
+The system should never feel:
+
+- cheap;
+- playful by default;
+- chaotic;
+- overloaded;
+- game-like;
+- decorative;
+- overly cinematic;
+- visually noisy;
+- generic corporate SaaS;
+- like a clone of ChatGPT.
+
+ChatGPT-like black simplicity is acceptable only as interface discipline: clarity, restraint, speed and readability. Levio's product meaning remains decision intelligence, risk analysis and consequence modeling.
+
+---
+
+# STRATEGIC THINKING MODEL
+
+Levio is built around strategic thinking, not answer generation.
+
+The interface and product flow should reinforce:
+
+- decision analysis;
+- consequence modeling;
+- risk evaluation;
+- future scenario simulation;
+- comparison of possible actions;
+- delayed-effect awareness;
+- strategic recommendation;
+- sober interpretation of uncertainty.
+
+The product should help the user understand what may happen, why it may happen and what tradeoffs are attached to each path.
 
 ---
 
@@ -108,67 +112,50 @@ but that they observed a thinking process.
 
 Levio.es visual identity is based on:
 
-- deep dark backgrounds;
-- graphite and black cinematic tones;
-- gold and amber highlights;
-- premium glow;
-- glass-like surfaces;
-- atmospheric lighting;
-- layered depth;
-- subtle gradients;
-- smooth transitions;
-- breathing motion;
-- intelligent visual calmness.
+- deep black and near-black foundations;
+- bright premium gold accents;
+- warm amber and champagne highlights;
+- restrained bronze details;
+- high-contrast typography;
+- clean layouts;
+- precise borders and active states;
+- lightweight symbolic depth;
+- minimal visual noise.
 
-The interface must feel premium and technologically advanced.
+Gold is the product accent system. It should appear in important icons, focus states, selected states, borders, strategic emphasis and the singularity mark.
 
----
-
-# VISUAL RULES
-
-The interface must avoid:
-
-- flat UI;
-- aggressive neon overload;
-- gaming HUD aesthetics;
-- random colorful gradients;
-- startup-template visuals;
-- cartoon aesthetics;
-- cheap glow effects;
-- chaotic motion;
-- excessive visual noise.
+Avoid color overload. Red, bright pink, acid colors, rainbow gradients and aggressive neon should not be part of the core production identity.
 
 ---
 
-# SINGULARITY PHILOSOPHY
+# SINGULARITY SYMBOL
 
-The central metaphor of Levio.es is a “thinking singularity”.
+The singularity is a restrained product symbol for intelligence concentration and strategic calculation.
 
-It is NOT:
+It is not:
 
-- an orb;
+- the whole product;
 - a loader;
-- a spinner;
-- a decorative animation.
+- a particle show;
+- a WebGL proof-of-concept;
+- a cinematic centerpiece that competes with the interface.
 
-The singularity represents:
+The singularity may represent:
 
-- concentration of intelligence;
-- future calculation;
-- AI cognition;
-- scenario generation;
-- emotional gravity.
+- focused intelligence;
+- consequence calculation;
+- scenario convergence;
+- strategic gravity;
+- future modeling.
 
-The singularity should feel:
+Production singularity rules:
 
-- deep;
-- magnetic;
-- intelligent;
-- cinematic;
-- alive;
-- slightly mysterious.
-
-Motion must remain subtle and premium.
+- lightweight SVG/CSS first;
+- subtle pulse only;
+- no WebGL/canvas/Three.js/R3F in production without a separate approved stage;
+- no heavy particle systems;
+- no aggressive transforms;
+- no large blur/glow stacks that risk Safari or iPhone performance.
 
 ---
 
@@ -176,18 +163,17 @@ Motion must remain subtle and premium.
 
 The UX must feel:
 
-- smooth;
-- immersive;
-- responsive;
-- cinematic;
+- readable;
+- stable;
+- fast;
 - calm;
-- intelligent;
-- premium.
+- product-like;
+- strategic;
+- trustworthy.
 
-Animations should support emotional perception,
-not distract from content.
+The homepage should communicate that Levio is a serious decision system. It should show a premium black-gold identity, a clear value proposition and a usable decision-intelligence entry point without becoming a visual demo.
 
-The interface must feel stable and controlled.
+Animations should support attention and state changes. They must not distract from reading, analysis or simulator interaction.
 
 ---
 
@@ -195,36 +181,37 @@ The interface must feel stable and controlled.
 
 Animations must be:
 
-- smooth;
 - subtle;
-- cinematic;
-- physically believable;
-- atmospheric.
-
-Avoid:
-
-- aggressive transforms;
-- arcade effects;
-- chaotic particles;
-- flashy gaming behavior;
-- excessive movement.
+- slow;
+- purposeful;
+- performance-safe;
+- easy to ignore while reading;
+- respectful of reduced-motion preferences.
 
 Preferred motion styles:
 
-- breathing;
-- pulse;
-- glow shifts;
-- ambient movement;
-- depth motion;
-- soft energy flow.
+- soft pulse;
+- slight focus glow;
+- restrained state transitions;
+- minimal breathing around symbolic elements.
+
+Avoid:
+
+- chaotic particles;
+- arcade effects;
+- large orbit systems;
+- aggressive scale/translate loops;
+- excessive blur animation;
+- multi-layer atmospheric motion;
+- motion that makes Safari/iPhone performance uncertain.
 
 ---
 
 # SIMULATION PHILOSOPHY
 
-Levio.es is not a “question-answer AI”.
+Levio.es is not a question-answer AI.
 
-It is a scenario simulation system.
+It is a scenario and consequence intelligence system.
 
 The focus is:
 
@@ -233,23 +220,26 @@ The focus is:
 - future modeling;
 - strategic interpretation;
 - emotional analysis;
-- risk evaluation.
+- risk evaluation;
+- decision confidence.
 
-The interface should reinforce the feeling of observing a simulated future.
+The interface should make the user feel that possible futures are being organized, compared and evaluated with discipline.
 
 ---
 
-# MOBILE PHILOSOPHY
+# MOBILE AND SAFARI PHILOSOPHY
 
 Mobile experience is critical.
 
 The mobile version must preserve:
 
-- cinematic feeling;
-- premium atmosphere;
-- visual clarity;
-- smooth interaction;
-- stable performance.
+- readability;
+- premium black-gold identity;
+- fast interaction;
+- stable layout;
+- clear simulator flow;
+- Safari compatibility;
+- low thermal risk.
 
 Mobile stability has higher priority than experimental visuals.
 
@@ -259,7 +249,8 @@ No visual idea is allowed to damage:
 - readability;
 - layout stability;
 - touch experience;
-- Safari compatibility.
+- Safari compatibility;
+- battery/thermal comfort.
 
 ---
 
@@ -272,7 +263,8 @@ The AI should feel:
 - strategic;
 - intelligent;
 - calm;
-- observant.
+- observant;
+- careful with uncertainty.
 
 The AI should never feel:
 
@@ -280,7 +272,42 @@ The AI should never feel:
 - meme-oriented;
 - robotic;
 - sarcastic by default;
-- overexcited.
+- overexcited;
+- like a generic chatbot.
+
+---
+
+# PRODUCT POSITIONING
+
+Levio.es should feel closer to:
+
+- premium decision intelligence software;
+- strategic analysis tools;
+- future-scenario modeling systems;
+- high-trust black product interfaces;
+- focused AI operating environments.
+
+Levio.es should not resemble:
+
+- a ChatGPT clone;
+- a crypto dashboard;
+- an admin panel;
+- a bootstrap template;
+- a gaming overlay;
+- a neon cyberpunk interface;
+- a cinematic effects portfolio.
+
+---
+
+# HISTORICAL VISUAL RESEARCH
+
+Earlier Stage 2.7.x work explored cinematic visual systems, WebGL, shader-based experiments, `/visual-lab`, atmospheric glow and heavier singularity concepts.
+
+Those efforts remain part of the project history and informed the current pivot. They are not the current production target.
+
+The current MVP path rejects heavy production WebGL and heavy cinematic visual effects in favor of a fast Premium Black-Gold AI Decision Intelligence System.
+
+Do not revive the older cinematic/WebGL direction without a new explicit stage, approval and performance plan.
 
 ---
 
@@ -288,7 +315,7 @@ The AI should never feel:
 
 Stability is more important than experimentation.
 
-Visual quality is more important than quantity of features.
+Product clarity is more important than visual spectacle.
 
 Architecture changes must be controlled and incremental.
 
@@ -305,36 +332,15 @@ The following are considered regressions:
 - white sections appearing unexpectedly;
 - generic startup appearance;
 - gaming aesthetics;
-- flat design;
+- neon overload;
 - weak contrast;
-- broken cinematic atmosphere;
-- loss of depth;
+- loss of black-gold identity;
 - chaotic animation;
 - visual cheapness;
 - unstable mobile layout;
 - horizontal overflow;
-- excessive visual noise.
-
----
-
-# PRODUCT POSITIONING
-
-Levio.es should feel closer to:
-
-- cinematic operating systems;
-- futuristic simulation interfaces;
-- intelligent strategic systems;
-- premium Apple-level presentation quality;
-- atmospheric sci-fi minimalism.
-
-Levio.es should NOT resemble:
-
-- ChatGPT clone;
-- crypto dashboard;
-- admin panel;
-- bootstrap template;
-- gaming overlay;
-- neon cyberpunk cliché.
+- excessive visual noise;
+- heavy effects that risk Safari/iPhone performance.
 
 ---
 
@@ -353,8 +359,8 @@ Russian or English acceptable.
 
 # LONG-TERM MISSION
 
-The long-term mission of Levio.es is to create a living visual intelligence system that allows users to observe and emotionally experience simulated future consequences of decisions.
+The long-term mission of Levio.es is to create a serious AI Decision Intelligence System that helps people understand the likely consequences of important decisions before they act.
 
 The product should eventually feel like:
 
-“watching intelligence think.”
+"strategic intelligence for decisions with real consequences."
