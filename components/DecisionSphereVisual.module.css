@@ -24,64 +24,139 @@
 .panel::before {
   content: "";
   position: absolute;
-  inset: 12%;
-  border: 1px solid rgba(216, 168, 74, 0.1);
+  inset: 7%;
   border-radius: 50%;
-  opacity: 0.7;
+  background:
+    radial-gradient(circle, rgba(255, 211, 106, 0.14), rgba(216, 168, 74, 0.055) 34%, transparent 68%);
+  opacity: 0.9;
 }
 
 .mark {
-  width: min(78%, 360px);
+  width: min(96%, 470px);
   aspect-ratio: 1;
   overflow: visible;
+  filter:
+    drop-shadow(0 0 12px rgba(255, 211, 106, 0.3))
+    drop-shadow(0 0 36px rgba(216, 168, 74, 0.16));
 }
 
+.outerTrace,
 .outerRing,
+.secondaryRing,
 .midRing,
+.nearRing,
+.outerDecisionPlane,
 .decisionPlane,
+.innerDecisionPlane,
+.coreRing,
 .signalLine,
-.signalLineMuted {
+.signalLineMuted,
+.trajectory,
+.trajectoryMuted,
+.trajectoryFine {
   fill: none;
   vector-effect: non-scaling-stroke;
 }
 
+.halo {
+  fill: url("#levio-core");
+  opacity: 0.62;
+  transform-origin: center;
+  animation: haloPulse 7.2s ease-in-out infinite;
+}
+
+.outerTrace {
+  stroke: rgba(216, 168, 74, 0.13);
+  stroke-width: 0.8;
+  stroke-dasharray: 1 10;
+}
+
 .outerRing {
-  stroke: rgba(216, 168, 74, 0.24);
-  stroke-width: 1.2;
+  stroke: rgba(255, 211, 106, 0.34);
+  stroke-width: 1;
+}
+
+.secondaryRing {
+  stroke: rgba(216, 168, 74, 0.28);
+  stroke-width: 0.9;
+  stroke-dasharray: 2 7;
 }
 
 .midRing {
-  stroke: rgba(255, 240, 189, 0.16);
+  stroke: rgba(255, 240, 189, 0.32);
   stroke-width: 1;
+}
+
+.nearRing {
+  stroke: rgba(255, 211, 106, 0.42);
+  stroke-width: 1;
+}
+
+.outerDecisionPlane {
+  stroke: rgba(216, 168, 74, 0.34);
+  stroke-width: 0.8;
 }
 
 .decisionPlane {
   stroke: url("#levio-ring");
-  stroke-width: 2;
-  opacity: 0.62;
+  stroke-width: 2.2;
+  opacity: 0.92;
+  filter: drop-shadow(0 0 8px rgba(255, 211, 106, 0.54));
+}
+
+.innerDecisionPlane {
+  stroke: rgba(255, 240, 189, 0.64);
+  stroke-width: 0.9;
 }
 
 .core {
   fill: url("#levio-core");
-  stroke: rgba(255, 240, 189, 0.18);
+  stroke: rgba(255, 240, 189, 0.4);
   stroke-width: 1;
   animation: corePulse 7.2s ease-in-out infinite;
 }
 
+.coreRing {
+  stroke: rgba(255, 211, 106, 0.62);
+  stroke-width: 1.2;
+  filter: drop-shadow(0 0 6px rgba(255, 211, 106, 0.62));
+}
+
 .innerCore {
-  fill: #000;
-  stroke: rgba(216, 168, 74, 0.28);
+  fill: url("#levio-focus");
+  stroke: rgba(255, 249, 219, 0.92);
   stroke-width: 1;
+  filter: drop-shadow(0 0 9px rgba(255, 211, 106, 0.95));
+}
+
+.focus {
+  fill: #fffdf0;
+  filter: drop-shadow(0 0 11px rgba(255, 240, 189, 1));
 }
 
 .signalLine {
-  stroke: rgba(255, 240, 189, 0.62);
-  stroke-width: 1.4;
+  stroke: rgba(255, 240, 189, 0.84);
+  stroke-width: 1.2;
 }
 
 .signalLineMuted {
+  stroke: rgba(216, 168, 74, 0.42);
+  stroke-width: 0.9;
+}
+
+.trajectory {
+  stroke: rgba(255, 211, 106, 0.38);
+  stroke-width: 0.8;
+}
+
+.trajectoryMuted {
   stroke: rgba(216, 168, 74, 0.24);
-  stroke-width: 1;
+  stroke-width: 0.7;
+}
+
+.trajectoryFine {
+  stroke: rgba(255, 240, 189, 0.2);
+  stroke-width: 0.65;
 }
 
 .signalGrid {
@@ -117,15 +192,28 @@
 @keyframes corePulse {
   0%,
   100% {
-    opacity: 0.86;
-    transform: scale(0.992);
+    opacity: 0.9;
+    transform: scale(0.988);
     transform-origin: center;
   }
 
   50% {
     opacity: 1;
-    transform: scale(1.012);
+    transform: scale(1.02);
     transform-origin: center;
+  }
+}
+
+@keyframes haloPulse {
+  0%,
+  100% {
+    opacity: 0.52;
+    transform: scale(0.985);
+  }
+
+  50% {
+    opacity: 0.68;
+    transform: scale(1.025);
   }
 }
 
@@ -135,7 +223,7 @@
   }
 
   .mark {
-    width: min(82%, 300px);
+    width: min(96%, 390px);
   }
 
   .signalGrid {
@@ -158,6 +246,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .halo,
   .core {
     animation: none;
   }
