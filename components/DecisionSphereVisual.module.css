@@ -1,54 +1,49 @@
 .stage {
-  width: 100%;
-  max-width: 560px;
-  min-width: 0;
-  justify-self: center;
-}
-
-.panel {
   position: relative;
   display: grid;
+  width: 100%;
+  max-width: 680px;
+  min-width: 0;
+  min-height: clamp(350px, 38vw, 520px);
   place-items: center;
-  min-height: clamp(300px, 40vw, 520px);
-  overflow: hidden;
-  border: 1px solid rgba(216, 168, 74, 0.2);
-  border-radius: 8px;
-  background:
-    linear-gradient(180deg, rgba(255, 244, 198, 0.035), rgba(255, 244, 198, 0.01)),
-    #030303;
-  box-shadow:
-    0 24px 70px rgba(0, 0, 0, 0.42),
-    inset 0 0 0 1px rgba(255, 240, 189, 0.035);
+  justify-self: center;
+  isolation: isolate;
 }
 
-.panel::before {
-  content: "";
+.stage::before {
   position: absolute;
-  inset: 7%;
+  inset: 16%;
   border-radius: 50%;
-  background:
-    radial-gradient(circle, rgba(255, 211, 106, 0.14), rgba(216, 168, 74, 0.055) 34%, transparent 68%);
-  opacity: 0.9;
+  background: radial-gradient(circle, rgba(255, 196, 0, 0.16), rgba(217, 135, 0, 0.055) 45%, transparent 72%);
+  content: "";
+  opacity: 0.92;
+  pointer-events: none;
 }
 
 .mark {
-  width: min(96%, 470px);
+  width: min(112%, 640px);
   aspect-ratio: 1;
   overflow: visible;
   filter:
-    drop-shadow(0 0 12px rgba(255, 211, 106, 0.3))
-    drop-shadow(0 0 36px rgba(216, 168, 74, 0.16));
+    drop-shadow(0 0 10px rgba(255, 196, 0, 0.32))
+    drop-shadow(0 0 28px rgba(217, 135, 0, 0.16));
 }
 
 .outerTrace,
+.outerTraceDense,
 .outerRing,
 .secondaryRing,
 .midRing,
 .nearRing,
+.innerTrace,
 .outerDecisionPlane,
 .decisionPlane,
 .innerDecisionPlane,
+.trajectoryTilted,
+.trajectoryTiltedReverse,
+.axisLines,
 .coreRing,
+.focusRay,
 .signalLine,
 .signalLineMuted,
 .trajectory,
@@ -60,188 +55,180 @@
 
 .halo {
   fill: url("#levio-core");
-  opacity: 0.62;
+  opacity: 0.54;
   transform-origin: center;
-  animation: haloPulse 7.2s ease-in-out infinite;
+  animation: haloPulse 7.6s ease-in-out infinite;
 }
 
 .outerTrace {
-  stroke: rgba(216, 168, 74, 0.13);
+  stroke: rgba(255, 196, 0, 0.4);
+  stroke-dasharray: 1 8;
+  stroke-width: 1;
+}
+
+.outerTraceDense {
+  stroke: rgba(217, 135, 0, 0.28);
+  stroke-dasharray: 1 5;
   stroke-width: 0.8;
-  stroke-dasharray: 1 10;
 }
 
 .outerRing {
-  stroke: rgba(255, 211, 106, 0.34);
-  stroke-width: 1;
+  stroke: rgba(255, 196, 0, 0.5);
+  stroke-width: 1.1;
 }
 
 .secondaryRing {
-  stroke: rgba(216, 168, 74, 0.28);
-  stroke-width: 0.9;
-  stroke-dasharray: 2 7;
-}
-
-.midRing {
-  stroke: rgba(255, 240, 189, 0.32);
+  stroke: rgba(255, 196, 0, 0.56);
+  stroke-dasharray: 2 5;
   stroke-width: 1;
 }
 
+.midRing {
+  stroke: rgba(255, 226, 111, 0.56);
+  stroke-width: 1.05;
+}
+
 .nearRing {
-  stroke: rgba(255, 211, 106, 0.42);
+  stroke: rgba(255, 196, 0, 0.72);
+  stroke-width: 1.25;
+}
+
+.innerTrace {
+  stroke: rgba(255, 228, 130, 0.78);
+  stroke-dasharray: 2 4;
   stroke-width: 1;
 }
 
 .outerDecisionPlane {
-  stroke: rgba(216, 168, 74, 0.34);
-  stroke-width: 0.8;
+  stroke: rgba(217, 135, 0, 0.56);
+  stroke-width: 0.9;
 }
 
 .decisionPlane {
   stroke: url("#levio-ring");
-  stroke-width: 2.2;
-  opacity: 0.92;
-  filter: drop-shadow(0 0 8px rgba(255, 211, 106, 0.54));
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 7px rgba(255, 196, 0, 0.74));
 }
 
 .innerDecisionPlane {
-  stroke: rgba(255, 240, 189, 0.64);
-  stroke-width: 0.9;
+  stroke: rgba(255, 231, 141, 0.76);
+  stroke-width: 1;
+}
+
+.trajectoryTilted {
+  stroke: rgba(255, 196, 0, 0.46);
+  stroke-width: 0.85;
+  transform: rotate(28deg);
+  transform-origin: center;
+}
+
+.trajectoryTiltedReverse {
+  stroke: rgba(255, 196, 0, 0.34);
+  stroke-width: 0.8;
+  transform: rotate(-34deg);
+  transform-origin: center;
+}
+
+.axisLines {
+  stroke: rgba(255, 196, 0, 0.22);
+  stroke-dasharray: 1 6;
+  stroke-width: 0.72;
 }
 
 .core {
   fill: url("#levio-core");
-  stroke: rgba(255, 240, 189, 0.4);
-  stroke-width: 1;
-  animation: corePulse 7.2s ease-in-out infinite;
+  stroke: rgba(255, 225, 117, 0.6);
+  stroke-width: 1.15;
+  transform-origin: center;
+  animation: corePulse 7.6s ease-in-out infinite;
 }
 
 .coreRing {
-  stroke: rgba(255, 211, 106, 0.62);
-  stroke-width: 1.2;
-  filter: drop-shadow(0 0 6px rgba(255, 211, 106, 0.62));
+  stroke: rgba(255, 196, 0, 0.88);
+  stroke-width: 1.7;
+  filter: drop-shadow(0 0 6px rgba(255, 196, 0, 0.78));
 }
 
 .innerCore {
   fill: url("#levio-focus");
-  stroke: rgba(255, 249, 219, 0.92);
-  stroke-width: 1;
-  filter: drop-shadow(0 0 9px rgba(255, 211, 106, 0.95));
+  stroke: rgba(255, 249, 219, 0.98);
+  stroke-width: 1.2;
+  filter: drop-shadow(0 0 9px rgba(255, 196, 0, 0.96));
 }
 
 .focus {
-  fill: #fffdf0;
-  filter: drop-shadow(0 0 11px rgba(255, 240, 189, 1));
+  fill: #fffef4;
+  filter: drop-shadow(0 0 12px rgba(255, 238, 169, 1));
+}
+
+.focusRay {
+  stroke: rgba(255, 244, 198, 0.72);
+  stroke-width: 0.7;
 }
 
 .signalLine {
-  stroke: rgba(255, 240, 189, 0.84);
-  stroke-width: 1.2;
+  stroke: rgba(255, 239, 181, 0.92);
+  stroke-width: 1.15;
 }
 
 .signalLineMuted {
-  stroke: rgba(216, 168, 74, 0.42);
+  stroke: rgba(255, 196, 0, 0.48);
   stroke-width: 0.9;
 }
 
 .trajectory {
-  stroke: rgba(255, 211, 106, 0.38);
-  stroke-width: 0.8;
+  stroke: rgba(255, 196, 0, 0.46);
+  stroke-width: 0.85;
 }
 
 .trajectoryMuted {
-  stroke: rgba(216, 168, 74, 0.24);
-  stroke-width: 0.7;
+  stroke: rgba(217, 135, 0, 0.36);
+  stroke-width: 0.75;
 }
 
 .trajectoryFine {
-  stroke: rgba(255, 240, 189, 0.2);
-  stroke-width: 0.65;
+  stroke: rgba(255, 233, 148, 0.34);
+  stroke-width: 0.68;
 }
 
-.signalGrid {
-  position: absolute;
-  inset: auto 18px 18px;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.signalCard {
-  display: grid;
-  gap: 2px;
-  min-width: 0;
-  padding: 9px 10px;
-  border: 1px solid rgba(216, 168, 74, 0.16);
-  border-radius: 8px;
-  background: rgba(7, 6, 4, 0.78);
-}
-
-.signalCard span {
-  color: rgba(255, 240, 189, 0.62);
-  font-size: 0.64rem;
-  font-weight: 700;
-}
-
-.signalCard strong {
-  color: #fff0bd;
-  font-size: 0.86rem;
-  line-height: 1.1;
+.sparkNodes {
+  fill: #ffd34e;
+  filter: drop-shadow(0 0 5px rgba(255, 196, 0, 0.94));
 }
 
 @keyframes corePulse {
   0%,
   100% {
-    opacity: 0.9;
-    transform: scale(0.988);
-    transform-origin: center;
+    opacity: 0.92;
+    transform: scale(0.99);
   }
 
   50% {
     opacity: 1;
-    transform: scale(1.02);
-    transform-origin: center;
+    transform: scale(1.018);
   }
 }
 
 @keyframes haloPulse {
   0%,
   100% {
-    opacity: 0.52;
-    transform: scale(0.985);
+    opacity: 0.48;
+    transform: scale(0.99);
   }
 
   50% {
-    opacity: 0.68;
-    transform: scale(1.025);
+    opacity: 0.6;
+    transform: scale(1.022);
   }
 }
 
 @media (max-width: 680px) {
-  .panel {
-    min-height: 300px;
+  .stage {
+    min-height: 286px;
   }
 
   .mark {
-    width: min(96%, 390px);
-  }
-
-  .signalGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    inset: auto 10px 10px;
-    gap: 5px;
-  }
-
-  .signalCard {
-    padding: 8px 6px;
-  }
-
-  .signalCard span {
-    font-size: 0.58rem;
-  }
-
-  .signalCard strong {
-    font-size: 0.76rem;
+    width: min(112%, 410px);
   }
 }
 

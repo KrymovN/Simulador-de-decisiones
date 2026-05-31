@@ -43,31 +43,33 @@ const scenarioCards = [
 ];
 
 const navItems = [
-  { label: "Producto", href: "#producto" },
-  { label: "Motor", href: "#motor" },
+  { label: "Inicio", href: "/", active: true },
+  { label: "Simulador", href: "#decision-input" },
   { label: "Escenarios", href: "#escenarios" },
-  { label: "Seguridad", href: "/dashboard/security" },
+  { label: "Riesgos", href: "#motor" },
+  { label: "Ventajas", href: "#producto" },
+  { label: "Mi espacio", href: "/dashboard" },
 ];
 
 const heroFeatures = [
   {
-    title: "Escenarios futuros",
-    copy: "Compara rutas posibles antes de comprometer recursos, tiempo o energía.",
+    title: "Análisis profundo",
+    copy: "IA que entiende contexto, emociones y objetivos.",
+    icon: "analysis",
+  },
+  {
+    title: "Escenarios múltiples",
+    copy: "Simula distintos futuros posibles y sus resultados.",
     icon: "paths",
   },
   {
-    title: "Riesgo oculto",
-    copy: "Detecta fricción, exposición y señales débiles que no aparecen en una respuesta rápida.",
+    title: "Evaluación de riesgos",
+    copy: "Detecta riesgos ocultos y oportunidades reales.",
     icon: "risk",
   },
   {
-    title: "Consecuencia tardía",
-    copy: "Observa impactos que pueden emerger semanas o meses después de decidir.",
-    icon: "model",
-  },
-  {
-    title: "Conclusión estratégica",
-    copy: "Convierte incertidumbre en una recomendación clara, sobria y accionable.",
+    title: "Decisiones estratégicas",
+    copy: "Recomendaciones claras para cada escenario.",
     icon: "target",
   },
 ];
@@ -98,56 +100,47 @@ const dashboardSignals = [
 export default function Home() {
   return (
     <main className="site-shell">
-      <header className="site-header section-frame">
+      <header className="site-header section-frame reference-header">
         <Link className="brand-lockup" href="/" aria-label="levio.es">
           <LevioMark size="lg" />
-          <span className="brand-name">LEVIO<span>.ES</span></span>
+          <span className="brand-name">LEVIO</span>
         </Link>
-        <nav className="site-nav" aria-label="Acceso principal">
+        <nav className="site-nav reference-nav" aria-label="Acceso principal">
           {navItems.map((item) => (
-            <Link href={item.href} key={item.label}>
+            <Link className={item.active ? "nav-active" : undefined} href={item.href} key={item.label}>
               {item.label}
             </Link>
           ))}
-          <Link href="/login">Entrar</Link>
-          <Link className="nav-cta" href="/register">Probar levio</Link>
+          <Link className="nav-cta" href="/login">Iniciar sesión</Link>
         </nav>
       </header>
 
-      <section className="hero-section section-frame home-hero" aria-labelledby="hero-title">
+      <section className="hero-section section-frame home-hero reference-hero" aria-labelledby="hero-title">
         <div className="hero-copy home-hero-copy">
-          <p className="eyebrow brand-mark">AI Decision Intelligence System</p>
+          <p className="eyebrow brand-mark">LEVIO</p>
           <h1 id="hero-title">
-            Decisiones complejas, analizadas <span>antes de actuar.</span>
+            Simula.<br />
+            Entiende.
+            <span>Decide con claridad.</span>
           </h1>
           <p className="hero-subtitle">
-            Levio organiza escenarios futuros, riesgos, consecuencias tardías y
-            rutas estratégicas para que decidas con claridad, no con impulso.
+            Levio es un sistema de inteligencia que simula escenarios, analiza
+            riesgos, evalúa consecuencias y te ayuda a tomar mejores decisiones.
           </p>
 
           <div className="hero-actions home-hero-actions" aria-label="Accesos principales">
             <a className="button-link" href="#decision-input">
-              Simular una decisión
+              Comenzar simulación
             </a>
             <a className="button-link secondary-button" href="#producto">
               Ver cómo funciona
             </a>
           </div>
-
-          <div className="hero-trust-row home-proof-row" aria-label="Principios del producto">
-            <span className="engine-online">Análisis estructurado</span>
-            <span>Diseñado para móvil y Safari</span>
-            <span>Sistema de decisión, no chatbot</span>
-          </div>
         </div>
 
         <aside className="hero-intelligence-panel" aria-label="Modelo visual de inteligencia de decisión">
-          <div className="hero-panel-topline">
-            <span>Modelo de consecuencia</span>
-            <strong>Black-Gold AI</strong>
-          </div>
           <div className="ai-core-stage" aria-label="Visual predictivo de Levio">
-            <DecisionSphereVisual ariaLabel="Singularidad ligera con señales de decisión" />
+            <DecisionSphereVisual ariaLabel="Símbolo visual de inteligencia de decisión Levio" />
           </div>
         </aside>
 
@@ -163,10 +156,11 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="hero-console-slot">
-          <HomeSimulator />
-        </div>
       </section>
+
+      <div className="hero-console-slot section-frame home-simulator-shell">
+        <HomeSimulator />
+      </div>
 
       <section className="story-section two-column section-frame" id="producto" aria-labelledby="what-title">
         <div>

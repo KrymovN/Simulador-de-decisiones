@@ -1,11 +1,5 @@
 import styles from "./DecisionSphereVisual.module.css";
 
-const intelligenceSignals = [
-  { label: "Riesgo", value: "42%" },
-  { label: "Ventaja", value: "68%" },
-  { label: "Latencia", value: "3 meses" },
-];
-
 type DecisionSphereVisualProps = {
   ariaLabel?: string;
 };
@@ -15,72 +9,60 @@ export default function DecisionSphereVisual({
 }: DecisionSphereVisualProps) {
   return (
     <div className={styles.stage} aria-label={ariaLabel} role="img">
-      <div className={styles.panel}>
-        <svg className={styles.mark} viewBox="0 0 320 320" aria-hidden="true">
-          <defs>
-            <radialGradient id="levio-core" cx="50%" cy="50%" r="60%">
-              <stop offset="0%" stopColor="#fffdf0" />
-              <stop offset="12%" stopColor="#fff0aa" stopOpacity="0.98" />
-              <stop offset="36%" stopColor="#ffca55" stopOpacity="0.86" />
-              <stop offset="68%" stopColor="#8a501c" stopOpacity="0.54" />
-              <stop offset="100%" stopColor="#120b04" stopOpacity="0" />
-            </radialGradient>
-            <radialGradient id="levio-focus" cx="47%" cy="42%" r="64%">
-              <stop offset="0%" stopColor="#ffffff" />
-              <stop offset="22%" stopColor="#fff4c9" />
-              <stop offset="58%" stopColor="#ffd36a" />
-              <stop offset="100%" stopColor="#c77b25" />
-            </radialGradient>
-            <linearGradient id="levio-ring" x1="28%" x2="78%" y1="18%" y2="82%">
-              <stop offset="0%" stopColor="#fff5c9" stopOpacity="0.98" />
-              <stop offset="48%" stopColor="#ffd36a" stopOpacity="0.86" />
-              <stop offset="100%" stopColor="#b56d27" stopOpacity="0.54" />
-            </linearGradient>
-          </defs>
-          <circle className={styles.halo} cx="160" cy="160" r="101" />
-          <circle className={styles.outerTrace} cx="160" cy="160" r="136" />
-          <circle className={styles.outerRing} cx="160" cy="160" r="116" />
-          <circle className={styles.secondaryRing} cx="160" cy="160" r="100" />
-          <circle className={styles.midRing} cx="160" cy="160" r="86" />
-          <circle className={styles.nearRing} cx="160" cy="160" r="68" />
-          <ellipse className={styles.outerDecisionPlane} cx="160" cy="160" rx="139" ry="51" />
-          <ellipse className={styles.decisionPlane} cx="160" cy="160" rx="118" ry="38" />
-          <ellipse className={styles.innerDecisionPlane} cx="160" cy="160" rx="91" ry="26" />
-          <circle className={styles.core} cx="160" cy="160" r="61" />
-          <circle className={styles.coreRing} cx="160" cy="160" r="43" />
-          <circle className={styles.innerCore} cx="160" cy="160" r="18" />
-          <circle className={styles.focus} cx="160" cy="160" r="8" />
-          <path
-            className={styles.signalLine}
-            d="M81 184c34 20 70 28 109 16 22-7 40-20 57-38"
-          />
-          <path
-            className={styles.signalLineMuted}
-            d="M91 131c37-16 78-17 121-2 17 6 31 14 44 25"
-          />
-          <path
-            className={styles.trajectory}
-            d="M42 206c34-54 82-88 143-101 34-8 66-8 96-2"
-          />
-          <path
-            className={styles.trajectoryMuted}
-            d="M57 93c41 17 79 50 113 98 20 27 36 52 52 73"
-          />
-          <path
-            className={styles.trajectoryFine}
-            d="M84 253c26-31 57-55 95-74 24-12 48-23 71-39"
-          />
-        </svg>
-
-        <div className={styles.signalGrid} aria-label="Señales de inteligencia">
-          {intelligenceSignals.map((signal) => (
-            <div className={styles.signalCard} key={signal.label}>
-              <span>{signal.label}</span>
-              <strong>{signal.value}</strong>
-            </div>
-          ))}
-        </div>
-      </div>
+      <svg className={styles.mark} viewBox="0 0 360 360" aria-hidden="true">
+        <defs>
+          <radialGradient id="levio-core" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="9%" stopColor="#fff8d0" />
+            <stop offset="25%" stopColor="#ffc400" stopOpacity="0.98" />
+            <stop offset="56%" stopColor="#d98700" stopOpacity="0.5" />
+            <stop offset="100%" stopColor="#120a00" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id="levio-focus" cx="47%" cy="42%" r="64%">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="30%" stopColor="#fff4ba" />
+            <stop offset="68%" stopColor="#ffc400" />
+            <stop offset="100%" stopColor="#d78300" />
+          </radialGradient>
+          <linearGradient id="levio-ring" x1="18%" x2="84%" y1="14%" y2="86%">
+            <stop offset="0%" stopColor="#fff4a3" stopOpacity="0.98" />
+            <stop offset="48%" stopColor="#ffc400" stopOpacity="0.96" />
+            <stop offset="100%" stopColor="#c97500" stopOpacity="0.68" />
+          </linearGradient>
+        </defs>
+        <circle className={styles.halo} cx="180" cy="180" r="98" />
+        <circle className={styles.outerTrace} cx="180" cy="180" r="164" />
+        <circle className={styles.outerTraceDense} cx="180" cy="180" r="151" />
+        <circle className={styles.outerRing} cx="180" cy="180" r="137" />
+        <circle className={styles.secondaryRing} cx="180" cy="180" r="122" />
+        <circle className={styles.midRing} cx="180" cy="180" r="105" />
+        <circle className={styles.nearRing} cx="180" cy="180" r="84" />
+        <circle className={styles.innerTrace} cx="180" cy="180" r="67" />
+        <ellipse className={styles.outerDecisionPlane} cx="180" cy="180" rx="168" ry="61" />
+        <ellipse className={styles.decisionPlane} cx="180" cy="180" rx="145" ry="47" />
+        <ellipse className={styles.innerDecisionPlane} cx="180" cy="180" rx="115" ry="32" />
+        <ellipse className={styles.trajectoryTilted} cx="180" cy="180" rx="159" ry="58" />
+        <ellipse className={styles.trajectoryTiltedReverse} cx="180" cy="180" rx="157" ry="53" />
+        <path className={styles.axisLines} d="M180 18v324M18 180h324M66 66l228 228M66 294 294 66" />
+        <path className={styles.signalLine} d="M77 208c43 25 89 35 139 19 27-8 50-25 71-49" />
+        <path className={styles.signalLineMuted} d="M89 139c46-20 98-21 151-3 22 8 40 18 56 31" />
+        <path className={styles.trajectory} d="M31 238c43-68 104-111 181-128 42-9 83-9 121-2" />
+        <path className={styles.trajectoryMuted} d="M50 87c51 22 99 63 141 123 25 34 45 65 65 91" />
+        <path className={styles.trajectoryFine} d="M85 308c32-39 72-69 119-93 31-15 60-29 89-49" />
+        <circle className={styles.core} cx="180" cy="180" r="58" />
+        <circle className={styles.coreRing} cx="180" cy="180" r="54" />
+        <circle className={styles.innerCore} cx="180" cy="180" r="21" />
+        <circle className={styles.focus} cx="180" cy="180" r="8" />
+        <path className={styles.focusRay} d="M180 154v52M154 180h52M162 162l36 36M162 198l36-36" />
+        <g className={styles.sparkNodes}>
+          <circle cx="80" cy="93" r="2.8" />
+          <circle cx="288" cy="87" r="3.2" />
+          <circle cx="314" cy="205" r="2.3" />
+          <circle cx="88" cy="263" r="2.5" />
+          <circle cx="270" cy="282" r="2.1" />
+          <circle cx="49" cy="180" r="1.9" />
+        </g>
+      </svg>
     </div>
   );
 }
