@@ -5676,6 +5676,8 @@ textarea::placeholder {
 }
 
 .reference-hero .home-hero-copy {
+  position: relative;
+  z-index: 2;
   gap: 14px;
   max-width: 610px;
   padding: 0 0 24px;
@@ -5759,7 +5761,11 @@ textarea::placeholder {
 }
 
 .reference-hero .hero-intelligence-panel {
+  position: relative;
+  z-index: 1;
   align-self: center;
+  min-width: 0;
+  overflow: hidden;
   padding: 0;
   border: 0;
   border-radius: 0;
@@ -5769,7 +5775,8 @@ textarea::placeholder {
 
 .reference-hero .ai-core-stage {
   min-height: clamp(360px, 38vw, 530px);
-  overflow: visible;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .reference-hero .hero-singularity-asset-stage {
@@ -5781,20 +5788,46 @@ textarea::placeholder {
   min-height: clamp(350px, 38vw, 520px);
   place-items: center;
   justify-self: center;
+  overflow: hidden;
   isolation: isolate;
 }
 
-.reference-hero .hero-singularity-asset-stage::before {
+.reference-hero .hero-singularity-asset-stage::before,
+.reference-hero .hero-singularity-asset-stage::after {
   position: absolute;
-  inset: 12%;
+  top: 50%;
+  left: 50%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 196, 0, 0.12), rgba(217, 135, 0, 0.025) 52%, transparent 74%);
   content: "";
-  opacity: 0.68;
   pointer-events: none;
+  transform: translate(-50%, -50%);
+  will-change: opacity;
+}
+
+.reference-hero .hero-singularity-asset-stage::before {
+  z-index: 2;
+  width: min(56%, 340px);
+  aspect-ratio: 1;
+  background: radial-gradient(circle, rgba(255, 232, 153, 0.2), rgba(255, 196, 0, 0.1) 30%, rgba(217, 135, 0, 0.035) 56%, transparent 74%);
+  filter: blur(8px);
+  opacity: 0.2;
+  animation: heroInternalEnergyBreathing 9.2s ease-in-out infinite;
+}
+
+.reference-hero .hero-singularity-asset-stage::after {
+  z-index: 3;
+  width: min(19%, 116px);
+  aspect-ratio: 1;
+  background: radial-gradient(circle, rgba(255, 255, 245, 0.92), rgba(255, 241, 181, 0.52) 17%, rgba(255, 196, 0, 0.18) 44%, transparent 73%);
+  filter: blur(3px);
+  opacity: 0.32;
+  animation: heroCoreIntelligencePulse 6.8s ease-in-out infinite;
 }
 
 .reference-hero .hero-singularity-asset {
+  position: relative;
+  z-index: 1;
+  display: block;
   width: min(124%, 720px);
   max-width: none;
   height: auto;
@@ -5804,21 +5837,28 @@ textarea::placeholder {
     drop-shadow(0 0 9px rgba(255, 196, 0, 0.18))
     drop-shadow(0 0 24px rgba(217, 135, 0, 0.08));
   mask-image: radial-gradient(ellipse at center, #000 67%, rgba(0, 0, 0, 0.96) 78%, transparent 100%);
-  opacity: 0.97;
-  transform-origin: center;
-  animation: heroSingularityAssetPulse 6.4s ease-in-out infinite;
+  opacity: 1;
 }
 
-@keyframes heroSingularityAssetPulse {
+@keyframes heroCoreIntelligencePulse {
   0%,
   100% {
-    opacity: 0.965;
-    transform: scale(1);
+    opacity: 0.26;
   }
 
   50% {
-    opacity: 1;
-    transform: scale(1.015);
+    opacity: 0.4;
+  }
+}
+
+@keyframes heroInternalEnergyBreathing {
+  0%,
+  100% {
+    opacity: 0.16;
+  }
+
+  50% {
+    opacity: 0.25;
   }
 }
 
@@ -6049,7 +6089,8 @@ textarea::placeholder {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reference-hero .hero-singularity-asset {
+  .reference-hero .hero-singularity-asset-stage::before,
+  .reference-hero .hero-singularity-asset-stage::after {
     animation: none;
   }
 }
