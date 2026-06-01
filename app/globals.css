@@ -5772,6 +5772,56 @@ textarea::placeholder {
   overflow: visible;
 }
 
+.reference-hero .hero-singularity-asset-stage {
+  position: relative;
+  display: grid;
+  width: 100%;
+  max-width: 680px;
+  min-width: 0;
+  min-height: clamp(350px, 38vw, 520px);
+  place-items: center;
+  justify-self: center;
+  isolation: isolate;
+}
+
+.reference-hero .hero-singularity-asset-stage::before {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 196, 0, 0.12), rgba(217, 135, 0, 0.025) 52%, transparent 74%);
+  content: "";
+  opacity: 0.68;
+  pointer-events: none;
+}
+
+.reference-hero .hero-singularity-asset {
+  width: min(124%, 720px);
+  max-width: none;
+  height: auto;
+  clip-path: inset(1.8% 0 0);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 67%, rgba(0, 0, 0, 0.96) 78%, transparent 100%);
+  filter:
+    drop-shadow(0 0 9px rgba(255, 196, 0, 0.18))
+    drop-shadow(0 0 24px rgba(217, 135, 0, 0.08));
+  mask-image: radial-gradient(ellipse at center, #000 67%, rgba(0, 0, 0, 0.96) 78%, transparent 100%);
+  opacity: 0.97;
+  transform-origin: center;
+  animation: heroSingularityAssetPulse 6.4s ease-in-out infinite;
+}
+
+@keyframes heroSingularityAssetPulse {
+  0%,
+  100% {
+    opacity: 0.965;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.015);
+  }
+}
+
 .reference-hero .hero-feature-strip {
   margin-inline: clamp(-54px, -4vw, -18px);
   padding-inline: clamp(18px, 4vw, 54px);
@@ -5966,6 +6016,14 @@ textarea::placeholder {
     min-height: 292px;
   }
 
+  .reference-hero .hero-singularity-asset-stage {
+    min-height: 286px;
+  }
+
+  .reference-hero .hero-singularity-asset {
+    width: min(118%, 450px);
+  }
+
   .reference-hero .hero-feature-strip {
     grid-template-columns: 1fr;
     margin-inline: -14px;
@@ -5987,6 +6045,12 @@ textarea::placeholder {
 
   .home-simulator-shell {
     margin-top: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-hero .hero-singularity-asset {
+    animation: none;
   }
 }
 

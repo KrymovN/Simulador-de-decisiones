@@ -1,5 +1,5 @@
 import Link from "next/link";
-import DecisionSphereVisual from "../components/DecisionSphereVisual";
+import Image from "next/image";
 import HomeSimulator from "../components/HomeSimulator";
 import LevioMark from "../components/LevioMark";
 
@@ -258,7 +258,21 @@ export default function Home() {
 
         <aside className="hero-intelligence-panel" aria-label="Modelo visual de inteligencia de decisión">
           <div className="ai-core-stage" aria-label="Visual predictivo de Levio">
-            <DecisionSphereVisual ariaLabel="Símbolo visual de inteligencia de decisión Levio" />
+            <div
+              className="hero-singularity-asset-stage"
+              aria-label="Símbolo visual de inteligencia de decisión Levio"
+              role="img"
+            >
+              <Image
+                className="hero-singularity-asset"
+                src="/hero-singularity.png"
+                alt=""
+                width={1261}
+                height={1151}
+                priority
+                sizes="(max-width: 680px) 116vw, (max-width: 900px) 92vw, 660px"
+              />
+            </div>
           </div>
         </aside>
 
