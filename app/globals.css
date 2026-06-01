@@ -6383,6 +6383,126 @@ textarea::placeholder {
   }
 }
 
+/* Stage 2.8B.3: scoped precision polish for reference-aligned symbolic details. */
+
+.reference-hero .feature-analysis > span::after {
+  inset: 37%;
+  border: 0;
+  background: #ffc400;
+  box-shadow: 0 0 8px rgba(255, 196, 0, 0.72);
+}
+
+.reference-hero .feature-paths > span {
+  border: 0;
+  border-radius: 0;
+  background:
+    radial-gradient(circle at 24% 50%, #ffc400 0 3px, transparent 3.8px),
+    radial-gradient(circle at 74% 20%, #ffc400 0 3px, transparent 3.8px),
+    radial-gradient(circle at 74% 80%, #ffc400 0 3px, transparent 3.8px);
+}
+
+.reference-hero .feature-paths > span::before,
+.reference-hero .feature-paths > span::after {
+  inset: auto;
+  left: 13px;
+  width: 23px;
+  height: 17px;
+  border: 0;
+  border-right: 1.5px solid #ffd36a;
+  border-radius: 0;
+  opacity: 0.9;
+}
+
+.reference-hero .feature-paths > span::before {
+  top: 6px;
+  border-top: 1.5px solid #ffd36a;
+  transform: skewY(-27deg);
+}
+
+.reference-hero .feature-paths > span::after {
+  bottom: 6px;
+  border-bottom: 1.5px solid #ffd36a;
+  transform: skewY(27deg);
+}
+
+.reference-hero .feature-risk > span {
+  border: 0;
+  border-radius: 0;
+}
+
+.reference-hero .feature-risk > span::before {
+  inset: 4px 9px 5px;
+  border: 2px solid #ffd36a;
+  border-radius: 5px 5px 12px 12px;
+  clip-path: polygon(0 0, 100% 0, 100% 64%, 50% 100%, 0 64%);
+}
+
+.reference-hero .feature-risk > span::after {
+  inset: 15px auto auto 17px;
+  width: 10px;
+  height: 5px;
+  border: 0;
+  border-bottom: 2px solid #ffd36a;
+  border-left: 2px solid #ffd36a;
+  background: transparent;
+  transform: rotate(-45deg);
+}
+
+.reference-hero .feature-target > span {
+  border: 0;
+  border-radius: 0;
+  background:
+    linear-gradient(90deg, transparent 8%, #ffd36a 8% 15%, transparent 15% 30%, #ffd36a 30% 38%, transparent 38% 54%, #ffd36a 54% 62%, transparent 62%) 7px 25px / 29px 15px no-repeat;
+}
+
+.reference-hero .feature-target > span::before {
+  inset: 8px 5px 9px 6px;
+  border: 0;
+  border-bottom: 2px solid #ffd36a;
+  border-left: 2px solid #ffd36a;
+  border-radius: 0;
+}
+
+.reference-hero .feature-target > span::after {
+  inset: 5px 5px auto auto;
+  width: 27px;
+  height: 19px;
+  border: 0;
+  border-top: 2px solid #ffd36a;
+  border-right: 2px solid #ffd36a;
+  border-radius: 0;
+  transform: skewY(-38deg);
+}
+
+.reference-cta-orbit::before {
+  width: 34px;
+  height: 34px;
+  background: radial-gradient(circle, #fffceb 0 8%, #ffc400 20%, rgba(255, 196, 0, 0.2) 51%, transparent 72%);
+  box-shadow: 0 0 12px rgba(255, 196, 0, 0.42);
+}
+
+.reference-cta-orbit span {
+  width: 50px;
+  height: 50px;
+  border-color: rgba(255, 196, 0, 0.72);
+}
+
+.reference-cta-orbit span:nth-child(2) {
+  width: 70px;
+  height: 70px;
+  border-style: dashed;
+  border-color: rgba(255, 196, 0, 0.48);
+  transform: none;
+}
+
+.reference-cta-orbit span:nth-child(3) {
+  width: 90px;
+  height: 90px;
+  border-style: dotted;
+  border-color: rgba(255, 196, 0, 0.4);
+  transform: none;
+}
+
 @media (max-width: 560px) {
   .reference-process,
   .reference-capabilities {

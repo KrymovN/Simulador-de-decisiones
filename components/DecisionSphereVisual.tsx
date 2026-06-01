@@ -11,11 +11,11 @@ export default function DecisionSphereVisual({
     <div className={styles.stage} aria-label={ariaLabel} role="img">
       <svg className={styles.mark} viewBox="0 0 360 360" aria-hidden="true">
         <defs>
-          <radialGradient id="levio-core" cx="50%" cy="50%" r="60%">
+          <radialGradient id="levio-core" cx="50%" cy="50%" r="58%">
             <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="9%" stopColor="#fff8d0" />
-            <stop offset="25%" stopColor="#ffc400" stopOpacity="0.98" />
-            <stop offset="56%" stopColor="#d98700" stopOpacity="0.5" />
+            <stop offset="8%" stopColor="#fff8d0" />
+            <stop offset="23%" stopColor="#ffc400" stopOpacity="0.98" />
+            <stop offset="54%" stopColor="#d98700" stopOpacity="0.46" />
             <stop offset="100%" stopColor="#120a00" stopOpacity="0" />
           </radialGradient>
           <radialGradient id="levio-focus" cx="47%" cy="42%" r="64%">
@@ -30,37 +30,53 @@ export default function DecisionSphereVisual({
             <stop offset="100%" stopColor="#c97500" stopOpacity="0.68" />
           </linearGradient>
         </defs>
-        <circle className={styles.halo} cx="180" cy="180" r="98" />
-        <circle className={styles.outerTrace} cx="180" cy="180" r="164" />
-        <circle className={styles.outerTraceDense} cx="180" cy="180" r="151" />
-        <circle className={styles.outerRing} cx="180" cy="180" r="137" />
-        <circle className={styles.secondaryRing} cx="180" cy="180" r="122" />
+        <circle className={styles.halo} cx="180" cy="180" r="88" />
+        <circle className={styles.outerTrace} cx="180" cy="180" r="168" />
+        <circle className={styles.outerTraceDense} cx="180" cy="180" r="158" />
+        <circle className={styles.outerRing} cx="180" cy="180" r="148" />
+        <circle className={styles.ringDotted} cx="180" cy="180" r="138" />
+        <circle className={styles.secondaryRing} cx="180" cy="180" r="127" />
+        <circle className={styles.segmentedRing} cx="180" cy="180" r="116" />
         <circle className={styles.midRing} cx="180" cy="180" r="105" />
-        <circle className={styles.nearRing} cx="180" cy="180" r="84" />
-        <circle className={styles.innerTrace} cx="180" cy="180" r="67" />
-        <ellipse className={styles.outerDecisionPlane} cx="180" cy="180" rx="168" ry="61" />
-        <ellipse className={styles.decisionPlane} cx="180" cy="180" rx="145" ry="47" />
-        <ellipse className={styles.innerDecisionPlane} cx="180" cy="180" rx="115" ry="32" />
-        <ellipse className={styles.trajectoryTilted} cx="180" cy="180" rx="159" ry="58" />
-        <ellipse className={styles.trajectoryTiltedReverse} cx="180" cy="180" rx="157" ry="53" />
-        <path className={styles.axisLines} d="M180 18v324M18 180h324M66 66l228 228M66 294 294 66" />
-        <path className={styles.signalLine} d="M77 208c43 25 89 35 139 19 27-8 50-25 71-49" />
-        <path className={styles.signalLineMuted} d="M89 139c46-20 98-21 151-3 22 8 40 18 56 31" />
-        <path className={styles.trajectory} d="M31 238c43-68 104-111 181-128 42-9 83-9 121-2" />
-        <path className={styles.trajectoryMuted} d="M50 87c51 22 99 63 141 123 25 34 45 65 65 91" />
-        <path className={styles.trajectoryFine} d="M85 308c32-39 72-69 119-93 31-15 60-29 89-49" />
-        <circle className={styles.core} cx="180" cy="180" r="58" />
-        <circle className={styles.coreRing} cx="180" cy="180" r="54" />
-        <circle className={styles.innerCore} cx="180" cy="180" r="21" />
-        <circle className={styles.focus} cx="180" cy="180" r="8" />
-        <path className={styles.focusRay} d="M180 154v52M154 180h52M162 162l36 36M162 198l36-36" />
+        <circle className={styles.precisionRing} cx="180" cy="180" r="95" />
+        <circle className={styles.nearRing} cx="180" cy="180" r="82" />
+        <circle className={styles.innerTrace} cx="180" cy="180" r="69" />
+        <circle className={styles.microTrace} cx="180" cy="180" r="58" />
+        <path
+          className={styles.axisLines}
+          d="M180 12v336M12 180h336M61 61l238 238M61 299 299 61M112 25l136 310M25 112l310 136M248 25 112 335M25 248l310-136"
+        />
+        <ellipse className={styles.decisionPlane} cx="180" cy="180" rx="164" ry="75" />
+        <ellipse className={styles.decisionPlaneTilted} cx="180" cy="180" rx="151" ry="61" />
+        <path className={styles.signalLine} d="M68 143c42-42 104-62 166-47 27 7 49 19 68 36" />
+        <path className={styles.signalLineMuted} d="M61 219c48 39 105 53 164 38 28-7 52-21 73-42" />
+        <path className={styles.trajectoryFine} d="M92 292c25-42 64-75 113-94 40-15 80-28 116-58" />
+        <circle className={styles.primaryRing} cx="180" cy="180" r="95" />
+        <circle className={styles.coreBoundary} cx="180" cy="180" r="70" />
+        <circle className={styles.core} cx="180" cy="180" r="48" />
+        <circle className={styles.coreRing} cx="180" cy="180" r="39" />
+        <circle className={styles.innerCore} cx="180" cy="180" r="15" />
+        <circle className={styles.focus} cx="180" cy="180" r="5.5" />
+        <path className={styles.focusRay} d="M180 145v70M145 180h70M158 158l44 44M158 202l44-44" />
+        <g className={styles.nodeRays}>
+          <path d="M180 43v22M169 54h22" />
+          <path d="M292 79v20M282 89h20" />
+          <path d="M302 259v18M293 268h18" />
+          <path d="M67 243v18M58 252h18" />
+        </g>
         <g className={styles.sparkNodes}>
-          <circle cx="80" cy="93" r="2.8" />
-          <circle cx="288" cy="87" r="3.2" />
-          <circle cx="314" cy="205" r="2.3" />
-          <circle cx="88" cy="263" r="2.5" />
-          <circle cx="270" cy="282" r="2.1" />
-          <circle cx="49" cy="180" r="1.9" />
+          <circle cx="180" cy="54" r="3.1" />
+          <circle cx="292" cy="89" r="2.8" />
+          <circle cx="320" cy="180" r="2.2" />
+          <circle cx="302" cy="268" r="2.6" />
+          <circle cx="180" cy="326" r="2" />
+          <circle cx="67" cy="252" r="2.6" />
+          <circle cx="42" cy="180" r="2" />
+          <circle cx="76" cy="88" r="2.4" />
+          <circle cx="240" cy="105" r="2.3" />
+          <circle cx="267" cy="193" r="2" />
+          <circle cx="130" cy="107" r="1.8" />
+          <circle cx="113" cy="222" r="2.1" />
         </g>
       </svg>
     </div>
