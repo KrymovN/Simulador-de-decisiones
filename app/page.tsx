@@ -263,6 +263,16 @@ export default function Home() {
               aria-label="Símbolo visual de inteligencia de decisión Levio"
               role="img"
             >
+              <svg
+                aria-hidden="true"
+                className="hero-singularity-orbit-overlay"
+                focusable="false"
+                viewBox="0 0 640 640"
+              >
+                <path className="hero-singularity-orbit orbit-champagne" d="M 72 365 A 258 190 0 0 1 535 178" />
+                <path className="hero-singularity-orbit orbit-gold" d="M 99 488 A 285 230 0 0 0 571 286" />
+                <path className="hero-singularity-orbit orbit-bronze" d="M 141 146 A 276 218 0 0 1 486 123" />
+              </svg>
               <Image
                 className="hero-singularity-asset"
                 src="/hero-singularity.png"

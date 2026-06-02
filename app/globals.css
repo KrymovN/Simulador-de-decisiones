@@ -6718,3 +6718,217 @@ textarea::placeholder {
     padding: 18px 14px;
   }
 }
+
+/* Stage 2.8C PASS 1: scoped premium identity lock for the public homepage. */
+.reference-hero {
+  background:
+    radial-gradient(circle at 75% 47%, rgba(255, 224, 140, 0.085), transparent 14%),
+    radial-gradient(circle at 75% 48%, rgba(196, 126, 36, 0.1), transparent 29%),
+    radial-gradient(ellipse at 72% 55%, rgba(117, 72, 20, 0.075), transparent 47%),
+    #020202;
+}
+
+.reference-hero h1 span {
+  color: #e0b45d;
+  text-shadow: 0 0 18px rgba(188, 123, 35, 0.12);
+}
+
+.reference-hero .brand-mark,
+.reference-section-heading .eyebrow,
+.reference-workspace-heading .eyebrow,
+.reference-footer-column strong {
+  color: #d8a84a;
+}
+
+.reference-hero .hero-singularity-asset-stage::before {
+  z-index: 0;
+  width: min(74%, 470px);
+  background:
+    radial-gradient(circle, rgba(255, 238, 184, 0.13) 0 7%, rgba(216, 168, 74, 0.11) 16%, transparent 31%),
+    radial-gradient(circle, transparent 0 42%, rgba(184, 106, 43, 0.12) 50%, rgba(101, 58, 18, 0.06) 61%, transparent 76%);
+  filter: blur(7px);
+  opacity: 0.52;
+  animation: heroPremiumAuraBreathing 10.8s ease-in-out infinite;
+}
+
+.reference-hero .hero-singularity-asset-stage::after {
+  z-index: 3;
+  width: min(25%, 152px);
+  background:
+    radial-gradient(circle,
+      rgba(255, 255, 246, 0.96) 0 5%,
+      rgba(255, 239, 182, 0.72) 10%,
+      rgba(216, 168, 74, 0.3) 23%,
+      rgba(4, 3, 2, 0.64) 39%,
+      rgba(2, 2, 2, 0.76) 49%,
+      rgba(184, 106, 43, 0.2) 57%,
+      transparent 74%);
+  filter: blur(2.5px);
+  opacity: 0.46;
+  animation: heroPremiumCoreBreathing 7.6s ease-in-out infinite;
+}
+
+@keyframes heroPremiumAuraBreathing {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes heroPremiumCoreBreathing {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(0.99);
+  }
+
+  50% {
+    opacity: 0.58;
+    transform: translate(-50%, -50%) scale(1.025);
+  }
+}
+
+.reference-hero .button-link {
+  border-color: rgba(216, 168, 74, 0.76);
+  background: rgba(184, 106, 43, 0.055);
+  box-shadow:
+    0 0 10px rgba(216, 168, 74, 0.16),
+    inset 0 0 10px rgba(255, 237, 166, 0.035);
+  color: #e0b45d;
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+}
+
+.reference-hero .button-link:hover {
+  border-color: rgba(255, 224, 140, 0.92);
+  background: rgba(216, 168, 74, 0.095);
+  box-shadow:
+    0 0 14px rgba(216, 168, 74, 0.22),
+    inset 0 0 12px rgba(255, 237, 166, 0.05);
+  color: #ffe08c;
+  transform: translateY(-1px);
+}
+
+.reference-hero .secondary-button,
+.reference-hero .secondary-button:hover {
+  background: transparent;
+  box-shadow: none;
+}
+
+.reference-process-card,
+.reference-capability-card {
+  border-color: rgba(216, 168, 74, 0.3);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(216, 168, 74, 0.075), transparent 38%),
+    linear-gradient(180deg, rgba(184, 106, 43, 0.022), rgba(184, 106, 43, 0.004)),
+    #040403;
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.reference-process-card:hover,
+.reference-capability-card:hover {
+  border-color: rgba(224, 180, 93, 0.58);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(216, 168, 74, 0.11), transparent 40%),
+    linear-gradient(180deg, rgba(184, 106, 43, 0.036), rgba(184, 106, 43, 0.006)),
+    #040403;
+  transform: translateY(-1px);
+}
+
+.reference-process-card small,
+.reference-process-card .reference-line-icon,
+.reference-capability-card .reference-line-icon {
+  color: #d8a84a;
+}
+
+.reference-cta-banner {
+  border-color: rgba(216, 168, 74, 0.42);
+}
+
+.reference-cta-banner > a {
+  border-color: rgba(255, 224, 140, 0.86);
+  background: linear-gradient(135deg, #e5bd6a, #c98d35);
+  box-shadow: 0 0 12px rgba(216, 168, 74, 0.2);
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.reference-cta-banner > a:hover {
+  border-color: #ffe08c;
+  background: linear-gradient(135deg, #f0ce82, #d8a84a);
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-hero .hero-singularity-asset-stage::before,
+  .reference-hero .hero-singularity-asset-stage::after {
+    animation: none;
+  }
+
+  .reference-hero .button-link:hover,
+  .reference-process-card:hover,
+  .reference-capability-card:hover,
+  .reference-cta-banner > a:hover {
+    transform: none;
+  }
+}
+
+/* Stage 2.8C PASS 2: minimal orbit activity around the public hero singularity. */
+.reference-hero .hero-singularity-orbit-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: min(94%, 620px);
+  aspect-ratio: 1;
+  overflow: visible;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+  animation: heroSingularityOrbitDrift 32s linear infinite;
+  will-change: transform;
+}
+
+.reference-hero .hero-singularity-orbit {
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.reference-hero .orbit-champagne {
+  stroke: rgba(255, 239, 182, 0.4);
+}
+
+.reference-hero .orbit-gold {
+  stroke: rgba(216, 168, 74, 0.32);
+}
+
+.reference-hero .orbit-bronze {
+  stroke: rgba(184, 106, 43, 0.28);
+}
+
+@keyframes heroSingularityOrbitDrift {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@media (max-width: 680px) {
+  .reference-hero .hero-singularity-orbit-overlay {
+    opacity: 0.42;
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-hero .hero-singularity-orbit-overlay {
+    animation: none;
+  }
+}
