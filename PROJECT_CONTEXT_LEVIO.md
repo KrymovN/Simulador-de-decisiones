@@ -2,6 +2,8 @@
 
 Last updated: 2026-05-14
 
+Superseded note: this is a historical handoff document. For the current project state, use `LEVIO_CURRENT_STATE.md`, `CURRENT_STAGE.md` and `PROJECT_CONTEXT.md`. The current direction is Premium Black-Gold AI Decision Intelligence System, and Stage 2.8G-FIX locks the approved Hero artwork fidelity state.
+
 This document is a handoff summary for a new Codex chat. It captures the current local state, product philosophy, architecture, implemented features, verification status, open issues, and next roadmap for Levio.es.
 
 ## 1. What Levio.es Is
@@ -501,4 +503,3 @@ Visual rules:
 - Levio is not a generic SaaS dashboard.
 - Levio is a living thinking engine.
 - The final look should be premium, cinematic, deep, intelligent, black/gold/amber, and emotionally serious.
-

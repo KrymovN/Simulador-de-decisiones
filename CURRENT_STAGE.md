@@ -1,6 +1,26 @@
 # CURRENT STAGE - LEVIO.ES
 
-Date: 30 May 2026, Europe/Madrid.
+Date: 3 June 2026, Europe/Madrid.
+
+## Current Confirmed Checkpoint - 3 June 2026
+
+Stage 2.8G-FIX - Hero Artwork Fidelity Restoration - is the current checkpoint being locked from the local repository state.
+
+Confirmed facts from code:
+
+- The public homepage Hero uses the approved artwork asset `public/hero-approved-network-bg.png`.
+- The approved artwork is rendered through `next/image` in `app/page.tsx`.
+- `quality={100}` is set on the Hero image.
+- `unoptimized` is enabled on the Hero image.
+- The previous `hero-singularity.png` visual block is no longer active in the Hero markup.
+- The SVG pulse layer remains in markup but is visually disabled by CSS with `display: none`.
+- Desktop Hero image opacity is restored to `1`.
+- Mobile CSS still reduces the image opacity to `0.9` below `900px` and `0.86` below `680px`; treat this as a known factual caveat, not as a separate approved restoration claim.
+- Overlay gradients remain above the image, but they are reduced and mostly serve text readability/vignette control.
+
+Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
+
+Next candidate stage remains Stage 2.8H - Living Intelligence Core, but it must not start until this checkpoint is committed and the working tree is clean.
 
 ## Current Authoritative Stage - 30 May 2026
 

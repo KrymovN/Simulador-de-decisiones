@@ -234,6 +234,47 @@ export default function Home() {
       </header>
 
       <section className="hero-section section-frame home-hero reference-hero" aria-labelledby="hero-title">
+        <div className="hero-approved-background" aria-hidden="true">
+          <Image
+            className="hero-approved-background-image"
+            src="/hero-approved-network-bg.png"
+            alt=""
+            fill
+            priority
+            quality={100}
+            sizes="100vw"
+            unoptimized
+          />
+        </div>
+        <div className="hero-approved-pulse-layer" aria-hidden="true">
+          <svg focusable="false" viewBox="0 0 160 160">
+            <defs>
+              <radialGradient id="hero-approved-core-gradient" cx="50%" cy="48%" r="58%">
+                <stop offset="0%" stopColor="#fff1bd" />
+                <stop offset="36%" stopColor="#d8a84a" stopOpacity="0.92" />
+                <stop offset="70%" stopColor="#ffb23e" stopOpacity="0.42" />
+                <stop offset="100%" stopColor="#8a5a24" stopOpacity="0" />
+              </radialGradient>
+              <radialGradient id="hero-approved-breath-gradient" cx="50%" cy="50%" r="62%">
+                <stop offset="0%" stopColor="#fff1bd" stopOpacity="0.32" />
+                <stop offset="42%" stopColor="#d8a84a" stopOpacity="0.22" />
+                <stop offset="100%" stopColor="#8a5a24" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+            <circle className="hero-approved-wave-ring hero-approved-wave-primary" cx="80" cy="80" r="31" />
+            <circle className="hero-approved-wave-ring hero-approved-wave-secondary" cx="80" cy="80" r="48" />
+            <ellipse className="hero-approved-distortion-ring hero-approved-distortion-a" cx="80" cy="80" rx="43" ry="22" />
+            <ellipse className="hero-approved-distortion-ring hero-approved-distortion-b" cx="80" cy="80" rx="24" ry="40" />
+            <circle className="hero-approved-core-breath" cx="80" cy="80" fill="url(#hero-approved-breath-gradient)" r="38" />
+            <g className="hero-approved-core-pulse">
+              <circle cx="80" cy="80" fill="url(#hero-approved-core-gradient)" r="20" />
+              <circle className="hero-approved-core-ring" cx="80" cy="80" r="13" />
+              <circle className="hero-approved-core-center" cx="80" cy="80" r="5.2" />
+              <circle className="hero-approved-inner-spark" cx="80" cy="80" r="2.4" />
+            </g>
+          </svg>
+        </div>
+
         <div className="hero-copy home-hero-copy">
           <p className="eyebrow brand-mark">LEVIO</p>
           <h1 id="hero-title">
@@ -256,34 +297,8 @@ export default function Home() {
           </div>
         </div>
 
-        <aside className="hero-intelligence-panel" aria-label="Modelo visual de inteligencia de decisión">
-          <div className="ai-core-stage" aria-label="Visual predictivo de Levio">
-            <div
-              className="hero-singularity-asset-stage"
-              aria-label="Símbolo visual de inteligencia de decisión Levio"
-              role="img"
-            >
-              <svg
-                aria-hidden="true"
-                className="hero-singularity-orbit-overlay"
-                focusable="false"
-                viewBox="0 0 640 640"
-              >
-                <path className="hero-singularity-orbit orbit-champagne" d="M 72 365 A 258 190 0 0 1 535 178" />
-                <path className="hero-singularity-orbit orbit-gold" d="M 99 488 A 285 230 0 0 0 571 286" />
-                <path className="hero-singularity-orbit orbit-bronze" d="M 141 146 A 276 218 0 0 1 486 123" />
-              </svg>
-              <Image
-                className="hero-singularity-asset"
-                src="/hero-singularity.png"
-                alt=""
-                width={1261}
-                height={1151}
-                priority
-                sizes="(max-width: 680px) 116vw, (max-width: 900px) 92vw, 660px"
-              />
-            </div>
-          </div>
+        <aside className="hero-intelligence-panel" aria-hidden="true">
+          <div className="ai-core-stage"></div>
         </aside>
 
         <div className="hero-feature-strip" aria-label="Capacidades principales">

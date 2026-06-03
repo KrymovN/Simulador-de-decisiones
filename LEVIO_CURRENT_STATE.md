@@ -2,9 +2,29 @@
 
 ## Дата обновления
 
-30 мая 2026, Europe/Madrid.
+3 июня 2026, Europe/Madrid.
 
-Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после стратегического визуального pivot. Это основной актуальный handoff-файл. `LEVIO_CURRENT_STATE.md` должен оставаться синхронизированной копией этого документа.
+Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после strategic visual pivot и Hero Artwork Fidelity Restoration. Это основной актуальный handoff-файл. `PROJECT_CONTEXT.md` должен оставаться синхронизированной копией этого документа.
+
+## 0. Current Confirmed Checkpoint - 3 June 2026
+
+Stage 2.8G-FIX - Hero Artwork Fidelity Restoration - является текущим checkpoint, который фиксируется из фактического локального состояния репозитория.
+
+Подтверждено по коду:
+
+- Public homepage Hero использует approved artwork `public/hero-approved-network-bg.png`.
+- Approved artwork подключен через `next/image` в `app/page.tsx`.
+- Для Hero image установлено `quality={100}`.
+- Для Hero image включен `unoptimized`.
+- Предыдущий `hero-singularity.png` visual block больше не активен в Hero markup.
+- SVG pulse layer остается в markup, но визуально отключен CSS-правилом `display: none`.
+- Desktop opacity для Hero image восстановлен до `1`.
+- Mobile CSS все еще снижает opacity до `0.9` ниже `900px` и до `0.86` ниже `680px`; считать это factual caveat, а не отдельным утверждением полной opacity restoration на всех viewport.
+- Overlay gradients над изображением остаются, но ослаблены и в основном работают на читаемость текста/vignette control.
+
+Направление продукта не изменилось: Levio.es является AI Decision Intelligence System, а не chatbot, AI playground, sci-fi showcase, WebGL experiment или visual-effects demo.
+
+Следующий кандидатный этап остается Stage 2.8H - Living Intelligence Core, но его нельзя начинать до фиксации этого checkpoint и чистого working tree.
 
 ## 0. Current Authoritative Strategy - 30 May 2026
 
