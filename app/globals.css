@@ -7876,67 +7876,6 @@ textarea::placeholder {
   }
 }
 
-.reference-hero .hero-feature-icon-shell {
-  position: relative;
-  width: 62px;
-  height: 62px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(255, 211, 106, 0.72);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(255, 243, 208, 0.14), transparent 18%),
-    radial-gradient(circle, rgba(255, 178, 62, 0.2), transparent 52%),
-    rgba(3, 3, 3, 0.72);
-  box-shadow:
-    0 0 20px rgba(255, 178, 62, 0.2),
-    inset 0 0 18px rgba(255, 211, 106, 0.1);
-}
-
-.reference-hero .hero-feature-icon-shell::before,
-.reference-hero .hero-feature-icon-shell::after {
-  display: none;
-}
-
-.reference-hero .hero-feature-icon {
-  position: relative;
-  z-index: 1;
-  width: 42px;
-  height: 42px;
-  color: #ffd36a;
-  filter:
-    drop-shadow(0 0 5px rgba(255, 211, 106, 0.4))
-    drop-shadow(0 0 14px rgba(255, 178, 62, 0.16));
-}
-
-.reference-hero .feature-analysis .hero-feature-icon {
-  width: 44px;
-  height: 44px;
-}
-
-.reference-hero .feature-paths .hero-feature-icon,
-.reference-hero .feature-risk .hero-feature-icon,
-.reference-hero .feature-target .hero-feature-icon {
-  width: 41px;
-  height: 41px;
-}
-
-@media (max-width: 680px) {
-  .reference-hero .hero-feature-icon-shell {
-    width: 50px;
-    height: 50px;
-  }
-
-  .reference-hero .hero-feature-icon,
-  .reference-hero .feature-analysis .hero-feature-icon,
-  .reference-hero .feature-paths .hero-feature-icon,
-  .reference-hero .feature-risk .hero-feature-icon,
-  .reference-hero .feature-target .hero-feature-icon {
-    width: 34px;
-    height: 34px;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .reference-hero .hero-approved-background-image {
     animation: none;
@@ -8833,5 +8772,374 @@ html {
   .reference-workspace .decision-console textarea:focus,
   .reference-workspace .decision-console textarea:focus-visible {
     min-height: 116px;
+  }
+}
+
+/* Stage 2.8H: Homepage Minimal Premium Reduction. */
+.reference-header {
+  border-bottom-color: rgba(216, 168, 74, 0.2);
+  background: rgba(3, 3, 3, 0.94);
+  box-shadow: 0 1px 0 rgba(255, 243, 208, 0.035) inset;
+}
+
+.reference-header .levio-mark-lg {
+  width: 42px;
+}
+
+.reference-nav {
+  gap: clamp(10px, 1.25vw, 18px);
+}
+
+.reference-nav a,
+.reference-nav .nav-cta {
+  min-height: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: rgba(245, 241, 232, 0.68);
+  font-size: 0.82rem;
+}
+
+.reference-nav a:hover,
+.reference-nav .nav-active,
+.reference-nav .nav-cta {
+  background: transparent;
+  box-shadow: none;
+  color: #ffd36a;
+}
+
+.reference-nav .nav-active::after {
+  display: none;
+}
+
+.reference-hero {
+  min-height: clamp(590px, 70vh, 760px);
+  grid-template-columns: minmax(0, 0.9fr) minmax(300px, 1.1fr);
+  gap: clamp(28px, 5vw, 84px);
+  padding-top: clamp(70px, 8vw, 112px);
+}
+
+.reference-hero .hero-intelligence-panel {
+  display: none;
+}
+
+.reference-hero .home-hero-copy {
+  max-width: 560px;
+  gap: 20px;
+  padding-bottom: clamp(54px, 7vw, 92px);
+}
+
+.reference-hero .home-hero-copy::before {
+  display: none;
+}
+
+.reference-hero h1 {
+  max-width: 560px;
+  font-size: clamp(3.35rem, 5.4vw, 6.3rem);
+  font-weight: 470;
+  letter-spacing: -0.055em;
+  line-height: 0.92;
+}
+
+.reference-hero h1 span {
+  letter-spacing: -0.058em;
+}
+
+.reference-hero .hero-subtitle {
+  max-width: 390px;
+  color: rgba(245, 241, 232, 0.72);
+  font-size: clamp(1rem, 1.08vw, 1.12rem);
+  line-height: 1.62;
+}
+
+.reference-hero .home-hero-actions {
+  margin-top: 10px;
+}
+
+.reference-hero .button-link,
+.reference-hero .secondary-button {
+  min-height: 48px;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+.reference-hero .secondary-button::before {
+  display: none;
+}
+
+.reference-hero .hero-feature-strip {
+  gap: clamp(18px, 2.2vw, 34px);
+  margin-inline: clamp(-54px, -4vw, -18px);
+  padding: clamp(24px, 3.4vw, 38px) clamp(18px, 4vw, 54px);
+  border-top-color: rgba(216, 168, 74, 0.14);
+  border-bottom-color: rgba(216, 168, 74, 0.12);
+  background: rgba(3, 3, 3, 0.42);
+}
+
+.reference-hero .hero-feature-card,
+.reference-hero .hero-feature-card:first-child,
+.reference-hero .hero-feature-card:last-child {
+  min-height: 136px;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  padding: 0 clamp(8px, 1vw, 16px);
+  border: 0;
+  border-right: 1px solid rgba(216, 168, 74, 0.14);
+  background: transparent;
+  box-shadow: none;
+  text-align: left;
+}
+
+.reference-hero .hero-feature-card:hover,
+.reference-process-card:hover,
+.reference-capability-card:hover {
+  border-color: rgba(216, 168, 74, 0.24);
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+.reference-hero .hero-feature-card small,
+.reference-process-card small,
+.reference-capability-card small {
+  color: rgba(216, 168, 74, 0.78);
+  font-size: 0.78rem;
+  font-weight: 760;
+  letter-spacing: 0.16em;
+  line-height: 1.1;
+  text-shadow: none;
+}
+
+.reference-hero .hero-feature-card h3 {
+  margin-bottom: 8px;
+  color: rgba(250, 249, 245, 0.9);
+  font-size: clamp(1rem, 1.05vw, 1.15rem);
+  font-weight: 620;
+  letter-spacing: -0.018em;
+  text-shadow: none;
+}
+
+.reference-hero .hero-feature-card p {
+  max-width: 260px;
+  color: rgba(245, 241, 232, 0.6);
+  font-size: 0.86rem;
+  line-height: 1.58;
+}
+
+.reference-process,
+.reference-capabilities,
+.reference-workspace {
+  padding-top: clamp(64px, 7vw, 104px);
+  padding-bottom: clamp(64px, 7vw, 104px);
+  border-bottom-color: rgba(216, 168, 74, 0.1);
+}
+
+.reference-section-heading {
+  max-width: 720px;
+  gap: 14px;
+  margin-bottom: clamp(34px, 4.5vw, 58px);
+}
+
+.reference-section-heading h2 {
+  font-size: clamp(2rem, 3vw, 3.1rem);
+  font-weight: 430;
+}
+
+.reference-section-heading > span {
+  opacity: 0.48;
+}
+
+.reference-process-grid,
+.reference-capability-grid {
+  gap: clamp(22px, 2.8vw, 42px);
+}
+
+.reference-process-card,
+.reference-capability-card {
+  min-height: 220px;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto 1fr;
+  gap: 18px;
+  padding: clamp(22px, 2.4vw, 32px);
+  border-color: rgba(216, 168, 74, 0.18);
+  border-radius: 4px;
+  background:
+    linear-gradient(180deg, rgba(255, 243, 208, 0.018), transparent),
+    rgba(3, 3, 3, 0.7);
+  box-shadow: inset 0 1px 0 rgba(255, 243, 208, 0.025);
+  text-align: left;
+}
+
+.reference-process-card::before,
+.reference-process-card::after,
+.reference-capability-card::before {
+  display: none;
+}
+
+.reference-process-card h3,
+.reference-capability-card h3 {
+  color: rgba(250, 249, 245, 0.9);
+  font-size: clamp(1.05rem, 1.2vw, 1.22rem);
+  font-weight: 610;
+  letter-spacing: -0.018em;
+  text-align: left;
+}
+
+.reference-process-card p,
+.reference-capability-card p {
+  max-width: 280px;
+  margin: 0;
+  color: rgba(245, 241, 232, 0.58);
+  font-size: 0.88rem;
+  line-height: 1.68;
+  text-align: left;
+}
+
+.reference-process-connector {
+  opacity: 0.28;
+}
+
+.reference-capability-card {
+  min-height: 190px;
+}
+
+.reference-workspace {
+  margin-top: 0;
+}
+
+.reference-cta-banner {
+  margin: clamp(16px, 3vw, 36px) clamp(18px, 4vw, 54px);
+  border-color: rgba(216, 168, 74, 0.2);
+  border-radius: 4px;
+  background: rgba(3, 3, 3, 0.82);
+  box-shadow: inset 0 1px 0 rgba(255, 243, 208, 0.025);
+}
+
+.reference-cta-banner::before {
+  opacity: 0.36;
+}
+
+.reference-footer {
+  display: block;
+  padding: clamp(34px, 5vw, 58px) clamp(18px, 4vw, 54px);
+  border-top-color: rgba(216, 168, 74, 0.14);
+  background: #020202;
+}
+
+.reference-footer-brand {
+  max-width: 440px;
+  gap: 14px;
+}
+
+.reference-footer-brand .brand-lockup {
+  justify-content: start;
+}
+
+.reference-footer .levio-mark-md {
+  width: 38px;
+}
+
+.reference-footer-brand .brand-name {
+  color: #d8a84a;
+  font-size: 1.22rem;
+  letter-spacing: 0;
+  text-transform: none;
+  text-shadow: none;
+}
+
+.reference-footer-brand p,
+.reference-footer-brand small {
+  color: rgba(245, 241, 232, 0.52);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 900px) {
+  .reference-hero {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "copy"
+      "features";
+    padding-top: clamp(46px, 8vw, 74px);
+  }
+
+  .reference-hero .home-hero-copy {
+    padding-bottom: clamp(34px, 7vw, 60px);
+  }
+
+  .reference-hero .hero-feature-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .reference-hero .hero-feature-card:nth-child(2) {
+    border-right: 0;
+  }
+}
+
+@media (max-width: 680px) {
+  .reference-header .levio-mark-lg {
+    width: 34px;
+  }
+
+  .reference-nav {
+    gap: 0;
+  }
+
+  .reference-nav a,
+  .reference-nav .nav-cta {
+    justify-content: center;
+    padding: 8px 4px;
+    font-size: 0.68rem;
+  }
+
+  .reference-hero {
+    padding-top: 38px;
+  }
+
+  .reference-hero h1 {
+    max-width: 340px;
+    font-size: clamp(3rem, 15vw, 4.15rem);
+  }
+
+  .reference-hero .hero-subtitle {
+    max-width: 320px;
+  }
+
+  .reference-hero .hero-feature-strip {
+    grid-template-columns: 1fr;
+    padding-top: 26px;
+    padding-bottom: 26px;
+  }
+
+  .reference-hero .hero-feature-card,
+  .reference-hero .hero-feature-card:first-child,
+  .reference-hero .hero-feature-card:last-child {
+    min-height: auto;
+    grid-template-columns: 48px minmax(0, 1fr);
+    padding: 18px 0;
+    border-right: 0;
+    border-bottom: 1px solid rgba(216, 168, 74, 0.12);
+  }
+
+  .reference-process,
+  .reference-capabilities,
+  .reference-workspace {
+    padding-top: 54px;
+    padding-bottom: 54px;
+  }
+
+  .reference-process-card,
+  .reference-capability-card {
+    min-height: auto;
+    grid-template-columns: 42px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    gap: 8px 14px;
+    padding: 20px 18px;
+  }
+
+  .reference-process-card small,
+  .reference-capability-card small {
+    grid-row: 1 / -1;
   }
 }
