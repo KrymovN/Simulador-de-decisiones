@@ -126,7 +126,7 @@ export default function HomeSimulator() {
 
       <div className={`console-status ${isRunning ? "is-live" : ""}`} aria-live="polite">
         <span></span>
-        <p>{message || "Motor preparado para escenarios, riesgos y consecuencias latentes"}</p>
+        <p>{message || "Levio.es está listo para analizar escenarios, riesgos y consecuencias."}</p>
       </div>
 
       {(isRunning || result) && (

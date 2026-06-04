@@ -11,7 +11,7 @@ const processSteps = [
   },
   {
     title: "Levio analiza",
-    copy: "La IA interpreta factores, contexto y variables relevantes.",
+    copy: "Levio detecta contexto, señales clave y variables que pueden cambiar el resultado.",
     icon: "analyze",
   },
   {
@@ -60,13 +60,13 @@ const heroFeatures = [
 
 const lowerCapabilities = [
   {
-    title: "Análisis profundo",
-    copy: "Comprende tu situación más allá de las palabras y detecta los factores que realmente importan.",
+    title: "Inteligencia contextual",
+    copy: "Comprende tu situación más allá de las palabras y detecta factores que realmente importan.",
     icon: "deep",
   },
   {
-    title: "Evaluación de riesgos",
-    copy: "Identifica riesgos visibles y ocultos antes de comprometer tiempo, recursos o energía.",
+    title: "Riesgos invisibles",
+    copy: "Identifica riesgos que no aparecen a simple vista antes de comprometer tiempo o recursos.",
     icon: "risk",
   },
   {
@@ -75,8 +75,8 @@ const lowerCapabilities = [
     icon: "future",
   },
   {
-    title: "Recomendación estratégica",
-    copy: "Convierte el análisis en una conclusión clara, sobria y accionable.",
+    title: "Recomendación accionable",
+    copy: "Convierte el análisis en una conclusión clara, sobria y aplicable.",
     icon: "strategy",
   },
 ];
@@ -94,7 +94,7 @@ const footerColumns = [
   {
     title: "Empresa",
     links: [
-      { label: "Sobre Levio", href: "#producto" },
+      { label: "Sobre Levio.es", href: "#producto" },
       { label: "Privacidad", href: "/dashboard/privacy" },
       { label: "Términos", href: "/dashboard/privacy" },
       { label: "Contacto", href: "mailto:hola@levio.es" },
@@ -351,9 +351,9 @@ export default function Home() {
             <span>Decide con claridad.</span>
           </h1>
           <p className="hero-subtitle">
-            Levio.es simula escenarios,<br />
-            analiza riesgos<br />
-            y te ayuda a tomar mejores decisiones.
+            Simula futuros posibles.<br />
+            Detecta riesgos ocultos.<br />
+            Elige con más claridad.
           </p>
 
           <div className="hero-actions home-hero-actions" aria-label="Accesos principales">
@@ -422,10 +422,19 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="reference-workspace" id="escenarios" aria-labelledby="workspace-title">
+        <div className="reference-workspace-heading">
+          <p className="eyebrow">Workspace levio.es</p>
+          <h2 id="workspace-title">Simula una decisión cuando estés listo.</h2>
+          <p>El motor de escenarios permanece disponible como área de trabajo separada del landing.</p>
+        </div>
+        <HomeSimulator />
+      </section>
+
       <section className="reference-cta-banner" aria-labelledby="reference-cta-title">
         <div>
-          <h2 id="reference-cta-title">¿Listo para tomar mejores decisiones?</h2>
-          <p>Comienza tu primera simulación ahora.</p>
+          <h2 id="reference-cta-title">Empieza con una decisión real.</h2>
+          <p>Levio.es simulará escenarios, riesgos y consecuencias antes de que actúes.</p>
         </div>
         <a href="#decision-input">
           Comenzar ahora
@@ -458,15 +467,6 @@ export default function Home() {
           <span aria-label="Correo">✉</span>
         </div>
       </footer>
-
-      <section className="reference-workspace" id="escenarios" aria-labelledby="workspace-title">
-        <div className="reference-workspace-heading">
-          <p className="eyebrow">Workspace levio.es</p>
-          <h2 id="workspace-title">Simula una decisión cuando estés listo.</h2>
-          <p>El motor de escenarios permanece disponible como área de trabajo separada del landing.</p>
-        </div>
-        <HomeSimulator />
-      </section>
     </main>
   );
 }
