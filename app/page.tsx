@@ -27,12 +27,12 @@ const processSteps = [
 ];
 
 const navItems = [
-  { label: "Inicio", href: "/", active: true },
-  { label: "Simulador", href: "#decision-input" },
-  { label: "Escenarios", href: "#escenarios" },
-  { label: "Riesgos", href: "#motor" },
-  { label: "Ventajas", href: "#producto" },
-  { label: "Mi espacio", href: "/dashboard" },
+  { label: "Inicio", href: "/", active: true, icon: "home" },
+  { label: "Simulador", href: "#decision-input", icon: "simulator" },
+  { label: "Escenarios", href: "#escenarios", icon: "scenarios" },
+  { label: "Riesgos", href: "#motor", icon: "risk" },
+  { label: "Ventajas", href: "#producto", icon: "advantage" },
+  { label: "Mi espacio", href: "/dashboard", icon: "space" },
 ];
 
 const heroFeatures = [
@@ -120,6 +120,62 @@ type ReferenceIconName =
   | "future"
   | "strategy";
 
+type HeroFeatureIconName = "analysis" | "paths" | "risk" | "target";
+
+function HeroFeatureIcon({ name }: { name: HeroFeatureIconName }) {
+  const sharedProps = {
+    "aria-hidden": true,
+    className: "hero-feature-icon",
+    fill: "none",
+    stroke: "currentColor",
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    viewBox: "0 0 64 64",
+  };
+
+  if (name === "analysis") {
+    return (
+      <svg {...sharedProps}>
+        <circle cx="32" cy="32" r="21" strokeWidth="1.4" />
+        <circle cx="32" cy="32" r="13" strokeWidth="1.8" />
+        <circle cx="32" cy="32" r="5" strokeWidth="2.2" />
+        <path d="M32 8v7M32 49v7M8 32h7M49 32h7" strokeWidth="1.4" />
+        <path d="m45 17 4-4M15 49l4-4" strokeWidth="1.4" />
+      </svg>
+    );
+  }
+
+  if (name === "paths") {
+    return (
+      <svg {...sharedProps}>
+        <path d="M17 32h13M30 32l15-14M30 32l15 14" strokeWidth="1.8" />
+        <circle cx="15" cy="32" r="5" strokeWidth="2" />
+        <circle cx="47" cy="17" r="5" strokeWidth="2" />
+        <circle cx="47" cy="47" r="5" strokeWidth="2" />
+        <path d="M45 22v20" strokeWidth="1.2" opacity="0.72" />
+      </svg>
+    );
+  }
+
+  if (name === "risk") {
+    return (
+      <svg {...sharedProps}>
+        <path d="M32 8c6.6 4.4 13.1 6.4 19 7.4v14.2c0 13.4-7.2 21.3-19 26.4-11.8-5.1-19-13-19-26.4V15.4C18.9 14.4 25.4 12.4 32 8Z" strokeWidth="1.8" />
+        <path d="m23 32 6.2 6.2L42 25.8" strokeWidth="2.4" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg {...sharedProps}>
+      <path d="M13 50h39" strokeWidth="1.6" />
+      <path d="M18 45V33M29 45V26M40 45V20" strokeWidth="2.4" />
+      <path d="m17 35 12-11 8 6 15-17" strokeWidth="2.2" />
+      <path d="M44 13h8v8" strokeWidth="2.2" />
+    </svg>
+  );
+}
+
 function ReferenceIcon({ name }: { name: ReferenceIconName }) {
   const sharedProps = {
     "aria-hidden": true,
@@ -128,17 +184,18 @@ function ReferenceIcon({ name }: { name: ReferenceIconName }) {
     stroke: "currentColor",
     strokeLinecap: "round" as const,
     strokeLinejoin: "round" as const,
-    strokeWidth: 2,
+    strokeWidth: 1.65,
     viewBox: "0 0 64 64",
   };
 
   if (name === "describe") {
     return (
       <svg {...sharedProps}>
-        <path d="M14 14h36v26H29L18 50V40h-4z" />
-        <path d="M22 23h20M22 30h14" />
-        <circle cx="42" cy="38" r="5" />
-        <path d="m45.5 41.5 5 5" />
+        <path d="M14 15.5h34v24H29.2L18.5 49v-9.5H14z" />
+        <path d="M22 23.5h17.5M22 30h13" />
+        <circle cx="44.5" cy="37.5" r="4.8" />
+        <path d="m48 41 4.8 4.8" />
+        <path d="M47.5 16.5 52 12M52 12v6M52 12h-6" opacity="0.68" />
       </svg>
     );
   }
@@ -147,8 +204,10 @@ function ReferenceIcon({ name }: { name: ReferenceIconName }) {
     return (
       <svg {...sharedProps}>
         <path d="M19 13h-6v8M45 13h6v8M19 51h-6v-8M45 51h6v-8" />
-        <circle cx="32" cy="32" r="14" />
-        <circle cx="32" cy="32" r="5" />
+        <circle cx="32" cy="32" r="15.5" opacity="0.82" />
+        <circle cx="32" cy="32" r="8.5" opacity="0.72" />
+        <circle cx="32" cy="32" r="3.2" />
+        <path d="M32 17v6M32 41v6M17 32h6M41 32h6" opacity="0.6" />
       </svg>
     );
   }
@@ -156,10 +215,11 @@ function ReferenceIcon({ name }: { name: ReferenceIconName }) {
   if (name === "scenarios") {
     return (
       <svg {...sharedProps}>
-        <path d="M14 32h14M28 32l11-16M28 32l11 16M39 16h11M39 48h11" />
-        <circle cx="12" cy="32" r="5" />
-        <circle cx="44" cy="16" r="5" />
-        <circle cx="44" cy="48" r="5" />
+        <path d="M17 32h12M29 32l13-15M29 32l13 15M42 17h8M42 47h8" />
+        <circle cx="15" cy="32" r="4.7" />
+        <circle cx="43" cy="17" r="4.7" />
+        <circle cx="43" cy="47" r="4.7" />
+        <path d="M50 17c3.6 3.8 5.5 8.7 5.5 15s-1.9 11.2-5.5 15" opacity="0.52" />
       </svg>
     );
   }
@@ -167,10 +227,11 @@ function ReferenceIcon({ name }: { name: ReferenceIconName }) {
   if (name === "target") {
     return (
       <svg {...sharedProps}>
-        <circle cx="30" cy="34" r="19" />
-        <circle cx="30" cy="34" r="10" />
+        <circle cx="30" cy="34" r="18.5" />
+        <circle cx="30" cy="34" r="10" opacity="0.78" />
         <circle cx="30" cy="34" r="3" />
-        <path d="m32 32 18-18M43 14h7v7" />
+        <path d="m32 32 18-18M43.5 14H50v6.5" />
+        <path d="M47 11.5 52.5 6M52.5 6v8M52.5 6h-8" opacity="0.55" />
       </svg>
     );
   }
@@ -178,10 +239,11 @@ function ReferenceIcon({ name }: { name: ReferenceIconName }) {
   if (name === "deep") {
     return (
       <svg {...sharedProps}>
-        <circle cx="32" cy="32" r="22" />
-        <circle cx="32" cy="32" r="12" />
-        <circle cx="32" cy="32" r="3" />
-        <path d="M32 6v7M32 51v7M6 32h7M51 32h7" />
+        <circle cx="32" cy="32" r="20.5" />
+        <circle cx="32" cy="32" r="12.2" opacity="0.78" />
+        <circle cx="32" cy="32" r="3.4" />
+        <path d="M32 8v7M32 49v7M8 32h7M49 32h7" />
+        <path d="m46 18 4-4M14 50l4-4" opacity="0.54" />
       </svg>
     );
   }
@@ -189,8 +251,9 @@ function ReferenceIcon({ name }: { name: ReferenceIconName }) {
   if (name === "risk") {
     return (
       <svg {...sharedProps}>
-        <path d="M32 7c7 5 14 7 21 8v15c0 14-8 22-21 28C19 52 11 44 11 30V15c7-1 14-3 21-8Z" />
-        <path d="m23 31 6 6 13-14" />
+        <path d="M32 7.5c6.7 4.8 13.4 6.8 20 7.8v14.8c0 13.8-7.7 21.7-20 27.4-12.3-5.7-20-13.6-20-27.4V15.3c6.6-1 13.3-3 20-7.8Z" />
+        <path d="m23 31.2 6.2 6.2L42.5 24" />
+        <path d="M22 17.5c3.7-1 7-2.4 10-4.3 3 1.9 6.3 3.3 10 4.3" opacity="0.48" />
       </svg>
     );
   }
@@ -198,10 +261,11 @@ function ReferenceIcon({ name }: { name: ReferenceIconName }) {
   if (name === "future") {
     return (
       <svg {...sharedProps}>
-        <path d="M12 32h18M30 32l12-16M30 32l12 16M42 16h10M42 48h10" />
-        <circle cx="12" cy="32" r="4" />
-        <circle cx="48" cy="16" r="4" />
-        <circle cx="48" cy="48" r="4" />
+        <path d="M15 32h14M29 32l12-14M29 32l12 14M41 18h9M41 46h9" />
+        <circle cx="14" cy="32" r="4.4" />
+        <circle cx="45" cy="18" r="4.4" />
+        <circle cx="45" cy="46" r="4.4" />
+        <path d="M15 23.5c6.7-8 17.3-10.6 26.8-6.3M15 40.5c6.7 8 17.3 10.6 26.8 6.3" opacity="0.5" />
       </svg>
     );
   }
@@ -210,7 +274,8 @@ function ReferenceIcon({ name }: { name: ReferenceIconName }) {
     <svg {...sharedProps}>
       <path d="M11 48 24 34l9 7 18-24" />
       <path d="M40 17h11v11M12 54h40" />
-      <path d="M16 43h-5M25 36h-7M36 40h-7" />
+      <path d="M16 43h-5M25 36h-7M36 40h-7" opacity="0.62" />
+      <path d="M13 28h11M18.5 22.5v11" opacity="0.46" />
     </svg>
   );
 }
@@ -221,15 +286,19 @@ export default function Home() {
       <header className="site-header section-frame reference-header">
         <Link className="brand-lockup" href="/" aria-label="levio.es">
           <LevioMark size="lg" />
-          <span className="brand-name">LEVIO</span>
+          <span className="brand-name">levio.es</span>
         </Link>
         <nav className="site-nav reference-nav" aria-label="Acceso principal">
           {navItems.map((item) => (
             <Link className={item.active ? "nav-active" : undefined} href={item.href} key={item.label}>
+              <span className={`nav-glyph nav-glyph-${item.icon}`} aria-hidden="true"></span>
               {item.label}
             </Link>
           ))}
-          <Link className="nav-cta" href="/login">Iniciar sesión</Link>
+          <Link className="nav-cta" href="/login">
+            <span className="nav-glyph nav-glyph-login" aria-hidden="true"></span>
+            Iniciar sesión
+          </Link>
         </nav>
       </header>
 
@@ -276,15 +345,15 @@ export default function Home() {
         </div>
 
         <div className="hero-copy home-hero-copy">
-          <p className="eyebrow brand-mark">LEVIO</p>
           <h1 id="hero-title">
             Simula.<br />
             Entiende.
             <span>Decide con claridad.</span>
           </h1>
           <p className="hero-subtitle">
-            Levio es un sistema de inteligencia que simula escenarios, analiza
-            riesgos, evalúa consecuencias y te ayuda a tomar mejores decisiones.
+            Levio.es simula escenarios,<br />
+            analiza riesgos<br />
+            y te ayuda a tomar mejores decisiones.
           </p>
 
           <div className="hero-actions home-hero-actions" aria-label="Accesos principales">
@@ -304,7 +373,9 @@ export default function Home() {
         <div className="hero-feature-strip" aria-label="Capacidades principales">
           {heroFeatures.map((feature) => (
             <article className={`hero-feature-card feature-${feature.icon}`} key={feature.title}>
-              <span aria-hidden="true"></span>
+              <span className="hero-feature-icon-shell" aria-hidden="true">
+                <HeroFeatureIcon name={feature.icon as HeroFeatureIconName} />
+              </span>
               <div>
                 <h3>{feature.title}</h3>
                 <p>{feature.copy}</p>
@@ -317,7 +388,7 @@ export default function Home() {
 
       <section className="reference-process" id="motor" aria-labelledby="process-title">
         <div className="reference-section-heading">
-          <p className="eyebrow">¿Cómo funciona Levio?</p>
+          <p className="eyebrow">¿Cómo funciona Levio.es?</p>
           <h2 id="process-title">Un proceso inteligente en 4 pasos</h2>
           <span aria-hidden="true"></span>
         </div>
@@ -352,11 +423,6 @@ export default function Home() {
       </section>
 
       <section className="reference-cta-banner" aria-labelledby="reference-cta-title">
-        <div className="reference-cta-orbit" aria-hidden="true">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
         <div>
           <h2 id="reference-cta-title">¿Listo para tomar mejores decisiones?</h2>
           <p>Comienza tu primera simulación ahora.</p>
@@ -371,7 +437,7 @@ export default function Home() {
         <div className="reference-footer-brand">
           <Link className="brand-lockup" href="/" aria-label="levio.es">
             <LevioMark size="md" />
-            <span className="brand-name">LEVIO</span>
+            <span className="brand-name">levio.es</span>
           </Link>
           <p>Inteligencia estratégica para decisiones con consecuencias reales.</p>
           <small>© 2026 Levio.es. Todos los derechos reservados.</small>
@@ -395,7 +461,7 @@ export default function Home() {
 
       <section className="reference-workspace" id="escenarios" aria-labelledby="workspace-title">
         <div className="reference-workspace-heading">
-          <p className="eyebrow">Workspace Levio</p>
+          <p className="eyebrow">Workspace levio.es</p>
           <h2 id="workspace-title">Simula una decisión cuando estés listo.</h2>
           <p>El motor de escenarios permanece disponible como área de trabajo separada del landing.</p>
         </div>
