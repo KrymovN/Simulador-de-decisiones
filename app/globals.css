@@ -7883,6 +7883,901 @@ textarea::placeholder {
   }
 }
 
+/* Stage 2.8L: navigation and left hero composition polish. */
+.reference-nav {
+  gap: clamp(12px, 1.3vw, 20px);
+}
+
+.reference-nav a,
+.reference-nav .nav-cta {
+  position: relative;
+  padding-block: 9px;
+  color: rgba(218, 210, 193, 0.72);
+  transition:
+    color 240ms ease,
+    text-shadow 240ms ease,
+    transform 240ms ease;
+}
+
+.reference-nav a::after {
+  position: absolute;
+  right: 10%;
+  bottom: 2px;
+  left: 10%;
+  display: block;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(216, 168, 74, 0.78), transparent);
+  box-shadow: 0 0 9px rgba(216, 168, 74, 0.16);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transform: scaleX(0.45);
+  transition:
+    opacity 240ms ease,
+    transform 240ms ease;
+}
+
+.reference-nav a:nth-child(n + 3):nth-child(-n + 6)::before {
+  position: absolute;
+  top: 50%;
+  left: calc(clamp(12px, 1.3vw, 20px) * -0.55);
+  width: 1px;
+  height: 15px;
+  background: linear-gradient(180deg, transparent, rgba(216, 168, 74, 0.42), transparent);
+  content: "";
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.reference-nav a:hover {
+  color: rgba(242, 218, 160, 0.96);
+  text-shadow: 0 0 15px rgba(216, 168, 74, 0.18);
+  transform: translateY(-1px) scale(1.025);
+}
+
+.reference-nav a:hover::after,
+.reference-nav .nav-active::after {
+  display: block;
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.reference-nav .nav-active {
+  color: #e2bb63;
+  font-weight: 720;
+  text-shadow: 0 0 14px rgba(216, 168, 74, 0.16);
+}
+
+.reference-nav .nav-active::after {
+  right: 4%;
+  bottom: 0;
+  left: 4%;
+  background: linear-gradient(90deg, transparent, rgba(255, 211, 106, 0.9), transparent);
+}
+
+.reference-nav .nav-cta {
+  min-width: 132px;
+  margin-left: clamp(8px, 1vw, 16px);
+  padding: 10px 16px;
+  border: 1px solid rgba(216, 168, 74, 0.48);
+  border-radius: 3px;
+  background: linear-gradient(180deg, rgba(24, 17, 7, 0.52), rgba(6, 5, 3, 0.34));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 243, 208, 0.055),
+    0 0 18px rgba(216, 168, 74, 0.04);
+}
+
+.reference-nav .nav-cta:hover {
+  border-color: rgba(226, 187, 99, 0.72);
+  background: linear-gradient(180deg, rgba(31, 21, 7, 0.62), rgba(8, 6, 3, 0.42));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 243, 208, 0.08),
+    0 8px 22px rgba(0, 0, 0, 0.28),
+    0 0 20px rgba(216, 168, 74, 0.09);
+}
+
+.reference-hero .home-hero-copy {
+  max-width: 570px;
+  gap: 24px;
+}
+
+.reference-hero .hero-intro {
+  position: relative;
+  display: grid;
+  gap: 22px;
+  width: min(100%, 500px);
+  padding: 10px 0 12px 24px;
+  isolation: isolate;
+}
+
+.reference-hero .hero-intro::before {
+  position: absolute;
+  inset: -18px -28px -20px 0;
+  z-index: -1;
+  border-left: 1px solid rgba(216, 168, 74, 0.48);
+  background:
+    linear-gradient(90deg, rgba(216, 168, 74, 0.045), rgba(216, 168, 74, 0.012) 48%, transparent 86%);
+  box-shadow: -9px 0 24px rgba(216, 168, 74, 0.025);
+  content: "";
+  pointer-events: none;
+}
+
+.reference-hero .hero-intro::after {
+  position: absolute;
+  top: -18px;
+  left: 0;
+  width: 38px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 211, 106, 0.82), transparent);
+  content: "";
+  pointer-events: none;
+}
+
+.reference-hero .hero-intro h1 {
+  max-width: 500px;
+  margin: 0;
+  font-size: clamp(3.2rem, 5vw, 5.7rem);
+  letter-spacing: -0.05em;
+  line-height: 0.95;
+}
+
+.reference-hero .hero-intro .hero-subtitle {
+  max-width: 430px;
+  margin: 0;
+  color: rgba(211, 200, 175, 0.76);
+  line-height: 1.7;
+}
+
+.reference-hero .hero-proof-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  width: min(100%, 430px);
+  margin: 2px 0 0 24px;
+  padding-left: 0;
+}
+
+.reference-hero .hero-proof-list li {
+  width: fit-content;
+  min-height: 18px;
+  padding-left: 19px;
+  color: rgba(196, 181, 149, 0.72);
+  line-height: 18px;
+  transform: translateX(0);
+}
+
+.reference-hero .hero-proof-list li::before {
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+@supports (animation-timeline: scroll()) {
+  .reference-hero .hero-proof-list li {
+    animation-duration: 1ms;
+    animation-fill-mode: both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 24%;
+  }
+
+  .reference-hero .hero-proof-list li:nth-child(odd) {
+    animation-name: heroProofDriftLeft;
+  }
+
+  .reference-hero .hero-proof-list li:nth-child(even) {
+    animation-name: heroProofDriftRight;
+  }
+}
+
+@keyframes heroProofDriftLeft {
+  from {
+    transform: translateX(5px);
+  }
+
+  to {
+    transform: translateX(-7px);
+  }
+}
+
+@keyframes heroProofDriftRight {
+  from {
+    transform: translateX(-5px);
+  }
+
+  to {
+    transform: translateX(7px);
+  }
+}
+
+@media (max-width: 900px) {
+  .reference-nav a:nth-child(n + 3):nth-child(-n + 6)::before {
+    display: none;
+  }
+
+  .reference-hero .hero-intro {
+    width: min(100%, 470px);
+  }
+}
+
+@media (max-width: 680px) {
+  .reference-nav {
+    gap: 0;
+  }
+
+  .reference-nav a,
+  .reference-nav .nav-cta {
+    padding: 8px 4px;
+  }
+
+  .reference-nav .nav-cta {
+    min-width: auto;
+    margin-left: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .reference-hero .hero-intro {
+    gap: 18px;
+    width: 100%;
+    padding: 8px 0 10px 15px;
+  }
+
+  .reference-hero .hero-intro::before {
+    inset: -12px -8px -14px 0;
+  }
+
+  .reference-hero .hero-intro h1 {
+    font-size: clamp(2.9rem, 14vw, 3.8rem);
+  }
+
+  .reference-hero .hero-proof-list {
+    margin-left: 15px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-nav a,
+  .reference-nav a::after,
+  .reference-hero .hero-proof-list li {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Stage 2.8M authoritative visual overrides. */
+.reference-header .levio-mark-lg {
+  width: 62px;
+}
+
+.reference-header .brand-name {
+  font-size: clamp(1.98rem, 2.75vw, 2.78rem);
+}
+
+.reference-hero .hero-feature-strip,
+.reference-decision-system {
+  overflow: clip;
+}
+
+.reference-hero .hero-feature-card,
+.reference-hero .hero-feature-card:first-child,
+.reference-hero .hero-feature-card:last-child {
+  min-height: 176px;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: start;
+  gap: 0;
+  padding: clamp(22px, 2.4vw, 32px);
+  border: 1px solid rgba(216, 168, 74, 0.18);
+  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(255, 243, 208, 0.018), transparent), rgba(3, 3, 3, 0.7);
+  box-shadow: inset 0 1px 0 rgba(255, 243, 208, 0.025);
+}
+
+.reference-hero .hero-feature-card:hover {
+  border-color: rgba(216, 168, 74, 0.32);
+  background: linear-gradient(180deg, rgba(255, 211, 106, 0.034), transparent), rgba(5, 4, 3, 0.76);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 243, 208, 0.045);
+  transform: translateY(-2px);
+}
+
+.reference-hero .hero-feature-card h3 {
+  margin-bottom: 12px;
+  color: rgba(226, 187, 99, 0.94);
+  font-size: clamp(1.02rem, 1.15vw, 1.22rem);
+  font-weight: 680;
+  text-shadow: none;
+}
+
+.reference-hero .hero-feature-card p {
+  max-width: 280px;
+  color: rgba(231, 226, 215, 0.62);
+  font-size: 0.88rem;
+  line-height: 1.68;
+}
+
+.reference-system-card {
+  transition: border-color 240ms ease, background 240ms ease, box-shadow 240ms ease, transform 240ms ease;
+}
+
+.reference-system-card:hover {
+  border-color: rgba(216, 168, 74, 0.32);
+  background: linear-gradient(180deg, rgba(255, 211, 106, 0.034), transparent), rgba(5, 4, 3, 0.76);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 243, 208, 0.045);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 680px) {
+  .reference-header .levio-mark-lg {
+    width: 48px;
+  }
+
+  .reference-header .brand-name {
+    font-size: 1.46rem;
+  }
+
+  .reference-hero .hero-feature-card,
+  .reference-hero .hero-feature-card:first-child,
+  .reference-hero .hero-feature-card:last-child {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    padding: 22px 18px;
+  }
+}
+
+/* Stage 2.8M-FIX authoritative final cascade. */
+.reference-hero .hero-feature-card,
+.reference-hero .hero-feature-card:first-child,
+.reference-hero .hero-feature-card:last-child,
+.reference-system-card {
+  min-height: 220px;
+  align-content: start;
+  gap: 18px;
+  padding: clamp(22px, 2.4vw, 32px);
+  border: 1px solid rgba(216, 168, 74, 0.18);
+  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(255, 243, 208, 0.018), transparent), rgba(3, 3, 3, 0.7);
+  box-shadow: inset 0 1px 0 rgba(255, 243, 208, 0.025);
+}
+
+.reference-hero .hero-feature-card h3,
+.reference-system-card h3 {
+  margin: 0;
+  color: rgba(226, 187, 99, 0.94);
+  font-size: clamp(1.02rem, 1.15vw, 1.22rem);
+  font-weight: 680;
+  letter-spacing: -0.018em;
+  line-height: 1.18;
+  text-shadow: none;
+}
+
+.reference-hero .hero-feature-card p,
+.reference-system-card p {
+  max-width: 280px;
+  margin: 0;
+  color: rgba(231, 226, 215, 0.62);
+  font-size: 0.88rem;
+  line-height: 1.68;
+}
+
+.reference-system-card small {
+  color: rgba(196, 157, 79, 0.7);
+}
+
+.reference-system-card strong {
+  color: rgba(226, 187, 99, 0.94);
+}
+
+.reference-hero .hero-approved-background-image {
+  animation: heroApprovedBackgroundBreath 21.8s ease-in-out infinite;
+}
+
+@supports (animation-timeline: view()) {
+  .reference-hero .hero-feature-card:nth-child(1),
+  .reference-system-card:nth-child(1) {
+    animation-range: entry 20% cover 58%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(2),
+  .reference-system-card:nth-child(2) {
+    animation-range: entry 32% cover 70%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(3),
+  .reference-system-card:nth-child(3) {
+    animation-range: entry 44% cover 82%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(4),
+  .reference-system-card:nth-child(4) {
+    animation-range: entry 56% cover 94%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(1) .motion-letter {
+    animation-range: entry 38% cover 76%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(2) .motion-letter {
+    animation-range: entry 42% cover 80%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(3) .motion-letter {
+    animation-range: entry 46% cover 84%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(4) .motion-letter {
+    animation-range: entry 50% cover 88%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(5) .motion-letter {
+    animation-range: entry 54% cover 92%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(6) .motion-letter {
+    animation-range: entry 58% cover 96%;
+  }
+}
+
+@keyframes heroApprovedBackgroundBreath {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.035);
+  }
+}
+
+@keyframes sectionCardReveal {
+  from {
+    opacity: 0;
+    transform: translate3d(-64px, 18px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes headingLetterAssembleLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-22px, 7px, 0) rotate(-4deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0);
+  }
+}
+
+@keyframes headingLetterAssembleRight {
+  from {
+    opacity: 0;
+    transform: translate3d(22px, -7px, 0) rotate(4deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0);
+  }
+}
+
+@media (max-width: 680px) {
+  .reference-hero .hero-feature-card,
+  .reference-hero .hero-feature-card:first-child,
+  .reference-hero .hero-feature-card:last-child,
+  .reference-system-card {
+    min-height: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-hero .hero-approved-background-image,
+  .reference-hero .hero-feature-card,
+  .reference-system-card,
+  .reference-decision-system .motion-letter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Stage 2.8M-FIX: slower section timing, consistent cards and stronger breathing. */
+.reference-hero .hero-feature-card,
+.reference-hero .hero-feature-card:first-child,
+.reference-hero .hero-feature-card:last-child,
+.reference-system-card {
+  min-height: 220px;
+  align-content: start;
+  gap: 18px;
+  padding: clamp(22px, 2.4vw, 32px);
+  border: 1px solid rgba(216, 168, 74, 0.18);
+  border-radius: 4px;
+  background:
+    linear-gradient(180deg, rgba(255, 243, 208, 0.018), transparent),
+    rgba(3, 3, 3, 0.7);
+  box-shadow: inset 0 1px 0 rgba(255, 243, 208, 0.025);
+}
+
+.reference-hero .hero-feature-card h3,
+.reference-system-card h3 {
+  margin: 0;
+  color: rgba(226, 187, 99, 0.94);
+  font-size: clamp(1.02rem, 1.15vw, 1.22rem);
+  font-weight: 680;
+  letter-spacing: -0.018em;
+  line-height: 1.18;
+  text-shadow: none;
+}
+
+.reference-hero .hero-feature-card p,
+.reference-system-card p {
+  max-width: 280px;
+  margin: 0;
+  color: rgba(231, 226, 215, 0.62);
+  font-size: 0.88rem;
+  line-height: 1.68;
+}
+
+.reference-system-card small {
+  color: rgba(196, 157, 79, 0.7);
+}
+
+.reference-system-card strong {
+  color: rgba(226, 187, 99, 0.94);
+}
+
+.reference-hero .hero-approved-background-image {
+  animation: heroApprovedBackgroundBreath 21.8s ease-in-out infinite;
+}
+
+@keyframes heroApprovedBackgroundBreath {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.035);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .reference-hero .hero-feature-card:nth-child(1),
+  .reference-system-card:nth-child(1) {
+    animation-range: entry 20% cover 58%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(2),
+  .reference-system-card:nth-child(2) {
+    animation-range: entry 32% cover 70%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(3),
+  .reference-system-card:nth-child(3) {
+    animation-range: entry 44% cover 82%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(4),
+  .reference-system-card:nth-child(4) {
+    animation-range: entry 56% cover 94%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(1) .motion-letter {
+    animation-range: entry 38% cover 76%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(2) .motion-letter {
+    animation-range: entry 42% cover 80%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(3) .motion-letter {
+    animation-range: entry 46% cover 84%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(4) .motion-letter {
+    animation-range: entry 50% cover 88%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(5) .motion-letter {
+    animation-range: entry 54% cover 92%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(6) .motion-letter {
+    animation-range: entry 58% cover 96%;
+  }
+}
+
+@keyframes sectionCardReveal {
+  from {
+    opacity: 0;
+    transform: translate3d(-64px, 18px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes headingLetterAssembleLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-22px, 7px, 0) rotate(-4deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0);
+  }
+}
+
+@keyframes headingLetterAssembleRight {
+  from {
+    opacity: 0;
+    transform: translate3d(22px, -7px, 0) rotate(4deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0);
+  }
+}
+
+@media (max-width: 680px) {
+  .reference-hero .hero-feature-card,
+  .reference-hero .hero-feature-card:first-child,
+  .reference-hero .hero-feature-card:last-child,
+  .reference-system-card {
+    min-height: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-hero .hero-approved-background-image,
+  .reference-hero .hero-feature-card,
+  .reference-system-card,
+  .reference-decision-system .motion-letter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-hero .hero-feature-card,
+  .reference-system-card,
+  .reference-decision-system .motion-letter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Stage 2.8M: animated section flow and premium card polish. */
+.reference-header .levio-mark-lg {
+  width: 62px;
+}
+
+.reference-header .brand-name {
+  font-size: clamp(1.98rem, 2.75vw, 2.78rem);
+}
+
+.reference-hero .hero-feature-strip,
+.reference-decision-system {
+  overflow: clip;
+}
+
+.reference-hero .hero-feature-card,
+.reference-hero .hero-feature-card:first-child,
+.reference-hero .hero-feature-card:last-child {
+  min-height: 176px;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: start;
+  gap: 0;
+  padding: clamp(22px, 2.4vw, 32px);
+  border: 1px solid rgba(216, 168, 74, 0.18);
+  border-radius: 4px;
+  background:
+    linear-gradient(180deg, rgba(255, 243, 208, 0.018), transparent),
+    rgba(3, 3, 3, 0.7);
+  box-shadow: inset 0 1px 0 rgba(255, 243, 208, 0.025);
+}
+
+.reference-hero .hero-feature-card:hover {
+  border-color: rgba(216, 168, 74, 0.32);
+  background:
+    linear-gradient(180deg, rgba(255, 211, 106, 0.034), transparent),
+    rgba(5, 4, 3, 0.76);
+  box-shadow:
+    0 18px 38px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 243, 208, 0.045);
+  transform: translateY(-2px);
+}
+
+.reference-hero .hero-feature-card h3 {
+  margin-bottom: 12px;
+  color: rgba(226, 187, 99, 0.94);
+  font-size: clamp(1.02rem, 1.15vw, 1.22rem);
+  font-weight: 680;
+  text-shadow: none;
+}
+
+.reference-hero .hero-feature-card p {
+  max-width: 280px;
+  color: rgba(231, 226, 215, 0.62);
+  font-size: 0.88rem;
+  line-height: 1.68;
+}
+
+.reference-system-card {
+  transition:
+    border-color 240ms ease,
+    background 240ms ease,
+    box-shadow 240ms ease,
+    transform 240ms ease;
+}
+
+.reference-system-card:hover {
+  border-color: rgba(216, 168, 74, 0.32);
+  background:
+    linear-gradient(180deg, rgba(255, 211, 106, 0.034), transparent),
+    rgba(5, 4, 3, 0.76);
+  box-shadow:
+    0 18px 38px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 243, 208, 0.045);
+  transform: translateY(-2px);
+}
+
+.motion-letters {
+  display: inline;
+}
+
+.motion-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.motion-letter {
+  display: inline-block;
+  transform-origin: 50% 58%;
+}
+
+@supports (animation-timeline: view()) {
+  .reference-hero .hero-feature-card,
+  .reference-system-card {
+    animation-duration: 1ms;
+    animation-fill-mode: both;
+    animation-name: sectionCardReveal;
+    animation-timeline: view(block);
+  }
+
+  .reference-hero .hero-feature-card:nth-child(1),
+  .reference-system-card:nth-child(1) {
+    animation-range: entry 0% cover 26%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(2),
+  .reference-system-card:nth-child(2) {
+    animation-range: entry 8% cover 34%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(3),
+  .reference-system-card:nth-child(3) {
+    animation-range: entry 16% cover 42%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(4),
+  .reference-system-card:nth-child(4) {
+    animation-range: entry 24% cover 50%;
+  }
+
+  .reference-decision-system .motion-letter {
+    animation-duration: 1ms;
+    animation-fill-mode: both;
+    animation-timeline: view(block);
+    animation-range: entry 4% cover 34%;
+  }
+
+  .reference-decision-system .motion-letter-left {
+    animation-name: headingLetterAssembleLeft;
+  }
+
+  .reference-decision-system .motion-letter-right {
+    animation-name: headingLetterAssembleRight;
+  }
+}
+
+@keyframes sectionCardReveal {
+  from {
+    opacity: 0;
+    transform: translate3d(-46px, 14px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes headingLetterAssembleLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-28px, 8px, 0) rotate(-7deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0);
+  }
+}
+
+@keyframes headingLetterAssembleRight {
+  from {
+    opacity: 0;
+    transform: translate3d(28px, -8px, 0) rotate(7deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0);
+  }
+}
+
+@media (max-width: 680px) {
+  .reference-header .levio-mark-lg {
+    width: 48px;
+  }
+
+  .reference-header .brand-name {
+    font-size: 1.46rem;
+  }
+
+  .reference-hero .hero-feature-card,
+  .reference-hero .hero-feature-card:first-child,
+  .reference-hero .hero-feature-card:last-child {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    padding: 22px 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-hero .hero-feature-card,
+  .reference-system-card,
+  .reference-decision-system .motion-letter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Stage 2.8L-FIX: precise hero sizing and full-exit proof motion. */
+@keyframes heroProofDriftLeft {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-100vw - 100%));
+  }
+}
+
+@keyframes heroProofDriftRight {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(100vw + 100%));
+  }
+}
+
 /* Stage 2.8G-TYPOGRAPHY-POLISH: homepage typography, premium icons, CTA and workspace input refinement. */
 .reference-header {
   flex-wrap: nowrap;
@@ -8857,6 +9752,36 @@ html {
   margin-top: 10px;
 }
 
+.hero-proof-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  max-width: 520px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hero-proof-list li {
+  position: relative;
+  padding-left: 14px;
+  color: rgba(245, 241, 232, 0.58);
+  font-size: 0.78rem;
+  font-weight: 640;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hero-proof-list li::before {
+  position: absolute;
+  top: 0.62em;
+  left: 0;
+  width: 5px;
+  height: 1px;
+  background: rgba(216, 168, 74, 0.72);
+  content: "";
+}
+
 .reference-hero .button-link,
 .reference-hero .secondary-button {
   min-height: 48px;
@@ -8929,11 +9854,23 @@ html {
 }
 
 .reference-process,
+.reference-decision-system,
 .reference-capabilities,
 .reference-workspace {
   padding-top: clamp(64px, 7vw, 104px);
   padding-bottom: clamp(64px, 7vw, 104px);
   border-bottom-color: rgba(216, 168, 74, 0.1);
+}
+
+.reference-decision-system {
+  position: relative;
+  z-index: 2;
+  padding-right: clamp(18px, 4vw, 54px);
+  padding-left: clamp(18px, 4vw, 54px);
+  border-bottom: 1px solid rgba(216, 168, 74, 0.1);
+  background:
+    linear-gradient(180deg, rgba(3, 3, 3, 0.98), rgba(7, 6, 4, 0.94)),
+    #020202;
 }
 
 .reference-section-heading {
@@ -8952,13 +9889,23 @@ html {
 }
 
 .reference-process-grid,
+.reference-system-grid,
 .reference-capability-grid {
   gap: clamp(22px, 2.8vw, 42px);
 }
 
+.reference-system-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
 .reference-process-card,
+.reference-system-card,
 .reference-capability-card {
+  position: relative;
+  display: grid;
   min-height: 220px;
+  min-width: 0;
   grid-template-columns: 1fr;
   grid-template-rows: auto auto 1fr;
   gap: 18px;
@@ -8974,11 +9921,13 @@ html {
 
 .reference-process-card::before,
 .reference-process-card::after,
+.reference-system-card::before,
 .reference-capability-card::before {
   display: none;
 }
 
 .reference-process-card h3,
+.reference-system-card h3,
 .reference-capability-card h3 {
   color: rgba(250, 249, 245, 0.9);
   font-size: clamp(1.05rem, 1.2vw, 1.22rem);
@@ -8988,6 +9937,7 @@ html {
 }
 
 .reference-process-card p,
+.reference-system-card p,
 .reference-capability-card p {
   max-width: 280px;
   margin: 0;
@@ -8995,6 +9945,21 @@ html {
   font-size: 0.88rem;
   line-height: 1.68;
   text-align: left;
+}
+
+.reference-system-card small,
+.reference-system-card strong {
+  color: rgba(216, 168, 74, 0.78);
+  font-size: 0.74rem;
+  font-weight: 760;
+  letter-spacing: 0.16em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.reference-system-card strong {
+  color: rgba(255, 211, 106, 0.86);
+  font-size: 0.72rem;
 }
 
 .reference-process-connector {
@@ -9022,7 +9987,9 @@ html {
 }
 
 .reference-footer {
-  display: block;
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) repeat(3, minmax(120px, 0.38fr));
+  gap: clamp(22px, 4vw, 56px);
   padding: clamp(34px, 5vw, 58px) clamp(18px, 4vw, 54px);
   border-top-color: rgba(216, 168, 74, 0.14);
   background: #020202;
@@ -9055,6 +10022,30 @@ html {
   font-size: 0.78rem;
 }
 
+.reference-footer-column {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+}
+
+.reference-footer-column strong {
+  color: rgba(216, 168, 74, 0.76);
+  font-size: 0.72rem;
+  font-weight: 760;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.reference-footer-column a {
+  color: rgba(245, 241, 232, 0.5);
+  font-size: 0.78rem;
+  text-decoration: none;
+}
+
+.reference-footer-column a:hover {
+  color: #ffd36a;
+}
+
 @media (max-width: 900px) {
   .reference-hero {
     grid-template-columns: 1fr;
@@ -9072,8 +10063,20 @@ html {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .reference-system-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .reference-hero .hero-feature-card:nth-child(2) {
     border-right: 0;
+  }
+
+  .reference-footer {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .reference-footer-brand {
+    grid-column: 1 / -1;
   }
 }
 
@@ -9123,6 +10126,7 @@ html {
   }
 
   .reference-process,
+  .reference-decision-system,
   .reference-capabilities,
   .reference-workspace {
     padding-top: 54px;
@@ -9130,6 +10134,7 @@ html {
   }
 
   .reference-process-card,
+  .reference-system-card,
   .reference-capability-card {
     min-height: auto;
     grid-template-columns: 42px minmax(0, 1fr);
@@ -9139,7 +10144,1002 @@ html {
   }
 
   .reference-process-card small,
+  .reference-system-card small,
   .reference-capability-card small {
     grid-row: 1 / -1;
+  }
+
+  .reference-system-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reference-system-card strong {
+    grid-column: 2;
+  }
+
+  .reference-system-card h3,
+  .reference-system-card p {
+    grid-column: 2;
+  }
+
+  .reference-footer {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Stage 2.8J: exact reference Levio ring mark. */
+.levio-mark {
+  display: inline-block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 0;
+  border-radius: 50%;
+  background: #000;
+  box-shadow: none;
+  line-height: 0;
+  vertical-align: middle;
+}
+
+.levio-mark::before,
+.levio-mark::after {
+  display: none;
+}
+
+.levio-mark-sm {
+  width: 30px;
+}
+
+.levio-mark-md {
+  width: 40px;
+}
+
+.levio-mark-lg,
+.reference-header .levio-mark-lg {
+  width: 44px;
+}
+
+.levio-mark-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.reference-header .brand-lockup,
+.reference-footer-brand .brand-lockup {
+  align-items: center;
+}
+
+.reference-hero .hero-subtitle {
+  max-width: 460px;
+}
+
+@media (max-width: 680px) {
+  .reference-header .levio-mark-lg {
+    width: 36px;
+  }
+}
+
+/* Stage 2.8K: hero motion and text hierarchy polish. */
+.reference-hero .hero-approved-background-image {
+  transform-origin: 76% 50%;
+  animation: heroApprovedBackgroundBreath 30s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes heroApprovedBackgroundBreath {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.025);
+  }
+}
+
+.reference-hero h1 {
+  max-width: 590px;
+  background: linear-gradient(112deg, #f3ead2 0%, #e4d1a0 54%, #c99a43 100%);
+  background-clip: text;
+  color: #e4d1a0;
+  font-weight: 520;
+  letter-spacing: -0.052em;
+  line-height: 0.94;
+  text-shadow:
+    0 1px 0 rgba(255, 243, 208, 0.06),
+    0 18px 42px rgba(0, 0, 0, 0.54);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.reference-hero h1 span {
+  background: linear-gradient(98deg, #f2dda8 0%, #dcb45d 46%, #bd812b 100%);
+  background-clip: text;
+  color: #d8a84a;
+  font-weight: 570;
+  letter-spacing: -0.056em;
+  text-shadow: 0 16px 36px rgba(0, 0, 0, 0.48);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.reference-hero .hero-subtitle {
+  max-width: 440px;
+  color: rgba(221, 211, 188, 0.76);
+  font-size: clamp(1.02rem, 1.1vw, 1.14rem);
+  font-weight: 430;
+  letter-spacing: -0.008em;
+  line-height: 1.68;
+  text-shadow: 0 12px 28px rgba(0, 0, 0, 0.42);
+}
+
+.reference-hero .hero-proof-list {
+  gap: 11px 22px;
+  max-width: 540px;
+  margin-top: 8px;
+}
+
+.reference-hero .hero-proof-list li {
+  padding-left: 15px;
+  color: rgba(205, 190, 158, 0.7);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.105em;
+  line-height: 1.45;
+}
+
+.reference-hero .hero-proof-list li::before {
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border: 1px solid rgba(216, 168, 74, 0.74);
+  border-radius: 50%;
+  background: rgba(216, 168, 74, 0.18);
+  box-shadow: 0 0 8px rgba(216, 168, 74, 0.16);
+}
+
+@media (max-width: 680px) {
+  .reference-hero h1 {
+    line-height: 0.96;
+  }
+
+  .reference-hero .hero-subtitle {
+    max-width: 350px;
+    font-size: 1rem;
+    line-height: 1.62;
+  }
+
+  .reference-hero .hero-proof-list {
+    gap: 9px 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-hero .hero-approved-background-image {
+    animation: none;
+    transform: none;
+  }
+}
+
+/* Stage 2.8L authoritative final overrides. */
+.reference-header .levio-mark-lg {
+  width: 52px;
+}
+
+.reference-header .brand-name {
+  font-size: clamp(1.72rem, 2.4vw, 2.42rem);
+}
+
+.reference-hero .hero-intro {
+  width: min(100%, 500px);
+  transform: translateY(-18px);
+}
+
+.reference-hero .hero-intro h1 {
+  max-width: 480px;
+  font-size: clamp(2.8rem, 4.25vw, 4.85rem);
+  line-height: 0.96;
+}
+
+.reference-hero .hero-intro .hero-subtitle {
+  max-width: 480px;
+  color: rgba(218, 205, 177, 0.8);
+  font-size: clamp(1.25rem, 1.65vw, 1.5rem);
+  line-height: 1.72;
+}
+
+.reference-hero .hero-approved-background-image {
+  animation-duration: 25.8s;
+}
+
+.reference-nav {
+  gap: clamp(12px, 1.3vw, 20px);
+}
+
+.reference-nav a,
+.reference-nav .nav-cta {
+  position: relative;
+  min-height: auto;
+  padding: 9px 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: rgba(218, 210, 193, 0.72);
+  transition: color 240ms ease, text-shadow 240ms ease, transform 240ms ease;
+}
+
+.reference-nav a:hover {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: rgba(242, 218, 160, 0.96);
+  text-shadow: 0 0 15px rgba(216, 168, 74, 0.18);
+  transform: translateY(-1px) scale(1.025);
+}
+
+.reference-nav .nav-active {
+  color: #e2bb63;
+  font-weight: 720;
+  text-shadow: 0 0 14px rgba(216, 168, 74, 0.16);
+}
+
+.reference-nav .nav-active::after {
+  right: 4%;
+  bottom: 0;
+  left: 4%;
+  display: block;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 211, 106, 0.9), transparent);
+  box-shadow: 0 0 9px rgba(216, 168, 74, 0.16);
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.reference-nav .nav-cta {
+  min-width: 132px;
+  margin-left: clamp(8px, 1vw, 16px);
+  padding: 10px 16px;
+  border: 1px solid rgba(216, 168, 74, 0.48);
+  border-radius: 3px;
+  background: linear-gradient(180deg, rgba(24, 17, 7, 0.52), rgba(6, 5, 3, 0.34));
+  box-shadow: inset 0 1px 0 rgba(255, 243, 208, 0.055), 0 0 18px rgba(216, 168, 74, 0.04);
+}
+
+.reference-nav .nav-cta:hover {
+  border: 1px solid rgba(226, 187, 99, 0.72);
+  background: linear-gradient(180deg, rgba(31, 21, 7, 0.62), rgba(8, 6, 3, 0.42));
+  box-shadow: inset 0 1px 0 rgba(255, 243, 208, 0.08), 0 8px 22px rgba(0, 0, 0, 0.28), 0 0 20px rgba(216, 168, 74, 0.09);
+}
+
+.reference-hero .home-hero-copy {
+  max-width: 570px;
+  gap: 24px;
+}
+
+.reference-hero .hero-proof-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  width: min(100%, 430px);
+  margin: 2px 0 0 24px;
+}
+
+.reference-hero .hero-proof-list li {
+  width: fit-content;
+  min-height: 21px;
+  padding-left: 19px;
+  color: rgba(211, 184, 126, 0.82);
+  font-size: 0.83rem;
+  line-height: 21px;
+}
+
+.reference-hero .hero-proof-list li::before {
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+@media (max-width: 900px) {
+  .reference-nav a:nth-child(n + 3):nth-child(-n + 6)::before {
+    display: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .reference-header .levio-mark-lg {
+    width: 42px;
+  }
+
+  .reference-header .brand-name {
+    font-size: 1.28rem;
+  }
+
+  .reference-nav {
+    gap: 0;
+  }
+
+  .reference-nav a,
+  .reference-nav .nav-cta {
+    justify-content: center;
+    min-width: auto;
+    margin-left: 0;
+    padding: 8px 4px;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .reference-hero .hero-proof-list {
+    margin-left: 15px;
+  }
+
+  .reference-hero .hero-intro {
+    transform: translateY(-8px);
+  }
+
+  .reference-hero .hero-intro h1 {
+    font-size: clamp(2.55rem, 12vw, 3.35rem);
+  }
+
+  .reference-hero .hero-intro .hero-subtitle {
+    max-width: 340px;
+    font-size: 1.12rem;
+    line-height: 1.68;
+  }
+
+  .reference-hero .hero-proof-list li {
+    font-size: 0.78rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-nav a,
+  .reference-nav a::after,
+  .reference-hero .hero-proof-list li {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+
+  .reference-hero .hero-intro {
+    transform: none;
+  }
+}
+
+/* Stage 2.8M final cascade. */
+.reference-header .levio-mark-lg {
+  width: 62px;
+}
+
+.reference-header .brand-name {
+  font-size: clamp(1.98rem, 2.75vw, 2.78rem);
+}
+
+.reference-hero .hero-feature-strip,
+.reference-decision-system {
+  overflow: clip;
+}
+
+.reference-hero .hero-feature-card,
+.reference-hero .hero-feature-card:first-child,
+.reference-hero .hero-feature-card:last-child {
+  min-height: 176px;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: start;
+  gap: 0;
+  padding: clamp(22px, 2.4vw, 32px);
+  border: 1px solid rgba(216, 168, 74, 0.18);
+  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(255, 243, 208, 0.018), transparent), rgba(3, 3, 3, 0.7);
+  box-shadow: inset 0 1px 0 rgba(255, 243, 208, 0.025);
+}
+
+.reference-hero .hero-feature-card h3 {
+  margin-bottom: 12px;
+  color: rgba(226, 187, 99, 0.94);
+  font-size: clamp(1.02rem, 1.15vw, 1.22rem);
+  font-weight: 680;
+  text-shadow: none;
+}
+
+.reference-hero .hero-feature-card p {
+  max-width: 280px;
+  color: rgba(231, 226, 215, 0.62);
+  font-size: 0.88rem;
+  line-height: 1.68;
+}
+
+@media (max-width: 680px) {
+  .reference-header .levio-mark-lg {
+    width: 48px;
+  }
+
+  .reference-header .brand-name {
+    font-size: 1.46rem;
+  }
+
+  .reference-hero .hero-feature-card,
+  .reference-hero .hero-feature-card:first-child,
+  .reference-hero .hero-feature-card:last-child {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    padding: 22px 18px;
+  }
+}
+
+/* Stage 2.8M-FIX final timing layer. */
+.reference-hero .hero-feature-card,
+.reference-hero .hero-feature-card:first-child,
+.reference-hero .hero-feature-card:last-child,
+.reference-system-card {
+  min-height: 220px;
+  gap: 18px;
+  padding: clamp(22px, 2.4vw, 32px);
+  border: 1px solid rgba(216, 168, 74, 0.18);
+  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(255, 243, 208, 0.018), transparent), rgba(3, 3, 3, 0.7);
+  box-shadow: inset 0 1px 0 rgba(255, 243, 208, 0.025);
+}
+
+.reference-hero .hero-feature-card h3,
+.reference-system-card h3 {
+  margin: 0;
+  color: rgba(226, 187, 99, 0.94);
+  font-size: clamp(1.02rem, 1.15vw, 1.22rem);
+  font-weight: 680;
+  line-height: 1.18;
+  text-shadow: none;
+}
+
+.reference-hero .hero-feature-card p,
+.reference-system-card p {
+  max-width: 280px;
+  margin: 0;
+  color: rgba(231, 226, 215, 0.62);
+  font-size: 0.88rem;
+  line-height: 1.68;
+}
+
+.reference-hero .hero-approved-background-image {
+  animation: heroApprovedBackgroundBreath 21.8s ease-in-out infinite;
+}
+
+@supports (animation-timeline: view()) {
+  .reference-hero .hero-feature-card:nth-child(1),
+  .reference-system-card:nth-child(1) {
+    animation-range: entry 20% cover 58%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(2),
+  .reference-system-card:nth-child(2) {
+    animation-range: entry 32% cover 70%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(3),
+  .reference-system-card:nth-child(3) {
+    animation-range: entry 44% cover 82%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(4),
+  .reference-system-card:nth-child(4) {
+    animation-range: entry 56% cover 94%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(1) .motion-letter {
+    animation-range: entry 38% cover 76%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(2) .motion-letter {
+    animation-range: entry 42% cover 80%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(3) .motion-letter {
+    animation-range: entry 46% cover 84%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(4) .motion-letter {
+    animation-range: entry 50% cover 88%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(5) .motion-letter {
+    animation-range: entry 54% cover 92%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(6) .motion-letter {
+    animation-range: entry 58% cover 96%;
+  }
+}
+
+@keyframes heroApprovedBackgroundBreath {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.035);
+  }
+}
+
+@keyframes sectionCardReveal {
+  from {
+    opacity: 0;
+    transform: translate3d(-64px, 18px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes headingLetterAssembleLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-22px, 7px, 0) rotate(-4deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0);
+  }
+}
+
+@keyframes headingLetterAssembleRight {
+  from {
+    opacity: 0;
+    transform: translate3d(22px, -7px, 0) rotate(4deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0);
+  }
+}
+
+@media (max-width: 680px) {
+  .reference-hero .hero-feature-card,
+  .reference-hero .hero-feature-card:first-child,
+  .reference-hero .hero-feature-card:last-child,
+  .reference-system-card {
+    min-height: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-hero .hero-approved-background-image,
+  .reference-hero .hero-feature-card,
+  .reference-system-card,
+  .reference-decision-system .motion-letter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Stage 2.8M-FIX root scroll sequencing. */
+@supports (animation-timeline: scroll()) {
+  .reference-hero .hero-feature-card,
+  .reference-system-card,
+  .reference-decision-system .motion-letter {
+    animation-timeline: scroll(root block);
+  }
+
+  .reference-hero .hero-feature-card:nth-child(1) {
+    animation-range: 0% 12%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(2) {
+    animation-range: 4% 16%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(3) {
+    animation-range: 8% 20%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(4) {
+    animation-range: 12% 24%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(1) .motion-letter {
+    animation-range: 18% 34%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(2) .motion-letter {
+    animation-range: 20% 36%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(3) .motion-letter {
+    animation-range: 22% 38%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(4) .motion-letter {
+    animation-range: 24% 40%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(5) .motion-letter {
+    animation-range: 26% 42%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(6) .motion-letter {
+    animation-range: 28% 44%;
+  }
+
+  .reference-system-card:nth-child(1) {
+    animation-range: 28% 42%;
+  }
+
+  .reference-system-card:nth-child(2) {
+    animation-range: 32% 46%;
+  }
+
+  .reference-system-card:nth-child(3) {
+    animation-range: 36% 50%;
+  }
+
+  .reference-system-card:nth-child(4) {
+    animation-range: 40% 54%;
+  }
+}
+
+@keyframes headingLetterAssembleLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-5px, 2px, 0) rotate(-1deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0);
+  }
+}
+
+@keyframes headingLetterAssembleRight {
+  from {
+    opacity: 0;
+    transform: translate3d(5px, -2px, 0) rotate(1deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0);
+  }
+}
+
+/* Stage 2.8N: scroll timing and section readability polish. */
+.reference-decision-system .reference-section-heading,
+.reference-process .reference-section-heading {
+  width: min(100%, 980px);
+  max-width: 980px;
+}
+
+.reference-hero .hero-feature-card,
+.reference-hero .hero-feature-card:first-child,
+.reference-hero .hero-feature-card:last-child,
+.reference-system-card,
+.reference-process-card,
+.reference-capability-card {
+  min-height: 188px;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  align-content: start;
+  gap: 14px;
+  padding: clamp(20px, 2.1vw, 28px);
+  border: 1px solid rgba(216, 168, 74, 0.2);
+  border-radius: 4px;
+  background:
+    linear-gradient(180deg, rgba(255, 243, 208, 0.022), transparent),
+    rgba(3, 3, 3, 0.74);
+  box-shadow: inset 0 1px 0 rgba(255, 243, 208, 0.03);
+}
+
+.reference-hero .hero-feature-card h3,
+.reference-system-card h3,
+.reference-process-card h3,
+.reference-capability-card h3 {
+  margin: 0;
+  color: rgba(232, 194, 112, 0.96);
+  font-size: clamp(1.12rem, 1.3vw, 1.34rem);
+  font-weight: 690;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  text-shadow: none;
+}
+
+.reference-hero .hero-feature-card p,
+.reference-system-card p,
+.reference-process-card p,
+.reference-capability-card p {
+  max-width: 300px;
+  margin: 0;
+  color: rgba(238, 233, 222, 0.74);
+  font-size: clamp(0.94rem, 1vw, 1rem);
+  line-height: 1.68;
+}
+
+.reference-system-card small,
+.reference-system-card strong {
+  color: rgba(216, 168, 74, 0.84);
+}
+
+.reference-system-card {
+  grid-template-rows: auto auto auto 1fr;
+}
+
+.reference-workspace-heading h2 {
+  color: rgba(244, 237, 221, 0.94);
+  font-size: clamp(2rem, 3.2vw, 3.15rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+}
+
+.reference-workspace-heading > p:last-child {
+  max-width: 920px;
+  color: rgba(235, 228, 213, 0.72);
+  font-size: clamp(1.05rem, 1.3vw, 1.24rem);
+  line-height: 1.65;
+}
+
+.reference-cta-banner h2 {
+  color: rgba(244, 237, 221, 0.96);
+  font-size: clamp(2rem, 3vw, 3rem);
+  font-weight: 520;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+}
+
+.reference-cta-banner p {
+  max-width: 860px;
+  color: rgba(235, 228, 213, 0.76);
+  font-size: clamp(1.08rem, 1.4vw, 1.3rem);
+  line-height: 1.62;
+}
+
+.reference-process .motion-letter {
+  display: inline-block;
+  transform-origin: 50% 58%;
+}
+
+.reference-process .motion-letter-left {
+  animation-name: sectionLetterFromViewerLeft;
+}
+
+.reference-process .motion-letter-right {
+  animation-name: sectionLetterFromViewerRight;
+}
+
+@keyframes heroTitleFadeUp {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, -88px, 0);
+  }
+}
+
+@keyframes sectionCardRevealReadable {
+  from {
+    opacity: 0;
+    transform: translate3d(-46px, 12px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes sectionLetterFromViewerLeft {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translate3d(-18px, 8px, 0) scale(1.18) rotate(-2deg);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) scale(1) rotate(0);
+  }
+}
+
+@keyframes sectionLetterFromViewerRight {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translate3d(18px, -8px, 0) scale(1.18) rotate(2deg);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) scale(1) rotate(0);
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .reference-hero .hero-motion-title {
+    animation: heroTitleFadeUp 1ms linear both;
+    animation-range: 0% 10%;
+    animation-timeline: scroll(root block);
+  }
+
+  .reference-hero .hero-feature-card,
+  .reference-system-card,
+  .reference-process-card,
+  .reference-capability-card {
+    animation-duration: 1ms;
+    animation-fill-mode: both;
+    animation-name: sectionCardRevealReadable;
+    animation-timeline: scroll(root block);
+  }
+
+  .reference-hero .hero-feature-card:nth-child(1) {
+    animation-range: 1% 8%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(2) {
+    animation-range: 3% 10%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(3) {
+    animation-range: 5% 12%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(4) {
+    animation-range: 7% 14%;
+  }
+
+  .reference-decision-system .motion-letter,
+  .reference-process .motion-letter {
+    animation-duration: 1ms;
+    animation-fill-mode: both;
+    animation-timeline: scroll(root block);
+  }
+
+  .reference-decision-system .motion-letter-left,
+  .reference-process .motion-letter-left {
+    animation-name: sectionLetterFromViewerLeft;
+  }
+
+  .reference-decision-system .motion-letter-right,
+  .reference-process .motion-letter-right {
+    animation-name: sectionLetterFromViewerRight;
+  }
+
+  .reference-decision-system .motion-word:nth-child(1) .motion-letter {
+    animation-range: 10% 19%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(2) .motion-letter {
+    animation-range: 11% 20%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(3) .motion-letter {
+    animation-range: 12% 21%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(4) .motion-letter {
+    animation-range: 13% 22%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(5) .motion-letter {
+    animation-range: 14% 23%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(6) .motion-letter {
+    animation-range: 15% 24%;
+  }
+
+  .reference-system-card:nth-child(1) {
+    animation-range: 17% 24%;
+  }
+
+  .reference-system-card:nth-child(2) {
+    animation-range: 19% 26%;
+  }
+
+  .reference-system-card:nth-child(3) {
+    animation-range: 21% 28%;
+  }
+
+  .reference-system-card:nth-child(4) {
+    animation-range: 23% 30%;
+  }
+
+  .reference-process .motion-word:nth-child(1) .motion-letter {
+    animation-range: 34% 43%;
+  }
+
+  .reference-process .motion-word:nth-child(2) .motion-letter {
+    animation-range: 35% 44%;
+  }
+
+  .reference-process .motion-word:nth-child(3) .motion-letter {
+    animation-range: 36% 45%;
+  }
+
+  .reference-process .motion-word:nth-child(4) .motion-letter {
+    animation-range: 37% 46%;
+  }
+
+  .reference-process .motion-word:nth-child(5) .motion-letter,
+  .reference-process .motion-word:nth-child(6) .motion-letter {
+    animation-range: 38% 47%;
+  }
+
+  .reference-process-card:nth-child(1) {
+    animation-range: 40% 47%;
+  }
+
+  .reference-process-card:nth-child(2) {
+    animation-range: 42% 49%;
+  }
+
+  .reference-process-card:nth-child(3) {
+    animation-range: 44% 51%;
+  }
+
+  .reference-process-card:nth-child(4) {
+    animation-range: 46% 53%;
+  }
+
+  .reference-capability-card:nth-child(1) {
+    animation-range: 58% 65%;
+  }
+
+  .reference-capability-card:nth-child(2) {
+    animation-range: 60% 67%;
+  }
+
+  .reference-capability-card:nth-child(3) {
+    animation-range: 62% 69%;
+  }
+
+  .reference-capability-card:nth-child(4) {
+    animation-range: 64% 71%;
+  }
+}
+
+@media (max-width: 680px) {
+  .reference-hero .hero-feature-card,
+  .reference-hero .hero-feature-card:first-child,
+  .reference-hero .hero-feature-card:last-child,
+  .reference-system-card,
+  .reference-process-card,
+  .reference-capability-card {
+    min-height: auto;
+    padding: 21px 18px;
+  }
+
+  .reference-workspace-heading h2,
+  .reference-cta-banner h2 {
+    font-size: clamp(1.8rem, 8vw, 2.45rem);
+  }
+
+  .reference-workspace-heading > p:last-child,
+  .reference-cta-banner p {
+    font-size: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-hero .hero-motion-title,
+  .reference-hero .hero-feature-card,
+  .reference-system-card,
+  .reference-process-card,
+  .reference-capability-card,
+  .reference-decision-system .motion-letter,
+  .reference-process .motion-letter {
+    animation: none;
+    filter: none;
+    opacity: 1;
+    transform: none;
   }
 }

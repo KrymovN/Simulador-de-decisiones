@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import HomeSimulator from "../components/HomeSimulator";
 import LevioMark from "../components/LevioMark";
 
@@ -34,40 +35,115 @@ const navItems = [
 const heroFeatures = [
   {
     title: "Análisis profundo",
-    copy: "IA que entiende contexto, emociones y objetivos.",
+    copy: "Contexto, objetivos, presión emocional y señales que pueden cambiar el resultado.",
   },
   {
     title: "Escenarios múltiples",
-    copy: "Simula distintos futuros posibles y sus resultados.",
+    copy: "Compara rutas posibles antes de comprometer tiempo, dinero o reputación.",
   },
   {
     title: "Evaluación de riesgos",
-    copy: "Detecta riesgos ocultos y oportunidades reales.",
+    copy: "Distingue riesgos visibles, riesgos ocultos y consecuencias aplazadas.",
   },
   {
     title: "Decisiones estratégicas",
-    copy: "Recomendaciones claras para cada escenario.",
+    copy: "Convierte el análisis en una recomendación sobria, clara y accionable.",
   },
 ];
 
 const lowerCapabilities = [
   {
     title: "Inteligencia contextual",
-    copy: "Entiende tu situación en profundidad, no solo las palabras.",
+    copy: "Lee la situación completa: intereses, restricciones, personas afectadas y momento de decisión.",
   },
   {
     title: "Análisis emocional",
-    copy: "Evalúa el impacto emocional de cada decisión en tu vida y entorno.",
+    copy: "Evalúa presión, coste emocional y posibles efectos en relaciones, energía y confianza.",
   },
   {
     title: "Riesgos ocultos",
-    copy: "Detecta riesgos que no son visibles a simple vista para evitar futuros problemas.",
+    copy: "Señala fricciones, dependencias y costes futuros que suelen aparecer demasiado tarde.",
   },
   {
     title: "Ventajas estratégicas",
-    copy: "Encuentra oportunidades que te acercan más rápido a tus objetivos.",
+    copy: "Detecta caminos con mejor relación entre oportunidad, exposición y capacidad real de ejecución.",
   },
 ];
+
+const trustSignals = [
+  "Sin conversación vacía",
+  "Escenarios comparables",
+  "Riesgo y consecuencia",
+];
+
+const decisionIntelligence = [
+  {
+    label: "Escenarios",
+    title: "No una respuesta. Un mapa de futuros posibles.",
+    copy: "Levio organiza alternativas y muestra cómo puede evolucionar cada ruta si actúas ahora, esperas o cambias de estrategia.",
+  },
+  {
+    label: "Consecuencias",
+    title: "Efectos inmediatos y efectos que llegan después.",
+    copy: "Cada decisión puede abrir beneficios rápidos y costes diferidos. El sistema ayuda a ver ambos antes de decidir.",
+  },
+  {
+    label: "Riesgo",
+    title: "Señales débiles antes de que se conviertan en problemas.",
+    copy: "Identifica incertidumbre, dependencia de terceros, presión emocional y puntos donde una decisión puede volverse frágil.",
+  },
+  {
+    label: "Criterio",
+    title: "Una recomendación que no sustituye tu juicio.",
+    copy: "La salida está pensada para ayudarte a pensar con más claridad, no para empujarte a una respuesta automática.",
+  },
+];
+
+const footerColumns = [
+  {
+    title: "Producto",
+    links: [
+      { label: "Simulador", href: "#decision-input" },
+      { label: "Escenarios", href: "#escenarios" },
+      { label: "Riesgos", href: "#motor" },
+    ],
+  },
+  {
+    title: "Acceso",
+    links: [
+      { label: "Iniciar sesión", href: "/login" },
+      { label: "Mi espacio", href: "/dashboard" },
+    ],
+  },
+  {
+    title: "Confianza",
+    links: [
+      { label: "Privacidad", href: "/dashboard/privacy" },
+      { label: "Contacto", href: "mailto:hola@levio.es" },
+    ],
+  },
+];
+
+function MotionLetters({ text }: { text: string }) {
+  return (
+    <span className="motion-letters" aria-hidden="true">
+      {text.split(" ").map((word, wordIndex) => (
+        <span className="motion-word" key={`${word}-${wordIndex}`}>
+          {Array.from(word).map((character, characterIndex) => (
+            <span
+              className={(wordIndex + characterIndex) % 2 === 0 ? "motion-letter motion-letter-left" : "motion-letter motion-letter-right"}
+              key={`${character}-${characterIndex}`}
+              style={{ "--motion-index": characterIndex } as CSSProperties}
+            >
+              {character}
+            </span>
+          ))}
+          {wordIndex < text.split(" ").length - 1 ? "\u00a0" : null}
+        </span>
+      ))}
+    </span>
+  );
+}
 
 export default function Home() {
   return (
@@ -132,13 +208,15 @@ export default function Home() {
         </div>
 
         <div className="hero-copy home-hero-copy">
-          <h1 id="hero-title">
-            Decide antes
-            <span>de actuar.</span>
-          </h1>
-          <p className="hero-subtitle">
-            Levio simula escenarios, riesgos y consecuencias para decisiones importantes.
-          </p>
+          <div className="hero-intro">
+            <h1 className="hero-motion-title" id="hero-title">
+              Decide antes
+              <span>de actuar.</span>
+            </h1>
+            <p className="hero-subtitle">
+              Analiza escenarios, riesgos y consecuencias antes de tomar una decisión.
+            </p>
+          </div>
 
           <div className="hero-actions home-hero-actions" aria-label="Accesos principales">
             <a className="button-link" href="#decision-input">
@@ -148,12 +226,21 @@ export default function Home() {
               Ver cómo funciona
             </a>
           </div>
+
+          <ul className="hero-proof-list" aria-label="Señales del producto">
+            {trustSignals.map((signal) => (
+              <li key={signal}>{signal}</li>
+            ))}
+          </ul>
         </div>
 
         <div className="hero-feature-strip" aria-label="Capacidades principales">
           {heroFeatures.map((feature, index) => (
-            <article className="hero-feature-card" key={feature.title}>
-              <small aria-hidden="true">{String(index + 1).padStart(2, "0")}</small>
+            <article
+              className="hero-feature-card"
+              key={feature.title}
+              style={{ "--card-index": index } as CSSProperties}
+            >
               <div>
                 <h3>{feature.title}</h3>
                 <p>{feature.copy}</p>
@@ -164,20 +251,57 @@ export default function Home() {
 
       </section>
 
+      <section className="reference-decision-system" aria-labelledby="decision-system-title">
+        <div className="reference-section-heading">
+          <p className="eyebrow motion-heading-line" aria-label="Inteligencia de decisión con IA">
+            <MotionLetters text="Inteligencia de decisión con IA" />
+          </p>
+          <h2
+            className="motion-heading-line"
+            id="decision-system-title"
+            aria-label="Pensado para decisiones con consecuencias reales."
+          >
+            <MotionLetters text="Pensado para decisiones con consecuencias reales." />
+          </h2>
+          <span aria-hidden="true"></span>
+        </div>
+
+        <div className="reference-system-grid">
+          {decisionIntelligence.map((item, index) => (
+            <article
+              className="reference-system-card"
+              key={item.title}
+              style={{ "--card-index": index } as CSSProperties}
+            >
+              <small>{String(index + 1).padStart(2, "0")}</small>
+              <strong>{item.label}</strong>
+              <h3>{item.title}</h3>
+              <p>{item.copy}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className="reference-process" id="motor" aria-labelledby="process-title">
         <div className="reference-section-heading">
-          <p className="eyebrow">¿Cómo funciona Levio.es?</p>
-          <h2 id="process-title">Un proceso inteligente en 4 pasos</h2>
+          <p className="eyebrow motion-heading-line" aria-label="¿Cómo funciona Levio.es?">
+            <MotionLetters text="¿Cómo funciona Levio.es?" />
+          </p>
+          <h2 className="motion-heading-line" id="process-title" aria-label="Un proceso inteligente en 4 pasos">
+            <MotionLetters text="Un proceso inteligente en 4 pasos" />
+          </h2>
           <span aria-hidden="true"></span>
         </div>
 
         <div className="reference-process-grid">
           {processSteps.map((step, index) => (
-            <article className="reference-process-card" key={step.title}>
-              <small>{String(index + 1).padStart(2, "0")}</small>
+            <article
+              className="reference-process-card"
+              key={step.title}
+              style={{ "--card-index": index } as CSSProperties}
+            >
               <h3>{step.title}</h3>
               <p>{step.copy}</p>
-              {index < processSteps.length - 1 && <span className="reference-process-connector" aria-hidden="true"></span>}
             </article>
           ))}
         </div>
@@ -190,8 +314,11 @@ export default function Home() {
 
         <div className="reference-capability-grid">
           {lowerCapabilities.map((capability, index) => (
-            <article className="reference-capability-card" key={capability.title}>
-              <small aria-hidden="true">{String(index + 1).padStart(2, "0")}</small>
+            <article
+              className="reference-capability-card"
+              key={capability.title}
+              style={{ "--card-index": index } as CSSProperties}
+            >
               <h3>{capability.title}</h3>
               <p>{capability.copy}</p>
             </article>
@@ -201,9 +328,9 @@ export default function Home() {
 
       <section className="reference-workspace" id="escenarios" aria-labelledby="workspace-title">
         <div className="reference-workspace-heading">
-          <p className="eyebrow">Workspace levio.es</p>
+          <p className="eyebrow">Área de trabajo levio.es</p>
           <h2 id="workspace-title">Simula una decisión cuando estés listo.</h2>
-          <p>El motor de escenarios permanece disponible como área de trabajo separada del landing.</p>
+          <p>El motor de escenarios permanece disponible como área de análisis separada de la presentación principal.</p>
         </div>
         <HomeSimulator />
       </section>
@@ -228,6 +355,15 @@ export default function Home() {
           <p>Inteligencia estratégica para decisiones con consecuencias reales.</p>
           <small>© 2026 Levio.es. Todos los derechos reservados.</small>
         </div>
+
+        {footerColumns.map((column) => (
+          <div className="reference-footer-column" key={column.title}>
+            <strong>{column.title}</strong>
+            {column.links.map((link) => (
+              <Link href={link.href} key={link.label}>{link.label}</Link>
+            ))}
+          </div>
+        ))}
       </footer>
     </main>
   );

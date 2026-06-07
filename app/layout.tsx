@@ -42,6 +42,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
+      <head>
+        <link rel="icon" href="/favicon.ico?v=2.8j-fix" sizes="64x64" type="image/x-icon" />
+        <link rel="shortcut icon" href="/favicon.ico?v=2.8j-fix" type="image/x-icon" />
+        <link rel="icon" href="/icon-192.png?v=2.8j-fix" sizes="192x192" type="image/png" />
+        <link rel="apple-touch-icon" href="/apple-icon.png?v=2.8j-fix" sizes="180x180" />
+        <link rel="manifest" href="/manifest.webmanifest?v=2.8j-fix" />
+      </head>
       <body>
         <div className="background"></div>
         <div className="overlay"></div>
