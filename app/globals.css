@@ -11512,3 +11512,220 @@ html {
     transform: none;
   }
 }
+
+/* Stage 2.9C: cross-device homepage scroll timing calibration. */
+.reference-hero .hero-approved-background-image {
+  animation-duration: 22.75s;
+}
+
+@supports (animation-timeline: scroll()) {
+  .reference-hero .hero-motion-title {
+    animation-range: 0% 6%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(1) {
+    animation-range: 0% 7%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(2) {
+    animation-range: 2% 9%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(3) {
+    animation-range: 4% 11%;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(4) {
+    animation-range: 6% 13%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(1) .motion-letter {
+    animation-range: 8% 16%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(2) .motion-letter {
+    animation-range: 9% 17%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(3) .motion-letter {
+    animation-range: 10% 18%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(4) .motion-letter {
+    animation-range: 11% 19%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(5) .motion-letter {
+    animation-range: 12% 20%;
+  }
+
+  .reference-decision-system .motion-word:nth-child(6) .motion-letter {
+    animation-range: 13% 21%;
+  }
+
+  .reference-process .motion-word:nth-child(1) .motion-letter {
+    animation-range: 31% 39%;
+  }
+
+  .reference-process .motion-word:nth-child(2) .motion-letter {
+    animation-range: 32% 40%;
+  }
+
+  .reference-process .motion-word:nth-child(3) .motion-letter {
+    animation-range: 33% 41%;
+  }
+
+  .reference-process .motion-word:nth-child(4) .motion-letter {
+    animation-range: 34% 42%;
+  }
+
+  .reference-process .motion-word:nth-child(5) .motion-letter,
+  .reference-process .motion-word:nth-child(6) .motion-letter {
+    animation-range: 35% 43%;
+  }
+
+  .reference-process-card:nth-child(1) {
+    animation-range: 38% 45%;
+  }
+
+  .reference-process-card:nth-child(2) {
+    animation-range: 40% 47%;
+  }
+
+  .reference-process-card:nth-child(3) {
+    animation-range: 42% 49%;
+  }
+
+  .reference-process-card:nth-child(4) {
+    animation-range: 44% 51%;
+  }
+
+  .reference-capability-card:nth-child(1) {
+    animation-range: 54% 61%;
+  }
+
+  .reference-capability-card:nth-child(2) {
+    animation-range: 56% 63%;
+  }
+
+  .reference-capability-card:nth-child(3) {
+    animation-range: 58% 65%;
+  }
+
+  .reference-capability-card:nth-child(4) {
+    animation-range: 60% 67%;
+  }
+}
+
+@media (max-width: 860px) {
+  @supports (animation-timeline: scroll()) {
+    .reference-hero .hero-feature-card:nth-child(1) {
+      animation-range: 1% 9%;
+    }
+
+    .reference-hero .hero-feature-card:nth-child(2) {
+      animation-range: 4% 12%;
+    }
+
+    .reference-hero .hero-feature-card:nth-child(3) {
+      animation-range: 7% 15%;
+    }
+
+    .reference-hero .hero-feature-card:nth-child(4) {
+      animation-range: 10% 18%;
+    }
+
+    .reference-decision-system .motion-word:nth-child(1) .motion-letter {
+      animation-range: 12% 21%;
+    }
+
+    .reference-decision-system .motion-word:nth-child(2) .motion-letter {
+      animation-range: 13% 22%;
+    }
+
+    .reference-decision-system .motion-word:nth-child(3) .motion-letter {
+      animation-range: 14% 23%;
+    }
+
+    .reference-decision-system .motion-word:nth-child(4) .motion-letter {
+      animation-range: 15% 24%;
+    }
+
+    .reference-decision-system .motion-word:nth-child(5) .motion-letter {
+      animation-range: 15% 24%;
+    }
+
+    .reference-decision-system .motion-word:nth-child(6) .motion-letter {
+      animation-range: 15% 24%;
+    }
+
+    .reference-process .motion-word:nth-child(1) .motion-letter {
+      animation-range: 35% 45%;
+    }
+
+    .reference-process .motion-word:nth-child(2) .motion-letter {
+      animation-range: 36% 46%;
+    }
+
+    .reference-process .motion-word:nth-child(3) .motion-letter {
+      animation-range: 37% 47%;
+    }
+
+    .reference-process .motion-word:nth-child(4) .motion-letter {
+      animation-range: 38% 48%;
+    }
+
+    .reference-process .motion-word:nth-child(5) .motion-letter,
+    .reference-process .motion-word:nth-child(6) .motion-letter {
+      animation-range: 38% 48%;
+    }
+
+    .reference-process-card:nth-child(1) {
+      animation-range: 43% 51%;
+    }
+
+    .reference-process-card:nth-child(2) {
+      animation-range: 46% 54%;
+    }
+
+    .reference-process-card:nth-child(3) {
+      animation-range: 49% 57%;
+    }
+
+    .reference-process-card:nth-child(4) {
+      animation-range: 52% 60%;
+    }
+
+    .reference-capability-card:nth-child(1) {
+      animation-range: 58% 67%;
+    }
+
+    .reference-capability-card:nth-child(2) {
+      animation-range: 61% 70%;
+    }
+
+    .reference-capability-card:nth-child(3) {
+      animation-range: 64% 73%;
+    }
+
+    .reference-capability-card:nth-child(4) {
+      animation-range: 67% 76%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-hero .hero-approved-background-image,
+  .reference-hero .hero-motion-title,
+  .reference-hero .hero-feature-card,
+  .reference-system-card,
+  .reference-process-card,
+  .reference-capability-card,
+  .reference-decision-system .motion-letter,
+  .reference-process .motion-letter {
+    animation: none;
+    filter: none;
+    opacity: 1;
+    transform: none;
+  }
+}
