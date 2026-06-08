@@ -11143,3 +11143,372 @@ html {
     transform: none;
   }
 }
+
+/* Stage 2.9A: mobile navigation, local scroll timing and simulator premium polish. */
+.reference-hero .hero-approved-background-image {
+  animation-duration: 21s;
+}
+
+.reference-workspace {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.reference-workspace::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse at 50% 18%, rgba(216, 168, 74, 0.1), transparent 42%),
+    linear-gradient(90deg, transparent, rgba(255, 243, 208, 0.018) 50%, transparent);
+  content: "";
+  pointer-events: none;
+}
+
+.reference-workspace-heading {
+  position: relative;
+  padding-bottom: 24px;
+}
+
+.reference-workspace-heading::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: min(100%, 360px);
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 211, 106, 0.74), rgba(216, 168, 74, 0.16), transparent);
+  box-shadow: 0 0 18px rgba(216, 168, 74, 0.16);
+  content: "";
+}
+
+.reference-workspace .decision-console {
+  width: min(100%, 1040px);
+  padding: clamp(20px, 3vw, 34px);
+  border-color: rgba(216, 168, 74, 0.42);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 88% 0%, rgba(255, 211, 106, 0.12), transparent 34%),
+    radial-gradient(circle at 0% 100%, rgba(216, 168, 74, 0.06), transparent 34%),
+    linear-gradient(145deg, rgba(18, 13, 6, 0.82), rgba(2, 2, 2, 0.94));
+  box-shadow:
+    0 34px 90px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 243, 208, 0.025),
+    0 0 48px rgba(216, 168, 74, 0.07),
+    inset 0 1px 0 rgba(255, 243, 208, 0.08);
+}
+
+.reference-workspace .decision-console::before {
+  background:
+    linear-gradient(90deg, rgba(216, 168, 74, 0.1), transparent 24% 76%, rgba(255, 178, 62, 0.06)),
+    linear-gradient(180deg, rgba(255, 243, 208, 0.045), transparent 20%);
+}
+
+.reference-workspace .decision-console form {
+  padding: clamp(16px, 2.2vw, 24px);
+  border: 1px solid rgba(216, 168, 74, 0.2);
+  border-radius: 16px;
+  background:
+    linear-gradient(145deg, rgba(255, 243, 208, 0.025), transparent 52%),
+    rgba(0, 0, 0, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 243, 208, 0.035),
+    0 18px 48px rgba(0, 0, 0, 0.2);
+}
+
+.reference-workspace .decision-console label {
+  margin-bottom: 16px;
+  color: rgba(255, 230, 174, 0.92);
+  font-size: 0.78rem;
+  font-weight: 780;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.reference-workspace .decision-console textarea,
+.reference-workspace .decision-console textarea:hover,
+.reference-workspace .decision-console textarea:focus,
+.reference-workspace .decision-console textarea:focus-visible {
+  min-height: 152px;
+  padding: 19px 20px;
+  border-color: rgba(216, 168, 74, 0.34) !important;
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(216, 168, 74, 0.055), transparent 34%),
+    rgba(1, 1, 1, 0.92) !important;
+  box-shadow:
+    inset 0 0 38px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 243, 208, 0.035) !important;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.reference-workspace .decision-console textarea:focus,
+.reference-workspace .decision-console textarea:focus-visible {
+  border-color: rgba(255, 211, 106, 0.78) !important;
+  box-shadow:
+    0 0 0 3px rgba(216, 168, 74, 0.1),
+    0 0 34px rgba(216, 168, 74, 0.16),
+    inset 0 0 38px rgba(0, 0, 0, 0.58) !important;
+}
+
+.reference-workspace .decision-console .input-row button {
+  min-width: 190px;
+  min-height: 64px;
+  border-color: rgba(255, 211, 106, 0.76);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 243, 208, 0.16), transparent 38%),
+    linear-gradient(145deg, rgba(216, 168, 74, 0.19), rgba(92, 57, 12, 0.12)),
+    rgba(7, 6, 4, 0.96);
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.42),
+    0 0 28px rgba(216, 168, 74, 0.16),
+    inset 0 1px 0 rgba(255, 243, 208, 0.12);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.reference-workspace .console-status {
+  margin: 18px 4px 0;
+  color: rgba(235, 221, 190, 0.64);
+  font-size: 0.82rem;
+}
+
+@supports (animation-timeline: scroll()) {
+  .reference-hero .hero-motion-title {
+    animation-range: 0% 7%;
+  }
+}
+
+@media (max-width: 860px) {
+  .reference-header {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+    justify-content: stretch;
+    gap: 8px;
+    padding: 9px 10px 10px;
+  }
+
+  .reference-header .brand-lockup {
+    justify-self: start;
+  }
+
+  .reference-nav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    width: 100%;
+    max-width: none;
+    gap: clamp(2px, 1.2vw, 6px);
+    overflow: hidden;
+  }
+
+  .reference-nav a,
+  .reference-nav .nav-cta {
+    min-width: 0;
+    min-height: 34px;
+    justify-content: center;
+    margin: 0;
+    padding: 6px 2px;
+    overflow: hidden;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    font-size: clamp(0.59rem, 2.5vw, 0.72rem);
+    line-height: 1;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .reference-nav a:nth-child(3),
+  .reference-nav a:nth-child(4),
+  .reference-nav a:nth-child(5) {
+    display: none;
+  }
+
+  .reference-nav a:nth-child(1),
+  .reference-nav a:nth-child(2),
+  .reference-nav a:nth-child(6),
+  .reference-nav .nav-cta {
+    display: inline-flex;
+  }
+
+  .reference-nav .nav-active::after {
+    right: 18%;
+    bottom: 1px;
+    left: 18%;
+  }
+
+  .reference-workspace .decision-console {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .reference-workspace .decision-console form {
+    padding: 14px;
+    border-radius: 13px;
+  }
+
+  .reference-workspace .decision-console .input-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .reference-workspace .decision-console textarea,
+  .reference-workspace .decision-console textarea:hover,
+  .reference-workspace .decision-console textarea:focus,
+  .reference-workspace .decision-console textarea:focus-visible {
+    min-height: 142px;
+    padding: 16px;
+  }
+
+  .reference-workspace .decision-console .input-row button {
+    width: 100%;
+    min-width: 0;
+    min-height: 56px;
+  }
+}
+
+@media (max-width: 860px) {
+  @supports (animation-timeline: scroll()) {
+    .reference-hero .hero-feature-card:nth-child(n),
+    .reference-system-card:nth-child(n),
+    .reference-process-card:nth-child(n),
+    .reference-capability-card:nth-child(n),
+    .reference-decision-system .motion-word:nth-child(n) .motion-letter,
+    .reference-process .motion-word:nth-child(n) .motion-letter {
+      animation-timeline: scroll(root block);
+    }
+
+    .reference-hero .hero-feature-card:nth-child(1) {
+      animation-range: 4% 14%;
+    }
+
+    .reference-hero .hero-feature-card:nth-child(2) {
+      animation-range: 7% 17%;
+    }
+
+    .reference-hero .hero-feature-card:nth-child(3) {
+      animation-range: 10% 20%;
+    }
+
+    .reference-hero .hero-feature-card:nth-child(4) {
+      animation-range: 13% 23%;
+    }
+
+    .reference-decision-system .motion-word:nth-child(1) .motion-letter {
+      animation-range: 17% 29%;
+    }
+
+    .reference-decision-system .motion-word:nth-child(2) .motion-letter {
+      animation-range: 18% 30%;
+    }
+
+    .reference-decision-system .motion-word:nth-child(3) .motion-letter {
+      animation-range: 19% 31%;
+    }
+
+    .reference-decision-system .motion-word:nth-child(4) .motion-letter {
+      animation-range: 20% 32%;
+    }
+
+    .reference-decision-system .motion-word:nth-child(5) .motion-letter {
+      animation-range: 21% 33%;
+    }
+
+    .reference-decision-system .motion-word:nth-child(6) .motion-letter {
+      animation-range: 22% 34%;
+    }
+
+    .reference-system-card:nth-child(1) {
+      animation-range: 24% 36%;
+    }
+
+    .reference-system-card:nth-child(2) {
+      animation-range: 27% 39%;
+    }
+
+    .reference-system-card:nth-child(3) {
+      animation-range: 30% 42%;
+    }
+
+    .reference-system-card:nth-child(4) {
+      animation-range: 33% 45%;
+    }
+
+    .reference-process .motion-word:nth-child(1) .motion-letter {
+      animation-range: 40% 53%;
+    }
+
+    .reference-process .motion-word:nth-child(2) .motion-letter {
+      animation-range: 41% 54%;
+    }
+
+    .reference-process .motion-word:nth-child(3) .motion-letter {
+      animation-range: 42% 55%;
+    }
+
+    .reference-process .motion-word:nth-child(4) .motion-letter {
+      animation-range: 43% 56%;
+    }
+
+    .reference-process .motion-word:nth-child(5) .motion-letter,
+    .reference-process .motion-word:nth-child(6) .motion-letter {
+      animation-range: 44% 57%;
+    }
+
+    .reference-process-card:nth-child(1) {
+      animation-range: 48% 60%;
+    }
+
+    .reference-process-card:nth-child(2) {
+      animation-range: 51% 63%;
+    }
+
+    .reference-process-card:nth-child(3) {
+      animation-range: 54% 66%;
+    }
+
+    .reference-process-card:nth-child(4) {
+      animation-range: 57% 69%;
+    }
+
+    .reference-capability-card:nth-child(1) {
+      animation-range: 66% 78%;
+    }
+
+    .reference-capability-card:nth-child(2) {
+      animation-range: 69% 81%;
+    }
+
+    .reference-capability-card:nth-child(3) {
+      animation-range: 72% 84%;
+    }
+
+    .reference-capability-card:nth-child(4) {
+      animation-range: 75% 87%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-hero .hero-approved-background-image,
+  .reference-hero .hero-motion-title,
+  .reference-hero .hero-feature-card,
+  .reference-system-card,
+  .reference-process-card,
+  .reference-capability-card,
+  .reference-decision-system .motion-letter,
+  .reference-process .motion-letter {
+    animation: none;
+    filter: none;
+    opacity: 1;
+    transform: none;
+  }
+}

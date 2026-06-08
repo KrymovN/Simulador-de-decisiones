@@ -4,22 +4,26 @@ Date: 8 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 8 June 2026
 
-Stage 2.8 homepage motion and brand polish is the current confirmed checkpoint from the actual `main` repository state.
+Stage 2.9A - Mobile Navigation + Scroll Motion Timing + Simulator Premium Polish - is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
 - `848a108` locked Stage 2.8G Hero artwork fidelity.
 - `9c7447d` completed Stage 2.8H homepage minimal premium reduction.
-- `6adefd6` completed the current Stage 2.8 homepage motion and brand polish checkpoint.
+- `6adefd6` completed the Stage 2.8 homepage motion and brand polish checkpoint.
+- Stage 2.9A preserves product architecture and changes only the final homepage CSS cascade.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
-- The homepage now has a stricter premium-minimal structure, controlled motion and updated brand presentation.
+- Mobile navigation is one controlled horizontal row: `Inicio`, `Simulador`, `Mi espacio`, `Iniciar sesión`.
+- Mobile root-scroll reveal ranges start later and run longer across hero feature, decision-system, process and capability blocks.
+- Hero title scroll-exit starts earlier and the approved artwork breathing cycle is accelerated to `21s`.
+- Simulator workspace has deeper black-gold composition, a premium input surface and stronger CTA without changes to `HomeSimulator` business logic.
 - Brand/favicons are served through `app/icon.png`, `public/favicon.ico`, `public/icon-192.png`, `public/apple-icon.png` and `public/manifest.webmanifest`.
 - Duplicate App Router metadata file `app/favicon.ico` is removed; `app/layout.tsx` explicitly points active favicon links to `public/favicon.ico`.
 - Obsolete production visual assets and unused `components/SingularityVisual.tsx` are removed.
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 2.8H is complete. The next logical candidate is Stage 2.9: production QA, controlled legacy visual CSS cleanup planning and homepage decision-flow hardening. Stage 2.9 must not start without separate explicit approval.
+Stage 2.9A is complete. No next implementation stage is approved; any continuation requires separate explicit approval.
 
 ## Current Authoritative Stage - 30 May 2026
 
@@ -116,7 +120,7 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 
 ## Current Stage
 
-Stage 2.8 - documentation/current-state synchronization, production state alignment and MVP preparation after strategic visual pivot - ACTIVE.
+Stage 2.9A - mobile navigation, scroll motion timing and simulator premium polish - COMPLETED CHECKPOINT.
 
 Roadmap from the current checkpoint:
 
@@ -148,6 +152,7 @@ Completed Stage 2 stabilization commits:
 - Stage 2.8G Hero artwork fidelity completed in `848a108`.
 - Stage 2.8H homepage minimal premium reduction completed in `9c7447d`.
 - Stage 2.8 homepage motion and brand polish checkpoint completed in `6adefd6`.
+- Stage 2.9A mobile navigation, scroll timing and simulator premium polish completed.
 
 ## Current CSS Architecture
 
