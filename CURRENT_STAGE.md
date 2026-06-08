@@ -4,26 +4,29 @@ Date: 8 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 8 June 2026
 
-Stage 2.9A - Mobile Navigation + Scroll Motion Timing + Simulator Premium Polish - is the current confirmed checkpoint.
+Stage 2.9B - Safari Metadata + Favicon Identity Fix - is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
 - `848a108` locked Stage 2.8G Hero artwork fidelity.
 - `9c7447d` completed Stage 2.8H homepage minimal premium reduction.
 - `6adefd6` completed the Stage 2.8 homepage motion and brand polish checkpoint.
-- Stage 2.9A preserves product architecture and changes only the final homepage CSS cascade.
+- Stage 2.9B preserves product architecture and changes only metadata, manifest and brand icon assets.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
 - Mobile navigation is one controlled horizontal row: `Inicio`, `Simulador`, `Mi espacio`, `Iniciar sesión`.
 - Mobile root-scroll reveal ranges start later and run longer across hero feature, decision-system, process and capability blocks.
 - Hero title scroll-exit starts earlier and the approved artwork breathing cycle is accelerated to `21s`.
 - Simulator workspace has deeper black-gold composition, a premium input surface and stronger CTA without changes to `HomeSimulator` business logic.
-- Brand/favicons are served through `app/icon.png`, `public/favicon.ico`, `public/icon-192.png`, `public/apple-icon.png` and `public/manifest.webmanifest`.
-- Duplicate App Router metadata file `app/favicon.ico` is removed; `app/layout.tsx` explicitly points active favicon links to `public/favicon.ico`.
+- `app/layout.tsx` defines consistent `Levio.es` title, application name, Spanish description, Apple Web App, Open Graph, Twitter, viewport and theme color metadata.
+- The only declared favicon uses cache-busted `public/levio-favicon-v3.ico`; the Apple touch icon uses `public/levio-apple-touch-icon-v3.png`.
+- The manifest is served through `public/levio-manifest-v3.webmanifest` and uses consistent `public/levio-icon-192-v3.png` and `public/levio-icon-512-v3.png`.
+- Conflicting file-based `app/icon.png`, old `public/apple-icon.png`, `public/icon-192.png` and `public/manifest.webmanifest` are removed.
+- No `xaz`, `xaz’` or `XAZ` source exists in the repository or Git history; that name belongs to Safari Favorites/History cache and may remain cached after source correction.
 - Obsolete production visual assets and unused `components/SingularityVisual.tsx` are removed.
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 2.9A is complete. No next implementation stage is approved; any continuation requires separate explicit approval.
+Stage 2.9B is complete. No next implementation stage is approved; any continuation requires separate explicit approval.
 
 ## Current Authoritative Stage - 30 May 2026
 
@@ -120,7 +123,7 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 
 ## Current Stage
 
-Stage 2.9A - mobile navigation, scroll motion timing and simulator premium polish - COMPLETED CHECKPOINT.
+Stage 2.9B - Safari metadata and favicon identity fix - COMPLETED CHECKPOINT.
 
 Roadmap from the current checkpoint:
 
@@ -153,6 +156,7 @@ Completed Stage 2 stabilization commits:
 - Stage 2.8H homepage minimal premium reduction completed in `9c7447d`.
 - Stage 2.8 homepage motion and brand polish checkpoint completed in `6adefd6`.
 - Stage 2.9A mobile navigation, scroll timing and simulator premium polish completed.
+- Stage 2.9B Safari metadata and favicon identity fix completed.
 
 ## Current CSS Architecture
 

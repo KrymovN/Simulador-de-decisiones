@@ -4,35 +4,73 @@ import './styles/simulator.css';
 import './globals.css';
 import './styles/motion.css';
 import type { Metadata } from 'next';
+import type { Viewport } from 'next';
+
+const siteName = 'Levio.es';
+const siteTitle = 'Levio.es';
+const siteDescription =
+  'Sistema de inteligencia de decisiones para analizar escenarios, riesgos y consecuencias antes de actuar.';
+const siteUrl = 'https://levio.es';
+const faviconUrl = '/levio-favicon-v3.ico';
+const appleIconUrl = '/levio-apple-touch-icon-v3.png';
+const icon512Url = '/levio-icon-512-v3.png';
+const manifestUrl = '/levio-manifest-v3.webmanifest';
 
 export const metadata: Metadata = {
-  title: 'levio.es',
-  description: 'AI decision-simulation platform',
-  metadataBase: new URL('https://levio.es'),
+  title: {
+    default: siteTitle,
+    template: `%s | ${siteName}`,
+  },
+  applicationName: siteName,
+  description: siteDescription,
+  metadataBase: new URL(siteUrl),
+  manifest: manifestUrl,
   icons: {
-    icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/icon-192.png', type: 'image/png', sizes: '192x192' },
-      { url: '/icon.png', type: 'image/png', sizes: '512x512' },
-    ],
-    apple: [{ url: '/apple-icon.png', type: 'image/png', sizes: '180x180' }],
+    icon: [{ url: faviconUrl, sizes: '64x64', type: 'image/x-icon' }],
+    shortcut: [{ url: faviconUrl, sizes: '64x64', type: 'image/x-icon' }],
+    apple: [{ url: appleIconUrl, type: 'image/png', sizes: '180x180' }],
+  },
+  appleWebApp: {
+    capable: true,
+    title: siteName,
+    statusBarStyle: 'black-translucent',
   },
   openGraph: {
-    title: 'levio.es',
-    description: 'AI decision-simulation platform',
-    url: 'https://levio.es',
-    siteName: 'levio.es',
+    title: siteTitle,
+    description: siteDescription,
+    url: siteUrl,
+    siteName,
     images: [
       {
-        url: '/icon.png',
+        url: icon512Url,
         width: 512,
         height: 512,
-        alt: 'levio.es',
+        alt: siteName,
       },
     ],
     locale: 'es_ES',
     type: 'website',
   },
+  twitter: {
+    card: 'summary',
+    title: siteTitle,
+    description: siteDescription,
+    images: [
+      {
+        url: icon512Url,
+        width: 512,
+        height: 512,
+        alt: siteName,
+      },
+    ],
+  },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  colorScheme: 'dark',
+  themeColor: '#000000',
 };
 
 export default function RootLayout({
@@ -42,13 +80,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <head>
-        <link rel="icon" href="/favicon.ico?v=2.8j-fix" sizes="64x64" type="image/x-icon" />
-        <link rel="shortcut icon" href="/favicon.ico?v=2.8j-fix" type="image/x-icon" />
-        <link rel="icon" href="/icon-192.png?v=2.8j-fix" sizes="192x192" type="image/png" />
-        <link rel="apple-touch-icon" href="/apple-icon.png?v=2.8j-fix" sizes="180x180" />
-        <link rel="manifest" href="/manifest.webmanifest?v=2.8j-fix" />
-      </head>
       <body>
         <div className="background"></div>
         <div className="overlay"></div>
