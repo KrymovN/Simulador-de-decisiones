@@ -329,16 +329,22 @@ export default function Home() {
       <section className="reference-workspace" id="escenarios" aria-labelledby="workspace-title">
         <div className="reference-workspace-heading">
           <p className="eyebrow">Área de trabajo levio.es</p>
-          <h2 id="workspace-title">Simula una decisión cuando estés listo.</h2>
+          <h2 className="desktop-motion-heading" id="workspace-title" aria-label="Simula una decisión cuando estés listo.">
+            <MotionLetters text="Simula una decisión cuando estés listo." />
+          </h2>
           <p>El motor de escenarios permanece disponible como área de análisis separada de la presentación principal.</p>
         </div>
         <HomeSimulator />
       </section>
 
       <section className="reference-cta-banner" aria-labelledby="reference-cta-title">
-        <div>
-          <h2 id="reference-cta-title">Empieza con una decisión real.</h2>
-          <p>Levio.es simulará escenarios, riesgos y consecuencias antes de que actúes.</p>
+        <div className="reference-cta-copy">
+          <h2 className="desktop-motion-heading" id="reference-cta-title" aria-label="Empieza con una decisión real.">
+            <MotionLetters text="Empieza con una decisión real." />
+          </h2>
+          <p aria-label="Levio.es simulará escenarios, riesgos y consecuencias antes de que actúes.">
+            <MotionLetters text="Levio.es simulará escenarios, riesgos y consecuencias antes de que actúes." />
+          </p>
         </div>
         <a href="#decision-input">
           Comenzar ahora

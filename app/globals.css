@@ -11729,3 +11729,245 @@ html {
     transform: none;
   }
 }
+
+/* Stage 2.9D: desktop Safari reveal alignment and simulator/CTA polish. */
+@media (min-width: 861px) {
+  .reference-workspace {
+    background:
+      radial-gradient(ellipse at 18% 0%, rgba(255, 211, 106, 0.11), transparent 34%),
+      radial-gradient(ellipse at 82% 42%, rgba(216, 168, 74, 0.055), transparent 36%),
+      linear-gradient(180deg, rgba(5, 4, 3, 0.99), #010101);
+  }
+
+  .reference-workspace-heading {
+    max-width: 880px;
+  }
+
+  .reference-workspace-heading h2 {
+    max-width: 780px;
+    color: rgba(250, 246, 235, 0.97);
+    font-weight: 540;
+    text-wrap: balance;
+  }
+
+  .reference-workspace .decision-console {
+    width: min(100%, 1080px);
+    padding: clamp(30px, 3.4vw, 42px);
+    border-color: rgba(255, 211, 106, 0.48);
+    border-radius: 24px;
+    background:
+      radial-gradient(circle at 90% 4%, rgba(255, 211, 106, 0.16), transparent 30%),
+      radial-gradient(circle at 5% 100%, rgba(139, 91, 24, 0.11), transparent 36%),
+      linear-gradient(145deg, rgba(22, 16, 7, 0.9), rgba(1, 1, 1, 0.97));
+    box-shadow:
+      0 42px 110px rgba(0, 0, 0, 0.58),
+      0 0 0 1px rgba(255, 243, 208, 0.035),
+      0 0 64px rgba(216, 168, 74, 0.09),
+      inset 0 1px 0 rgba(255, 243, 208, 0.11),
+      inset 0 0 70px rgba(216, 168, 74, 0.025);
+  }
+
+  .reference-workspace .decision-console::after {
+    position: absolute;
+    inset: 12px;
+    z-index: 0;
+    border: 1px solid rgba(255, 211, 106, 0.08);
+    border-radius: 17px;
+    background: linear-gradient(90deg, transparent, rgba(255, 243, 208, 0.025) 50%, transparent);
+    content: "";
+    pointer-events: none;
+  }
+
+  .reference-workspace .decision-console form {
+    padding: clamp(22px, 2.8vw, 30px);
+    border-color: rgba(255, 211, 106, 0.25);
+    border-radius: 18px;
+    background:
+      radial-gradient(circle at 100% 0%, rgba(255, 211, 106, 0.075), transparent 34%),
+      linear-gradient(145deg, rgba(255, 243, 208, 0.035), transparent 58%),
+      rgba(0, 0, 0, 0.38);
+    box-shadow:
+      0 22px 60px rgba(0, 0, 0, 0.28),
+      inset 0 1px 0 rgba(255, 243, 208, 0.055);
+  }
+
+  .reference-workspace .decision-console label {
+    margin-bottom: 19px;
+    color: rgba(255, 230, 174, 0.96);
+    font-size: 0.8rem;
+    letter-spacing: 0.17em;
+  }
+
+  .reference-workspace .decision-console textarea,
+  .reference-workspace .decision-console textarea:hover,
+  .reference-workspace .decision-console textarea:focus,
+  .reference-workspace .decision-console textarea:focus-visible {
+    min-height: 176px;
+    padding: 22px 23px;
+    border-color: rgba(216, 168, 74, 0.38) !important;
+    border-radius: 16px;
+    background:
+      radial-gradient(circle at 100% 0%, rgba(255, 211, 106, 0.075), transparent 34%),
+      linear-gradient(145deg, rgba(255, 243, 208, 0.018), transparent 62%),
+      rgba(0, 0, 0, 0.88) !important;
+    box-shadow:
+      inset 0 0 48px rgba(0, 0, 0, 0.66),
+      inset 0 1px 0 rgba(255, 243, 208, 0.045) !important;
+    font-size: 1.04rem;
+    line-height: 1.72;
+  }
+
+  .reference-workspace .decision-console textarea:hover {
+    border-color: rgba(255, 211, 106, 0.55) !important;
+  }
+
+  .reference-workspace .decision-console textarea:focus,
+  .reference-workspace .decision-console textarea:focus-visible {
+    border-color: rgba(255, 220, 136, 0.88) !important;
+    box-shadow:
+      0 0 0 3px rgba(216, 168, 74, 0.12),
+      0 0 42px rgba(216, 168, 74, 0.2),
+      inset 0 0 48px rgba(0, 0, 0, 0.58) !important;
+  }
+
+  .reference-workspace .decision-console .input-row button {
+    min-width: 210px;
+    border-color: rgba(255, 220, 136, 0.82);
+    border-radius: 16px;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255, 243, 208, 0.22), transparent 42%),
+      linear-gradient(145deg, rgba(216, 168, 74, 0.24), rgba(86, 55, 14, 0.14)),
+      rgba(6, 5, 3, 0.98);
+    box-shadow:
+      0 22px 48px rgba(0, 0, 0, 0.46),
+      0 0 34px rgba(216, 168, 74, 0.2),
+      inset 0 1px 0 rgba(255, 243, 208, 0.15);
+  }
+
+  .reference-cta-banner {
+    padding: 28px clamp(28px, 4vw, 48px);
+    border-color: rgba(255, 211, 106, 0.48);
+    border-radius: 22px;
+    background:
+      radial-gradient(ellipse at 86% 50%, rgba(255, 211, 106, 0.16), transparent 34%),
+      linear-gradient(120deg, rgba(255, 243, 208, 0.045), transparent 46%),
+      rgba(2, 2, 2, 0.97);
+    box-shadow:
+      0 34px 82px rgba(0, 0, 0, 0.44),
+      0 0 46px rgba(216, 168, 74, 0.07),
+      inset 0 1px 0 rgba(255, 243, 208, 0.075);
+  }
+
+  .reference-cta-copy {
+    display: grid;
+    gap: 8px;
+  }
+
+  .reference-cta-banner h2 {
+    color: rgba(250, 246, 235, 0.98);
+    font-size: clamp(1.55rem, 2.4vw, 2.15rem);
+    font-weight: 560;
+  }
+
+  .reference-cta-banner > a {
+    min-width: 210px;
+    min-height: 58px;
+    border-radius: 12px;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255, 243, 208, 0.16), transparent 46%),
+      linear-gradient(145deg, rgba(216, 168, 74, 0.18), rgba(74, 48, 13, 0.1)),
+      rgba(5, 5, 4, 0.98);
+  }
+
+  .reference-workspace .desktop-motion-heading .motion-letter,
+  .reference-cta-banner .motion-letter {
+    display: inline-block;
+    transform-origin: 50% 58%;
+  }
+
+  .reference-workspace .desktop-motion-heading .motion-letter-left,
+  .reference-cta-banner .motion-letter-left {
+    animation-name: sectionLetterFromViewerLeft;
+  }
+
+  .reference-workspace .desktop-motion-heading .motion-letter-right,
+  .reference-cta-banner .motion-letter-right {
+    animation-name: sectionLetterFromViewerRight;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .reference-hero .hero-feature-card:nth-child(1) { animation-range: 4% 11%; }
+    .reference-hero .hero-feature-card:nth-child(2) { animation-range: 6% 13%; }
+    .reference-hero .hero-feature-card:nth-child(3) { animation-range: 8% 15%; }
+    .reference-hero .hero-feature-card:nth-child(4) { animation-range: 10% 17%; }
+
+    .reference-decision-system .motion-word:nth-child(1) .motion-letter { animation-range: 12% 20%; }
+    .reference-decision-system .motion-word:nth-child(2) .motion-letter { animation-range: 13% 21%; }
+    .reference-decision-system .motion-word:nth-child(3) .motion-letter { animation-range: 14% 22%; }
+    .reference-decision-system .motion-word:nth-child(4) .motion-letter { animation-range: 15% 23%; }
+    .reference-decision-system .motion-word:nth-child(5) .motion-letter { animation-range: 16% 24%; }
+    .reference-decision-system .motion-word:nth-child(6) .motion-letter { animation-range: 17% 25%; }
+
+    .reference-system-card:nth-child(1) { animation-range: 21% 28%; }
+    .reference-system-card:nth-child(2) { animation-range: 23% 30%; }
+    .reference-system-card:nth-child(3) { animation-range: 25% 32%; }
+    .reference-system-card:nth-child(4) { animation-range: 27% 34%; }
+
+    .reference-process .motion-word:nth-child(1) .motion-letter { animation-range: 33% 41%; }
+    .reference-process .motion-word:nth-child(2) .motion-letter { animation-range: 34% 42%; }
+    .reference-process .motion-word:nth-child(3) .motion-letter { animation-range: 35% 43%; }
+    .reference-process .motion-word:nth-child(4) .motion-letter { animation-range: 36% 44%; }
+    .reference-process .motion-word:nth-child(5) .motion-letter,
+    .reference-process .motion-word:nth-child(6) .motion-letter { animation-range: 37% 45%; }
+
+    .reference-process-card:nth-child(1) { animation-range: 40% 47%; }
+    .reference-process-card:nth-child(2) { animation-range: 42% 49%; }
+    .reference-process-card:nth-child(3) { animation-range: 44% 51%; }
+    .reference-process-card:nth-child(4) { animation-range: 46% 53%; }
+
+    .reference-workspace .desktop-motion-heading .motion-letter,
+    .reference-cta-banner .motion-letter,
+    .reference-cta-banner {
+      animation-duration: 1ms;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root block);
+    }
+
+    .reference-workspace .desktop-motion-heading .motion-word:nth-child(1) .motion-letter { animation-range: 68% 75%; }
+    .reference-workspace .desktop-motion-heading .motion-word:nth-child(2) .motion-letter { animation-range: 69% 76%; }
+    .reference-workspace .desktop-motion-heading .motion-word:nth-child(3) .motion-letter { animation-range: 70% 77%; }
+    .reference-workspace .desktop-motion-heading .motion-word:nth-child(4) .motion-letter { animation-range: 71% 78%; }
+    .reference-workspace .desktop-motion-heading .motion-word:nth-child(5) .motion-letter { animation-range: 72% 79%; }
+    .reference-workspace .desktop-motion-heading .motion-word:nth-child(6) .motion-letter { animation-range: 73% 80%; }
+
+    .reference-cta-banner .motion-letter { animation-range: 90% 97%; }
+
+    .reference-cta-banner {
+      animation-name: desktopCtaArrive;
+      animation-range: 89% 97%;
+    }
+  }
+}
+
+@keyframes desktopCtaArrive {
+  from {
+    opacity: 0;
+    transform: translate3d(72px, 16px, 0) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-workspace .desktop-motion-heading .motion-letter,
+  .reference-cta-banner,
+  .reference-cta-banner .motion-letter {
+    animation: none;
+    filter: none;
+    opacity: 1;
+    transform: none;
+  }
+}

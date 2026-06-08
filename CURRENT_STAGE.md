@@ -4,19 +4,21 @@ Date: 8 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 8 June 2026
 
-Stage 2.9C - Homepage Scroll Motion Fine-Tuning - is the current confirmed checkpoint.
+Stage 2.9D - Desktop Motion Alignment and CTA Polish - is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
 - `848a108` locked Stage 2.8G Hero artwork fidelity.
 - `9c7447d` completed Stage 2.8H homepage minimal premium reduction.
 - `6adefd6` completed the Stage 2.8 homepage motion and brand polish checkpoint.
-- Stage 2.9C preserves product architecture and changes only final homepage motion timing overrides in `app/globals.css`.
+- Stage 2.9D preserves product architecture and changes only homepage presentation markup in `app/page.tsx` and final desktop-only motion/visual overrides in `app/globals.css`.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
 - Mobile navigation is one controlled horizontal row: `Inicio`, `Simulador`, `Mi espacio`, `Iniciar sesión`.
 - Mobile root-scroll reveal ranges start later and run longer across hero feature, decision-system, process and capability blocks.
 - Hero title scroll-exit starts earlier and the approved artwork breathing cycle is accelerated to `21s`.
-- Simulator workspace has deeper black-gold composition, a premium input surface and stronger CTA without changes to `HomeSimulator` business logic.
+- Desktop reveal timing for hero feature, decision-system, process and `01/02/03/04` blocks is aligned against the capability-card reference; accepted Stage 2.9C mobile timing remains unchanged.
+- Simulator workspace has deeper black-gold composition and a premium input surface without changes to `HomeSimulator` business logic.
+- The simulator workspace heading reveals by word around desktop viewport center; the final CTA arrives softly from the right and reveals its copy by letter on desktop only.
 - `app/layout.tsx` defines consistent `Levio.es` title, application name, Spanish description, Apple Web App, Open Graph, Twitter, viewport and theme color metadata.
 - The only declared favicon uses cache-busted `public/levio-favicon-v3.ico`; the Apple touch icon uses `public/levio-apple-touch-icon-v3.png`.
 - The manifest is served through `public/levio-manifest-v3.webmanifest` and uses consistent `public/levio-icon-192-v3.png` and `public/levio-icon-512-v3.png`.
@@ -29,7 +31,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 2.9C is complete. No next implementation stage is approved; any continuation requires separate explicit approval.
+Stage 2.9D is complete. No next implementation stage is approved; any continuation requires separate explicit approval.
 
 ## Current Authoritative Stage - 30 May 2026
 
@@ -126,7 +128,7 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 
 ## Current Stage
 
-Stage 2.9C - homepage scroll motion fine-tuning - COMPLETED CHECKPOINT.
+Stage 2.9D - desktop motion alignment and CTA polish - COMPLETED CHECKPOINT.
 
 Roadmap from the current checkpoint:
 
@@ -161,6 +163,7 @@ Completed Stage 2 stabilization commits:
 - Stage 2.9A mobile navigation, scroll timing and simulator premium polish completed.
 - Stage 2.9B Safari metadata and favicon identity fix completed.
 - Stage 2.9C homepage scroll motion fine-tuning completed.
+- Stage 2.9D desktop motion alignment and CTA polish completed.
 
 ## Current CSS Architecture
 
