@@ -1,26 +1,25 @@
 # CURRENT STAGE - LEVIO.ES
 
-Date: 3 June 2026, Europe/Madrid.
+Date: 8 June 2026, Europe/Madrid.
 
-## Current Confirmed Checkpoint - 3 June 2026
+## Current Confirmed Checkpoint - 8 June 2026
 
-Stage 2.8G-FIX - Hero Artwork Fidelity Restoration - is the current checkpoint being locked from the local repository state.
+Stage 2.8 homepage motion and brand polish is the current confirmed checkpoint from the actual `main` repository state.
 
-Confirmed facts from code:
+Confirmed facts from the repository:
 
-- The public homepage Hero uses the approved artwork asset `public/hero-approved-network-bg.png`.
-- The approved artwork is rendered through `next/image` in `app/page.tsx`.
-- `quality={100}` is set on the Hero image.
-- `unoptimized` is enabled on the Hero image.
-- The previous `hero-singularity.png` visual block is no longer active in the Hero markup.
-- The SVG pulse layer remains in markup but is visually disabled by CSS with `display: none`.
-- Desktop Hero image opacity is restored to `1`.
-- Mobile CSS still reduces the image opacity to `0.9` below `900px` and `0.86` below `680px`; treat this as a known factual caveat, not as a separate approved restoration claim.
-- Overlay gradients remain above the image, but they are reduced and mostly serve text readability/vignette control.
+- `848a108` locked Stage 2.8G Hero artwork fidelity.
+- `9c7447d` completed Stage 2.8H homepage minimal premium reduction.
+- `6adefd6` completed the current Stage 2.8 homepage motion and brand polish checkpoint.
+- The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
+- The homepage now has a stricter premium-minimal structure, controlled motion and updated brand presentation.
+- Brand/favicons are served through `app/icon.png`, `public/favicon.ico`, `public/icon-192.png`, `public/apple-icon.png` and `public/manifest.webmanifest`.
+- Duplicate App Router metadata file `app/favicon.ico` is removed; `app/layout.tsx` explicitly points active favicon links to `public/favicon.ico`.
+- Obsolete production visual assets and unused `components/SingularityVisual.tsx` are removed.
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Next candidate stage remains Stage 2.8H - Living Intelligence Core, but it must not start until this checkpoint is committed and the working tree is clean.
+Stage 2.8H is complete. The next logical candidate is Stage 2.9: production QA, controlled legacy visual CSS cleanup planning and homepage decision-flow hardening. Stage 2.9 must not start without separate explicit approval.
 
 ## Current Authoritative Stage - 30 May 2026
 
@@ -146,6 +145,9 @@ Completed Stage 2 stabilization commits:
 - Stage 2.7.4 isolated WebGL performance profiling and stress testing completed with no file changes and no implementation commit needed.
 - `89e534c` - Stage 2.7.5 isolated WebGL mobile safety optimization completed; this is not full Safari/iPhone validation.
 - Stage 2.7.6 formal integration decision completed: keep production `DecisionSingularity`, keep WebGL isolated in `/visual-lab`, no production replacement approved.
+- Stage 2.8G Hero artwork fidelity completed in `848a108`.
+- Stage 2.8H homepage minimal premium reduction completed in `9c7447d`.
+- Stage 2.8 homepage motion and brand polish checkpoint completed in `6adefd6`.
 
 ## Current CSS Architecture
 

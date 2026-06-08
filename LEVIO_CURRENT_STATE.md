@@ -2,29 +2,28 @@
 
 ## Дата обновления
 
-3 июня 2026, Europe/Madrid.
+8 июня 2026, Europe/Madrid.
 
-Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после strategic visual pivot и Hero Artwork Fidelity Restoration. Это основной актуальный handoff-файл. `PROJECT_CONTEXT.md` должен оставаться синхронизированной копией этого документа.
+Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после завершения Stage 2.8 homepage motion and brand polish. Это основной актуальный handoff-файл. `PROJECT_CONTEXT.md` должен оставаться синхронизированной копией этого документа.
 
-## 0. Current Confirmed Checkpoint - 3 June 2026
+## 0. Current Confirmed Checkpoint - 8 June 2026
 
-Stage 2.8G-FIX - Hero Artwork Fidelity Restoration - является текущим checkpoint, который фиксируется из фактического локального состояния репозитория.
+Stage 2.8 homepage motion and brand polish - текущий подтвержденный checkpoint из фактического состояния `main`.
 
-Подтверждено по коду:
+Подтверждено по репозиторию:
 
-- Public homepage Hero использует approved artwork `public/hero-approved-network-bg.png`.
-- Approved artwork подключен через `next/image` в `app/page.tsx`.
-- Для Hero image установлено `quality={100}`.
-- Для Hero image включен `unoptimized`.
-- Предыдущий `hero-singularity.png` visual block больше не активен в Hero markup.
-- SVG pulse layer остается в markup, но визуально отключен CSS-правилом `display: none`.
-- Desktop opacity для Hero image восстановлен до `1`.
-- Mobile CSS все еще снижает opacity до `0.9` ниже `900px` и до `0.86` ниже `680px`; считать это factual caveat, а не отдельным утверждением полной opacity restoration на всех viewport.
-- Overlay gradients над изображением остаются, но ослаблены и в основном работают на читаемость текста/vignette control.
+- `848a108` зафиксировал Stage 2.8G Hero artwork fidelity.
+- `9c7447d` завершил Stage 2.8H homepage minimal premium reduction.
+- `6adefd6` завершил текущий Stage 2.8 homepage motion and brand polish checkpoint.
+- Public homepage сохраняет approved artwork `public/hero-approved-network-bg.png`, подключенный через `next/image` с `quality={100}` и `unoptimized`.
+- Homepage получила более строгую premium-minimal структуру, controlled motion и обновленную brand presentation.
+- Brand/favicons обслуживаются через `app/icon.png`, `public/favicon.ico`, `public/icon-192.png`, `public/apple-icon.png` и `public/manifest.webmanifest`.
+- Дублирующий App Router metadata-файл `app/favicon.ico` удален; активный favicon явно указывает на `public/favicon.ico` через `app/layout.tsx`.
+- Удалены устаревшие production visual assets и неиспользуемый `components/SingularityVisual.tsx`.
 
 Направление продукта не изменилось: Levio.es является AI Decision Intelligence System, а не chatbot, AI playground, sci-fi showcase, WebGL experiment или visual-effects demo.
 
-Следующий кандидатный этап остается Stage 2.8H - Living Intelligence Core, но его нельзя начинать до фиксации этого checkpoint и чистого working tree.
+Stage 2.8H завершен. Следующий логический кандидат - Stage 2.9: production QA, controlled legacy visual CSS cleanup planning и homepage decision-flow hardening. Stage 2.9 нельзя начинать без отдельного явного одобрения.
 
 ## 0. Current Authoritative Strategy - 30 May 2026
 
@@ -171,6 +170,9 @@ Stage 2 progress:
 - Stage 2.7.4 completed: isolated WebGL performance profiling and stress testing; no file changes, no commit needed.
 - Stage 2.7.5 completed: `89e534c` - isolated WebGL mobile safety optimization; this is not full Safari/iPhone validation.
 - Stage 2.7.6 completed: formal integration decision - keep production `DecisionSingularity`, keep WebGL isolated in `/visual-lab`, no production replacement approved.
+- Stage 2.8G Hero artwork fidelity completed: `848a108`.
+- Stage 2.8H homepage minimal premium reduction completed: `9c7447d`.
+- Stage 2.8 homepage motion and brand polish checkpoint completed: `6adefd6`.
 
 Stage 2.1-2.7.4 result:
 
