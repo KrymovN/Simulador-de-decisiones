@@ -12597,3 +12597,59 @@ html {
     padding-top: 16px;
   }
 }
+
+/* Stage 2.10A follow-up: synchronize anchor landings with scroll-linked reveals. */
+.anchor-reveal-synced .motion-letter,
+.anchor-reveal-synced .reference-system-card,
+.anchor-reveal-synced .reference-process-card,
+.anchor-reveal-synced .reference-capability-card {
+  animation: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+/* Stage 2.10A follow-up: quieter, better-balanced auth composition. */
+@media (min-width: 981px) {
+  .auth-shell {
+    width: min(1180px, calc(100% - 48px));
+    grid-template-columns: minmax(0, 1fr) minmax(410px, 0.94fr);
+    align-items: center;
+  }
+
+  .auth-visual,
+  .auth-card {
+    min-height: min(700px, calc(100vh - 72px));
+  }
+
+  .auth-visual {
+    padding: clamp(36px, 4.2vw, 58px);
+  }
+
+  .auth-visual h1 {
+    max-width: 580px;
+    font-size: clamp(3rem, 4.6vw, 4.3rem);
+    line-height: 1.01;
+  }
+
+  .auth-visual p:not(.eyebrow),
+  .auth-visual .security-note {
+    max-width: 570px;
+  }
+
+  .auth-card {
+    padding: clamp(34px, 3.7vw, 50px);
+  }
+}
+
+.auth-visual::before,
+.auth-card::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(216, 168, 74, 0.56),
+    rgba(255, 211, 106, 0.2),
+    transparent
+  );
+  box-shadow: 0 0 20px rgba(216, 168, 74, 0.12);
+}

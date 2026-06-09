@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import { createMockSession } from "./MockAuthGate";
 import type { MockSimulation } from "../lib/mockSimulations";
 import {
@@ -41,6 +41,8 @@ export default function HomeSimulator() {
   const [isRunning, setIsRunning] = useState(false);
   const [result, setResult] = useState<SimulationResponse | null>(null);
   const [message, setMessage] = useState("");
+  const thinkingPanelRef = useRef<HTMLDivElement>(null);
+  const outputRef = useRef<HTMLDivElement>(null);
 
   const stages = useMemo(
     () => result?.thinkingStages ?? buildMockSimulation("simulación inicial").thinkingStages,
@@ -91,6 +93,39 @@ export default function HomeSimulator() {
     setMessage("Simulación completada. Escenarios listos para revisar.");
   }
 
+  function handleTextareaKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
+    if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+      event.preventDefault();
+      event.currentTarget.form?.requestSubmit();
+    }
+  }
+
+  useEffect(() => {
+    if (!isRunning || activeStage < 0) {
+      return;
+    }
+
+    const currentStage = thinkingPanelRef.current?.querySelector<HTMLElement>(".thinking-step.is-current");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    currentStage?.scrollIntoView({
+      behavior: reducedMotion ? "auto" : "smooth",
+      block: "center",
+    });
+  }, [activeStage, isRunning]);
+
+  useEffect(() => {
+    if (!result) {
+      return;
+    }
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    outputRef.current?.scrollIntoView({
+      behavior: reducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
+  }, [result]);
+
   function handleSave() {
     if (!result) {
       return;
@@ -115,6 +150,7 @@ export default function HomeSimulator() {
           <textarea
             id="decision-input"
             onChange={(event) => setInput(event.target.value)}
+            onKeyDown={handleTextareaKeyDown}
             placeholder={defaultInput}
             value={input}
           />
@@ -130,7 +166,7 @@ export default function HomeSimulator() {
       </div>
 
       {(isRunning || result) && (
-        <div className="thinking-panel" aria-label="Etapas de pensamiento del motor">
+        <div className="thinking-panel" aria-label="Etapas de pensamiento del motor" ref={thinkingPanelRef}>
           {stages.map((stage, index) => (
             <article
               className={`thinking-step ${index <= activeStage || result ? "is-active" : ""} ${
@@ -149,7 +185,7 @@ export default function HomeSimulator() {
       )}
 
       {result && (
-        <div className="simulation-output">
+        <div className="simulation-output" ref={outputRef}>
           <div className="simulation-output-header">
             <div>
               <p className="eyebrow">Mapa de escenarios</p>

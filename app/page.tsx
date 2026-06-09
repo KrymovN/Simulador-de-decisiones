@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { CSSProperties } from "react";
 import HomeSimulator from "../components/HomeSimulator";
+import HomepageAnchorLink from "../components/HomepageAnchorLink";
 import LevioMark from "../components/LevioMark";
 
 const processSteps = [
@@ -24,7 +25,7 @@ const processSteps = [
 ];
 
 const navItems = [
-  { label: "Inicio", href: "/", active: true },
+  { label: "Inicio", href: "#hero-title", active: true },
   { label: "Simulador", href: "#decision-input" },
   { label: "Escenarios", href: "#escenarios" },
   { label: "Riesgos", href: "#motor" },
@@ -155,9 +156,19 @@ export default function Home() {
         </Link>
         <nav className="site-nav reference-nav" aria-label="Acceso principal">
           {navItems.map((item) => (
-            <Link className={item.active ? "nav-active" : undefined} href={item.href} key={item.label}>
-              {item.label}
-            </Link>
+            item.href.startsWith("#") ? (
+              <HomepageAnchorLink
+                className={item.active ? "nav-active" : undefined}
+                href={item.href as `#${string}`}
+                key={item.label}
+              >
+                {item.label}
+              </HomepageAnchorLink>
+            ) : (
+              <Link className={item.active ? "nav-active" : undefined} href={item.href} key={item.label}>
+                {item.label}
+              </Link>
+            )
           ))}
           <Link className="nav-cta" href="/login">
             Iniciar sesión
@@ -219,12 +230,12 @@ export default function Home() {
           </div>
 
           <div className="hero-actions home-hero-actions" aria-label="Accesos principales">
-            <a className="button-link" href="#decision-input">
+            <HomepageAnchorLink className="button-link" href="#decision-input">
               Comenzar simulación
-            </a>
-            <a className="button-link secondary-button" href="#producto">
+            </HomepageAnchorLink>
+            <HomepageAnchorLink className="button-link secondary-button" href="#producto">
               Ver cómo funciona
-            </a>
+            </HomepageAnchorLink>
           </div>
 
           <ul className="hero-proof-list" aria-label="Señales del producto">
@@ -346,10 +357,10 @@ export default function Home() {
             <MotionLetters text="Levio.es simulará escenarios, riesgos y consecuencias antes de que actúes." />
           </p>
         </div>
-        <a href="#decision-input">
+        <HomepageAnchorLink href="#decision-input">
           Comenzar ahora
           <span aria-hidden="true">→</span>
-        </a>
+        </HomepageAnchorLink>
       </section>
 
       <footer className="reference-footer">
@@ -366,7 +377,11 @@ export default function Home() {
           <div className="reference-footer-column" key={column.title}>
             <strong>{column.title}</strong>
             {column.links.map((link) => (
-              <Link href={link.href} key={link.label}>{link.label}</Link>
+              link.href.startsWith("#") ? (
+                <HomepageAnchorLink href={link.href as `#${string}`} key={link.label}>{link.label}</HomepageAnchorLink>
+              ) : (
+                <Link href={link.href} key={link.label}>{link.label}</Link>
+              )
             ))}
           </div>
         ))}
