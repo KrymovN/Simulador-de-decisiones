@@ -12068,3 +12068,155 @@ html {
       0 0 26px rgba(216, 168, 74, 0.2);
   }
 }
+
+/* Stage 2.9F: align tablet compositions and calm the desktop simulator form. */
+@media (min-width: 481px) and (max-width: 900px) {
+  .reference-system-card {
+    grid-template-columns: 44px minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    align-content: start;
+    gap: 10px 20px;
+    min-height: 0;
+    padding: 24px 26px;
+  }
+
+  .reference-system-card small {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    align-self: start;
+    width: 44px;
+  }
+
+  .reference-system-card strong,
+  .reference-system-card h3,
+  .reference-system-card p {
+    grid-column: 2;
+    width: 100%;
+    max-width: 34rem;
+  }
+
+  .reference-system-card strong {
+    grid-row: 1;
+  }
+
+  .reference-system-card h3 {
+    grid-row: 2;
+  }
+
+  .reference-system-card p {
+    grid-row: 3;
+  }
+
+  .reference-cta-banner {
+    align-items: center;
+    gap: 22px;
+    padding: 24px 26px;
+  }
+
+  .reference-cta-copy {
+    gap: 7px;
+    max-width: 35rem;
+  }
+
+  .reference-cta-banner h2 {
+    max-width: 27rem;
+    font-size: clamp(1.75rem, 4.4vw, 2.15rem);
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+
+  .reference-cta-banner p {
+    max-width: 33.75rem;
+    font-size: 0.98rem;
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+}
+
+@media (min-width: 901px) {
+  .reference-workspace .decision-console {
+    width: min(100%, 980px);
+    padding: clamp(22px, 2.6vw, 30px);
+    border-color: rgba(216, 168, 74, 0.42);
+    border-radius: 20px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 243, 208, 0.04),
+      inset 0 -24px 50px rgba(216, 168, 74, 0.025),
+      0 18px 48px rgba(0, 0, 0, 0.34),
+      0 0 36px rgba(216, 168, 74, 0.06);
+  }
+
+  .reference-workspace .decision-console::after {
+    inset: 10px;
+    border-color: rgba(216, 168, 74, 0.12);
+    border-radius: 15px;
+  }
+
+  .reference-workspace .decision-console form {
+    padding: clamp(18px, 2vw, 24px);
+    border-color: rgba(216, 168, 74, 0.32);
+    border-radius: 15px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 243, 208, 0.035),
+      0 12px 32px rgba(0, 0, 0, 0.24);
+  }
+
+  .reference-workspace .decision-console label {
+    margin-bottom: 14px;
+    font-size: 0.74rem;
+    letter-spacing: 0.14em;
+  }
+
+  .reference-workspace .decision-console .input-row {
+    grid-template-columns: minmax(0, 1fr) 176px;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .reference-workspace .decision-console textarea,
+  .reference-workspace .decision-console textarea:hover,
+  .reference-workspace .decision-console textarea:focus,
+  .reference-workspace .decision-console textarea:focus-visible {
+    min-height: 136px;
+    padding: 17px 18px;
+    border-color: rgba(216, 168, 74, 0.32) !important;
+    border-radius: 13px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 243, 208, 0.025),
+      inset 0 0 32px rgba(216, 168, 74, 0.018),
+      0 10px 24px rgba(0, 0, 0, 0.2) !important;
+    font-size: 0.98rem;
+  }
+
+  .reference-workspace .decision-console textarea:hover {
+    border-color: rgba(216, 168, 74, 0.44) !important;
+  }
+
+  .reference-workspace .decision-console textarea:focus,
+  .reference-workspace .decision-console textarea:focus-visible {
+    border-color: rgba(255, 211, 106, 0.64) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 243, 208, 0.04),
+      inset 0 0 34px rgba(216, 168, 74, 0.025),
+      0 0 0 3px rgba(216, 168, 74, 0.06),
+      0 12px 28px rgba(0, 0, 0, 0.22) !important;
+  }
+
+  .reference-workspace .decision-console .input-row button {
+    align-self: center;
+    width: 100%;
+    min-width: 0;
+    min-height: 62px;
+    height: 62px;
+    border-radius: 12px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 243, 208, 0.14),
+      0 10px 24px rgba(0, 0, 0, 0.26),
+      0 0 24px rgba(216, 168, 74, 0.1);
+    font-size: 0.76rem;
+  }
+
+  .reference-workspace .console-status {
+    margin-top: 14px;
+  }
+}
