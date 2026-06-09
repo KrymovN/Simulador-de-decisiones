@@ -1,10 +1,10 @@
 # CURRENT STAGE - LEVIO.ES
 
-Date: 8 June 2026, Europe/Madrid.
+Date: 9 June 2026, Europe/Madrid.
 
-## Current Confirmed Checkpoint - 8 June 2026
+## Current Confirmed Checkpoint - 9 June 2026
 
-Stage 2.9D - Desktop Motion Alignment and CTA Polish - is the current confirmed checkpoint.
+Stage 2.9E - Mobile Navigation Visibility Polish and Secondary Pages Audit - is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
@@ -12,8 +12,10 @@ Confirmed facts from the repository:
 - `9c7447d` completed Stage 2.8H homepage minimal premium reduction.
 - `6adefd6` completed the Stage 2.8 homepage motion and brand polish checkpoint.
 - Stage 2.9D preserves product architecture and changes only homepage presentation markup in `app/page.tsx` and final desktop-only motion/visual overrides in `app/globals.css`.
+- Stage 2.9E changes only the final mobile navigation override in `app/globals.css` and synchronizes stage documentation; auth/dashboard/simulator business logic is untouched.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
 - Mobile navigation is one controlled horizontal row: `Inicio`, `Simulador`, `Mi espacio`, `Iniciar sesión`.
+- Mobile navigation now uses readable `44px` premium glass controls, stronger typography/contrast/active/tap states and a distinct login CTA without horizontal overflow.
 - Mobile root-scroll reveal ranges start later and run longer across hero feature, decision-system, process and capability blocks.
 - Hero title scroll-exit starts earlier and the approved artwork breathing cycle is accelerated to `21s`.
 - Desktop reveal timing for hero feature, decision-system, process and `01/02/03/04` blocks is aligned against the capability-card reference; accepted Stage 2.9C mobile timing remains unchanged.
@@ -31,7 +33,15 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 2.9D is complete. No next implementation stage is approved; any continuation requires separate explicit approval.
+Stage 2.9E is complete. The auth, dashboard and `/visual-lab` secondary-pages audit is complete; any Stage 2.10 implementation requires separate explicit approval.
+
+### Stage 2.10 Candidate - Secondary Product Surface Unification
+
+- Start with shared auth shell and shared dashboard shell/navigation so a controlled primitive-level pass improves the widest route surface.
+- Align auth mark, form hierarchy, input/label contrast and spacing with the homepage premium system.
+- Align dashboard brand mark, active navigation, cards, controls, spacing/radius/borders and remove incompatible white/cyan/rainbow identity traces.
+- Preserve auth/dashboard/mock logic, routing, simulator contracts, localStorage keys, API and production persistence boundaries.
+- Keep `/visual-lab` isolated as a sandbox, not a production style target.
 
 ## Current Authoritative Stage - 30 May 2026
 
@@ -128,7 +138,7 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 
 ## Current Stage
 
-Stage 2.9D - desktop motion alignment and CTA polish - COMPLETED CHECKPOINT.
+Stage 2.9E - mobile navigation visibility polish and secondary-pages audit - COMPLETED CHECKPOINT.
 
 Roadmap from the current checkpoint:
 
@@ -164,6 +174,7 @@ Completed Stage 2 stabilization commits:
 - Stage 2.9B Safari metadata and favicon identity fix completed.
 - Stage 2.9C homepage scroll motion fine-tuning completed.
 - Stage 2.9D desktop motion alignment and CTA polish completed.
+- Stage 2.9E mobile navigation visibility polish and secondary-pages audit completed.
 
 ## Current CSS Architecture
 

@@ -11971,3 +11971,100 @@ html {
     transform: none;
   }
 }
+
+/* Stage 2.9E: stronger iPhone navigation visibility without changing desktop. */
+@media (max-width: 860px) {
+  .reference-header {
+    gap: 10px;
+    padding: 10px 10px 12px;
+  }
+
+  .reference-nav {
+    gap: 4px;
+    overflow: visible;
+  }
+
+  .reference-nav a,
+  .reference-nav .nav-cta {
+    min-height: 44px;
+    padding: 8px 3px;
+    border: 1px solid rgba(216, 168, 74, 0.22);
+    border-radius: 8px;
+    background:
+      linear-gradient(180deg, rgba(255, 243, 208, 0.035), transparent),
+      rgba(7, 5, 3, 0.72);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 243, 208, 0.045),
+      0 8px 18px rgba(0, 0, 0, 0.18);
+    color: rgba(240, 225, 192, 0.82);
+    font-size: clamp(0.69rem, 2.9vw, 0.78rem);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+    transition:
+      border-color 180ms ease,
+      background 180ms ease,
+      box-shadow 180ms ease,
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .reference-nav a:hover,
+  .reference-nav a:active,
+  .reference-nav a:focus-visible {
+    border-color: rgba(255, 211, 106, 0.48);
+    background:
+      linear-gradient(180deg, rgba(255, 243, 208, 0.07), transparent),
+      rgba(15, 10, 4, 0.86);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 243, 208, 0.08),
+      0 0 20px rgba(216, 168, 74, 0.1);
+    color: rgba(255, 240, 204, 0.98);
+    text-shadow: none;
+    transform: translateY(-1px);
+  }
+
+  .reference-nav .nav-active {
+    border-color: rgba(255, 211, 106, 0.58);
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255, 243, 208, 0.11), transparent 52%),
+      linear-gradient(180deg, rgba(216, 168, 74, 0.12), rgba(8, 5, 2, 0.82));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 243, 208, 0.1),
+      0 0 22px rgba(216, 168, 74, 0.11);
+    color: #f0c96f;
+    font-weight: 780;
+  }
+
+  .reference-nav .nav-active::after {
+    right: 24%;
+    bottom: 4px;
+    left: 24%;
+  }
+
+  .reference-nav .nav-cta {
+    border-color: rgba(255, 211, 106, 0.72);
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255, 243, 208, 0.15), transparent 52%),
+      linear-gradient(145deg, rgba(216, 168, 74, 0.22), rgba(42, 27, 7, 0.22)),
+      rgba(8, 6, 3, 0.94);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 243, 208, 0.13),
+      0 0 22px rgba(216, 168, 74, 0.13);
+    color: rgba(255, 226, 158, 0.98);
+    font-weight: 800;
+  }
+
+  .reference-nav .nav-cta:hover,
+  .reference-nav .nav-cta:active,
+  .reference-nav .nav-cta:focus-visible {
+    border-color: rgba(255, 220, 136, 0.92);
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255, 243, 208, 0.2), transparent 54%),
+      linear-gradient(145deg, rgba(216, 168, 74, 0.29), rgba(52, 33, 8, 0.24)),
+      rgba(10, 7, 3, 0.96);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 243, 208, 0.17),
+      0 0 26px rgba(216, 168, 74, 0.2);
+  }
+}
