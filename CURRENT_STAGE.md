@@ -4,7 +4,7 @@ Date: 11 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 11 June 2026
 
-Stage 2.10B - Simulator Reveal State Fix + Progressive Voice Input - is the current confirmed checkpoint.
+Stage 2.11 - Core Architecture Foundation - is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
@@ -21,6 +21,11 @@ Confirmed facts from the repository:
 - `HomeSimulator` uses its existing submit path for Enter, preserves Shift+Enter newlines and softly follows active thinking stages and completed output.
 - Stage 2.10B preserves already reached homepage sections before simulator auto-follow, preventing dynamic result height from moving Safari root-scroll timelines back into dimmed intermediate frames.
 - `HomeSimulator` adds progressive browser-safe `SpeechRecognition` / `webkitSpeechRecognition` voice input with start/stop/listening states and Spanish fallback/error feedback; voice input never submits automatically.
+- Stage 2.11 creates `LEVIO_DECISION_ENGINE.md`, defining the future decision pipeline, confidence and completeness concepts, clarification logic, scenario construction, and Stage 3 AI integration requirements.
+- Stage 2.11 creates `LEVIO_MEMORY_MODEL.md`, defining short-term, long-term, project, and decision memory with consent, retention, and GDPR boundaries.
+- Stage 2.11 creates `LEVIO_SUBSCRIPTION_MODEL.md`, defining the conceptual FREE, PREMIUM, and PROFESSIONAL foundations without final prices or production entitlements.
+- Stage 2.11 creates `LEVIO_MULTILINGUAL_ARCHITECTURE.md`, defining language selection, persistence, dictionaries, RTL requirements, and future AI language behavior.
+- Stage 2.11 is documentation-only: product code, UI, business logic, simulator, auth/dashboard routes, API, localStorage contracts, OpenAI integration, database, and payments remain unchanged.
 - Simulator business logic, API and `SimulationResponse` contracts, auth logic, routing and localStorage keys remain unchanged.
 - Desktop auth composition is more balanced and its edge accents are restricted to the black/graphite/gold/amber identity; desktop/mobile QA passed without console errors or horizontal overflow.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
@@ -43,7 +48,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 2.10B is complete. Reveal state after simulator flow is stable, progressive voice input is present, keyboard/auto-follow/anchor flow and desktop/mobile QA are confirmed, and protected contracts remain unchanged.
+Stage 2.11 is complete. Decision Engine, Memory Model, Subscription, and Multilingual foundations now exist as architecture documents; product code and protected contracts remain unchanged.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -148,7 +153,7 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 
 ## Current Stage
 
-Stage 2.10B - simulator reveal state fix and progressive voice input - COMPLETED CHECKPOINT.
+Stage 2.11 - Core Architecture Foundation - COMPLETED CHECKPOINT.
 
 Roadmap from the current checkpoint:
 
@@ -189,6 +194,7 @@ Completed Stage 2 stabilization commits:
 - Stage 2.10A auth pages premium black-gold unification completed; auth logic and routes preserved.
 - Stage 2.10A navigation reveal sync, simulator Enter/Shift+Enter and auto-follow flow completed; simulator contracts and business logic preserved.
 - Stage 2.10B simulator reveal preservation and progressive voice input completed; simulator/API/localStorage contracts and business logic preserved.
+- Stage 2.11 Core Architecture Foundation completed through four architecture documents; product code and protected contracts preserved.
 
 ## Current CSS Architecture
 
