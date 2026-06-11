@@ -2,13 +2,13 @@
 
 ## Дата обновления
 
-9 июня 2026, Europe/Madrid.
+11 июня 2026, Europe/Madrid.
 
-Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после завершения Stage 2.10A auth pages premium unification и UX follow-up. Это синхронизированная копия `LEVIO_CURRENT_STATE.md`.
+Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после завершения Stage 2.10B simulator reveal fix и progressive voice input. Это синхронизированная копия `LEVIO_CURRENT_STATE.md`.
 
-## 0. Current Confirmed Checkpoint - 9 June 2026
+## 0. Current Confirmed Checkpoint - 11 June 2026
 
-Stage 2.10A - Auth Pages Premium Black-Gold Unification + UX Navigation/Simulator Follow-up - текущий подтвержденный checkpoint.
+Stage 2.10B - Simulator Reveal State Fix + Progressive Voice Input - текущий подтвержденный checkpoint.
 
 Подтверждено по репозиторию:
 
@@ -23,6 +23,8 @@ Stage 2.10A - Auth Pages Premium Black-Gold Unification + UX Navigation/Simulato
 - Mock auth logic, routing, localStorage keys и dashboard logic не изменены; desktop/mobile route QA и mock auth flows прошли.
 - Stage 2.10A UX follow-up синхронизирует homepage anchor navigation со scroll-linked reveal, поэтому целевые секции сразу видимы после перехода по якорю в Safari.
 - `HomeSimulator` теперь запускает существующий submit flow по Enter, сохраняет перенос строки по Shift+Enter и мягко сопровождает пользователя к текущему этапу и результату.
+- Stage 2.10B сохраняет раскрытое состояние уже достигнутых homepage-секций перед simulator auto-follow, поэтому динамическое увеличение страницы результатом больше не возвращает верхние scroll-linked блоки в промежуточное затемнённое состояние Safari.
+- `HomeSimulator` получил progressive voice input через browser-safe `SpeechRecognition` / `webkitSpeechRecognition`, состояния start/stop/listening и испанские fallback/error сообщения без автоматического запуска симуляции.
 - Simulator business logic, API и `SimulationResponse` contracts, mock auth logic, routing и localStorage keys не изменены.
 - Auth desktop composition сбалансирована, heading облегчен, а edge accents ограничены black/graphite/gold/amber палитрой; mobile и desktop QA прошли без console errors и horizontal overflow.
 - Public homepage сохраняет approved artwork `public/hero-approved-network-bg.png`, подключенный через `next/image` с `quality={100}` и `unoptimized`.
@@ -45,7 +47,7 @@ Stage 2.10A - Auth Pages Premium Black-Gold Unification + UX Navigation/Simulato
 
 Направление продукта не изменилось: Levio.es является AI Decision Intelligence System, а не chatbot, AI playground, sci-fi showcase, WebGL experiment или visual-effects demo.
 
-Stage 2.10A завершен. Auth pages premium black-gold unification, navigation reveal sync, simulator keyboard/auto-follow flow и route QA подтверждены; следующий implementation stage не утвержден и требует отдельного явного одобрения.
+Stage 2.10B завершен. Reveal state после simulator flow стабилен, progressive voice input добавлен, keyboard/auto-follow/anchor flow и desktop/mobile QA подтверждены; защищённые контракты не изменены.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 

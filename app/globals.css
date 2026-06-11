@@ -12602,11 +12602,110 @@ html {
 .anchor-reveal-synced .motion-letter,
 .anchor-reveal-synced .reference-system-card,
 .anchor-reveal-synced .reference-process-card,
-.anchor-reveal-synced .reference-capability-card {
+.anchor-reveal-synced .reference-capability-card,
+.reveal-state-preserved .hero-motion-title,
+.reveal-state-preserved .motion-letter,
+.reveal-state-preserved .hero-feature-card,
+.reveal-state-preserved .reference-system-card,
+.reveal-state-preserved .reference-process-card,
+.reveal-state-preserved .reference-capability-card {
   animation: none !important;
   opacity: 1 !important;
   filter: none !important;
   transform: none !important;
+}
+
+/* Stage 2.10B: progressive voice input and stable reveal state during simulator auto-follow. */
+.reference-workspace .decision-input-shell {
+  position: relative;
+  min-width: 0;
+}
+
+.reference-workspace .decision-input-shell textarea {
+  height: 100%;
+  padding-bottom: 72px !important;
+}
+
+.reference-workspace .decision-console .input-row .voice-input-button {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  display: inline-flex;
+  width: auto;
+  min-width: 0;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 211, 106, 0.42);
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 243, 208, 0.08), transparent),
+    rgba(5, 4, 2, 0.94);
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 243, 208, 0.09);
+  color: rgba(255, 230, 174, 0.9);
+  font-size: 0.72rem;
+  font-weight: 760;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.reference-workspace .decision-console .input-row .voice-input-button svg {
+  width: 17px;
+  height: 17px;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.reference-workspace .decision-console .input-row .voice-input-button:hover,
+.reference-workspace .decision-console .input-row .voice-input-button:focus-visible,
+.reference-workspace .decision-console .input-row .voice-input-button.is-listening {
+  border-color: rgba(255, 220, 136, 0.86);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 243, 208, 0.18), transparent 58%),
+    rgba(15, 10, 4, 0.97);
+  box-shadow:
+    0 0 0 3px rgba(216, 168, 74, 0.1),
+    0 0 25px rgba(216, 168, 74, 0.18),
+    inset 0 1px 0 rgba(255, 243, 208, 0.13);
+  color: rgba(255, 240, 204, 0.98);
+}
+
+.reference-workspace .decision-console .input-row .voice-input-button.is-listening svg {
+  animation: voiceInputPulse 1.15s ease-in-out infinite;
+}
+
+@keyframes voiceInputPulse {
+  50% {
+    opacity: 0.58;
+    transform: scale(0.9);
+  }
+}
+
+@media (max-width: 480px) {
+  .reference-workspace .decision-console .input-row .voice-input-button {
+    right: 10px;
+    bottom: 10px;
+    min-height: 38px;
+    padding: 8px 10px;
+  }
+
+  .reference-workspace .decision-input-shell textarea {
+    padding-bottom: 66px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-workspace .decision-console .input-row .voice-input-button.is-listening svg {
+    animation: none;
+  }
 }
 
 /* Stage 2.10A follow-up: quieter, better-balanced auth composition. */

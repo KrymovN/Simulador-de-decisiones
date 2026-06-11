@@ -11,6 +11,35 @@ import {
   type SimulationResponse,
 } from "../lib/simulationEngine";
 
+interface SpeechRecognitionResultLike {
+  isFinal: boolean;
+  0: {
+    transcript: string;
+  };
+}
+
+interface SpeechRecognitionEventLike {
+  results: ArrayLike<SpeechRecognitionResultLike>;
+}
+
+interface SpeechRecognitionErrorEventLike {
+  error: string;
+}
+
+interface SpeechRecognitionLike {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onend: (() => void) | null;
+  onerror: ((event: SpeechRecognitionErrorEventLike) => void) | null;
+  onresult: ((event: SpeechRecognitionEventLike) => void) | null;
+  abort: () => void;
+  start: () => void;
+  stop: () => void;
+}
+
+type SpeechRecognitionConstructor = new () => SpeechRecognitionLike;
+
 const defaultInput =
   "Aceptar una oferta, lanzar un producto, cambiar de país, invertir en una nueva dirección...";
 
@@ -34,13 +63,45 @@ function readSavedSimulations() {
   }
 }
 
+function getSpeechRecognitionConstructor() {
+  if (typeof window === "undefined") {
+    return undefined;
+  }
+
+  const speechWindow = window as typeof window & {
+    SpeechRecognition?: SpeechRecognitionConstructor;
+    webkitSpeechRecognition?: SpeechRecognitionConstructor;
+  };
+
+  return speechWindow.SpeechRecognition ?? speechWindow.webkitSpeechRecognition;
+}
+
+function preserveReachedRevealState(origin: HTMLElement | null) {
+  const siteShell = origin?.closest<HTMLElement>(".site-shell");
+
+  if (!siteShell) {
+    return;
+  }
+
+  const revealThreshold = window.innerHeight * 0.85;
+
+  siteShell.querySelectorAll<HTMLElement>("section").forEach((section) => {
+    if (section.getBoundingClientRect().top <= revealThreshold) {
+      section.classList.add("reveal-state-preserved");
+    }
+  });
+}
+
 export default function HomeSimulator() {
   const router = useRouter();
   const [input, setInput] = useState("");
   const [activeStage, setActiveStage] = useState(-1);
   const [isRunning, setIsRunning] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const [result, setResult] = useState<SimulationResponse | null>(null);
   const [message, setMessage] = useState("");
+  const consoleRef = useRef<HTMLElement>(null);
+  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const thinkingPanelRef = useRef<HTMLDivElement>(null);
   const outputRef = useRef<HTMLDivElement>(null);
 
@@ -75,6 +136,7 @@ export default function HomeSimulator() {
       return;
     }
 
+    preserveReachedRevealState(consoleRef.current);
     setMessage("");
     setResult(null);
     setActiveStage(-1);
@@ -99,6 +161,66 @@ export default function HomeSimulator() {
       event.currentTarget.form?.requestSubmit();
     }
   }
+
+  function handleVoiceToggle() {
+    if (recognitionRef.current && isListening) {
+      recognitionRef.current.stop();
+      return;
+    }
+
+    const SpeechRecognition = getSpeechRecognitionConstructor();
+
+    if (!SpeechRecognition) {
+      setMessage("El dictado por voz no está disponible en este navegador.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "es-ES";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.onresult = (event) => {
+      const transcript = Array.from(event.results)
+        .filter((result) => result.isFinal)
+        .map((result) => result[0]?.transcript ?? "")
+        .join(" ")
+        .trim();
+
+      if (transcript) {
+        setInput((currentInput) => `${currentInput.trimEnd()}${currentInput.trim() ? " " : ""}${transcript}`);
+        setMessage("Dictado añadido. Revisa el texto antes de simular.");
+      }
+    };
+    recognition.onerror = (event) => {
+      if (event.error === "not-allowed" || event.error === "service-not-allowed") {
+        setMessage("No se pudo acceder al micrófono. Revisa el permiso del navegador.");
+      } else {
+        setMessage("No se pudo completar el dictado por voz. Puedes seguir escribiendo.");
+      }
+    };
+    recognition.onend = () => {
+      recognitionRef.current = null;
+      setIsListening(false);
+    };
+
+    recognitionRef.current = recognition;
+
+    try {
+      recognition.start();
+      setIsListening(true);
+      setMessage("Escuchando... Pulsa el micrófono para detener el dictado.");
+    } catch {
+      recognitionRef.current = null;
+      setIsListening(false);
+      setMessage("No se pudo iniciar el dictado por voz. Puedes seguir escribiendo.");
+    }
+  }
+
+  useEffect(() => {
+    return () => {
+      recognitionRef.current?.abort();
+    };
+  }, []);
 
   useEffect(() => {
     if (!isRunning || activeStage < 0) {
@@ -143,17 +265,32 @@ export default function HomeSimulator() {
   }
 
   return (
-    <section className="decision-console" aria-label="Simulador inicial de decisión">
+    <section className="decision-console" aria-label="Simulador inicial de decisión" ref={consoleRef}>
       <form onSubmit={handleSubmit}>
         <label htmlFor="decision-input">Describe la situación que quieres simular</label>
         <div className="input-row">
-          <textarea
-            id="decision-input"
-            onChange={(event) => setInput(event.target.value)}
-            onKeyDown={handleTextareaKeyDown}
-            placeholder={defaultInput}
-            value={input}
-          />
+          <div className="decision-input-shell">
+            <textarea
+              id="decision-input"
+              onChange={(event) => setInput(event.target.value)}
+              onKeyDown={handleTextareaKeyDown}
+              placeholder={defaultInput}
+              value={input}
+            />
+            <button
+              aria-label={isListening ? "Detener dictado por voz" : "Iniciar dictado por voz"}
+              aria-pressed={isListening}
+              className={`voice-input-button ${isListening ? "is-listening" : ""}`}
+              onClick={handleVoiceToggle}
+              type="button"
+            >
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                <path d="M12 15.25a4 4 0 0 0 4-4V6a4 4 0 1 0-8 0v5.25a4 4 0 0 0 4 4Z" />
+                <path d="M5.75 10.75v.5a6.25 6.25 0 0 0 12.5 0v-.5M12 17.5V21M9.25 21h5.5" />
+              </svg>
+              <span>{isListening ? "Detener" : "Dictar"}</span>
+            </button>
+          </div>
           <button disabled={isRunning} type="submit">
             {isRunning ? "Analizando..." : "Simular decisión"}
           </button>
