@@ -4,7 +4,7 @@ Date: 11 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 11 June 2026
 
-Stage 2.12B - Dashboard Layout Grid Discipline - is the current confirmed checkpoint.
+Stage 2.13 - Product Readiness Audit - is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
@@ -32,6 +32,9 @@ Confirmed facts from the repository:
 - Stage 2.12B establishes one scoped dashboard grid rhythm with consistent content gaps, column/row gaps, card padding, start lines, and equal-height paired cards.
 - Stage 2.12B neutralizes the legacy adjacent-section margin only inside dashboard, aligns the sidebar with the header, and disciplines history, decisions, memory, profile, security, and privacy layouts.
 - Stage 2.12B changes only layout/CSS in `app/globals.css`; JSX, dashboard data, business logic, routes, auth, simulator, localStorage, and API contracts remain unchanged.
+- Stage 2.13 creates `LEVIO_PRODUCT_READINESS_AUDIT.md`, assessing homepage, dashboard, auth, simulator, Decision Engine, memory, multilingual, monetization, Stage 3 readiness, production risks, and priority fixes.
+- Stage 2.13 assesses Levio as a strong controlled-demo frontend and PARTIALLY READY product, but NOT READY for production users, real personal data, monetization, or direct AI connection.
+- Stage 2.13 is audit/documentation-only: product code and protected contracts remain unchanged.
 - Simulator business logic, API and `SimulationResponse` contracts, auth logic, routing and localStorage keys remain unchanged.
 - Desktop auth composition is more balanced and its edge accents are restricted to the black/graphite/gold/amber identity; desktop/mobile QA passed without console errors or horizontal overflow.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
@@ -54,7 +57,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 2.12B is complete. Dashboard pages use one strict layout grid over the premium black-gold system; logic and protected contracts remain unchanged.
+Stage 2.13 is complete. The Product Readiness Audit records the current frontend MVP strengths and mandatory production/Stage 3 gates; product code and protected contracts remain unchanged.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -159,7 +162,7 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 
 ## Current Stage
 
-Stage 2.12B - Dashboard Layout Grid Discipline - COMPLETED CHECKPOINT.
+Stage 2.13 - Product Readiness Audit - COMPLETED CHECKPOINT.
 
 Roadmap from the current checkpoint:
 
@@ -203,6 +206,7 @@ Completed Stage 2 stabilization commits:
 - Stage 2.11 Core Architecture Foundation completed through four architecture documents; product code and protected contracts preserved.
 - Stage 2.12A dashboard premium system unification completed; dashboard logic, routes, data, localStorage, and API contracts preserved.
 - Stage 2.12B dashboard layout grid discipline completed; dashboard logic, routes, data, auth, simulator, localStorage, and API contracts preserved.
+- Stage 2.13 product readiness audit completed; product code, UI, CSS, simulator, dashboard, auth, routes, API, localStorage, voice input, and architecture foundations preserved.
 
 ## Current CSS Architecture
 
