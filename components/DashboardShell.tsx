@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { clearMockSession } from "./MockAuthGate";
+import LevioMark from "./LevioMark";
 
 const navigationItems = [
   { href: "/dashboard", label: "Resumen" },
@@ -50,7 +51,7 @@ export default function DashboardShell({
     <main className="dashboard-shell">
       <aside className="dashboard-sidebar section-frame">
         <Link className="dashboard-brand brand-lockup" href="/">
-          <span className="brand-logo brand-logo-mini" aria-hidden="true"></span>
+          <LevioMark size="sm" />
           <span>levio.es</span>
         </Link>
         <p>Área personal del motor de simulación de decisiones.</p>

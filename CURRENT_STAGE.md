@@ -4,7 +4,7 @@ Date: 11 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 11 June 2026
 
-Stage 2.11 - Core Architecture Foundation - is the current confirmed checkpoint.
+Stage 2.12A - Dashboard Premium System Unification - is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
@@ -26,6 +26,9 @@ Confirmed facts from the repository:
 - Stage 2.11 creates `LEVIO_SUBSCRIPTION_MODEL.md`, defining the conceptual FREE, PREMIUM, and PROFESSIONAL foundations without final prices or production entitlements.
 - Stage 2.11 creates `LEVIO_MULTILINGUAL_ARCHITECTURE.md`, defining language selection, persistence, dictionaries, RTL requirements, and future AI language behavior.
 - Stage 2.11 is documentation-only: product code, UI, business logic, simulator, auth/dashboard routes, API, localStorage contracts, OpenAI integration, database, and payments remain unchanged.
+- Stage 2.12A unifies the shared dashboard shell with the homepage premium black-gold identity: Levio mark, sidebar, compact navigation, headers, active/hover states, glass surfaces, borders, shadows, and spacing.
+- `/dashboard`, simulations, decisions, memory, profile, security, and privacy use consistent graphite/black/gold/amber presentation primitives without visually active cyan, rainbow, green, or legacy coral states.
+- Stage 2.12A changes only presentation in `components/DashboardShell.tsx` and the final scoped dashboard cascade in `app/globals.css`; dashboard data, business logic, routes, localStorage, and API contracts remain unchanged.
 - Simulator business logic, API and `SimulationResponse` contracts, auth logic, routing and localStorage keys remain unchanged.
 - Desktop auth composition is more balanced and its edge accents are restricted to the black/graphite/gold/amber identity; desktop/mobile QA passed without console errors or horizontal overflow.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
@@ -48,7 +51,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 2.11 is complete. Decision Engine, Memory Model, Subscription, and Multilingual foundations now exist as architecture documents; product code and protected contracts remain unchanged.
+Stage 2.12A is complete. The dashboard shell and secondary dashboard pages are visually aligned with the homepage premium system; logic and protected contracts remain unchanged.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -153,7 +156,7 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 
 ## Current Stage
 
-Stage 2.11 - Core Architecture Foundation - COMPLETED CHECKPOINT.
+Stage 2.12A - Dashboard Premium System Unification - COMPLETED CHECKPOINT.
 
 Roadmap from the current checkpoint:
 
@@ -195,6 +198,7 @@ Completed Stage 2 stabilization commits:
 - Stage 2.10A navigation reveal sync, simulator Enter/Shift+Enter and auto-follow flow completed; simulator contracts and business logic preserved.
 - Stage 2.10B simulator reveal preservation and progressive voice input completed; simulator/API/localStorage contracts and business logic preserved.
 - Stage 2.11 Core Architecture Foundation completed through four architecture documents; product code and protected contracts preserved.
+- Stage 2.12A dashboard premium system unification completed; dashboard logic, routes, data, localStorage, and API contracts preserved.
 
 ## Current CSS Architecture
 

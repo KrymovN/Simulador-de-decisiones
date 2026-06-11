@@ -12752,3 +12752,650 @@ html {
   );
   box-shadow: 0 0 20px rgba(216, 168, 74, 0.12);
 }
+
+/* Stage 2.12A: dashboard premium black-gold system unification. */
+.dashboard-shell {
+  --dashboard-gold: #d8a84a;
+  --dashboard-gold-bright: #ffd36a;
+  --dashboard-gold-soft: rgba(216, 168, 74, 0.22);
+  --dashboard-border: rgba(216, 168, 74, 0.2);
+  --dashboard-border-strong: rgba(255, 211, 106, 0.44);
+  --dashboard-surface: rgba(5, 4, 3, 0.92);
+  --dashboard-surface-soft: rgba(11, 8, 4, 0.82);
+  --dashboard-text: rgba(249, 244, 232, 0.96);
+  --dashboard-muted: rgba(228, 218, 197, 0.64);
+  width: min(1380px, calc(100% - 40px));
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 20px;
+  padding: 20px 0 42px;
+  color: var(--dashboard-text);
+}
+
+.dashboard-shell .section-frame {
+  border-color: var(--dashboard-border);
+  background:
+    linear-gradient(145deg, rgba(255, 243, 208, 0.032), transparent 48%),
+    radial-gradient(circle at 100% 0%, rgba(216, 168, 74, 0.07), transparent 34%),
+    var(--dashboard-surface);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 243, 208, 0.045);
+  backdrop-filter: blur(22px);
+}
+
+.dashboard-shell .section-frame::before {
+  background: linear-gradient(100deg, transparent, rgba(255, 211, 106, 0.22), transparent);
+  opacity: 0.34;
+}
+
+.dashboard-sidebar {
+  top: 20px;
+  min-height: calc(100vh - 40px);
+  gap: 20px;
+  padding: 22px 18px;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 32% 0%, rgba(255, 211, 106, 0.1), transparent 29%),
+    linear-gradient(160deg, rgba(255, 243, 208, 0.035), transparent 42%),
+    rgba(3, 3, 3, 0.96) !important;
+}
+
+.dashboard-brand.brand-lockup {
+  gap: 10px;
+  color: rgba(246, 205, 118, 0.98);
+  font-size: 1.16rem;
+  text-shadow: 0 0 24px rgba(216, 168, 74, 0.14);
+}
+
+.dashboard-sidebar > p {
+  margin: -4px 2px 4px;
+  color: var(--dashboard-muted);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.dashboard-sidebar nav {
+  gap: 6px;
+}
+
+.dashboard-sidebar nav a {
+  position: relative;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 10px 12px 10px 16px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(226, 214, 190, 0.68);
+  font-size: 0.84rem;
+  font-weight: 660;
+  letter-spacing: 0.015em;
+}
+
+.dashboard-sidebar nav a::before {
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: 6px;
+  width: 2px;
+  border-radius: 999px;
+  background: var(--dashboard-gold-bright);
+  box-shadow: 0 0 14px rgba(255, 211, 106, 0.5);
+  content: "";
+  opacity: 0;
+  transform: scaleY(0.35);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.dashboard-sidebar nav a:hover,
+.dashboard-sidebar nav a.active {
+  border-color: rgba(216, 168, 74, 0.22);
+  background:
+    linear-gradient(90deg, rgba(216, 168, 74, 0.12), transparent 78%),
+    rgba(255, 243, 208, 0.018);
+  color: rgba(255, 239, 204, 0.96);
+}
+
+.dashboard-sidebar nav a.active::before {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.dashboard-sidebar-status,
+.dashboard-shell .privacy-state,
+.dashboard-shell .mock-feedback,
+.dashboard-shell .memory-status-strip {
+  border-color: var(--dashboard-border);
+  border-radius: 12px;
+  background:
+    linear-gradient(145deg, rgba(255, 243, 208, 0.035), transparent),
+    rgba(7, 5, 3, 0.9);
+  box-shadow: inset 0 1px 0 rgba(255, 243, 208, 0.04);
+}
+
+.dashboard-sidebar-status span,
+.dashboard-sidebar-status small,
+.dashboard-shell .privacy-state span {
+  color: var(--dashboard-muted);
+}
+
+.dashboard-sidebar-status strong,
+.dashboard-shell .privacy-state strong {
+  color: rgba(255, 226, 163, 0.94);
+}
+
+.dashboard-sidebar .ghost-button {
+  min-height: 46px;
+  border-color: rgba(216, 168, 74, 0.28);
+  border-radius: 10px;
+  background: rgba(216, 168, 74, 0.045);
+  color: rgba(240, 222, 184, 0.74);
+  box-shadow: none;
+}
+
+.dashboard-sidebar .ghost-button:hover {
+  border-color: var(--dashboard-border-strong);
+  background: rgba(216, 168, 74, 0.1);
+  color: rgba(255, 239, 204, 0.96);
+}
+
+.dashboard-main {
+  gap: 18px;
+  min-width: 0;
+}
+
+.dashboard-header {
+  min-height: 230px;
+  align-items: end;
+  padding: clamp(28px, 4vw, 46px);
+  border-radius: 20px;
+  background:
+    radial-gradient(ellipse at 92% 0%, rgba(255, 211, 106, 0.14), transparent 38%),
+    linear-gradient(145deg, rgba(255, 243, 208, 0.04), transparent 48%),
+    rgba(3, 3, 3, 0.96) !important;
+}
+
+.dashboard-header .eyebrow,
+.dashboard-shell .eyebrow {
+  color: rgba(216, 168, 74, 0.82);
+  font-size: 0.72rem;
+  font-weight: 760;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.dashboard-header h1 {
+  max-width: 760px;
+  margin-top: 12px;
+  color: var(--dashboard-text);
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-weight: 560;
+  letter-spacing: -0.055em;
+  line-height: 0.96;
+}
+
+.dashboard-header p:not(.eyebrow) {
+  max-width: 760px;
+  margin-top: 18px;
+  color: var(--dashboard-muted);
+  font-size: clamp(0.96rem, 1.2vw, 1.08rem);
+  line-height: 1.65;
+}
+
+.dashboard-shell .privacy-state {
+  min-width: 168px;
+  padding: 14px 16px;
+}
+
+.dashboard-shell .privacy-state strong {
+  font-size: 1.18rem;
+}
+
+.dashboard-grid {
+  gap: 12px;
+}
+
+.dashboard-shell .dashboard-card,
+.dashboard-shell .simulation-row,
+.dashboard-shell .saved-decision-card,
+.dashboard-shell .radar-card {
+  border-radius: 14px;
+}
+
+.dashboard-shell .dashboard-card {
+  padding: clamp(20px, 2.4vw, 28px);
+}
+
+.dashboard-shell .dashboard-card h2,
+.dashboard-shell .dashboard-engine h2,
+.dashboard-shell .simulation-detail-hero h2,
+.dashboard-shell .scenario-detail-card h2,
+.dashboard-shell .profile-overview h2,
+.dashboard-shell .decision-command h2,
+.dashboard-shell .memory-hero h2 {
+  color: var(--dashboard-text);
+  font-weight: 580;
+  letter-spacing: -0.035em;
+}
+
+.dashboard-shell .dashboard-card h2 {
+  margin-bottom: 20px;
+  font-size: clamp(1.45rem, 2.2vw, 2.1rem);
+}
+
+.dashboard-shell .dashboard-card h3,
+.dashboard-shell .saved-decision-card h2 {
+  color: rgba(248, 238, 216, 0.94);
+}
+
+.dashboard-shell .dashboard-card p,
+.dashboard-shell .simulation-row p,
+.dashboard-shell .active-simulation-panel p,
+.dashboard-shell .radar-card p,
+.dashboard-shell .impact-row p,
+.dashboard-shell .detail-timeline p,
+.dashboard-shell .mini-timeline p,
+.dashboard-shell .profile-signal-list p,
+.dashboard-shell .decision-command p,
+.dashboard-shell .decision-stat p,
+.dashboard-shell .saved-decision-card p,
+.dashboard-shell .memory-hero p,
+.dashboard-shell .memory-state-panel p,
+.dashboard-shell .memory-scope p,
+.dashboard-shell .remembered-patterns p {
+  color: var(--dashboard-muted);
+}
+
+.dashboard-shell .privacy-state span,
+.dashboard-shell .dashboard-card span,
+.dashboard-shell .simulation-row span,
+.dashboard-shell .simulation-row small,
+.dashboard-shell .session-list span,
+.dashboard-shell .session-list small,
+.dashboard-shell .engine-stage span,
+.dashboard-shell .radar-card span,
+.dashboard-shell .active-simulation-panel span,
+.dashboard-shell .detail-metric span,
+.dashboard-shell .scenario-score span,
+.dashboard-shell .impact-row span,
+.dashboard-shell .detail-timeline span,
+.dashboard-shell .mini-timeline span,
+.dashboard-shell .profile-state-grid span,
+.dashboard-shell .decision-stat span,
+.dashboard-shell .decision-card-header span,
+.dashboard-shell .decision-card-header small,
+.dashboard-shell .decision-bars span,
+.dashboard-shell .decision-review span,
+.dashboard-shell .decision-review small,
+.dashboard-shell .memory-state-panel span,
+.dashboard-shell .memory-state-panel small,
+.dashboard-shell .memory-scope small,
+.dashboard-shell .remembered-patterns span,
+.dashboard-shell .profile-signal-list span {
+  color: rgba(216, 193, 147, 0.62);
+}
+
+.dashboard-shell .dashboard-card strong,
+.dashboard-shell .privacy-state strong,
+.dashboard-shell .compact-list strong,
+.dashboard-shell .simulation-row strong,
+.dashboard-shell .session-list strong,
+.dashboard-shell .engine-stage strong,
+.dashboard-shell .radar-card strong,
+.dashboard-shell .active-simulation-panel strong,
+.dashboard-shell .detail-metric strong,
+.dashboard-shell .scenario-score strong,
+.dashboard-shell .impact-row strong,
+.dashboard-shell .detail-timeline strong,
+.dashboard-shell .profile-state-grid strong,
+.dashboard-shell .decision-stat strong,
+.dashboard-shell .decision-bars strong,
+.dashboard-shell .decision-review strong,
+.dashboard-shell .memory-state-panel strong,
+.dashboard-shell .memory-scope strong,
+.dashboard-shell .remembered-patterns strong,
+.dashboard-shell .profile-signal-list strong {
+  color: rgba(248, 238, 216, 0.96);
+}
+
+.dashboard-shell .compact-list div,
+.dashboard-shell .session-list div,
+.dashboard-shell .engine-stage,
+.dashboard-shell .radar-card,
+.dashboard-shell .active-simulation-panel,
+.dashboard-shell .detail-metric,
+.dashboard-shell .simulation-signal,
+.dashboard-shell .impact-row,
+.dashboard-shell .detail-timeline div,
+.dashboard-shell .mini-timeline div,
+.dashboard-shell .profile-state-grid div,
+.dashboard-shell .decision-stat,
+.dashboard-shell .profile-signal-list div,
+.dashboard-shell .memory-state-panel,
+.dashboard-shell .memory-scope,
+.dashboard-shell .remembered-patterns div,
+.dashboard-shell .decision-review,
+.dashboard-shell .rights-grid span {
+  border-color: rgba(216, 168, 74, 0.14);
+  border-radius: 10px;
+  background:
+    linear-gradient(145deg, rgba(255, 243, 208, 0.025), transparent),
+    rgba(255, 243, 208, 0.014);
+  box-shadow: inset 0 1px 0 rgba(255, 243, 208, 0.025);
+}
+
+.dashboard-shell .dashboard-action,
+.dashboard-shell .compact-list a,
+.dashboard-shell .row-action-link {
+  color: rgba(238, 199, 115, 0.9);
+  text-decoration-color: rgba(216, 168, 74, 0.34);
+}
+
+.dashboard-shell .dashboard-action:hover,
+.dashboard-shell .compact-list a:hover,
+.dashboard-shell .row-action-link:hover {
+  color: var(--dashboard-gold-bright);
+}
+
+.dashboard-shell button,
+.dashboard-shell .button-link,
+.dashboard-shell .row-action-link {
+  border-color: rgba(255, 211, 106, 0.55);
+  border-radius: 10px;
+  background:
+    linear-gradient(145deg, rgba(216, 168, 74, 0.2), rgba(89, 57, 14, 0.1)),
+    rgba(5, 4, 3, 0.96);
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 243, 208, 0.1);
+  color: rgba(255, 230, 174, 0.96);
+}
+
+.dashboard-shell button:hover,
+.dashboard-shell .button-link:hover,
+.dashboard-shell .row-action-link:hover {
+  border-color: rgba(255, 220, 136, 0.84);
+  background:
+    linear-gradient(145deg, rgba(216, 168, 74, 0.28), rgba(89, 57, 14, 0.14)),
+    rgba(8, 6, 3, 0.98);
+  box-shadow:
+    0 0 30px rgba(216, 168, 74, 0.12),
+    inset 0 1px 0 rgba(255, 243, 208, 0.14);
+}
+
+.dashboard-shell .ghost-button {
+  border-color: rgba(216, 168, 74, 0.22);
+  background: rgba(216, 168, 74, 0.035);
+  box-shadow: none;
+  color: rgba(226, 211, 180, 0.72);
+}
+
+.dashboard-engine,
+.profile-overview,
+.decision-command,
+.memory-hero,
+.simulation-detail-hero {
+  border-radius: 18px;
+  background:
+    radial-gradient(ellipse at 12% 0%, rgba(255, 211, 106, 0.12), transparent 34%),
+    radial-gradient(ellipse at 90% 72%, rgba(126, 79, 18, 0.07), transparent 34%),
+    linear-gradient(145deg, rgba(255, 243, 208, 0.032), transparent 52%),
+    rgba(3, 3, 3, 0.96) !important;
+}
+
+.dashboard-engine {
+  grid-template-columns: 132px minmax(0, 1fr) minmax(240px, 0.55fr);
+  gap: 28px;
+}
+
+.engine-status-core,
+.profile-avatar,
+.memory-core,
+.security-score span {
+  background:
+    radial-gradient(circle at 50% 50%, #020202 0 24%, transparent 25%),
+    conic-gradient(from 120deg, #3d2a10, #d8a84a, #ffd36a, #9a641a, #3d2a10);
+  box-shadow:
+    0 0 48px rgba(216, 168, 74, 0.22),
+    inset 0 0 28px rgba(255, 243, 208, 0.08);
+}
+
+.engine-status-core::after,
+.profile-avatar span,
+.memory-core span {
+  background: radial-gradient(circle, #fff1bd, #d8a84a 28%, #6b4312 60%, transparent 72%);
+  box-shadow: 0 0 34px rgba(216, 168, 74, 0.5);
+}
+
+.signal-track,
+.impact-bar,
+.dashboard-shell .decision-bars small {
+  background-color: rgba(255, 243, 208, 0.055);
+  box-shadow: inset 0 0 0 1px rgba(216, 168, 74, 0.08);
+}
+
+.signal-track span,
+.impact-bar span,
+.dashboard-shell .decision-bars small {
+  background-image: linear-gradient(90deg, #6f4818, #d8a84a, #ffd36a);
+}
+
+.decision-radar,
+.dashboard-two-column,
+.profile-layout,
+.memory-layout,
+.privacy-layout,
+.security-layout,
+.saved-decision-grid,
+.memory-actions {
+  gap: 14px;
+}
+
+.saved-decision-card {
+  min-height: 410px;
+}
+
+.dashboard-shell .detail-tags span {
+  border-color: rgba(216, 168, 74, 0.18);
+  background: rgba(216, 168, 74, 0.045);
+  color: rgba(239, 219, 180, 0.8);
+}
+
+.memory-scope input {
+  accent-color: var(--dashboard-gold);
+}
+
+.profile-form {
+  gap: 14px;
+}
+
+.profile-form label {
+  color: rgba(224, 206, 169, 0.72);
+  font-size: 0.78rem;
+  font-weight: 680;
+  letter-spacing: 0.04em;
+}
+
+.profile-form input,
+.profile-form select {
+  min-height: 48px;
+  border-color: rgba(216, 168, 74, 0.18);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.46);
+  color: var(--dashboard-text);
+  box-shadow: inset 0 1px 0 rgba(255, 243, 208, 0.025);
+}
+
+.profile-form input:focus,
+.profile-form select:focus {
+  border-color: rgba(255, 211, 106, 0.68);
+  background: rgba(0, 0, 0, 0.64);
+  box-shadow: 0 0 0 3px rgba(216, 168, 74, 0.1);
+}
+
+.simulation-list {
+  gap: 12px;
+}
+
+.simulation-row {
+  grid-template-columns: minmax(190px, 0.75fr) minmax(0, 1fr) minmax(230px, 0.72fr) auto;
+  padding: 18px;
+}
+
+.simulation-signal {
+  min-height: 72px;
+}
+
+.dashboard-nav-menu summary {
+  border-color: var(--dashboard-border);
+  border-radius: 10px;
+  background:
+    linear-gradient(145deg, rgba(216, 168, 74, 0.08), transparent),
+    rgba(5, 4, 3, 0.96);
+  color: var(--dashboard-text);
+}
+
+.dashboard-nav-menu summary span {
+  color: var(--dashboard-muted);
+}
+
+.dashboard-nav-menu summary strong {
+  color: var(--dashboard-gold-bright);
+}
+
+@media (max-width: 980px) {
+  .dashboard-shell {
+    width: min(100% - 24px, 760px);
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding-top: 12px;
+  }
+
+  .dashboard-sidebar {
+    position: relative;
+    top: auto;
+    min-height: auto;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .dashboard-sidebar > p,
+  .dashboard-sidebar-status,
+  .dashboard-sidebar > .ghost-button {
+    display: none;
+  }
+
+  .dashboard-nav-menu {
+    display: block;
+  }
+
+  .dashboard-sidebar .dashboard-sidebar-nav {
+    display: none;
+  }
+
+  .dashboard-header {
+    min-height: auto;
+    display: grid;
+    gap: 18px;
+    padding: 26px 22px;
+    border-radius: 16px;
+  }
+
+  .dashboard-header h1 {
+    font-size: clamp(2.4rem, 10vw, 4rem);
+  }
+
+  .dashboard-shell .privacy-state {
+    min-width: 0;
+  }
+
+  .dashboard-grid,
+  .dashboard-engine,
+  .decision-radar,
+  .dashboard-two-column,
+  .profile-overview,
+  .profile-layout,
+  .decision-command,
+  .memory-hero,
+  .memory-layout,
+  .security-layout,
+  .privacy-layout,
+  .saved-decision-grid,
+  .memory-actions,
+  .simulation-detail-hero,
+  .simulation-detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-engine,
+  .profile-overview,
+  .decision-command,
+  .memory-hero,
+  .simulation-detail-hero {
+    padding: 24px 20px;
+  }
+
+  .engine-status-core,
+  .profile-avatar,
+  .memory-core {
+    width: 94px;
+  }
+
+  .engine-stage-list,
+  .decision-stat-grid,
+  .profile-state-grid,
+  .simulation-signal-grid,
+  .detail-metrics,
+  .rights-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .simulation-row {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 18px;
+  }
+
+  .row-actions {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 520px) {
+  .dashboard-shell {
+    width: min(100% - 16px, 760px);
+  }
+
+  .dashboard-header,
+  .dashboard-shell .dashboard-card,
+  .dashboard-engine,
+  .profile-overview,
+  .decision-command,
+  .memory-hero,
+  .simulation-detail-hero,
+  .simulation-row,
+  .saved-decision-card {
+    padding: 18px;
+  }
+
+  .dashboard-header h1 {
+    font-size: clamp(2.25rem, 12vw, 3.25rem);
+  }
+
+  .engine-stage-list,
+  .decision-stat-grid,
+  .profile-state-grid,
+  .simulation-signal-grid,
+  .detail-metrics,
+  .rights-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-shell button,
+  .dashboard-shell .button-link,
+  .dashboard-shell .row-action-link {
+    width: 100%;
+  }
+}
