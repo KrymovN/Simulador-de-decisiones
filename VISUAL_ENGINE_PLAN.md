@@ -1,186 +1,185 @@
 # VISUAL_ENGINE_PLAN.md
 
-# Levio.es — Stage 2.7.1: WebGL architecture research
+# Levio.es - Stage 2.7.1: WebGL Architecture Research
 
-Текущий стабильный baseline: `0cec475 Prepare visual engine baseline`.
+Current stable baseline: `0cec475 Prepare visual engine baseline`.
 
-Статус этапа: research only. Этот документ не является спецификацией к немедленной реализации и не разрешает внедрение WebGL в production hero, `DecisionSingularity`, `HomeSimulator`, simulator logic или контракт `SimulationResponse`.
+Stage status: research only. This document is not an immediate implementation specification and does not authorize WebGL integration into the production hero, `DecisionSingularity`, `HomeSimulator`, simulator logic, or the `SimulationResponse` contract.
 
-## 1. Three.js: плюсы, минусы, риски
+## 1. Three.js: Advantages, Disadvantages, And Risks
 
-### Плюсы
+### Advantages
 
-- Низкоуровневый контроль над WebGL-сценой, камерой, материалами, постобработкой, частицами и шейдерами.
-- Подходит для кинематографичной метафоры Levio.es: глубина, свет, гравитация, мягкое движение, объемная атмосфера.
-- Может работать без React-обвязки, что дает больше контроля над lifecycle, размером bundle и точками инициализации.
-- Хорошо подходит для isolated prototype: можно построить отдельную сцену, измерить FPS, memory pressure, shader cost и только затем решать вопрос интеграции.
+- Provides low-level control over the WebGL scene, camera, materials, post-processing, particles, and shaders.
+- Supports a cinematic Levio.es metaphor through depth, light, gravity, soft motion, and volumetric atmosphere.
+- Can operate without a React wrapper, providing greater control over lifecycle, bundle size, and initialization points.
+- Fits an isolated prototype approach: build a separate scene, measure FPS, memory pressure, and shader cost, and only then decide whether integration is justified.
 
-### Минусы
+### Disadvantages
 
-- Это отдельный rendering runtime поверх React/Next.js: появляется ручное управление canvas, renderer, resize, pixel ratio, animation loop, cleanup.
-- WebGL-сцена легко начинает конкурировать с DOM за CPU/GPU, особенно на hero-экране, где уже важны first paint, input responsiveness и mobile layout stability.
-- Требует дисциплины в asset budget: текстуры, геометрия, post-processing и shader complexity быстро создают тяжелый initial load.
-- Команда должна поддерживать отдельный слой визуальной архитектуры, debugging и regression QA, а не только CSS/React UI.
+- Adds a separate rendering runtime alongside React and Next.js, requiring manual management of canvas, renderer, resize, pixel ratio, animation loop, and cleanup.
+- A WebGL scene can compete with the DOM for CPU and GPU resources, especially in a hero where first paint, input responsiveness, and mobile layout stability already matter.
+- Requires strict asset budgets because textures, geometry, post-processing, and shader complexity can quickly create a heavy initial load.
+- Requires the team to maintain a separate visual architecture, debugging process, and regression QA surface beyond CSS and React UI.
 
-### Риски
+### Risks
 
-- Утечки GPU-ресурсов при неправильном dispose материалов, геометрии, render targets и текстур.
-- Нестабильный frame pacing на слабых устройствах и при переключении вкладок.
-- Ошибки контекста WebGL: context lost, context restore, ограничение количества активных canvas/context в браузере.
-- Сложность graceful fallback: production UI не должен деградировать в пустой или сломанный hero, если WebGL недоступен.
+- GPU resource leaks when materials, geometry, render targets, and textures are not disposed correctly.
+- Unstable frame pacing on weaker devices and during tab changes.
+- WebGL context failures, including context loss, context restoration, and browser limits on active canvas contexts.
+- Difficult graceful fallback: production UI must not degrade into an empty or broken hero when WebGL is unavailable.
 
-## 2. React Three Fiber: плюсы, минусы, риски
+## 2. React Three Fiber: Advantages, Disadvantages, And Risks
 
-### Плюсы
+### Advantages
 
-- Декларативный React-подход к Three.js-сценам: сцена описывается компонентами, состояние и props легче согласовать с React-моделью.
-- Удобнее разделять визуальные элементы на компоненты, тестировать композицию сцены и переиспользовать примитивы.
-- Экосистема вокруг R3F может ускорить прототипирование: controls, helpers, post-processing, asset loading.
-- Потенциально лучше подходит для будущей интеграции с App Router, если WebGL будет вынесен в строго client-only boundary.
+- Provides a declarative React approach to Three.js scenes, making scene composition, state, and props easier to align with the React model.
+- Makes it easier to separate visual elements into components, test scene composition, and reuse primitives.
+- The surrounding ecosystem can accelerate prototyping through controls, helpers, post-processing, and asset loading.
+- Could suit future App Router integration if WebGL is placed behind a strict client-only boundary.
 
-### Минусы
+### Disadvantages
 
-- Добавляет еще один runtime-слой: React reconciler для Three.js поверх самого Three.js.
-- Увеличивает dependency surface и bundle size, особенно если подтянуть дополнительные helper-библиотеки.
-- Абстракция может скрыть реальные GPU-costs; сцена выглядит React-компонентной, но исполняется как тяжелый realtime renderer.
-- Требует особенно аккуратной границы между Server Components и Client Components.
+- Adds another runtime layer: a React reconciler for Three.js on top of Three.js itself.
+- Increases dependency surface and bundle size, especially when additional helper libraries are included.
+- The abstraction can hide real GPU costs; a scene may look component-oriented while still running as a heavy real-time renderer.
+- Requires an especially careful boundary between Server Components and Client Components.
 
-### Риски
+### Risks
 
-- Hydration/SSR ошибки при случайном использовании browser-only API вне client-only зоны.
-- Непредсказуемые performance regressions из-за React state updates, которые затрагивают сцену чаще, чем нужно.
-- Сложнее гарантировать deterministic visual baseline, если сцена зависит от времени, размеров viewport, devicePixelRatio и async asset loading.
-- Риск преждевременно превратить production hero в экспериментальную лабораторию вместо стабильной cinematic baseline.
+- Hydration or SSR failures when browser-only APIs are accidentally used outside a client-only area.
+- Performance regressions caused by React state updates affecting the scene more often than required.
+- Difficulty guaranteeing a deterministic visual baseline when the scene depends on time, viewport dimensions, `devicePixelRatio`, and asynchronous asset loading.
+- Risk of prematurely turning the production hero into an experimental laboratory instead of preserving a stable cinematic baseline.
 
-## 3. Совместимость с Next.js App Router
+## 3. Compatibility With Next.js App Router
 
-Текущий проект использует Next.js `14.2.5` и структуру `app/`, то есть App Router. В такой архитектуре WebGL нельзя рассматривать как обычный Server Component: canvas, WebGL context, `window`, `document`, `ResizeObserver`, `requestAnimationFrame` и device APIs доступны только в браузере.
+At the time of this research, the project used Next.js `14.2.5` and the `app/` structure. In that architecture, WebGL cannot be treated as an ordinary Server Component because canvas, WebGL context, `window`, `document`, `ResizeObserver`, `requestAnimationFrame`, and device APIs are available only in the browser.
 
-Безопасная модель для будущего:
+A safe future model would require:
 
-- WebGL должен жить внутри отдельного Client Component с явным `"use client"`.
-- Импорт тяжелых WebGL-зависимостей должен быть отложенным и изолированным, чтобы не тащить renderer в server path.
-- Production route должен сохранять SSR-friendly fallback DOM/CSS baseline.
-- Любая будущая WebGL-интеграция должна быть отключаемой feature flag или runtime guard.
-- Сцена не должна менять контракт simulator API и не должна становиться зависимостью `SimulationResponse`.
+- WebGL to live inside a separate Client Component with explicit `"use client"`.
+- Heavy WebGL dependency imports to be deferred and isolated so the renderer does not enter the server path.
+- The production route to retain an SSR-friendly DOM/CSS fallback baseline.
+- Any future WebGL integration to be disableable through a feature flag or runtime guard.
+- The scene to remain independent from the simulator API contract and `SimulationResponse`.
 
-Важно: инструкция проекта просит читать `node_modules/next/dist/docs/` перед изменениями Next.js-кода, но в текущей установке такого каталога нет. В рамках Stage 2.7.1 код Next.js не изменяется; выводы выше основаны на текущей структуре проекта, типах/пакете Next.js в `node_modules` и общих требованиях App Router к client-only browser APIs.
+Historical note: project instructions required reading `node_modules/next/dist/docs/` before changing Next.js code, but that directory was not present in the installation used during Stage 2.7.1. No Next.js code changed during that stage; the conclusions above were based on the project structure, installed Next.js package and types, and App Router requirements for client-only browser APIs.
 
-## 4. Hydration/SSR risks
+## 4. Hydration And SSR Risks
 
-WebGL имеет высокий риск hydration mismatch, если его внедрять прямо в production hero:
+Direct WebGL integration into the production hero carries a high hydration-mismatch risk:
 
-- сервер не может отрендерить реальное состояние WebGL canvas;
-- размеры viewport, DPR и GPU capabilities известны только на клиенте;
-- animation state не является deterministic между SSR и client hydration;
-- async asset loading может менять DOM/размеры после hydration;
-- browser-only API вызовы во время server render приводят к ошибкам build/runtime.
+- The server cannot render the real state of a WebGL canvas.
+- Viewport dimensions, DPR, and GPU capabilities are known only on the client.
+- Animation state is not deterministic between SSR and client hydration.
+- Asynchronous asset loading can alter DOM dimensions after hydration.
+- Browser-only API calls during server rendering cause build or runtime failures.
 
-Минимальное правило будущей архитектуры: сервер должен отдавать стабильный DOM/CSS fallback, а WebGL может подключаться только после client mount и только если runtime checks прошли успешно.
+Minimum future architecture rule: the server must return a stable DOM/CSS fallback, and WebGL may connect only after client mount and successful runtime checks.
 
-## 5. Mobile Safari risks
+## 5. Mobile Safari Risks
 
-Mobile Safari является критичным риском для Levio.es, потому что mobile stability имеет приоритет над экспериментальными visuals.
+Mobile Safari is a critical Levio.es risk because mobile stability takes priority over experimental visuals.
 
-Основные риски:
+Primary risks:
 
-- агрессивное управление памятью и выгрузка ресурсов при pressure;
-- WebGL context lost при тяжелой сцене, смене вкладки, блокировке экрана или возврате из background;
-- нестабильность `devicePixelRatio` и canvas resize при изменении viewport, address bar, orientation;
-- перегрев и throttling на длинных animation loops;
-- ограничения на video/textures/post-processing в зависимости от устройства и версии iOS;
-- touch responsiveness может ухудшиться, если animation loop забирает main thread budget.
+- Aggressive memory management and resource eviction under pressure.
+- WebGL context loss during heavy scenes, tab changes, screen locking, or background restoration.
+- Unstable `devicePixelRatio` and canvas resizing during viewport, address-bar, or orientation changes.
+- Thermal pressure and throttling during long animation loops.
+- Device- and iOS-version-specific limitations on video, textures, and post-processing.
+- Reduced touch responsiveness when an animation loop consumes the main-thread budget.
 
-Для Levio.es это особенно важно: cinematic feeling не должен ломать читаемость, input latency, scroll stability и premium calmness.
+For Levio.es, cinematic character must never compromise readability, input latency, scroll stability, or premium calmness.
 
-## 6. GPU/performance risks на слабых устройствах
+## 6. GPU And Performance Risks On Weaker Devices
 
-WebGL-сцена в hero может быть визуально сильной, но слабые устройства первыми покажут цену:
+A hero WebGL scene may be visually strong, but weaker devices expose its cost first:
 
-- падение FPS ниже стабильного уровня создает ощущение дешевой, дерганой анимации;
-- высокий `devicePixelRatio` резко увеличивает fill-rate cost;
-- bloom, blur, noise, volumetric effects и particles могут перегрузить fragment shader;
-- parallel CSS effects, shadows, filters и WebGL post-processing конкурируют за GPU;
-- initial JS bundle может ухудшить LCP/TTI;
-- постоянный render loop расходует батарею даже без пользовательского действия;
-- отсутствие adaptive quality приведет к неравному опыту между устройствами.
+- FPS drops create a cheap, unstable motion impression.
+- High `devicePixelRatio` sharply increases fill-rate cost.
+- Bloom, blur, noise, volumetric effects, and particles can overload fragment shaders.
+- Parallel CSS effects, shadows, filters, and WebGL post-processing compete for GPU resources.
+- A larger initial JavaScript bundle can damage LCP and TTI.
+- A permanent render loop consumes battery without user interaction.
+- Missing adaptive quality creates unequal experiences across devices.
 
-Будущий engine должен иметь quality tiers: low, medium, high; hard caps на DPR; pause/resume logic; reduced-motion handling; canvas teardown; fallback без WebGL.
+Any future engine must include low, medium, and high quality tiers; hard DPR caps; pause and resume logic; reduced-motion handling; canvas teardown; and a non-WebGL fallback.
 
-## 7. Почему сейчас нельзя внедрять WebGL напрямую в production hero
+## 7. Why WebGL Must Not Be Integrated Directly Into The Production Hero
 
-Сейчас production baseline только что стабилизирован в commit `0cec475`. Прямое внедрение WebGL в hero на этом этапе нарушило бы принцип controlled and incremental architecture changes.
+The production baseline had just been stabilized in commit `0cec475`. Direct hero WebGL integration at that point would have violated the controlled, incremental architecture principle.
 
-Причины не внедрять сейчас:
+Reasons not to integrate:
 
-- Stage 2.7.1 определен как research only, не implementation stage.
-- В проекте нет WebGL-зависимостей, и установка новых пакетов на этом этапе запрещена.
-- Нет isolated prototype, нет performance data, нет Mobile Safari validation.
-- Не определены fallback states, quality tiers, lifecycle cleanup и context lost handling.
-- Production hero является частью первого впечатления Levio.es; экспериментальный renderer может повредить cinematic baseline.
-- Любая ошибка в hydration или client-only boundary может затронуть главную страницу.
-- Визуальная метафора singularity уже имеет продуктовую ценность и не должна быть заменена без доказанного выигрыша.
+- Stage 2.7.1 was defined as research only, not an implementation stage.
+- The project had no WebGL dependencies, and installing packages was prohibited during the stage.
+- There was no isolated prototype, performance data, or Mobile Safari validation.
+- Fallback states, quality tiers, lifecycle cleanup, and context-loss handling were undefined.
+- The production hero defines the first Levio.es impression; an experimental renderer could damage the stable baseline.
+- Hydration or client-boundary errors could affect the homepage.
+- The existing singularity metaphor already had product value and should not be replaced without demonstrated benefit.
 
-Вывод: WebGL не должен входить напрямую в production hero до отдельного прототипа и измерений.
+Conclusion: WebGL must not enter the production hero without a separate prototype and measurements.
 
-## 8. Рекомендуемая безопасная стратегия внедрения в будущем
+## 8. Recommended Safe Future Integration Strategy
 
-Будущая стратегия должна быть консервативной:
+Any future strategy should remain conservative:
 
-1. Сохранить текущий CSS/DOM production baseline как canonical fallback.
-2. Исследовать Three.js и R3F отдельно от production UI.
-3. Создать isolated visual prototype в отдельной зоне, не связанной с `HomeSimulator`, `DecisionSingularity` и simulator API.
-4. Ввести performance budget до интеграции: bundle impact, FPS, memory, GPU time, LCP/TTI, battery/thermal behavior.
-5. Проверить Mobile Safari на реальных устройствах или максимально близкой device matrix.
-6. Добавить runtime capability detection: WebGL support, reduced motion, memory/device class, context lost.
-7. Разрешать production integration только после доказанного преимущества над текущим baseline.
+1. Preserve the current CSS/DOM production baseline as the canonical fallback.
+2. Research Three.js and React Three Fiber separately from production UI.
+3. Create an isolated visual prototype outside `HomeSimulator`, `DecisionSingularity`, and the simulator API.
+4. Define performance budgets before integration: bundle impact, FPS, memory, GPU time, LCP/TTI, and battery and thermal behavior.
+5. Validate Mobile Safari on real devices or the closest practical device matrix.
+6. Add runtime capability detection for WebGL support, reduced motion, memory or device class, and context loss.
+7. Permit production integration only after demonstrating a clear advantage over the current baseline.
 
-Ключевой принцип: WebGL должен быть progressive enhancement, а не обязательной зависимостью главного пользовательского опыта.
+Core principle: WebGL must be a progressive enhancement, not a required dependency of the primary user experience.
 
-## 9. Предложение staged approach
+## 9. Proposed Staged Approach
 
-### Stage A — research only
+### Stage A - Research Only
 
-- Зафиксировать архитектурные риски.
-- Сравнить Three.js и React Three Fiber.
-- Не устанавливать пакеты.
-- Не менять production UI.
-- Не менять simulator contract.
+- Record architecture risks.
+- Compare Three.js and React Three Fiber.
+- Do not install packages.
+- Do not change production UI.
+- Do not change the simulator contract.
 
-### Stage B — isolated visual prototype later
+### Stage B - Isolated Visual Prototype Later
 
-- Только после отдельного решения создать изолированный prototype route или lab-area.
-- Не подключать prototype к production hero.
-- Не менять `DecisionSingularity` и `HomeSimulator`.
-- Сравнить raw Three.js и R3F на одном visual brief.
+- Create an isolated prototype route or lab area only after a separate decision.
+- Do not connect the prototype to the production hero.
+- Do not change `DecisionSingularity` or `HomeSimulator`.
+- Compare raw Three.js and React Three Fiber against the same visual brief.
 
-### Stage C — performance tests
+### Stage C - Performance Tests
 
-- Измерить FPS, dropped frames, memory, GPU pressure, bundle size.
-- Проверить adaptive DPR и quality tiers.
-- Проверить pause on hidden tab, reduced motion и cleanup.
-- Сравнить с текущим CSS/DOM baseline.
+- Measure FPS, dropped frames, memory, GPU pressure, and bundle size.
+- Validate adaptive DPR and quality tiers.
+- Validate pause on hidden tab, reduced motion, and cleanup.
+- Compare results with the current CSS/DOM baseline.
 
-### Stage D — mobile Safari validation
+### Stage D - Mobile Safari Validation
 
-- Проверить iPhone Safari в portrait/landscape.
-- Проверить scroll, touch latency, orientation changes, address bar resize.
-- Проверить context lost/restore.
-- Проверить thermal throttling при длительной сессии.
+- Validate iPhone Safari in portrait and landscape.
+- Validate scroll, touch latency, orientation changes, and address-bar resize.
+- Validate context loss and restoration.
+- Validate thermal throttling during a long session.
 
-### Stage E — possible production integration
+### Stage E - Possible Production Integration
 
-- Только при успешных результатах Stage B-D.
-- Внедрять как progressive enhancement.
-- Сохранять CSS/DOM fallback.
-- Держать feature flag/kill switch.
-- Не менять simulator API без отдельного архитектурного этапа.
+- Proceed only after successful Stage B-D results.
+- Integrate as progressive enhancement.
+- Preserve the CSS/DOM fallback.
+- Retain a feature flag and kill switch.
+- Do not change the simulator API without a separate architecture stage.
 
-## 10. Четкий вывод
+## 10. Clear Conclusion
 
-WebGL сейчас не внедрять.
+Do not integrate WebGL now.
 
-Production baseline сохранить.
+Preserve the production baseline.
 
-Stage 2.7.1 должен завершиться исследовательским документом и проверками стабильности, без установки зависимостей, без Three.js, без React Three Fiber, без WebGL components, без `/visual-lab`, без изменений production UI, `DecisionSingularity`, `HomeSimulator`, simulator logic, `SimulationResponse` и `app/globals.css`.
-
+Stage 2.7.1 must end with a research document and stability checks, without installing dependencies, adding Three.js, React Three Fiber, WebGL components, or `/visual-lab`, and without changing production UI, `DecisionSingularity`, `HomeSimulator`, simulator logic, `SimulationResponse`, or `app/globals.css`.

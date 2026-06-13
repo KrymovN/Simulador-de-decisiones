@@ -12,7 +12,7 @@ It does not introduce a translation library, change routes, add a language selec
 
 - Español (`es`)
 - English (`en`)
-- Русский (`ru`)
+- Russian (`ru`)
 - 中文 (`zh`)
 
 ### Second Wave

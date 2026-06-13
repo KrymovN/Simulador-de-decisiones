@@ -1,94 +1,97 @@
-# LEVIO.ES - АКТУАЛЬНОЕ СОСТОЯНИЕ ПРОЕКТА
+# LEVIO.ES - CURRENT PROJECT STATE
 
-## Дата обновления
+## Updated
 
-13 июня 2026, Europe/Madrid.
+13 June 2026, Europe/Madrid.
 
-Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после завершения Stage 2.19 Product / Security / Quality Test Architecture. Это основной актуальный handoff-файл. `PROJECT_CONTEXT.md` должен оставаться синхронизированной копией этого документа.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 2.19A Documentation Language Consistency Audit. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
 
-## 0. Current Confirmed Checkpoint - 13 June 2026
+## Current Confirmed Checkpoint - 13 June 2026
 
-Stage 2.19 - Product / Security / Quality Test Architecture - текущий подтвержденный checkpoint.
+Stage 2.19A - Documentation Language Consistency Audit - is the current confirmed checkpoint.
 
-Подтверждено по репозиторию:
+Confirmed facts from the repository:
 
-- `848a108` зафиксировал Stage 2.8G Hero artwork fidelity.
-- `9c7447d` завершил Stage 2.8H homepage minimal premium reduction.
-- `6adefd6` завершил Stage 2.8 homepage motion and brand polish checkpoint.
-- Stage 2.9D сохраняет продуктовую архитектуру и меняет только homepage presentation markup в `app/page.tsx` и финальные desktop-only motion/visual overrides в `app/globals.css`.
-- Stage 2.9E меняет только финальный mobile navigation override в `app/globals.css` и синхронизирует stage-документацию; auth/dashboard/simulator business logic не затронута.
-- Stage 2.9F добавляет только responsive presentation overrides в `app/globals.css`: выравнивает tablet-карточки `01/02/03/04`, балансирует final CTA typography и облегчает desktop simulator form.
-- `HomeSimulator`, simulator/API contracts, auth/dashboard logic, localStorage keys, production persistence и favicon/metadata в Stage 2.9F не изменены.
-- Stage 2.10A унифицирует `/login`, `/register` и `/forgot-password` с homepage premium black-gold system через scoped auth presentation overrides в `app/globals.css`.
-- Mock auth logic, routing, localStorage keys и dashboard logic не изменены; desktop/mobile route QA и mock auth flows прошли.
-- Stage 2.10A UX follow-up синхронизирует homepage anchor navigation со scroll-linked reveal, поэтому целевые секции сразу видимы после перехода по якорю в Safari.
-- `HomeSimulator` теперь запускает существующий submit flow по Enter, сохраняет перенос строки по Shift+Enter и мягко сопровождает пользователя к текущему этапу и результату.
-- Stage 2.10B сохраняет раскрытое состояние уже достигнутых homepage-секций перед simulator auto-follow, поэтому динамическое увеличение страницы результатом больше не возвращает верхние scroll-linked блоки в промежуточное затемнённое состояние Safari.
-- `HomeSimulator` получил progressive voice input через browser-safe `SpeechRecognition` / `webkitSpeechRecognition`, состояния start/stop/listening и испанские fallback/error сообщения без автоматического запуска симуляции.
-- Stage 2.11 создает `LEVIO_DECISION_ENGINE.md` как foundation будущего decision pipeline, confidence/completeness model, clarifying-question logic, scenario construction и Stage 3 AI integration requirements.
-- Stage 2.11 создает `LEVIO_MEMORY_MODEL.md` как foundation short-term, long-term, project и decision memory, retention, consent и GDPR boundaries.
-- Stage 2.11 создает `LEVIO_SUBSCRIPTION_MODEL.md` как концептуальный foundation уровней FREE, PREMIUM и PROFESSIONAL без финальных цен или production entitlements.
-- Stage 2.11 создает `LEVIO_MULTILINGUAL_ARCHITECTURE.md` как foundation language selection, persistence, dictionaries, RTL и будущего AI language behavior.
-- Stage 2.11 является documentation-only этапом: код продукта, UI, business logic, simulator, auth/dashboard routes, API, localStorage contracts, OpenAI integration, database и payments не изменены.
-- Stage 2.12A унифицирует shared dashboard shell с homepage premium black-gold identity: Levio mark, sidebar, compact navigation, headers, active/hover states, glass surfaces, borders, shadows и spacing.
-- `/dashboard`, simulations, decisions, memory, profile, security и privacy используют согласованные graphite/black/gold/amber presentation primitives без визуально активных cyan, rainbow, green или legacy coral states.
-- Stage 2.12A меняет только presentation layer в `components/DashboardShell.tsx` и финальном scoped dashboard cascade `app/globals.css`; dashboard data, business logic, routes, localStorage и API contracts не изменены.
-- Stage 2.12B вводит единый scoped dashboard grid rhythm: общий content gap, column/row gaps, card padding, равные стартовые линии и согласованную высоту парных карточек.
-- Stage 2.12B нейтрализует legacy adjacent-section margin только внутри dashboard, выравнивает sidebar с header и дисциплинирует historial, decisions, memory, profile, security и privacy layouts.
-- Stage 2.12B меняет только layout/CSS в `app/globals.css`; JSX, dashboard data, business logic, routes, auth, simulator, localStorage и API contracts не изменены.
-- Stage 2.13 создает `LEVIO_PRODUCT_READINESS_AUDIT.md` с оценкой homepage, dashboard, auth, simulator, Decision Engine, memory, multilingual, monetization, Stage 3 readiness, production risks и priority fixes.
-- Stage 2.13 оценивает Levio как сильный controlled-demo frontend и PARTIALLY READY продукт, но NOT READY для production users, real personal data, monetization или прямого подключения AI.
-- Stage 2.13 является audit/documentation-only этапом: код продукта и все защищённые контракты не изменены.
-- Stage 2.14 создает `LEVIO_DECISION_SCHEMAS.md` с provider-independent canonical schemas, provenance, deterministic validation, confidence/completeness, safety, scenario и recommendation invariants.
-- Stage 2.14 создает `LEVIO_SIMULATION_RESPONSE_V2.md` как будущий major-version response contract со статусами clarification, analysis, limited analysis, withheld recommendation, refusal и controlled failure.
-- Stage 2.14 создает `LEVIO_CLARIFICATION_ENGINE.md` с critical-gap detection, question information value, minimal-question selection, contradiction handling, safety behavior и stop conditions.
-- Stage 2.14 остается documentation-only этапом: текущий `SimulationResponse`, simulator, UI, dashboard, product code, API, auth, localStorage, persistence, payments и OpenAI integration не изменены.
-- Stage 2.15 создает `LEVIO_USER_DATA_ARCHITECTURE.md`, определяя user-owned data principles, anonymous/guest/registered boundaries, ownership simulations/history/memory/preferences, consent, retention, export, deletion и recovery boundaries.
-- Stage 2.15 связывает будущую user-owned persistence с Production Auth Stage 2.16, subscription, memory и `SimulationResponse V2`, но не выбирает auth/database provider и не реализует persistence.
-- Stage 2.15 является documentation-only этапом: product code, UI, homepage, dashboard, simulator, API routes, текущий `SimulationResponse`, localStorage, OpenAI integration, auth, database, payments и dependencies не изменены.
-- Stage 2.16 создает `LEVIO_PRODUCTION_AUTH_ARCHITECTURE.md`, определяя auth principles, identity/session states, optional/required auth, anonymous/guest claims, ownership authorization, provider strategy, security, abuse-prevention и GDPR-oriented boundaries.
-- Stage 2.16 следует User Data Architecture: authentication, authorization, ownership, consent и subscription остаются отдельными понятиями, а production provider choice отложен до implementation stage.
-- Stage 2.16 является documentation-only этапом: auth routes/provider, database, dependencies, product code, UI, homepage, dashboard, simulator, API routes, текущий `SimulationResponse`, persistence, payments и OpenAI integration не изменены.
-- Stage 2.17 создает `LEVIO_AI_ABSTRACTION_OBSERVABILITY_COSTS.md`, определяя provider-neutral model adapters, controlled request lifecycle, validation/failure boundaries, observability, traceability, retries/fallbacks, rate limits и cost budgets.
-- Stage 2.17 сохраняет Decision Engine как product authority: AI provider создает только candidate output и не решает ownership, auth, consent, entitlement, safety gates или `SimulationResponse V2` semantics.
-- Stage 2.17 является documentation-only этапом: OpenAI/AI providers, real model calls, streaming, AI routes, `/api/simulate`, environment variables, dependencies, product code, UI, dashboard, simulator и текущий `SimulationResponse` не изменены.
-- Stage 2.18 создает `LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md`, определяя evaluation dataset structure, measurable quality gates, minimum pre-integration dataset, human/regression review и стартовый каталог из 24 synthetic cases.
-- Stage 2.18 устанавливает zero-tolerance gates для critical safety/privacy violations и рекомендаций при unresolved critical gaps, а также multilingual, traceability, cost-aware и controlled-failure thresholds.
-- Stage 2.18 является documentation-only этапом: AI providers/models, eval/test runners, automated tests, executable fixtures, SDKs, dependencies, product code, UI, dashboard, simulator, API routes и текущий `SimulationResponse` не изменены.
-- Stage 2.19 создает `LEVIO_TESTING_STRATEGY.md`, определяя product, Decision Engine, SimulationResponse, user-data, auth и security testing layers, release quality gates, regression strategy, metrics и audit evidence.
-- Stage 2.19 разделяет semantic evaluation и deterministic testing и устанавливает development, internal release, beta и production gates с блокирующими safety/privacy/ownership/access boundaries.
-- Stage 2.19 является documentation-only этапом: tests, test/eval runners, CI/CD, GitHub Actions, Playwright/Vitest/Jest, dependencies, product code, UI, dashboard, simulator, API routes, AI и текущий `SimulationResponse` не изменены.
-- Simulator business logic, API и `SimulationResponse` contracts, mock auth logic, routing и localStorage keys не изменены.
-- Auth desktop composition сбалансирована, heading облегчен, а edge accents ограничены black/graphite/gold/amber палитрой; mobile и desktop QA прошли без console errors и horizontal overflow.
-- Public homepage сохраняет approved artwork `public/hero-approved-network-bg.png`, подключенный через `next/image` с `quality={100}` и `unoptimized`.
-- Mobile navigation показывает одну аккуратную горизонтальную строку: `Inicio`, `Simulador`, `Mi espacio`, `Iniciar sesión`.
-- Mobile navigation использует читаемые `44px` premium glass controls, усиленные typography/contrast/active/tap states и выделенный login CTA без horizontal overflow.
-- Mobile root-scroll reveal ranges сдвинуты позже и растянуты для hero feature, decision-system, process и capability блоков.
-- Hero title начинает scroll-exit раньше, а approved artwork breathing cycle ускорен до `21s`.
-- Desktop reveal timing hero feature, decision-system, process и `01/02/03/04` блоков выровнен относительно эталонного capability reveal; подтвержденные mobile timing Stage 2.9C не изменены.
-- Simulator workspace получил более глубокую black-gold композицию и premium input surface без изменений `HomeSimulator` business logic.
-- Заголовок simulator workspace раскрывается по словам в центральной зоне desktop viewport; финальный CTA мягко приходит справа и раскрывает текст по буквам только на desktop.
-- `app/layout.tsx` задает согласованные `Levio.es` title, application name, Spanish description, Apple Web App, Open Graph, Twitter, viewport и theme color metadata.
-- Единственный объявленный favicon использует cache-busted `public/levio-favicon-v3.ico`; Apple touch icon использует `public/levio-apple-touch-icon-v3.png`.
-- Manifest обслуживается через `public/levio-manifest-v3.webmanifest` и использует согласованные `public/levio-icon-192-v3.png` и `public/levio-icon-512-v3.png`.
-- Конфликтующий file-based `app/icon.png`, старые `public/apple-icon.png`, `public/icon-192.png` и `public/manifest.webmanifest` удалены.
-- Строки `xaz`, `xaz’` и `XAZ` в репозитории и Git history не найдены; это имя относится к Safari Favorites/History cache, который может сохраняться после исправления источников.
-- Approved hero artwork breathing cycle замедлен с `21s` до `22.75s`, а hero title scroll-exit ускорен с `0-7%` до `0-6%`.
-- Hero feature cards, decision heading, process heading/cards и capability cards откалиброваны отдельно для desktop и mobile, чтобы завершать reveal в центральной зоне viewport.
-- Timing блоков `01/02/03/04` оставлен без изменений; reduced-motion fallback сохранен.
-- Удалены устаревшие production visual assets и неиспользуемый `components/SingularityVisual.tsx`.
+- `848a108` locked Stage 2.8G Hero artwork fidelity.
+- `9c7447d` completed Stage 2.8H homepage minimal premium reduction.
+- `6adefd6` completed the Stage 2.8 homepage motion and brand polish checkpoint.
+- Stage 2.9D preserves product architecture and changes only homepage presentation markup in `app/page.tsx` and final desktop-only motion/visual overrides in `app/globals.css`.
+- Stage 2.9E changes only the final mobile navigation override in `app/globals.css` and synchronizes stage documentation; auth/dashboard/simulator business logic is untouched.
+- Stage 2.9F adds only responsive presentation overrides in `app/globals.css`: tablet `01/02/03/04` cards share one internal grid, final CTA typography is balanced, and the desktop simulator form is lighter and more compact.
+- `HomeSimulator`, simulator/API contracts, auth/dashboard logic, localStorage keys, production persistence and favicon/metadata remain unchanged in Stage 2.9F.
+- Stage 2.10A aligns `/login`, `/register` and `/forgot-password` with the homepage premium black-gold system through scoped auth presentation overrides in `app/globals.css`.
+- Mock auth logic, routing, localStorage keys and dashboard logic remain unchanged; desktop/mobile route QA and mock auth flows passed.
+- Stage 2.10A UX follow-up synchronizes homepage anchor navigation with scroll-linked reveals so Safari anchor landings render their target sections immediately.
+- `HomeSimulator` uses its existing submit path for Enter, preserves Shift+Enter newlines and softly follows active thinking stages and completed output.
+- Stage 2.10B preserves already reached homepage sections before simulator auto-follow, preventing dynamic result height from moving Safari root-scroll timelines back into dimmed intermediate frames.
+- `HomeSimulator` adds progressive browser-safe `SpeechRecognition` / `webkitSpeechRecognition` voice input with start/stop/listening states and Spanish fallback/error feedback; voice input never submits automatically.
+- Stage 2.11 creates `LEVIO_DECISION_ENGINE.md`, defining the future decision pipeline, confidence and completeness concepts, clarification logic, scenario construction, and Stage 3 AI integration requirements.
+- Stage 2.11 creates `LEVIO_MEMORY_MODEL.md`, defining short-term, long-term, project, and decision memory with consent, retention, and GDPR boundaries.
+- Stage 2.11 creates `LEVIO_SUBSCRIPTION_MODEL.md`, defining the conceptual FREE, PREMIUM, and PROFESSIONAL foundations without final prices or production entitlements.
+- Stage 2.11 creates `LEVIO_MULTILINGUAL_ARCHITECTURE.md`, defining language selection, persistence, dictionaries, RTL requirements, and future AI language behavior.
+- Stage 2.11 is documentation-only: product code, UI, business logic, simulator, auth/dashboard routes, API, localStorage contracts, OpenAI integration, database, and payments remain unchanged.
+- Stage 2.12A unifies the shared dashboard shell with the homepage premium black-gold identity: Levio mark, sidebar, compact navigation, headers, active/hover states, glass surfaces, borders, shadows, and spacing.
+- `/dashboard`, simulations, decisions, memory, profile, security, and privacy use consistent graphite/black/gold/amber presentation primitives without visually active cyan, rainbow, green, or legacy coral states.
+- Stage 2.12A changes only presentation in `components/DashboardShell.tsx` and the final scoped dashboard cascade in `app/globals.css`; dashboard data, business logic, routes, localStorage, and API contracts remain unchanged.
+- Stage 2.12B establishes one scoped dashboard grid rhythm with consistent content gaps, column/row gaps, card padding, start lines, and equal-height paired cards.
+- Stage 2.12B neutralizes the legacy adjacent-section margin only inside dashboard, aligns the sidebar with the header, and disciplines history, decisions, memory, profile, security, and privacy layouts.
+- Stage 2.12B changes only layout/CSS in `app/globals.css`; JSX, dashboard data, business logic, routes, auth, simulator, localStorage, and API contracts remain unchanged.
+- Stage 2.13 creates `LEVIO_PRODUCT_READINESS_AUDIT.md`, assessing homepage, dashboard, auth, simulator, Decision Engine, memory, multilingual, monetization, Stage 3 readiness, production risks, and priority fixes.
+- Stage 2.13 assesses Levio as a strong controlled-demo frontend and PARTIALLY READY product, but NOT READY for production users, real personal data, monetization, or direct AI connection.
+- Stage 2.13 is audit/documentation-only: product code and protected contracts remain unchanged.
+- Stage 2.14 creates `LEVIO_DECISION_SCHEMAS.md`, defining provider-independent canonical schemas, provenance, deterministic validation, confidence/completeness, safety, scenario, and recommendation invariants.
+- Stage 2.14 creates `LEVIO_SIMULATION_RESPONSE_V2.md`, defining a future major-version response contract with clarification, analysis, limited-analysis, withheld-recommendation, refusal, and controlled-failure states.
+- Stage 2.14 creates `LEVIO_CLARIFICATION_ENGINE.md`, defining critical-gap detection, question information value, minimal-question selection, contradiction handling, safety behavior, and stop conditions.
+- Stage 2.14 is documentation-only: the current `SimulationResponse`, simulator, UI, dashboard, product code, API, auth, localStorage, persistence, payments, and OpenAI integration remain unchanged.
+- Stage 2.15 creates `LEVIO_USER_DATA_ARCHITECTURE.md`, defining user-owned data principles, anonymous/guest/registered boundaries, simulation/history/memory/preference ownership, consent, retention, export, deletion, and recovery boundaries.
+- Stage 2.15 connects future user-owned persistence to Production Auth Stage 2.16, subscriptions, memory, and `SimulationResponse V2` without selecting an auth/database provider or implementing persistence.
+- Stage 2.15 is documentation-only: product code, UI, homepage, dashboard, simulator, API routes, the current `SimulationResponse`, localStorage, OpenAI integration, auth, database, payments, and dependencies remain unchanged.
+- Stage 2.16 creates `LEVIO_PRODUCTION_AUTH_ARCHITECTURE.md`, defining auth principles, identity and session states, optional and required auth, anonymous and guest claims, ownership authorization, provider strategy, security, abuse-prevention, and GDPR-oriented boundaries.
+- Stage 2.16 follows the User Data Architecture: authentication, authorization, ownership, consent, and subscription remain separate concepts, while production provider choice is deferred until implementation.
+- Stage 2.16 is documentation-only: auth routes/providers, database, dependencies, product code, UI, homepage, dashboard, simulator, API routes, the current `SimulationResponse`, persistence, payments, and OpenAI integration remain unchanged.
+- Stage 2.17 creates `LEVIO_AI_ABSTRACTION_OBSERVABILITY_COSTS.md`, defining provider-neutral model adapters, controlled request lifecycle, validation and failure boundaries, observability, traceability, retries and fallbacks, rate limits, and cost budgets.
+- Stage 2.17 preserves the Decision Engine as product authority: an AI provider creates candidate output only and does not decide ownership, auth, consent, entitlement, safety gates, or `SimulationResponse V2` semantics.
+- Stage 2.17 is documentation-only: OpenAI or other AI providers, real model calls, streaming, AI routes, `/api/simulate`, environment variables, dependencies, product code, UI, dashboard, simulator, and the current `SimulationResponse` remain unchanged.
+- Stage 2.18 creates `LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md`, defining evaluation dataset structure, measurable quality gates, the minimum pre-integration dataset, human and regression review, and an initial catalog of 24 synthetic cases.
+- Stage 2.18 establishes zero-tolerance gates for critical safety/privacy violations and recommendations with unresolved critical gaps, plus multilingual, traceability, cost-aware, and controlled-failure thresholds.
+- Stage 2.18 is documentation-only: AI providers/models, eval/test runners, automated tests, executable fixtures, SDKs, dependencies, product code, UI, dashboard, simulator, API routes, and the current `SimulationResponse` remain unchanged.
+- Stage 2.19 creates `LEVIO_TESTING_STRATEGY.md`, defining product, Decision Engine, SimulationResponse, user-data, auth, and security testing layers, release quality gates, regression strategy, metrics, and audit evidence.
+- Stage 2.19 separates semantic evaluation from deterministic testing and establishes development, internal release, beta, and production gates with blocking safety, privacy, ownership, and access boundaries.
+- Stage 2.19 is documentation-only: tests, test/eval runners, CI/CD, GitHub Actions, Playwright/Vitest/Jest, dependencies, product code, UI, dashboard, simulator, API routes, AI, and the current `SimulationResponse` remain unchanged.
+- Stage 2.19A creates `LEVIO_DOCUMENTATION_LANGUAGE_AUDIT.md`, audits key and root project-level Markdown documentation, and aligns detected Russian or mixed-language documentation fragments with the English-first standard.
+- Stage 2.19A establishes the explicit language policy: project documentation is English, owner-facing Codex reports are Russian, and product UI remains multilingual with Spanish as the current primary public UI language unless product strategy changes.
+- Stage 2.19A is documentation-only: product code, UI, dashboard, simulator, API routes, dependencies, AI integration, tests, and CI/CD remain unchanged.
+- Simulator business logic, API and `SimulationResponse` contracts, auth logic, routing and localStorage keys remain unchanged.
+- Desktop auth composition is more balanced and its edge accents are restricted to the black/graphite/gold/amber identity; desktop/mobile QA passed without console errors or horizontal overflow.
+- The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
+- Mobile navigation is one controlled horizontal row: `Inicio`, `Simulador`, `Mi espacio`, `Iniciar sesión`.
+- Mobile navigation now uses readable `44px` premium glass controls, stronger typography/contrast/active/tap states and a distinct login CTA without horizontal overflow.
+- Mobile root-scroll reveal ranges start later and run longer across hero feature, decision-system, process and capability blocks.
+- Hero title scroll-exit starts earlier and the approved artwork breathing cycle is accelerated to `21s`.
+- Desktop reveal timing for hero feature, decision-system, process and `01/02/03/04` blocks is aligned against the capability-card reference; accepted Stage 2.9C mobile timing remains unchanged.
+- Simulator workspace has deeper black-gold composition and a premium input surface without changes to `HomeSimulator` business logic.
+- The simulator workspace heading reveals by word around desktop viewport center; the final CTA arrives softly from the right and reveals its copy by letter on desktop only.
+- `app/layout.tsx` defines consistent `Levio.es` title, application name, Spanish description, Apple Web App, Open Graph, Twitter, viewport and theme color metadata.
+- The only declared favicon uses cache-busted `public/levio-favicon-v3.ico`; the Apple touch icon uses `public/levio-apple-touch-icon-v3.png`.
+- The manifest is served through `public/levio-manifest-v3.webmanifest` and uses consistent `public/levio-icon-192-v3.png` and `public/levio-icon-512-v3.png`.
+- Conflicting file-based `app/icon.png`, old `public/apple-icon.png`, `public/icon-192.png` and `public/manifest.webmanifest` are removed.
+- No `xaz`, `xaz’` or `XAZ` source exists in the repository or Git history; that name belongs to Safari Favorites/History cache and may remain cached after source correction.
+- Approved hero artwork breathing is slowed from `21s` to `22.75s`, while hero title scroll-exit is accelerated from `0-7%` to `0-6%`.
+- Hero feature cards, decision heading, process heading/cards and capability cards have separately calibrated desktop and mobile ranges that complete around the viewport center.
+- Timing for the `01/02/03/04` system cards remains unchanged; reduced-motion fallback remains active.
+- Obsolete production visual assets and unused `components/SingularityVisual.tsx` are removed.
 
-Направление продукта не изменилось: Levio.es является AI Decision Intelligence System, а не chatbot, AI playground, sci-fi showcase, WebGL experiment или visual-effects demo.
+Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 2.19 завершен. Testing Strategy определяет архитектуру проверки перед Stage 3 и public launch, но не создает тесты, test runner или CI/CD.
+Stage 2.19A is complete only through the documentation language audit, the English alignment of project-level documentation, and the repository fixation of `LEVIO_DOCUMENTATION_LANGUAGE_AUDIT.md`. No product code, UI, API, simulator, dashboard, AI integration, tests, or CI/CD changed.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
-- Первыми кандидатами являются shared auth shell и shared dashboard shell/navigation, потому что изменения этих primitives согласуют сразу большинство secondary routes.
-- Auth pages уже используют black-gold foundation, но требуют унификации Levio mark, form hierarchy, label/input contrast и spacing с homepage premium system.
-- Dashboard pages требуют унификации brand mark, active navigation, cards, controls, spacing/radius/borders и удаления несовместимых white/cyan/rainbow identity traces.
-- Сохранить без изменений auth/dashboard/mock logic, routing, simulator contracts, localStorage keys, API и production persistence boundaries.
-- `/visual-lab` остается sandbox и не является production style target.
+- Start with shared auth shell and shared dashboard shell/navigation so a controlled primitive-level pass improves the widest route surface.
+- Align auth mark, form hierarchy, input/label contrast and spacing with the homepage premium system.
+- Align dashboard brand mark, active navigation, cards, controls, spacing/radius/borders and remove incompatible white/cyan/rainbow identity traces.
+- Preserve auth/dashboard/mock logic, routing, simulator contracts, localStorage keys, API and production persistence boundaries.
+- Keep `/visual-lab` isolated as a sandbox, not a production style target.
 
 ## 0. Current Authoritative Strategy - 30 May 2026
 
@@ -187,17 +190,17 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 - `/visual-lab` remains available as a sandbox route, but its current visual is also refocused toward a lighter mark for consistency.
 - Remaining caveat: `app/globals.css` still contains historical visual CSS sections; production homepage has scoped override rules, but a later CSS cleanup stage may remove legacy unused blocks after visual QA.
 
-## 1. Краткое описание проекта
+## 1. Project Summary
 
-Levio.es - испаноязычная AI Decision Intelligence System. Продукт помогает пользователю описать сложную ситуацию, сравнить потенциальные шаги, увидеть возможные сценарии, риски, преимущества, отложенные последствия и стратегическую рекомендацию до принятия решения.
+Levio.es is a Spanish-first AI Decision Intelligence System. It helps users describe complex situations, compare possible actions, understand scenarios, risks, advantages, delayed consequences, and a strategic recommendation before making a decision.
 
-Текущая версия следует Premium Black-Gold product direction и сохраняет mock-архитектуру: backend, авторизация, база данных и реальная AI-интеграция пока не подключены. Авторизация и сохранение симуляций работают через demo/localStorage flows.
+The current version follows the Premium Black-Gold product direction and retains a mock architecture: backend, production authentication, database, and real AI integration are not connected. Authentication and saved simulations use demo/localStorage flows.
 
-Публичный UI и личный кабинет должны оставаться на испанском языке. Технические отчеты для разработчика пишутся на русском.
+Project documentation is written in English. Codex owner-facing reports are written in Russian. Product UI follows `LEVIO_MULTILINGUAL_ARCHITECTURE.md`, with Spanish as the current primary public UI language unless product strategy changes.
 
 ## 2. Current Development Stage
 
-Stage 2.19 - Product / Security / Quality Test Architecture - COMPLETED CHECKPOINT.
+Stage 2.19A - Documentation Language Consistency Audit - COMPLETED CHECKPOINT.
 
 Stage 2.7.x is closed as a research and direction-discovery track. It must not be treated as the active production target, and the older cinematic/WebGL target must not be revived without a new approved stage.
 
@@ -209,7 +212,7 @@ Stage 2.8 roadmap to MVP:
 - preserve `HomeSimulator` while polishing the decision-intelligence flow and Spanish product copy;
 - keep backend/auth/API/real AI integration as later approved stages, not implicit work during documentation sync.
 
-Stage 1 stable baseline завершен ранее:
+Stage 1 stable baseline was completed earlier:
 
 - `9e9bb08` - Safe CSS stabilization for Levio visual baseline.
 - `652cd71` - Organize globals CSS into safe structural sections.
@@ -251,6 +254,7 @@ Stage 2 progress:
 - Stage 2.17 AI Abstraction / Observability / Cost Budgets completed through `LEVIO_AI_ABSTRACTION_OBSERVABILITY_COSTS.md`; no AI provider, real model, streaming, AI route, dependency, environment variable, product code, UI, simulator, dashboard, API, or current `SimulationResponse` was changed.
 - Stage 2.18 Evaluation Dataset / Quality Thresholds completed through `LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md` and its initial 24-case synthetic catalog; no AI provider/model, eval/test runner, automated test, executable fixture, dependency, product code, UI, simulator, dashboard, API, or current `SimulationResponse` was changed.
 - Stage 2.19 Product / Security / Quality Test Architecture completed through `LEVIO_TESTING_STRATEGY.md`; no tests, test/eval runner, CI/CD, GitHub Actions, dependency, product code, UI, simulator, dashboard, API, AI provider, or current `SimulationResponse` was changed.
+- Stage 2.19A Documentation Language Consistency Audit completed through `LEVIO_DOCUMENTATION_LANGUAGE_AUDIT.md`; key and root project-level documentation is English-first, owner-facing Codex reports remain Russian, product UI remains governed by the multilingual architecture, and no product code changed.
 
 Stage 2.1-2.7.4 result:
 
@@ -907,14 +911,15 @@ The stash was not applied during Stage 2.1-2.5 and must not be applied without e
 Start the next chat with:
 
 ```text
-Прочитай PROJECT_CONTEXT.md в корне проекта Levio.es.
-Используй его как основной актуальный контекст проекта.
-Продолжай строго от описанного состояния.
-Не начинай проект заново.
-Не применяй stash без отдельного разрешения.
-Не меняй production code во время documentation-only задач.
-Все технические отчеты пиши на русском.
-Видимый UI должен оставаться на испанском.
+Read `PROJECT_CONTEXT.md` in the Levio.es project root.
+Use it as the primary current project context.
+Continue strictly from the documented state.
+Do not restart the project from scratch.
+Do not apply the stash without separate permission.
+Do not change production code during documentation-only tasks.
+Write project documentation in English.
+Write all owner-facing Codex reports in Russian.
+Keep product UI multilingual under `LEVIO_MULTILINGUAL_ARCHITECTURE.md`, with Spanish as the current primary public UI language unless product strategy changes.
 ```
 
 Critical reminder:
