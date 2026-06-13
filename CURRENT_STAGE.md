@@ -4,7 +4,7 @@ Date: 13 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 13 June 2026
 
-Stage 2.15 - User Data Architecture - is the current confirmed checkpoint.
+Stage 2.16 - Production Auth Architecture - is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
@@ -42,6 +42,9 @@ Confirmed facts from the repository:
 - Stage 2.15 creates `LEVIO_USER_DATA_ARCHITECTURE.md`, defining user-owned data principles, anonymous/guest/registered boundaries, simulation/history/memory/preference ownership, consent, retention, export, deletion, and recovery boundaries.
 - Stage 2.15 connects future user-owned persistence to Production Auth Stage 2.16, subscriptions, memory, and `SimulationResponse V2` without selecting an auth/database provider or implementing persistence.
 - Stage 2.15 is documentation-only: product code, UI, homepage, dashboard, simulator, API routes, the current `SimulationResponse`, localStorage, OpenAI integration, auth, database, payments, and dependencies remain unchanged.
+- Stage 2.16 creates `LEVIO_PRODUCTION_AUTH_ARCHITECTURE.md`, defining auth principles, identity and session states, optional and required auth, anonymous and guest claims, ownership authorization, provider strategy, security, abuse-prevention, and GDPR-oriented boundaries.
+- Stage 2.16 follows the User Data Architecture: authentication, authorization, ownership, consent, and subscription remain separate concepts, while production provider choice is deferred until implementation.
+- Stage 2.16 is documentation-only: auth routes/providers, database, dependencies, product code, UI, homepage, dashboard, simulator, API routes, the current `SimulationResponse`, persistence, payments, and OpenAI integration remain unchanged.
 - Simulator business logic, API and `SimulationResponse` contracts, auth logic, routing and localStorage keys remain unchanged.
 - Desktop auth composition is more balanced and its edge accents are restricted to the black/graphite/gold/amber identity; desktop/mobile QA passed without console errors or horizontal overflow.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
@@ -64,7 +67,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 2.15 is complete only through the creation and repository fixation of `LEVIO_USER_DATA_ARCHITECTURE.md`. It formalizes future user-data ownership and lifecycle boundaries and prepares Stage 2.16 Production Auth at architecture level without implementing auth or persistence.
+Stage 2.16 is complete only through the creation and repository fixation of `LEVIO_PRODUCTION_AUTH_ARCHITECTURE.md`. It closes the final Stage 2 user-data architecture item without implementing production auth, persistence, or Stage 3 AI integration.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -169,7 +172,7 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 
 ## Current Stage
 
-Stage 2.15 - User Data Architecture - COMPLETED CHECKPOINT.
+Stage 2.16 - Production Auth Architecture - COMPLETED CHECKPOINT.
 
 Roadmap from the current checkpoint:
 
@@ -216,6 +219,7 @@ Completed Stage 2 stabilization commits:
 - Stage 2.13 product readiness audit completed; product code, UI, CSS, simulator, dashboard, auth, routes, API, localStorage, voice input, and architecture foundations preserved.
 - Stage 2.14 Decision Engine Specification completed through three provider-independent contract documents; Stage 3, OpenAI, auth, persistence, payments, product code, UI, simulator, dashboard, API, and current `SimulationResponse` remain unchanged.
 - Stage 2.15 User Data Architecture completed through `LEVIO_USER_DATA_ARCHITECTURE.md`; Stage 2.16 Production Auth is prepared at architecture level only, while auth, database, persistence, subscriptions, OpenAI, product code, UI, simulator, dashboard, API, and current `SimulationResponse` remain unchanged.
+- Stage 2.16 Production Auth Architecture completed through `LEVIO_PRODUCTION_AUTH_ARCHITECTURE.md`; production auth, providers, database, persistence, subscriptions, OpenAI, product code, UI, simulator, dashboard, API, and current `SimulationResponse` remain unchanged.
 
 ## Current CSS Architecture
 
