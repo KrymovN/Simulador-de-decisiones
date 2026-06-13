@@ -4,11 +4,11 @@
 
 13 июня 2026, Europe/Madrid.
 
-Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после завершения Stage 2.14 Decision Engine Specification. Это синхронизированная копия `LEVIO_CURRENT_STATE.md`.
+Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после завершения Stage 2.15 User Data Architecture. Это синхронизированная копия `LEVIO_CURRENT_STATE.md`.
 
 ## 0. Current Confirmed Checkpoint - 13 June 2026
 
-Stage 2.14 - Decision Engine Specification - текущий подтвержденный checkpoint.
+Stage 2.15 - User Data Architecture - текущий подтвержденный checkpoint.
 
 Подтверждено по репозиторию:
 
@@ -43,6 +43,9 @@ Stage 2.14 - Decision Engine Specification - текущий подтвержде
 - Stage 2.14 создает `LEVIO_SIMULATION_RESPONSE_V2.md` как будущий major-version response contract со статусами clarification, analysis, limited analysis, withheld recommendation, refusal и controlled failure.
 - Stage 2.14 создает `LEVIO_CLARIFICATION_ENGINE.md` с critical-gap detection, question information value, minimal-question selection, contradiction handling, safety behavior и stop conditions.
 - Stage 2.14 остается documentation-only этапом: текущий `SimulationResponse`, simulator, UI, dashboard, product code, API, auth, localStorage, persistence, payments и OpenAI integration не изменены.
+- Stage 2.15 создает `LEVIO_USER_DATA_ARCHITECTURE.md`, определяя user-owned data principles, anonymous/guest/registered boundaries, ownership simulations/history/memory/preferences, consent, retention, export, deletion и recovery boundaries.
+- Stage 2.15 связывает будущую user-owned persistence с Production Auth Stage 2.16, subscription, memory и `SimulationResponse V2`, но не выбирает auth/database provider и не реализует persistence.
+- Stage 2.15 является documentation-only этапом: product code, UI, homepage, dashboard, simulator, API routes, текущий `SimulationResponse`, localStorage, OpenAI integration, auth, database, payments и dependencies не изменены.
 - Simulator business logic, API и `SimulationResponse` contracts, mock auth logic, routing и localStorage keys не изменены.
 - Auth desktop composition сбалансирована, heading облегчен, а edge accents ограничены black/graphite/gold/amber палитрой; mobile и desktop QA прошли без console errors и horizontal overflow.
 - Public homepage сохраняет approved artwork `public/hero-approved-network-bg.png`, подключенный через `next/image` с `quality={100}` и `unoptimized`.
@@ -65,7 +68,7 @@ Stage 2.14 - Decision Engine Specification - текущий подтвержде
 
 Направление продукта не изменилось: Levio.es является AI Decision Intelligence System, а не chatbot, AI playground, sci-fi showcase, WebGL experiment или visual-effects demo.
 
-Stage 2.14 завершен. Decision Engine Specification формализует будущие schemas, `SimulationResponse V2` и clarification gate, но не разрешает Stage 3 и не изменяет код продукта или защищённые контракты.
+Stage 2.15 завершен. User Data Architecture формализует ownership и lifecycle будущих пользовательских данных и подготавливает архитектурные границы для Stage 2.16 Production Auth без реализации auth или persistence.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -182,7 +185,7 @@ Levio.es - испаноязычная AI Decision Intelligence System. Прод�
 
 ## 2. Current Development Stage
 
-Stage 2.14 - Decision Engine Specification - COMPLETED CHECKPOINT.
+Stage 2.15 - User Data Architecture - COMPLETED CHECKPOINT.
 
 Stage 2.7.x is closed as a research and direction-discovery track. It must not be treated as the active production target, and the older cinematic/WebGL target must not be revived without a new approved stage.
 
@@ -231,6 +234,7 @@ Stage 2 progress:
 - Stage 2.9F tablet card alignment, final CTA typography polish and simulator form refinement completed.
 - Stage 2.10A auth pages premium black-gold unification completed; auth logic and routes preserved.
 - Stage 2.14 Decision Engine Specification completed through three provider-independent contract documents; Stage 3, OpenAI, auth, persistence, payments, product code, UI, simulator, dashboard, API, and current `SimulationResponse` remain unchanged.
+- Stage 2.15 User Data Architecture completed through `LEVIO_USER_DATA_ARCHITECTURE.md`; Stage 2.16 Production Auth is prepared at architecture level only, while auth, database, persistence, subscriptions, OpenAI, product code, UI, simulator, dashboard, API, and current `SimulationResponse` remain unchanged.
 
 Stage 2.1-2.7.4 result:
 
