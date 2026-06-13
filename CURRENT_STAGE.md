@@ -1,10 +1,10 @@
 # CURRENT STAGE - LEVIO.ES
 
-Date: 11 June 2026, Europe/Madrid.
+Date: 13 June 2026, Europe/Madrid.
 
-## Current Confirmed Checkpoint - 11 June 2026
+## Current Confirmed Checkpoint - 13 June 2026
 
-Stage 2.13 - Product Readiness Audit - is the current confirmed checkpoint.
+Stage 2.14 - Decision Engine Specification - is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
@@ -35,6 +35,10 @@ Confirmed facts from the repository:
 - Stage 2.13 creates `LEVIO_PRODUCT_READINESS_AUDIT.md`, assessing homepage, dashboard, auth, simulator, Decision Engine, memory, multilingual, monetization, Stage 3 readiness, production risks, and priority fixes.
 - Stage 2.13 assesses Levio as a strong controlled-demo frontend and PARTIALLY READY product, but NOT READY for production users, real personal data, monetization, or direct AI connection.
 - Stage 2.13 is audit/documentation-only: product code and protected contracts remain unchanged.
+- Stage 2.14 creates `LEVIO_DECISION_SCHEMAS.md`, defining provider-independent canonical schemas, provenance, deterministic validation, confidence/completeness, safety, scenario, and recommendation invariants.
+- Stage 2.14 creates `LEVIO_SIMULATION_RESPONSE_V2.md`, defining a future major-version response contract with clarification, analysis, limited-analysis, withheld-recommendation, refusal, and controlled-failure states.
+- Stage 2.14 creates `LEVIO_CLARIFICATION_ENGINE.md`, defining critical-gap detection, question information value, minimal-question selection, contradiction handling, safety behavior, and stop conditions.
+- Stage 2.14 is documentation-only: the current `SimulationResponse`, simulator, UI, dashboard, product code, API, auth, localStorage, persistence, payments, and OpenAI integration remain unchanged.
 - Simulator business logic, API and `SimulationResponse` contracts, auth logic, routing and localStorage keys remain unchanged.
 - Desktop auth composition is more balanced and its edge accents are restricted to the black/graphite/gold/amber identity; desktop/mobile QA passed without console errors or horizontal overflow.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
@@ -57,7 +61,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 2.13 is complete. The Product Readiness Audit records the current frontend MVP strengths and mandatory production/Stage 3 gates; product code and protected contracts remain unchanged.
+Stage 2.14 is complete. The Decision Engine Specification formalizes future schemas, `SimulationResponse V2`, and the clarification gate without authorizing Stage 3 or changing product code and protected contracts.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -162,7 +166,7 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 
 ## Current Stage
 
-Stage 2.13 - Product Readiness Audit - COMPLETED CHECKPOINT.
+Stage 2.14 - Decision Engine Specification - COMPLETED CHECKPOINT.
 
 Roadmap from the current checkpoint:
 
@@ -207,6 +211,7 @@ Completed Stage 2 stabilization commits:
 - Stage 2.12A dashboard premium system unification completed; dashboard logic, routes, data, localStorage, and API contracts preserved.
 - Stage 2.12B dashboard layout grid discipline completed; dashboard logic, routes, data, auth, simulator, localStorage, and API contracts preserved.
 - Stage 2.13 product readiness audit completed; product code, UI, CSS, simulator, dashboard, auth, routes, API, localStorage, voice input, and architecture foundations preserved.
+- Stage 2.14 Decision Engine Specification completed through three provider-independent contract documents; Stage 3, OpenAI, auth, persistence, payments, product code, UI, simulator, dashboard, API, and current `SimulationResponse` remain unchanged.
 
 ## Current CSS Architecture
 
