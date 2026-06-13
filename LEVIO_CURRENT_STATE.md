@@ -4,11 +4,11 @@
 
 13 июня 2026, Europe/Madrid.
 
-Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после завершения Stage 2.17 AI Abstraction / Observability / Cost Budgets. Это основной актуальный handoff-файл. `PROJECT_CONTEXT.md` должен оставаться синхронизированной копией этого документа.
+Документ отражает локальное состояние проекта `/Users/s3/Documents/New project` после завершения Stage 2.18 Evaluation Dataset / Quality Thresholds. Это основной актуальный handoff-файл. `PROJECT_CONTEXT.md` должен оставаться синхронизированной копией этого документа.
 
 ## 0. Current Confirmed Checkpoint - 13 June 2026
 
-Stage 2.17 - AI Abstraction / Observability / Cost Budgets - текущий подтвержденный checkpoint.
+Stage 2.18 - Evaluation Dataset / Quality Thresholds - текущий подтвержденный checkpoint.
 
 Подтверждено по репозиторию:
 
@@ -52,6 +52,9 @@ Stage 2.17 - AI Abstraction / Observability / Cost Budgets - текущий по
 - Stage 2.17 создает `LEVIO_AI_ABSTRACTION_OBSERVABILITY_COSTS.md`, определяя provider-neutral model adapters, controlled request lifecycle, validation/failure boundaries, observability, traceability, retries/fallbacks, rate limits и cost budgets.
 - Stage 2.17 сохраняет Decision Engine как product authority: AI provider создает только candidate output и не решает ownership, auth, consent, entitlement, safety gates или `SimulationResponse V2` semantics.
 - Stage 2.17 является documentation-only этапом: OpenAI/AI providers, real model calls, streaming, AI routes, `/api/simulate`, environment variables, dependencies, product code, UI, dashboard, simulator и текущий `SimulationResponse` не изменены.
+- Stage 2.18 создает `LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md`, определяя evaluation dataset structure, measurable quality gates, minimum pre-integration dataset, human/regression review и стартовый каталог из 24 synthetic cases.
+- Stage 2.18 устанавливает zero-tolerance gates для critical safety/privacy violations и рекомендаций при unresolved critical gaps, а также multilingual, traceability, cost-aware и controlled-failure thresholds.
+- Stage 2.18 является documentation-only этапом: AI providers/models, eval/test runners, automated tests, executable fixtures, SDKs, dependencies, product code, UI, dashboard, simulator, API routes и текущий `SimulationResponse` не изменены.
 - Simulator business logic, API и `SimulationResponse` contracts, mock auth logic, routing и localStorage keys не изменены.
 - Auth desktop composition сбалансирована, heading облегчен, а edge accents ограничены black/graphite/gold/amber палитрой; mobile и desktop QA прошли без console errors и horizontal overflow.
 - Public homepage сохраняет approved artwork `public/hero-approved-network-bg.png`, подключенный через `next/image` с `quality={100}` и `unoptimized`.
@@ -74,7 +77,7 @@ Stage 2.17 - AI Abstraction / Observability / Cost Budgets - текущий по
 
 Направление продукта не изменилось: Levio.es является AI Decision Intelligence System, а не chatbot, AI playground, sci-fi showcase, WebGL experiment или visual-effects demo.
 
-Stage 2.17 завершен. AI Abstraction / Observability / Cost Budgets открывает архитектурный AI-контур Stage 3, но не подключает AI и не реализует model calls, observability или budgets.
+Stage 2.18 завершен. Evaluation Dataset / Quality Thresholds определяет измеримые ворота перед AI integration, но не запускает evaluation, не создает runner и не подключает AI.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -191,7 +194,7 @@ Levio.es - испаноязычная AI Decision Intelligence System. Прод�
 
 ## 2. Current Development Stage
 
-Stage 2.17 - AI Abstraction / Observability / Cost Budgets - COMPLETED CHECKPOINT.
+Stage 2.18 - Evaluation Dataset / Quality Thresholds - COMPLETED CHECKPOINT.
 
 Stage 2.7.x is closed as a research and direction-discovery track. It must not be treated as the active production target, and the older cinematic/WebGL target must not be revived without a new approved stage.
 
@@ -243,6 +246,7 @@ Stage 2 progress:
 - Stage 2.15 User Data Architecture completed through `LEVIO_USER_DATA_ARCHITECTURE.md`; Stage 2.16 Production Auth is prepared at architecture level only, while auth, database, persistence, subscriptions, OpenAI, product code, UI, simulator, dashboard, API, and current `SimulationResponse` remain unchanged.
 - Stage 2.16 Production Auth Architecture completed through `LEVIO_PRODUCTION_AUTH_ARCHITECTURE.md`; production auth, providers, database, persistence, subscriptions, OpenAI, product code, UI, simulator, dashboard, API, and current `SimulationResponse` remain unchanged.
 - Stage 2.17 AI Abstraction / Observability / Cost Budgets completed through `LEVIO_AI_ABSTRACTION_OBSERVABILITY_COSTS.md`; no AI provider, real model, streaming, AI route, dependency, environment variable, product code, UI, simulator, dashboard, API, or current `SimulationResponse` was changed.
+- Stage 2.18 Evaluation Dataset / Quality Thresholds completed through `LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md` and its initial 24-case synthetic catalog; no AI provider/model, eval/test runner, automated test, executable fixture, dependency, product code, UI, simulator, dashboard, API, or current `SimulationResponse` was changed.
 
 Stage 2.1-2.7.4 result:
 
