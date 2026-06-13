@@ -4,7 +4,7 @@ Date: 13 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 13 June 2026
 
-Stage 2.18 - Evaluation Dataset / Quality Thresholds - is the current confirmed checkpoint.
+Stage 2.19 - Product / Security / Quality Test Architecture - is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
@@ -51,6 +51,9 @@ Confirmed facts from the repository:
 - Stage 2.18 creates `LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md`, defining evaluation dataset structure, measurable quality gates, the minimum pre-integration dataset, human and regression review, and an initial catalog of 24 synthetic cases.
 - Stage 2.18 establishes zero-tolerance gates for critical safety/privacy violations and recommendations with unresolved critical gaps, plus multilingual, traceability, cost-aware, and controlled-failure thresholds.
 - Stage 2.18 is documentation-only: AI providers/models, eval/test runners, automated tests, executable fixtures, SDKs, dependencies, product code, UI, dashboard, simulator, API routes, and the current `SimulationResponse` remain unchanged.
+- Stage 2.19 creates `LEVIO_TESTING_STRATEGY.md`, defining product, Decision Engine, SimulationResponse, user-data, auth, and security testing layers, release quality gates, regression strategy, metrics, and audit evidence.
+- Stage 2.19 separates semantic evaluation from deterministic testing and establishes development, internal release, beta, and production gates with blocking safety, privacy, ownership, and access boundaries.
+- Stage 2.19 is documentation-only: tests, test/eval runners, CI/CD, GitHub Actions, Playwright/Vitest/Jest, dependencies, product code, UI, dashboard, simulator, API routes, AI, and the current `SimulationResponse` remain unchanged.
 - Simulator business logic, API and `SimulationResponse` contracts, auth logic, routing and localStorage keys remain unchanged.
 - Desktop auth composition is more balanced and its edge accents are restricted to the black/graphite/gold/amber identity; desktop/mobile QA passed without console errors or horizontal overflow.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
@@ -73,7 +76,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 2.18 is complete only through the creation and repository fixation of `LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md` and its initial 24-case synthetic catalog. It defines measurable pre-AI quality gates without connecting AI or implementing an evaluation or test runner.
+Stage 2.19 is complete only through the creation and repository fixation of `LEVIO_TESTING_STRATEGY.md`. It defines testing architecture before Stage 3 and public launch without creating tests, a test runner, or CI/CD.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -178,7 +181,7 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 
 ## Current Stage
 
-Stage 2.18 - Evaluation Dataset / Quality Thresholds - COMPLETED CHECKPOINT.
+Stage 2.19 - Product / Security / Quality Test Architecture - COMPLETED CHECKPOINT.
 
 Roadmap from the current checkpoint:
 
@@ -228,6 +231,7 @@ Completed Stage 2 stabilization commits:
 - Stage 2.16 Production Auth Architecture completed through `LEVIO_PRODUCTION_AUTH_ARCHITECTURE.md`; production auth, providers, database, persistence, subscriptions, OpenAI, product code, UI, simulator, dashboard, API, and current `SimulationResponse` remain unchanged.
 - Stage 2.17 AI Abstraction / Observability / Cost Budgets completed through `LEVIO_AI_ABSTRACTION_OBSERVABILITY_COSTS.md`; no AI provider, real model, streaming, AI route, dependency, environment variable, product code, UI, simulator, dashboard, API, or current `SimulationResponse` was changed.
 - Stage 2.18 Evaluation Dataset / Quality Thresholds completed through `LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md` and its initial 24-case synthetic catalog; no AI provider/model, eval/test runner, automated test, executable fixture, dependency, product code, UI, simulator, dashboard, API, or current `SimulationResponse` was changed.
+- Stage 2.19 Product / Security / Quality Test Architecture completed through `LEVIO_TESTING_STRATEGY.md`; no tests, test/eval runner, CI/CD, GitHub Actions, dependency, product code, UI, simulator, dashboard, API, AI provider, or current `SimulationResponse` was changed.
 
 ## Current CSS Architecture
 
