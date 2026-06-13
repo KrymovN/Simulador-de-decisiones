@@ -21,7 +21,7 @@ This document defines how future Levio AI-assisted processing must:
 - fail safely and visibly;
 - support future evaluation datasets and automated tests.
 
-This is the first architecture item in the Stage 3 AI track. It authorizes specification work only. It does not authorize AI integration.
+This is pre-Stage 3 architecture preparation for the future AI track. It authorizes specification work only. It does not start Stage 3 or authorize AI integration.
 
 ## 2. Why Levio Needs an AI Abstraction Layer
 
@@ -940,4 +940,4 @@ Stage 2.17 does not:
 
 Stage 2.17 is complete through this provider-independent architecture specification and repository fixation only.
 
-It begins the Stage 3 AI track by defining the boundary around future AI integration. It does not connect AI, authorize model calls, or make Levio ready for production AI processing.
+It prepares the boundary for a future Stage 3 AI track. It does not start Stage 3, connect AI, authorize model calls, or make Levio ready for production AI processing.

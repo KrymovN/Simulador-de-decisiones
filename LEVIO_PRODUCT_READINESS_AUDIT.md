@@ -4,6 +4,12 @@ Date: 11 June 2026, Europe/Madrid.
 
 Baseline: `7ba6c0d` - `Stage 2.12B align dashboard layout grid`
 
+## Stage 2 Closure Note
+
+This document remains the Stage 2.13 product-readiness snapshot. Later Stage 2 architecture documents completed the specification work identified in several Stage 3-readiness tasks, including Decision Engine schemas, `SimulationResponse V2`, clarification, user data, production auth, AI abstraction, evaluation, testing, and trust requirements.
+
+Those later specifications do not resolve the implementation gaps recorded in this audit. Production auth, persistence, runtime Decision Engine behavior, AI integration, tests, operational controls, legal review, and public-launch readiness remain unimplemented. Use `LEVIO_STAGE_2_FINAL_ARCHITECTURE_CLOSURE_AUDIT.md` for the final Stage 2 architecture conclusion.
+
 ## Status Definitions
 
 - **READY**: sufficient for the assessed scope without a known blocking gap.

@@ -4,11 +4,11 @@
 
 13 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 2.20 Production Trust / Legal Layer. It is a synchronized copy of `LEVIO_CURRENT_STATE.md`.
+This document reflects the local project state in `/Users/s3/Documents/New project` after the Stage 2 Final Architecture Closure Audit. It is a synchronized copy of `LEVIO_CURRENT_STATE.md`.
 
 ## Current Confirmed Checkpoint - 13 June 2026
 
-Stage 2.20 - Production Trust / Legal Layer - is the current confirmed checkpoint.
+Stage 2 Final Architecture Closure Audit - is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
@@ -64,6 +64,8 @@ Confirmed facts from the repository:
 - Stage 2.20 creates `LEVIO_TRUST_LEGAL_LAYER.md`, defining product transparency, expectation management, simulation and recommendation limitations, high-risk boundaries, user autonomy, trust indicators, accountability, auditability, and future legal dependencies.
 - Stage 2.20 connects existing safety, data, auth, AI, evaluation, and testing foundations into a production Trust Layer while explicitly deferring public legal documents and qualified legal review.
 - Stage 2.20 is documentation-only: no Terms of Service, Privacy Policy, legal publication, product code, UI, dashboard, simulator, API routes, dependencies, AI integration, tests, or CI/CD are created or changed.
+- The Stage 2 Final Architecture Closure Audit creates `LEVIO_STAGE_2_FINAL_ARCHITECTURE_CLOSURE_AUDIT.md`, confirms cross-document consistency, corrects historical stage-status terminology, and closes the Stage 2 architecture package.
+- Stage 3 has not started. The recommended first Stage 3 step is a separately approved deterministic Decision Engine contract foundation using synthetic fixtures and test doubles before any AI-provider connection.
 - Simulator business logic, API and `SimulationResponse` contracts, auth logic, routing and localStorage keys remain unchanged.
 - Desktop auth composition is more balanced and its edge accents are restricted to the black/graphite/gold/amber identity; desktop/mobile QA passed without console errors or horizontal overflow.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
@@ -86,7 +88,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 2.20 is complete only through the creation and repository fixation of `LEVIO_TRUST_LEGAL_LAYER.md` and synchronized project-state documentation. It defines an architectural Trust Layer and future legal dependencies without creating public legal documents or changing product code.
+The Stage 2 architecture package is complete only through the creation and repository fixation of `LEVIO_STAGE_2_FINAL_ARCHITECTURE_CLOSURE_AUDIT.md` and synchronized project-state documentation. Stage 3 has not started.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -96,11 +98,11 @@ Stage 2.20 is complete only through the creation and repository fixation of `LEV
 - Preserve auth/dashboard/mock logic, routing, simulator contracts, localStorage keys, API and production persistence boundaries.
 - Keep `/visual-lab` isolated as a sandbox, not a production style target.
 
-## 0. Current Authoritative Strategy - 30 May 2026
+## 0. Historical Authoritative Strategy - 30 May 2026
 
 This section supersedes older Stage 2.7.x visual-research notes below wherever they conflict with the current product direction.
 
-- Active stage: Stage 2.8 - documentation/current-state synchronization and MVP preparation after the strategic visual pivot.
+- Historical active stage at that checkpoint: Stage 2.8 - documentation/current-state synchronization and MVP preparation after the strategic visual pivot.
 - Current product direction: Premium Black-Gold AI Decision Intelligence System.
 - Levio.es is not a chatbot, SaaS dashboard, visual-effects showcase, WebGL experiment or gaming interface.
 - Levio.es helps users describe a situation, compare possible actions, evaluate risks, model consequences and understand likely strategic outcomes.
@@ -110,11 +112,11 @@ This section supersedes older Stage 2.7.x visual-research notes below wherever t
 - The accepted direction is disciplined black-gold product UI, not cinematic spectacle.
 - Current production checkpoint: `78913da` - `Refocus Levio homepage toward premium black-gold product UI`.
 - `HomeSimulator`, simulator/API contracts, auth/dashboard logic and Spanish visible UI remain protected unless a later approved stage explicitly touches them.
-- Next safe work: Stage 2.8 alignment, production QA, legacy visual CSS cleanup planning and MVP decision-flow polish. Do not start new visual experiments as a substitute for MVP work.
+- Historical next safe work at that checkpoint: Stage 2.8 alignment, production QA, legacy visual CSS cleanup planning and MVP decision-flow polish. Do not start new visual experiments as a substitute for MVP work.
 
 ## 0.6 Superseded Transition State - 24 May 2026
 
-Historical note: this was the handoff source of truth before the Stage 2.8 synchronization and the 30 May 2026 product pivot. Treat it as superseded by `Current Authoritative Strategy - 30 May 2026`.
+Historical note: this was the handoff source of truth before the Stage 2.8 synchronization and the 30 May 2026 product pivot. Treat it as superseded by `Historical Authoritative Strategy - 30 May 2026` for the visual-direction decision and by the current confirmed checkpoint for stage status.
 
 - Historical active stage at that time: Stage 2.7.3b - isolated lightweight shader cinematic-depth correction and validation.
 - Historical status at that time: Stage 2.7.3b was not complete. Real iPhone Safari after `fa5dfd9` confirmed technical safety, but did not confirm enough perceived cinematic-depth improvement.
@@ -203,11 +205,11 @@ Project documentation is written in English. Codex owner-facing reports are writ
 
 ## 2. Current Development Stage
 
-Stage 2.20 - Production Trust / Legal Layer - COMPLETED CHECKPOINT.
+Stage 2 Final Architecture Closure Audit - COMPLETED CHECKPOINT.
 
 Stage 2.7.x is closed as a research and direction-discovery track. It must not be treated as the active production target, and the older cinematic/WebGL target must not be revived without a new approved stage.
 
-Stage 2.8 roadmap to MVP:
+Historical Stage 2.8 roadmap to MVP:
 
 - synchronize context/state/identity documentation around the Premium Black-Gold AI Decision Intelligence System direction;
 - verify the production homepage after the black-gold pivot and Vercel/GitHub synchronization;
@@ -259,6 +261,7 @@ Stage 2 progress:
 - Stage 2.19 Product / Security / Quality Test Architecture completed through `LEVIO_TESTING_STRATEGY.md`; no tests, test/eval runner, CI/CD, GitHub Actions, dependency, product code, UI, simulator, dashboard, API, AI provider, or current `SimulationResponse` was changed.
 - Stage 2.19A Documentation Language Consistency Audit completed through `LEVIO_DOCUMENTATION_LANGUAGE_AUDIT.md`; key and root project-level documentation is English-first, owner-facing Codex reports remain Russian, product UI remains governed by the multilingual architecture, and no product code changed.
 - Stage 2.20 Production Trust / Legal Layer completed through `LEVIO_TRUST_LEGAL_LAYER.md`; trust requirements and future legal dependencies are defined architecturally, while public legal documents, legal approval, product code, UI, simulator, dashboard, API, AI integration, tests, and CI/CD remain unchanged.
+- Stage 2 Final Architecture Closure Audit completed through `LEVIO_STAGE_2_FINAL_ARCHITECTURE_CLOSURE_AUDIT.md`; Stage 2 architecture is closed, Stage 3 has not started, and product code remains unchanged.
 
 Stage 2.1-2.7.4 result:
 
