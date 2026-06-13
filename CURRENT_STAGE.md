@@ -4,7 +4,7 @@ Date: 13 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 13 June 2026
 
-Stage 2 Final Architecture Closure Audit - is the current confirmed checkpoint.
+Stage 3.1 - Deterministic Decision Engine Contract Foundation - is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
@@ -61,7 +61,8 @@ Confirmed facts from the repository:
 - Stage 2.20 connects existing safety, data, auth, AI, evaluation, and testing foundations into a production Trust Layer while explicitly deferring public legal documents and qualified legal review.
 - Stage 2.20 is documentation-only: no Terms of Service, Privacy Policy, legal publication, product code, UI, dashboard, simulator, API routes, dependencies, AI integration, tests, or CI/CD are created or changed.
 - The Stage 2 Final Architecture Closure Audit creates `LEVIO_STAGE_2_FINAL_ARCHITECTURE_CLOSURE_AUDIT.md`, confirms cross-document consistency, corrects historical stage-status terminology, and closes the Stage 2 architecture package.
-- Stage 3 has not started. The recommended first Stage 3 step is a separately approved deterministic Decision Engine contract foundation using synthetic fixtures and test doubles before any AI-provider connection.
+- Stage 3.1 creates an isolated provider-independent contract layer in `lib/decision-engine/` with canonical TypeScript types, draft result/V2 contracts, stable exports, and lightweight deterministic shape validators.
+- Stage 3.1 does not implement the Decision Engine, generate scenarios, connect AI, auth, database, or persistence, change UI or API behavior, or modify the current simulator and `SimulationResponse` runtime.
 - Simulator business logic, API and `SimulationResponse` contracts, auth logic, routing and localStorage keys remain unchanged.
 - Desktop auth composition is more balanced and its edge accents are restricted to the black/graphite/gold/amber identity; desktop/mobile QA passed without console errors or horizontal overflow.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
@@ -84,7 +85,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-The Stage 2 architecture package is complete only through the creation and repository fixation of `LEVIO_STAGE_2_FINAL_ARCHITECTURE_CLOSURE_AUDIT.md` and synchronized project-state documentation. Stage 3 has not started.
+Stage 3.1 is complete only as a deterministic Decision Engine contract foundation. The Stage 2 architecture package remains closed, and no AI, auth, persistence, UI, API, or simulator runtime integration has started.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -189,14 +190,14 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 
 ## Current Stage
 
-Stage 2 Final Architecture Closure Audit - COMPLETED CHECKPOINT.
+Stage 3.1 - Deterministic Decision Engine Contract Foundation - COMPLETED CHECKPOINT.
 
 Roadmap from the current checkpoint:
 
 - Stage 2.7.x: completed research track covering visual-engine exploration, `/visual-lab`, WebGL/shader testing, mobile safety checks and the final strategic pivot away from heavy cinematic production visuals.
 - Stage 2 architecture package: completed through the final closure audit.
-- Stage 3: not started.
-- Recommended first Stage 3 step: a separately approved deterministic Decision Engine contract foundation using synthetic fixtures and test doubles before any AI-provider connection.
+- Stage 3.1: completed only as an isolated deterministic contract foundation.
+- Recommended next Stage 3 step: separately approve deterministic contract tests and invariant validation before any provider or runtime integration.
 
 Completed Stage 2 stabilization commits:
 
@@ -243,6 +244,7 @@ Completed Stage 2 stabilization commits:
 - Stage 2.19A Documentation Language Consistency Audit completed through `LEVIO_DOCUMENTATION_LANGUAGE_AUDIT.md`; key and root project-level documentation is English-first, owner-facing Codex reports remain Russian, product UI remains governed by the multilingual architecture, and no product code changed.
 - Stage 2.20 Production Trust / Legal Layer completed through `LEVIO_TRUST_LEGAL_LAYER.md`; trust requirements and future legal dependencies are defined architecturally, while public legal documents, legal approval, product code, UI, simulator, dashboard, API, AI integration, tests, and CI/CD remain unchanged.
 - Stage 2 Final Architecture Closure Audit completed through `LEVIO_STAGE_2_FINAL_ARCHITECTURE_CLOSURE_AUDIT.md`; Stage 2 architecture is closed, Stage 3 has not started, and product code remains unchanged.
+- Stage 3.1 Deterministic Decision Engine Contract Foundation completed through isolated TypeScript contracts and lightweight shape validators in `lib/decision-engine/`; AI, auth, persistence, UI, API behavior, current `SimulationResponse`, and simulator runtime remain unchanged.
 
 ## Current CSS Architecture
 
