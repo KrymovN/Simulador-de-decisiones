@@ -645,3 +645,41 @@ export type RecommendationEngineResult = {
   recommendations: DeterministicRecommendation[];
   preferredRecommendationId?: EntityId;
 };
+
+export type DecisionEngineOrchestratorOptions = {
+  context?: DecisionContext;
+  safety?: SafetyBoundary;
+  safetyContextComplete?: boolean;
+};
+
+export type DecisionEngineInputValidation = {
+  valid: boolean;
+  errors: string[];
+};
+
+export type DecisionEngineOrchestratorStage =
+  | "input_validation"
+  | "completeness"
+  | "critical_gaps"
+  | "contradictions"
+  | "clarification"
+  | "scenarios"
+  | "risks"
+  | "recommendations";
+
+export type DecisionEngineOrchestratorTraceEntry = {
+  stage: DecisionEngineOrchestratorStage;
+  status: "completed" | "skipped" | "blocked" | "failed";
+  detail: string;
+  sourceEntityIds: EntityId[];
+};
+
+export type DecisionEngineConfidenceSummary = {
+  overall: Score;
+  completeness: Score;
+  clarification: Score;
+  scenarios?: Score;
+  risks?: Score;
+  recommendations?: Score;
+  calibration: "model_quality_not_probability";
+};

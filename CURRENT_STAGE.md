@@ -4,7 +4,7 @@ Date: 14 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 14 June 2026
 
-Stage 3.6 - Deterministic Recommendation Engine - is the current confirmed checkpoint.
+Stage 3.7 - Decision Engine Orchestrator - is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
@@ -73,6 +73,8 @@ Confirmed facts from the repository:
 - Stage 3.5 marks probability as comparative and not calibrated, links risk assessments to scenario assumptions and uncertainties, and adds no narrative generation or runtime integration.
 - Stage 3.6 adds pure deterministic recommendation reasoning with structured categories, priorities, preconditions, option comparison, confidence, rationale, and source traceability.
 - Stage 3.6 enforces critical-gap, clarification, and safety withholding gates; a consequential preferred option is exposed only for eligible recommended or conditional outputs.
+- Stage 3.7 adds `runDecisionEngine(...)`, a pure deterministic orchestrator that coordinates validation, completeness, critical gaps, contradictions, clarification, scenarios, risks, and recommendations in the required order.
+- Stage 3.7 adds controlled pipeline stops, stage-level traceability, controlled failures, and a model-quality confidence summary without connecting the orchestrator to product runtime.
 - Simulator business logic, API and `SimulationResponse` contracts, auth logic, routing and localStorage keys remain unchanged.
 - Desktop auth composition is more balanced and its edge accents are restricted to the black/graphite/gold/amber identity; desktop/mobile QA passed without console errors or horizontal overflow.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
@@ -95,7 +97,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 3.6 is complete only as an isolated deterministic recommendation-reasoning layer. The Stage 2 architecture package remains closed, and no AI, memory runtime, auth, persistence, UI, API, or simulator runtime integration has started.
+Stage 3.7 is complete only as an isolated deterministic orchestration layer. The Stage 2 architecture package remains closed, and no AI, memory runtime, auth, persistence, UI, API, or simulator runtime integration has started.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -200,7 +202,7 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 
 ## Current Stage
 
-Stage 3.6 - Deterministic Recommendation Engine - COMPLETED CHECKPOINT.
+Stage 3.7 - Decision Engine Orchestrator - COMPLETED CHECKPOINT.
 
 Roadmap from the current checkpoint:
 
@@ -212,6 +214,7 @@ Roadmap from the current checkpoint:
 - Stage 3.4: completed only as an isolated deterministic scenario-construction layer.
 - Stage 3.5: completed only as an isolated deterministic risk-assessment layer.
 - Stage 3.6: completed only as an isolated deterministic recommendation-reasoning layer.
+- Stage 3.7: completed only as an isolated deterministic orchestration layer.
 - Recommended next Stage 3 step: separately approve deterministic contract tests and deeper invariant validation before any provider or runtime integration.
 
 Completed Stage 2 stabilization commits:
@@ -265,6 +268,7 @@ Completed Stage 2 stabilization commits:
 - Stage 3.4 Deterministic Scenario Engine completed through pure structured scenario functions in `lib/decision-engine/`; no AI, narrative generation, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current `SimulationResponse`, or simulator runtime changed.
 - Stage 3.5 Deterministic Risk Engine completed through pure structured scenario-risk functions in `lib/decision-engine/`; no AI, narrative generation, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current `SimulationResponse`, or simulator runtime changed.
 - Stage 3.6 Deterministic Recommendation Engine completed through pure structured recommendation functions in `lib/decision-engine/`; no AI, advice prose, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current `SimulationResponse`, or simulator runtime changed.
+- Stage 3.7 Decision Engine Orchestrator completed through pure deterministic pipeline coordination and controlled stop behavior in `lib/decision-engine/`; no AI, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current `SimulationResponse`, or simulator runtime changed.
 
 ## Current CSS Architecture
 

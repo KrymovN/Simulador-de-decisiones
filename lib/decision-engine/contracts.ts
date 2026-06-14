@@ -1,13 +1,21 @@
 import type {
   ClarificationDecision,
+  ClarificationEngineResult,
   CompletenessAssessment,
   ConfidenceAssessment,
   ContractVersion,
   ControlledFailure,
   CriticalGap,
+  DecisionEngineConfidenceSummary,
+  DecisionEngineInputValidation,
+  DecisionEngineOrchestratorTraceEntry,
   DecisionContext,
   DecisionEngineTrace,
   DecisionInput,
+  DetectedCriticalGap,
+  DeterministicRecommendation,
+  DeterministicRiskAssessment,
+  DeterministicScenario,
   EvidenceRef,
   Recommendation,
   SafetyBoundary,
@@ -34,14 +42,20 @@ export type DecisionEngineResult = {
   status: DecisionEngineStatus;
   input: DecisionInput;
   context?: DecisionContext;
+  inputValidation: DecisionEngineInputValidation;
   completeness: CompletenessAssessment;
   confidence: ConfidenceAssessment;
-  gaps: CriticalGap[];
-  clarification: ClarificationDecision;
-  scenarios: Scenario[];
-  recommendation?: Recommendation;
+  confidenceSummary: DecisionEngineConfidenceSummary;
+  gaps: DetectedCriticalGap[];
+  contradictions: DetectedCriticalGap[];
+  clarification: ClarificationEngineResult;
+  scenarios: DeterministicScenario[];
+  risks: DeterministicRiskAssessment[];
+  recommendations: DeterministicRecommendation[];
   safety: SafetyBoundary;
   trace: DecisionEngineTrace;
+  orchestratorTrace: DecisionEngineOrchestratorTraceEntry[];
+  controlledFailures: ControlledFailure[];
   failure?: ControlledFailure;
 };
 

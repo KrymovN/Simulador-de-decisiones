@@ -93,7 +93,13 @@ export function validateCompletenessAssessmentShape(value: unknown): value is Co
  * Cross-reference, safety, gap, and recommendation invariants are intentionally out of scope.
  */
 export function validateDecisionEngineResultShape(value: unknown): value is DecisionEngineResult {
-  if (!isRecord(value) || !isRecord(value.safety) || !isRecord(value.trace)) {
+  if (
+    !isRecord(value) ||
+    !isRecord(value.inputValidation) ||
+    !isRecord(value.confidenceSummary) ||
+    !isRecord(value.safety) ||
+    !isRecord(value.trace)
+  ) {
     return false;
   }
 
@@ -103,11 +109,20 @@ export function validateDecisionEngineResultShape(value: unknown): value is Deci
     isString(value.requestId) &&
     isOneOf(value.status, DECISION_ENGINE_STATUSES) &&
     validateDecisionInputShape(value.input) &&
+    typeof value.inputValidation.valid === "boolean" &&
+    isStringArray(value.inputValidation.errors) &&
     validateCompletenessAssessmentShape(value.completeness) &&
     isRecord(value.confidence) &&
+    isScore(value.confidenceSummary.overall) &&
+    value.confidenceSummary.calibration === "model_quality_not_probability" &&
     Array.isArray(value.gaps) &&
+    Array.isArray(value.contradictions) &&
     isRecord(value.clarification) &&
     Array.isArray(value.scenarios) &&
+    Array.isArray(value.risks) &&
+    Array.isArray(value.recommendations) &&
+    Array.isArray(value.orchestratorTrace) &&
+    Array.isArray(value.controlledFailures) &&
     isString(value.safety.domain) &&
     isString(value.safety.level) &&
     typeof value.safety.recommendationAllowed === "boolean" &&
