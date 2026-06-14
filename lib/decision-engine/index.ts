@@ -1,4 +1,5 @@
 export * from "./completeness";
+export * from "./clarification";
 export * from "./contracts";
 export * from "./contradictions";
 export * from "./gaps";

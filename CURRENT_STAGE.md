@@ -4,7 +4,7 @@ Date: 14 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 14 June 2026
 
-Stage 3.2 - Deterministic Completeness & Critical Gap Engine - is the current confirmed checkpoint.
+Stage 3.3 - Deterministic Clarification & Question Selection Engine - is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
@@ -65,6 +65,8 @@ Confirmed facts from the repository:
 - Stage 3.1 does not implement the Decision Engine, generate scenarios, connect AI, auth, database, or persistence, change UI or API behavior, or modify the current simulator and `SimulationResponse` runtime.
 - Stage 3.2 adds the first executable Decision Engine layer through pure deterministic completeness, critical-gap, confidence, trace, and limited contradiction-analysis functions in `lib/decision-engine/`.
 - Stage 3.2 supports `missing_goal`, `missing_context`, `missing_constraints`, `missing_time_horizon`, `critical_unknown`, `contradiction_detected`, and `safety_gap` without AI, auth, database, persistence, subscriptions, UI, API, or simulator runtime integration.
+- Stage 3.3 adds pure deterministic clarification functions that prioritize gaps, select a minimal first-pass question set, and decide whether to ask, proceed with limitations, withhold, or refuse.
+- Stage 3.3 provides stable English question templates for all seven Stage 3.2 gap codes and preserves safety-first behavior without AI, memory runtime, auth, database, persistence, subscriptions, UI, API, or simulator runtime integration.
 - Simulator business logic, API and `SimulationResponse` contracts, auth logic, routing and localStorage keys remain unchanged.
 - Desktop auth composition is more balanced and its edge accents are restricted to the black/graphite/gold/amber identity; desktop/mobile QA passed without console errors or horizontal overflow.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
@@ -87,7 +89,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 3.2 is complete only as an isolated deterministic completeness and critical-gap execution layer. The Stage 2 architecture package remains closed, and no AI, auth, persistence, UI, API, or simulator runtime integration has started.
+Stage 3.3 is complete only as an isolated deterministic clarification and question-selection layer. The Stage 2 architecture package remains closed, and no AI, memory runtime, auth, persistence, UI, API, or simulator runtime integration has started.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -192,7 +194,7 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 
 ## Current Stage
 
-Stage 3.2 - Deterministic Completeness & Critical Gap Engine - COMPLETED CHECKPOINT.
+Stage 3.3 - Deterministic Clarification & Question Selection Engine - COMPLETED CHECKPOINT.
 
 Roadmap from the current checkpoint:
 
@@ -200,6 +202,7 @@ Roadmap from the current checkpoint:
 - Stage 2 architecture package: completed through the final closure audit.
 - Stage 3.1: completed only as an isolated deterministic contract foundation.
 - Stage 3.2: completed only as an isolated deterministic completeness and critical-gap execution layer.
+- Stage 3.3: completed only as an isolated deterministic clarification and question-selection layer.
 - Recommended next Stage 3 step: separately approve deterministic contract tests and deeper invariant validation before any provider or runtime integration.
 
 Completed Stage 2 stabilization commits:
@@ -249,6 +252,7 @@ Completed Stage 2 stabilization commits:
 - Stage 2 Final Architecture Closure Audit completed through `LEVIO_STAGE_2_FINAL_ARCHITECTURE_CLOSURE_AUDIT.md`; Stage 2 architecture is closed, Stage 3 has not started, and product code remains unchanged.
 - Stage 3.1 Deterministic Decision Engine Contract Foundation completed through isolated TypeScript contracts and lightweight shape validators in `lib/decision-engine/`; AI, auth, persistence, UI, API behavior, current `SimulationResponse`, and simulator runtime remain unchanged.
 - Stage 3.2 Deterministic Completeness & Critical Gap Engine completed through pure functions in `lib/decision-engine/`; no AI, auth, database, persistence, subscriptions, UI, API behavior, current `SimulationResponse`, or simulator runtime changed.
+- Stage 3.3 Deterministic Clarification & Question Selection Engine completed through pure functions in `lib/decision-engine/`; no AI, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current `SimulationResponse`, or simulator runtime changed.
 
 ## Current CSS Architecture
 

@@ -423,3 +423,36 @@ export type CompletenessEngineResult = {
   confidence: ConfidenceAssessment;
   traceEntries: CompletenessTraceEntry[];
 };
+
+export type PrioritizedGap = {
+  gap: DetectedCriticalGap;
+  priorityScore: number;
+  priorityReasons: string[];
+};
+
+export type ClarificationTraceEntry = {
+  check:
+    | "safety_boundary"
+    | "gap_prioritization"
+    | "question_selection"
+    | "clarification_decision";
+  status: "passed" | "action_required" | "stopped";
+  detail: string;
+};
+
+export type ClarificationEngineOptions = {
+  maxQuestions?: number;
+};
+
+export type ClarificationEngineInput = {
+  analysis: CompletenessEngineResult;
+  safety?: SafetyBoundary;
+};
+
+export type ClarificationEngineResult = {
+  decision: ClarificationDecision;
+  prioritizedGaps: PrioritizedGap[];
+  selectedQuestions: ClarificationQuestion[];
+  confidence: ConfidenceAssessment;
+  traceEntries: ClarificationTraceEntry[];
+};
