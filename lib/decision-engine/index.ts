@@ -7,5 +7,6 @@ export * from "./orchestrator";
 export * from "./recommendations";
 export * from "./risks";
 export * from "./scenarios";
+export * from "./simulation-response";
 export * from "./types";
 export * from "./validation";

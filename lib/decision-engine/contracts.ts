@@ -1,11 +1,10 @@
 import type {
-  ClarificationDecision,
   ClarificationEngineResult,
   CompletenessAssessment,
+  CompletenessTraceEntry,
   ConfidenceAssessment,
   ContractVersion,
   ControlledFailure,
-  CriticalGap,
   DecisionEngineConfidenceSummary,
   DecisionEngineInputValidation,
   DecisionEngineOrchestratorTraceEntry,
@@ -17,9 +16,7 @@ import type {
   DeterministicRiskAssessment,
   DeterministicScenario,
   EvidenceRef,
-  Recommendation,
   SafetyBoundary,
-  Scenario,
 } from "./types";
 
 export const CONTRACT_VERSION: ContractVersion = "2.0";
@@ -44,6 +41,7 @@ export type DecisionEngineResult = {
   context?: DecisionContext;
   inputValidation: DecisionEngineInputValidation;
   completeness: CompletenessAssessment;
+  completenessTrace: CompletenessTraceEntry[];
   confidence: ConfidenceAssessment;
   confidenceSummary: DecisionEngineConfidenceSummary;
   gaps: DetectedCriticalGap[];
@@ -71,29 +69,68 @@ export type SimulationResponseV2Draft = {
   };
   decision: {
     statement: string;
+    decisionTypes: string[];
     primaryGoal?: string;
+    secondaryGoals: string[];
     optionSummaries: {
       id: string;
       label: string;
       type: "action" | "delay" | "no_action" | "information_gathering";
       feasibility: "feasible" | "infeasible" | "unknown";
     }[];
+    keyConstraints: string[];
+    timeHorizonSummary?: string;
   };
   modelQuality: {
-    completeness: CompletenessAssessment;
-    confidence: ConfidenceAssessment;
+    completeness: {
+      score: number;
+      band: string;
+      blockingDimensions: string[];
+      explanation: string;
+    };
+    confidence: {
+      score: number;
+      band: string;
+      explanation: string;
+      limitations: string[];
+      calibration: "model_quality_not_probability";
+      stages: DecisionEngineConfidenceSummary;
+    };
   };
-  gaps: CriticalGap[];
-  clarification?: ClarificationDecision;
+  gaps: DetectedCriticalGap[];
+  contradictions: DetectedCriticalGap[];
+  clarification?: ClarificationEngineResult["decision"];
   analysis?: {
-    scenarios: Scenario[];
-    uncertaintySummary: string;
+    assumptions: NonNullable<DecisionContext["assumptions"]>;
+    scenarios: DeterministicScenario[];
+    risks: DeterministicRiskAssessment[];
   };
-  recommendation?: Recommendation;
-  safety: SafetyBoundary;
+  recommendation?: DeterministicRecommendation;
+  safety: {
+    level: SafetyBoundary["level"];
+    domain: SafetyBoundary["domain"];
+    recommendationAllowed: boolean;
+    message: string;
+    suggestedSupport: string[];
+    prohibitedOutputs: string[];
+  };
+  availability: {
+    scenarios: RuntimeAvailability;
+    risks: RuntimeAvailability;
+    recommendation: RuntimeAvailability;
+  };
   traceability: {
     evidence: EvidenceRef[];
     policyVersion: string;
+    inputValidation: DecisionEngineInputValidation;
+    completeness: CompletenessTraceEntry[];
+    gaps: DetectedCriticalGap[];
+    contradictions: DetectedCriticalGap[];
+    clarification: ClarificationEngineResult["traceEntries"];
+    scenarios: DeterministicScenario["traceEntries"];
+    risks: DeterministicRiskAssessment["traceEntries"];
+    recommendations: DeterministicRecommendation["traceEntries"];
+    orchestrator: DecisionEngineOrchestratorTraceEntry[];
   };
   notices: {
     code:
@@ -106,5 +143,11 @@ export type SimulationResponseV2Draft = {
     severity: "info" | "warning" | "critical";
     message: string;
   }[];
+  controlledFailures: ControlledFailure[];
   failure?: ControlledFailure;
+};
+
+export type RuntimeAvailability = {
+  status: "available" | "unavailable" | "blocked" | "not_applicable";
+  reasons: string[];
 };

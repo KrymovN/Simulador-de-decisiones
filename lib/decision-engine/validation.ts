@@ -112,6 +112,7 @@ export function validateDecisionEngineResultShape(value: unknown): value is Deci
     typeof value.inputValidation.valid === "boolean" &&
     isStringArray(value.inputValidation.errors) &&
     validateCompletenessAssessmentShape(value.completeness) &&
+    Array.isArray(value.completenessTrace) &&
     isRecord(value.confidence) &&
     isScore(value.confidenceSummary.overall) &&
     value.confidenceSummary.calibration === "model_quality_not_probability" &&
