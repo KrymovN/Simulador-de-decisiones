@@ -528,3 +528,50 @@ export type ScenarioEngineResult = {
   skippedOptionIds: EntityId[];
   blockedReason?: string;
 };
+
+export type CostOfError = "low" | "moderate" | "high";
+
+export type RiskReversibility = {
+  level: "easy" | "moderate" | "difficult" | "unknown";
+  difficulty: Score;
+};
+
+export type RiskTraceEntry = {
+  rule:
+    | "risk_classification"
+    | "scenario_conditions"
+    | "assumption_exposure"
+    | "uncertainty_exposure"
+    | "cost_of_error"
+    | "confidence_calculation";
+  detail: string;
+  sourceEntityIds: EntityId[];
+};
+
+export type DeterministicRiskAssessment = {
+  id: EntityId;
+  scenarioId: EntityId;
+  optionId: EntityId;
+  riskTypes: RiskAssessment["type"][];
+  level: RiskLevel;
+  probability: Score & { calibration: "comparative_not_calibrated" };
+  impactSeverity: Score;
+  reversibility: RiskReversibility;
+  uncertainty: Score;
+  costOfError: CostOfError;
+  confidence: Score;
+  assumptionIds: EntityId[];
+  uncertaintyMarkerIds: EntityId[];
+  traceEntries: RiskTraceEntry[];
+};
+
+export type RiskEngineInput = {
+  scenarios: DeterministicScenario[];
+  analysis: CompletenessEngineResult;
+  clarification: ClarificationEngineResult;
+};
+
+export type RiskEngineResult = {
+  assessments: DeterministicRiskAssessment[];
+  assessedScenarioIds: EntityId[];
+};

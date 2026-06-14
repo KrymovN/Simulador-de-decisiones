@@ -3,6 +3,7 @@ export * from "./clarification";
 export * from "./contracts";
 export * from "./contradictions";
 export * from "./gaps";
+export * from "./risks";
 export * from "./scenarios";
 export * from "./types";
 export * from "./validation";
