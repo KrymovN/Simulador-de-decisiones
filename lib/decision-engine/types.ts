@@ -456,3 +456,75 @@ export type ClarificationEngineResult = {
   confidence: ConfidenceAssessment;
   traceEntries: ClarificationTraceEntry[];
 };
+
+export type ScenarioPerspective = "optimistic" | "realistic" | "pessimistic";
+
+export type ScenarioAssumption = {
+  id: EntityId;
+  source: Assumption["source"];
+  materiality: Assumption["materiality"];
+  validationStatus: Assumption["validationStatus"];
+};
+
+export type ScenarioDependency = {
+  id: EntityId;
+  kind: "constraint" | "variable" | "stakeholder" | "time_horizon";
+  sourceEntityId: EntityId;
+  status: "known" | "unknown" | "not_applicable";
+  materiality: "critical" | "important" | "supporting";
+  description: string;
+};
+
+export type ScenarioUncertaintyMarker = {
+  id: EntityId;
+  sourceType: "gap" | "assumption" | "dependency";
+  sourceEntityId: EntityId;
+  severity: "critical" | "important" | "supporting";
+  reason: string;
+};
+
+export type ScenarioOutcomeIndicator = {
+  id: EntityId;
+  category: "opportunity" | "constraint" | "resource" | "timeline";
+  sourceEntityId: EntityId;
+  state: "favorable" | "stable" | "uncertain" | "adverse";
+};
+
+export type ScenarioTraceEntry = {
+  rule:
+    | "option_eligibility"
+    | "perspective_mapping"
+    | "assumption_linking"
+    | "dependency_linking"
+    | "uncertainty_preservation"
+    | "confidence_calculation";
+  detail: string;
+  sourceEntityIds: EntityId[];
+};
+
+export type DeterministicScenario = {
+  id: EntityId;
+  optionId: EntityId;
+  perspective: ScenarioPerspective;
+  canonicalType: Extract<ScenarioType, "base_case" | "favorable" | "adverse">;
+  assumptionIds: EntityId[];
+  assumptions: ScenarioAssumption[];
+  dependencies: ScenarioDependency[];
+  uncertaintyMarkers: ScenarioUncertaintyMarker[];
+  outcomeIndicators: ScenarioOutcomeIndicator[];
+  confidence: Score;
+  traceEntries: ScenarioTraceEntry[];
+};
+
+export type ScenarioEngineInput = {
+  context: DecisionContext;
+  analysis: CompletenessEngineResult;
+  clarification: ClarificationEngineResult;
+};
+
+export type ScenarioEngineResult = {
+  scenarios: DeterministicScenario[];
+  eligibleOptionIds: EntityId[];
+  skippedOptionIds: EntityId[];
+  blockedReason?: string;
+};
