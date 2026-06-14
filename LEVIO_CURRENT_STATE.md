@@ -4,11 +4,11 @@
 
 14 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 3.9 End-to-End Deterministic Simulation Pipeline. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 3.10 Runtime Validation & Internal Testing. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
 
 ## Current Confirmed Checkpoint - 14 June 2026
 
-Stage 3.9 - End-to-End Deterministic Simulation Pipeline - is the current confirmed checkpoint.
+Stage 3.10 - Runtime Validation & Internal Testing - is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
@@ -83,6 +83,8 @@ Confirmed facts from the repository:
 - Stage 3.8 keeps the V2 runtime draft isolated from UI, API routes, simulator runtime, dashboard, and the current public `SimulationResponse`.
 - Stage 3.9 adds `runSimulationPipeline(...)`, a single deterministic internal runtime entrypoint that runs the Decision Engine, maps the result to a V2 draft, validates the final lifecycle envelope, and returns controlled failure instead of an uncaught runtime error.
 - Stage 3.9 preserves validation, completeness, gaps, contradictions, clarification, scenarios, risks, recommendations, orchestrator, response-mapping, and response-validation traceability without exposing the pipeline to product runtime.
+- Stage 3.10 adds `runDecisionEngineRuntimeValidation()` and an internal catalog of ten synthetic deterministic cases covering successful, limited, clarification, safety, scenario, risk, withholding, and controlled-failure behavior.
+- Stage 3.10 runtime validation passed `10/10` cases and is documented in `LEVIO_STAGE_3_RUNTIME_VALIDATION.md`; no test framework, CI/CD, dependency, or product-runtime integration was introduced.
 - Simulator business logic, API and `SimulationResponse` contracts, auth logic, routing and localStorage keys remain unchanged.
 - Desktop auth composition is more balanced and its edge accents are restricted to the black/graphite/gold/amber identity; desktop/mobile QA passed without console errors or horizontal overflow.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
@@ -105,7 +107,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 3.9 is complete only as an isolated end-to-end deterministic simulation pipeline. The Stage 2 architecture package remains closed, and no AI, memory runtime, auth, persistence, UI, API, or simulator runtime integration has started.
+Stage 3.10 is complete only as internal deterministic runtime validation. The Stage 2 architecture package remains closed, and no AI, memory runtime, auth, persistence, UI, API, or simulator runtime integration has started.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -222,7 +224,7 @@ Project documentation is written in English. Codex owner-facing reports are writ
 
 ## 2. Current Development Stage
 
-Stage 3.9 - End-to-End Deterministic Simulation Pipeline - COMPLETED CHECKPOINT.
+Stage 3.10 - Runtime Validation & Internal Testing - COMPLETED CHECKPOINT.
 
 Stage 2.7.x is closed as a research and direction-discovery track. It must not be treated as the active production target, and the older cinematic/WebGL target must not be revived without a new approved stage.
 
@@ -288,6 +290,7 @@ Stage 2 progress:
 - Stage 3.7 Decision Engine Orchestrator completed through pure deterministic pipeline coordination and controlled stop behavior in `lib/decision-engine/`; no AI, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current `SimulationResponse`, or simulator runtime changed.
 - Stage 3.8 SimulationResponse V2 Runtime Integration completed through an isolated deterministic V2 draft mapper and lightweight validator in `lib/decision-engine/`; no AI, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current public `SimulationResponse`, or simulator runtime changed.
 - Stage 3.9 End-to-End Deterministic Simulation Pipeline completed through a single validated internal runtime entrypoint in `lib/decision-engine/`; no AI, external service, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current public `SimulationResponse`, or simulator runtime changed.
+- Stage 3.10 Runtime Validation & Internal Testing completed through `runDecisionEngineRuntimeValidation()` and `LEVIO_STAGE_3_RUNTIME_VALIDATION.md`; all ten synthetic deterministic cases passed, and no test framework, AI, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current public `SimulationResponse`, or simulator runtime changed.
 
 Stage 2.1-2.7.4 result:
 
