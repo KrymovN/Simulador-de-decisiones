@@ -282,6 +282,14 @@ export function mapDecisionEngineResultToSimulationResponseV2(
       risks: result.risks.flatMap((risk) => risk.traceEntries),
       recommendations: result.recommendations.flatMap((candidate) => candidate.traceEntries),
       orchestrator: result.orchestratorTrace,
+      responseMapping: [
+        {
+          stage: "response_mapping",
+          status: "completed",
+          detail: "Mapped DecisionEngineResult into the SimulationResponse V2 draft contract.",
+          sourceEntityIds: [result.resultId],
+        },
+      ],
     },
     notices: responseNotices(result),
     controlledFailures: allFailures(result),
@@ -362,6 +370,7 @@ export function validateSimulationResponseV2DraftShape(value: unknown): value is
     Array.isArray(value.contradictions) &&
     Array.isArray(value.notices) &&
     Array.isArray(value.controlledFailures) &&
+    Array.isArray(value.traceability.responseMapping) &&
     typeof value.safety.recommendationAllowed === "boolean" &&
     (!value.safety.recommendationAllowed || recommendationAllowedForStatus) &&
     recommendationInvariant &&

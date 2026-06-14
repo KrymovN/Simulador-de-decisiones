@@ -683,3 +683,10 @@ export type DecisionEngineConfidenceSummary = {
   recommendations?: Score;
   calibration: "model_quality_not_probability";
 };
+
+export type SimulationResponseMappingTraceEntry = {
+  stage: "response_mapping" | "response_validation";
+  status: "completed" | "failed";
+  detail: string;
+  sourceEntityIds: EntityId[];
+};

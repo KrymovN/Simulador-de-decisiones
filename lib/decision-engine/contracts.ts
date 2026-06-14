@@ -17,6 +17,7 @@ import type {
   DeterministicScenario,
   EvidenceRef,
   SafetyBoundary,
+  SimulationResponseMappingTraceEntry,
 } from "./types";
 
 export const CONTRACT_VERSION: ContractVersion = "2.0";
@@ -131,6 +132,7 @@ export type SimulationResponseV2Draft = {
     risks: DeterministicRiskAssessment["traceEntries"];
     recommendations: DeterministicRecommendation["traceEntries"];
     orchestrator: DecisionEngineOrchestratorTraceEntry[];
+    responseMapping: SimulationResponseMappingTraceEntry[];
   };
   notices: {
     code:

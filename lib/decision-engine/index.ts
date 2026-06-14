@@ -4,6 +4,7 @@ export * from "./contracts";
 export * from "./contradictions";
 export * from "./gaps";
 export * from "./orchestrator";
+export * from "./pipeline";
 export * from "./recommendations";
 export * from "./risks";
 export * from "./scenarios";
