@@ -4,11 +4,11 @@
 
 14 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 3.5 Deterministic Risk Engine. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 3.6 Deterministic Recommendation Engine. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
 
 ## Current Confirmed Checkpoint - 14 June 2026
 
-Stage 3.5 - Deterministic Risk Engine - is the current confirmed checkpoint.
+Stage 3.6 - Deterministic Recommendation Engine - is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
@@ -75,6 +75,8 @@ Confirmed facts from the repository:
 - Stage 3.4 keeps scenarios structural and traceable through explicit assumptions, dependencies, uncertainty markers, outcome indicators, confidence calculations, and clarification gates without narrative generation or runtime integration.
 - Stage 3.5 adds pure deterministic scenario-risk assessment with low, medium, high, and critical levels plus structured comparative probability, impact severity, reversibility, uncertainty, cost-of-error, confidence, and traceability.
 - Stage 3.5 marks probability as comparative and not calibrated, links risk assessments to scenario assumptions and uncertainties, and adds no narrative generation or runtime integration.
+- Stage 3.6 adds pure deterministic recommendation reasoning with structured categories, priorities, preconditions, option comparison, confidence, rationale, and source traceability.
+- Stage 3.6 enforces critical-gap, clarification, and safety withholding gates; a consequential preferred option is exposed only for eligible recommended or conditional outputs.
 - Simulator business logic, API and `SimulationResponse` contracts, auth logic, routing and localStorage keys remain unchanged.
 - Desktop auth composition is more balanced and its edge accents are restricted to the black/graphite/gold/amber identity; desktop/mobile QA passed without console errors or horizontal overflow.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
@@ -97,7 +99,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 3.5 is complete only as an isolated deterministic risk-assessment layer. The Stage 2 architecture package remains closed, and no AI, memory runtime, auth, persistence, UI, API, or simulator runtime integration has started.
+Stage 3.6 is complete only as an isolated deterministic recommendation-reasoning layer. The Stage 2 architecture package remains closed, and no AI, memory runtime, auth, persistence, UI, API, or simulator runtime integration has started.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -214,7 +216,7 @@ Project documentation is written in English. Codex owner-facing reports are writ
 
 ## 2. Current Development Stage
 
-Stage 3.5 - Deterministic Risk Engine - COMPLETED CHECKPOINT.
+Stage 3.6 - Deterministic Recommendation Engine - COMPLETED CHECKPOINT.
 
 Stage 2.7.x is closed as a research and direction-discovery track. It must not be treated as the active production target, and the older cinematic/WebGL target must not be revived without a new approved stage.
 
@@ -276,6 +278,7 @@ Stage 2 progress:
 - Stage 3.3 Deterministic Clarification & Question Selection Engine completed through pure functions in `lib/decision-engine/`; no AI, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current `SimulationResponse`, or simulator runtime changed.
 - Stage 3.4 Deterministic Scenario Engine completed through pure structured scenario functions in `lib/decision-engine/`; no AI, narrative generation, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current `SimulationResponse`, or simulator runtime changed.
 - Stage 3.5 Deterministic Risk Engine completed through pure structured scenario-risk functions in `lib/decision-engine/`; no AI, narrative generation, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current `SimulationResponse`, or simulator runtime changed.
+- Stage 3.6 Deterministic Recommendation Engine completed through pure structured recommendation functions in `lib/decision-engine/`; no AI, advice prose, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current `SimulationResponse`, or simulator runtime changed.
 
 Stage 2.1-2.7.4 result:
 

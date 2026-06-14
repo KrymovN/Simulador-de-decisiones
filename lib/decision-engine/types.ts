@@ -575,3 +575,73 @@ export type RiskEngineResult = {
   assessments: DeterministicRiskAssessment[];
   assessedScenarioIds: EntityId[];
 };
+
+export type RecommendationCategory =
+  | "proceed"
+  | "proceed_with_conditions"
+  | "delay"
+  | "gather_information"
+  | "mitigate_risk"
+  | "avoid"
+  | "stop";
+
+export type RecommendationCondition = {
+  id: EntityId;
+  kind: "gap" | "clarification" | "scenario" | "risk" | "dependency" | "safety";
+  sourceEntityId: EntityId;
+  status: "required" | "blocking" | "satisfied" | "accepted_unknown";
+};
+
+export type RecommendationRationale = {
+  criterion:
+    | "eligibility"
+    | "scenario_support"
+    | "risk_exposure"
+    | "reversibility"
+    | "uncertainty"
+    | "safety";
+  priority: RecommendationPriority;
+  score: Score;
+  sourceEntityIds: EntityId[];
+};
+
+export type RecommendationTraceEntry = {
+  rule:
+    | "eligibility_gate"
+    | "option_comparison"
+    | "risk_gate"
+    | "precondition_mapping"
+    | "safety_gate"
+    | "confidence_calculation";
+  detail: string;
+  sourceEntityIds: EntityId[];
+};
+
+export type DeterministicRecommendation = {
+  id: EntityId;
+  status: Recommendation["status"];
+  category: RecommendationCategory;
+  priority: RecommendationPriority;
+  preferredOptionId?: EntityId;
+  requiredConditions: RecommendationCondition[];
+  blockingConditions: RecommendationCondition[];
+  dependencies: EntityId[];
+  sourceScenarioIds: EntityId[];
+  sourceRiskIds: EntityId[];
+  rationale: RecommendationRationale[];
+  confidence: Score;
+  traceEntries: RecommendationTraceEntry[];
+};
+
+export type RecommendationEngineInput = {
+  analysis: CompletenessEngineResult;
+  clarification: ClarificationEngineResult;
+  scenarios: DeterministicScenario[];
+  risks: DeterministicRiskAssessment[];
+  safety?: SafetyBoundary;
+};
+
+export type RecommendationEngineResult = {
+  recommendations: DeterministicRecommendation[];
+  preferredRecommendationId?: EntityId;
+};
