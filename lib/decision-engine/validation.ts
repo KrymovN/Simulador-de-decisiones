@@ -3,7 +3,7 @@ import type { CompletenessAssessment, DecisionInput, Score } from "./types";
 
 const DECISION_INTENTS = ["explore", "compare", "recommend", "review"] as const;
 const SCORE_BANDS = ["very_low", "low", "medium", "high", "very_high"] as const;
-const COMPLETENESS_LEVELS = ["insufficient", "limited", "usable", "strong"] as const;
+const COMPLETENESS_LEVELS = ["complete", "partial", "critical"] as const;
 const COMPLETENESS_DIMENSIONS = [
   "goal",
   "options",
@@ -78,10 +78,12 @@ export function validateCompletenessAssessmentShape(value: unknown): value is Co
     return false;
   }
 
+  const dimensions = value.dimensions;
+
   return (
     isOneOf(value.level, COMPLETENESS_LEVELS) &&
     isScore(value.overall) &&
-    COMPLETENESS_DIMENSIONS.every((dimension) => isScore(value.dimensions[dimension])) &&
+    COMPLETENESS_DIMENSIONS.every((dimension) => isScore(dimensions[dimension])) &&
     isStringArray(value.blockingDimensions)
   );
 }

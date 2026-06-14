@@ -148,7 +148,7 @@ export type DecisionContext = {
   evidence: EvidenceRef[];
 };
 
-export type CompletenessLevel = "insufficient" | "limited" | "usable" | "strong";
+export type CompletenessLevel = "complete" | "partial" | "critical";
 
 export type CompletenessAssessment = {
   level: CompletenessLevel;
@@ -190,6 +190,19 @@ export type CriticalGap = {
   recommendationImpact: "could_reverse" | "could_change" | "could_refine" | "no_material_change";
   resolution: "unresolved" | "question_pending" | "resolved" | "accepted_unknown";
   questionId?: EntityId;
+};
+
+export type DeterministicGapType =
+  | "missing_goal"
+  | "missing_context"
+  | "missing_constraints"
+  | "missing_time_horizon"
+  | "critical_unknown"
+  | "contradiction_detected"
+  | "safety_gap";
+
+export type DetectedCriticalGap = CriticalGap & {
+  code: DeterministicGapType;
 };
 
 export type ClarificationAnswerType =
@@ -382,4 +395,31 @@ export type ControlledFailure = {
   message: string;
   retryable: boolean;
   retryGuidance?: string;
+};
+
+export type CompletenessTraceEntry = {
+  check:
+    | "goal_presence"
+    | "context_presence"
+    | "constraint_presence"
+    | "time_horizon_presence"
+    | "critical_unknowns"
+    | "contradictions"
+    | "safety_context";
+  status: "passed" | "gap_detected" | "not_applicable";
+  detail: string;
+};
+
+export type CompletenessEngineInput = {
+  decisionInput: DecisionInput;
+  context?: DecisionContext;
+  safety?: SafetyBoundary;
+  safetyContextComplete?: boolean;
+};
+
+export type CompletenessEngineResult = {
+  completeness: CompletenessAssessment;
+  gaps: DetectedCriticalGap[];
+  confidence: ConfidenceAssessment;
+  traceEntries: CompletenessTraceEntry[];
 };
