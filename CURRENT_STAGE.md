@@ -4,7 +4,7 @@ Date: 14 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 14 June 2026
 
-Stage 3.10 - Runtime Validation & Internal Testing - is the current confirmed checkpoint.
+Stage 3 Final Deterministic Brain Audit is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
@@ -81,6 +81,8 @@ Confirmed facts from the repository:
 - Stage 3.9 preserves validation, completeness, gaps, contradictions, clarification, scenarios, risks, recommendations, orchestrator, response-mapping, and response-validation traceability without exposing the pipeline to product runtime.
 - Stage 3.10 adds `runDecisionEngineRuntimeValidation()` and an internal catalog of ten synthetic deterministic cases covering successful, limited, clarification, safety, scenario, risk, withholding, and controlled-failure behavior.
 - Stage 3.10 runtime validation passed `10/10` cases and is documented in `LEVIO_STAGE_3_RUNTIME_VALIDATION.md`; no test framework, CI/CD, dependency, or product-runtime integration was introduced.
+- The Stage 3 Final Deterministic Brain Audit creates `LEVIO_STAGE_3_FINAL_DETERMINISTIC_BRAIN_AUDIT.md`, confirms that the Stage 3.1-3.10 package is coherent and internally validated, and records known deterministic limitations without changing code.
+- The audit found no direct contract contradiction requiring a code change. AI, memory runtime, auth, database, persistence, subscriptions, UI, API routes, simulator runtime, and current public `SimulationResponse` remain unconnected and unchanged.
 - Simulator business logic, API and `SimulationResponse` contracts, auth logic, routing and localStorage keys remain unchanged.
 - Desktop auth composition is more balanced and its edge accents are restricted to the black/graphite/gold/amber identity; desktop/mobile QA passed without console errors or horizontal overflow.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
@@ -103,7 +105,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 3.10 is complete only as internal deterministic runtime validation. The Stage 2 architecture package remains closed, and no AI, memory runtime, auth, persistence, UI, API, or simulator runtime integration has started.
+The Stage 3.1-3.10 deterministic brain package is audited and complete for its isolated internal scope. The recommended next block is Stage 3.11 - Internal Runtime Integration Planning; no product-runtime integration or AI integration has started.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -208,7 +210,7 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 
 ## Current Stage
 
-Stage 3.10 - Runtime Validation & Internal Testing - COMPLETED CHECKPOINT.
+Stage 3 Final Deterministic Brain Audit - COMPLETED CHECKPOINT.
 
 Roadmap from the current checkpoint:
 
@@ -224,7 +226,9 @@ Roadmap from the current checkpoint:
 - Stage 3.8: completed only as an isolated deterministic SimulationResponse V2 draft-mapping layer.
 - Stage 3.9: completed only as an isolated validated end-to-end deterministic simulation pipeline.
 - Stage 3.10: completed only as internal deterministic runtime validation with ten passing synthetic cases.
-- Recommended next Stage 3 step: separately approve deterministic contract tests and deeper invariant validation before any provider or runtime integration.
+- Stage 3 Final Deterministic Brain Audit: completed as a documentation-only closure review; no direct contract contradiction requiring a code change was found.
+- Recommended next stage: Stage 3.11 - Internal Runtime Integration Planning, before any UI, API, simulator, or public runtime connection.
+- Stage 3.11 planning must include deterministic contract tests and deeper invariant validation before any provider or runtime integration is approved.
 
 Completed Stage 2 stabilization commits:
 
@@ -281,6 +285,7 @@ Completed Stage 2 stabilization commits:
 - Stage 3.8 SimulationResponse V2 Runtime Integration completed through an isolated deterministic V2 draft mapper and lightweight validator in `lib/decision-engine/`; no AI, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current public `SimulationResponse`, or simulator runtime changed.
 - Stage 3.9 End-to-End Deterministic Simulation Pipeline completed through a single validated internal runtime entrypoint in `lib/decision-engine/`; no AI, external service, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current public `SimulationResponse`, or simulator runtime changed.
 - Stage 3.10 Runtime Validation & Internal Testing completed through `runDecisionEngineRuntimeValidation()` and `LEVIO_STAGE_3_RUNTIME_VALIDATION.md`; all ten synthetic deterministic cases passed, and no test framework, AI, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current public `SimulationResponse`, or simulator runtime changed.
+- Stage 3 Final Deterministic Brain Audit completed through `LEVIO_STAGE_3_FINAL_DETERMINISTIC_BRAIN_AUDIT.md`; the isolated Stage 3.1-3.10 package is coherent, no direct contract contradiction required a code change, and Stage 3.11 Internal Runtime Integration Planning is the recommended next block.
 
 ## Current CSS Architecture
 
