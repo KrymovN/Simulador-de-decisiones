@@ -4,7 +4,7 @@ Date: 15 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 15 June 2026
 
-Stage 3.15 Controlled Simulator Runtime Switch is the current confirmed checkpoint.
+Stage 3.16 Runtime QA / Regression is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
@@ -101,6 +101,9 @@ Confirmed facts from the repository:
 - Stage 3.15 preserves `buildMockSimulation(...)` as the unchanged immediate rollback path and makes every runtime fallback explicit through reason and source-status metadata.
 - Stage 3.15 adds `runControlledSimulatorSwitchValidation()` with ten passing switch/fallback/isolation cases and revalidates Stage 3.14 at `10/10`, Stage 3.13 at `9/9`, Stage 3.12 at `12/12`, and Stage 3.10 at `10/10`.
 - Stage 3.15 creates no public route, public runtime switch, component, rendering change, public API contract change, persistence, auth, memory, subscription, AI, or external-service coupling.
+- Stage 3.16 creates `LEVIO_STAGE_3_16_RUNTIME_QA_REGRESSION.md`, completing the runtime-integration QA checklist across static validation, runtime catalogs, public isolation, API, desktop, and mobile regression.
+- Stage 3.16 revalidates Stage 3.15 at `10/10`, Stage 3.14 at `10/10`, Stage 3.13 at `9/9`, Stage 3.12 at `12/12`, and Stage 3.10 at `10/10`; TypeScript, ESLint, production build, public V1 API, desktop, and mobile checks pass.
+- Stage 3.16 is documentation-only. Public UI, public API, public runtime, V1 behavior, deterministic V2 gating, dependencies, AI, memory runtime, auth runtime, persistence, database, and subscriptions remain unchanged.
 - Simulator business logic, API and `SimulationResponse` contracts, auth logic, routing and localStorage keys remain unchanged.
 - Desktop auth composition is more balanced and its edge accents are restricted to the black/graphite/gold/amber identity; desktop/mobile QA passed without console errors or horizontal overflow.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
@@ -123,7 +126,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 3.15 is complete as a controlled internal-dev runtime switch with V1 deny-by-default rollback. The next roadmap stage is Stage 3.16 - Runtime QA / Regression; it has not started, and no public product-runtime switch or AI integration has started.
+Stage 3.16 is complete as the QA and regression closure of the controlled runtime integration block. No public product-runtime switch, Stage 4 implementation, or AI integration has started.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -228,7 +231,7 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 
 ## Current Stage
 
-Stage 3.15 Controlled Simulator Runtime Switch - COMPLETED CHECKPOINT.
+Stage 3.16 Runtime QA / Regression - COMPLETED CHECKPOINT.
 
 Roadmap from the current checkpoint:
 
@@ -250,8 +253,8 @@ Roadmap from the current checkpoint:
 - Stage 3.13: completed as a code-only feature-gated simulator integration sandbox with nine passing smoke/isolation cases.
 - Stage 3.14: completed as an isolated mapping-first V2 presentation contract with ten passing mapping-only cases.
 - Stage 3.15: completed as an internal/dev-only deny-by-default controlled runtime switch with ten passing switch/fallback/isolation cases.
-- Recommended next stage: Stage 3.16 - Runtime QA / Regression.
-- Stage 3.16 has not started and requires separate explicit approval.
+- Stage 3.16: completed as the runtime-integration QA and regression closure with all required catalogs, static checks, build, public-isolation, API, desktop, and mobile checks passing.
+- Stage 4 has not started and requires separate explicit approval.
 
 Completed Stage 2 stabilization commits:
 
@@ -313,7 +316,8 @@ Completed Stage 2 stabilization commits:
 - Stage 3.12 Controlled Internal Runtime Adapter completed through isolated adapter contracts, invocation, validation, deeper invariants, and `LEVIO_STAGE_3_12_CONTROLLED_INTERNAL_RUNTIME_ADAPTER.md`.
 - Stage 3.13 Simulator Integration Sandbox completed through code-only feature-gated sandbox wiring, adapter execution, V2 generation, smoke/isolation validation, and `LEVIO_STAGE_3_13_SIMULATOR_INTEGRATION_SANDBOX.md`.
 - Stage 3.14 SimulationResponse V2 UI Mapping completed through isolated mapping contracts, lifecycle and section definitions, strict V1/V2 separation, mapping-only validation, and `LEVIO_STAGE_3_14_SIMULATION_RESPONSE_V2_UI_MAPPING.md`.
-- Stage 3.15 Controlled Simulator Runtime Switch completed through an internal/dev-only deny-by-default switch, explicit V1 rollback and fallback evidence, sandbox-to-V2-to-UI-mapping execution, switch validation, and `LEVIO_STAGE_3_15_CONTROLLED_SIMULATOR_RUNTIME_SWITCH.md`; Stage 3.16 Runtime QA / Regression is the next roadmap block and has not started.
+- Stage 3.15 Controlled Simulator Runtime Switch completed through an internal/dev-only deny-by-default switch, explicit V1 rollback and fallback evidence, sandbox-to-V2-to-UI-mapping execution, switch validation, and `LEVIO_STAGE_3_15_CONTROLLED_SIMULATOR_RUNTIME_SWITCH.md`.
+- Stage 3.16 Runtime QA / Regression completed through `LEVIO_STAGE_3_16_RUNTIME_QA_REGRESSION.md`; all required runtime catalogs, static checks, production build, public isolation, API, desktop, and mobile regression checks passed, and Stage 4 has not started.
 
 ## Current CSS Architecture
 
