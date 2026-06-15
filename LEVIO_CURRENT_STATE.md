@@ -2,13 +2,13 @@
 
 ## Updated
 
-14 June 2026, Europe/Madrid.
+15 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after the Stage 3 Final Deterministic Brain Audit. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 3.15 Controlled Simulator Runtime Switch. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
 
-## Current Confirmed Checkpoint - 14 June 2026
+## Current Confirmed Checkpoint - 15 June 2026
 
-Stage 3 Final Deterministic Brain Audit is the current confirmed checkpoint.
+Stage 3.15 Controlled Simulator Runtime Switch is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
@@ -87,6 +87,24 @@ Confirmed facts from the repository:
 - Stage 3.10 runtime validation passed `10/10` cases and is documented in `LEVIO_STAGE_3_RUNTIME_VALIDATION.md`; no test framework, CI/CD, dependency, or product-runtime integration was introduced.
 - The Stage 3 Final Deterministic Brain Audit creates `LEVIO_STAGE_3_FINAL_DETERMINISTIC_BRAIN_AUDIT.md`, confirms that the Stage 3.1-3.10 package is coherent and internally validated, and records known deterministic limitations without changing code.
 - The audit found no direct contract contradiction requiring a code change. AI, memory runtime, auth, database, persistence, subscriptions, UI, API routes, simulator runtime, and current public `SimulationResponse` remain unconnected and unchanged.
+- Stage 3.11 creates `LEVIO_STAGE_3_11_INTERNAL_RUNTIME_INTEGRATION_PLANNING.md`, defining the controlled internal adapter boundary, raw-text and structured-context mapping rules, V1/V2 coexistence, feature-flag and rollback requirements, internal error mapping, observability/privacy limits, contract-validation requirements, deeper invariants, and approval gates through Stage 3.16.
+- Stage 3.11 confirms that raw public simulator text cannot responsibly become structured deterministic context without a separately approved semantic extraction capability; Stage 3.12 must preserve missing context rather than invent it.
+- Stage 3.11 is documentation-only. It does not connect the deterministic brain to the public simulator, `/api/simulate`, UI, dashboard, localStorage, AI, memory runtime, auth, persistence, subscriptions, or external services.
+- Stage 3.12 adds a controlled internal runtime adapter in `lib/decision-engine/` with adapter contracts, canonical input construction, internal-mode validation, controlled error mapping, explicit no-coupling operational evidence, and deeper V2 invariant validation.
+- Stage 3.12 adds `runInternalRuntimeAdapterValidation()` with twelve passing synthetic cases and revalidates the Stage 3.10 deterministic catalog at `10/10`.
+- Stage 3.12 calls only `runSimulationPipeline(...)`. Public simulator behavior, `/api/simulate`, UI, dashboard, localStorage, AI, memory runtime, auth, database, persistence, subscriptions, dependencies, and external services remain unchanged and unconnected.
+- Stage 3.13 adds a code-only simulator-shaped sandbox in `lib/decision-engine/` that requires an explicit deny-by-default `simulator_sandbox_v2` feature gate and invokes the deterministic brain only through the Stage 3.12 adapter.
+- Stage 3.13 generates internal `SimulationResponseV2Draft` results for enabled valid sandbox requests; disabled and rejected requests execute neither the adapter nor the deterministic brain.
+- Stage 3.13 adds `runSimulatorIntegrationSandboxValidation()` with nine passing smoke/isolation cases and revalidates Stage 3.12 at `12/12` and Stage 3.10 at `10/10`.
+- Stage 3.13 creates no route, page, endpoint, navigation link, UI mapping, public runtime switch, persistence, auth, memory, subscription, AI, or external-service coupling.
+- Stage 3.14 adds a pure internal `SimulationResponseV2Draft` to `SimulationResponseV2UiModel` mapping contract covering lifecycle, decision summary, model quality, clarification, scenarios, risks, consequences, recommendation, safety, notices, and traceability.
+- Stage 3.14 defines loading, empty, clarification, ready, limited, cannot-recommend, refused, and controlled-failure presentation states without importing or executing the sandbox, adapter, pipeline, or public runtime.
+- Stage 3.14 adds `runSimulationResponseV2UiMappingValidation()` with ten passing mapping-only cases and revalidates Stage 3.13 at `9/9`, Stage 3.12 at `12/12`, and Stage 3.10 at `10/10`.
+- Stage 3.14 creates no component, route, rendering change, public runtime switch, V2-to-V1 coercion, persistence, auth, memory, subscription, AI, or external-service coupling.
+- Stage 3.15 adds an internal/dev-only controlled switch boundary in `lib/runtime-integration/` with deny-by-default V1 selection, explicit dual-gated V2 execution through the sandbox, and discriminated V1, V2, or controlled-failure results.
+- Stage 3.15 preserves `buildMockSimulation(...)` as the unchanged immediate rollback path and makes every runtime fallback explicit through reason and source-status metadata.
+- Stage 3.15 adds `runControlledSimulatorSwitchValidation()` with ten passing switch/fallback/isolation cases and revalidates Stage 3.14 at `10/10`, Stage 3.13 at `9/9`, Stage 3.12 at `12/12`, and Stage 3.10 at `10/10`.
+- Stage 3.15 creates no public route, public runtime switch, component, rendering change, public API contract change, persistence, auth, memory, subscription, AI, or external-service coupling.
 - Simulator business logic, API and `SimulationResponse` contracts, auth logic, routing and localStorage keys remain unchanged.
 - Desktop auth composition is more balanced and its edge accents are restricted to the black/graphite/gold/amber identity; desktop/mobile QA passed without console errors or horizontal overflow.
 - The public homepage retains `public/hero-approved-network-bg.png`, rendered through `next/image` with `quality={100}` and `unoptimized`.
@@ -109,7 +127,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-The Stage 3.1-3.10 deterministic brain package is audited and complete for its isolated internal scope. The recommended next block is Stage 3.11 - Internal Runtime Integration Planning; no product-runtime integration or AI integration has started.
+Stage 3.15 is complete as a controlled internal-dev runtime switch with V1 deny-by-default rollback. The next roadmap stage is Stage 3.16 - Runtime QA / Regression; it has not started, and no public product-runtime switch or AI integration has started.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -226,7 +244,7 @@ Project documentation is written in English. Codex owner-facing reports are writ
 
 ## 2. Current Development Stage
 
-Stage 3 Final Deterministic Brain Audit - COMPLETED CHECKPOINT.
+Stage 3.15 Controlled Simulator Runtime Switch - COMPLETED CHECKPOINT.
 
 Stage 2.7.x is closed as a research and direction-discovery track. It must not be treated as the active production target, and the older cinematic/WebGL target must not be revived without a new approved stage.
 
@@ -293,7 +311,12 @@ Stage 2 progress:
 - Stage 3.8 SimulationResponse V2 Runtime Integration completed through an isolated deterministic V2 draft mapper and lightweight validator in `lib/decision-engine/`; no AI, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current public `SimulationResponse`, or simulator runtime changed.
 - Stage 3.9 End-to-End Deterministic Simulation Pipeline completed through a single validated internal runtime entrypoint in `lib/decision-engine/`; no AI, external service, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current public `SimulationResponse`, or simulator runtime changed.
 - Stage 3.10 Runtime Validation & Internal Testing completed through `runDecisionEngineRuntimeValidation()` and `LEVIO_STAGE_3_RUNTIME_VALIDATION.md`; all ten synthetic deterministic cases passed, and no test framework, AI, memory runtime, auth, database, persistence, subscriptions, UI, API behavior, current public `SimulationResponse`, or simulator runtime changed.
-- Stage 3 Final Deterministic Brain Audit completed through `LEVIO_STAGE_3_FINAL_DETERMINISTIC_BRAIN_AUDIT.md`; the isolated Stage 3.1-3.10 package is coherent, no direct contract contradiction required a code change, and Stage 3.11 Internal Runtime Integration Planning is the recommended next block.
+- Stage 3 Final Deterministic Brain Audit completed through `LEVIO_STAGE_3_FINAL_DETERMINISTIC_BRAIN_AUDIT.md`; the isolated Stage 3.1-3.10 package is coherent and no direct contract contradiction required a code change.
+- Stage 3.11 Internal Runtime Integration Planning completed through `LEVIO_STAGE_3_11_INTERNAL_RUNTIME_INTEGRATION_PLANNING.md`; Stage 3.12 Controlled Internal Runtime Adapter is the approved next block.
+- Stage 3.12 Controlled Internal Runtime Adapter completed through isolated adapter contracts, invocation, validation, deeper invariants, and `LEVIO_STAGE_3_12_CONTROLLED_INTERNAL_RUNTIME_ADAPTER.md`.
+- Stage 3.13 Simulator Integration Sandbox completed through code-only feature-gated sandbox wiring, adapter execution, V2 generation, smoke/isolation validation, and `LEVIO_STAGE_3_13_SIMULATOR_INTEGRATION_SANDBOX.md`.
+- Stage 3.14 SimulationResponse V2 UI Mapping completed through isolated mapping contracts, lifecycle and section definitions, strict V1/V2 separation, mapping-only validation, and `LEVIO_STAGE_3_14_SIMULATION_RESPONSE_V2_UI_MAPPING.md`.
+- Stage 3.15 Controlled Simulator Runtime Switch completed through an internal/dev-only deny-by-default switch, explicit V1 rollback and fallback evidence, sandbox-to-V2-to-UI-mapping execution, switch validation, and `LEVIO_STAGE_3_15_CONTROLLED_SIMULATOR_RUNTIME_SWITCH.md`; Stage 3.16 Runtime QA / Regression is the next roadmap block and has not started.
 
 Stage 2.1-2.7.4 result:
 
