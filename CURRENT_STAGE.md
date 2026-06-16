@@ -1,13 +1,17 @@
 # CURRENT STAGE - LEVIO.ES
 
-Date: 15 June 2026, Europe/Madrid.
+Date: 16 June 2026, Europe/Madrid.
 
-## Current Confirmed Checkpoint - 15 June 2026
+## Current Confirmed Checkpoint - 16 June 2026
 
-Stage 3.16 Runtime QA / Regression is the current confirmed checkpoint.
+Stage 4.1 Auth Runtime Scope Lock is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
+- Stage 4.1 creates `LEVIO_STAGE_4_1_AUTH_RUNTIME_SCOPE.md`, defining the provider-neutral auth runtime boundary, identity states, session model, guest/authenticated transition boundary, protected route strategy, rollback/safety plan, and roadmap compliance for production auth foundation.
+- Stage 4.1 is documentation/scope-lock only because provider integration requires an explicit provider decision and implementation plan. No Supabase, Auth.js, Clerk, Firebase, Auth0, NextAuth, database, auth SDK, middleware, route gate, provider callback, session runtime, or dependency is added.
+- Stage 4.1 preserves the current mock auth boundary: `components/MockAuthGate.tsx`, `levio_es_mock_session`, and localStorage saved simulations remain demo-only and must never authorize production data.
+- Stage 4.1 does not start persistence, subscriptions, payments, AI, memory runtime, Stage 4.2, Stage 4.3, Stage 4.4, or Stage 5. Public simulator V1/mock behavior, `/api/simulate`, deterministic brain code, and Stages 3.11-3.16 runtime-switch behavior remain unchanged.
 - `848a108` locked Stage 2.8G Hero artwork fidelity.
 - `9c7447d` completed Stage 2.8H homepage minimal premium reduction.
 - `6adefd6` completed the Stage 2.8 homepage motion and brand polish checkpoint.
@@ -126,7 +130,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 3.16 is complete as the QA and regression closure of the controlled runtime integration block. No public product-runtime switch, Stage 4 implementation, or AI integration has started.
+Stage 4.1 is complete as the auth runtime scope lock. No provider integration, production session runtime, protected route migration, persistence, public product-runtime switch, Stage 4.2, or AI integration has started.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -231,7 +235,7 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 
 ## Current Stage
 
-Stage 3.16 Runtime QA / Regression - COMPLETED CHECKPOINT.
+Stage 4.1 Auth Runtime Scope Lock - COMPLETED CHECKPOINT.
 
 Roadmap from the current checkpoint:
 
@@ -254,7 +258,7 @@ Roadmap from the current checkpoint:
 - Stage 3.14: completed as an isolated mapping-first V2 presentation contract with ten passing mapping-only cases.
 - Stage 3.15: completed as an internal/dev-only deny-by-default controlled runtime switch with ten passing switch/fallback/isolation cases.
 - Stage 3.16: completed as the runtime-integration QA and regression closure with all required catalogs, static checks, build, public-isolation, API, desktop, and mobile checks passing.
-- Stage 4 has not started and requires separate explicit approval.
+- Stage 4.1: completed as auth runtime scope lock only; provider-specific production auth integration still requires separate explicit approval.
 
 Completed Stage 2 stabilization commits:
 
@@ -317,7 +321,8 @@ Completed Stage 2 stabilization commits:
 - Stage 3.13 Simulator Integration Sandbox completed through code-only feature-gated sandbox wiring, adapter execution, V2 generation, smoke/isolation validation, and `LEVIO_STAGE_3_13_SIMULATOR_INTEGRATION_SANDBOX.md`.
 - Stage 3.14 SimulationResponse V2 UI Mapping completed through isolated mapping contracts, lifecycle and section definitions, strict V1/V2 separation, mapping-only validation, and `LEVIO_STAGE_3_14_SIMULATION_RESPONSE_V2_UI_MAPPING.md`.
 - Stage 3.15 Controlled Simulator Runtime Switch completed through an internal/dev-only deny-by-default switch, explicit V1 rollback and fallback evidence, sandbox-to-V2-to-UI-mapping execution, switch validation, and `LEVIO_STAGE_3_15_CONTROLLED_SIMULATOR_RUNTIME_SWITCH.md`.
-- Stage 3.16 Runtime QA / Regression completed through `LEVIO_STAGE_3_16_RUNTIME_QA_REGRESSION.md`; all required runtime catalogs, static checks, production build, public isolation, API, desktop, and mobile regression checks passed, and Stage 4 has not started.
+- Stage 3.16 Runtime QA / Regression completed through `LEVIO_STAGE_3_16_RUNTIME_QA_REGRESSION.md`; all required runtime catalogs, static checks, production build, public isolation, API, desktop, and mobile regression checks passed.
+- Stage 4.1 Auth Runtime Scope Lock completed through `LEVIO_STAGE_4_1_AUTH_RUNTIME_SCOPE.md`; provider-neutral auth runtime boundary, identity states, session model, guest/authenticated separation, protected route strategy, and rollback/safety plan are fixed without changing runtime code, dependencies, public simulator behavior, persistence, subscriptions, AI, memory, or deterministic brain behavior.
 
 ## Current CSS Architecture
 
@@ -921,7 +926,7 @@ Do not start without explicit approval:
 
 - real AI backend;
 - OpenAI API integration;
-- Supabase/Auth.js/Clerk authentication;
+- provider-specific production auth integration beyond the Stage 4.1 scope lock;
 - database;
 - payments;
 - production persistence;
