@@ -3,19 +3,81 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { FormEvent } from "react";
+import { useEffect, useState } from "react";
+import AuthStateView from "../../components/auth/AuthStateView";
+import { useAuthRuntime } from "../../components/auth/AuthRuntimeProvider";
 import AuthShell from "../../components/AuthShell";
-import { createMockSession } from "../../components/MockAuthGate";
+import { getAuthErrorMessage } from "../../lib/auth/messages";
+import { sanitizeRedirectPath } from "../../lib/auth/redirects";
+import { createSupabaseBrowserAuthClient } from "../../lib/auth/supabase/client";
 
 export default function LoginPage() {
   const router = useRouter();
+  const auth = useAuthRuntime();
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [nextPath, setNextPath] = useState("/dashboard");
+  const [queryError, setQueryError] = useState("");
+  const [hasParsedSearch, setHasParsedSearch] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
-    const nextPath = searchParams.get("next") || "/dashboard";
 
-    createMockSession();
-    router.push(nextPath);
+    setNextPath(sanitizeRedirectPath(searchParams.get("next"), "/dashboard"));
+    setQueryError(getAuthErrorMessage(searchParams.get("auth_error") || searchParams.get("reason")));
+    setHasParsedSearch(true);
+  }, []);
+
+  useEffect(() => {
+    if (hasParsedSearch && auth.identityState === "authenticated") {
+      router.replace(nextPath);
+    }
+  }, [auth.identityState, hasParsedSearch, nextPath, router]);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError("");
+    setMessage("");
+
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get("email") || "").trim();
+
+    if (!email) {
+      setError("Introduce un correo electrónico válido.");
+      return;
+    }
+
+    const supabase = createSupabaseBrowserAuthClient();
+
+    if (!supabase) {
+      setError("Auth Runtime no está configurado todavía.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const { error: signInError } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
+        },
+      });
+
+      if (signInError) {
+        setError("No se pudo iniciar la sesión. Inténtalo de nuevo.");
+        return;
+      }
+    } catch {
+      setError("No se pudo conectar con Auth Runtime. Inténtalo de nuevo.");
+      return;
+    } finally {
+      setIsSubmitting(false);
+    }
+
+    router.refresh();
+    setMessage("Te hemos enviado un enlace seguro para entrar.");
   }
 
   return (
@@ -24,21 +86,36 @@ export default function LoginPage() {
       eyebrow="levio.es / Acceso seguro"
       title="Entra en tu zona personal de decisiones."
     >
+      <AuthStateView signedOutLabel="Acceso productivo mediante enlace seguro por correo." />
+      {queryError && !error && (
+        <div className="mock-feedback" role="alert">
+          {queryError}
+        </div>
+      )}
       <form className="auth-form" onSubmit={handleSubmit}>
         <label>
           Correo electrónico
-          <input autoComplete="email" name="email" placeholder="tu@correo.com" type="email" />
+          <input autoComplete="email" name="email" placeholder="tu@correo.com" required type="email" />
         </label>
-        <label>
-          Contraseña
-          <input autoComplete="current-password" name="password" placeholder="••••••••" type="password" />
-        </label>
-        <button type="submit">Entrar</button>
+        <button disabled={isSubmitting} type="submit">
+          {isSubmitting ? "Enviando enlace" : "Enviar enlace seguro"}
+        </button>
       </form>
+
+      {message && (
+        <div className="mock-feedback" role="status">
+          {message}
+        </div>
+      )}
+      {error && (
+        <div className="mock-feedback" role="alert">
+          {error}
+        </div>
+      )}
 
       <div className="auth-links">
         <Link href="/register">Crear cuenta</Link>
-        <Link href="/forgot-password">He olvidado mi contraseña</Link>
+        <Link href="/forgot-password">Recuperar acceso</Link>
       </div>
     </AuthShell>
   );

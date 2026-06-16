@@ -1,7 +1,4 @@
-"use client";
-
-import { useEffect, useState, type ReactNode } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import type { ReactNode } from "react";
 
 export const MOCK_SESSION_KEY = "levio_es_mock_session";
 
@@ -40,32 +37,10 @@ export function clearMockSession() {
 }
 
 export default function MockAuthGate({ children }: MockAuthGateProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const [isAllowed, setIsAllowed] = useState(false);
-
-  useEffect(() => {
-    const session = window.localStorage.getItem(MOCK_SESSION_KEY);
-
-    if (!session) {
-      router.replace(`/login?next=${encodeURIComponent(pathname)}`);
-      return;
-    }
-
-    setIsAllowed(true);
-  }, [pathname, router]);
-
-  if (!isAllowed) {
-    return (
-      <main className="dashboard-shell dashboard-loading">
-        <section className="section-frame dashboard-loading-card">
-          <p className="eyebrow brand-mark">levio.es / Acceso protegido</p>
-          <h1>Verificando acceso seguro.</h1>
-          <p>Preparando el área personal del motor de decisiones.</p>
-        </section>
-      </main>
-    );
-  }
-
+  /*
+   * Production dashboard protection now lives in app/dashboard/layout.tsx.
+   * This component remains only as a compatibility wrapper for existing demo
+   * dashboard pages and must not authorize production data.
+   */
   return children;
 }

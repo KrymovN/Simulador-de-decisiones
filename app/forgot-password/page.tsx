@@ -1,16 +1,27 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { FormEvent } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import AuthStateView from "../../components/auth/AuthStateView";
+import { useAuthRuntime } from "../../components/auth/AuthRuntimeProvider";
 import AuthShell from "../../components/AuthShell";
 
 export default function ForgotPasswordPage() {
+  const router = useRouter();
+  const auth = useAuthRuntime();
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    if (auth.identityState === "authenticated") {
+      router.replace("/dashboard");
+    }
+  }, [auth.identityState, router]);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setMessage("Te enviaremos instrucciones si el correo existe en el sistema.");
+    setMessage("El acceso productivo usa enlace seguro por correo. El restablecimiento de contraseña no está activado.");
   }
 
   return (
@@ -19,12 +30,13 @@ export default function ForgotPasswordPage() {
       eyebrow="levio.es / Recuperar acceso"
       title="Recupera tu entrada al espacio estratégico."
     >
+      <AuthStateView signedOutLabel="Password reset no está activado para esta fase." />
       <form className="auth-form" onSubmit={handleSubmit}>
         <label>
           Correo electrónico
           <input autoComplete="email" name="email" placeholder="tu@correo.com" type="email" />
         </label>
-        <button type="submit">Enviar instrucciones</button>
+        <button type="submit">Ver estado de recuperación</button>
       </form>
 
       {message && (

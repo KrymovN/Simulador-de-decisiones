@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { ReactNode } from "react";
+import { useAuthRuntime } from "./auth/AuthRuntimeProvider";
 import { clearMockSession } from "./MockAuthGate";
 import LevioMark from "./LevioMark";
 
@@ -31,9 +32,12 @@ export default function DashboardShell({
 }: DashboardShellProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const auth = useAuthRuntime();
 
-  function handleLogout() {
+  async function handleLogout() {
+    await auth.signOut();
     clearMockSession();
+    router.refresh();
     router.replace("/login");
   }
 
@@ -87,8 +91,8 @@ export default function DashboardShell({
         </nav>
         <div className="dashboard-sidebar-status">
           <span>Sesión</span>
-          <strong>Demo segura</strong>
-          <small>Auth productivo pendiente</small>
+          <strong>{auth.identityState === "authenticated" ? "Autenticada" : "No iniciada"}</strong>
+          <small>{auth.email ?? "Supabase Auth foundation"}</small>
         </div>
         <button className="ghost-button" onClick={handleLogout} type="button">
           Cerrar sesión

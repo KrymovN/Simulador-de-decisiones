@@ -5,6 +5,7 @@ import './globals.css';
 import './styles/motion.css';
 import type { Metadata } from 'next';
 import type { Viewport } from 'next';
+import { AuthRuntimeProvider } from '../components/auth/AuthRuntimeProvider';
 
 const siteName = 'Levio.es';
 const siteTitle = 'Levio.es';
@@ -83,7 +84,7 @@ export default function RootLayout({
       <body>
         <div className="background"></div>
         <div className="overlay"></div>
-        {children}
+        <AuthRuntimeProvider>{children}</AuthRuntimeProvider>
       </body>
     </html>
   );

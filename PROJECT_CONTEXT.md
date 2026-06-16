@@ -4,14 +4,24 @@
 
 16 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.1 Auth Runtime Scope Lock. It is a synchronized copy of `LEVIO_CURRENT_STATE.md`.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.1B-2 Auth Runtime Hardening + Production Readiness. It is a synchronized copy of `LEVIO_CURRENT_STATE.md`.
 
 ## Current Confirmed Checkpoint - 16 June 2026
 
-Stage 4.1 Auth Runtime Scope Lock is the current confirmed checkpoint.
+Stage 4.1B-2 Auth Runtime Hardening + Production Readiness is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
+- Stage 4.1B-2 creates `LEVIO_STAGE_4_1_AUTH_RUNTIME_HARDENING.md`, documenting the completed auth-runtime scope, audit findings, fixed issues, known limitations, remaining blockers, rollback instructions, Stage 4.2 prerequisites, and readiness decision.
+- Stage 4.1B-2 hardens the existing Supabase Auth runtime foundation with stricter redirect sanitization, visible auth error mapping, provider callback error handling, malformed auth config rejection, unsupported provider rejection, authenticated-user redirects away from auth entry pages, safer submit `try/finally` handling, and logout cleanup of the legacy mock session marker.
+- Stage 4.1B-2 confirms the release readiness decision `READY FOR STAGE 4.2`, meaning the auth identity/session boundary is ready for a separately approved persistence stage. It does not mean ready for production users or real personal data.
+- Stage 4.1B-2 does not create persistence, database schemas, user tables, saved simulations, drafts/history storage, subscriptions, payments, AI integration, memory, simulator changes, Decision Engine changes, runtime-integration changes, or `SimulationResponse` changes.
+- Stage 4.1B-1 implemented the Auth Runtime foundation with Supabase Auth packages, `lib/auth` runtime boundary, normalized identity/session model, server-side dashboard guard, `/auth/callback`, login/register magic-link foundation, disabled password-reset posture, and mock-auth separation.
+- Stage 4.1B created `LEVIO_STAGE_4_1B_AUTH_RUNTIME_IMPLEMENTATION_PLAN.md`, defining the implementation blueprint for the auth runtime foundation without writing runtime code in that step.
+- Stage 4.1A creates `LEVIO_AUTH_PROVIDER_DECISION.md`, evaluating Auth.js / NextAuth, Supabase Auth, and Clerk against Levio architecture, Stage 4.2 persistence fit, user-data ownership, GDPR-oriented requirements, lock-in, cost, support burden, migration, AI, subscriptions, and ownership impact.
+- Stage 4.1A approves Supabase Auth as the provider for the next auth implementation planning stage, with a strict Levio Auth Runtime Boundary, stable internal principal mapping requirement, Supabase anonymous sign-ins disabled by default, and no direct provider-native owner ID assumption.
+- Stage 4.1A rejects Auth.js / NextAuth and Clerk as initial providers while preserving Auth.js as the preferred fallback if Supabase lock-in or persistence alignment becomes unacceptable.
+- Stage 4.1A is documentation-only. It does not start Stage 4.1B, implement auth runtime, create routes, install dependencies, change UI/dashboard/simulator/runtime code, connect persistence, subscriptions, AI, or memory, or change deterministic brain / `SimulationResponse`.
 - Stage 4.1 creates `LEVIO_STAGE_4_1_AUTH_RUNTIME_SCOPE.md`, defining the provider-neutral auth runtime boundary, identity states, session model, guest/authenticated transition boundary, protected route strategy, rollback/safety plan, and roadmap compliance for production auth foundation.
 - Stage 4.1 is documentation/scope-lock only because provider integration requires an explicit provider decision and implementation plan. No Supabase, Auth.js, Clerk, Firebase, Auth0, NextAuth, database, auth SDK, middleware, route gate, provider callback, session runtime, or dependency is added.
 - Stage 4.1 preserves the current mock auth boundary: `components/MockAuthGate.tsx`, `levio_es_mock_session`, and localStorage saved simulations remain demo-only and must never authorize production data.
@@ -134,7 +144,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 4.1 is complete as the auth runtime scope lock. No provider integration, production session runtime, protected route migration, persistence, public product-runtime switch, Stage 4.2, or AI integration has started.
+Stage 4.1A is complete as the auth provider decision. No provider integration, production session runtime, protected route migration, persistence, public product-runtime switch, Stage 4.1B, Stage 4.2, or AI integration has started.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -251,7 +261,7 @@ Project documentation is written in English. Codex owner-facing reports are writ
 
 ## 2. Current Development Stage
 
-Stage 4.1 Auth Runtime Scope Lock - COMPLETED CHECKPOINT.
+Stage 4.1A Auth Provider Decision - COMPLETED CHECKPOINT.
 
 Stage 2.7.x is closed as a research and direction-discovery track. It must not be treated as the active production target, and the older cinematic/WebGL target must not be revived without a new approved stage.
 
@@ -326,6 +336,7 @@ Stage 2 progress:
 - Stage 3.15 Controlled Simulator Runtime Switch completed through an internal/dev-only deny-by-default switch, explicit V1 rollback and fallback evidence, sandbox-to-V2-to-UI-mapping execution, switch validation, and `LEVIO_STAGE_3_15_CONTROLLED_SIMULATOR_RUNTIME_SWITCH.md`.
 - Stage 3.16 Runtime QA / Regression completed through `LEVIO_STAGE_3_16_RUNTIME_QA_REGRESSION.md`; all required runtime catalogs, static checks, production build, public isolation, API, desktop, and mobile regression checks passed.
 - Stage 4.1 Auth Runtime Scope Lock completed through `LEVIO_STAGE_4_1_AUTH_RUNTIME_SCOPE.md`; provider-neutral auth runtime boundary, identity states, session model, guest/authenticated separation, protected route strategy, and rollback/safety plan are fixed without changing runtime code, dependencies, public simulator behavior, persistence, subscriptions, AI, memory, or deterministic brain behavior.
+- Stage 4.1A Auth Provider Decision completed through `LEVIO_AUTH_PROVIDER_DECISION.md`; Supabase Auth is approved for next-stage implementation planning under strict provider-boundary and principal-mapping conditions, while Auth.js / NextAuth and Clerk are rejected as initial providers.
 
 Stage 2.1-2.7.4 result:
 
