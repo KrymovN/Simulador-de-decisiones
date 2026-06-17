@@ -2,16 +2,24 @@
 
 ## Updated
 
-16 June 2026, Europe/Madrid.
+17 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.1B-2 Auth Runtime Hardening + Production Readiness. It is a synchronized copy of `LEVIO_CURRENT_STATE.md`.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.2C Persistence Schema Planning and Migration Readiness. It is a synchronized copy of `LEVIO_CURRENT_STATE.md`.
 
-## Current Confirmed Checkpoint - 16 June 2026
+## Current Confirmed Checkpoint - 17 June 2026
 
-Stage 4.1B-2 Auth Runtime Hardening + Production Readiness is the current confirmed checkpoint.
+Stage 4.2C Persistence Schema Planning and Migration Readiness is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
+- Stage 4.2C creates `LEVIO_STAGE_4_2C_SCHEMA_MIGRATION_READINESS.md`, defining future schema planning, planned table columns, required/nullable fields, indexes, uniqueness constraints, foreign-key strategy, deletion/retention/export compatibility, RLS planning, migration readiness, data-integrity rules, environment requirements, Stage 4.2D prerequisites, and risk register.
+- Stage 4.2C plans future `levio_principals`, `simulation_records`, `simulation_drafts`, and `simulation_history_entries` tables without creating SQL, migrations, Supabase tables, schema files, runtime code, persistence APIs, storage buckets, auth runtime changes, simulator changes, dashboard/UI changes, package changes, AI, memory, subscriptions, billing, payments, Stage 4.3, or Stage 4.4.
+- Stage 4.2C keeps `levio_principals.principal_id` as the canonical future owner anchor and requires future RLS/server authorization to fail closed when principal mapping cannot be proven.
+- Stage 4.2B creates `LEVIO_STAGE_4_2B_DATA_MODEL_PRINCIPAL_MAPPING.md`, defining the conceptual principal mapping model, ownership rules, persistence entities, SimulationResponse V2 payload policy, guest-to-authenticated transition boundaries, GDPR/data-rights compatibility, and Stage 4.2C prerequisites.
+- Stage 4.2B confirms that `levio_principals.principal_id` is the canonical Levio owner anchor for future persisted user data, while Supabase `auth.users.id` remains a `provider_reference` and must not become the direct owner ID without a later architecture approval.
+- Stage 4.2B specifies `levio_principals`, `simulation_records`, `simulation_drafts`, and `simulation_history_entries` as conceptual entities only. It creates no SQL, migrations, Supabase tables, runtime code, persistence API, storage buckets, auth runtime changes, simulator changes, dashboard changes, package changes, AI, memory, subscriptions, billing, or payments.
+- Stage 4.2A creates `LEVIO_STAGE_4_2_PERSISTENCE_RUNTIME_ARCHITECTURE.md`, defining persistence scope, ownership model, conceptual data lifecycle, security/RLS posture, Stage 4.2 breakdown, rollback strategy, and dependencies at architecture level only.
+- Stage 4.2A starts Stage 4.2 as documentation-only. It does not implement persistence runtime, create database schemas, write SQL, create migrations, connect storage, change auth runtime, change simulator runtime, change public API, change UI, connect subscriptions, connect AI, or connect memory.
 - Stage 4.1B-2 creates `LEVIO_STAGE_4_1_AUTH_RUNTIME_HARDENING.md`, documenting the completed auth-runtime scope, audit findings, fixed issues, known limitations, remaining blockers, rollback instructions, Stage 4.2 prerequisites, and readiness decision.
 - Stage 4.1B-2 hardens the existing Supabase Auth runtime foundation with stricter redirect sanitization, visible auth error mapping, provider callback error handling, malformed auth config rejection, unsupported provider rejection, authenticated-user redirects away from auth entry pages, safer submit `try/finally` handling, and logout cleanup of the legacy mock session marker.
 - Stage 4.1B-2 confirms the release readiness decision `READY FOR STAGE 4.2`, meaning the auth identity/session boundary is ready for a separately approved persistence stage. It does not mean ready for production users or real personal data.
@@ -144,7 +152,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 4.1A is complete as the auth provider decision. No provider integration, production session runtime, protected route migration, persistence, public product-runtime switch, Stage 4.1B, Stage 4.2, or AI integration has started.
+Stage 4.2C is complete as schema planning and migration readiness. Persistence runtime, database schema, SQL, migrations, Supabase tables, storage, persistence APIs, auth runtime changes, simulator changes, public product-runtime changes, subscriptions, AI, memory, billing, Stage 4.3, and Stage 4.4 have not started.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
