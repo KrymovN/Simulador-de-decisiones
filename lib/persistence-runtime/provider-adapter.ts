@@ -4,40 +4,54 @@ import type {
   PersistenceProviderId,
   PersistenceProviderSubjectType,
 } from "./contracts";
+import {
+  createSupabasePersistenceProviderAdapter,
+  readSupabasePersistenceProviderConfig,
+  validateSupabasePersistenceProviderConfig,
+  type SupabasePersistenceProviderConfig,
+  type SupabasePrincipalResolutionClient,
+} from "./supabase-provider";
 
 export const PERSISTENCE_PROVIDER_ADAPTER_FOUNDATION_VERSION =
   "4.2F-provider-adapter.1" as const;
 
-export type PersistenceProviderAdapterKind = "noop";
+export type PersistenceProviderAdapterKind = "noop" | "supabase";
 
 export type PersistenceProviderAdapterFactoryInput = {
   providerId?: PersistenceProviderId | string;
   adapterKind?: PersistenceProviderAdapterKind | string;
   enabled?: boolean;
+  supabaseConfig?: SupabasePersistenceProviderConfig;
+  supabaseClient?: SupabasePrincipalResolutionClient;
 };
 
 export type PersistenceProviderAdapterBlockedReason =
   | "provider_disabled"
   | "provider_not_supported"
-  | "adapter_kind_not_supported";
+  | "adapter_kind_not_supported"
+  | "provider_config_missing"
+  | "provider_config_invalid"
+  | "server_boundary_required";
 
 export type PersistenceProviderAdapterEvidence = {
-  stage: "4.2F";
+  stage: "4.2F" | "4.2G";
   providerAbstractionOnly: true;
   providerContractValidated: true;
-  noopProviderOnly: true;
+  noopProviderOnly: boolean;
   serverOnlyBoundaryRequired: true;
-  supabaseSdkImported: false;
-  dbOperationExecuted: false;
+  supabaseSdkImported: boolean;
+  dbOperationExecuted: boolean;
   sqlExecuted: false;
   userOperationExecuted: false;
   uiIntegrated: false;
   apiRouteIntegrated: false;
   authIntegrated: false;
   simulatorIntegrated: false;
+  persistenceCrudEnabled: false;
   schemaChanged: false;
   migrationsChanged: false;
-  stage42GStarted: false;
+  stage42GStarted: boolean;
+  stage42HStarted: false;
   stage43Started: false;
   stage44Started: false;
   rollback: "remove_persistence_provider_adapter_foundation_exports";
@@ -51,6 +65,8 @@ export type PersistenceProviderAdapterAvailableResult = {
   adapter: PersistenceProviderAdapter;
   writesEnabled: false;
   realOperationsEnabled: false;
+  principalResolutionEnabled: boolean;
+  connectivityValidationEnabled: boolean;
   evidence: PersistenceProviderAdapterEvidence;
 };
 
@@ -63,6 +79,8 @@ export type PersistenceProviderAdapterBlockedResult = {
   message: string;
   writesEnabled: false;
   realOperationsEnabled: false;
+  principalResolutionEnabled: false;
+  connectivityValidationEnabled: false;
   evidence: PersistenceProviderAdapterEvidence;
 };
 
@@ -95,14 +113,14 @@ type ResolverInput = {
   providerSubjectType: PersistenceProviderSubjectType;
 };
 
-function evidence(): PersistenceProviderAdapterEvidence {
+function evidence(stage: PersistenceProviderAdapterEvidence["stage"] = "4.2F"): PersistenceProviderAdapterEvidence {
   return {
-    stage: "4.2F",
+    stage,
     providerAbstractionOnly: true,
     providerContractValidated: true,
-    noopProviderOnly: true,
+    noopProviderOnly: stage === "4.2F",
     serverOnlyBoundaryRequired: true,
-    supabaseSdkImported: false,
+    supabaseSdkImported: stage === "4.2G",
     dbOperationExecuted: false,
     sqlExecuted: false,
     userOperationExecuted: false,
@@ -110,9 +128,11 @@ function evidence(): PersistenceProviderAdapterEvidence {
     apiRouteIntegrated: false,
     authIntegrated: false,
     simulatorIntegrated: false,
+    persistenceCrudEnabled: false,
     schemaChanged: false,
     migrationsChanged: false,
-    stage42GStarted: false,
+    stage42GStarted: stage === "4.2G",
+    stage42HStarted: false,
     stage43Started: false,
     stage44Started: false,
     rollback: "remove_persistence_provider_adapter_foundation_exports",
@@ -123,6 +143,7 @@ function blocked(
   input: Required<Pick<PersistenceProviderAdapterFactoryInput, "providerId" | "adapterKind">>,
   reason: PersistenceProviderAdapterBlockedReason,
   message: string,
+  evidenceStage: PersistenceProviderAdapterEvidence["stage"] = "4.2F",
 ): PersistenceProviderAdapterBlockedResult {
   return {
     status: "blocked",
@@ -133,7 +154,9 @@ function blocked(
     message,
     writesEnabled: false,
     realOperationsEnabled: false,
-    evidence: evidence(),
+    principalResolutionEnabled: false,
+    connectivityValidationEnabled: false,
+    evidence: evidence(evidenceStage),
   };
 }
 
@@ -190,15 +213,46 @@ export function createPersistenceProviderAdapter(
     return blocked(
       normalizedInput,
       "provider_not_supported",
-      "Stage 4.2F only accepts the Supabase provider contract.",
+      "Persistence provider factory only accepts the Supabase provider contract.",
     );
+  }
+
+  if (adapterKind === "supabase") {
+    const configResult = input.supabaseConfig
+      ? validateSupabasePersistenceProviderConfig(input.supabaseConfig)
+      : readSupabasePersistenceProviderConfig();
+
+    if (configResult.status === "disabled") {
+      return blocked(
+        normalizedInput,
+        configResult.reason,
+        configResult.message,
+        "4.2G",
+      );
+    }
+
+    return {
+      status: "available",
+      version: PERSISTENCE_PROVIDER_ADAPTER_FOUNDATION_VERSION,
+      providerId,
+      adapterKind,
+      adapter: createSupabasePersistenceProviderAdapter({
+        config: configResult.config,
+        client: input.supabaseClient,
+      }),
+      writesEnabled: false,
+      realOperationsEnabled: false,
+      principalResolutionEnabled: true,
+      connectivityValidationEnabled: true,
+      evidence: evidence("4.2G"),
+    };
   }
 
   if (adapterKind !== "noop") {
     return blocked(
       normalizedInput,
       "adapter_kind_not_supported",
-      "Stage 4.2F exposes only the no-op provider adapter foundation.",
+      "Unsupported persistence provider adapter kind.",
     );
   }
 
@@ -210,6 +264,8 @@ export function createPersistenceProviderAdapter(
     adapter: createNoopPersistenceProviderAdapter(),
     writesEnabled: false,
     realOperationsEnabled: false,
+    principalResolutionEnabled: false,
+    connectivityValidationEnabled: false,
     evidence: evidence(),
   };
 }
