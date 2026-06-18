@@ -83,6 +83,7 @@ export type PersistenceRuntimeWiringReady = {
   version: typeof PERSISTENCE_RUNTIME_WIRING_VERSION;
   providerSource: PersistenceRuntimeWiringProviderSource;
   providerAdapterConfigured: true;
+  providerAdapter: PersistenceProviderAdapter;
   providerFactoryResult?: PersistenceProviderAdapterFactoryResult;
   foundation: PersistenceRuntimeFoundation;
   writesEnabled: false;
@@ -245,6 +246,7 @@ export function initializePersistenceRuntimeWiring(
       version: PERSISTENCE_RUNTIME_WIRING_VERSION,
       providerSource,
       providerAdapterConfigured: true,
+      providerAdapter: input.providerAdapter,
       foundation,
       writesEnabled: false,
       evidence: runtimeEvidence,
@@ -308,6 +310,7 @@ export function initializePersistenceRuntimeWiring(
     version: PERSISTENCE_RUNTIME_WIRING_VERSION,
     providerSource,
     providerAdapterConfigured: true,
+    providerAdapter: providerFactoryResult.adapter,
     providerFactoryResult,
     foundation,
     writesEnabled: false,
