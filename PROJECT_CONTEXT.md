@@ -4,14 +4,18 @@
 
 18 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.2D-5 Supabase Execution Readiness Plan. It is a synchronized copy of `LEVIO_CURRENT_STATE.md`.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.2D-6 Manual Supabase Execution Guide and Validation Log Template. It is a synchronized copy of `LEVIO_CURRENT_STATE.md`.
 
 ## Current Confirmed Checkpoint - 18 June 2026
 
-Stage 4.2D-5 Supabase Execution Readiness Plan is the current confirmed checkpoint.
+Stage 4.2D-6 Manual Supabase Execution Guide and Validation Log Template is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
+- Stage 4.2D-6 creates `LEVIO_STAGE_4_2D_6_MANUAL_SUPABASE_EXECUTION_GUIDE.md`, defining the owner/operator manual execution scope, environment checklist, exact migration execution order, per-file checks, stop conditions, validation log template, post-execution gate, and next-stage decision.
+- Stage 4.2D-6 keeps execution scoped to isolated local/dev Supabase only. Production execution remains forbidden in this stage.
+- Stage 4.2D-6 defines the validation log that must be returned before Stage 4.2E Persistence Runtime Foundation may begin.
+- Stage 4.2D-6 does not execute SQL, connect to Supabase, create tables in any real database, change migration SQL files, create runtime persistence, change auth runtime, change dashboard, change simulator, change package files, connect AI, connect memory, connect subscriptions, connect billing, start Stage 4.3, or start Stage 4.4.
 - Stage 4.2D-5 creates `LEVIO_STAGE_4_2D_5_SUPABASE_EXECUTION_READINESS_PLAN.md`, defining execution target, pre-execution checklist, manual execution plan, post-execution validation plan, failure/rollback plan, Stage 4.2D-6 criteria, and readiness status.
 - Stage 4.2D-5 recommends isolated local/dev Supabase execution first and keeps production execution unapproved until local/dev validation logs, RLS evidence, rollback posture, and environment separation are confirmed.
 - Stage 4.2D-5 readiness status is `READY FOR MANUAL SUPABASE EXECUTION`, scoped only to a separately approved local/dev manual execution. It is not production approval and not runtime persistence launch.
@@ -174,7 +178,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 4.2D-5 is complete as execution-readiness planning only. SQL has not been executed, Supabase has not been contacted, Supabase tables have not been created, persistence runtime has not started, auth runtime/dashboard/simulator/public product runtime remain unchanged, and subscriptions, AI, memory, billing, Stage 4.3, and Stage 4.4 have not started.
+Stage 4.2D-6 is complete as manual execution guidance and validation-log templating only. SQL has not been executed by Codex, Supabase has not been contacted by Codex, Supabase tables have not been created by Codex, persistence runtime has not started, auth runtime/dashboard/simulator/public product runtime remain unchanged, and subscriptions, AI, memory, billing, Stage 4.3, and Stage 4.4 have not started.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
