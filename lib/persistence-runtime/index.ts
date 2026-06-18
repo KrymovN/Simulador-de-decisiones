@@ -5,6 +5,8 @@ export * from "./provider-adapter";
 export * from "./provider-adapter-validation";
 export * from "./runtime-wiring";
 export * from "./runtime-wiring-validation";
+export * from "./simulation-draft-persistence";
+export * from "./simulation-draft-persistence-validation";
 export * from "./simulation-history-persistence";
 export * from "./simulation-history-persistence-validation";
 export * from "./simulation-record-persistence";
