@@ -1,13 +1,35 @@
 # CURRENT STAGE - LEVIO.ES
 
-Date: 17 June 2026, Europe/Madrid.
+Date: 18 June 2026, Europe/Madrid.
 
-## Current Confirmed Checkpoint - 17 June 2026
+## Current Confirmed Checkpoint - 18 June 2026
 
-Stage 4.2C Persistence Schema Planning and Migration Readiness is the current confirmed checkpoint.
+Stage 4.2D-5 Supabase Execution Readiness Plan is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
+- Stage 4.2D-5 creates `LEVIO_STAGE_4_2D_5_SUPABASE_EXECUTION_READINESS_PLAN.md`, defining execution target, pre-execution checklist, manual execution plan, post-execution validation plan, failure/rollback plan, Stage 4.2D-6 criteria, and readiness status.
+- Stage 4.2D-5 recommends isolated local/dev Supabase execution first and keeps production execution unapproved until local/dev validation logs, RLS evidence, rollback posture, and environment separation are confirmed.
+- Stage 4.2D-5 readiness status is `READY FOR MANUAL SUPABASE EXECUTION`, scoped only to a separately approved local/dev manual execution. It is not production approval and not runtime persistence launch.
+- Stage 4.2D-5 does not execute SQL, connect to Supabase, create tables in any real database, change migration SQL files, create runtime persistence, change auth runtime, change dashboard, change simulator, change package files, connect AI, connect memory, connect subscriptions, connect billing, start Stage 4.3, or start Stage 4.4.
+- Stage 4.2D-4 creates `LEVIO_STAGE_4_2D_4_MIGRATION_STATIC_REVIEW.md`, documenting reviewed migration files, static review findings, fixes applied, remaining risks, and readiness status.
+- Stage 4.2D-4 hardens `supabase/migrations/006_enable_rls_and_policies.sql` so direct authenticated client inserts/updates on `simulation_records` and `simulation_drafts` fail closed. Future writes must come from a server-only persistence runtime after owner resolution from the validated auth session.
+- Stage 4.2D-4 updates `supabase/migrations/007_rollback_notes.sql` so commented rollback policy names match the hardened RLS policy names.
+- Stage 4.2D-4 readiness status is `READY FOR SUPABASE EXECUTION REVIEW`, meaning a separate isolated Supabase execution review may be planned later. It does not approve production execution.
+- Stage 4.2D-4 does not execute SQL, connect to Supabase, create tables in any real database, create runtime persistence, change auth runtime, change dashboard, change simulator, change package files, connect AI, connect memory, connect subscriptions, connect billing, start Stage 4.3, or start Stage 4.4.
+- Stage 4.2D-3 creates real migration files on disk under `supabase/migrations/`: `001_create_levio_principals.sql`, `002_create_simulation_records.sql`, `003_create_simulation_drafts.sql`, `004_create_simulation_history_entries.sql`, `005_indexes_and_constraints.sql`, `006_enable_rls_and_policies.sql`, and `007_rollback_notes.sql`.
+- Stage 4.2D-3 creates `LEVIO_STAGE_4_2D_3_REAL_MIGRATION_FILES.md`, documenting the created files, schema summary, RLS summary, rollback summary, what was not applied, prerequisites before applying migrations, and QA required before Supabase execution.
+- Stage 4.2D-3 creates migration files only. It does not execute SQL, connect to Supabase, create tables in any real database, create runtime persistence, change auth runtime, change dashboard, change simulator, change package files, connect AI, connect memory, connect subscriptions, connect billing, start Stage 4.3, or start Stage 4.4.
+- Stage 4.2D-2 creates `LEVIO_STAGE_4_2D_2_MIGRATION_SQL_REVIEW_HARDENING.md`, reviewing the D-1 draft across ownership correctness, principal immutability, provider-reference uniqueness, foreign keys, deletion, retention, export, RLS, rollback, and indexes.
+- Stage 4.2D-2 hardens the D-1 review draft by adding required future database-level immutability for `principal_id` and owner fields, expanding active provider-reference uniqueness across non-terminal states, requiring composite history parent-owner alignment, and improving rollback order for constraints/triggers before table drops.
+- Stage 4.2D-2 readiness decision is `READY FOR REAL MIGRATION FILES`, meaning the reviewed draft is ready to be converted into real migration files only in a later explicitly approved stage. It does not mean migrations are ready to apply to production.
+- Stage 4.2D-2 is documentation-only. It does not create real SQL files, migration files, schema files, migration directories, Supabase tables, runtime code, persistence APIs, auth runtime changes, dashboard changes, simulator changes, package changes, AI, memory, subscriptions, billing, Stage 4.3, or Stage 4.4.
+- Stage 4.2D-1 creates `LEVIO_STAGE_4_2D_1_MIGRATION_SQL_REVIEW_DRAFT.md`, containing review-only SQL draft blocks for future `001_create_levio_principals`, `002_create_simulation_records`, `003_create_simulation_drafts`, `004_create_simulation_history_entries`, `005_indexes_and_constraints`, `006_enable_rls_and_policies`, and `007_rollback_notes`.
+- Stage 4.2D-1 keeps `levio_principals.principal_id` as the canonical owner anchor, stores Supabase `auth.users.id` only as `provider_reference`, requires future user-owned records to use `owner_principal_id`, and documents RLS drafts through `provider_reference -> principal_id` owner isolation.
+- Stage 4.2D-1 is SQL review only. It does not create real SQL files, migration files, schema files, migration directories, Supabase tables, runtime code, persistence APIs, auth runtime changes, dashboard changes, simulator changes, package changes, AI, memory, subscriptions, billing, Stage 4.3, or Stage 4.4.
+- Stage 4.2D-0 creates `LEVIO_STAGE_4_2D_MIGRATION_FILE_LIST_APPROVAL.md`, defining only the future migration file list, per-file purpose/dependencies/rollback/review checklist, schema boundary, RLS review plan, cross-user isolation/forged-owner/guest/fail-closed test expectations, and Stage 4.2D-1 prerequisites.
+- Stage 4.2D-0 proposes future migration units for `create_levio_principals`, `create_simulation_records`, `create_simulation_drafts`, `create_simulation_history_entries`, `indexes_and_constraints`, `enable_rls_and_policies`, and `rollback_notes`.
+- Stage 4.2D-0 does not create SQL, migration files, schema files, Supabase tables, runtime code, persistence APIs, auth runtime changes, dashboard changes, simulator changes, package changes, AI, memory, subscriptions, billing, Stage 4.3, or Stage 4.4.
 - Stage 4.2C creates `LEVIO_STAGE_4_2C_SCHEMA_MIGRATION_READINESS.md`, defining future schema planning, planned table columns, required/nullable fields, indexes, uniqueness constraints, foreign-key strategy, deletion/retention/export compatibility, RLS planning, migration readiness, data-integrity rules, environment requirements, Stage 4.2D prerequisites, and risk register.
 - Stage 4.2C plans future `levio_principals`, `simulation_records`, `simulation_drafts`, and `simulation_history_entries` tables without creating SQL, migrations, Supabase tables, schema files, runtime code, persistence APIs, storage buckets, auth runtime changes, simulator changes, dashboard/UI changes, package changes, AI, memory, subscriptions, billing, payments, Stage 4.3, or Stage 4.4.
 - Stage 4.2C keeps `levio_principals.principal_id` as the canonical future owner anchor and requires future RLS/server authorization to fail closed when principal mapping cannot be proven.
@@ -148,7 +170,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 4.2C is complete as schema planning and migration readiness. Persistence runtime, database schema, SQL, migrations, Supabase tables, storage, persistence APIs, auth runtime changes, simulator changes, public product-runtime changes, subscriptions, AI, memory, billing, Stage 4.3, and Stage 4.4 have not started.
+Stage 4.2D-5 is complete as execution-readiness planning only. SQL has not been executed, Supabase has not been contacted, Supabase tables have not been created, persistence runtime has not started, auth runtime/dashboard/simulator/public product runtime remain unchanged, and subscriptions, AI, memory, billing, Stage 4.3, and Stage 4.4 have not started.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
@@ -253,7 +275,7 @@ This checkpoint records a controlled production homepage pivot away from heavy c
 
 ## Current Stage
 
-Stage 4.2C Persistence Schema Planning and Migration Readiness - COMPLETED CHECKPOINT.
+Stage 4.2D-0 Persistence Migration File List Approval - COMPLETED CHECKPOINT.
 
 Roadmap from the current checkpoint:
 
