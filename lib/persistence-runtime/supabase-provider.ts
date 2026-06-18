@@ -3,6 +3,7 @@ import type {
   LevioPrincipalRow,
   PersistenceProviderAdapter,
   PersistenceProviderSubjectType,
+  SimulationHistoryEntryRow,
   SimulationRecordRow,
 } from "./contracts";
 
@@ -121,12 +122,40 @@ export type SupabaseSimulationRecordInsertPayload = {
   schema_version: number;
 };
 
+export type SupabaseSimulationHistoryEntryInsertPayload = {
+  owner_principal_id: string;
+  owner_principal_type: "registered_user";
+  record_id: string;
+  event_type: SimulationHistoryEntryRow["event_type"];
+  event_timestamp: string;
+  event_source: SimulationHistoryEntryRow["event_source"];
+  user_visible: boolean;
+  event_summary: string | null;
+  event_payload: Record<string, unknown>;
+  before_reference: string | null;
+  after_reference: string | null;
+  revision_reference: string | null;
+  outcome_snapshot: Record<string, unknown> | null;
+  claim_transaction_reference: string | null;
+  export_reference: string | null;
+  deletion_state: "active";
+  retention_rule: string;
+  export_eligible: boolean;
+  schema_version: number;
+};
+
 export type SupabasePrincipalQuery = {
   eq(column: string, value: string): SupabasePrincipalQuery;
   maybeSingle(): Promise<SupabaseQueryResponse>;
 };
 
 export type SupabaseSimulationRecordMutation = {
+  select(columns: string): {
+    single(): Promise<SupabaseQueryResponse>;
+  };
+};
+
+export type SupabaseSimulationHistoryEntryMutation = {
   select(columns: string): {
     single(): Promise<SupabaseQueryResponse>;
   };
@@ -144,9 +173,26 @@ export type SupabaseSimulationRecordMutationClient = {
   };
 };
 
+export type SupabaseSimulationHistoryEntryMutationClient = {
+  from(table: "simulation_history_entries"): {
+    insert(
+      payload: SupabaseSimulationHistoryEntryInsertPayload,
+    ): SupabaseSimulationHistoryEntryMutation;
+  };
+};
+
 export type SupabaseSimulationRecordSaveProvider = PersistenceProviderAdapter & {
   saveSimulationRecord(payload: SupabaseSimulationRecordInsertPayload): Promise<SimulationRecordRow | null>;
 };
+
+export type SupabaseSimulationHistoryEntrySaveProvider = PersistenceProviderAdapter & {
+  saveSimulationHistoryEntry(
+    payload: SupabaseSimulationHistoryEntryInsertPayload,
+  ): Promise<SimulationHistoryEntryRow | null>;
+};
+
+export type SupabasePersistenceRuntimeProvider =
+  SupabaseSimulationRecordSaveProvider & SupabaseSimulationHistoryEntrySaveProvider;
 
 export type SupabasePersistenceConnectivityValidationResult = {
   status: "passed" | "blocked";
@@ -299,6 +345,41 @@ function isSimulationRecordRow(value: unknown): value is SimulationRecordRow {
   );
 }
 
+function isSimulationHistoryEntryRow(value: unknown): value is SimulationHistoryEntryRow {
+  if (typeof value !== "object" || value === null) {
+    return false;
+  }
+
+  const row = value as Record<string, unknown>;
+
+  return (
+    typeof row.history_entry_id === "string" &&
+    typeof row.owner_principal_id === "string" &&
+    row.owner_principal_type === "registered_user" &&
+    typeof row.record_id === "string" &&
+    typeof row.event_type === "string" &&
+    typeof row.event_timestamp === "string" &&
+    typeof row.event_source === "string" &&
+    typeof row.user_visible === "boolean" &&
+    nullableString(row.event_summary) &&
+    isJsonObject(row.event_payload) &&
+    nullableString(row.before_reference) &&
+    nullableString(row.after_reference) &&
+    nullableString(row.revision_reference) &&
+    (isJsonObject(row.outcome_snapshot) || row.outcome_snapshot === null) &&
+    nullableString(row.claim_transaction_reference) &&
+    nullableString(row.export_reference) &&
+    typeof row.created_at === "string" &&
+    typeof row.updated_at === "string" &&
+    typeof row.deletion_state === "string" &&
+    typeof row.retention_rule === "string" &&
+    typeof row.export_eligible === "boolean" &&
+    nullableString(row.deleted_at) &&
+    nullableString(row.legal_hold_reason) &&
+    typeof row.schema_version === "number"
+  );
+}
+
 export function supabasePersistenceProviderEvidence(): SupabasePersistenceProviderEvidence {
   return evidence();
 }
@@ -391,11 +472,15 @@ export function createSupabasePersistenceProviderAdapter(input: {
   config: SupabasePersistenceProviderConfig;
   client?: SupabasePrincipalResolutionClient;
   mutationClient?: SupabaseSimulationRecordMutationClient;
-}): SupabaseSimulationRecordSaveProvider {
+  historyMutationClient?: SupabaseSimulationHistoryEntryMutationClient;
+}): SupabasePersistenceRuntimeProvider {
   const client = input.client ?? createSupabasePersistenceProviderClient(input.config);
   const mutationClient =
     input.mutationClient ??
     (client as unknown as SupabaseSimulationRecordMutationClient);
+  const historyMutationClient =
+    input.historyMutationClient ??
+    (client as unknown as SupabaseSimulationHistoryEntryMutationClient);
 
   return {
     providerId: "supabase",
@@ -446,6 +531,25 @@ export function createSupabasePersistenceProviderAdapter(input: {
         .single();
 
       if (response.error || !isSimulationRecordRow(response.data)) {
+        return null;
+      }
+
+      return response.data;
+    },
+    async saveSimulationHistoryEntry(
+      payload: SupabaseSimulationHistoryEntryInsertPayload,
+    ): Promise<SimulationHistoryEntryRow | null> {
+      if (!isServerRuntime()) {
+        return null;
+      }
+
+      const response = await historyMutationClient
+        .from("simulation_history_entries")
+        .insert(payload)
+        .select("*")
+        .single();
+
+      if (response.error || !isSimulationHistoryEntryRow(response.data)) {
         return null;
       }
 
