@@ -4,14 +4,18 @@
 
 18 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.2D-9 Dev Supabase Execution Support Plan. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.2D-10 Owner Execution Checklist. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
 
 ## Current Confirmed Checkpoint - 18 June 2026
 
-Stage 4.2D-9 Dev Supabase Execution Support Plan is the current confirmed checkpoint.
+Stage 4.2D-10 Owner Execution Checklist is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
+- Stage 4.2D-10 creates `LEVIO_STAGE_4_2D_10_OWNER_EXECUTION_CHECKLIST.md`, a short practical owner/operator checklist for manually applying the reviewed migration files in the approved Empty Dev Supabase Project.
+- Stage 4.2D-10 keeps the exact migration order `001_create_levio_principals.sql`, `002_create_simulation_records.sql`, `003_create_simulation_drafts.sql`, `004_create_simulation_history_entries.sql`, `005_indexes_and_constraints.sql`, `006_enable_rls_and_policies.sql`, and review-only `007_rollback_notes.sql`.
+- Stage 4.2D-10 defines before-start checks, per-file success/failure recording, post-execution validation checks, evidence to return, and stop conditions for wrong project, production selection, migration errors, rollback uncertainty, RLS/policy errors, and constraint errors.
+- Stage 4.2D-10 does not execute SQL, connect to Supabase, create tables in any real database, change migration SQL files, create runtime persistence, change auth runtime, change dashboard, change simulator, change package files, connect AI, connect memory, connect subscriptions, connect billing, start Stage 4.3, or start Stage 4.4.
 - Stage 4.2D-9 creates `LEVIO_STAGE_4_2D_9_DEV_SUPABASE_EXECUTION_SUPPORT_PLAN.md`, defining the practical first-execution support plan for owner/operator-run migrations in an Empty Dev Supabase Project.
 - Stage 4.2D-9 records the project-owner decision that the approved dev target is `Empty Dev Supabase Project`, local Supabase is not used for this stage, and production Supabase remains forbidden.
 - Stage 4.2D-9 defines dev project requirements, dev project checklist, per-file migration execution sequence, validation evidence requirements, failure handling, Go criteria, and next-stage mapping to Stage 4.2E only after successful dev execution and accepted validation evidence.
@@ -190,7 +194,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 4.2D-9 is complete as a dev Supabase execution support plan only. The approved target is an Empty Dev Supabase Project; local Supabase is not used and production Supabase remains forbidden. SQL has not been executed by Codex, Supabase has not been contacted by Codex, Supabase tables have not been created by Codex, persistence runtime has not started, auth runtime/dashboard/simulator/public product runtime remain unchanged, and subscriptions, AI, memory, billing, Stage 4.3, and Stage 4.4 have not started.
+Stage 4.2D-10 is complete as a practical owner execution checklist only. The approved target remains an Empty Dev Supabase Project; local Supabase is not used and production Supabase remains forbidden. SQL has not been executed by Codex, Supabase has not been contacted by Codex, Supabase tables have not been created by Codex, persistence runtime has not started, auth runtime/dashboard/simulator/public product runtime remain unchanged, and subscriptions, AI, memory, billing, Stage 4.3, and Stage 4.4 have not started.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
