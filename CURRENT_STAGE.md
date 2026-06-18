@@ -4,10 +4,18 @@ Date: 18 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 18 June 2026
 
-Stage 4.2D-11 Dev Execution Result Intake is the current confirmed checkpoint.
+Stage 4.2D Validation Intake is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
+- Stage 4.2D Validation Intake records the owner/operator-submitted successful dev migration execution result for the approved Empty Dev Supabase Project.
+- Owner/operator reported `SUCCESS` for `001_create_levio_principals.sql`, `002_create_simulation_records.sql`, `003_create_simulation_drafts.sql`, `004_create_simulation_history_entries.sql`, `005_indexes_and_constraints.sql`, `006_enable_rls_and_policies.sql`, and `007_rollback_notes.sql`.
+- Stage 4.2D Validation Intake decision is `ACCEPTED DEV EXECUTION`.
+- Stage 4.2D is fully completed at the dev migration execution level.
+- The next actionable stage is `STAGE 4.2E PERSISTENCE RUNTIME FOUNDATION`, but Stage 4.2E implementation has not started.
+- No production environment exists according to the owner/operator submission.
+- No runtime integration, persistence code connection, auth-runtime database integration, AI/OpenAI, memory, or subscriptions exist.
+- Codex did not execute SQL, connect to Supabase, request secrets, change migration files, change runtime, change auth, change simulator, start Stage 4.3, or start Stage 4.4 during validation intake.
 - Stage 4.2D-11 creates `LEVIO_STAGE_4_2D_11_DEV_EXECUTION_RESULT_INTAKE.md`, defining owner/operator result submission requirements, validation result template, decision logic, next-step mapping, and safety rules for manual Empty Dev Supabase Project migration execution results.
 - Stage 4.2D-11 decision statuses are `ACCEPTED DEV EXECUTION`, `ACCEPTED WITH WARNINGS`, `REJECTED / NEEDS FIX`, and `EXECUTION FAILED`.
 - Stage 4.2D-11 maps accepted dev execution to `STAGE 4.2E PERSISTENCE RUNTIME FOUNDATION`; warnings require targeted fix/review before runtime if they affect evidence quality; rejected or failed execution blocks runtime until the migration/dev execution issue is resolved.
@@ -194,7 +202,7 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 4.2D-11 is complete as a dev execution result intake template and decision logic only. The approved target remains an Empty Dev Supabase Project; local Supabase is not used and production Supabase remains forbidden. SQL has not been executed by Codex, Supabase has not been contacted by Codex, Supabase tables have not been created by Codex, persistence runtime has not started, auth runtime/dashboard/simulator/public product runtime remain unchanged, and subscriptions, AI, memory, billing, Stage 4.3, and Stage 4.4 have not started.
+Stage 4.2D Validation Intake is complete with decision `ACCEPTED DEV EXECUTION`. The approved target was an Empty Dev Supabase Project, and the owner/operator reported successful manual execution of all Stage 4.2D migration files in order. SQL was not executed by Codex, Supabase was not contacted by Codex, secrets were not requested, migration files were not changed, persistence runtime has not started, auth runtime/dashboard/simulator/public product runtime remain unchanged, and subscriptions, AI, memory, billing, Stage 4.3, and Stage 4.4 have not started. The next actionable step is Stage 4.2E Persistence Runtime Foundation.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 

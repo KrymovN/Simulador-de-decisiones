@@ -3,12 +3,12 @@
 ## Document Status
 
 - Stage: 4.2D-11 - Dev Supabase Execution Result Intake.
-- Status: intake template and decision logic only.
+- Status: accepted dev execution evidence recorded.
 - Date: 18 June 2026, Europe/Madrid.
 - Approved dev target: Empty Dev Supabase Project.
-- SQL execution status: not executed by Codex.
+- SQL execution status: manually executed by owner/operator in Empty Dev Supabase Project; not executed by Codex.
 - Supabase connection status: not connected by Codex.
-- Supabase table status: not created by Codex.
+- Supabase table status: created in owner/operator-managed Empty Dev Supabase Project; not created by Codex.
 - Runtime persistence status: not implemented.
 - Stage 4.3 status: not started.
 - Stage 4.4 status: not started.
@@ -16,6 +16,38 @@
 This document defines what the owner/operator must provide after manual migration execution in the approved Empty Dev Supabase Project, how the evidence must be validated, and how the result is classified before any Stage 4.2E runtime work can begin.
 
 No secrets, service-role keys, access tokens, database passwords, or production identifiers may be stored in git, screenshots, logs, or project documentation.
+
+## 0. Validation Intake Result - 18 June 2026
+
+Owner/operator submitted the Stage 4.2D Dev Migration Execution result:
+
+```text
+001_create_levio_principals.sql - SUCCESS
+002_create_simulation_records.sql - SUCCESS
+003_create_simulation_drafts.sql - SUCCESS
+004_create_simulation_history_entries.sql - SUCCESS
+005_indexes_and_constraints.sql - SUCCESS
+006_enable_rls_and_policies.sql - SUCCESS
+007_rollback_notes.sql - SUCCESS
+```
+
+Submitted environment facts:
+
+- Dev Supabase project was created.
+- All migrations were executed manually in order.
+- No production environment exists.
+- No runtime integration exists.
+- No persistence code is connected.
+- No auth-runtime database integration exists.
+- No AI/OpenAI, memory, or subscriptions exist.
+
+Intake decision:
+
+```text
+ACCEPTED DEV EXECUTION
+```
+
+Stage 4.2D is fully completed at the dev migration execution level. The next actionable stage is `STAGE 4.2E PERSISTENCE RUNTIME FOUNDATION`, but Stage 4.2E implementation has not started in this intake.
 
 ## 1. Owner Submission Required After Manual Execution
 
