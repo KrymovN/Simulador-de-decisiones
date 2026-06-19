@@ -9,6 +9,9 @@ export const RETENTION_RUNTIME_FOUNDATION_MODE = "retention_foundation_only" as 
 export const EXPORT_RUNTIME_FOUNDATION_VERSION =
   "4.3D-export-runtime-foundation.1" as const;
 export const EXPORT_RUNTIME_FOUNDATION_MODE = "export_foundation_only" as const;
+export const DELETION_RUNTIME_FOUNDATION_VERSION =
+  "4.3E-deletion-runtime-foundation.1" as const;
+export const DELETION_RUNTIME_FOUNDATION_MODE = "deletion_foundation_only" as const;
 
 export type ConsentRuntimeFoundationVersion =
   typeof CONSENT_RUNTIME_FOUNDATION_VERSION;
@@ -22,6 +25,10 @@ export type ExportRuntimeFoundationVersion =
   typeof EXPORT_RUNTIME_FOUNDATION_VERSION;
 export type ExportRuntimeFoundationMode =
   typeof EXPORT_RUNTIME_FOUNDATION_MODE;
+export type DeletionRuntimeFoundationVersion =
+  typeof DELETION_RUNTIME_FOUNDATION_VERSION;
+export type DeletionRuntimeFoundationMode =
+  typeof DELETION_RUNTIME_FOUNDATION_MODE;
 
 export type ConsentOwnerPrincipalType = "registered_user";
 
@@ -628,6 +635,250 @@ export type ExportRuntimeValidationResult = {
   passed: boolean;
   failed: boolean;
   cases: ExportRuntimeValidationCaseResult[];
+  summary: {
+    total: number;
+    passed: number;
+    failed: number;
+  };
+};
+
+export type DeletionOwnerPrincipalType = "registered_user";
+
+export type DeletionResourceCategory =
+  | "levio_principal"
+  | "saved_simulation"
+  | "simulation_draft"
+  | "simulation_history_entry";
+
+export type DeletionRequestKind =
+  | "resource_deletion_planning"
+  | "account_deletion_planning";
+
+export type DeletionLifecycleState =
+  | "active"
+  | "archived"
+  | "saved"
+  | "converted"
+  | "expired"
+  | "discarded"
+  | "deletion_requested"
+  | "deletion_pending"
+  | "restricted"
+  | "deleted"
+  | "anonymized"
+  | "retained_legal_exception";
+
+export type DeletionState =
+  | "active"
+  | "deletion_requested"
+  | "restricted"
+  | "deleted"
+  | "anonymized"
+  | "retained_legal_exception";
+
+export type DeletionScope = {
+  includePrincipalRecord: boolean;
+  includeSavedSimulations: boolean;
+  includeSimulationDrafts: boolean;
+  includeSimulationHistory: boolean;
+};
+
+export type DeletionEligibilityState =
+  | "eligible_for_lifecycle_request"
+  | "eligible_for_restriction_review"
+  | "already_terminal"
+  | "blocked_legal_hold"
+  | "blocked_active_subscription"
+  | "blocked_scope_excluded"
+  | "blocked_parent_context_missing"
+  | "blocked_parent_owner_mismatch";
+
+export type DeletionPlanAction =
+  | "mark_deletion_requested"
+  | "mark_restricted"
+  | "retain_legal_exception"
+  | "retain_active_subscription"
+  | "no_action_terminal"
+  | "no_action_scope_excluded";
+
+export type DeletionResourceSnapshot = {
+  resourceId: string;
+  resourceCategory: DeletionResourceCategory;
+  ownerPrincipalId: string;
+  ownerPrincipalType: DeletionOwnerPrincipalType;
+  lifecycleState: DeletionLifecycleState;
+  deletionState: DeletionState;
+  retentionRule: string;
+  createdAt: string;
+  updatedAt?: string;
+  deletedAt?: string | null;
+  expiresAt?: string | null;
+  legalHoldReason?: string | null;
+  parentRecordId?: string | null;
+};
+
+export type DeletionParentSnapshot = {
+  recordId: string;
+  ownerPrincipalId: string;
+  ownerPrincipalType: DeletionOwnerPrincipalType;
+  lifecycleState: DeletionLifecycleState;
+  deletionState: DeletionState;
+};
+
+export type DeletionAccountState = {
+  activeSubscription: boolean;
+  subscriptionStatus:
+    | "none"
+    | "active"
+    | "trialing"
+    | "past_due"
+    | "canceled"
+    | "unknown";
+};
+
+export type DeletionRuntimeConfig = {
+  enabled: boolean;
+};
+
+export type DeletionRuntimeBlockedReason =
+  | "deletion_runtime_disabled"
+  | "auth_context_missing"
+  | "auth_context_not_authenticated"
+  | "session_not_active"
+  | "principal_type_not_supported"
+  | "client_owner_input_rejected"
+  | "owner_mismatch"
+  | "deletion_request_missing"
+  | "deletion_scope_empty"
+  | "request_confirmation_missing"
+  | "timestamp_invalid"
+  | "resource_snapshot_missing"
+  | "resource_owner_mismatch"
+  | "resource_category_not_supported"
+  | "legal_hold_blocks_deletion"
+  | "active_subscription_blocks_account_deletion"
+  | "parent_context_required"
+  | "parent_owner_mismatch"
+  | "no_deletable_resources";
+
+export type DeletionPlanEntry = {
+  resourceId: string;
+  resourceCategory: DeletionResourceCategory;
+  eligibility: DeletionEligibilityState;
+  plannedAction: DeletionPlanAction;
+  execution: "not_started";
+  reason: string;
+};
+
+export type DeletionPlan = {
+  requestKind: DeletionRequestKind;
+  execution: "not_started";
+  hardDeleteExecuted: false;
+  databaseWrite: false;
+  supabaseConnected: false;
+  lifecycleOnly: true;
+  entries: DeletionPlanEntry[];
+  blockers: DeletionPlanEntry[];
+};
+
+export type DeletionRuntimeSafetyEvidence = {
+  stage: "4.3E";
+  deletionOnly: true;
+  foundationOnly: true;
+  failClosedByDefault: true;
+  runtimeWritesEnabled: false;
+  hardDeleteExecuted: false;
+  dbOperationsExecuted: false;
+  supabaseConnected: false;
+  migrationsChanged: false;
+  apiRouteIntegrated: false;
+  uiIntegrated: false;
+  dashboardIntegrated: false;
+  cronJobsStarted: false;
+  exportRuntimeChanged: false;
+  retentionRuntimeChanged: false;
+  consentRuntimeChanged: false;
+  authRuntimeChanged: false;
+  simulatorIntegrated: false;
+  subscriptionsIntegrated: false;
+  memoryRuntimeIntegrated: false;
+  aiIntegrated: false;
+  stage43FStarted: false;
+  stage44Started: false;
+  stage5Started: false;
+  rollback: "disable_deletion_runtime_or_remove_deletion_foundation_exports";
+};
+
+export type DeletionRuntimeEvaluationInput = {
+  authContext: LevioAuthRuntimeContext | null | undefined;
+  ownerPrincipalId?: string;
+  request?: {
+    requestId: string;
+    requestKind: DeletionRequestKind;
+    ownerPrincipalId?: string;
+    scope: DeletionScope;
+    requestedAt: string;
+    confirmationAcknowledged: boolean;
+  } | null;
+  accountState?: DeletionAccountState;
+  resources: DeletionResourceSnapshot[];
+  parentRecords?: DeletionParentSnapshot[];
+  clientOwnerFields?: {
+    principalId?: string;
+    ownerPrincipalId?: string;
+    ownerPrincipalType?: string;
+    providerReference?: string;
+  };
+};
+
+export type DeletionRuntimeAllowedEvaluation = {
+  status: "allowed";
+  execution: "preflight_only";
+  version: DeletionRuntimeFoundationVersion;
+  requestId: string;
+  principalId: string;
+  scope: DeletionScope;
+  deletionPlan: DeletionPlan;
+  evidence: DeletionRuntimeSafetyEvidence;
+};
+
+export type DeletionRuntimeBlockedEvaluation = {
+  status: "blocked";
+  execution: "none";
+  version: DeletionRuntimeFoundationVersion;
+  reason: DeletionRuntimeBlockedReason;
+  message: string;
+  evidence: DeletionRuntimeSafetyEvidence;
+};
+
+export type DeletionRuntimeEvaluationResult =
+  | DeletionRuntimeAllowedEvaluation
+  | DeletionRuntimeBlockedEvaluation;
+
+export type DeletionRuntimeFoundation = {
+  version: DeletionRuntimeFoundationVersion;
+  mode: DeletionRuntimeFoundationMode;
+  enabled: boolean;
+  writesEnabled: false;
+  evaluate(
+    input: DeletionRuntimeEvaluationInput,
+  ): DeletionRuntimeEvaluationResult;
+};
+
+export type DeletionRuntimeValidationCaseResult = {
+  caseId: string;
+  title: string;
+  expectedBehavior: string;
+  actualStatus: DeletionRuntimeEvaluationResult["status"];
+  passed: boolean;
+  failed: boolean;
+  issues: string[];
+};
+
+export type DeletionRuntimeValidationResult = {
+  passed: boolean;
+  failed: boolean;
+  cases: DeletionRuntimeValidationCaseResult[];
   summary: {
     total: number;
     passed: number;
