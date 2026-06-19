@@ -4,26 +4,31 @@
 
 19 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 5.2E Prompt / Context Documentation / State Closure. It is a synchronized copy of `LEVIO_CURRENT_STATE.md`.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 5.3C AI Quality / Cost / Safety Runtime Boundary and the immutable runtime architecture governance correction. It is a synchronized copy of `LEVIO_CURRENT_STATE.md`.
 
 ## Current Confirmed Checkpoint - 19 June 2026
 
-Stage 5.2E Prompt / Context Documentation / State Closure is the current confirmed checkpoint.
+Stage 5.3C AI Quality / Cost / Safety Runtime Boundary is the current confirmed checkpoint.
+This documentation-only governance step adds `LEVIO_TARGET_RUNTIME_ARCHITECTURE.md`
+as an immutable architecture reference for all future Stage 5 runtime integration
+work.
 
 Confirmed facts from the repository:
 
-- Stage 2, Stage 3, Stage 4.1, Stage 4.2, Stage 4.3, Stage 4.4, and Stage 5.1 are complete.
-- Stage 5.2A through Stage 5.2D are complete and accepted.
-- Stage 5.2E creates `LEVIO_STAGE_5_2E_PROMPT_CONTEXT_CLOSURE.md` and closes Stage 5.2 at the contracts/runtime/boundary/QA level.
+- Stage 2, Stage 3, Stage 4.1, Stage 4.2, Stage 4.3, Stage 4.4, Stage 5.1, and Stage 5.2 are complete.
+- Stage 5.3A through Stage 5.3C are complete and accepted at the contracts/runtime/boundary foundation level.
+- The completed Stage 5.1 package is isolated under `lib/ai-provider`.
 - The completed Stage 5.2 package is isolated under `lib/prompt-context`.
-- Stage 5.2 includes prompt/context contracts, deterministic runtime foundation, controlled runtime boundary, and runtime QA/regression aggregation.
-- Stage 5.2 uses pure TypeScript deterministic contracts, preflight decisions, controlled boundary routing, prompt/context packet assembly, instruction resolution, safety/budget/forbidden-pattern evidence, and QA aggregation only.
-- Stage 5.2 did not connect model calls, OpenAI SDK, environment variables, API routes, simulator runtime, Decision Engine runtime, AI Provider runtime, database runtime, Supabase runtime, auth runtime, persistence runtime, subscriptions runtime, UI, or dashboard.
-- `lib/prompt-context/runtime-qa-regression.ts` aggregates deterministic validation catalogs for prompt/context contracts, runtime, and boundary.
-- Stage 5.3 AI Quality / Cost / Safety Validation is the next roadmap stage, but implementation has not started.
+- The current Stage 5.3 package is isolated under `lib/ai-quality`.
+- Stage 5.3A through Stage 5.3C did not connect OpenAI SDK, API keys, environment variables, API routes, real model calls, simulator runtime, Decision Engine runtime, AI Provider runtime, Prompt / Context runtime, database runtime, Supabase runtime, auth runtime, persistence runtime, subscriptions runtime, UI, or dashboard.
+- Stage 5.3D has not started.
+- Real AI runtime integration has not started.
+- The immutable target runtime architecture is now documented in `LEVIO_TARGET_RUNTIME_ARCHITECTURE.md`.
+- Future Stage 5 runtime integration must preserve `USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI`.
+- Any deviation requires a separate warning, risk analysis, consequence analysis, alternative options, and explicit owner confirmation before code changes.
 - Strategic invariant: Levio is not an AI Chat; Levio is not an Answer Engine; Levio is a Decision Simulation Engine.
 
-Levio remains a system for decision simulation: modeling decisions, scenarios, risks, consequences, and tradeoffs. Stage 5.2 prompt/context foundations define a controlled context-shaping layer for future decision simulation support; they do not redefine the product as a chatbot, answer engine, AI playground, prompt wrapper, or wrapper over OpenAI.
+Levio remains a system for decision simulation: modeling decisions, scenarios, risks, consequences, outcomes, and tradeoffs. The AI Provider is an internal replaceable component only. AI must not answer users directly, must not become the center of the product, and must not bypass the Decision Engine before or after candidate generation. The UI must present simulation process and simulation results, not direct AI answers.
 
 ## Superseded Checkpoint - 18 June 2026
 
@@ -836,9 +841,11 @@ Current authoritative roadmap state:
 - Stage 4.4 - Subscription Runtime - complete at the foundation/runtime-boundary/QA level.
 - Stage 5.1 - AI Provider Adapter - complete at the contracts/runtime/boundary/QA level.
 - Stage 5.2 - Prompt / Context Layer - complete at the contracts/runtime/boundary/QA level.
-- Stage 5.3 - AI Quality / Cost / Safety Validation - next stage, not started.
+- Stage 5.3A-C - AI Quality / Cost / Safety Validation - complete at the contracts/runtime/boundary foundation level.
+- Stage 5.3D - not started.
+- Real AI runtime integration - not started.
 
-Stage 4.x, Stage 5.1, and Stage 5.2 closure constraints remain binding:
+Stage 4.x, Stage 5.1, Stage 5.2, and Stage 5.3A-C closure constraints remain binding:
 
 - Stage 4.3 completed user data controls foundation work only.
 - Stage 4.3 did not connect UI, dashboard, API routes, database runtime, Supabase runtime, migrations, cron/jobs, storage, real export generation, real deletion execution, simulator runtime, AI/OpenAI, memory, subscriptions, billing, or payments.
@@ -848,8 +855,12 @@ Stage 4.x, Stage 5.1, and Stage 5.2 closure constraints remain binding:
 - Stage 5.1 did not connect OpenAI SDK, API keys, environment variables, API routes, real model calls, simulator runtime, Decision Engine runtime, prompt/context layer, database runtime, Supabase runtime, auth runtime, persistence runtime, subscriptions runtime, UI, or dashboard.
 - Stage 5.2 completed prompt/context foundation work only.
 - Stage 5.2 did not connect model calls, OpenAI SDK, environment variables, API routes, simulator runtime, Decision Engine runtime, AI Provider runtime, database runtime, Supabase runtime, auth runtime, persistence runtime, subscriptions runtime, UI, or dashboard.
-- Stage 5.3 AI Quality / Cost / Safety Validation must not start before a separate explicit stage instruction defines its scope, risks, dependencies, and prohibited coupling.
+- Stage 5.3A-C completed AI quality/cost/safety foundation work only.
+- Stage 5.3A-C did not connect OpenAI SDK, API keys, environment variables, API routes, real model calls, simulator runtime, Decision Engine runtime, AI Provider runtime, Prompt / Context runtime, database runtime, Supabase runtime, auth runtime, persistence runtime, subscriptions runtime, UI, or dashboard.
+- Stage 5.3D must not start before a separate explicit stage instruction defines its scope, risks, dependencies, and prohibited coupling.
 - Levio remains a Decision Simulation Engine, not an AI chat, answer engine, or wrapper over OpenAI.
+- The immutable target runtime architecture is `USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI`.
+- Future Stage 5 runtime integration must preserve that architecture. Any deviation requires a separate warning, risk analysis, consequence analysis, alternative options, and explicit owner confirmation before code changes.
 
 ## 10. Critical Experimental Rules
 
