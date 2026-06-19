@@ -1,10 +1,30 @@
 # CURRENT STAGE - LEVIO.ES
 
-Date: 18 June 2026, Europe/Madrid.
+Date: 19 June 2026, Europe/Madrid.
 
-## Current Confirmed Checkpoint - 18 June 2026
+## Current Confirmed Checkpoint - 19 June 2026
 
-Stage 4.2D Validation Intake is the current confirmed checkpoint.
+Stage 4.3H User Data Controls Documentation / State Closure is the current confirmed checkpoint.
+
+Confirmed facts from the repository:
+
+- Stage 2, Stage 3, Stage 4.1, and Stage 4.2 are complete.
+- Stage 4.3A through Stage 4.3G are complete and accepted.
+- Stage 4.3H creates `LEVIO_STAGE_4_3H_USER_DATA_CONTROLS_CLOSURE.md` and closes Stage 4.3 at the foundation/runtime-boundary/QA level.
+- The completed Stage 4.3 package is isolated under `lib/user-data-controls`.
+- Stage 4.3 includes consent, retention, export, deletion, runtime-boundary, and runtime QA/regression foundations.
+- Stage 4.3 uses pure TypeScript deterministic contracts and preflight/foundation logic only.
+- Stage 4.3 did not connect UI, dashboard, API routes, database runtime, Supabase runtime, migrations, cron/jobs, storage, real export generation, real deletion execution, simulator runtime, AI/OpenAI, memory, subscriptions, billing, or payments.
+- `lib/user-data-controls/runtime-qa-regression.ts` aggregates deterministic validation catalogs for consent, retention, export, deletion, and runtime boundary.
+- Stage 4.4 is the next major roadmap stage, but it has not started.
+- Stage 5.x has not started.
+- Strategic invariant: Levio is not an AI Chat; Levio is not an Answer Engine; Levio is a Decision Simulation Engine.
+
+Levio remains a system for decision simulation: modeling decisions, scenarios, risks, consequences, and tradeoffs. Stage 4.3 user data controls support ownership and lifecycle safety around that product direction; they do not redefine the product as a chatbot, answer engine, or wrapper over OpenAI.
+
+## Superseded Checkpoint - 18 June 2026
+
+Stage 4.2D Validation Intake was the confirmed checkpoint before Stage 4.3 foundation work.
 
 Confirmed facts from the repository:
 
@@ -200,9 +220,9 @@ Confirmed facts from the repository:
 - Timing for the `01/02/03/04` system cards remains unchanged; reduced-motion fallback remains active.
 - Obsolete production visual assets and unused `components/SingularityVisual.tsx` are removed.
 
-Current direction remains unchanged: Levio.es is an AI Decision Intelligence System, not a chatbot, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
+Current direction remains unchanged: Levio.es is a Decision Simulation Engine, not an AI chat, answer engine, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 4.2D Validation Intake is complete with decision `ACCEPTED DEV EXECUTION`. The approved target was an Empty Dev Supabase Project, and the owner/operator reported successful manual execution of all Stage 4.2D migration files in order. SQL was not executed by Codex, Supabase was not contacted by Codex, secrets were not requested, migration files were not changed, persistence runtime has not started, auth runtime/dashboard/simulator/public product runtime remain unchanged, and subscriptions, AI, memory, billing, Stage 4.3, and Stage 4.4 have not started. The next actionable step is Stage 4.2E Persistence Runtime Foundation.
+Stage 4.3 User Data Controls is complete at the foundation/runtime-boundary/QA level. UI, dashboard, API routes, database runtime, Supabase runtime, migrations, real export generation, real deletion execution, simulator runtime, AI/OpenAI, memory, subscriptions, billing, Stage 4.4, and Stage 5.x remain unstarted.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 
