@@ -827,39 +827,25 @@ Important `AGENTS.md` note:
 
 ## 9. Roadmap
 
-Stable frontend stabilization phase:
+Current authoritative roadmap state:
 
-- Stage 2.1 - motion CSS stabilization - completed in `8eeb150`.
-- Stage 2.2 - dashboard CSS stabilization - completed in `959ffe5`.
-- Stage 2.3 - auth CSS stabilization - completed in `7ea3e61`.
-- Stage 2.4 - simulator CSS stabilization - completed in `c9a86da`.
-- Stage 2.5 - visual regression QA - completed.
-- Stage 2.6 - checkpoint + context sync - completed in `c81a9c8`.
-- Stage 2.7-prep - visual engine preparation - completed in `0cec475`.
-- Stage 2.7.1 - WebGL architecture research - completed in `3d8ef6e`.
+- Stage 2 - complete.
+- Stage 3 - complete.
+- Stage 4.1 - complete.
+- Stage 4.2 - complete.
+- Stage 4.3 - complete at the foundation/runtime-boundary/QA level.
+- Stage 4.4 - Subscription Runtime - next stage, not started.
+- Stage 5.1 - AI Provider Adapter - future stage, not started.
+- Stage 5.2 - Prompt / Context Layer - future stage, not started.
+- Stage 5.3 - AI Quality / Cost / Safety Validation - future stage, not started.
 
-Experimental visual engine phase:
+Stage 4.3 closure constraints remain binding:
 
-- Stage 2.7.2 - isolated WebGL sandbox prototype - completed in `0781b46`.
-- Stage 2.7.3 - isolated WebGL visual quality iteration - completed in `5553455`.
-- Stage 2.7.3b - `fa5dfd9` technical iPhone Safari safety passed, but visual depth improvement failed; stage remains active.
-- Stage 2.7.4 - blocked until Stage 2.7.3b closes under strict stage discipline, despite older profiling notes.
-- Stage 2.7.5 - provisional mobile safety work in `89e534c`; not a final validation stage or production-integration basis.
-- Stage 2.7.6 - provisional/no-production decision only; production replacement remains blocked.
-- Stage 2.7.7 - blocked; no escalation stage is approved.
-- Stage 2.7.5b - real Safari/iPhone validation completed after Safari-safe motion retest.
-- Stage 2.7.5c - adaptive quality / reduced mobile mode decision completed; no extra reduced mode required now.
-- Stage 2.7.6b - reserved for a future production integration proposal only if hybrid or partial integration is explicitly requested later.
-
-Locked until explicit later stages:
-
-- real AI backend;
-- OpenAI API integration;
-- provider-specific production auth integration beyond the Stage 4.1 scope lock;
-- database;
-- payments;
-- production persistence;
-- production privacy/security implementation.
+- Stage 4.3 completed user data controls foundation work only.
+- Stage 4.3 did not connect UI, dashboard, API routes, database runtime, Supabase runtime, migrations, cron/jobs, storage, real export generation, real deletion execution, simulator runtime, AI/OpenAI, memory, subscriptions, billing, or payments.
+- Stage 4.4 Subscription Runtime must not be treated as started until a separate explicit stage instruction defines its scope, risks, dependencies, and prohibited coupling.
+- Stage 5.x must not start before Stage 4.4 is completed and accepted.
+- Levio remains a Decision Simulation Engine, not an AI chat, answer engine, or wrapper over OpenAI.
 
 ## 10. Critical Experimental Rules
 
