@@ -4,23 +4,24 @@ Date: 19 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 19 June 2026
 
-Stage 4.3H User Data Controls Documentation / State Closure is the current confirmed checkpoint.
+Stage 4.4E Subscription Documentation / State Closure is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
-- Stage 2, Stage 3, Stage 4.1, and Stage 4.2 are complete.
-- Stage 4.3A through Stage 4.3G are complete and accepted.
-- Stage 4.3H creates `LEVIO_STAGE_4_3H_USER_DATA_CONTROLS_CLOSURE.md` and closes Stage 4.3 at the foundation/runtime-boundary/QA level.
-- The completed Stage 4.3 package is isolated under `lib/user-data-controls`.
-- Stage 4.3 includes consent, retention, export, deletion, runtime-boundary, and runtime QA/regression foundations.
-- Stage 4.3 uses pure TypeScript deterministic contracts and preflight/foundation logic only.
-- Stage 4.3 did not connect UI, dashboard, API routes, database runtime, Supabase runtime, migrations, cron/jobs, storage, real export generation, real deletion execution, simulator runtime, AI/OpenAI, memory, subscriptions, billing, or payments.
-- `lib/user-data-controls/runtime-qa-regression.ts` aggregates deterministic validation catalogs for consent, retention, export, deletion, and runtime boundary.
-- Stage 4.4 is the next major roadmap stage, but it has not started.
-- Stage 5.x has not started.
+- Stage 2, Stage 3, Stage 4.1, Stage 4.2, and Stage 4.3 are complete.
+- Stage 4.4A through Stage 4.4D are complete and accepted.
+- Stage 4.4E creates `LEVIO_STAGE_4_4E_SUBSCRIPTION_RUNTIME_CLOSURE.md` and closes Stage 4.4 at the foundation/runtime-boundary/QA level.
+- The completed Stage 4.4 package is isolated under `lib/subscriptions`.
+- Stage 4.4 includes subscription contracts, runtime, runtime-boundary, and runtime QA/regression foundations.
+- Stage 4.4 uses pure TypeScript deterministic contracts, preflight decisions, controlled boundary routing, and QA aggregation only.
+- Stage 4.4 did not connect billing, payments, Stripe, UI, dashboard, API routes, database runtime, Supabase runtime, auth runtime, persistence runtime, simulator runtime, AI/OpenAI, or Stage 5.x.
+- `lib/subscriptions/runtime-qa-regression.ts` aggregates deterministic validation catalogs for subscription contracts, runtime, and boundary.
+- Stage 5.1 AI Provider Adapter is the next major roadmap stage, but it has not started.
+- Stage 5.2 Prompt / Context Layer has not started.
+- Stage 5.3 AI Quality / Cost / Safety Validation has not started.
 - Strategic invariant: Levio is not an AI Chat; Levio is not an Answer Engine; Levio is a Decision Simulation Engine.
 
-Levio remains a system for decision simulation: modeling decisions, scenarios, risks, consequences, and tradeoffs. Stage 4.3 user data controls support ownership and lifecycle safety around that product direction; they do not redefine the product as a chatbot, answer engine, or wrapper over OpenAI.
+Levio remains a system for decision simulation: modeling decisions, scenarios, risks, consequences, and tradeoffs. Stage 4.4 subscription foundations support controlled access and entitlement checks around that product direction; they do not redefine the product as a chatbot, answer engine, billing shell, or wrapper over OpenAI.
 
 ## Superseded Checkpoint - 18 June 2026
 
