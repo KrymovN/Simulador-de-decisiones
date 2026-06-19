@@ -6,6 +6,9 @@ export const CONSENT_RUNTIME_FOUNDATION_MODE = "consent_foundation_only" as cons
 export const RETENTION_RUNTIME_FOUNDATION_VERSION =
   "4.3C-retention-runtime-foundation.1" as const;
 export const RETENTION_RUNTIME_FOUNDATION_MODE = "retention_foundation_only" as const;
+export const EXPORT_RUNTIME_FOUNDATION_VERSION =
+  "4.3D-export-runtime-foundation.1" as const;
+export const EXPORT_RUNTIME_FOUNDATION_MODE = "export_foundation_only" as const;
 
 export type ConsentRuntimeFoundationVersion =
   typeof CONSENT_RUNTIME_FOUNDATION_VERSION;
@@ -15,6 +18,10 @@ export type RetentionRuntimeFoundationVersion =
   typeof RETENTION_RUNTIME_FOUNDATION_VERSION;
 export type RetentionRuntimeFoundationMode =
   typeof RETENTION_RUNTIME_FOUNDATION_MODE;
+export type ExportRuntimeFoundationVersion =
+  typeof EXPORT_RUNTIME_FOUNDATION_VERSION;
+export type ExportRuntimeFoundationMode =
+  typeof EXPORT_RUNTIME_FOUNDATION_MODE;
 
 export type ConsentOwnerPrincipalType = "registered_user";
 
@@ -385,6 +392,242 @@ export type RetentionRuntimeValidationResult = {
   passed: boolean;
   failed: boolean;
   cases: RetentionRuntimeValidationCaseResult[];
+  summary: {
+    total: number;
+    passed: number;
+    failed: number;
+  };
+};
+
+export type ExportOwnerPrincipalType = "registered_user";
+
+export type ExportResourceCategory =
+  | "levio_principal_metadata"
+  | "saved_simulation"
+  | "simulation_draft"
+  | "simulation_history_entry";
+
+export type ExportDataCategory =
+  | "principal_profile"
+  | "simulation_record"
+  | "simulation_draft"
+  | "simulation_history"
+  | "decision_provenance"
+  | "lifecycle_metadata";
+
+export type ExportForbiddenDataCategory =
+  | "provider_secret"
+  | "auth_token"
+  | "internal_security_signal"
+  | "service_role_data"
+  | "other_user_record"
+  | "workspace_record"
+  | "billing_record"
+  | "ai_prompt"
+  | "raw_ai_response"
+  | "embedding"
+  | "vector"
+  | "memory_data";
+
+export type ExportPackageFormat = "manifest_only";
+
+export type ExportRequestScope = {
+  includePrincipalMetadata: boolean;
+  includeSavedSimulations: boolean;
+  includeSimulationDrafts: boolean;
+  includeSimulationHistory: boolean;
+};
+
+export type ExportEligibilityState =
+  | "eligible"
+  | "ineligible_deleted"
+  | "ineligible_restricted"
+  | "ineligible_expired"
+  | "ineligible_legal_exception"
+  | "ineligible_scope_excluded";
+
+export type ExportResourceSnapshot = {
+  resourceId: string;
+  resourceCategory: ExportResourceCategory;
+  ownerPrincipalId: string;
+  ownerPrincipalType: ExportOwnerPrincipalType;
+  exportEligible: boolean;
+  deletionState:
+    | "active"
+    | "deletion_requested"
+    | "restricted"
+    | "deleted"
+    | "anonymized"
+    | "retained_legal_exception";
+  lifecycleState:
+    | "active"
+    | "archived"
+    | "saved"
+    | "converted"
+    | "deletion_requested"
+    | "deletion_pending"
+    | "restricted"
+    | "deleted"
+    | "anonymized"
+    | "retained_legal_exception"
+    | "expired"
+    | "discarded";
+  dataCategories: ExportDataCategory[];
+  forbiddenDataCategories?: ExportForbiddenDataCategory[];
+  createdAt: string;
+  updatedAt?: string;
+  archivedAt?: string | null;
+  deletedAt?: string | null;
+  expiresAt?: string | null;
+  retentionRule?: string;
+  schemaVersion?: number;
+};
+
+export type ExportPackageEntry = {
+  resourceId: string;
+  resourceCategory: ExportResourceCategory;
+  dataCategories: ExportDataCategory[];
+  eligibility: Extract<ExportEligibilityState, "eligible">;
+};
+
+export type ExportPackagePlan = {
+  packageFormat: ExportPackageFormat;
+  generation: "not_started";
+  fileCreated: false;
+  storageWrite: false;
+  databaseRead: false;
+  includes: ExportPackageEntry[];
+  excluded: {
+    resourceId: string;
+    resourceCategory: ExportResourceCategory;
+    eligibility: Exclude<ExportEligibilityState, "eligible">;
+    reason: string;
+  }[];
+  forbiddenCategoriesExcluded: ExportForbiddenDataCategory[];
+};
+
+export type ExportRuntimeConfig = {
+  enabled: boolean;
+  allowedDataCategories: ExportDataCategory[];
+  forbiddenDataCategories: ExportForbiddenDataCategory[];
+};
+
+export type ExportRuntimeBlockedReason =
+  | "export_runtime_disabled"
+  | "auth_context_missing"
+  | "auth_context_not_authenticated"
+  | "session_not_active"
+  | "principal_type_not_supported"
+  | "client_owner_input_rejected"
+  | "owner_mismatch"
+  | "export_request_missing"
+  | "export_scope_empty"
+  | "resource_owner_mismatch"
+  | "resource_category_not_supported"
+  | "resource_forbidden_data_present"
+  | "resource_data_category_not_allowed"
+  | "timestamp_invalid"
+  | "no_exportable_resources";
+
+export type ExportRuntimeSafetyEvidence = {
+  stage: "4.3D";
+  exportOnly: true;
+  foundationOnly: true;
+  failClosedByDefault: true;
+  runtimeWritesEnabled: false;
+  fileCreated: false;
+  archiveCreated: false;
+  jsonCreated: false;
+  csvCreated: false;
+  storageConnected: false;
+  dbOperationsExecuted: false;
+  supabaseConnected: false;
+  apiRouteIntegrated: false;
+  uiIntegrated: false;
+  dashboardIntegrated: false;
+  cronJobsStarted: false;
+  deletionRuntimeStarted: false;
+  retentionRuntimeChanged: false;
+  consentRuntimeChanged: false;
+  authRuntimeChanged: false;
+  simulatorIntegrated: false;
+  persistenceSchemaChanged: false;
+  migrationsChanged: false;
+  subscriptionsIntegrated: false;
+  memoryRuntimeIntegrated: false;
+  aiIntegrated: false;
+  stage43EStarted: false;
+  stage44Started: false;
+  stage5Started: false;
+  rollback: "disable_export_runtime_or_remove_export_foundation_exports";
+};
+
+export type ExportRuntimeEvaluationInput = {
+  authContext: LevioAuthRuntimeContext | null | undefined;
+  ownerPrincipalId?: string;
+  request?: {
+    requestId: string;
+    ownerPrincipalId?: string;
+    scope: ExportRequestScope;
+    requestedAt: string;
+    packageFormat: ExportPackageFormat;
+  } | null;
+  resources: ExportResourceSnapshot[];
+  clientOwnerFields?: {
+    principalId?: string;
+    ownerPrincipalId?: string;
+    ownerPrincipalType?: string;
+    providerReference?: string;
+  };
+};
+
+export type ExportRuntimeAllowedEvaluation = {
+  status: "allowed";
+  execution: "preflight_only";
+  version: ExportRuntimeFoundationVersion;
+  requestId: string;
+  principalId: string;
+  scope: ExportRequestScope;
+  packagePlan: ExportPackagePlan;
+  evidence: ExportRuntimeSafetyEvidence;
+};
+
+export type ExportRuntimeBlockedEvaluation = {
+  status: "blocked";
+  execution: "none";
+  version: ExportRuntimeFoundationVersion;
+  reason: ExportRuntimeBlockedReason;
+  message: string;
+  evidence: ExportRuntimeSafetyEvidence;
+};
+
+export type ExportRuntimeEvaluationResult =
+  | ExportRuntimeAllowedEvaluation
+  | ExportRuntimeBlockedEvaluation;
+
+export type ExportRuntimeFoundation = {
+  version: ExportRuntimeFoundationVersion;
+  mode: ExportRuntimeFoundationMode;
+  enabled: boolean;
+  writesEnabled: false;
+  packageFormat: ExportPackageFormat;
+  evaluate(input: ExportRuntimeEvaluationInput): ExportRuntimeEvaluationResult;
+};
+
+export type ExportRuntimeValidationCaseResult = {
+  caseId: string;
+  title: string;
+  expectedBehavior: string;
+  actualStatus: ExportRuntimeEvaluationResult["status"];
+  passed: boolean;
+  failed: boolean;
+  issues: string[];
+};
+
+export type ExportRuntimeValidationResult = {
+  passed: boolean;
+  failed: boolean;
+  cases: ExportRuntimeValidationCaseResult[];
   summary: {
     total: number;
     passed: number;
