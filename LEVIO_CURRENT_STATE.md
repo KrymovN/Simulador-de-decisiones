@@ -4,27 +4,26 @@
 
 19 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 5.1E AI Provider Adapter Documentation / State Closure. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 5.2E Prompt / Context Documentation / State Closure. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
 
 ## Current Confirmed Checkpoint - 19 June 2026
 
-Stage 5.1E AI Provider Adapter Documentation / State Closure is the current confirmed checkpoint.
+Stage 5.2E Prompt / Context Documentation / State Closure is the current confirmed checkpoint.
 
 Confirmed facts from the repository:
 
-- Stage 2, Stage 3, Stage 4.1, Stage 4.2, Stage 4.3, and Stage 4.4 are complete.
-- Stage 5.1A through Stage 5.1D are complete and accepted.
-- Stage 5.1E creates `LEVIO_STAGE_5_1E_AI_PROVIDER_ADAPTER_CLOSURE.md` and closes Stage 5.1 at the contracts/runtime/boundary/QA level.
-- The completed Stage 5.1 package is isolated under `lib/ai-provider`.
-- Stage 5.1 includes AI provider adapter contracts, deterministic runtime foundation, controlled runtime boundary, and runtime QA/regression aggregation.
-- Stage 5.1 uses pure TypeScript deterministic contracts, preflight decisions, controlled boundary routing, provider/capability/safety/cost/latency evidence, and QA aggregation only.
-- Stage 5.1 did not connect OpenAI SDK, API keys, environment variables, API routes, real model calls, simulator runtime, Decision Engine runtime, prompt/context layer, database runtime, Supabase runtime, auth runtime, persistence runtime, subscriptions runtime, UI, or dashboard.
-- `lib/ai-provider/runtime-qa-regression.ts` aggregates deterministic validation catalogs for AI provider contracts, runtime, and boundary.
-- Stage 5.2 Prompt / Context Layer is the next roadmap stage, but implementation has not started.
-- Stage 5.3 AI Quality / Cost / Safety Validation has not started.
+- Stage 2, Stage 3, Stage 4.1, Stage 4.2, Stage 4.3, Stage 4.4, and Stage 5.1 are complete.
+- Stage 5.2A through Stage 5.2D are complete and accepted.
+- Stage 5.2E creates `LEVIO_STAGE_5_2E_PROMPT_CONTEXT_CLOSURE.md` and closes Stage 5.2 at the contracts/runtime/boundary/QA level.
+- The completed Stage 5.2 package is isolated under `lib/prompt-context`.
+- Stage 5.2 includes prompt/context contracts, deterministic runtime foundation, controlled runtime boundary, and runtime QA/regression aggregation.
+- Stage 5.2 uses pure TypeScript deterministic contracts, preflight decisions, controlled boundary routing, prompt/context packet assembly, instruction resolution, safety/budget/forbidden-pattern evidence, and QA aggregation only.
+- Stage 5.2 did not connect model calls, OpenAI SDK, environment variables, API routes, simulator runtime, Decision Engine runtime, AI Provider runtime, database runtime, Supabase runtime, auth runtime, persistence runtime, subscriptions runtime, UI, or dashboard.
+- `lib/prompt-context/runtime-qa-regression.ts` aggregates deterministic validation catalogs for prompt/context contracts, runtime, and boundary.
+- Stage 5.3 AI Quality / Cost / Safety Validation is the next roadmap stage, but implementation has not started.
 - Strategic invariant: Levio is not an AI Chat; Levio is not an Answer Engine; Levio is a Decision Simulation Engine.
 
-Levio remains a system for decision simulation: modeling decisions, scenarios, risks, consequences, and tradeoffs. Stage 5.1 AI provider adapter foundations define a controlled provider-facing preflight layer for future decision simulation support; they do not redefine the product as a chatbot, answer engine, AI playground, or wrapper over OpenAI.
+Levio remains a system for decision simulation: modeling decisions, scenarios, risks, consequences, and tradeoffs. Stage 5.2 prompt/context foundations define a controlled context-shaping layer for future decision simulation support; they do not redefine the product as a chatbot, answer engine, AI playground, prompt wrapper, or wrapper over OpenAI.
 
 ## Superseded Checkpoint - 18 June 2026
 
