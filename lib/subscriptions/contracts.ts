@@ -6,6 +6,10 @@ export const SUBSCRIPTION_RUNTIME_FOUNDATION_VERSION =
   "4.4B-subscription-runtime-foundation.1" as const;
 export const SUBSCRIPTION_RUNTIME_FOUNDATION_MODE =
   "subscription_runtime_foundation_only" as const;
+export const SUBSCRIPTION_RUNTIME_BOUNDARY_VERSION =
+  "4.4C-subscription-runtime-boundary.1" as const;
+export const SUBSCRIPTION_RUNTIME_BOUNDARY_MODE =
+  "subscription_runtime_boundary_only" as const;
 
 export type SubscriptionContractsFoundationVersion =
   typeof SUBSCRIPTION_CONTRACTS_FOUNDATION_VERSION;
@@ -15,6 +19,10 @@ export type SubscriptionRuntimeFoundationVersion =
   typeof SUBSCRIPTION_RUNTIME_FOUNDATION_VERSION;
 export type SubscriptionRuntimeFoundationMode =
   typeof SUBSCRIPTION_RUNTIME_FOUNDATION_MODE;
+export type SubscriptionRuntimeBoundaryVersion =
+  typeof SUBSCRIPTION_RUNTIME_BOUNDARY_VERSION;
+export type SubscriptionRuntimeBoundaryMode =
+  typeof SUBSCRIPTION_RUNTIME_BOUNDARY_MODE;
 
 export type SubscriptionTier = "FREE" | "PREMIUM" | "PROFESSIONAL";
 
@@ -304,6 +312,114 @@ export type SubscriptionRuntimeValidationResult = {
   passed: boolean;
   failed: boolean;
   cases: SubscriptionRuntimeValidationCaseResult[];
+  summary: {
+    total: number;
+    passed: number;
+    failed: number;
+  };
+};
+
+export type SubscriptionRuntimeBoundaryOperation =
+  "subscription_access_evaluation";
+
+export type SubscriptionRuntimeBoundaryConfig = {
+  enabled: boolean;
+  allowedOperations: SubscriptionRuntimeBoundaryOperation[];
+  runtime: SubscriptionRuntimeFoundation;
+};
+
+export type SubscriptionRuntimeBoundaryBlockedReason =
+  | SubscriptionRuntimeBlockedReason
+  | "subscription_boundary_disabled"
+  | "operation_missing"
+  | "operation_not_supported"
+  | "operation_not_allowed"
+  | "payload_missing"
+  | "payload_mismatch"
+  | "module_isolation_failed";
+
+export type SubscriptionRuntimeBoundarySafetyEvidence = {
+  stage: "4.4C";
+  subscriptionOnly: true;
+  boundaryOnly: true;
+  facadeOnly: true;
+  deterministicOnly: true;
+  failClosedByDefault: true;
+  allowedOperationsExplicit: true;
+  moduleIsolationEnforced: true;
+  runtimeWritesEnabled: false;
+  billingConnected: false;
+  paymentsConnected: false;
+  stripeConnected: false;
+  dbOperationsExecuted: false;
+  supabaseConnected: false;
+  apiRouteIntegrated: false;
+  uiIntegrated: false;
+  dashboardIntegrated: false;
+  authRuntimeConnected: false;
+  persistenceRuntimeConnected: false;
+  simulatorIntegrated: false;
+  aiIntegrated: false;
+  stage44DStarted: false;
+  stage5Started: false;
+  rollback: "disable_subscription_boundary_or_remove_boundary_exports";
+};
+
+export type SubscriptionRuntimeBoundaryEvaluationInput = {
+  operation?: SubscriptionRuntimeBoundaryOperation | string;
+  access?: SubscriptionRuntimeEvaluationInput | null;
+  unexpectedPayload?: unknown;
+};
+
+export type SubscriptionRuntimeBoundaryAllowedResult = {
+  status: "allowed";
+  execution: "preflight_only";
+  version: SubscriptionRuntimeBoundaryVersion;
+  operation: SubscriptionRuntimeBoundaryOperation;
+  runtimeResult: SubscriptionRuntimeAllowedDecision;
+  evidence: SubscriptionRuntimeBoundarySafetyEvidence;
+};
+
+export type SubscriptionRuntimeBoundaryBlockedResult = {
+  status: "blocked";
+  execution: "none";
+  version: SubscriptionRuntimeBoundaryVersion;
+  operation?: SubscriptionRuntimeBoundaryOperation | string;
+  reason: SubscriptionRuntimeBoundaryBlockedReason;
+  message: string;
+  runtimeResult?: SubscriptionRuntimeEvaluationResult;
+  evidence: SubscriptionRuntimeBoundarySafetyEvidence;
+};
+
+export type SubscriptionRuntimeBoundaryEvaluationResult =
+  | SubscriptionRuntimeBoundaryAllowedResult
+  | SubscriptionRuntimeBoundaryBlockedResult;
+
+export type SubscriptionRuntimeBoundaryFoundation = {
+  version: SubscriptionRuntimeBoundaryVersion;
+  mode: SubscriptionRuntimeBoundaryMode;
+  enabled: boolean;
+  writesEnabled: false;
+  allowedOperations: SubscriptionRuntimeBoundaryOperation[];
+  evaluate(
+    input: SubscriptionRuntimeBoundaryEvaluationInput,
+  ): SubscriptionRuntimeBoundaryEvaluationResult;
+};
+
+export type SubscriptionRuntimeBoundaryValidationCaseResult = {
+  caseId: string;
+  title: string;
+  expectedBehavior: string;
+  actualStatus: SubscriptionRuntimeBoundaryEvaluationResult["status"];
+  passed: boolean;
+  failed: boolean;
+  issues: string[];
+};
+
+export type SubscriptionRuntimeBoundaryValidationResult = {
+  passed: boolean;
+  failed: boolean;
+  cases: SubscriptionRuntimeBoundaryValidationCaseResult[];
   summary: {
     total: number;
     passed: number;
