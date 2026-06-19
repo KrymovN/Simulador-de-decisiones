@@ -6,6 +6,10 @@ export const AI_PROVIDER_ADAPTER_RUNTIME_VERSION =
   "5.1B-ai-provider-adapter-runtime-foundation.1" as const;
 export const AI_PROVIDER_ADAPTER_RUNTIME_MODE =
   "ai_provider_adapter_runtime_foundation_only" as const;
+export const AI_PROVIDER_ADAPTER_BOUNDARY_VERSION =
+  "5.1C-ai-provider-adapter-boundary.1" as const;
+export const AI_PROVIDER_ADAPTER_BOUNDARY_MODE =
+  "ai_provider_adapter_boundary_only" as const;
 
 export type AiProviderAdapterContractsVersion =
   typeof AI_PROVIDER_ADAPTER_CONTRACTS_VERSION;
@@ -15,6 +19,10 @@ export type AiProviderAdapterRuntimeVersion =
   typeof AI_PROVIDER_ADAPTER_RUNTIME_VERSION;
 export type AiProviderAdapterRuntimeMode =
   typeof AI_PROVIDER_ADAPTER_RUNTIME_MODE;
+export type AiProviderAdapterBoundaryVersion =
+  typeof AI_PROVIDER_ADAPTER_BOUNDARY_VERSION;
+export type AiProviderAdapterBoundaryMode =
+  typeof AI_PROVIDER_ADAPTER_BOUNDARY_MODE;
 
 export type AiProviderId = "openai" | "anthropic" | "local_contract_stub";
 
@@ -360,6 +368,118 @@ export type AiProviderAdapterRuntimeValidationResult = {
   passed: boolean;
   failed: boolean;
   cases: AiProviderAdapterRuntimeValidationCaseResult[];
+  summary: {
+    total: number;
+    passed: number;
+    failed: number;
+  };
+};
+
+export type AiProviderAdapterBoundaryOperation =
+  "ai_provider_runtime_preflight";
+
+export type AiProviderAdapterBoundaryConfig = {
+  enabled: boolean;
+  allowedOperations: AiProviderAdapterBoundaryOperation[];
+  runtime: AiProviderAdapterRuntimeFoundation;
+};
+
+export type AiProviderAdapterBoundaryBlockedReason =
+  | AiProviderAdapterRuntimeBlockedReason
+  | "ai_provider_boundary_disabled"
+  | "operation_missing"
+  | "operation_not_supported"
+  | "operation_not_allowed"
+  | "payload_missing"
+  | "payload_mismatch"
+  | "runtime_isolation_failed";
+
+export type AiProviderAdapterBoundarySafetyEvidence = {
+  stage: "5.1C";
+  aiProviderOnly: true;
+  boundaryOnly: true;
+  facadeOnly: true;
+  deterministicOnly: true;
+  failClosedByDefault: true;
+  allowedOperationsExplicit: true;
+  payloadIsolationEnforced: true;
+  runtimeIsolationEnforced: true;
+  modelCallExecuted: false;
+  openAiSdkConnected: false;
+  apiKeysRead: false;
+  envVariablesRead: false;
+  apiRouteIntegrated: false;
+  simulatorIntegrated: false;
+  decisionEngineRuntimeConnected: false;
+  promptContextLayerConnected: false;
+  databaseConnected: false;
+  supabaseConnected: false;
+  authRuntimeConnected: false;
+  persistenceRuntimeConnected: false;
+  subscriptionsRuntimeConnected: false;
+  uiIntegrated: false;
+  dashboardIntegrated: false;
+  stage51DStarted: false;
+  stage52Started: false;
+  stage53Started: false;
+  rollback: "disable_ai_provider_adapter_boundary_or_remove_boundary_exports";
+};
+
+export type AiProviderAdapterBoundaryEvaluationInput = {
+  operation?: AiProviderAdapterBoundaryOperation | string;
+  runtime?: AiProviderAdapterRuntimeEvaluationInput | null;
+  unexpectedPayload?: unknown;
+};
+
+export type AiProviderAdapterBoundaryAllowedResult = {
+  status: "allowed";
+  execution: "preflight_only";
+  version: AiProviderAdapterBoundaryVersion;
+  operation: AiProviderAdapterBoundaryOperation;
+  runtimeResult: AiProviderAdapterRuntimeAllowedDecision;
+  evidence: AiProviderAdapterBoundarySafetyEvidence;
+};
+
+export type AiProviderAdapterBoundaryBlockedResult = {
+  status: "blocked";
+  execution: "none";
+  version: AiProviderAdapterBoundaryVersion;
+  operation?: AiProviderAdapterBoundaryOperation | string;
+  reason: AiProviderAdapterBoundaryBlockedReason;
+  message: string;
+  runtimeResult?: AiProviderAdapterRuntimeEvaluationResult;
+  evidence: AiProviderAdapterBoundarySafetyEvidence;
+};
+
+export type AiProviderAdapterBoundaryEvaluationResult =
+  | AiProviderAdapterBoundaryAllowedResult
+  | AiProviderAdapterBoundaryBlockedResult;
+
+export type AiProviderAdapterBoundaryFoundation = {
+  version: AiProviderAdapterBoundaryVersion;
+  mode: AiProviderAdapterBoundaryMode;
+  enabled: boolean;
+  modelCallsEnabled: false;
+  allowedOperations: AiProviderAdapterBoundaryOperation[];
+  evaluate(
+    input: AiProviderAdapterBoundaryEvaluationInput,
+  ): AiProviderAdapterBoundaryEvaluationResult;
+};
+
+export type AiProviderAdapterBoundaryValidationCaseResult = {
+  caseId: string;
+  title: string;
+  expectedBehavior: string;
+  actualStatus: AiProviderAdapterBoundaryEvaluationResult["status"];
+  passed: boolean;
+  failed: boolean;
+  issues: string[];
+};
+
+export type AiProviderAdapterBoundaryValidationResult = {
+  passed: boolean;
+  failed: boolean;
+  cases: AiProviderAdapterBoundaryValidationCaseResult[];
   summary: {
     total: number;
     passed: number;
