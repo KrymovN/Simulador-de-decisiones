@@ -2,11 +2,19 @@ export const AI_PROVIDER_ADAPTER_CONTRACTS_VERSION =
   "5.1A-ai-provider-adapter-contracts-foundation.1" as const;
 export const AI_PROVIDER_ADAPTER_CONTRACTS_MODE =
   "ai_provider_adapter_contracts_foundation_only" as const;
+export const AI_PROVIDER_ADAPTER_RUNTIME_VERSION =
+  "5.1B-ai-provider-adapter-runtime-foundation.1" as const;
+export const AI_PROVIDER_ADAPTER_RUNTIME_MODE =
+  "ai_provider_adapter_runtime_foundation_only" as const;
 
 export type AiProviderAdapterContractsVersion =
   typeof AI_PROVIDER_ADAPTER_CONTRACTS_VERSION;
 export type AiProviderAdapterContractsMode =
   typeof AI_PROVIDER_ADAPTER_CONTRACTS_MODE;
+export type AiProviderAdapterRuntimeVersion =
+  typeof AI_PROVIDER_ADAPTER_RUNTIME_VERSION;
+export type AiProviderAdapterRuntimeMode =
+  typeof AI_PROVIDER_ADAPTER_RUNTIME_MODE;
 
 export type AiProviderId = "openai" | "anthropic" | "local_contract_stub";
 
@@ -235,6 +243,123 @@ export type AiProviderAdapterValidationResult = {
   passed: boolean;
   failed: boolean;
   cases: AiProviderAdapterValidationCaseResult[];
+  summary: {
+    total: number;
+    passed: number;
+    failed: number;
+  };
+};
+
+export type AiProviderAdapterRuntimeSelectionStrategy =
+  | "requested_provider_first"
+  | "first_capable_provider";
+
+export type AiProviderAdapterRuntimeConfig = {
+  enabled: boolean;
+  adapterConfig: AiProviderAdapterConfig;
+  allowedProviders: AiProviderId[];
+  selectionStrategy: AiProviderAdapterRuntimeSelectionStrategy;
+};
+
+export type AiProviderAdapterRuntimeBlockedReason =
+  | AiProviderAdapterErrorCode
+  | "ai_provider_runtime_disabled"
+  | "request_missing"
+  | "provider_not_allowed"
+  | "provider_selection_failed"
+  | "runtime_contract_isolation_failed";
+
+export type AiProviderAdapterRuntimeSelection = {
+  providerId: AiProviderId;
+  modelId: string;
+  strategy: AiProviderAdapterRuntimeSelectionStrategy;
+  source: "runtime_preflight_selection";
+};
+
+export type AiProviderAdapterRuntimeSafetyEvidence = {
+  stage: "5.1B";
+  aiProviderOnly: true;
+  runtimeFoundationOnly: true;
+  contractsFoundationUsed: true;
+  deterministicOnly: true;
+  failClosedByDefault: true;
+  modelCallExecuted: false;
+  openAiSdkConnected: false;
+  apiKeysRead: false;
+  envVariablesRead: false;
+  apiRouteIntegrated: false;
+  simulatorIntegrated: false;
+  decisionEngineRuntimeConnected: false;
+  promptContextLayerConnected: false;
+  databaseConnected: false;
+  supabaseConnected: false;
+  authRuntimeConnected: false;
+  persistenceRuntimeConnected: false;
+  subscriptionsRuntimeConnected: false;
+  uiIntegrated: false;
+  dashboardIntegrated: false;
+  stage51CStarted: false;
+  stage52Started: false;
+  stage53Started: false;
+  rollback: "disable_ai_provider_adapter_runtime_or_remove_runtime_exports";
+};
+
+export type AiProviderAdapterRuntimeEvaluationInput = {
+  request?: AiProviderAdapterRequestContract | null;
+  providerPreference?: AiProviderId[];
+  allowedProviders?: AiProviderId[];
+};
+
+export type AiProviderAdapterRuntimeAllowedDecision = {
+  status: "allowed";
+  execution: "preflight_only";
+  version: AiProviderAdapterRuntimeVersion;
+  selection: AiProviderAdapterRuntimeSelection;
+  selectedRequest: AiProviderAdapterRequestContract;
+  contractResult: AiProviderAdapterAllowedEvaluation;
+  evidence: AiProviderAdapterRuntimeSafetyEvidence;
+};
+
+export type AiProviderAdapterRuntimeBlockedDecision = {
+  status: "blocked";
+  execution: "none";
+  version: AiProviderAdapterRuntimeVersion;
+  reason: AiProviderAdapterRuntimeBlockedReason;
+  message: string;
+  selection?: AiProviderAdapterRuntimeSelection;
+  selectedRequest?: AiProviderAdapterRequestContract;
+  contractResult?: AiProviderAdapterEvaluationResult;
+  evidence: AiProviderAdapterRuntimeSafetyEvidence;
+};
+
+export type AiProviderAdapterRuntimeEvaluationResult =
+  | AiProviderAdapterRuntimeAllowedDecision
+  | AiProviderAdapterRuntimeBlockedDecision;
+
+export type AiProviderAdapterRuntimeFoundation = {
+  version: AiProviderAdapterRuntimeVersion;
+  mode: AiProviderAdapterRuntimeMode;
+  enabled: boolean;
+  modelCallsEnabled: false;
+  evaluate(
+    input: AiProviderAdapterRuntimeEvaluationInput,
+  ): AiProviderAdapterRuntimeEvaluationResult;
+};
+
+export type AiProviderAdapterRuntimeValidationCaseResult = {
+  caseId: string;
+  title: string;
+  expectedBehavior: string;
+  actualStatus: AiProviderAdapterRuntimeEvaluationResult["status"];
+  passed: boolean;
+  failed: boolean;
+  issues: string[];
+};
+
+export type AiProviderAdapterRuntimeValidationResult = {
+  passed: boolean;
+  failed: boolean;
+  cases: AiProviderAdapterRuntimeValidationCaseResult[];
   summary: {
     total: number;
     passed: number;
