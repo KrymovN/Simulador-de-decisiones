@@ -2,11 +2,19 @@ export const SUBSCRIPTION_CONTRACTS_FOUNDATION_VERSION =
   "4.4A-subscription-contracts-foundation.1" as const;
 export const SUBSCRIPTION_CONTRACTS_FOUNDATION_MODE =
   "subscription_contracts_foundation_only" as const;
+export const SUBSCRIPTION_RUNTIME_FOUNDATION_VERSION =
+  "4.4B-subscription-runtime-foundation.1" as const;
+export const SUBSCRIPTION_RUNTIME_FOUNDATION_MODE =
+  "subscription_runtime_foundation_only" as const;
 
 export type SubscriptionContractsFoundationVersion =
   typeof SUBSCRIPTION_CONTRACTS_FOUNDATION_VERSION;
 export type SubscriptionContractsFoundationMode =
   typeof SUBSCRIPTION_CONTRACTS_FOUNDATION_MODE;
+export type SubscriptionRuntimeFoundationVersion =
+  typeof SUBSCRIPTION_RUNTIME_FOUNDATION_VERSION;
+export type SubscriptionRuntimeFoundationMode =
+  typeof SUBSCRIPTION_RUNTIME_FOUNDATION_MODE;
 
 export type SubscriptionTier = "FREE" | "PREMIUM" | "PROFESSIONAL";
 
@@ -179,6 +187,123 @@ export type SubscriptionContractsValidationResult = {
   passed: boolean;
   failed: boolean;
   cases: SubscriptionContractsValidationCaseResult[];
+  summary: {
+    total: number;
+    passed: number;
+    failed: number;
+  };
+};
+
+export type SubscriptionTierResolution = {
+  status: "resolved";
+  tier: SubscriptionTier;
+  entitlementId: string;
+  source: "highest_trusted_entitlement";
+};
+
+export type SubscriptionRuntimeConfig = {
+  enabled: boolean;
+  contractsConfig: SubscriptionContractsConfig;
+};
+
+export type SubscriptionRuntimeBlockedReason =
+  | SubscriptionContractsBlockedReason
+  | "subscription_runtime_disabled"
+  | "trusted_owner_missing"
+  | "owner_mismatch"
+  | "entitlement_resolution_failed";
+
+export type SubscriptionRuntimeSafetyEvidence = {
+  stage: "4.4B";
+  subscriptionOnly: true;
+  runtimeFoundationOnly: true;
+  deterministicOnly: true;
+  failClosedByDefault: true;
+  contractsFoundationUsed: true;
+  runtimeWritesEnabled: false;
+  billingConnected: false;
+  paymentsConnected: false;
+  stripeConnected: false;
+  dbOperationsExecuted: false;
+  supabaseConnected: false;
+  apiRouteIntegrated: false;
+  uiIntegrated: false;
+  dashboardIntegrated: false;
+  authRuntimeConnected: false;
+  persistenceRuntimeConnected: false;
+  simulatorIntegrated: false;
+  aiIntegrated: false;
+  stage44CStarted: false;
+  stage5Started: false;
+  rollback: "disable_subscription_runtime_or_remove_runtime_exports";
+};
+
+export type SubscriptionRuntimeEvaluationInput = {
+  trustedOwnerPrincipalId?: string;
+  entitlements: SubscriptionEntitlement[];
+  requestedCapability: SubscriptionCapability;
+  usage?: SubscriptionUsageSnapshot[];
+  now?: string;
+  clientTierOverride?: SubscriptionTier;
+  clientOwnerFields?: {
+    principalId?: string;
+    ownerPrincipalId?: string;
+    providerReference?: string;
+  };
+};
+
+export type SubscriptionRuntimeAllowedDecision = {
+  status: "allowed";
+  execution: "preflight_only";
+  version: SubscriptionRuntimeFoundationVersion;
+  requestedCapability: SubscriptionCapability;
+  resolvedTier: SubscriptionTier;
+  entitlementId: string;
+  tierResolution: SubscriptionTierResolution;
+  contractsResult: SubscriptionCapabilityAllowedEvaluation;
+  evidence: SubscriptionRuntimeSafetyEvidence;
+};
+
+export type SubscriptionRuntimeBlockedDecision = {
+  status: "blocked";
+  execution: "none";
+  version: SubscriptionRuntimeFoundationVersion;
+  requestedCapability: SubscriptionCapability;
+  reason: SubscriptionRuntimeBlockedReason;
+  message: string;
+  tierResolution?: SubscriptionTierResolution;
+  contractsResult?: SubscriptionCapabilityBlockedEvaluation;
+  evidence: SubscriptionRuntimeSafetyEvidence;
+};
+
+export type SubscriptionRuntimeEvaluationResult =
+  | SubscriptionRuntimeAllowedDecision
+  | SubscriptionRuntimeBlockedDecision;
+
+export type SubscriptionRuntimeFoundation = {
+  version: SubscriptionRuntimeFoundationVersion;
+  mode: SubscriptionRuntimeFoundationMode;
+  enabled: boolean;
+  writesEnabled: false;
+  evaluateAccess(
+    input: SubscriptionRuntimeEvaluationInput,
+  ): SubscriptionRuntimeEvaluationResult;
+};
+
+export type SubscriptionRuntimeValidationCaseResult = {
+  caseId: string;
+  title: string;
+  expectedBehavior: string;
+  actualStatus: SubscriptionRuntimeEvaluationResult["status"];
+  passed: boolean;
+  failed: boolean;
+  issues: string[];
+};
+
+export type SubscriptionRuntimeValidationResult = {
+  passed: boolean;
+  failed: boolean;
+  cases: SubscriptionRuntimeValidationCaseResult[];
   summary: {
     total: number;
     passed: number;
