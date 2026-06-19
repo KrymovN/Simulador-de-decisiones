@@ -6,11 +6,17 @@ export const AI_QUALITY_RUNTIME_VERSION =
   "5.3B-ai-quality-cost-safety-runtime-foundation.1" as const;
 export const AI_QUALITY_RUNTIME_MODE =
   "ai_quality_cost_safety_runtime_foundation_only" as const;
+export const AI_QUALITY_BOUNDARY_VERSION =
+  "5.3C-ai-quality-cost-safety-runtime-boundary.1" as const;
+export const AI_QUALITY_BOUNDARY_MODE =
+  "ai_quality_cost_safety_runtime_boundary_only" as const;
 
 export type AiQualityContractsVersion = typeof AI_QUALITY_CONTRACTS_VERSION;
 export type AiQualityContractsMode = typeof AI_QUALITY_CONTRACTS_MODE;
 export type AiQualityRuntimeVersion = typeof AI_QUALITY_RUNTIME_VERSION;
 export type AiQualityRuntimeMode = typeof AI_QUALITY_RUNTIME_MODE;
+export type AiQualityBoundaryVersion = typeof AI_QUALITY_BOUNDARY_VERSION;
+export type AiQualityBoundaryMode = typeof AI_QUALITY_BOUNDARY_MODE;
 
 export type AiQualityValidationScope =
   "decision_simulation_ai_quality_cost_safety";
@@ -358,6 +364,116 @@ export type AiQualityRuntimeValidationResult = {
   passed: boolean;
   failed: boolean;
   cases: AiQualityRuntimeValidationCaseResult[];
+  summary: {
+    total: number;
+    passed: number;
+    failed: number;
+  };
+};
+
+export type AiQualityBoundaryOperation = "ai_quality_runtime_preflight";
+
+export type AiQualityBoundaryConfig = {
+  enabled: boolean;
+  allowedOperations: AiQualityBoundaryOperation[];
+  runtime: AiQualityRuntimeFoundation;
+};
+
+export type AiQualityBoundaryBlockedReason =
+  | AiQualityRuntimeBlockedReason
+  | "ai_quality_boundary_disabled"
+  | "operation_missing"
+  | "operation_not_supported"
+  | "operation_not_allowed"
+  | "payload_missing"
+  | "payload_mismatch"
+  | "runtime_isolation_failed";
+
+export type AiQualityBoundarySafetyEvidence = {
+  stage: "5.3C";
+  aiQualityOnly: true;
+  boundaryOnly: true;
+  facadeOnly: true;
+  deterministicOnly: true;
+  failClosedByDefault: true;
+  allowedOperationsExplicit: true;
+  payloadIsolationEnforced: true;
+  runtimeIsolationEnforced: true;
+  modelCallExecuted: false;
+  openAiSdkConnected: false;
+  apiKeysRead: false;
+  envVariablesRead: false;
+  apiRouteIntegrated: false;
+  simulatorIntegrated: false;
+  decisionEngineRuntimeConnected: false;
+  aiProviderRuntimeConnected: false;
+  promptContextRuntimeConnected: false;
+  databaseConnected: false;
+  supabaseConnected: false;
+  authRuntimeConnected: false;
+  persistenceRuntimeConnected: false;
+  subscriptionsRuntimeConnected: false;
+  uiIntegrated: false;
+  dashboardIntegrated: false;
+  stage53DStarted: false;
+  rollback: "disable_ai_quality_boundary_or_remove_boundary_exports";
+};
+
+export type AiQualityBoundaryEvaluationInput = {
+  operation?: AiQualityBoundaryOperation | string;
+  runtime?: AiQualityRuntimeEvaluationInput | null;
+  unexpectedPayload?: unknown;
+};
+
+export type AiQualityBoundaryAllowedDecision = {
+  status: "allowed";
+  execution: "boundary_preflight_only";
+  version: AiQualityBoundaryVersion;
+  operation: AiQualityBoundaryOperation;
+  runtimeResult: AiQualityRuntimeAllowedDecision;
+  evidence: AiQualityBoundarySafetyEvidence;
+};
+
+export type AiQualityBoundaryBlockedDecision = {
+  status: "blocked";
+  execution: "none";
+  version: AiQualityBoundaryVersion;
+  operation?: AiQualityBoundaryOperation | string;
+  reason: AiQualityBoundaryBlockedReason;
+  message: string;
+  runtimeResult?: AiQualityRuntimeEvaluationResult;
+  evidence: AiQualityBoundarySafetyEvidence;
+};
+
+export type AiQualityBoundaryEvaluationResult =
+  | AiQualityBoundaryAllowedDecision
+  | AiQualityBoundaryBlockedDecision;
+
+export type AiQualityBoundaryFoundation = {
+  version: AiQualityBoundaryVersion;
+  mode: AiQualityBoundaryMode;
+  enabled: boolean;
+  modelCallsEnabled: false;
+  allowedOperations: AiQualityBoundaryOperation[];
+  evaluate(
+    input: AiQualityBoundaryEvaluationInput,
+  ): AiQualityBoundaryEvaluationResult;
+};
+
+export type AiQualityBoundaryValidationCaseResult = {
+  caseId: string;
+  title: string;
+  expectedBehavior: string;
+  actualStatus: AiQualityBoundaryEvaluationResult["status"];
+  passed: boolean;
+  failed: boolean;
+  issues: string[];
+};
+
+export type AiQualityBoundaryValidationResult = {
+  passed: boolean;
+  failed: boolean;
+  cases: AiQualityBoundaryValidationCaseResult[];
   summary: {
     total: number;
     passed: number;
