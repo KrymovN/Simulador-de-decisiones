@@ -12,6 +12,10 @@ export const EXPORT_RUNTIME_FOUNDATION_MODE = "export_foundation_only" as const;
 export const DELETION_RUNTIME_FOUNDATION_VERSION =
   "4.3E-deletion-runtime-foundation.1" as const;
 export const DELETION_RUNTIME_FOUNDATION_MODE = "deletion_foundation_only" as const;
+export const USER_DATA_CONTROLS_RUNTIME_BOUNDARY_VERSION =
+  "4.3F-user-data-controls-runtime-boundary.1" as const;
+export const USER_DATA_CONTROLS_RUNTIME_BOUNDARY_MODE =
+  "user_data_controls_boundary_only" as const;
 
 export type ConsentRuntimeFoundationVersion =
   typeof CONSENT_RUNTIME_FOUNDATION_VERSION;
@@ -29,6 +33,10 @@ export type DeletionRuntimeFoundationVersion =
   typeof DELETION_RUNTIME_FOUNDATION_VERSION;
 export type DeletionRuntimeFoundationMode =
   typeof DELETION_RUNTIME_FOUNDATION_MODE;
+export type UserDataControlsRuntimeBoundaryVersion =
+  typeof USER_DATA_CONTROLS_RUNTIME_BOUNDARY_VERSION;
+export type UserDataControlsRuntimeBoundaryMode =
+  typeof USER_DATA_CONTROLS_RUNTIME_BOUNDARY_MODE;
 
 export type ConsentOwnerPrincipalType = "registered_user";
 
@@ -879,6 +887,148 @@ export type DeletionRuntimeValidationResult = {
   passed: boolean;
   failed: boolean;
   cases: DeletionRuntimeValidationCaseResult[];
+  summary: {
+    total: number;
+    passed: number;
+    failed: number;
+  };
+};
+
+export type UserDataControlsBoundaryOperation =
+  | "consent_evaluation"
+  | "retention_evaluation"
+  | "export_evaluation"
+  | "deletion_evaluation";
+
+export type UserDataControlsBoundaryModule =
+  | "consent"
+  | "retention"
+  | "export"
+  | "deletion";
+
+export type UserDataControlsBoundaryModuleResult =
+  | ConsentRuntimeEvaluationResult
+  | RetentionRuntimeEvaluationResult
+  | ExportRuntimeEvaluationResult
+  | DeletionRuntimeEvaluationResult;
+
+export type UserDataControlsRuntimeBoundaryConfig = {
+  enabled: boolean;
+  allowedOperations: UserDataControlsBoundaryOperation[];
+  modules: {
+    consent?: ConsentRuntimeFoundation;
+    retention?: RetentionRuntimeFoundation;
+    export?: ExportRuntimeFoundation;
+    deletion?: DeletionRuntimeFoundation;
+  };
+};
+
+export type UserDataControlsRuntimeBoundaryBlockedReason =
+  | "boundary_disabled"
+  | "operation_not_supported"
+  | "operation_not_allowed"
+  | "module_unavailable"
+  | "module_disabled"
+  | "module_payload_missing"
+  | "module_payload_mismatch"
+  | "module_isolation_violation"
+  | "module_blocked"
+  | "module_exception";
+
+export type UserDataControlsRuntimeBoundarySafetyEvidence = {
+  stage: "4.3F";
+  boundaryOnly: true;
+  facadeOnly: true;
+  foundationOnly: true;
+  failClosedByDefault: true;
+  moduleIsolationEnforced: true;
+  allowedOperationsExplicit: true;
+  runtimeWritesEnabled: false;
+  dbOperationsExecuted: false;
+  supabaseConnected: false;
+  migrationsChanged: false;
+  apiRouteIntegrated: false;
+  uiIntegrated: false;
+  dashboardIntegrated: false;
+  cronJobsStarted: false;
+  exportFilesCreated: false;
+  deletionExecuted: false;
+  authRuntimeConnected: false;
+  persistenceRuntimeConnected: false;
+  simulatorIntegrated: false;
+  subscriptionsIntegrated: false;
+  memoryRuntimeIntegrated: false;
+  aiIntegrated: false;
+  stage43GStarted: false;
+  stage44Started: false;
+  stage5Started: false;
+  rollback: "disable_user_data_controls_boundary_or_remove_boundary_exports";
+};
+
+export type UserDataControlsRuntimeBoundaryEvaluationInput = {
+  operation: UserDataControlsBoundaryOperation;
+  consent?: ConsentRuntimeEvaluationInput | null;
+  retention?: RetentionRuntimeEvaluationInput | null;
+  exportRequest?: ExportRuntimeEvaluationInput | null;
+  deletion?: DeletionRuntimeEvaluationInput | null;
+  metadata?: {
+    correlationId?: string;
+    requestedAt?: string;
+    source: "internal_runtime_boundary";
+  };
+};
+
+export type UserDataControlsRuntimeBoundaryAllowedEvaluation = {
+  status: "allowed";
+  execution: "preflight_only";
+  version: UserDataControlsRuntimeBoundaryVersion;
+  operation: UserDataControlsBoundaryOperation;
+  module: UserDataControlsBoundaryModule;
+  moduleResult: Extract<UserDataControlsBoundaryModuleResult, { status: "allowed" }>;
+  evidence: UserDataControlsRuntimeBoundarySafetyEvidence;
+};
+
+export type UserDataControlsRuntimeBoundaryBlockedEvaluation = {
+  status: "blocked";
+  execution: "none";
+  version: UserDataControlsRuntimeBoundaryVersion;
+  operation?: UserDataControlsBoundaryOperation;
+  module?: UserDataControlsBoundaryModule;
+  reason: UserDataControlsRuntimeBoundaryBlockedReason;
+  message: string;
+  moduleResult?: UserDataControlsBoundaryModuleResult;
+  evidence: UserDataControlsRuntimeBoundarySafetyEvidence;
+};
+
+export type UserDataControlsRuntimeBoundaryEvaluationResult =
+  | UserDataControlsRuntimeBoundaryAllowedEvaluation
+  | UserDataControlsRuntimeBoundaryBlockedEvaluation;
+
+export type UserDataControlsRuntimeBoundaryFoundation = {
+  version: UserDataControlsRuntimeBoundaryVersion;
+  mode: UserDataControlsRuntimeBoundaryMode;
+  enabled: boolean;
+  writesEnabled: false;
+  allowedOperations: UserDataControlsBoundaryOperation[];
+  evaluate(
+    input: UserDataControlsRuntimeBoundaryEvaluationInput,
+  ): UserDataControlsRuntimeBoundaryEvaluationResult;
+};
+
+export type UserDataControlsRuntimeBoundaryValidationCaseResult = {
+  caseId: string;
+  title: string;
+  expectedBehavior: string;
+  actualStatus: UserDataControlsRuntimeBoundaryEvaluationResult["status"];
+  passed: boolean;
+  failed: boolean;
+  issues: string[];
+};
+
+export type UserDataControlsRuntimeBoundaryValidationResult = {
+  passed: boolean;
+  failed: boolean;
+  cases: UserDataControlsRuntimeBoundaryValidationCaseResult[];
   summary: {
     total: number;
     passed: number;
