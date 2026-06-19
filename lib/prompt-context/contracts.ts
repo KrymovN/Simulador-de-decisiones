@@ -6,6 +6,10 @@ export const PROMPT_CONTEXT_RUNTIME_VERSION =
   "5.2B-prompt-context-runtime-foundation.1" as const;
 export const PROMPT_CONTEXT_RUNTIME_MODE =
   "prompt_context_runtime_foundation_only" as const;
+export const PROMPT_CONTEXT_BOUNDARY_VERSION =
+  "5.2C-prompt-context-runtime-boundary.1" as const;
+export const PROMPT_CONTEXT_BOUNDARY_MODE =
+  "prompt_context_runtime_boundary_only" as const;
 
 export type PromptContextContractsVersion =
   typeof PROMPT_CONTEXT_CONTRACTS_VERSION;
@@ -13,6 +17,8 @@ export type PromptContextContractsMode =
   typeof PROMPT_CONTEXT_CONTRACTS_MODE;
 export type PromptContextRuntimeVersion = typeof PROMPT_CONTEXT_RUNTIME_VERSION;
 export type PromptContextRuntimeMode = typeof PROMPT_CONTEXT_RUNTIME_MODE;
+export type PromptContextBoundaryVersion = typeof PROMPT_CONTEXT_BOUNDARY_VERSION;
+export type PromptContextBoundaryMode = typeof PROMPT_CONTEXT_BOUNDARY_MODE;
 
 export type PromptContextInputKind =
   | "decision_simulation_brief"
@@ -370,6 +376,117 @@ export type PromptContextRuntimeValidationResult = {
   passed: boolean;
   failed: boolean;
   cases: PromptContextRuntimeValidationCaseResult[];
+  summary: {
+    total: number;
+    passed: number;
+    failed: number;
+  };
+};
+
+export type PromptContextBoundaryOperation =
+  "prompt_context_runtime_preflight";
+
+export type PromptContextBoundaryConfig = {
+  enabled: boolean;
+  allowedOperations: PromptContextBoundaryOperation[];
+  runtime: PromptContextRuntimeFoundation;
+};
+
+export type PromptContextBoundaryBlockedReason =
+  | PromptContextRuntimeBlockedReason
+  | "prompt_context_boundary_disabled"
+  | "operation_missing"
+  | "operation_not_supported"
+  | "operation_not_allowed"
+  | "payload_missing"
+  | "payload_mismatch"
+  | "runtime_isolation_failed";
+
+export type PromptContextBoundarySafetyEvidence = {
+  stage: "5.2C";
+  promptContextOnly: true;
+  boundaryOnly: true;
+  facadeOnly: true;
+  deterministicOnly: true;
+  failClosedByDefault: true;
+  allowedOperationsExplicit: true;
+  payloadIsolationEnforced: true;
+  runtimeIsolationEnforced: true;
+  modelCallExecuted: false;
+  openAiSdkConnected: false;
+  apiKeysRead: false;
+  envVariablesRead: false;
+  apiRouteIntegrated: false;
+  simulatorIntegrated: false;
+  decisionEngineRuntimeConnected: false;
+  aiProviderRuntimeConnected: false;
+  databaseConnected: false;
+  supabaseConnected: false;
+  authRuntimeConnected: false;
+  persistenceRuntimeConnected: false;
+  subscriptionsRuntimeConnected: false;
+  uiIntegrated: false;
+  dashboardIntegrated: false;
+  stage52DStarted: false;
+  stage53Started: false;
+  rollback: "disable_prompt_context_boundary_or_remove_boundary_exports";
+};
+
+export type PromptContextBoundaryEvaluationInput = {
+  operation?: PromptContextBoundaryOperation | string;
+  runtime?: PromptContextRuntimeEvaluationInput | null;
+  unexpectedPayload?: unknown;
+};
+
+export type PromptContextBoundaryAllowedResult = {
+  status: "allowed";
+  execution: "preflight_only";
+  version: PromptContextBoundaryVersion;
+  operation: PromptContextBoundaryOperation;
+  runtimeResult: PromptContextRuntimeAllowedDecision;
+  evidence: PromptContextBoundarySafetyEvidence;
+};
+
+export type PromptContextBoundaryBlockedResult = {
+  status: "blocked";
+  execution: "none";
+  version: PromptContextBoundaryVersion;
+  operation?: PromptContextBoundaryOperation | string;
+  reason: PromptContextBoundaryBlockedReason;
+  message: string;
+  runtimeResult?: PromptContextRuntimeEvaluationResult;
+  evidence: PromptContextBoundarySafetyEvidence;
+};
+
+export type PromptContextBoundaryEvaluationResult =
+  | PromptContextBoundaryAllowedResult
+  | PromptContextBoundaryBlockedResult;
+
+export type PromptContextBoundaryFoundation = {
+  version: PromptContextBoundaryVersion;
+  mode: PromptContextBoundaryMode;
+  enabled: boolean;
+  modelCallsEnabled: false;
+  allowedOperations: PromptContextBoundaryOperation[];
+  evaluate(
+    input: PromptContextBoundaryEvaluationInput,
+  ): PromptContextBoundaryEvaluationResult;
+};
+
+export type PromptContextBoundaryValidationCaseResult = {
+  caseId: string;
+  title: string;
+  expectedBehavior: string;
+  actualStatus: PromptContextBoundaryEvaluationResult["status"];
+  passed: boolean;
+  failed: boolean;
+  issues: string[];
+};
+
+export type PromptContextBoundaryValidationResult = {
+  passed: boolean;
+  failed: boolean;
+  cases: PromptContextBoundaryValidationCaseResult[];
   summary: {
     total: number;
     passed: number;
