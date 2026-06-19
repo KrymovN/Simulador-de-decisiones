@@ -2,11 +2,17 @@ export const PROMPT_CONTEXT_CONTRACTS_VERSION =
   "5.2A-prompt-context-contracts-foundation.1" as const;
 export const PROMPT_CONTEXT_CONTRACTS_MODE =
   "prompt_context_contracts_foundation_only" as const;
+export const PROMPT_CONTEXT_RUNTIME_VERSION =
+  "5.2B-prompt-context-runtime-foundation.1" as const;
+export const PROMPT_CONTEXT_RUNTIME_MODE =
+  "prompt_context_runtime_foundation_only" as const;
 
 export type PromptContextContractsVersion =
   typeof PROMPT_CONTEXT_CONTRACTS_VERSION;
 export type PromptContextContractsMode =
   typeof PROMPT_CONTEXT_CONTRACTS_MODE;
+export type PromptContextRuntimeVersion = typeof PROMPT_CONTEXT_RUNTIME_VERSION;
+export type PromptContextRuntimeMode = typeof PROMPT_CONTEXT_RUNTIME_MODE;
 
 export type PromptContextInputKind =
   | "decision_simulation_brief"
@@ -254,6 +260,116 @@ export type PromptContextValidationResult = {
   passed: boolean;
   failed: boolean;
   cases: PromptContextValidationCaseResult[];
+  summary: {
+    total: number;
+    passed: number;
+    failed: number;
+  };
+};
+
+export type PromptContextRuntimeConfig = {
+  enabled: boolean;
+  contracts: PromptContextContractsFoundation;
+  maxRuntimePacketCharacters: number;
+  requireDecisionSimulationInstruction: true;
+  failClosedOnContractBlock: true;
+};
+
+export type PromptContextRuntimeBlockedReason =
+  | PromptContextErrorCode
+  | "prompt_context_runtime_disabled"
+  | "input_missing"
+  | "contract_isolation_failed"
+  | "context_packet_missing"
+  | "instruction_resolution_failed"
+  | "runtime_context_budget_exceeded"
+  | "runtime_safety_guard_failed";
+
+export type PromptContextRuntimeSafetyEvidence = {
+  stage: "5.2B";
+  promptContextOnly: true;
+  runtimeFoundationOnly: true;
+  contractsFoundationUsed: true;
+  deterministicOnly: true;
+  failClosedByDefault: true;
+  contextPacketAssemblyPreflightOnly: true;
+  decisionSimulationInstructionResolved: boolean;
+  forbiddenPromptPatternsChecked: true;
+  contextBudgetEvaluated: true;
+  contextSafetyGuardEvaluated: true;
+  modelCallExecuted: false;
+  openAiSdkConnected: false;
+  apiKeysRead: false;
+  envVariablesRead: false;
+  apiRouteIntegrated: false;
+  simulatorIntegrated: false;
+  decisionEngineRuntimeConnected: false;
+  aiProviderRuntimeConnected: false;
+  databaseConnected: false;
+  supabaseConnected: false;
+  authRuntimeConnected: false;
+  persistenceRuntimeConnected: false;
+  subscriptionsRuntimeConnected: false;
+  uiIntegrated: false;
+  dashboardIntegrated: false;
+  stage52CStarted: false;
+  stage53Started: false;
+  rollback: "disable_prompt_context_runtime_or_remove_runtime_exports";
+};
+
+export type PromptContextRuntimeEvaluationInput = {
+  input?: PromptContextInputContract | null;
+};
+
+export type PromptContextRuntimeAllowedDecision = {
+  status: "allowed";
+  execution: "preflight_only";
+  version: PromptContextRuntimeVersion;
+  packet: PromptContextPacketModel;
+  instruction: DecisionSimulationInstructionModel;
+  contractResult: PromptContextAllowedEvaluation;
+  evidence: PromptContextRuntimeSafetyEvidence;
+};
+
+export type PromptContextRuntimeBlockedDecision = {
+  status: "blocked";
+  execution: "none";
+  version: PromptContextRuntimeVersion;
+  reason: PromptContextRuntimeBlockedReason;
+  message: string;
+  contractResult?: PromptContextEvaluationResult;
+  packet?: PromptContextPacketModel;
+  evidence: PromptContextRuntimeSafetyEvidence;
+};
+
+export type PromptContextRuntimeEvaluationResult =
+  | PromptContextRuntimeAllowedDecision
+  | PromptContextRuntimeBlockedDecision;
+
+export type PromptContextRuntimeFoundation = {
+  version: PromptContextRuntimeVersion;
+  mode: PromptContextRuntimeMode;
+  enabled: boolean;
+  modelCallsEnabled: false;
+  evaluate(
+    input: PromptContextRuntimeEvaluationInput,
+  ): PromptContextRuntimeEvaluationResult;
+};
+
+export type PromptContextRuntimeValidationCaseResult = {
+  caseId: string;
+  title: string;
+  expectedBehavior: string;
+  actualStatus: PromptContextRuntimeEvaluationResult["status"];
+  passed: boolean;
+  failed: boolean;
+  issues: string[];
+};
+
+export type PromptContextRuntimeValidationResult = {
+  passed: boolean;
+  failed: boolean;
+  cases: PromptContextRuntimeValidationCaseResult[];
   summary: {
     total: number;
     passed: number;
