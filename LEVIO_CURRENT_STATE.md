@@ -2,11 +2,47 @@
 
 ## Updated
 
-19 June 2026, Europe/Madrid.
+20 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 5.3C AI Quality / Cost / Safety Runtime Boundary and the immutable runtime architecture governance correction. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.3 Runtime Dependency & Scope Lock Audit. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
 
-## Current Confirmed Checkpoint - 19 June 2026
+## Current Confirmed Checkpoint - 20 June 2026
+
+Stage 4.3 Runtime Dependency & Scope Lock Audit is the current confirmed
+checkpoint after the Product Alignment Session and `LEVIO_PROJECT_PROGRESS.md`.
+
+Confirmed facts from the repository:
+
+- `LEVIO_STAGE_4_3_RUNTIME_DEPENDENCY_SCOPE_LOCK.md` records the dependency
+  audit before any production User Data Controls runtime work.
+- The audit is documentation-only.
+- No runtime code, UI, API route, AI Provider, Stripe, billing, dependency, or
+  product-logic change was approved by the audit.
+- Stage 4.2 has runtime foundation modules under `lib/persistence-runtime`,
+  including Stage 4.2E through Stage 4.2K code-level work, but product
+  UI/API/auth/simulator integration remains unapproved and unconnected.
+- Stage 4.3 remains complete only at the foundation/runtime-boundary/QA level.
+- Stage 4.4 remains complete only at the foundation/runtime-boundary/QA level.
+- Stage 5.1, Stage 5.2, and Stage 5.3A-C remain foundation/runtime/boundary
+  work only; real AI runtime integration has not started.
+- Stage 5.3A-C have code commits under `lib/ai-quality`, but no standalone
+  Stage 5.3A-C closure documents exist.
+- The next approved roadmap step is `Stage 4.2L Persistence Runtime State
+  Closure & Product Integration Scope Lock`.
+- Stage 4.3 production runtime remains blocked until Stage 4.2L closes the
+  persistence runtime state and product integration boundary, unless the project
+  owner explicitly approves a narrower non-production Stage 4.3 preflight-only
+  step.
+- Strategic invariant: Levio is not an AI Chat; Levio is not an Answer Engine;
+  Levio is a Decision Simulation Engine.
+
+The immutable target runtime architecture remains:
+
+```text
+USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI
+```
+
+## Superseded Checkpoint - 19 June 2026
 
 Stage 5.3C AI Quality / Cost / Safety Runtime Boundary is the current confirmed checkpoint.
 This documentation-only governance step adds `LEVIO_TARGET_RUNTIME_ARCHITECTURE.md`

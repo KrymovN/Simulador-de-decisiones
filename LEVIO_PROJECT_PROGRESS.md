@@ -98,8 +98,8 @@ Market Readiness         ░░░░░░░░░░ 5%
 Статус: Частично выполнено
 Прогресс: ██████░░░░ 60%
 Блокирующий фактор: Production persistence runtime еще не подключен к пользовательскому продукту.
-Последнее изменение: Persistence architecture, principal mapping, schema planning, migrations и dev execution intake подготовлены на foundation/dev уровне.
-Следующий шаг: Довести persistence runtime до безопасной production-ready интеграции с owner-scoped records, без overpromise в UI.
+Последнее изменение: Persistence architecture, principal mapping, schema planning, migrations, accepted dev execution intake и изолированные Stage 4.2E-K runtime foundation modules существуют, но продуктовая UI/API/auth/simulator интеграция не подключена.
+Следующий шаг: Stage 4.2L Persistence Runtime State Closure & Product Integration Scope Lock перед Stage 4.3 production runtime.
 
 ### 7. User Data Controls
 
@@ -178,25 +178,32 @@ Market Readiness         ░░░░░░░░░░ 5%
 - Product Alignment завершен.
 - Foundation layers в основном завершены.
 - Runtime completion еще впереди.
-- Следующий логичный фокус: Stage 4.3 User Data Controls Runtime, затем Stage 4.4 Subscription Runtime, затем Real AI Integration.
+- Stage 4.3 Runtime Dependency & Scope Lock Audit завершен.
+- Stage 4.3 production runtime пока не одобрен.
+- Следующий допустимый roadmap-шаг: Stage 4.2L Persistence Runtime State Closure & Product Integration Scope Lock.
 - В текущем состоянии Stage 4.3 и Stage 4.4 следует понимать как foundation/runtime-boundary закрытие, а не как production-ready UI/API/commercial execution.
 
 ## Current Roadmap Focus
 
 Current Focus:
-Stage 4.3 → Stage 4.4 → Real AI Integration
+Stage 4.2L → Stage 4.3 Production User Data Controls Runtime → Stage 4.4 Commercial/Billing Runtime Scope → Real AI Integration
 
 Do Not Skip:
+Persistence product integration boundary
 User Data Controls
 Subscription Runtime
 
 Reason:
-Эти блоки являются обязательным мостом между foundation и production product.
+Эти блоки являются обязательным мостом между foundation и production product. Stage 4.3 real user-data workflows зависят от owner-scoped persistence runtime и production-safe auth/session behavior.
 
 ## Decision Log
 
 ### 20 июня 2026
 
+- Выполнен Stage 4.3 Runtime Dependency & Scope Lock Audit.
+- Создан `LEVIO_STAGE_4_3_RUNTIME_DEPENDENCY_SCOPE_LOCK.md`.
+- Зафиксировано: Stage 4.3 production runtime не одобрен, потому что owner-scoped persistence product integration и production auth validation еще не закрыты.
+- Следующий approved step: Stage 4.2L Persistence Runtime State Closure & Product Integration Scope Lock.
 - Создан `LEVIO_PROJECT_PROGRESS.md` как активный progress tracker проекта.
 - Product Alignment Session завершена.
 - Главная страница выровнена под Decision Simulation Engine.
