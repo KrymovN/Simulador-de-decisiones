@@ -4,11 +4,50 @@
 
 20 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.3S User Data Controls Server Workflow Foundation. It is a synchronized copy of `LEVIO_CURRENT_STATE.md`.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.3T User Data Controls Persistence Read Adapter Foundation. It is a synchronized copy of `LEVIO_CURRENT_STATE.md`.
 
 ## Current Confirmed Checkpoint - 20 June 2026
 
-Stage 4.3S User Data Controls Server Workflow Foundation is the current
+Stage 4.3T User Data Controls Persistence Read Adapter Foundation is the
+current confirmed checkpoint after explicit owner approval following commit
+`6e96e9a`.
+
+Confirmed facts from the repository:
+
+- `LEVIO_STAGE_4_3T_PERSISTENCE_READ_ADAPTER_FOUNDATION.md` records the
+  implementation closure.
+- Runtime code was added only inside `lib/user-data-controls`.
+- Public simulator behavior was not changed.
+- UI was not changed.
+- API routes were not changed.
+- OpenAI / Real AI Runtime was not connected.
+- Billing / Subscription Runtime was not connected.
+- Export UI and Deletion UI were not created.
+- Real export packages were not created.
+- Deletion writes and account deletion orchestration were not implemented.
+- Stage 4.3T implements an owner-scoped persistence read adapter foundation,
+  safe server-only read provider contract, principal-based artifact access,
+  export/deletion snapshot mapping, parent context for history deletion
+  planning, rollback-safe invariants, and deterministic validation.
+- Stage 4.3T remains foundation only. It does not make User Data Controls
+  production-ready.
+- Still blocked: public API routes, public UI workflows, real export package
+  generation, storage/download/expiration, deletion writes, hard deletion,
+  account deletion orchestration, durable consent ledger, retention jobs,
+  production Supabase read-provider connection, production Supabase validation,
+  legal/privacy publication, and browser/API product QA.
+- Next allowable roadmap step after separate owner approval:
+  `Stage 4.3U User Data Controls API Scope & Product Exposure Gate`.
+
+The immutable target runtime architecture remains:
+
+```text
+USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI
+```
+
+## Superseded Checkpoint - 20 June 2026
+
+Stage 4.3S User Data Controls Server Workflow Foundation was the previous
 confirmed checkpoint after explicit owner approval following commit `9c02ae5`.
 
 Confirmed facts from the repository:

@@ -103,11 +103,11 @@ Market Readiness         ░░░░░░░░░░ 5%
 
 ### 7. User Data Controls
 
-Статус: Server workflow foundation реализован, production runtime не завершен
-Прогресс: ███░░░░░░░ 30%
-Блокирующий фактор: Public UI/API, real export package generation, deletion writes, production Supabase validation, legal/privacy publication и product QA еще не завершены.
-Последнее изменение: Stage 4.3S User Data Controls Server Workflow Foundation реализован; canonical principal resolution, ownership verification, owner-scoped artifact access contracts, manifest-only export planning и lifecycle-only deletion planning добавлены как server-side foundation.
-Следующий шаг: Stage 4.3T User Data Controls Persistence Read Adapter Foundation после отдельного owner approval.
+Статус: Persistence read adapter foundation реализован, production runtime не завершен
+Прогресс: ████░░░░░░ 40%
+Блокирующий фактор: Public API/UI, production Supabase read-provider connection, real export package generation, deletion writes, legal/privacy publication и product QA еще не завершены.
+Последнее изменение: Stage 4.3T User Data Controls Persistence Read Adapter Foundation реализован; owner-scoped server-only read adapter, principal-based artifact access, export/deletion snapshot mapping и history parent context добавлены как foundation.
+Следующий шаг: Stage 4.3U User Data Controls API Scope & Product Exposure Gate после отдельного owner approval.
 
 ### 8. Subscription Runtime
 
@@ -188,16 +188,18 @@ Market Readiness         ░░░░░░░░░░ 5%
 - Часть блокеров можно закрывать evidence validation, но core user-data workflows требуют инженерной разработки.
 - Владелец проекта явно одобрил начало Stage 4.3S implementation.
 - Stage 4.3S User Data Controls Server Workflow Foundation реализован.
-- User Data Controls теперь имеют server-side workflow foundation, но не public product integration.
+- Владелец проекта явно одобрил начало Stage 4.3T implementation.
+- Stage 4.3T User Data Controls Persistence Read Adapter Foundation реализован.
+- User Data Controls теперь имеют server-side workflow foundation и owner-scoped persistence read adapter foundation, но не public product integration.
 - Stage 4.3 production runtime пока не завершен.
-- Public UI/API workflows, real export generation, deletion writes и production QA начинать нельзя без отдельного approval.
-- Следующий допустимый roadmap-шаг: Stage 4.3T User Data Controls Persistence Read Adapter Foundation.
+- Public API/UI workflows, real export generation, deletion writes, production Supabase read-provider connection и production QA начинать нельзя без отдельного approval.
+- Следующий допустимый roadmap-шаг: Stage 4.3U User Data Controls API Scope & Product Exposure Gate.
 - В текущем состоянии Stage 4.3 и Stage 4.4 следует понимать как foundation/runtime-boundary закрытие, а не как production-ready UI/API/commercial execution.
 
 ## Current Roadmap Focus
 
 Current Focus:
-Stage 4.3T User Data Controls Persistence Read Adapter Foundation → later API/UI scope approval → Stage 4.4 Commercial/Billing Runtime Scope → Real AI Integration
+Stage 4.3U User Data Controls API Scope & Product Exposure Gate → later API/UI implementation approval → Stage 4.4 Commercial/Billing Runtime Scope → Real AI Integration
 
 Do Not Skip:
 Persistence product integration boundary
@@ -211,6 +213,16 @@ Reason:
 
 ### 20 июня 2026
 
+- Владелец проекта явно одобрил переход к Stage 4.3T.
+- Выполнен Stage 4.3T User Data Controls Persistence Read Adapter Foundation.
+- Создан `LEVIO_STAGE_4_3T_PERSISTENCE_READ_ADAPTER_FOUNDATION.md`.
+- Добавлен `lib/user-data-controls/persistence-read-adapter.ts`.
+- Добавлен `lib/user-data-controls/persistence-read-adapter-validation.ts`.
+- Обновлен `lib/user-data-controls/index.ts`.
+- Реализовано: owner-scoped persistence read adapter foundation, safe server-only read provider contract, client ownership exclusion, principal-based artifact access, export/deletion snapshot mapping, history parent context и rollback-safe behavior.
+- Не реализовано: UI, API routes, OpenAI, Billing, Subscription Runtime, real export packages, deletion writes, hard delete, account deletion orchestration, product behavior changes.
+- Stage 4.3T validation catalog прошел: 10 passed / 0 failed.
+- Следующий допустимый roadmap-шаг: Stage 4.3U User Data Controls API Scope & Product Exposure Gate после отдельного owner approval.
 - Владелец проекта явно одобрил переход к Stage 4.3S.
 - Выполнен Stage 4.3S User Data Controls Server Workflow Foundation.
 - Создан `LEVIO_STAGE_4_3S_SERVER_WORKFLOW_FOUNDATION.md`.
