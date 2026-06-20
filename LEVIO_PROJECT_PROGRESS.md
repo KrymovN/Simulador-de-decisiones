@@ -103,11 +103,11 @@ Market Readiness         ░░░░░░░░░░ 5%
 
 ### 7. User Data Controls
 
-Статус: Production read provider foundation реализован, production route enablement не одобрен
-Прогресс: █████░░░░░ 50%
-Блокирующий фактор: Production route enablement, public UI/product workflow, real export package generation, deletion writes, legal/privacy publication, route hardening и product QA еще не завершены.
-Последнее изменение: Stage 4.3X User Data Controls Production Read Provider Foundation реализован; server-only owner-scoped read provider, minimal planning reads, sanitized row contracts, fail-closed provider behavior и validation catalog добавлены.
-Следующий шаг: Stage 4.3Y User Data Controls Read Provider Integration Validation & Route Enablement Gate после отдельного owner approval.
+Статус: Read provider integration gate завершён, production route enablement получил NO-GO
+Прогресс: █████░░░░░ 52%
+Блокирующий фактор: Route-through-provider integration evidence, route-specific rate limiting / abuse protection, CSRF/origin/session hardening, rollback rehearsal, browser/API product QA, public UI/product workflow, real export package generation, deletion writes и legal/privacy publication еще не завершены.
+Последнее изменение: Stage 4.3Y User Data Controls Read Provider Integration Validation & Route Enablement Gate завершён; Stage 4.3S/4.3T/4.3V/4.3X integration chain признан структурно coherent, но production route enablement получил NO-GO.
+Следующий шаг: Stage 4.3Z User Data Controls Route Enablement Blocker Closure & Integration Evidence после отдельного owner approval.
 
 ### 8. Subscription Runtime
 
@@ -203,15 +203,18 @@ Market Readiness         ░░░░░░░░░░ 5%
 - Владелец проекта явно одобрил Stage 4.3X production read provider foundation implementation.
 - Stage 4.3X User Data Controls Production Read Provider Foundation реализован.
 - User Data Controls теперь имеют server-only, read-only, owner-scoped production read provider foundation, disabled by default.
+- Stage 4.3Y User Data Controls Read Provider Integration Validation & Route Enablement Gate завершен.
+- Gate result: NO-GO for production route enablement.
+- Stage 4.3S/4.3T/4.3V/4.3X integration chain is structurally coherent, but route-through-provider integration evidence, route hardening evidence, rollback rehearsal and browser/API product QA remain blockers.
 - Stage 4.3 production runtime пока не завершен.
 - Production route enablement, public UI workflows, production release, real export generation, deletion writes и production QA начинать нельзя без отдельного approval.
-- Следующий допустимый roadmap-шаг: Stage 4.3Y User Data Controls Read Provider Integration Validation & Route Enablement Gate.
+- Следующий допустимый roadmap-шаг: Stage 4.3Z User Data Controls Route Enablement Blocker Closure & Integration Evidence.
 - В текущем состоянии Stage 4.3 и Stage 4.4 следует понимать как foundation/runtime-boundary закрытие, а не как production-ready UI/API/commercial execution.
 
 ## Current Roadmap Focus
 
 Current Focus:
-Stage 4.3Y User Data Controls Read Provider Integration Validation & Route Enablement Gate → later route enablement/product workflow approval → Stage 4.4 Commercial/Billing Runtime Scope → Real AI Integration
+Stage 4.3Z User Data Controls Route Enablement Blocker Closure & Integration Evidence → later route enablement/product workflow approval → Stage 4.4 Commercial/Billing Runtime Scope → Real AI Integration
 
 Do Not Skip:
 Persistence product integration boundary
@@ -225,6 +228,13 @@ Reason:
 
 ### 20 июня 2026
 
+- Выполнен Stage 4.3Y User Data Controls Read Provider Integration Validation & Route Enablement Gate.
+- Создан `LEVIO_STAGE_4_3Y_READ_PROVIDER_INTEGRATION_VALIDATION_AND_ROUTE_ENABLEMENT_GATE.md`.
+- Runtime code, API routes, UI, OpenAI, Billing, Subscription Runtime, real export packages, storage/download links, deletion writes, hard delete и account deletion orchestration не изменялись.
+- Зафиксировано: Stage 4.3S/4.3T/4.3V/4.3X integration chain structurally coherent; canonical principal resolution, ownership guarantees, read provider boundaries, route protection, feature flags, sanitization, fail-closed behavior и rollback posture reviewed.
+- Gate result: NO-GO for production route enablement.
+- Technical blockers: no recorded route-through-provider validation against approved production-like Supabase target, no route-specific rate limiting / abuse-protection evidence, no CSRF/origin/session-hardening evidence, no expired/revoked-session route evidence, no route-through-provider sanitized error validation, no rollback rehearsal, no browser/API product QA for enabled routes.
+- Следующий допустимый roadmap-шаг: Stage 4.3Z User Data Controls Route Enablement Blocker Closure & Integration Evidence после отдельного owner approval.
 - Владелец проекта явно одобрил переход к Stage 4.3X.
 - Выполнен Stage 4.3X User Data Controls Production Read Provider Foundation.
 - Создан `LEVIO_STAGE_4_3X_PRODUCTION_READ_PROVIDER_FOUNDATION.md`.

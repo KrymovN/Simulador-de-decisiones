@@ -4,9 +4,55 @@ Date: 20 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 20 June 2026
 
-Stage 4.3X User Data Controls Production Read Provider Foundation is the
-current confirmed checkpoint after explicit owner approval following commit
-`79bf8d5`.
+Stage 4.3Y User Data Controls Read Provider Integration Validation & Route
+Enablement Gate is the current confirmed checkpoint after Stage 4.3X and commit
+`1588323`.
+
+Confirmed facts from the repository:
+
+- `LEVIO_STAGE_4_3Y_READ_PROVIDER_INTEGRATION_VALIDATION_AND_ROUTE_ENABLEMENT_GATE.md`
+  records the integration validation and route enablement gate.
+- The gate is documentation-only.
+- Runtime code was not changed.
+- API routes were not changed.
+- New endpoints were not created.
+- Product UI was not changed.
+- Production route enablement was not approved or changed.
+- OpenAI / Real AI Runtime was not connected.
+- Billing / Subscription Runtime was not connected.
+- Real export packages were not created.
+- Storage/download links were not created.
+- Deletion writes, hard delete, and account deletion orchestration were not
+  implemented.
+- Stage 4.3Y audits the Stage 4.3S/4.3T/4.3V/4.3X integration chain:
+  canonical principal resolution, ownership guarantees, read provider
+  boundaries, API route protection, feature flag behavior, sanitization,
+  fail-closed behavior, and rollback posture.
+- The foundation chain is structurally coherent, but production route enablement
+  is not ready.
+- Gate result: `NO-GO` for production route enablement.
+- Technical blockers: no recorded route-through-provider validation against an
+  approved production-like Supabase target, no route-specific rate limiting /
+  abuse-protection evidence, no CSRF/origin/session-hardening evidence, no
+  expired/revoked-session route evidence, no route-through-provider sanitized
+  error validation, no rollback rehearsal, and no browser/API product QA for
+  enabled routes.
+- Next allowable roadmap step after separate owner approval:
+  `Stage 4.3Z User Data Controls Route Enablement Blocker Closure & Integration Evidence`.
+- The next step is a governance/evidence validation stage unless the owner
+  separately approves narrowly scoped route-hardening implementation.
+
+The immutable target runtime architecture remains:
+
+```text
+USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI
+```
+
+## Superseded Checkpoint - 20 June 2026
+
+Stage 4.3X User Data Controls Production Read Provider Foundation was the
+confirmed checkpoint after explicit owner approval following commit `79bf8d5`;
+it is superseded by Stage 4.3Y.
 
 Confirmed facts from the repository:
 
