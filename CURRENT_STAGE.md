@@ -4,9 +4,50 @@ Date: 20 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 20 June 2026
 
-Stage 4.3T User Data Controls Persistence Read Adapter Foundation is the
-current confirmed checkpoint after explicit owner approval following commit
-`6e96e9a`.
+Stage 4.3U User Data Controls API Scope & Product Exposure Gate is the current
+confirmed checkpoint after Stage 4.3T and commit `2421f32`.
+
+Confirmed facts from the repository:
+
+- `LEVIO_STAGE_4_3U_API_SCOPE_AND_PRODUCT_EXPOSURE_GATE.md` records the API
+  scope and product exposure gate.
+- The gate is documentation-only.
+- Runtime code was not changed.
+- UI was not changed.
+- API routes were not created.
+- Public endpoints were not created.
+- OpenAI / Real AI Runtime was not connected.
+- Billing / Subscription Runtime was not connected.
+- Export UI and Deletion UI were not created.
+- Real export packages were not created.
+- Deletion writes and account deletion orchestration were not implemented.
+- Stage 4.3U defines future API eligibility for export request/status, deletion
+  request/status, consent management, and retention visibility.
+- Stage 4.3U defines what may leave the persistence boundary, what must never
+  leave it, which operations must remain server-only, and which ownership,
+  principal-resolution, and rollback checks are mandatory before exposure.
+- Gate result: conditional GO for a future narrow server-side API route
+  foundation stage; NO-GO for production public release, UI exposure, real export
+  packages, deletion writes, hard deletion, consent ledger writes, retention
+  jobs, OpenAI, billing, and Subscription Runtime.
+- Stage 4.3U remains governance only. It does not make User Data Controls
+  production-ready.
+- Next allowable roadmap step after separate owner approval:
+  `Stage 4.3V User Data Controls API Route Foundation`.
+- The next step is an implementation stage, not another governance stage, if the
+  owner explicitly approves API route foundation work.
+
+The immutable target runtime architecture remains:
+
+```text
+USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI
+```
+
+## Superseded Checkpoint - 20 June 2026
+
+Stage 4.3T User Data Controls Persistence Read Adapter Foundation was the
+previous confirmed checkpoint after explicit owner approval following commit
+`6e96e9a` and is superseded by Stage 4.3U.
 
 Confirmed facts from the repository:
 
