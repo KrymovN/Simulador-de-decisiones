@@ -4,8 +4,39 @@ Date: 20 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 20 June 2026
 
-Stage 4.3Q User Data Controls Product Integration Readiness Plan is the current
-confirmed checkpoint after Stage 4.3P and commit `f32d387`.
+Stage 4.3R User Data Controls Implementation Gate & Evidence Closure is the
+current confirmed checkpoint after Stage 4.3Q and commit `43cf892`.
+
+Confirmed facts from the repository:
+
+- `LEVIO_STAGE_4_3R_USER_DATA_CONTROLS_IMPLEMENTATION_GATE.md` records the
+  implementation gate evidence and decision.
+- The gate is documentation-only.
+- No runtime code, UI, API route, Supabase production runtime, OpenAI, billing,
+  Subscription Runtime, dependency, or product-behavior change was approved.
+- Gate status: `NO-GO`.
+- Stage 4.3S User Data Controls Server Workflow Foundation must not start yet.
+- Foundation evidence exists for Stage 4.3 user data controls, owner-scoped
+  persistence, and non-chat product invariants.
+- Implementation evidence remains incomplete for production auth/session,
+  canonical principal resolution, owner-scoped persistence product readiness,
+  export workflow, deletion workflow, retention policy, consent workflow,
+  legal/privacy copy, QA evidence, rollback drill, and explicit owner approval.
+- The next approved roadmap step is `Stage 4.3R-1 User Data Controls Gate
+  Blocker Closure Plan`.
+- Stage 4.3R-1 must remain documentation/validation-only unless the project
+  owner explicitly changes scope.
+
+The immutable target runtime architecture remains:
+
+```text
+USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI
+```
+
+## Superseded Checkpoint - 20 June 2026
+
+Stage 4.3Q User Data Controls Product Integration Readiness Plan was the
+previous confirmed checkpoint at commit `43cf892`.
 
 Confirmed facts from the repository:
 

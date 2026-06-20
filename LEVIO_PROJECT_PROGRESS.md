@@ -105,9 +105,9 @@ Market Readiness         ░░░░░░░░░░ 5%
 
 Статус: Foundation завершен, production runtime не завершен
 Прогресс: ██░░░░░░░░ 20%
-Блокирующий фактор: Реальные export/delete/privacy workflows еще не реализованы и implementation не одобрен.
-Последнее изменение: Stage 4.3Q User Data Controls Product Integration Readiness Plan завершен; implementation после 4.3Q не разрешен без Stage 4.3R gate и explicit owner approval.
-Следующий шаг: Stage 4.3R User Data Controls Implementation Gate & Evidence Closure.
+Блокирующий фактор: Stage 4.3R gate завершен с NO-GO; implementation не одобрен.
+Последнее изменение: Stage 4.3R User Data Controls Implementation Gate & Evidence Closure завершен; foundation evidence принято, но production/product evidence недостаточно для Stage 4.3S.
+Следующий шаг: Stage 4.3R-1 User Data Controls Gate Blocker Closure Plan.
 
 ### 8. Subscription Runtime
 
@@ -182,16 +182,17 @@ Market Readiness         ░░░░░░░░░░ 5%
 - Stage 4.2L Persistence Runtime State Closure & Product Integration Scope Lock завершен.
 - Stage 4.3P User Data Controls Product Integration Scope Lock завершен.
 - Stage 4.3Q User Data Controls Product Integration Readiness Plan завершен.
+- Stage 4.3R User Data Controls Implementation Gate & Evidence Closure завершен с итогом NO-GO.
 - User Data Controls product integration не начат.
 - Stage 4.3 production runtime пока не одобрен.
-- Implementation после Stage 4.3Q начинать нельзя.
-- Следующий допустимый roadmap-шаг: Stage 4.3R User Data Controls Implementation Gate & Evidence Closure.
+- Implementation Stage 4.3S начинать нельзя.
+- Следующий допустимый roadmap-шаг: Stage 4.3R-1 User Data Controls Gate Blocker Closure Plan.
 - В текущем состоянии Stage 4.3 и Stage 4.4 следует понимать как foundation/runtime-boundary закрытие, а не как production-ready UI/API/commercial execution.
 
 ## Current Roadmap Focus
 
 Current Focus:
-Stage 4.3R → Stage 4.3S User Data Controls Server Workflow Foundation → Stage 4.4 Commercial/Billing Runtime Scope → Real AI Integration
+Stage 4.3R-1 → repeat implementation gate → Stage 4.3S User Data Controls Server Workflow Foundation → Stage 4.4 Commercial/Billing Runtime Scope → Real AI Integration
 
 Do Not Skip:
 Persistence product integration boundary
@@ -205,6 +206,12 @@ Reason:
 
 ### 20 июня 2026
 
+- Выполнен Stage 4.3R User Data Controls Implementation Gate & Evidence Closure.
+- Создан `LEVIO_STAGE_4_3R_USER_DATA_CONTROLS_IMPLEMENTATION_GATE.md`.
+- Итоговый gate status: NO-GO.
+- Зафиксировано: foundation evidence существует, но implementation evidence не закрывает production auth/session, canonical principal resolution, owner-scoped persistence product readiness, export/deletion/retention/consent workflows, legal/privacy, QA, rollback и explicit owner approval.
+- Stage 4.3S User Data Controls Server Workflow Foundation начинать нельзя.
+- Следующий approved step: Stage 4.3R-1 User Data Controls Gate Blocker Closure Plan.
 - Выполнен Stage 4.3Q User Data Controls Product Integration Readiness Plan.
 - Создан `LEVIO_STAGE_4_3Q_USER_DATA_CONTROLS_READINESS_PLAN.md`.
 - Зафиксировано: Stage 4.3 foundation готов как input, но implementation не разрешен сразу после 4.3Q.
