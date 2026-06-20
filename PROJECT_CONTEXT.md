@@ -4,12 +4,40 @@
 
 20 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.3R User Data Controls Implementation Gate & Evidence Closure. It is a synchronized copy of `LEVIO_CURRENT_STATE.md`.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.3R Blocker Reality Audit. It is a synchronized copy of `LEVIO_CURRENT_STATE.md`.
 
 ## Current Confirmed Checkpoint - 20 June 2026
 
-Stage 4.3R User Data Controls Implementation Gate & Evidence Closure is the
-current confirmed checkpoint after Stage 4.3Q and commit `43cf892`.
+Stage 4.3R Blocker Reality Audit is the current confirmed checkpoint after
+Stage 4.3R and commit `2e38a86`.
+
+Confirmed facts from the repository:
+
+- `LEVIO_STAGE_4_3R_BLOCKER_REALITY_AUDIT.md` classifies each Stage 4.3R blocker
+  as implementation status plus evidence status.
+- The audit is documentation-only.
+- No runtime code, UI, API route, OpenAI, billing, dependency, or
+  product-behavior change was approved.
+- No new roadmap stage was created automatically.
+- Stage 4.3S User Data Controls Server Workflow Foundation remains blocked.
+- Blockers are classified as predominantly implementation gaps, with some
+  evidence/documentation gaps that can be reduced without runtime code.
+- Evidence validation can help with production auth/session, legal/privacy copy,
+  foundation QA, and rollback design.
+- Real engineering is still required for canonical principal resolution on the
+  product path, owner-scoped persistence product reads, export workflow, deletion
+  workflow, product QA, and complete workflow rollback evidence.
+
+The immutable target runtime architecture remains:
+
+```text
+USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI
+```
+
+## Superseded Checkpoint - 20 June 2026
+
+Stage 4.3R User Data Controls Implementation Gate & Evidence Closure was the
+previous confirmed checkpoint at commit `2e38a86`.
 
 Confirmed facts from the repository:
 
