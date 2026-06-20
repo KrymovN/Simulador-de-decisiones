@@ -132,7 +132,7 @@ export default function HomeSimulator() {
     const situation = input.trim();
 
     if (!situation) {
-      setMessage("Describe una situación concreta para iniciar el análisis.");
+      setMessage("Describe una situación concreta para iniciar la simulación.");
       return;
     }
 
@@ -292,18 +292,18 @@ export default function HomeSimulator() {
             </button>
           </div>
           <button disabled={isRunning} type="submit">
-            {isRunning ? "Analizando..." : "Simular decisión"}
+            {isRunning ? "Simulando escenarios..." : "Simular decisión"}
           </button>
         </div>
       </form>
 
       <div className={`console-status ${isRunning ? "is-live" : ""}`} aria-live="polite">
         <span></span>
-        <p>{message || "Levio.es está listo para analizar escenarios, riesgos y consecuencias."}</p>
+        <p>{message || "Levio.es está listo para simular escenarios, riesgos y consecuencias."}</p>
       </div>
 
       {(isRunning || result) && (
-        <div className="thinking-panel" aria-label="Etapas de pensamiento del motor" ref={thinkingPanelRef}>
+        <div className="thinking-panel" aria-label="Etapas de simulación del motor" ref={thinkingPanelRef}>
           {stages.map((stage, index) => (
             <article
               className={`thinking-step ${index <= activeStage || result ? "is-active" : ""} ${
@@ -329,7 +329,7 @@ export default function HomeSimulator() {
               <h2>{result.simulation.result}</h2>
             </div>
             <div className="output-confidence">
-              <span>Confianza mock</span>
+              <span>Claridad del mapa</span>
               <strong>{result.simulation.signals.confidence}%</strong>
             </div>
           </div>
@@ -367,7 +367,7 @@ export default function HomeSimulator() {
           </div>
 
           <article className="strategic-conclusion">
-            <span>Conclusión estratégica final</span>
+            <span>Marco de decisión</span>
             <strong>{result.simulation.strategicConclusion}</strong>
             <p>{result.simulation.detailCopy}</p>
           </article>

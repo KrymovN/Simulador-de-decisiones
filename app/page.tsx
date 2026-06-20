@@ -7,20 +7,28 @@ import LevioMark from "../components/LevioMark";
 
 const processSteps = [
   {
-    title: "Describe tu situación",
-    copy: "Cuéntanos tu decisión, dilema o situación actual con tus propias palabras.",
+    title: "Analiza la situación",
+    copy: "Separa objetivo, contexto, presión y restricciones antes de construir el mapa.",
   },
   {
-    title: "Levio analiza",
-    copy: "Levio detecta contexto, señales clave y variables que pueden cambiar el resultado.",
+    title: "Detecta información faltante",
+    copy: "Marca datos ausentes, supuestos débiles y señales que conviene revisar.",
   },
   {
-    title: "Simulación de escenarios",
-    copy: "Generamos rutas posibles con consecuencias, riesgos y oportunidades.",
+    title: "Identifica contradicciones",
+    copy: "Contrasta objetivos, límites y tensiones que pueden hacer frágil una opción.",
   },
   {
-    title: "Decide con claridad",
-    copy: "Recibe una recomendación estratégica y elige el camino más sólido.",
+    title: "Simula escenarios",
+    copy: "Genera rutas posibles con consecuencias, riesgos, oportunidades y trade-offs.",
+  },
+  {
+    title: "Evalúa riesgos",
+    copy: "Compara exposición, reversibilidad, impacto diferido y señales de alerta.",
+  },
+  {
+    title: "Organiza criterios de decisión",
+    copy: "Convierte el mapa en criterios claros para comparar opciones antes de actuar.",
   },
 ];
 
@@ -35,8 +43,8 @@ const navItems = [
 
 const heroFeatures = [
   {
-    title: "Análisis profundo",
-    copy: "Contexto, objetivos, presión emocional y señales que pueden cambiar el resultado.",
+    title: "Mapa de decisión",
+    copy: "Contexto, objetivos, presión emocional y señales que pueden cambiar cada ruta.",
   },
   {
     title: "Escenarios múltiples",
@@ -47,32 +55,32 @@ const heroFeatures = [
     copy: "Distingue riesgos visibles, riesgos ocultos y consecuencias aplazadas.",
   },
   {
-    title: "Decisiones estratégicas",
-    copy: "Convierte el análisis en una recomendación sobria, clara y accionable.",
+    title: "Criterios estratégicos",
+    copy: "Convierte la simulación en opciones comparables, límites y próximos pasos.",
   },
 ];
 
 const lowerCapabilities = [
   {
-    title: "Inteligencia contextual",
-    copy: "Lee la situación completa: intereses, restricciones, personas afectadas y momento de decisión.",
+    title: "Contexto de decisión",
+    copy: "Ordena intereses, restricciones, personas afectadas y momento de decisión.",
   },
   {
-    title: "Análisis emocional",
-    copy: "Evalúa presión, coste emocional y posibles efectos en relaciones, energía y confianza.",
+    title: "Presión y coste",
+    copy: "Sitúa presión, coste emocional y posibles efectos en relaciones, energía y confianza.",
   },
   {
     title: "Riesgos ocultos",
     copy: "Señala fricciones, dependencias y costes futuros que suelen aparecer demasiado tarde.",
   },
   {
-    title: "Ventajas estratégicas",
-    copy: "Detecta caminos con mejor relación entre oportunidad, exposición y capacidad real de ejecución.",
+    title: "Trade-offs estratégicos",
+    copy: "Compara oportunidad, exposición y capacidad real de ejecución antes de avanzar.",
   },
 ];
 
 const trustSignals = [
-  "Sin conversación vacía",
+  "Simulación de decisiones 24/7",
   "Escenarios comparables",
   "Riesgo y consecuencia",
 ];
@@ -80,7 +88,7 @@ const trustSignals = [
 const decisionIntelligence = [
   {
     label: "Escenarios",
-    title: "No una respuesta. Un mapa de futuros posibles.",
+    title: "No una respuesta. Una simulación de futuros posibles.",
     copy: "Levio organiza alternativas y muestra cómo puede evolucionar cada ruta si actúas ahora, esperas o cambias de estrategia.",
   },
   {
@@ -95,8 +103,26 @@ const decisionIntelligence = [
   },
   {
     label: "Criterio",
-    title: "Una recomendación que no sustituye tu juicio.",
-    copy: "La salida está pensada para ayudarte a pensar con más claridad, no para empujarte a una respuesta automática.",
+    title: "Criterios para decidir sin piloto automático.",
+    copy: "El mapa está pensado para ayudarte a pensar con más claridad, no para empujarte a una respuesta automática.",
+  },
+];
+
+const futureBranches = [
+  {
+    label: "Escenario favorable",
+    title: "Una trayectoria con mayor margen.",
+    copy: "Muestra una posible trayectoria donde la oportunidad crece, junto a las condiciones que tendrían que cumplirse.",
+  },
+  {
+    label: "Escenario probable",
+    title: "La ruta que parece más plausible.",
+    copy: "Ordena consecuencias esperables, trade-offs prácticos y señales que podrían confirmar o debilitar el camino.",
+  },
+  {
+    label: "Escenario adverso",
+    title: "La opción bajo presión.",
+    copy: "Expone riesgos, costes diferidos y puntos de ruptura para que la decisión no dependa solo del mejor caso.",
   },
 ];
 
@@ -225,7 +251,7 @@ export default function Home() {
               <span>de actuar.</span>
             </h1>
             <p className="hero-subtitle">
-              Analiza escenarios, riesgos y consecuencias antes de tomar una decisión.
+              Simula escenarios, riesgos y consecuencias antes de tomar una decisión.
             </p>
           </div>
 
@@ -262,10 +288,46 @@ export default function Home() {
 
       </section>
 
+      <section className="reference-workspace" id="escenarios" aria-labelledby="workspace-title">
+        <div className="reference-workspace-heading">
+          <p className="eyebrow">Área de trabajo levio.es</p>
+          <h2 className="desktop-motion-heading" id="workspace-title" aria-label="Simula una decisión cuando estés listo.">
+            <MotionLetters text="Simula una decisión cuando estés listo." />
+          </h2>
+          <p>El motor de escenarios es el punto de partida para comparar opciones, riesgos y consecuencias.</p>
+        </div>
+        <HomeSimulator />
+      </section>
+
+      <section className="reference-process" id="motor" aria-labelledby="process-title">
+        <div className="reference-section-heading">
+          <p className="eyebrow motion-heading-line" aria-label="Proceso de simulación">
+            <MotionLetters text="Proceso de simulación" />
+          </p>
+          <h2 className="motion-heading-line" id="process-title" aria-label="Cómo piensa Levio">
+            <MotionLetters text="Cómo piensa Levio" />
+          </h2>
+          <span aria-hidden="true"></span>
+        </div>
+
+        <div className="reference-process-grid">
+          {processSteps.map((step, index) => (
+            <article
+              className="reference-process-card"
+              key={step.title}
+              style={{ "--card-index": index } as CSSProperties}
+            >
+              <h3>{step.title}</h3>
+              <p>{step.copy}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className="reference-decision-system" aria-labelledby="decision-system-title">
         <div className="reference-section-heading">
-          <p className="eyebrow motion-heading-line" aria-label="Inteligencia de decisión con IA">
-            <MotionLetters text="Inteligencia de decisión con IA" />
+          <p className="eyebrow motion-heading-line" aria-label="Sistema de simulación de decisiones">
+            <MotionLetters text="Sistema de simulación de decisiones" />
           </p>
           <h2
             className="motion-heading-line"
@@ -291,28 +353,22 @@ export default function Home() {
             </article>
           ))}
         </div>
-      </section>
 
-      <section className="reference-process" id="motor" aria-labelledby="process-title">
-        <div className="reference-section-heading">
-          <p className="eyebrow motion-heading-line" aria-label="¿Cómo funciona Levio.es?">
-            <MotionLetters text="¿Cómo funciona Levio.es?" />
-          </p>
-          <h2 className="motion-heading-line" id="process-title" aria-label="Un proceso inteligente en 4 pasos">
-            <MotionLetters text="Un proceso inteligente en 4 pasos" />
-          </h2>
-          <span aria-hidden="true"></span>
+        <div className="reference-section-heading compact-heading">
+          <p className="eyebrow">Tres ramas del futuro</p>
         </div>
 
-        <div className="reference-process-grid">
-          {processSteps.map((step, index) => (
+        <div className="reference-system-grid" aria-label="Tres ramas del futuro">
+          {futureBranches.map((branch, index) => (
             <article
-              className="reference-process-card"
-              key={step.title}
+              className="reference-system-card"
+              key={branch.label}
               style={{ "--card-index": index } as CSSProperties}
             >
-              <h3>{step.title}</h3>
-              <p>{step.copy}</p>
+              <small>{String(index + 1).padStart(2, "0")}</small>
+              <strong>{branch.label}</strong>
+              <h3>{branch.title}</h3>
+              <p>{branch.copy}</p>
             </article>
           ))}
         </div>
@@ -320,7 +376,7 @@ export default function Home() {
 
       <section className="reference-capabilities" id="producto" aria-labelledby="capabilities-title">
         <div className="reference-section-heading compact-heading">
-          <p className="eyebrow" id="capabilities-title">Inteligencia que ve lo que otros no ven</p>
+          <p className="eyebrow" id="capabilities-title">Criterios que hacen comparables las opciones</p>
         </div>
 
         <div className="reference-capability-grid">
@@ -335,17 +391,6 @@ export default function Home() {
             </article>
           ))}
         </div>
-      </section>
-
-      <section className="reference-workspace" id="escenarios" aria-labelledby="workspace-title">
-        <div className="reference-workspace-heading">
-          <p className="eyebrow">Área de trabajo levio.es</p>
-          <h2 className="desktop-motion-heading" id="workspace-title" aria-label="Simula una decisión cuando estés listo.">
-            <MotionLetters text="Simula una decisión cuando estés listo." />
-          </h2>
-          <p>El motor de escenarios permanece disponible como área de análisis separada de la presentación principal.</p>
-        </div>
-        <HomeSimulator />
       </section>
 
       <section className="reference-cta-banner" aria-labelledby="reference-cta-title">
@@ -369,7 +414,7 @@ export default function Home() {
             <LevioMark size="md" />
             <span className="brand-name">levio.es</span>
           </Link>
-          <p>Inteligencia estratégica para decisiones con consecuencias reales.</p>
+          <p>Motor de simulación para decisiones con consecuencias reales.</p>
           <small>© 2026 Levio.es. Todos los derechos reservados.</small>
         </div>
 
