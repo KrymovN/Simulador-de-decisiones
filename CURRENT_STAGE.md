@@ -4,9 +4,63 @@ Date: 20 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 20 June 2026
 
+Stage 4.3X User Data Controls Production Read Provider Foundation is the
+current confirmed checkpoint after explicit owner approval following commit
+`79bf8d5`.
+
+Confirmed facts from the repository:
+
+- `LEVIO_STAGE_4_3X_PRODUCTION_READ_PROVIDER_FOUNDATION.md` records the
+  implementation closure.
+- Runtime code was added only for User Data Controls production read provider
+  foundation.
+- `lib/user-data-controls/production-read-provider.ts` was created.
+- `lib/user-data-controls/production-read-provider-validation.ts` was created.
+- `lib/user-data-controls/api-route-foundation.ts` now composes the production
+  read provider into the existing Stage 4.3V route foundation while preserving
+  disabled-by-default route behavior.
+- `lib/user-data-controls/index.ts` exports the new provider and validation
+  catalog.
+- Public simulator behavior was not changed.
+- Product UI was not changed.
+- Export UI and Deletion UI were not created.
+- Production route enablement was not approved or changed.
+- Real export packages were not created.
+- Export storage/download links were not created.
+- Deletion writes, hard delete, and account deletion orchestration were not
+  implemented.
+- OpenAI / Real AI Runtime was not connected.
+- Billing / Subscription Runtime was not connected.
+- Stage 4.3X implements a server-only, read-only, owner-scoped production read
+  provider foundation for `simulation_records`, `simulation_drafts`, and
+  `simulation_history_entries`.
+- The provider is disabled by default through
+  `LEVIO_USER_DATA_CONTROLS_READ_PROVIDER_ENABLED`.
+- The provider reads minimal planning columns, does not select raw payload
+  columns, and sanitizes row contracts before handing rows to Stage 4.3T.
+- Stage 4.3X validation catalog passed: 10 passed / 0 failed.
+- Stage 4.3X remains foundation only. It does not make User Data Controls
+  production-ready.
+- Still blocked: production route enablement, public product UI, real export
+  package generation, storage/download/expiration, deletion writes, hard
+  deletion, account deletion orchestration, durable consent ledger, retention
+  jobs, legal/privacy publication, browser/API product QA, route rate limiting /
+  abuse protection review, CSRF/session-hardening review, OpenAI, billing, and
+  Subscription Runtime.
+- Next allowable roadmap step after separate owner approval:
+  `Stage 4.3Y User Data Controls Read Provider Integration Validation & Route Enablement Gate`.
+
+The immutable target runtime architecture remains:
+
+```text
+USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI
+```
+
+## Superseded Checkpoint - 20 June 2026
+
 Stage 4.3W User Data Controls API Route Validation & Production Read Provider
-Scope Gate is the current confirmed checkpoint after Stage 4.3V and commit
-`2171861`.
+Scope Gate was the confirmed checkpoint after Stage 4.3V and commit `2171861`;
+it is superseded by Stage 4.3X.
 
 Confirmed facts from the repository:
 

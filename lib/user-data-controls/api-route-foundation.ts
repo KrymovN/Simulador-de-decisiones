@@ -9,6 +9,7 @@ import type {
   ExportRequestScope,
 } from "./contracts";
 import { createUserDataControlsPersistenceReadAdapter } from "./persistence-read-adapter";
+import { createUserDataControlsProductionReadProviderFromEnv } from "./production-read-provider";
 import {
   createUserDataControlsServerWorkflowFoundation,
   type UserDataControlsDeletionWorkflowFoundationResult,
@@ -575,8 +576,10 @@ function deletionAllowedPayload(
 }
 
 function defaultWorkflow(enabled: boolean): UserDataControlsServerWorkflowFoundation {
+  const readProvider = createUserDataControlsProductionReadProviderFromEnv();
   const artifactSource = createUserDataControlsPersistenceReadAdapter({
     enabled,
+    readProvider,
   });
 
   return createUserDataControlsServerWorkflowFoundation({
