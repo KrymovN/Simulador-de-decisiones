@@ -4,12 +4,61 @@
 
 20 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.3U User Data Controls API Scope & Product Exposure Gate. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.3V User Data Controls API Route Foundation. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
 
 ## Current Confirmed Checkpoint - 20 June 2026
 
-Stage 4.3U User Data Controls API Scope & Product Exposure Gate is the current
-confirmed checkpoint after Stage 4.3T and commit `2421f32`.
+Stage 4.3V User Data Controls API Route Foundation is the current confirmed
+checkpoint after explicit owner approval following commit `d8f3ecb`.
+
+Confirmed facts from the repository:
+
+- `LEVIO_STAGE_4_3V_API_ROUTE_FOUNDATION.md` records the implementation
+  closure.
+- Runtime code was added only for User Data Controls API route foundation.
+- `app/api/user-data-controls/export/route.ts` was created.
+- `app/api/user-data-controls/deletion/route.ts` was created.
+- `lib/user-data-controls/api-route-foundation.ts` was created.
+- `lib/user-data-controls/api-route-foundation-validation.ts` was created.
+- Public simulator behavior was not changed.
+- Product UI was not changed.
+- Export UI and Deletion UI were not created.
+- OpenAI / Real AI Runtime was not connected.
+- Billing / Subscription Runtime was not connected.
+- Real export packages were not created.
+- Export storage/download links were not created.
+- Deletion writes, hard delete, and account deletion orchestration were not
+  implemented.
+- Public unauthenticated endpoints were not created.
+- API routes are disabled by default through
+  `LEVIO_USER_DATA_CONTROLS_API_ROUTES_ENABLED`.
+- Stage 4.3V implements authenticated, owner-scoped, server-only route
+  foundation for export request planning and deletion request planning.
+- Export route output is manifest-only and sanitized.
+- Deletion route output is lifecycle-only and sanitized.
+- Stage 4.3V validation catalog passed: 10 passed / 0 failed.
+- Stage 4.3V remains foundation only. It does not make User Data Controls
+  production-ready.
+- Still blocked: production route enablement, production Supabase read-provider
+  connection, production Supabase validation, public product UI, real export
+  package generation, storage/download/expiration, deletion writes, hard
+  deletion, account deletion orchestration, durable consent ledger, retention
+  jobs, legal/privacy publication, browser/API product QA, OpenAI, billing, and
+  Subscription Runtime.
+- Next allowable roadmap step after separate owner approval:
+  `Stage 4.3W User Data Controls API Route Validation & Production Read Provider Scope Gate`.
+
+The immutable target runtime architecture remains:
+
+```text
+USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI
+```
+
+## Superseded Checkpoint - 20 June 2026
+
+Stage 4.3U User Data Controls API Scope & Product Exposure Gate was the
+confirmed checkpoint after Stage 4.3T and commit `2421f32`; it is superseded by
+Stage 4.3V.
 
 Confirmed facts from the repository:
 
@@ -541,7 +590,11 @@ Confirmed facts from the repository:
 
 Current direction remains unchanged: Levio.es is a Decision Simulation Engine, not an AI chat, answer engine, AI playground, sci-fi showcase, WebGL experiment or visual-effects demo.
 
-Stage 4.3 User Data Controls is complete at the foundation/runtime-boundary/QA level. UI, dashboard, API routes, database runtime, Supabase runtime, migrations, real export generation, real deletion execution, simulator runtime, AI/OpenAI, memory, subscriptions, billing, Stage 4.4, and Stage 5.x remain unstarted.
+Stage 4.3 User Data Controls now includes authenticated API route foundation at
+the foundation/runtime-boundary/QA level. UI, dashboard product workflows,
+database runtime, Supabase read-provider route enablement, migrations, real
+export generation, real deletion execution, simulator runtime, AI/OpenAI,
+memory, subscriptions, billing, Stage 4.4, and Stage 5.x remain unstarted.
 
 ### Stage 2.10 Candidate - Secondary Product Surface Unification
 

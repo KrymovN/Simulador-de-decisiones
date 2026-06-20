@@ -103,11 +103,11 @@ Market Readiness         ░░░░░░░░░░ 5%
 
 ### 7. User Data Controls
 
-Статус: API exposure gate завершен, production runtime не завершен
-Прогресс: ████░░░░░░ 40%
-Блокирующий фактор: Public API/UI implementation, production Supabase read-provider connection, real export package generation, deletion writes, legal/privacy publication и product QA еще не завершены.
-Последнее изменение: Stage 4.3U User Data Controls API Scope & Product Exposure Gate завершен; future API exposure boundary, API exposure matrix, product exposure matrix, ownership/principal checks и rollback requirements зафиксированы как governance gate.
-Следующий шаг: Stage 4.3V User Data Controls API Route Foundation после отдельного owner approval.
+Статус: API route foundation реализован, production runtime не завершен
+Прогресс: ████░░░░░░ 45%
+Блокирующий фактор: Production route enablement, production Supabase read-provider connection, public UI/product workflow, real export package generation, deletion writes, legal/privacy publication и product QA еще не завершены.
+Последнее изменение: Stage 4.3V User Data Controls API Route Foundation реализован; authenticated owner-scoped export/deletion request route foundation, fail-closed feature flag, sanitized route responses и validation catalog добавлены.
+Следующий шаг: Stage 4.3W User Data Controls API Route Validation & Production Read Provider Scope Gate после отдельного owner approval.
 
 ### 8. Subscription Runtime
 
@@ -194,15 +194,18 @@ Market Readiness         ░░░░░░░░░░ 5%
 - Владелец проекта явно одобрил Stage 4.3U governance gate.
 - Stage 4.3U User Data Controls API Scope & Product Exposure Gate завершен.
 - User Data Controls теперь имеют conditional GO для будущего narrow server-side API route foundation stage.
+- Владелец проекта явно одобрил Stage 4.3V API route foundation implementation.
+- Stage 4.3V User Data Controls API Route Foundation реализован.
+- User Data Controls теперь имеют authenticated, owner-scoped, feature-flagged export/deletion request route foundation.
 - Stage 4.3 production runtime пока не завершен.
-- Public UI workflows, production release, real export generation, deletion writes, production Supabase read-provider connection и production QA начинать нельзя без отдельного approval.
-- Следующий допустимый roadmap-шаг: Stage 4.3V User Data Controls API Route Foundation.
+- Production route enablement, public UI workflows, production release, real export generation, deletion writes, production Supabase read-provider connection и production QA начинать нельзя без отдельного approval.
+- Следующий допустимый roadmap-шаг: Stage 4.3W User Data Controls API Route Validation & Production Read Provider Scope Gate.
 - В текущем состоянии Stage 4.3 и Stage 4.4 следует понимать как foundation/runtime-boundary закрытие, а не как production-ready UI/API/commercial execution.
 
 ## Current Roadmap Focus
 
 Current Focus:
-Stage 4.3V User Data Controls API Route Foundation → later UI/product workflow approval → Stage 4.4 Commercial/Billing Runtime Scope → Real AI Integration
+Stage 4.3W User Data Controls API Route Validation & Production Read Provider Scope Gate → later UI/product workflow approval → Stage 4.4 Commercial/Billing Runtime Scope → Real AI Integration
 
 Do Not Skip:
 Persistence product integration boundary
@@ -216,6 +219,18 @@ Reason:
 
 ### 20 июня 2026
 
+- Владелец проекта явно одобрил переход к Stage 4.3V.
+- Выполнен Stage 4.3V User Data Controls API Route Foundation.
+- Создан `LEVIO_STAGE_4_3V_API_ROUTE_FOUNDATION.md`.
+- Добавлен `lib/user-data-controls/api-route-foundation.ts`.
+- Добавлен `lib/user-data-controls/api-route-foundation-validation.ts`.
+- Добавлен `app/api/user-data-controls/export/route.ts`.
+- Добавлен `app/api/user-data-controls/deletion/route.ts`.
+- Обновлен `lib/user-data-controls/index.ts`.
+- Реализовано: authenticated owner-scoped route foundation, canonical principal workflow usage, export request manifest-only endpoint foundation, deletion request lifecycle-only endpoint foundation, fail-closed feature flag, rollback-safe response contract и deterministic validation.
+- Не реализовано: Product UI, Export UI, Deletion UI, OpenAI, Billing, Subscription Runtime, production route enablement, production Supabase read-provider connection, real export packages, storage/download links, deletion writes, hard delete, account deletion orchestration, durable consent ledger, retention jobs, product behavior changes.
+- Stage 4.3V validation catalog прошел: 10 passed / 0 failed.
+- Следующий допустимый roadmap-шаг: Stage 4.3W User Data Controls API Route Validation & Production Read Provider Scope Gate после отдельного owner approval.
 - Владелец проекта явно одобрил переход к Stage 4.3U.
 - Выполнен Stage 4.3U User Data Controls API Scope & Product Exposure Gate.
 - Создан `LEVIO_STAGE_4_3U_API_SCOPE_AND_PRODUCT_EXPOSURE_GATE.md`.
