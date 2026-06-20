@@ -99,15 +99,15 @@ Market Readiness         ░░░░░░░░░░ 5%
 Прогресс: ██████░░░░ 60%
 Блокирующий фактор: Production persistence runtime еще не подключен к пользовательскому продукту.
 Последнее изменение: Stage 4.2L Persistence Runtime State Closure & Product Integration Scope Lock завершен; Stage 4.2 закрыт как foundation / isolated runtime boundary, но product integration и production readiness не одобрены.
-Следующий шаг: Stage 4.3P User Data Controls Product Integration Scope Lock.
+Следующий шаг: Поддерживать owner-scoped persistence boundary как зависимость Stage 4.3Q.
 
 ### 7. User Data Controls
 
 Статус: Foundation завершен, production runtime не завершен
 Прогресс: ██░░░░░░░░ 20%
-Блокирующий фактор: Реальные export/delete/privacy workflows еще не реализованы в production runtime.
-Последнее изменение: Stage 4.3 foundation/runtime-boundary/QA закрыт для consent, retention, export и deletion preflight models.
-Следующий шаг: Реализовать production-safe UI/API/runtime workflows только после отдельного approved scope.
+Блокирующий фактор: Реальные export/delete/privacy workflows еще не реализованы и не одобрены для production runtime.
+Последнее изменение: Stage 4.3P User Data Controls Product Integration Scope Lock завершен; controls зафиксированы вокруг decision simulation artifacts, не AI chat history.
+Следующий шаг: Stage 4.3Q User Data Controls Product Integration Readiness Plan.
 
 ### 8. Subscription Runtime
 
@@ -180,14 +180,16 @@ Market Readiness         ░░░░░░░░░░ 5%
 - Runtime completion еще впереди.
 - Stage 4.3 Runtime Dependency & Scope Lock Audit завершен.
 - Stage 4.2L Persistence Runtime State Closure & Product Integration Scope Lock завершен.
+- Stage 4.3P User Data Controls Product Integration Scope Lock завершен.
+- User Data Controls product integration не начат.
 - Stage 4.3 production runtime пока не одобрен.
-- Следующий допустимый roadmap-шаг: Stage 4.3P User Data Controls Product Integration Scope Lock.
+- Следующий допустимый roadmap-шаг: Stage 4.3Q User Data Controls Product Integration Readiness Plan.
 - В текущем состоянии Stage 4.3 и Stage 4.4 следует понимать как foundation/runtime-boundary закрытие, а не как production-ready UI/API/commercial execution.
 
 ## Current Roadmap Focus
 
 Current Focus:
-Stage 4.3P → Stage 4.3 Production User Data Controls Runtime → Stage 4.4 Commercial/Billing Runtime Scope → Real AI Integration
+Stage 4.3Q → Stage 4.3 Production User Data Controls Runtime → Stage 4.4 Commercial/Billing Runtime Scope → Real AI Integration
 
 Do Not Skip:
 Persistence product integration boundary
@@ -201,6 +203,11 @@ Reason:
 
 ### 20 июня 2026
 
+- Выполнен Stage 4.3P User Data Controls Product Integration Scope Lock.
+- Создан `LEVIO_STAGE_4_3P_USER_DATA_CONTROLS_PRODUCT_INTEGRATION_SCOPE_LOCK.md`.
+- Зафиксировано: user data controls относятся к export, deletion, consent, retention, privacy visibility и ownership verification вокруг decision simulation artifacts.
+- Зафиксировано: AI chat history, generic prompt history и assistant conversation logs не являются основными продуктовыми объектами Levio.
+- Следующий approved step: Stage 4.3Q User Data Controls Product Integration Readiness Plan.
 - Выполнен Stage 4.2L Persistence Runtime State Closure & Product Integration Scope Lock.
 - Создан `LEVIO_STAGE_4_2L_PERSISTENCE_RUNTIME_STATE_CLOSURE.md`.
 - Зафиксировано: Stage 4.2 foundation / isolated runtime boundary complete, но product integration и production readiness не одобрены.

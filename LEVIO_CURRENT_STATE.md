@@ -4,12 +4,48 @@
 
 20 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.2L Persistence Runtime State Closure & Product Integration Scope Lock. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.3P User Data Controls Product Integration Scope Lock. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
 
 ## Current Confirmed Checkpoint - 20 June 2026
 
+Stage 4.3P User Data Controls Product Integration Scope Lock is the current
+confirmed checkpoint after Stage 4.2L and commit `732dff6`.
+
+Confirmed facts from the repository:
+
+- `LEVIO_STAGE_4_3P_USER_DATA_CONTROLS_PRODUCT_INTEGRATION_SCOPE_LOCK.md`
+  records the future product integration boundary for user data controls.
+- The scope lock is documentation-only.
+- No runtime code, UI, API route, Supabase production runtime, OpenAI, billing,
+  Subscription Runtime, dependency, or product-behavior change was approved.
+- Stage 4.3 remains complete only at foundation/runtime-boundary/QA level.
+- Stage 4.3 product integration has not started.
+- Stage 4.3 production readiness is not approved.
+- User data controls are scoped to decision simulation artifacts only:
+  simulations, drafts, saved decision artifacts, user-owned metadata, future
+  export packages, and future deletion records.
+- AI chat history, generic prompt history, and assistant conversation logs are
+  not primary Levio product objects.
+- User data controls must not turn Levio into AI Chat, an Answer Engine, or a
+  generic AI assistant.
+- Runtime dependencies remain owner-scoped persistence,
+  `levio_principals.principal_id`, auth/session boundary, future export/delete
+  workflows, and future retention policy.
+- The next approved roadmap step is `Stage 4.3Q User Data Controls Product
+  Integration Readiness Plan`.
+- Stage 4.3Q must remain documentation/planning-only unless the project owner
+  explicitly approves implementation.
+
+The immutable target runtime architecture remains:
+
+```text
+USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI
+```
+
+## Superseded Checkpoint - 20 June 2026
+
 Stage 4.2L Persistence Runtime State Closure & Product Integration Scope Lock is
-the current confirmed checkpoint after `bf2d6d1`.
+the previous confirmed checkpoint after `bf2d6d1`.
 
 Confirmed facts from the repository:
 
@@ -39,7 +75,7 @@ USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISIO
 
 ## Superseded Checkpoint - 20 June 2026
 
-Stage 4.3 Runtime Dependency & Scope Lock Audit is the current confirmed
+Stage 4.3 Runtime Dependency & Scope Lock Audit was the confirmed
 checkpoint after the Product Alignment Session and `LEVIO_PROJECT_PROGRESS.md`.
 
 Confirmed facts from the repository:
@@ -75,7 +111,7 @@ USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISIO
 
 ## Superseded Checkpoint - 19 June 2026
 
-Stage 5.3C AI Quality / Cost / Safety Runtime Boundary is the current confirmed checkpoint.
+Stage 5.3C AI Quality / Cost / Safety Runtime Boundary was the confirmed checkpoint.
 This documentation-only governance step adds `LEVIO_TARGET_RUNTIME_ARCHITECTURE.md`
 as an immutable architecture reference for all future Stage 5 runtime integration
 work.
