@@ -4,11 +4,46 @@
 
 20 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.3R Blocker Reality Audit. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.3S User Data Controls Server Workflow Foundation. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
 
 ## Current Confirmed Checkpoint - 20 June 2026
 
-Stage 4.3R Blocker Reality Audit is the current confirmed checkpoint after
+Stage 4.3S User Data Controls Server Workflow Foundation is the current
+confirmed checkpoint after explicit owner approval following commit `9c02ae5`.
+
+Confirmed facts from the repository:
+
+- `LEVIO_STAGE_4_3S_SERVER_WORKFLOW_FOUNDATION.md` records the implementation
+  closure.
+- Runtime code was added only inside `lib/user-data-controls`.
+- Public simulator behavior was not changed.
+- UI was not changed.
+- API routes were not changed.
+- OpenAI / Real AI Runtime was not connected.
+- Billing / Subscription Runtime was not connected.
+- Export UI and Deletion UI were not created.
+- Stage 4.3S implements canonical principal resolution, ownership verification,
+  owner-scoped artifact access contracts, manifest-only export workflow
+  foundation, lifecycle-only deletion workflow foundation, runtime invariants,
+  rollback evidence, and deterministic validation.
+- Stage 4.3S remains foundation only. It does not make User Data Controls
+  production-ready.
+- Still blocked: public UI/API workflows, real export package generation,
+  storage/download/expiration, deletion writes, account deletion orchestration,
+  durable consent ledger, retention jobs, production Supabase validation,
+  legal/privacy publication, and product QA.
+- Next allowable roadmap step after separate owner approval:
+  `Stage 4.3T User Data Controls Persistence Read Adapter Foundation`.
+
+The immutable target runtime architecture remains:
+
+```text
+USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI
+```
+
+## Superseded Checkpoint - 20 June 2026
+
+Stage 4.3R Blocker Reality Audit was the previous confirmed checkpoint after
 Stage 4.3R and commit `2e38a86`.
 
 Confirmed facts from the repository:
@@ -19,14 +54,15 @@ Confirmed facts from the repository:
 - No runtime code, UI, API route, OpenAI, billing, dependency, or
   product-behavior change was approved.
 - No new roadmap stage was created automatically.
-- Stage 4.3S User Data Controls Server Workflow Foundation remains blocked.
-- Blockers are classified as predominantly implementation gaps, with some
+- Stage 4.3S User Data Controls Server Workflow Foundation remained blocked at
+  that checkpoint.
+- Blockers were classified as predominantly implementation gaps, with some
   evidence/documentation gaps that can be reduced without runtime code.
-- Evidence validation can help with production auth/session, legal/privacy copy,
-  foundation QA, and rollback design.
-- Real engineering is still required for canonical principal resolution on the
-  product path, owner-scoped persistence product reads, export workflow, deletion
-  workflow, product QA, and complete workflow rollback evidence.
+- Evidence validation could help with production auth/session, legal/privacy
+  copy, foundation QA, and rollback design.
+- Real engineering was still required for canonical principal resolution on the
+  product path, owner-scoped persistence product reads, export workflow,
+  deletion workflow, product QA, and complete workflow rollback evidence.
 
 The immutable target runtime architecture remains:
 
