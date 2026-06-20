@@ -96,7 +96,7 @@ export const mockSimulations: MockSimulation[] = [
         label: "Alternativa estratégica",
         title: "Lanzar como invitación privada",
         copy: "Una apertura por cohortes reduce exposición pública y permite ajustar el servicio con clientes de confianza.",
-        signal: "Ruta recomendada",
+        signal: "Mapa de opciones",
         score: "Alta",
       },
     ],

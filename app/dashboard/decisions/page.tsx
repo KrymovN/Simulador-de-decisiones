@@ -7,9 +7,9 @@ import { savedDecisions } from "../../../lib/personalArea";
 
 const decisionStats = [
   {
-    label: "Guardadas",
+    label: "Preparadas",
     value: String(savedDecisions.length),
-    copy: "Decisiones con seguimiento activo.",
+    copy: "Decisiones en vista demo.",
   },
   {
     label: "Revisión próxima",
@@ -27,16 +27,16 @@ export default function DecisionsPage() {
   return (
     <MockAuthGate>
       <DashboardShell
-        description="Organiza decisiones guardadas, próximos pasos, revisiones y exposición antes de actuar."
+        description="Organiza decisiones preparadas, próximos pasos, revisiones y exposición antes de actuar."
         eyebrow="levio.es / Decisiones"
-        title="Decisiones guardadas."
+        title="Decisiones preparadas."
       >
         <section className="decision-command section-frame">
           <div>
             <p className="eyebrow">Centro de seguimiento</p>
             <h2>Convierte cada simulación importante en una decisión observada.</h2>
             <p>
-              Este espacio prepara la futura capa de decisiones guardadas: estado, prioridad, revisión, exposición y
+              Este espacio prepara la futura capa de decisiones: estado, prioridad, revisión, exposición y
               conexión con simulaciones completas.
             </p>
           </div>
@@ -51,7 +51,7 @@ export default function DecisionsPage() {
           </div>
         </section>
 
-        <section className="saved-decision-grid" aria-label="Decisiones guardadas">
+        <section className="saved-decision-grid" aria-label="Decisiones preparadas">
           {savedDecisions.map((decision) => (
             <article className="saved-decision-card section-frame" key={decision.id}>
               <div className="decision-card-header">
@@ -96,8 +96,8 @@ export default function DecisionsPage() {
                 </Link>
                 <MockFeedbackButton
                   className="ghost-button"
-                  label="Guardar decisión"
-                  feedback="Decisión guardada para revisión demo."
+                  label="Preparar decisión"
+                  feedback="Decisión preparada para revisión demo."
                 />
               </div>
             </article>

@@ -10,7 +10,7 @@ import { AuthRuntimeProvider } from '../components/auth/AuthRuntimeProvider';
 const siteName = 'Levio.es';
 const siteTitle = 'Levio.es';
 const siteDescription =
-  'Sistema de inteligencia de decisiones para analizar escenarios, riesgos y consecuencias antes de actuar.';
+  'Motor de simulación de decisiones para explorar escenarios, riesgos y consecuencias antes de actuar.';
 const siteUrl = 'https://levio.es';
 const faviconUrl = '/levio-favicon-v3.ico';
 const appleIconUrl = '/levio-apple-touch-icon-v3.png';

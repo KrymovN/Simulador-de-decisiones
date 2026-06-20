@@ -84,7 +84,7 @@ export default function SimulationsList({ initialSimulations }: SimulationsListP
                 Ver detalle
               </Link>
               <button className="ghost-button" onClick={() => deleteSimulation(simulation.id)} type="button">
-                Eliminar simulación
+                Retirar de vista local
               </button>
             </div>
           </article>

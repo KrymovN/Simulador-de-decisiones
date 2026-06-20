@@ -39,15 +39,15 @@ export default function SimulationDetailClient({ id, initialSimulation }: Simula
   if (!simulation) {
     return (
       <DashboardShell
-        description="La simulación solicitada no está disponible en los datos demo ni en el historial local de este navegador."
-        eyebrow="levio.es / Historial"
+        description="La simulación solicitada no está disponible en los datos demo ni en las simulaciones locales de este navegador."
+        eyebrow="levio.es / Simulaciones locales"
         title="Simulación no encontrada."
       >
         <section className="dashboard-card section-frame">
           <h2>Puede que se haya eliminado localmente.</h2>
-          <p>Vuelve al historial para revisar las simulaciones disponibles o crea una nueva desde la página principal.</p>
+          <p>Vuelve a simulaciones locales para revisar las opciones disponibles o crea una nueva desde la página principal.</p>
           <Link className="button-link" href="/dashboard/simulations">
-            Volver al historial
+            Volver a simulaciones locales
           </Link>
         </section>
       </DashboardShell>
@@ -56,13 +56,13 @@ export default function SimulationDetailClient({ id, initialSimulation }: Simula
 
   return (
     <DashboardShell
-      description="Mapa privado de escenarios, riesgos, consecuencias retrasadas y ruta estratégica recomendada."
+      description="Mapa de opciones con escenarios, riesgos, consecuencias retrasadas y marco de decisión."
       eyebrow={`levio.es / ${simulation.category}`}
       title={simulation.decision}
     >
       <section className="simulation-detail-hero section-frame">
         <div>
-          <p className="eyebrow">Conclusión estratégica</p>
+          <p className="eyebrow">Marco de decisión</p>
           <h2>{simulation.strategicConclusion}</h2>
           <p>{simulation.detailCopy}</p>
           <div className="detail-tags" aria-label="Etiquetas estratégicas">
@@ -86,7 +86,7 @@ export default function SimulationDetailClient({ id, initialSimulation }: Simula
             <strong>{simulation.signals.latency}</strong>
           </div>
           <div className="detail-metric">
-            <span>Confianza</span>
+            <span>Claridad del análisis</span>
             <strong>{simulation.signals.confidence}%</strong>
           </div>
         </div>
@@ -153,7 +153,7 @@ export default function SimulationDetailClient({ id, initialSimulation }: Simula
           consentimiento, exportación y supresión de datos.
         </p>
         <Link className="dashboard-action" href="/dashboard/simulations">
-          Volver al historial
+          Volver a simulaciones locales
         </Link>
       </section>
     </DashboardShell>

@@ -7,9 +7,9 @@ export default function SimulationsPage() {
   return (
     <MockAuthGate>
       <DashboardShell
-        description="Consulta decisiones analizadas, resultados estratégicos y acciones de gestión sobre cada simulación."
-        eyebrow="levio.es / Historial"
-        title="Historial de simulaciones."
+        description="Revisa simulaciones locales y ejemplos preparados con mapas de opciones, riesgos y consecuencias."
+        eyebrow="levio.es / Simulaciones locales"
+        title="Simulaciones locales."
       >
         <SimulationsList initialSimulations={mockSimulations} />
       </DashboardShell>
