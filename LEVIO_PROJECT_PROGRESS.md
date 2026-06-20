@@ -103,11 +103,11 @@ Market Readiness         ░░░░░░░░░░ 5%
 
 ### 7. User Data Controls
 
-Статус: API route foundation реализован, production runtime не завершен
+Статус: API route validation gate завершен, production runtime не завершен
 Прогресс: ████░░░░░░ 45%
 Блокирующий фактор: Production route enablement, production Supabase read-provider connection, public UI/product workflow, real export package generation, deletion writes, legal/privacy publication и product QA еще не завершены.
-Последнее изменение: Stage 4.3V User Data Controls API Route Foundation реализован; authenticated owner-scoped export/deletion request route foundation, fail-closed feature flag, sanitized route responses и validation catalog добавлены.
-Следующий шаг: Stage 4.3W User Data Controls API Route Validation & Production Read Provider Scope Gate после отдельного owner approval.
+Последнее изменение: Stage 4.3W User Data Controls API Route Validation & Production Read Provider Scope Gate завершен; route foundation audited, production read-provider scope matrix, validation matrix, rollback matrix и GO/NO-GO gate зафиксированы.
+Следующий шаг: Stage 4.3X User Data Controls Production Read Provider Foundation после отдельного owner approval.
 
 ### 8. Subscription Runtime
 
@@ -197,15 +197,18 @@ Market Readiness         ░░░░░░░░░░ 5%
 - Владелец проекта явно одобрил Stage 4.3V API route foundation implementation.
 - Stage 4.3V User Data Controls API Route Foundation реализован.
 - User Data Controls теперь имеют authenticated, owner-scoped, feature-flagged export/deletion request route foundation.
+- Владелец проекта явно одобрил Stage 4.3W governance gate.
+- Stage 4.3W User Data Controls API Route Validation & Production Read Provider Scope Gate завершен.
+- Gate result: GO for Stage 4.3X Production Read Provider Foundation; NO-GO for production route enablement.
 - Stage 4.3 production runtime пока не завершен.
 - Production route enablement, public UI workflows, production release, real export generation, deletion writes, production Supabase read-provider connection и production QA начинать нельзя без отдельного approval.
-- Следующий допустимый roadmap-шаг: Stage 4.3W User Data Controls API Route Validation & Production Read Provider Scope Gate.
+- Следующий допустимый roadmap-шаг: Stage 4.3X User Data Controls Production Read Provider Foundation.
 - В текущем состоянии Stage 4.3 и Stage 4.4 следует понимать как foundation/runtime-boundary закрытие, а не как production-ready UI/API/commercial execution.
 
 ## Current Roadmap Focus
 
 Current Focus:
-Stage 4.3W User Data Controls API Route Validation & Production Read Provider Scope Gate → later UI/product workflow approval → Stage 4.4 Commercial/Billing Runtime Scope → Real AI Integration
+Stage 4.3X User Data Controls Production Read Provider Foundation → later route enablement/product workflow approval → Stage 4.4 Commercial/Billing Runtime Scope → Real AI Integration
 
 Do Not Skip:
 Persistence product integration boundary
@@ -219,6 +222,13 @@ Reason:
 
 ### 20 июня 2026
 
+- Владелец проекта явно одобрил переход к Stage 4.3W.
+- Выполнен Stage 4.3W User Data Controls API Route Validation & Production Read Provider Scope Gate.
+- Создан `LEVIO_STAGE_4_3W_API_ROUTE_VALIDATION_AND_READ_PROVIDER_SCOPE_GATE.md`.
+- Зафиксировано: current API route foundation audit, owner-scoped guarantees, principal resolution path, fail-closed behavior, feature flag protection, response sanitization, export/deletion planning paths, production read-provider requirements, allowed/forbidden reads, validation matrix и rollback matrix.
+- Gate result: GO for Stage 4.3X User Data Controls Production Read Provider Foundation.
+- NO-GO remains for production route enablement, public UI exposure, real export package generation, deletion writes, hard delete, account deletion orchestration, OpenAI, Billing и Subscription Runtime.
+- Следующий допустимый roadmap-шаг: Stage 4.3X User Data Controls Production Read Provider Foundation после отдельного owner approval.
 - Владелец проекта явно одобрил переход к Stage 4.3V.
 - Выполнен Stage 4.3V User Data Controls API Route Foundation.
 - Создан `LEVIO_STAGE_4_3V_API_ROUTE_FOUNDATION.md`.

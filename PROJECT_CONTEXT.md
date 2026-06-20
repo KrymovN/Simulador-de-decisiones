@@ -4,12 +4,54 @@
 
 20 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.3V User Data Controls API Route Foundation. It is a synchronized copy of `LEVIO_CURRENT_STATE.md`.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.3W User Data Controls API Route Validation & Production Read Provider Scope Gate. It is a synchronized copy of `LEVIO_CURRENT_STATE.md`.
 
 ## Current Confirmed Checkpoint - 20 June 2026
 
-Stage 4.3V User Data Controls API Route Foundation is the current confirmed
-checkpoint after explicit owner approval following commit `d8f3ecb`.
+Stage 4.3W User Data Controls API Route Validation & Production Read Provider
+Scope Gate is the current confirmed checkpoint after Stage 4.3V and commit
+`2171861`.
+
+Confirmed facts from the repository:
+
+- `LEVIO_STAGE_4_3W_API_ROUTE_VALIDATION_AND_READ_PROVIDER_SCOPE_GATE.md`
+  records the API route validation and production read-provider scope gate.
+- The gate is documentation-only.
+- Runtime code was not changed.
+- Production read-provider code was not written.
+- Supabase runtime was not connected.
+- OpenAI / Real AI Runtime was not connected.
+- Billing / Subscription Runtime was not connected.
+- UI was not changed.
+- New public endpoints were not created.
+- Stage 4.3W audits the current export/deletion API route foundation, owner
+  scope guarantees, canonical principal path, fail-closed behavior, feature flag
+  protection, response sanitization, export planning path, and deletion planning
+  path.
+- Stage 4.3W defines production read-provider scope, allowed reads, forbidden
+  reads, mandatory read-access checks, validation matrix, and rollback matrix.
+- Gate result: GO for `Stage 4.3X User Data Controls Production Read Provider
+  Foundation`; NO-GO for production route enablement, public UI exposure, real
+  export package generation, deletion writes, hard delete, account deletion
+  orchestration, OpenAI, billing, and Subscription Runtime.
+- Stage 4.3W remains governance only. It does not make User Data Controls
+  production-ready.
+- Next allowable roadmap step after separate owner approval:
+  `Stage 4.3X User Data Controls Production Read Provider Foundation`.
+- The next step is an implementation stage, not another governance stage, if the
+  owner explicitly approves production read-provider foundation work.
+
+The immutable target runtime architecture remains:
+
+```text
+USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI
+```
+
+## Superseded Checkpoint - 20 June 2026
+
+Stage 4.3V User Data Controls API Route Foundation was the confirmed
+checkpoint after explicit owner approval following commit `d8f3ecb`; it is
+superseded by Stage 4.3W.
 
 Confirmed facts from the repository:
 
