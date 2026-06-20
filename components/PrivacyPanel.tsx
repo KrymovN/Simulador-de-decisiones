@@ -11,24 +11,24 @@ const privacyRights = [
 
 const privacyActions = [
   {
-    title: "Exportar mis datos",
-    copy: "Preparar un archivo con perfil, simulaciones, decisiones guardadas y consentimiento activo.",
+    title: "Preparar exportación futura",
+    copy: "Definir un futuro archivo con perfil, simulaciones, decisiones preparadas y consentimiento preparado.",
   },
   {
-    title: "Eliminar mi cuenta",
-    copy: "Solicitar la supresión completa de la cuenta y datos asociados cuando exista backend productivo.",
+    title: "Solicitud futura de eliminación",
+    copy: "Preparar la supresión de cuenta y datos asociados cuando exista backend productivo.",
   },
   {
-    title: "Borrar historial de simulaciones",
-    copy: "Eliminar simulaciones anteriores sin borrar el perfil de usuario.",
+    title: "Borrado futuro de historial",
+    copy: "Preparar el borrado de simulaciones cuando exista historial productivo.",
   },
   {
-    title: "Retirar consentimiento",
-    copy: "Desactivar el análisis personalizado de decisiones y cualquier memoria asociada.",
+    title: "Gestión futura del consentimiento",
+    copy: "Preparar cómo se retiraría el análisis personalizado y cualquier contexto futuro asociado.",
   },
   {
-    title: "Desactivar memoria personalizada",
-    copy: "Pausar la memoria de IA para que futuras simulaciones no usen patrones históricos del usuario.",
+    title: "Preparar pausa de memoria futura",
+    copy: "Pausar el contexto futuro de simulaciones para que no use patrones históricos del usuario.",
   },
 ];
 
@@ -37,7 +37,7 @@ export default function PrivacyPanel() {
     <div className="privacy-layout">
       <section className="dashboard-card section-frame">
         <p className="eyebrow">Derechos del usuario</p>
-        <h2>Control explícito sobre datos personales.</h2>
+        <h2>Controles preparados sobre datos personales.</h2>
         <div className="rights-grid">
           {privacyRights.map((right) => (
             <span key={right}>{right}</span>

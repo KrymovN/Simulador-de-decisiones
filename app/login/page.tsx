@@ -82,11 +82,11 @@ export default function LoginPage() {
 
   return (
     <AuthShell
-      description="Accede al espacio privado donde tus simulaciones, decisiones y preferencias futuras estarán protegidas."
+      description="Accede al área preparada para revisar simulaciones locales y futuras preferencias de decisión."
       eyebrow="levio.es / Acceso seguro"
-      title="Entra en tu zona personal de decisiones."
+      title="Entra en tu espacio de simulación."
     >
-      <AuthStateView signedOutLabel="Acceso productivo mediante enlace seguro por correo." />
+      <AuthStateView signedOutLabel="Acceso mediante enlace seguro por correo." />
       {queryError && !error && (
         <div className="mock-feedback" role="alert">
           {queryError}

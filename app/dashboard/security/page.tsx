@@ -7,13 +7,13 @@ export default function SecurityPage() {
   return (
     <MockAuthGate>
       <DashboardShell
-        description="Controla contraseña, sesiones activas y el futuro estado de protección avanzada de la cuenta."
+        description="Prepara contraseña, sesión actual y futura protección avanzada de la cuenta."
         eyebrow="levio.es / Seguridad"
-        title="Seguridad de la cuenta."
+        title="Seguridad preparada."
       >
         <section className="dashboard-two-column">
           <article className="dashboard-card section-frame">
-            <h2>Cambiar contraseña</h2>
+            <h2>Preparar cambio de contraseña</h2>
             <form className="profile-form">
               <label>
                 Contraseña actual

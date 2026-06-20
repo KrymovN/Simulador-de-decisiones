@@ -70,11 +70,11 @@ export default function RegisterPage() {
 
   return (
     <AuthShell
-      description="Crea una cuenta preparada para historial de simulaciones, idioma preferido, consentimiento informado y control de datos."
+      description="Prepara un acceso para futuras vistas de simulación, idioma preferido y controles de datos cuando estén disponibles."
       eyebrow="levio.es / Crear cuenta"
-      title="Construye tu memoria estratégica privada."
+      title="Prepara tu espacio de simulación."
     >
-      <AuthStateView signedOutLabel="Registro productivo mediante enlace seguro por correo." />
+      <AuthStateView signedOutLabel="Registro mediante enlace seguro por correo." />
       <form className="auth-form" onSubmit={handleSubmit}>
         <label>
           Correo electrónico

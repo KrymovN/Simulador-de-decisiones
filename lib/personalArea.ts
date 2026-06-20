@@ -53,13 +53,13 @@ export const accountSignals = [
   },
   {
     label: "Privacidad",
-    value: "Alta",
-    copy: "Consentimiento, exportación y supresión estructurados como base GDPR.",
+    value: "Preparada",
+    copy: "Consentimiento, exportación y supresión preparados como base GDPR.",
   },
   {
     label: "Continuidad",
-    value: "Activa",
-    copy: "Historial, decisiones y memoria preparados para sincronización real.",
+    value: "Preparada",
+    copy: "Historial local, decisiones y memoria futura preparados para una etapa posterior.",
   },
 ];
 
@@ -129,33 +129,33 @@ export const savedDecisions: SavedDecision[] = [
 export const memorySettings = {
   state: "Pausable",
   mode: "Personalización controlada",
-  consent: "Consentimiento activo",
+  consent: "Consentimiento preparado",
   lastUpdated: "11 mayo 2026",
 };
 
 export const memoryScopes: MemoryScope[] = [
   {
     label: "Patrones de decisión",
-    state: "Activo",
-    copy: "Recordar si el usuario prefiere validar, esperar, invertir por tramos o actuar rápido.",
+    state: "Preparado",
+    copy: "Ejemplo de cómo Levio podría reconocer si el usuario prefiere validar, esperar, invertir por tramos o actuar rápido.",
     active: true,
   },
   {
     label: "Sensibilidad al riesgo",
-    state: "Activo",
-    copy: "Usar tolerancia al riesgo para ajustar exposición, timing y alternativas estratégicas.",
+    state: "Preparado",
+    copy: "Ejemplo de cómo la tolerancia al riesgo podría ajustar exposición, timing y alternativas estratégicas.",
     active: true,
   },
   {
     label: "Contexto regional e idioma",
-    state: "Activo",
-    copy: "Mantener idioma, zona horaria y región como base de futuras simulaciones.",
+    state: "Preparado",
+    copy: "Preparar idioma, zona horaria y región como base de futuras simulaciones.",
     active: true,
   },
   {
     label: "Datos altamente sensibles",
     state: "Desactivado",
-    copy: "No recordar información sensible sin consentimiento explícito y trazabilidad real.",
+    copy: "No preparar información sensible sin consentimiento explícito y trazabilidad real.",
     active: false,
   },
 ];
@@ -187,11 +187,11 @@ export const activityLog = [
   {
     date: "10 mayo 2026",
     title: "Privacidad revisada",
-    copy: "Consentimiento personalizado preparado como base de producto.",
+    copy: "Consentimiento preparado como base de producto.",
   },
   {
     date: "08 mayo 2026",
-    title: "Decisión guardada",
+    title: "Decisión preparada",
     copy: "Cambio de país añadido al seguimiento mensual.",
   },
 ];

@@ -8,8 +8,8 @@ const sessions = [
   },
   {
     device: "iPhone",
-    location: "Último acceso preparado",
-    state: "Futura sincronización",
+    location: "Dispositivo de ejemplo",
+    state: "Sin sincronización activa",
   },
 ];
 
@@ -17,17 +17,17 @@ export default function SecurityPanel() {
   return (
     <div className="security-layout">
       <section className="dashboard-card section-frame">
-        <p className="eyebrow">Protección de cuenta</p>
-        <h2>Seguridad preparada para autenticación real.</h2>
+        <p className="eyebrow">Protección preparada</p>
+        <h2>Seguridad lista para futura autenticación real.</h2>
         <div className="security-score" aria-label="Estado de protección de cuenta">
           <span></span>
-          <strong>Protección alta</strong>
-          <p>Contraseña, sesiones y futura autenticación en dos pasos.</p>
+          <strong>Protección preparada</strong>
+          <p>Contraseña, sesión actual y futura autenticación en dos pasos.</p>
         </div>
       </section>
 
       <section className="dashboard-card section-frame">
-        <h3>Sesiones activas</h3>
+        <h3>Sesión actual y ejemplo</h3>
         <div className="session-list">
           {sessions.map((session) => (
             <div key={session.device}>
@@ -37,7 +37,7 @@ export default function SecurityPanel() {
             </div>
           ))}
         </div>
-        <MockFeedbackButton label="Cerrar sesión en todos los dispositivos" feedback="Sesiones demo marcadas para cierre." />
+        <MockFeedbackButton label="Preparar gestión de sesiones" feedback="Gestión de sesiones preparada en demo." />
       </section>
     </div>
   );

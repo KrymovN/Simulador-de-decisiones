@@ -5,16 +5,16 @@ import { memoryScopes, memorySettings, rememberedPatterns } from "../../../lib/p
 
 const memoryActions = [
   {
-    title: "Ver lo recordado",
-    copy: "Mostrar patrones, preferencias y señales usadas por futuras simulaciones.",
+    title: "Qué podría recordar Levio",
+    copy: "Mostrar ejemplos de patrones, preferencias y señales para futuras simulaciones.",
   },
   {
-    title: "Pausar memoria",
-    copy: "Detener personalización sin eliminar historial ni simulaciones guardadas.",
+    title: "Preparar pausa futura",
+    copy: "Definir cómo se pausaría la personalización cuando la memoria esté activa.",
   },
   {
-    title: "Eliminar memoria",
-    copy: "Borrar patrones personalizados cuando exista backend y trazabilidad real.",
+    title: "Preparar limpieza futura",
+    copy: "Definir cómo se borrarían patrones preparados cuando exista backend y trazabilidad real.",
   },
 ];
 
@@ -22,16 +22,16 @@ export default function MemoryPage() {
   return (
     <MockAuthGate>
       <DashboardShell
-        description="Controla qué puede recordar el motor, qué queda fuera y cómo se usará en futuras simulaciones."
-        eyebrow="levio.es / Memoria personalizada"
-        title="Memoria de decisiones."
+        description="Prepara qué podría recordar el motor, qué quedaría fuera y cómo se usaría en futuras simulaciones."
+        eyebrow="levio.es / Memoria futura"
+        title="Memoria futura de decisiones."
       >
         <section className="memory-hero section-frame">
           <div className="memory-core" aria-hidden="true">
             <span></span>
           </div>
           <div>
-            <p className="eyebrow">Personalización bajo control</p>
+            <p className="eyebrow">Personalización preparada</p>
             <h2>{memorySettings.mode}</h2>
             <p>
               La memoria no es un chat ni una conversación guardada. Es una capa futura de contexto estratégico que debe
@@ -48,8 +48,8 @@ export default function MemoryPage() {
 
         <section className="memory-layout">
           <article className="dashboard-card section-frame">
-            <p className="eyebrow">Ámbitos de memoria</p>
-            <h2>Qué puede usar el motor.</h2>
+            <p className="eyebrow">Ámbitos de memoria futura</p>
+            <h2>Qué podría usar el motor.</h2>
             <div className="memory-scope-list">
               {memoryScopes.map((scope) => (
                 <label className="memory-scope" key={scope.label}>
@@ -66,7 +66,7 @@ export default function MemoryPage() {
 
           <article className="dashboard-card section-frame">
             <p className="eyebrow">Transparencia</p>
-            <h2>Patrones detectados.</h2>
+            <h2>Patrones de ejemplo.</h2>
             <div className="remembered-patterns">
               {rememberedPatterns.map((pattern) => (
                 <div key={pattern.title}>
@@ -85,10 +85,10 @@ export default function MemoryPage() {
               <h3>{action.title}</h3>
               <p>{action.copy}</p>
               <MockFeedbackButton
-                label={action.title === "Eliminar memoria" ? "Limpiar memoria" : "Preparar acción"}
+                label={action.title === "Preparar limpieza futura" ? "Preparar limpieza" : "Preparar acción"}
                 feedback={
-                  action.title === "Eliminar memoria"
-                    ? "Memoria limpiada en modo demo."
+                  action.title === "Preparar limpieza futura"
+                    ? "Limpieza de memoria preparada en modo demo."
                     : "Preferencia de memoria actualizada en demo."
                 }
               />

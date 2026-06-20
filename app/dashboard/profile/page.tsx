@@ -7,9 +7,9 @@ export default function ProfilePage() {
   return (
     <MockAuthGate>
       <DashboardShell
-        description="Gestiona identidad, idioma preferido y configuración regional para futuras simulaciones personalizadas."
+        description="Prepara identidad, idioma preferido y configuración regional para futuras simulaciones personalizadas."
         eyebrow="levio.es / Perfil"
-        title="Perfil del usuario."
+        title="Perfil preparado."
       >
         <section className="profile-overview section-frame">
           <div className="profile-identity">
@@ -17,7 +17,7 @@ export default function ProfilePage() {
               <span></span>
             </div>
             <div>
-              <p className="eyebrow">Identidad privada</p>
+              <p className="eyebrow">Identidad preparada</p>
               <h2>{userProfile.name}</h2>
               <p>{userProfile.email}</p>
             </div>
@@ -40,7 +40,7 @@ export default function ProfilePage() {
 
         <section className="profile-layout">
           <article className="dashboard-card section-frame">
-            <h2>Datos de cuenta</h2>
+            <h2>Datos preparados de cuenta</h2>
             <form className="profile-form">
               <label>
                 Nombre
@@ -67,10 +67,10 @@ export default function ProfilePage() {
                 <input defaultValue={userProfile.timezone} type="text" />
               </label>
               <label>
-                Cambiar contraseña
+                Contraseña futura
                 <input placeholder="Nueva contraseña" type="password" />
               </label>
-              <MockFeedbackButton label="Guardar cambios" feedback="Perfil guardado en modo demo." />
+              <MockFeedbackButton label="Preparar cambios" feedback="Cambios de perfil preparados en modo demo." />
             </form>
           </article>
 

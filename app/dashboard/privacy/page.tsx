@@ -6,9 +6,9 @@ export default function PrivacyPage() {
   return (
     <MockAuthGate>
       <DashboardShell
-        description="Gestiona consentimiento, memoria personalizada, portabilidad, supresión y límites del tratamiento."
+        description="Prepara consentimiento, memoria futura, portabilidad, supresión y límites del tratamiento para etapas productivas."
         eyebrow="levio.es / Centro de privacidad"
-        title="Privacidad y control de datos."
+        title="Privacidad y controles preparados."
       >
         <section className="dashboard-grid">
           <article className="dashboard-card section-frame">
@@ -16,12 +16,12 @@ export default function PrivacyPage() {
             <strong>Perfil mínimo</strong>
           </article>
           <article className="dashboard-card section-frame">
-            <span>Consentimiento activo</span>
-            <strong>Análisis personalizado</strong>
+            <span>Consentimiento preparado</span>
+            <strong>Pendiente de activación productiva</strong>
           </article>
           <article className="dashboard-card section-frame">
-            <span>Memoria personalizada</span>
-            <strong>Configurable</strong>
+            <span>Memoria futura</span>
+            <strong>Preparada</strong>
           </article>
         </section>
         <PrivacyPanel />

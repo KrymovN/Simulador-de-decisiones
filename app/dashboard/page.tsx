@@ -6,10 +6,10 @@ import { mockSimulations } from "../../lib/mockSimulations";
 import { memorySettings, savedDecisions } from "../../lib/personalArea";
 
 const summaryCards = [
-  { label: "Simulaciones guardadas", value: "12", detail: "3 listas para revisar" },
+  { label: "Simulaciones locales", value: "12", detail: "3 listas para revisar" },
   { label: "Decisiones activas", value: String(savedDecisions.length), detail: "2 con señales sensibles" },
-  { label: "Idioma activo", value: "Español", detail: "Base i18n preparada" },
-  { label: "Memoria personalizada", value: memorySettings.state, detail: "Consentimiento configurable" },
+  { label: "Idioma preparado", value: "Español", detail: "Base i18n futura" },
+  { label: "Memoria futura", value: memorySettings.state, detail: "Consentimiento preparado" },
 ];
 
 const engineStages = [
@@ -43,9 +43,9 @@ export default function DashboardPage() {
   return (
     <MockAuthGate>
       <DashboardShell
-        description="Tu historial de decisiones, tus simulaciones y tu evolución estratégica en un solo lugar."
+        description="Vista preparada para revisar simulaciones locales, decisiones de ejemplo y futura evolución estratégica."
         eyebrow="levio.es / Área personal"
-        title="Panel privado de simulación."
+        title="Panel de simulación preparado."
       >
         <section className="dashboard-grid">
           {summaryCards.map((card) => (
@@ -62,8 +62,8 @@ export default function DashboardPage() {
             <span></span>
           </div>
           <div>
-            <p className="eyebrow">Estado del motor privado</p>
-            <h2 id="engine-state-title">Tu espacio estratégico está preparado para revisar decisiones.</h2>
+            <p className="eyebrow">Estado del entorno preparado</p>
+            <h2 id="engine-state-title">Tu espacio de simulación está listo para revisar decisiones de ejemplo.</h2>
             <div className="engine-stage-list" aria-label="Estado actual del motor">
               {engineStages.map((stage, index) => (
                 <div className="engine-stage" key={stage}>
@@ -113,7 +113,7 @@ export default function DashboardPage() {
               ))}
             </div>
             <Link className="dashboard-action" href="/dashboard/simulations">
-              Ver historial completo
+              Ver historial local
             </Link>
           </article>
 
@@ -136,7 +136,7 @@ export default function DashboardPage() {
 
         <section className="dashboard-two-column">
           <article className="dashboard-card section-frame">
-            <h2>Decisiones guardadas</h2>
+            <h2>Decisiones preparadas</h2>
             <div className="compact-list">
               {savedDecisions.slice(0, 3).map((decision) => (
                 <div key={decision.id}>
@@ -151,16 +151,16 @@ export default function DashboardPage() {
           </article>
 
           <article className="dashboard-card section-frame">
-            <h2>Memoria personalizada</h2>
+            <h2>Memoria futura</h2>
             <p>
-              {memorySettings.mode}. La memoria puede pausarse, revisarse o eliminarse cuando exista backend productivo.
+              {memorySettings.mode}. La memoria podrá pausarse, revisarse o eliminarse cuando exista backend productivo.
             </p>
             <div className="memory-status-strip">
               <span>{memorySettings.consent}</span>
               <strong>{memorySettings.lastUpdated}</strong>
             </div>
             <Link className="dashboard-action" href="/dashboard/memory">
-              Gestionar memoria
+              Ver memoria futura
             </Link>
           </article>
         </section>
