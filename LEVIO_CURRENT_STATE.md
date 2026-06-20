@@ -4,11 +4,44 @@
 
 20 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.3P User Data Controls Product Integration Scope Lock. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.3Q User Data Controls Product Integration Readiness Plan. It is the primary current handoff file. `PROJECT_CONTEXT.md` must remain synchronized with it.
 
 ## Current Confirmed Checkpoint - 20 June 2026
 
-Stage 4.3P User Data Controls Product Integration Scope Lock is the current
+Stage 4.3Q User Data Controls Product Integration Readiness Plan is the current
+confirmed checkpoint after Stage 4.3P and commit `f32d387`.
+
+Confirmed facts from the repository:
+
+- `LEVIO_STAGE_4_3Q_USER_DATA_CONTROLS_READINESS_PLAN.md` records the readiness
+  plan for future User Data Controls product integration.
+- The readiness plan is documentation-only.
+- No runtime code, UI, API route, Supabase production runtime, OpenAI, billing,
+  Subscription Runtime, dependency, or product-behavior change was approved.
+- Stage 4.3 foundation exists, but product/runtime implementation remains
+  blocked.
+- Stage 4.3Q does not approve implementation.
+- Implementation may not start immediately after Stage 4.3Q.
+- Required before implementation: Stage 4.3R implementation gate, auth/session
+  evidence, principal-resolution evidence, persistence product-readiness
+  evidence, legal/privacy copy path, QA matrix, rollback evidence, and explicit
+  owner approval.
+- The first possible implementation stage after mandatory gates is `Stage 4.3S
+  User Data Controls Server Workflow Foundation`.
+- The next approved roadmap step is `Stage 4.3R User Data Controls
+  Implementation Gate & Evidence Closure`.
+- Stage 4.3R must remain documentation/validation-only unless the project owner
+  explicitly approves implementation.
+
+The immutable target runtime architecture remains:
+
+```text
+USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI
+```
+
+## Superseded Checkpoint - 20 June 2026
+
+Stage 4.3P User Data Controls Product Integration Scope Lock was the previous
 confirmed checkpoint after Stage 4.2L and commit `732dff6`.
 
 Confirmed facts from the repository:
