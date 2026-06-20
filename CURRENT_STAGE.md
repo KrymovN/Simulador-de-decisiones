@@ -4,6 +4,37 @@ Date: 20 June 2026, Europe/Madrid.
 
 ## Current Confirmed Checkpoint - 20 June 2026
 
+Stage 4.2L Persistence Runtime State Closure & Product Integration Scope Lock is
+the current confirmed checkpoint after `bf2d6d1`.
+
+Confirmed facts from the repository:
+
+- `LEVIO_STAGE_4_2L_PERSISTENCE_RUNTIME_STATE_CLOSURE.md` records the current
+  persistence runtime state and product integration boundary.
+- The closure is documentation-only.
+- No runtime code, UI, API route, Supabase runtime connection, OpenAI, billing,
+  Subscription Runtime, dependency, or product-behavior change was approved.
+- Stage 4.2 is closed as foundation / isolated runtime boundary complete.
+- Stage 4.2 product integration has not started.
+- Stage 4.2 production readiness is not approved.
+- Persistence remains owner-scoped to `levio_principals.principal_id`.
+- Persisted simulations and drafts are decision simulation artifacts, not AI
+  chat history.
+- Future exports and deletions must operate only over owner-scoped eligible
+  resources.
+- The next approved roadmap step is `Stage 4.3P User Data Controls Product
+  Integration Scope Lock`.
+- Stage 4.3P must remain documentation/planning-only unless the project owner
+  explicitly approves implementation.
+
+The immutable target runtime architecture remains:
+
+```text
+USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI
+```
+
+## Superseded Checkpoint - 20 June 2026
+
 Stage 4.3 Runtime Dependency & Scope Lock Audit is the current confirmed
 checkpoint after the Product Alignment Session and `LEVIO_PROJECT_PROGRESS.md`.
 
