@@ -33,6 +33,7 @@ export type LevioAuthErrorCode =
   | "session_missing"
   | "session_invalid"
   | "session_expired"
+  | "session_revoked"
   | "callback_missing_code"
   | "callback_exchange_failed"
   | "provider_error";
@@ -53,7 +54,7 @@ export type LevioSessionContext = {
   identityState: Extract<LevioIdentityState, "authenticated">;
   principal: LevioPrincipalContext;
   sessionId: string;
-  sessionStatus: Extract<LevioSessionStatus, "active" | "expired">;
+  sessionStatus: Extract<LevioSessionStatus, "active" | "expired" | "revoked">;
   assuranceLevel: Extract<LevioAssuranceLevel, "authenticated">;
   authTime?: string;
   expiresAt?: string;

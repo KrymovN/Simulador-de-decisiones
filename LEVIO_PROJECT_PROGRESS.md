@@ -103,11 +103,11 @@ Market Readiness         ░░░░░░░░░░ 5%
 
 ### 7. User Data Controls
 
-Статус: Stage 4.3Y Blocker Reality Audit завершён, production route enablement остаётся NO-GO
-Прогресс: █████░░░░░ 52%
-Блокирующий фактор: Route-through-provider integration evidence, route-specific rate limiting / abuse protection, CSRF/origin/session hardening, rollback rehearsal, browser/API product QA, public UI/product workflow, real export package generation, deletion writes и legal/privacy publication еще не завершены.
-Последнее изменение: Stage 4.3Y Blocker Reality Audit завершён; blockers classified as predominantly implementation gap.
-Следующий шаг: Получить owner approval на narrowly scoped blocker closure plan, разделяющий engineering implementation blockers и evidence-only blockers. Новый roadmap-этап аудитом автоматически не создаётся.
+Статус: Route hardening foundation реализован, production route enablement остаётся NO-GO
+Прогресс: ██████░░░░ 58%
+Блокирующий фактор: Route-through-provider integration evidence, production-like target validation, rollback rehearsal, browser/API product QA, public UI/product workflow, real export package generation, deletion writes и legal/privacy publication еще не завершены.
+Последнее изменение: Stage 4.3Z Route Hardening Foundation реализован; rate limiting, abuse protection, CSRF, Origin/Referer validation, revoked-session handling и rollback-safe disabled-route preemption добавлены на foundation уровне.
+Следующий шаг: Stage 4.3Z-1 Route Hardening Integration Evidence & Route Enablement Re-Gate после отдельного owner approval.
 
 ### 8. Subscription Runtime
 
@@ -209,15 +209,19 @@ Market Readiness         ░░░░░░░░░░ 5%
 - Stage 4.3Y Blocker Reality Audit завершен.
 - Audit conclusion: blockers are predominantly implementation gap.
 - Aggregate classification: IMPLEMENTED 1, PARTIALLY IMPLEMENTED 5, NOT IMPLEMENTED 4, EVIDENCE PRESENT 0, EVIDENCE MISSING 10.
+- Владелец проекта явно одобрил Stage 4.3Z implementation.
+- Stage 4.3Z Route Hardening Foundation реализован.
+- User Data Controls routes теперь имеют hardening foundation: route-specific rate limiting, abuse protection, CSRF protection, Origin/Referer validation, explicit revoked-session handling, fail-closed response mapping и rollback-safe disabled-route preemption.
+- Stage 4.3V/4.3Z API route validation catalog прошел: 18 passed / 0 failed.
 - Stage 4.3 production runtime пока не завершен.
 - Production route enablement, public UI workflows, production release, real export generation, deletion writes и production QA начинать нельзя без отдельного approval.
-- Логический следующий шаг: owner-approved narrowly scoped blocker closure plan; аудит не создаёт новый roadmap-этап автоматически.
+- Следующий допустимый roadmap-шаг: Stage 4.3Z-1 Route Hardening Integration Evidence & Route Enablement Re-Gate.
 - В текущем состоянии Stage 4.3 и Stage 4.4 следует понимать как foundation/runtime-boundary закрытие, а не как production-ready UI/API/commercial execution.
 
 ## Current Roadmap Focus
 
 Current Focus:
-Stage 4.3Y blocker closure decision → owner-approved blocker closure plan → later route enablement/product workflow approval → Stage 4.4 Commercial/Billing Runtime Scope → Real AI Integration
+Stage 4.3Z-1 Route Hardening Integration Evidence & Route Enablement Re-Gate → later route enablement/product workflow approval → Stage 4.4 Commercial/Billing Runtime Scope → Real AI Integration
 
 Do Not Skip:
 Persistence product integration boundary
@@ -231,6 +235,19 @@ Reason:
 
 ### 20 июня 2026
 
+- Владелец проекта явно одобрил переход к Stage 4.3Z.
+- Выполнен Stage 4.3Z Route Hardening Foundation.
+- Создан `LEVIO_STAGE_4_3Z_ROUTE_HARDENING_FOUNDATION.md`.
+- Добавлен `lib/user-data-controls/api-route-hardening.ts`.
+- Обновлен `lib/user-data-controls/api-route-foundation.ts`.
+- Обновлен `lib/user-data-controls/api-route-foundation-validation.ts`.
+- Обновлен `lib/user-data-controls/index.ts`.
+- Обновлен `lib/auth/types.ts`.
+- Обновлен `lib/auth/messages.ts`.
+- Реализовано: route-specific rate limiting foundation, abuse protection foundation, CSRF protection foundation, Origin/Referer validation foundation, explicit revoked-session handling foundation, fail-closed response mapping and rollback-safe disabled-route preemption.
+- Не реализовано: production route enablement, Product UI, Export UI, Deletion UI, OpenAI, Billing, Subscription Runtime, real export packages, storage/download links, deletion writes, hard delete, account deletion orchestration, durable consent ledger, retention jobs, product behavior changes.
+- Stage 4.3V/4.3Z API route validation catalog прошел: 18 passed / 0 failed.
+- Следующий допустимый roadmap-шаг: Stage 4.3Z-1 Route Hardening Integration Evidence & Route Enablement Re-Gate после отдельного owner approval.
 - Выполнен Stage 4.3Y Blocker Reality Audit.
 - Создан `LEVIO_STAGE_4_3Y_BLOCKER_REALITY_AUDIT.md`.
 - Runtime code, UI, API surface, OpenAI, Billing, Subscription Runtime, real export packages, deletion writes и product behavior не изменялись.

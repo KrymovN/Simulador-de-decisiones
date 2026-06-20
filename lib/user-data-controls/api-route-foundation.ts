@@ -8,6 +8,12 @@ import type {
   ExportPackagePlan,
   ExportRequestScope,
 } from "./contracts";
+import {
+  createUserDataControlsApiRouteHardeningFoundation,
+  readUserDataControlsApiRouteHardeningConfigFromEnv,
+  type UserDataControlsApiRouteHardeningBlockedReason,
+  type UserDataControlsApiRouteHardeningFoundation,
+} from "./api-route-hardening";
 import { createUserDataControlsPersistenceReadAdapter } from "./persistence-read-adapter";
 import { createUserDataControlsProductionReadProviderFromEnv } from "./production-read-provider";
 import {
@@ -35,6 +41,7 @@ export type UserDataControlsApiRouteOperation =
 export type UserDataControlsApiRouteBlockedReason =
   | "api_route_disabled"
   | "method_not_allowed"
+  | UserDataControlsApiRouteHardeningBlockedReason
   | "invalid_json"
   | "request_body_invalid"
   | "client_owner_input_rejected"
@@ -52,6 +59,12 @@ export type UserDataControlsApiRouteSafetyEvidence = {
   serverOnlyHandlers: true;
   failClosedByDefault: true;
   routeFeatureFlagRequired: true;
+  routeHardeningFoundationIntegrated: true;
+  rateLimitingFoundation: true;
+  abuseProtectionFoundation: true;
+  csrfProtectionFoundation: true;
+  originRefererValidationFoundation: true;
+  revokedSessionHandlingFoundation: true;
   clientOwnerInputAccepted: false;
   publicUnauthenticatedAccessAllowed: false;
   decisionSimulationArtifactsOnly: true;
@@ -125,6 +138,7 @@ export type UserDataControlsApiRouteResponsePayload =
 
 export type UserDataControlsApiRouteConfig = {
   enabled: boolean;
+  hardening?: UserDataControlsApiRouteHardeningFoundation;
   workflow?: UserDataControlsServerWorkflowFoundation;
   readAuthContext?: () => Promise<LevioAuthRuntimeContext>;
   requestIdFactory?: () => string;
@@ -210,6 +224,12 @@ export function userDataControlsApiRouteSafetyEvidence(): UserDataControlsApiRou
     serverOnlyHandlers: true,
     failClosedByDefault: true,
     routeFeatureFlagRequired: true,
+    routeHardeningFoundationIntegrated: true,
+    rateLimitingFoundation: true,
+    abuseProtectionFoundation: true,
+    csrfProtectionFoundation: true,
+    originRefererValidationFoundation: true,
+    revokedSessionHandlingFoundation: true,
     clientOwnerInputAccepted: false,
     publicUnauthenticatedAccessAllowed: false,
     decisionSimulationArtifactsOnly: true,
@@ -280,6 +300,10 @@ function statusForBlockedReason(input: {
     return 503;
   }
 
+  if (input.reason === "rate_limit_exceeded") {
+    return 429;
+  }
+
   if (
     input.reason === "invalid_json" ||
     input.reason === "request_body_invalid" ||
@@ -289,6 +313,20 @@ function statusForBlockedReason(input: {
     input.reason === "client_owner_input_rejected"
   ) {
     return 400;
+  }
+
+  if (
+    input.reason === "abuse_detected" ||
+    input.reason === "origin_missing" ||
+    input.reason === "origin_invalid" ||
+    input.reason === "csrf_failed" ||
+    input.reason === "route_hardening_unavailable"
+  ) {
+    return 403;
+  }
+
+  if (input.reason === "session_revoked") {
+    return 401;
   }
 
   if (
@@ -600,22 +638,94 @@ export function createUserDataControlsApiRouteFoundation(
   const requestIdFactory = config.requestIdFactory ?? defaultRequestId;
   const now = config.now ?? (() => new Date().toISOString());
   const workflow = config.workflow ?? defaultWorkflow(config.enabled);
+  const hardening =
+    config.hardening ??
+    createUserDataControlsApiRouteHardeningFoundation(
+      readUserDataControlsApiRouteHardeningConfigFromEnv(),
+    );
 
-  async function handleExportRequest(request: Request): Promise<Response> {
-    if (request.method !== "POST") {
-      return blockedResponse({
-        operation: "export_request",
-        reason: "method_not_allowed",
-        message: "Export request foundation accepts POST only.",
-      });
+  async function runRoutePreflight(input: {
+    operation: UserDataControlsApiRouteOperation;
+    request: Request;
+  }): Promise<
+    | {
+        status: "ready";
+        authContext: LevioAuthRuntimeContext;
+      }
+    | {
+        status: "blocked";
+        response: Response;
+      }
+  > {
+    if (input.request.method !== "POST") {
+      return {
+        status: "blocked",
+        response: blockedResponse({
+          operation: input.operation,
+          reason: "method_not_allowed",
+          message:
+            input.operation === "export_request"
+              ? "Export request foundation accepts POST only."
+              : "Deletion request foundation accepts POST only.",
+        }),
+      };
     }
 
     if (!config.enabled) {
-      return blockedResponse({
-        operation: "export_request",
-        reason: "api_route_disabled",
-        message: "User Data Controls API route foundation is disabled by rollout configuration.",
-      });
+      return {
+        status: "blocked",
+        response: blockedResponse({
+          operation: input.operation,
+          reason: "api_route_disabled",
+          message: "User Data Controls API route foundation is disabled by rollout configuration.",
+        }),
+      };
+    }
+
+    const hardeningResult = hardening.validateRequest(input);
+
+    if (hardeningResult.status === "blocked") {
+      return {
+        status: "blocked",
+        response: blockedResponse({
+          operation: input.operation,
+          reason: hardeningResult.reason,
+          message: hardeningResult.message,
+        }),
+      };
+    }
+
+    const authContext = await readAuthContext();
+    const authHardening = hardening.validateAuthContext({
+      operation: input.operation,
+      authContext,
+    });
+
+    if (authHardening.status === "blocked") {
+      return {
+        status: "blocked",
+        response: blockedResponse({
+          operation: input.operation,
+          reason: authHardening.reason,
+          message: authHardening.message,
+        }),
+      };
+    }
+
+    return {
+      status: "ready",
+      authContext,
+    };
+  }
+
+  async function handleExportRequest(request: Request): Promise<Response> {
+    const preflight = await runRoutePreflight({
+      operation: "export_request",
+      request,
+    });
+
+    if (preflight.status === "blocked") {
+      return preflight.response;
     }
 
     const parsedBody = await parseJsonBody(request);
@@ -639,7 +749,7 @@ export function createUserDataControlsApiRouteFoundation(
     }
 
     const workflowResult = await workflow.planExport({
-      authContext: await readAuthContext(),
+      authContext: preflight.authContext,
       requestId: requestIdFactory(),
       requestedAt: now(),
       scope: parsedRequest.scope,
@@ -659,20 +769,13 @@ export function createUserDataControlsApiRouteFoundation(
   }
 
   async function handleDeletionRequest(request: Request): Promise<Response> {
-    if (request.method !== "POST") {
-      return blockedResponse({
-        operation: "deletion_request",
-        reason: "method_not_allowed",
-        message: "Deletion request foundation accepts POST only.",
-      });
-    }
+    const preflight = await runRoutePreflight({
+      operation: "deletion_request",
+      request,
+    });
 
-    if (!config.enabled) {
-      return blockedResponse({
-        operation: "deletion_request",
-        reason: "api_route_disabled",
-        message: "User Data Controls API route foundation is disabled by rollout configuration.",
-      });
+    if (preflight.status === "blocked") {
+      return preflight.response;
     }
 
     const parsedBody = await parseJsonBody(request);
@@ -696,7 +799,7 @@ export function createUserDataControlsApiRouteFoundation(
     }
 
     const workflowResult = await workflow.planDeletion({
-      authContext: await readAuthContext(),
+      authContext: preflight.authContext,
       requestId: requestIdFactory(),
       requestedAt: now(),
       scope: parsedRequest.scope,

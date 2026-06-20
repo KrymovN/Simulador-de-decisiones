@@ -4,13 +4,59 @@
 
 20 June 2026, Europe/Madrid.
 
-This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.3Y Blocker Reality Audit. It is a synchronized copy of `LEVIO_CURRENT_STATE.md`.
+This document reflects the local project state in `/Users/s3/Documents/New project` after Stage 4.3Z Route Hardening Foundation. It is a synchronized copy of `LEVIO_CURRENT_STATE.md`.
 
 ## Current Confirmed Checkpoint - 20 June 2026
 
-Stage 4.3Y Blocker Reality Audit is the current confirmed checkpoint after
-Stage 4.3Y Read Provider Integration Validation & Route Enablement Gate and
-commit `ef2b4d0`.
+Stage 4.3Z Route Hardening Foundation is the current confirmed checkpoint after
+owner approval following Stage 4.3Y Blocker Reality Audit and commit `f027d89`.
+
+Confirmed facts from the repository:
+
+- `LEVIO_STAGE_4_3Z_ROUTE_HARDENING_FOUNDATION.md` records the implementation
+  closure.
+- Runtime code was added only for User Data Controls route hardening foundation.
+- `lib/user-data-controls/api-route-hardening.ts` was created.
+- `lib/user-data-controls/api-route-foundation.ts` now composes route hardening
+  before JSON parsing and workflow planning when routes are enabled.
+- `lib/user-data-controls/api-route-foundation-validation.ts` now validates
+  Stage 4.3Z hardening cases.
+- `lib/user-data-controls/index.ts` exports the hardening foundation.
+- `lib/auth/types.ts` and `lib/auth/messages.ts` now include explicit
+  `session_revoked` foundation support.
+- API route files were not changed.
+- API surface was not changed.
+- Production route enablement was not approved or changed.
+- Product UI was not changed.
+- OpenAI / Real AI Runtime was not connected.
+- Billing / Subscription Runtime was not connected.
+- Real export packages were not created.
+- Deletion writes, hard delete, and account deletion orchestration were not
+  implemented.
+- Stage 4.3Z implements route-specific rate limiting foundation, abuse
+  protection foundation, CSRF protection foundation, Origin / Referer validation
+  foundation, explicit revoked-session handling foundation, fail-closed response
+  mapping, and rollback-safe disabled-route preemption.
+- Stage 4.3V/4.3Z API route foundation validation passed: 18 passed / 0 failed.
+- Stage 4.3Z remains foundation only. It does not make User Data Controls
+  production-ready.
+- Production route enablement remains `NO-GO`.
+- Next allowable roadmap step after separate owner approval:
+  `Stage 4.3Z-1 Route Hardening Integration Evidence & Route Enablement Re-Gate`.
+- The next step is a governance/evidence validation gate unless the owner
+  separately approves additional implementation work.
+
+The immutable target runtime architecture remains:
+
+```text
+USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI
+```
+
+## Superseded Checkpoint - 20 June 2026
+
+Stage 4.3Y Blocker Reality Audit was the confirmed checkpoint after Stage 4.3Y
+Read Provider Integration Validation & Route Enablement Gate and commit
+`ef2b4d0`; it is superseded by Stage 4.3Z.
 
 Confirmed facts from the repository:
 

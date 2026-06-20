@@ -10,6 +10,7 @@ import {
   type UserDataControlsApiRouteResponsePayload,
   type UserDataControlsApiRouteSafetyEvidence,
 } from "./api-route-foundation";
+import { createUserDataControlsApiRouteHardeningFoundation } from "./api-route-hardening";
 import {
   createUserDataControlsServerWorkflowFoundation,
   type UserDataControlsOwnerScopedArtifactSource,
@@ -45,6 +46,8 @@ export type UserDataControlsApiRouteFoundationValidationResult = {
 const providerReference = "9f1e5a40-0a5f-4f76-8c9c-999999999999";
 const principalId = "3d25a625-7ad3-4995-9d13-999999999999";
 const requestedAt = "2026-06-20T18:00:00.000Z";
+const allowedOrigin = "https://levio.test";
+const csrfToken = "stage4_3z_csrf_token";
 
 const authenticatedContext: LevioSessionContext = {
   identityState: "authenticated",
@@ -65,6 +68,12 @@ const signedOutContext: LevioAuthRuntimeContext = {
     code: "session_missing",
     message: "No validation session.",
   },
+};
+
+const revokedContext: LevioSessionContext = {
+  ...authenticatedContext,
+  sessionId: "stage_4_3z_revoked_session",
+  sessionStatus: "revoked",
 };
 
 const principalRow: LevioPrincipalRow = {
@@ -136,6 +145,12 @@ function expectEvidence(evidence: UserDataControlsApiRouteSafetyEvidence): strin
     evidence.serverOnlyHandlers &&
     evidence.failClosedByDefault &&
     evidence.routeFeatureFlagRequired &&
+    evidence.routeHardeningFoundationIntegrated &&
+    evidence.rateLimitingFoundation &&
+    evidence.abuseProtectionFoundation &&
+    evidence.csrfProtectionFoundation &&
+    evidence.originRefererValidationFoundation &&
+    evidence.revokedSessionHandlingFoundation &&
     evidence.clientOwnerInputAccepted === false &&
     evidence.publicUnauthenticatedAccessAllowed === false &&
     evidence.decisionSimulationArtifactsOnly &&
@@ -218,9 +233,22 @@ function createRouteFoundation(input?: {
   enabled?: boolean;
   authContext?: LevioAuthRuntimeContext;
   artifactSource?: UserDataControlsOwnerScopedArtifactSource;
+  rateLimitMaxRequests?: number;
+  hardeningEnabled?: boolean;
 }) {
+  const rateLimitStore = new Map();
+
   return createUserDataControlsApiRouteFoundation({
     enabled: input?.enabled ?? true,
+    hardening: createUserDataControlsApiRouteHardeningFoundation({
+      enabled: input?.hardeningEnabled ?? true,
+      allowedOrigins: [allowedOrigin],
+      rateLimitMaxRequests: input?.rateLimitMaxRequests ?? 100,
+      rateLimitWindowMs: 60_000,
+      maxRequestBytes: 4_096,
+      now: () => 1_000,
+      rateLimitStore,
+    }),
     workflow: createWorkflow({ artifactSource: input?.artifactSource }),
     readAuthContext: async () => input?.authContext ?? authenticatedContext,
     requestIdFactory: () => "udc_stage4_3v_validation",
@@ -228,13 +256,49 @@ function createRouteFoundation(input?: {
   });
 }
 
-function createRequest(body: unknown, method = "POST"): Request {
+function createRequest(
+  body: unknown,
+  method = "POST",
+  headers?: Record<string, string | undefined>,
+): Request {
+  const requestHeaders: Record<string, string> = {
+    "content-type": "application/json",
+    origin: allowedOrigin,
+    cookie: `levio_csrf=${encodeURIComponent(csrfToken)}`,
+    "x-levio-csrf-token": csrfToken,
+    "x-forwarded-for": "203.0.113.4",
+  };
+
+  Object.entries(headers ?? {}).forEach(([key, value]) => {
+    if (value === undefined) {
+      delete requestHeaders[key.toLowerCase()];
+    } else {
+      requestHeaders[key] = value;
+    }
+  });
+
   return new Request("https://levio.test/api/user-data-controls/export", {
     method,
+    headers: requestHeaders,
+    body: method === "POST" ? JSON.stringify(body) : undefined,
+  });
+}
+
+function createRawRequest(
+  body: string,
+  headers?: Record<string, string | undefined>,
+): Request {
+  return new Request("https://levio.test/api/user-data-controls/export", {
+    method: "POST",
     headers: {
       "content-type": "application/json",
+      origin: allowedOrigin,
+      cookie: `levio_csrf=${encodeURIComponent(csrfToken)}`,
+      "x-levio-csrf-token": csrfToken,
+      "x-forwarded-for": "203.0.113.4",
+      ...headers,
     },
-    body: method === "POST" ? JSON.stringify(body) : undefined,
+    body,
   });
 }
 
@@ -268,6 +332,187 @@ function cases(): ValidationCase[] {
           ...issueUnless(
             payload.status === "blocked" && payload.reason === "api_route_disabled",
             "Expected api_route_disabled payload.",
+          ),
+          ...expectEvidence(payload.evidence),
+        ];
+      },
+    },
+    {
+      id: "rate_limit_exceeded",
+      title: "Rate limit exceeded fails closed",
+      expectedBehavior: "Route-specific rate limiting blocks repeated requests before workflow exposure.",
+      async run() {
+        const route = createRouteFoundation({
+          rateLimitMaxRequests: 1,
+        });
+        await route.handleExportRequest(
+          createRequest({
+            scope: {
+              includeSavedSimulations: true,
+            },
+          }),
+        );
+        const response = await route.handleExportRequest(
+          createRequest({
+            scope: {
+              includeSavedSimulations: true,
+            },
+          }),
+        );
+        const payload = await readPayload(response);
+
+        return [
+          ...issueUnless(response.status === 429, "Expected rate limit status 429."),
+          ...issueUnless(
+            payload.status === "blocked" && payload.reason === "rate_limit_exceeded",
+            "Expected rate_limit_exceeded payload.",
+          ),
+          ...expectEvidence(payload.evidence),
+        ];
+      },
+    },
+    {
+      id: "abuse_detection_blocks",
+      title: "Abuse detection blocks",
+      expectedBehavior: "Route hardening rejects abusive request signals before workflow exposure.",
+      async run() {
+        const response = await createRouteFoundation().handleExportRequest(
+          createRequest(
+            {
+              scope: {
+                includeSavedSimulations: true,
+              },
+            },
+            "POST",
+            {
+              "x-levio-abuse-signal": "detected",
+            },
+          ),
+        );
+        const payload = await readPayload(response);
+
+        return [
+          ...issueUnless(response.status === 403, "Expected abuse status 403."),
+          ...issueUnless(
+            payload.status === "blocked" && payload.reason === "abuse_detected",
+            "Expected abuse_detected payload.",
+          ),
+          ...expectEvidence(payload.evidence),
+        ];
+      },
+    },
+    {
+      id: "missing_origin_blocks",
+      title: "Missing origin blocks",
+      expectedBehavior: "Origin/Referer validation fails closed when no origin evidence exists.",
+      async run() {
+        const response = await createRouteFoundation().handleExportRequest(
+          createRequest(
+            {
+              scope: {
+                includeSavedSimulations: true,
+              },
+            },
+            "POST",
+            {
+              origin: undefined,
+              referer: undefined,
+            },
+          ),
+        );
+        const payload = await readPayload(response);
+
+        return [
+          ...issueUnless(response.status === 403, "Expected missing origin status 403."),
+          ...issueUnless(
+            payload.status === "blocked" && payload.reason === "origin_missing",
+            "Expected origin_missing payload.",
+          ),
+          ...expectEvidence(payload.evidence),
+        ];
+      },
+    },
+    {
+      id: "invalid_origin_blocks",
+      title: "Invalid origin blocks",
+      expectedBehavior: "Origin/Referer validation rejects requests outside the allowlist.",
+      async run() {
+        const response = await createRouteFoundation().handleExportRequest(
+          createRequest(
+            {
+              scope: {
+                includeSavedSimulations: true,
+              },
+            },
+            "POST",
+            {
+              origin: "https://evil.example",
+            },
+          ),
+        );
+        const payload = await readPayload(response);
+
+        return [
+          ...issueUnless(response.status === 403, "Expected invalid origin status 403."),
+          ...issueUnless(
+            payload.status === "blocked" && payload.reason === "origin_invalid",
+            "Expected origin_invalid payload.",
+          ),
+          ...expectEvidence(payload.evidence),
+        ];
+      },
+    },
+    {
+      id: "csrf_failure_blocks",
+      title: "CSRF failure blocks",
+      expectedBehavior: "CSRF protection rejects missing or mismatched double-submit tokens.",
+      async run() {
+        const response = await createRouteFoundation().handleExportRequest(
+          createRequest(
+            {
+              scope: {
+                includeSavedSimulations: true,
+              },
+            },
+            "POST",
+            {
+              "x-levio-csrf-token": "wrong_stage4_3z_token",
+            },
+          ),
+        );
+        const payload = await readPayload(response);
+
+        return [
+          ...issueUnless(response.status === 403, "Expected CSRF status 403."),
+          ...issueUnless(
+            payload.status === "blocked" && payload.reason === "csrf_failed",
+            "Expected csrf_failed payload.",
+          ),
+          ...expectEvidence(payload.evidence),
+        ];
+      },
+    },
+    {
+      id: "revoked_session_blocks",
+      title: "Revoked session blocks",
+      expectedBehavior: "Route hardening explicitly rejects revoked authenticated sessions.",
+      async run() {
+        const response = await createRouteFoundation({
+          authContext: revokedContext,
+        }).handleExportRequest(
+          createRequest({
+            scope: {
+              includeSavedSimulations: true,
+            },
+          }),
+        );
+        const payload = await readPayload(response);
+
+        return [
+          ...issueUnless(response.status === 401, "Expected revoked session status 401."),
+          ...issueUnless(
+            payload.status === "blocked" && payload.reason === "session_revoked",
+            "Expected session_revoked payload.",
           ),
           ...expectEvidence(payload.evidence),
         ];
@@ -371,6 +616,60 @@ function cases(): ValidationCase[] {
               payload.storageWrite === false &&
               payload.includedResources === 1,
             "Expected manifest-only export foundation response.",
+          ),
+          ...expectEvidence(payload.evidence),
+        ];
+      },
+    },
+    {
+      id: "malformed_request_blocks",
+      title: "Malformed request blocks",
+      expectedBehavior: "Malformed JSON fails closed after hardening and before workflow execution.",
+      async run() {
+        const response = await createRouteFoundation().handleExportRequest(
+          createRawRequest("{not-valid-json"),
+        );
+        const payload = await readPayload(response);
+
+        return [
+          ...issueUnless(response.status === 400, "Expected malformed request status 400."),
+          ...issueUnless(
+            payload.status === "blocked" && payload.reason === "invalid_json",
+            "Expected invalid_json payload.",
+          ),
+          ...expectEvidence(payload.evidence),
+        ];
+      },
+    },
+    {
+      id: "rollback_disabled_route_preempts_hardening",
+      title: "Rollback disabled route preempts hardening",
+      expectedBehavior:
+        "Disabling the route flag remains the rollback switch even when hardening headers are absent.",
+      async run() {
+        const response = await createRouteFoundation({
+          enabled: false,
+        }).handleExportRequest(
+          createRequest(
+            {
+              scope: {
+                includeSavedSimulations: true,
+              },
+            },
+            "POST",
+            {
+              origin: undefined,
+              "x-levio-csrf-token": undefined,
+            },
+          ),
+        );
+        const payload = await readPayload(response);
+
+        return [
+          ...issueUnless(response.status === 503, "Expected disabled route status 503."),
+          ...issueUnless(
+            payload.status === "blocked" && payload.reason === "api_route_disabled",
+            "Expected api_route_disabled rollback payload.",
           ),
           ...expectEvidence(payload.evidence),
         ];
