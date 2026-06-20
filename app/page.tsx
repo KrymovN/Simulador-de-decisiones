@@ -38,7 +38,7 @@ const navItems = [
   { label: "Escenarios", href: "#escenarios" },
   { label: "Riesgos", href: "#motor" },
   { label: "Ventajas", href: "#producto" },
-  { label: "Mi espacio", href: "/dashboard" },
+  { label: "Espacio local", href: "/dashboard" },
 ];
 
 const heroFeatures = [
@@ -139,7 +139,7 @@ const footerColumns = [
     title: "Acceso",
     links: [
       { label: "Iniciar sesión", href: "/login" },
-      { label: "Mi espacio", href: "/dashboard" },
+      { label: "Espacio local", href: "/dashboard" },
     ],
   },
   {

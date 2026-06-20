@@ -374,10 +374,10 @@ export default function HomeSimulator() {
 
           <div className="simulator-cta-row" aria-label="Acciones posteriores a la simulación">
             <button onClick={handleSave} type="button">
-              Guardar simulación
+              Guardar localmente
             </button>
             <Link className="secondary-button" href="/dashboard/simulations">
-              Ver en Mi espacio
+              Ver historial local
             </Link>
             <button className="ghost-button" onClick={handleDemoSession} type="button">
               Crear sesión demo
