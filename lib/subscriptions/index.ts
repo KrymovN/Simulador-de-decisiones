@@ -7,3 +7,5 @@ export * from "./boundary-validation";
 export * from "./runtime-qa-regression";
 export * from "./entitlement-persistence";
 export * from "./entitlement-persistence-validation";
+export * from "./entitlement-enforcement";
+export * from "./entitlement-enforcement-validation";

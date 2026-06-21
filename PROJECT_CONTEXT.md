@@ -12,7 +12,7 @@ Levio is not an Answer Engine.
 
 Levio is not a Generic AI Assistant.
 
-The active checkpoint is Subscription Entitlement Persistence Foundation
+The active checkpoint is Subscription Entitlement Enforcement Foundation
 implemented. Stage 4.3 remains closed as User Data Controls
 foundation/runtime-boundary complete after the excessive Stage 4.3
 gate/audit/micro-stage chain was removed.
@@ -83,6 +83,25 @@ It provides:
 It does not connect Stripe, Billing provider, checkout, webhooks, pricing
 engine, payment UI, subscription UI, API routes, OpenAI, or product behavior.
 
+## Subscription Entitlement Enforcement Result
+
+Subscription Entitlement Enforcement Foundation is implemented as
+foundation-only runtime under `lib/subscriptions`.
+
+It provides:
+
+- server-only entitlement enforcement contracts;
+- Free / Premium / Professional capability enforcement;
+- fail-closed entitlement checks over trusted entitlement snapshots;
+- Decision Simulation Engine-safe capability restrictions;
+- rejection of client-supplied tier, capability, and owner fields;
+- deterministic validation catalog.
+
+It composes the entitlement persistence foundation and existing subscription
+runtime foundation. It does not connect Stripe, Billing provider, checkout,
+webhooks, pricing engine, payment UI, subscription UI, API routes, OpenAI, or
+product behavior.
+
 ## Current Runtime Boundaries
 
 Allowed at current closure:
@@ -91,6 +110,7 @@ Allowed at current closure:
 - owner-scoped planning contracts;
 - subscription scope reasoning;
 - entitlement persistence foundation;
+- entitlement enforcement foundation;
 - canonical owner model based on `levio_principals.principal_id`;
 - fail-closed behavior;
 - deterministic validation functions;
@@ -138,7 +158,7 @@ history or generic assistant behavior.
 
 ## Production Readiness
 
-Subscription Entitlement Persistence Foundation is not production-ready billing.
+Subscription Entitlement Enforcement Foundation is not production-ready billing.
 
 Billing/product work remains blocked until a separately approved future stage
 defines provider integration, entitlement sync/enforcement, webhooks, UI/API,

@@ -6,7 +6,7 @@ Date: 21 June 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Subscription Entitlement Persistence Foundation
+The current confirmed state is Subscription Entitlement Enforcement Foundation
 implemented. Stage 4.3 remains closed after consolidation and Stage 4.4A remains
 accepted.
 
@@ -28,15 +28,15 @@ Levio must not become:
 - generic prompt history system;
 - assistant conversation log product.
 
-## Subscription Entitlement Persistence State
+## Subscription Entitlement Enforcement State
 
 Implemented as foundation-only runtime:
 
-- owner-scoped entitlement snapshot model;
-- FREE / PREMIUM / PROFESSIONAL entitlement snapshots;
-- server-only read/write contracts;
-- fail-closed entitlement resolution;
-- rejection of client-supplied tier, owner, customer, and billing identifiers;
+- server-only entitlement enforcement contracts;
+- Free / Premium / Professional capability enforcement;
+- fail-closed entitlement checks;
+- Decision Simulation Engine-safe capability restrictions;
+- rejection of client-supplied tier, capability, and owner fields;
 - deterministic validation catalog.
 
 The foundation is isolated under `lib/subscriptions` and is not connected to UI,
@@ -65,7 +65,7 @@ There is no product behavior change from Stage 4.4A.
 
 ## Production Status
 
-Subscription Entitlement Persistence Foundation is not production-ready billing.
+Subscription Entitlement Enforcement Foundation is not production-ready billing.
 
 Future billing implementation requires separate owner approval, provider scope,
 legal/commercial terms, entitlement sync/enforcement, webhook security, QA, and

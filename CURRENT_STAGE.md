@@ -2,7 +2,7 @@
 
 ## Active Checkpoint
 
-Subscription Entitlement Persistence Foundation.
+Subscription Entitlement Enforcement Foundation.
 
 Status: implemented / foundation-only.
 
@@ -10,8 +10,8 @@ Date: 21 June 2026, Europe/Madrid.
 
 Stage 4.3 remains closed as User Data Controls foundation/runtime-boundary
 complete. Stage 4.4A is accepted. Subscription Entitlement Persistence
-Foundation implements the first narrow Stage 4.4 runtime foundation after the
-scope lock.
+Foundation is complete. Subscription Entitlement Enforcement Foundation adds
+server-only capability enforcement over trusted entitlement snapshots.
 
 ## Product Invariant
 
@@ -27,27 +27,27 @@ USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISIO
 
 ## What Is Closed
 
-Subscription Entitlement Persistence Foundation is implemented as
+Subscription Entitlement Enforcement Foundation is implemented as
 foundation-only runtime.
 
 It adds:
 
-- owner-scoped entitlement snapshot model;
-- FREE / PREMIUM / PROFESSIONAL entitlement snapshot support;
-- server-only read/write provider contracts;
-- fail-closed entitlement resolution;
-- rejection of client-supplied tier, owner, customer, and billing identifiers;
+- server-only entitlement enforcement contracts;
+- Free / Premium / Professional capability enforcement;
+- fail-closed entitlement checks through entitlement persistence and subscription runtime;
+- Decision Simulation Engine-safe capability restrictions;
+- rejection of client-supplied tier, capability, and owner fields;
 - deterministic validation catalog.
 
 ## Current Non-Scope
 
-The current foundation does not include Stripe, Billing provider, checkout,
+The current foundations do not include Stripe, Billing provider, checkout,
 customer portal, invoices, payment webhooks, pricing engine, payment UI,
 subscription UI, OpenAI integration, API exposure, or product behavior changes.
 
 ## Production Readiness
 
-Subscription Entitlement Persistence Foundation is not production billing.
+Subscription Entitlement Enforcement Foundation is not production billing.
 Billing and production subscription behavior are not production-ready and not
 approved.
 
