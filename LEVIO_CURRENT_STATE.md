@@ -6,9 +6,9 @@ Date: 21 June 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Subscription Runtime Integration Foundation
-implemented. Stage 4.3 remains closed after consolidation and Stage 4.4A remains
-accepted.
+The current confirmed state is Stage 4.4 Subscription Runtime Foundation
+Complete / Production Billing Deferred. Stage 4.3 remains closed after
+consolidation.
 
 Active closure document:
 
@@ -28,10 +28,17 @@ Levio must not become:
 - generic prompt history system;
 - assistant conversation log product.
 
-## Subscription Runtime Integration State
+## Subscription Runtime State
+
+Stage 4.4 is closed as foundation/runtime-boundary complete.
 
 Implemented as foundation-only runtime:
 
+- Free / Premium / Professional subscription tier contracts;
+- entitlement meaning and owner boundary;
+- owner-scoped entitlement snapshot persistence foundation;
+- server-only entitlement read/write provider contracts;
+- server-only entitlement enforcement contracts;
 - unified server-only subscription runtime facade;
 - integration of entitlement persistence and entitlement enforcement;
 - Free / Premium / Professional capability model integration;
@@ -39,7 +46,7 @@ Implemented as foundation-only runtime:
 - disabled-by-default rollback-safe behavior;
 - Decision Simulation Engine-safe runtime limits;
 - rejection of client-supplied tier, owner, capability, customer, and billing fields;
-- deterministic validation catalog.
+- deterministic validation catalogs.
 
 The foundation is isolated under `lib/subscriptions` and is not connected to UI,
 API routes, Stripe, Billing provider, checkout, webhooks, pricing engine,
@@ -48,6 +55,15 @@ payment UI, subscription UI, OpenAI, or product behavior.
 The owner model remains anchored on `levio_principals.principal_id`.
 Billing status, payment provider IDs, and client-supplied tier fields are not
 ownership proof.
+
+## Deferred Production Billing
+
+Production billing is deferred because:
+
+- billing provider is not approved;
+- Stripe is not approved;
+- pricing, legal, and tax scope are not approved;
+- checkout, webhooks, and customer portal are not ready.
 
 ## Current Product Behavior
 
@@ -67,7 +83,7 @@ There is no product behavior change from Stage 4.4A.
 
 ## Production Status
 
-Subscription Runtime Integration Foundation is not production-ready billing.
+Stage 4.4 is not production-ready billing.
 
 Future billing implementation requires separate owner approval, provider scope,
 legal/commercial terms, entitlement sync/enforcement, webhook security, QA, and
@@ -75,9 +91,8 @@ rollback planning.
 
 ## Next Roadmap Step
 
-The next logical step is an owner-approved decision on the next Stage 4.4
-implementation target.
+Stage 5.1 AI Provider Abstraction / Real AI Integration Foundation.
 
-Billing provider integration remains blocked until provider/commercial/legal
-scope is approved.
-Do not create the next micro-stage automatically.
+AI Provider is an internal component only. It must remain behind Simulator,
+Decision Engine, and Prompt Context boundaries and must not become AI Chat,
+Answer Engine, or Generic Assistant behavior.

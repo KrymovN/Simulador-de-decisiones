@@ -2,17 +2,17 @@
 
 ## Active Checkpoint
 
-Subscription Runtime Integration Foundation.
+Stage 4.4 Subscription Runtime Foundation Complete.
 
-Status: implemented / foundation-only.
+Status: foundation/runtime-boundary complete; production billing deferred.
 
 Date: 21 June 2026, Europe/Madrid.
 
 Stage 4.3 remains closed as User Data Controls foundation/runtime-boundary
-complete. Stage 4.4A is accepted. Subscription Entitlement Persistence
-Foundation and Subscription Entitlement Enforcement Foundation are complete.
-Subscription Runtime Integration Foundation adds a unified server-only facade
-over trusted entitlement persistence and enforcement.
+complete. Stage 4.4 is closed as Subscription Runtime Foundation Complete.
+Subscription Entitlement Persistence Foundation, Subscription Entitlement
+Enforcement Foundation, and Subscription Runtime Integration Foundation are
+complete on a foundation-only runtime-boundary level.
 
 ## Product Invariant
 
@@ -28,11 +28,15 @@ USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISIO
 
 ## What Is Closed
 
-Subscription Runtime Integration Foundation is implemented as foundation-only
-runtime.
+Stage 4.4 foundation/runtime-boundary is closed.
 
-It adds:
+It includes:
 
+- Free / Premium / Professional subscription tier contracts;
+- entitlement meaning and owner boundary;
+- owner-scoped entitlement snapshot persistence foundation;
+- server-only entitlement read/write provider contracts;
+- server-only entitlement enforcement contracts;
 - unified server-only subscription runtime facade;
 - integration of entitlement persistence and entitlement enforcement;
 - Free / Premium / Professional capability model integration;
@@ -40,9 +44,16 @@ It adds:
 - disabled-by-default rollback-safe behavior;
 - Decision Simulation Engine-safe runtime limits;
 - rejection of client-supplied tier, owner, capability, customer, and billing fields;
-- deterministic validation catalog.
+- deterministic validation catalogs.
 
-## Current Non-Scope
+## Deferred Production Billing Scope
+
+Production billing is explicitly deferred because:
+
+- billing provider is not approved;
+- Stripe is not approved;
+- pricing, legal, and tax scope are not approved;
+- checkout, webhooks, and customer portal are not ready.
 
 The current foundations do not include Stripe, Billing provider, checkout,
 customer portal, invoices, payment webhooks, pricing engine, payment UI,
@@ -50,16 +61,16 @@ subscription UI, OpenAI integration, API exposure, or product behavior changes.
 
 ## Production Readiness
 
-Subscription Runtime Integration Foundation is not production billing. Billing
-and production subscription behavior are not production-ready and not approved.
+Stage 4.4 is not production billing. Billing and production subscription
+behavior are not production-ready and not approved.
 
 Any future billing implementation requires separate owner approval and a
 dedicated implementation plan.
 
 ## Next Allowed Roadmap Step
 
-Owner-approved decision on the next Stage 4.4 implementation target.
+Stage 5.1 AI Provider Abstraction / Real AI Integration Foundation.
 
-The next logical target is owner-approved billing provider integration, but it
-remains blocked until provider/commercial/legal scope is approved.
-Do not create a follow-up micro-stage automatically.
+AI Provider must remain an internal replaceable component inside the immutable
+Decision Simulation Engine architecture. Stage 5.1 must not turn Levio into AI
+Chat, Answer Engine, or Generic Assistant.

@@ -12,8 +12,8 @@ Levio is not an Answer Engine.
 
 Levio is not a Generic AI Assistant.
 
-The active checkpoint is Subscription Runtime Integration Foundation
-implemented. Stage 4.3 remains closed as User Data Controls
+The active checkpoint is Stage 4.4 Subscription Runtime Foundation Complete /
+Production Billing Deferred. Stage 4.3 remains closed as User Data Controls
 foundation/runtime-boundary complete after the excessive Stage 4.3
 gate/audit/micro-stage chain was removed.
 
@@ -121,6 +121,36 @@ It provides:
 It does not connect Stripe, Billing provider, checkout, webhooks, pricing
 engine, payment UI, subscription UI, API routes, OpenAI, or product behavior.
 
+## Stage 4.4 Closure Result
+
+Stage 4.4 is closed as Subscription Runtime Foundation Complete /
+Production Billing Deferred.
+
+Closed at foundation/runtime-boundary level:
+
+- subscription tier contracts for Free, Premium, and Professional;
+- entitlement meaning and owner boundary;
+- owner-scoped entitlement snapshot persistence foundation;
+- server-only entitlement read/write provider contracts;
+- server-only entitlement enforcement contracts;
+- unified server-only subscription runtime facade;
+- fail-closed entitlement and capability resolution;
+- disabled-by-default rollback-safe behavior;
+- Decision Simulation Engine-safe capability limits;
+- rejection of client-supplied tier, owner, capability, customer, and billing fields;
+- deterministic validation catalogs.
+
+Production billing is deferred because:
+
+- billing provider is not approved;
+- Stripe is not approved;
+- pricing, legal, and tax scope are not approved;
+- checkout, webhooks, and customer portal are not ready.
+
+This closure does not connect Stripe, Billing provider, checkout, webhooks,
+pricing engine, payment UI, subscription UI, public API, OpenAI, or product
+behavior.
+
 ## Current Runtime Boundaries
 
 Allowed at current closure:
@@ -178,17 +208,17 @@ history or generic assistant behavior.
 
 ## Production Readiness
 
-Subscription Runtime Integration Foundation is not production-ready billing.
+Stage 4.4 is not production-ready billing.
 
 Billing/product work remains blocked until a separately approved future stage
-defines provider integration, entitlement sync, webhooks, UI/API,
-legal/commercial copy, QA, and rollback rehearsal.
+defines provider integration, pricing/legal/tax scope, entitlement sync,
+webhooks, UI/API, QA, and rollback rehearsal.
 
 ## Next Roadmap Step
 
-The next logical step is an owner-approved decision on the next Stage 4.4
-implementation target.
+Stage 5.1 AI Provider Abstraction / Real AI Integration Foundation is the next
+roadmap step.
 
-Billing provider integration remains blocked until provider/commercial/legal
-scope is approved.
-No follow-up micro-stage is created automatically.
+AI Provider remains an internal replaceable component. Stage 5.1 must preserve
+the immutable Decision Simulation Engine architecture and must not create AI
+Chat, Answer Engine, Generic Assistant, or direct AI-to-user behavior.
