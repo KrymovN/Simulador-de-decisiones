@@ -12,9 +12,9 @@ Levio is not an Answer Engine.
 
 Levio is not a Generic AI Assistant.
 
-The active checkpoint is Stage 4.4A Subscription Runtime Scope Lock. Stage 4.3
-remains closed as User Data Controls foundation/runtime-boundary complete after
-the excessive Stage 4.3 gate/audit/micro-stage chain was removed.
+The active checkpoint is Stage 4.4A Subscription Runtime Scope Lock Owner
+Review. Stage 4.3 remains closed as User Data Controls foundation/runtime-boundary
+complete after the excessive Stage 4.3 gate/audit/micro-stage chain was removed.
 
 Active closure reference:
 
@@ -40,7 +40,8 @@ artifacts only.
 
 ## Stage 4.4A Scope Lock Result
 
-Stage 4.4A is closed as documentation-only subscription runtime scope lock.
+Stage 4.4A is closed and accepted as documentation-only subscription runtime
+scope lock.
 
 It defines:
 
@@ -55,6 +56,14 @@ It does not create runtime code, connect Stripe, connect Billing, change UI,
 change API, connect OpenAI, or approve production subscription behavior.
 
 Stage 4.3 remains closed and must not restart as a micro-stage chain.
+
+Owner review result:
+
+- conforms to the roadmap;
+- does not inflate subscription scope into billing implementation;
+- keeps Free, Premium, and Professional as decision simulation access tiers;
+- preserves Levio as Decision Simulation Engine;
+- does not create AI Chat, Answer Engine, or Generic AI Assistant behavior.
 
 ## Current Runtime Boundaries
 
@@ -118,6 +127,8 @@ legal/commercial copy, QA, and rollback rehearsal.
 
 ## Next Roadmap Step
 
-The next logical step is owner review of the Stage 4.4A scope lock.
+The next logical step is an owner-approved billing/subscription implementation
+plan.
 
+That next logical step is documentation/readiness work, not implementation.
 No follow-up micro-stage is created automatically.

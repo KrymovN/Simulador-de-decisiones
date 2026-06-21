@@ -6,8 +6,8 @@ Date: 21 June 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Stage 4.4A Subscription Runtime Scope Lock.
-Stage 4.3 remains closed after consolidation.
+The current confirmed state is Stage 4.4A Subscription Runtime Scope Lock Owner
+Review. Stage 4.3 remains closed after consolidation.
 
 Active closure document:
 
@@ -27,9 +27,9 @@ Levio must not become:
 - generic prompt history system;
 - assistant conversation log product.
 
-## Stage 4.4A Final State
+## Stage 4.4A Review State
 
-Closed as documentation-only scope lock:
+Accepted as documentation-only scope lock:
 
 - Free, Premium, and Professional tier model fixed;
 - entitlement definition fixed;
@@ -37,6 +37,13 @@ Closed as documentation-only scope lock:
 - Decision Simulation Engine invariants preserved;
 - dependencies before billing implementation documented;
 - deferred billing/product work documented.
+
+Review result:
+
+- Stage 4.4A conforms to the roadmap.
+- Scope does not expand into Billing, Stripe, UI, API, OpenAI, or product launch.
+- Commercial tiers remain access controls for decision simulation capabilities.
+- The layer does not create AI Chat, Answer Engine, or Generic AI Assistant behavior.
 
 The owner model remains anchored on `levio_principals.principal_id`.
 Billing status, payment provider IDs, and client-supplied tier fields are not
@@ -68,6 +75,8 @@ rollback planning.
 
 ## Next Roadmap Step
 
-The next logical step is owner review of Stage 4.4A.
+The next logical step is an owner-approved billing/subscription implementation
+plan.
 
+That next logical step is documentation/readiness work, not implementation.
 Do not create the next micro-stage automatically.

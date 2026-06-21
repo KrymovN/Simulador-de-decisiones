@@ -51,6 +51,7 @@ Overall Project Progress ███████░░░ 70%
 - Production read-provider foundation удален из runtime.
 - Route hardening foundation, созданный ради удаленных routes, удален из runtime.
 - Stage 4.4A Subscription Runtime Scope Lock закрыт как документационный scope lock.
+- Stage 4.4A owner review/readiness check завершен: accepted.
 - Product behavior не изменен.
 
 ## Block Progress
@@ -103,11 +104,12 @@ Overall Project Progress ███████░░░ 70%
 
 ### 8. Subscription Runtime
 
-Статус: Scope lock завершен, billing не начат.
+Статус: Scope lock accepted, billing не начат.
 Прогресс: █░░░░░░░░░ 10%.
 Блокер: Billing provider, payments и commercial entitlement runtime не подключены.
 Последнее изменение: Stage 4.4A зафиксировал Free/Premium/Professional, entitlement definition, допустимые restriction categories, Decision Simulation Engine invariants, billing dependencies и deferred work.
-Следующий шаг: Owner review Stage 4.4A; следующий этап не создавать автоматически.
+Review result: accepted. Scope соответствует roadmap, не раздувает subscription layer, не превращает Levio в AI Chat / Answer Engine / Generic Assistant.
+Следующий шаг: owner-approved billing/subscription implementation plan; следующий этап не создавать автоматически.
 
 ### 9. Real AI Integration
 
@@ -154,7 +156,7 @@ Overall Project Progress ███████░░░ 70%
 
 ## Current Roadmap Focus
 
-Owner review Stage 4.4A -> only owner-approved next roadmap instruction.
+Owner-approved billing/subscription implementation plan -> only owner-approved next roadmap instruction.
 
 Do not continue:
 
@@ -182,3 +184,8 @@ Do not continue:
 - Runtime code, Stripe, Billing, UI, API, OpenAI и product behavior не изменялись.
 - Зафиксированы Free/Premium/Professional tiers, entitlement definition, restriction categories, subscription invariants, billing implementation dependencies и deferred work.
 - Stage 4.4A не одобряет billing implementation и не создает следующий micro-stage автоматически.
+- Выполнен owner review/readiness check для Stage 4.4A.
+- Result: Stage 4.4A accepted.
+- Подтверждено: scope соответствует roadmap, не раздувает subscription layer, не нарушает Decision Simulation Engine invariant и не создает AI Chat / Answer Engine / Generic Assistant behavior.
+- Следующий логичный шаг: owner-approved billing/subscription implementation plan.
+- Следующий логичный шаг является documentation/readiness, не implementation.

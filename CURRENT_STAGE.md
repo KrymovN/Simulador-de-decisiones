@@ -2,15 +2,15 @@
 
 ## Active Checkpoint
 
-Stage 4.4A Subscription Runtime Scope Lock.
+Stage 4.4A Subscription Runtime Scope Lock Owner Review.
 
-Status: scope lock / documentation-only complete.
+Status: accepted / documentation-only readiness check complete.
 
 Date: 21 June 2026, Europe/Madrid.
 
 Stage 4.3 remains closed as User Data Controls foundation/runtime-boundary
 complete. Stage 4.4A defines the subscription runtime scope without billing
-implementation.
+implementation and has passed owner review/readiness check.
 
 ## Product Invariant
 
@@ -28,6 +28,8 @@ USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISIO
 
 Stage 4.4A is closed as a Subscription Runtime Scope Lock.
 
+Owner review result: accepted.
+
 It fixes:
 
 - Free, Premium, and Professional tier vocabulary;
@@ -39,6 +41,13 @@ It fixes:
 
 No runtime code, API, UI, Stripe, Billing, OpenAI, or Subscription Runtime
 implementation was added by Stage 4.4A.
+
+Review findings:
+
+- Stage 4.4A matches the roadmap subscription/commercial scope.
+- Scope is not inflated into billing provider integration or product launch.
+- Free, Premium, and Professional remain decision simulation access tiers.
+- Commercial layer does not turn Levio into AI Chat, Answer Engine, or Generic AI Assistant.
 
 ## Current Non-Scope
 
@@ -57,6 +66,7 @@ dedicated implementation plan.
 
 ## Next Allowed Roadmap Step
 
-Owner review of `LEVIO_STAGE_4_4A_SUBSCRIPTION_RUNTIME_SCOPE_LOCK.md`.
+Owner-approved billing/subscription implementation plan.
 
+This next logical step is documentation/readiness work, not implementation.
 Do not create a follow-up micro-stage automatically.
