@@ -6,8 +6,9 @@ Date: 21 June 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Stage 4.4A Subscription Runtime Scope Lock Owner
-Review. Stage 4.3 remains closed after consolidation.
+The current confirmed state is Subscription Entitlement Persistence Foundation
+implemented. Stage 4.3 remains closed after consolidation and Stage 4.4A remains
+accepted.
 
 Active closure document:
 
@@ -27,23 +28,20 @@ Levio must not become:
 - generic prompt history system;
 - assistant conversation log product.
 
-## Stage 4.4A Review State
+## Subscription Entitlement Persistence State
 
-Accepted as documentation-only scope lock:
+Implemented as foundation-only runtime:
 
-- Free, Premium, and Professional tier model fixed;
-- entitlement definition fixed;
-- subscription restriction categories fixed;
-- Decision Simulation Engine invariants preserved;
-- dependencies before billing implementation documented;
-- deferred billing/product work documented.
+- owner-scoped entitlement snapshot model;
+- FREE / PREMIUM / PROFESSIONAL entitlement snapshots;
+- server-only read/write contracts;
+- fail-closed entitlement resolution;
+- rejection of client-supplied tier, owner, customer, and billing identifiers;
+- deterministic validation catalog.
 
-Review result:
-
-- Stage 4.4A conforms to the roadmap.
-- Scope does not expand into Billing, Stripe, UI, API, OpenAI, or product launch.
-- Commercial tiers remain access controls for decision simulation capabilities.
-- The layer does not create AI Chat, Answer Engine, or Generic AI Assistant behavior.
+The foundation is isolated under `lib/subscriptions` and is not connected to UI,
+API routes, Stripe, Billing provider, checkout, webhooks, pricing engine,
+payment UI, subscription UI, OpenAI, or product behavior.
 
 The owner model remains anchored on `levio_principals.principal_id`.
 Billing status, payment provider IDs, and client-supplied tier fields are not
@@ -59,7 +57,7 @@ There is no Billing integration.
 
 There is no checkout or customer portal.
 
-There is no subscription API or billing UI.
+There is no subscription API, entitlement API, or billing UI.
 
 There is no OpenAI runtime integration.
 
@@ -67,16 +65,17 @@ There is no product behavior change from Stage 4.4A.
 
 ## Production Status
 
-Stage 4.4A is not production-ready.
+Subscription Entitlement Persistence Foundation is not production-ready billing.
 
 Future billing implementation requires separate owner approval, provider scope,
-legal/commercial terms, entitlement persistence, webhook security, QA, and
+legal/commercial terms, entitlement sync/enforcement, webhook security, QA, and
 rollback planning.
 
 ## Next Roadmap Step
 
-The next logical step is an owner-approved billing/subscription implementation
-plan.
+The next logical step is an owner-approved decision on the next Stage 4.4
+implementation target.
 
-That next logical step is documentation/readiness work, not implementation.
+Billing provider integration remains blocked until provider/commercial/legal
+scope is approved.
 Do not create the next micro-stage automatically.

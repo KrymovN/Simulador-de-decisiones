@@ -12,9 +12,10 @@ Levio is not an Answer Engine.
 
 Levio is not a Generic AI Assistant.
 
-The active checkpoint is Stage 4.4A Subscription Runtime Scope Lock Owner
-Review. Stage 4.3 remains closed as User Data Controls foundation/runtime-boundary
-complete after the excessive Stage 4.3 gate/audit/micro-stage chain was removed.
+The active checkpoint is Subscription Entitlement Persistence Foundation
+implemented. Stage 4.3 remains closed as User Data Controls
+foundation/runtime-boundary complete after the excessive Stage 4.3
+gate/audit/micro-stage chain was removed.
 
 Active closure reference:
 
@@ -65,6 +66,23 @@ Owner review result:
 - preserves Levio as Decision Simulation Engine;
 - does not create AI Chat, Answer Engine, or Generic AI Assistant behavior.
 
+## Subscription Entitlement Persistence Result
+
+Subscription Entitlement Persistence Foundation is implemented as
+foundation-only runtime under `lib/subscriptions`.
+
+It provides:
+
+- owner-scoped entitlement snapshot model;
+- FREE / PREMIUM / PROFESSIONAL entitlement snapshot support;
+- server-only read/write provider contracts;
+- fail-closed entitlement resolution;
+- rejection of client-supplied tier, owner, customer, and billing identifiers;
+- deterministic validation catalog.
+
+It does not connect Stripe, Billing provider, checkout, webhooks, pricing
+engine, payment UI, subscription UI, API routes, OpenAI, or product behavior.
+
 ## Current Runtime Boundaries
 
 Allowed at current closure:
@@ -72,6 +90,7 @@ Allowed at current closure:
 - foundation-only evaluation;
 - owner-scoped planning contracts;
 - subscription scope reasoning;
+- entitlement persistence foundation;
 - canonical owner model based on `levio_principals.principal_id`;
 - fail-closed behavior;
 - deterministic validation functions;
@@ -91,7 +110,7 @@ Not allowed or not present:
 - production Supabase read provider for User Data Controls;
 - OpenAI integration;
 - Billing;
-- Subscription Runtime integration.
+- Subscription Runtime product integration.
 - Stripe integration;
 - checkout/customer portal;
 - subscription API routes;
@@ -119,16 +138,17 @@ history or generic assistant behavior.
 
 ## Production Readiness
 
-Stage 4.4A is not production-ready.
+Subscription Entitlement Persistence Foundation is not production-ready billing.
 
 Billing/product work remains blocked until a separately approved future stage
-defines provider integration, entitlement persistence, webhooks, UI/API,
+defines provider integration, entitlement sync/enforcement, webhooks, UI/API,
 legal/commercial copy, QA, and rollback rehearsal.
 
 ## Next Roadmap Step
 
-The next logical step is an owner-approved billing/subscription implementation
-plan.
+The next logical step is an owner-approved decision on the next Stage 4.4
+implementation target.
 
-That next logical step is documentation/readiness work, not implementation.
+Billing provider integration remains blocked until provider/commercial/legal
+scope is approved.
 No follow-up micro-stage is created automatically.

@@ -52,6 +52,7 @@ Overall Project Progress ███████░░░ 70%
 - Route hardening foundation, созданный ради удаленных routes, удален из runtime.
 - Stage 4.4A Subscription Runtime Scope Lock закрыт как документационный scope lock.
 - Stage 4.4A owner review/readiness check завершен: accepted.
+- Subscription Entitlement Persistence Foundation реализован на foundation-only уровне.
 - Product behavior не изменен.
 
 ## Block Progress
@@ -104,12 +105,13 @@ Overall Project Progress ███████░░░ 70%
 
 ### 8. Subscription Runtime
 
-Статус: Scope lock accepted, billing не начат.
-Прогресс: █░░░░░░░░░ 10%.
+Статус: Entitlement persistence foundation реализован, billing не начат.
+Прогресс: ██░░░░░░░░ 20%.
 Блокер: Billing provider, payments и commercial entitlement runtime не подключены.
 Последнее изменение: Stage 4.4A зафиксировал Free/Premium/Professional, entitlement definition, допустимые restriction categories, Decision Simulation Engine invariants, billing dependencies и deferred work.
 Review result: accepted. Scope соответствует roadmap, не раздувает subscription layer, не превращает Levio в AI Chat / Answer Engine / Generic Assistant.
-Следующий шаг: owner-approved billing/subscription implementation plan; следующий этап не создавать автоматически.
+Implementation update: Subscription Entitlement Persistence Foundation добавил owner-scoped entitlement snapshot model, server-only read/write contracts, fail-closed resolution и validation catalog.
+Следующий шаг: owner-approved decision on next Stage 4.4 implementation target; следующий этап не создавать автоматически.
 
 ### 9. Real AI Integration
 
@@ -156,7 +158,7 @@ Review result: accepted. Scope соответствует roadmap, не разд
 
 ## Current Roadmap Focus
 
-Owner-approved billing/subscription implementation plan -> only owner-approved next roadmap instruction.
+Owner-approved next Stage 4.4 implementation target -> only owner-approved next roadmap instruction.
 
 Do not continue:
 
@@ -189,3 +191,9 @@ Do not continue:
 - Подтверждено: scope соответствует roadmap, не раздувает subscription layer, не нарушает Decision Simulation Engine invariant и не создает AI Chat / Answer Engine / Generic Assistant behavior.
 - Следующий логичный шаг: owner-approved billing/subscription implementation plan.
 - Следующий логичный шаг является documentation/readiness, не implementation.
+- Реализован Subscription Entitlement Persistence Foundation.
+- Добавлены `lib/subscriptions/entitlement-persistence.ts` и `lib/subscriptions/entitlement-persistence-validation.ts`.
+- Обновлен `lib/subscriptions/index.ts`.
+- Реализовано: owner-scoped entitlement snapshot model, FREE/PREMIUM/PROFESSIONAL snapshots, server-only read/write contracts, fail-closed resolution, rejection of client tier/owner/customer/billing identifiers, rollback-safe disabled-by-default behavior.
+- Не подключались: Stripe, Billing provider, checkout, webhooks, pricing engine, payment UI, subscription UI, OpenAI, API routes, product behavior.
+- Validation catalog: 12 passed / 0 failed.
