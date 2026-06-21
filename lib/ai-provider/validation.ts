@@ -59,7 +59,11 @@ function hasClientRuntimeFields(
 }
 
 function isValidTimestamp(value: string | undefined): boolean {
-  return Boolean(value) && Number.isFinite(Date.parse(value));
+  if (!value) {
+    return false;
+  }
+
+  return Number.isFinite(Date.parse(value));
 }
 
 function findProvider(
@@ -97,7 +101,9 @@ export function validateAIProviderRequest(
     });
   }
 
-  if (!request.requestId) {
+  const requestId = request.requestId;
+
+  if (!requestId) {
     return blocked({
       request,
       code: "request_id_missing",
@@ -105,7 +111,9 @@ export function validateAIProviderRequest(
     });
   }
 
-  if (!request.providerId) {
+  const providerId = request.providerId;
+
+  if (!providerId) {
     return blocked({
       request,
       code: "provider_missing",
@@ -113,7 +121,9 @@ export function validateAIProviderRequest(
     });
   }
 
-  if (!request.inputFingerprint) {
+  const inputFingerprint = request.inputFingerprint;
+
+  if (!inputFingerprint) {
     return blocked({
       request,
       code: "input_fingerprint_missing",
@@ -129,7 +139,9 @@ export function validateAIProviderRequest(
     });
   }
 
-  if (!request.capability) {
+  const capability = request.capability;
+
+  if (!capability) {
     return blocked({
       request,
       code: "capability_not_supported",
@@ -159,10 +171,13 @@ export function validateAIProviderRequest(
     });
   }
 
+  const temperature = request.temperature;
+
   if (
-    !Number.isFinite(request.temperature) ||
-    request.temperature < 0 ||
-    request.temperature > 1
+    temperature == null ||
+    !Number.isFinite(temperature) ||
+    temperature < 0 ||
+    temperature > 1
   ) {
     return blocked({
       request,
@@ -171,7 +186,7 @@ export function validateAIProviderRequest(
     });
   }
 
-  const provider = findProvider(config.providers, request.providerId);
+  const provider = findProvider(config.providers, providerId);
 
   if (!provider) {
     return blocked({
@@ -197,7 +212,7 @@ export function validateAIProviderRequest(
     });
   }
 
-  if (!provider.capabilities.includes(request.capability)) {
+  if (!provider.capabilities.includes(capability)) {
     return blocked({
       request,
       code: "capability_not_supported",
@@ -208,11 +223,11 @@ export function validateAIProviderRequest(
   return {
     status: "validated",
     execution: "contract_validation_only",
-    requestId: request.requestId,
-    providerId: request.providerId,
-    capability: request.capability,
+    requestId,
+    providerId,
+    capability,
     modelCallExecuted: false,
-    outputFingerprint: `${request.inputFingerprint}:validated`,
+    outputFingerprint: `${inputFingerprint}:validated`,
   };
 }
 

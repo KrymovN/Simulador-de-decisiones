@@ -12,20 +12,20 @@ Levio is not an Answer Engine.
 
 Levio is not a Generic AI Assistant.
 
-The active checkpoint is Stage 4.4 Subscription Runtime Foundation Complete /
+The active checkpoint is Stage 5.1 AI Provider Abstraction / Real AI Integration
+Foundation Complete. Real model calls are deferred.
+
+Stage 4.4 remains closed as Subscription Runtime Foundation Complete /
 Production Billing Deferred. Stage 4.3 remains closed as User Data Controls
 foundation/runtime-boundary complete after the excessive Stage 4.3
 gate/audit/micro-stage chain was removed.
-
-Active closure reference:
-
-- `LEVIO_STAGE_4_4A_SUBSCRIPTION_RUNTIME_SCOPE_LOCK.md`
 
 Supporting references:
 
 - `LEVIO_STAGE_4_3A_USER_DATA_CONTROLS_SCOPE_LOCK.md`
 - `LEVIO_STAGE_4_3_RUNTIME_DEPENDENCY_SCOPE_LOCK.md`
 - `LEVIO_STAGE_4_3_USER_DATA_CONTROLS_FOUNDATION_CLOSURE.md`
+- `LEVIO_STAGE_4_4A_SUBSCRIPTION_RUNTIME_SCOPE_LOCK.md`
 - `LEVIO_TARGET_RUNTIME_ARCHITECTURE.md`
 
 ## Immutable Runtime Architecture
@@ -35,95 +35,42 @@ USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISIO
 ```
 
 No runtime or product step may bypass the Simulator, Decision Engine, Prompt
-Context, or post-provider Decision Engine validation. User Data Controls are
-supporting ownership and lifecycle infrastructure around decision simulation
-artifacts only.
+Context, or post-provider Decision Engine validation.
 
-## Stage 4.4A Scope Lock Result
+AI Provider is an internal replaceable component. It supplies controlled
+candidate material only and must never become the product, the direct respondent
+to the user, or the owner of decision semantics.
 
-Stage 4.4A is closed and accepted as documentation-only subscription runtime
-scope lock.
+## Stage 5.1 Closure Result
 
-It defines:
+Stage 5.1 is closed as AI Provider Abstraction / Real AI Integration Foundation
+Complete at the foundation/runtime-boundary/QA level.
 
-- Free, Premium, and Professional tier vocabulary;
-- entitlement meaning and owner boundary;
-- allowed subscription restriction categories;
-- subscription product invariants;
-- dependencies before billing implementation;
-- deferred billing/product work.
+Closed under `lib/ai-provider`:
 
-It does not create runtime code, connect Stripe, connect Billing, change UI,
-change API, connect OpenAI, or approve production subscription behavior.
+- provider-agnostic AI Provider Adapter contracts;
+- AI Provider request, response, capability, and error models;
+- fail-closed contract validation;
+- disabled-by-default adapter behavior;
+- Runtime Selection / Preflight foundation;
+- provider availability and capability preflight;
+- fail-closed provider resolution;
+- safe missing, disabled, unavailable, and unsupported provider errors;
+- Controlled Adapter Boundary / Facade foundation;
+- boundary rejection of raw prompts, secrets, API keys, env names, and client
+  runtime fields;
+- structured controlled result/error contracts;
+- Stage 5.1 runtime QA/regression aggregation;
+- exports through `lib/ai-provider/index.ts`.
 
-Stage 4.3 remains closed and must not restart as a micro-stage chain.
-
-Owner review result:
-
-- conforms to the roadmap;
-- does not inflate subscription scope into billing implementation;
-- keeps Free, Premium, and Professional as decision simulation access tiers;
-- preserves Levio as Decision Simulation Engine;
-- does not create AI Chat, Answer Engine, or Generic AI Assistant behavior.
-
-## Subscription Entitlement Persistence Result
-
-Subscription Entitlement Persistence Foundation is implemented as
-foundation-only runtime under `lib/subscriptions`.
-
-It provides:
-
-- owner-scoped entitlement snapshot model;
-- FREE / PREMIUM / PROFESSIONAL entitlement snapshot support;
-- server-only read/write provider contracts;
-- fail-closed entitlement resolution;
-- rejection of client-supplied tier, owner, customer, and billing identifiers;
-- deterministic validation catalog.
-
-It does not connect Stripe, Billing provider, checkout, webhooks, pricing
-engine, payment UI, subscription UI, API routes, OpenAI, or product behavior.
-
-## Subscription Entitlement Enforcement Result
-
-Subscription Entitlement Enforcement Foundation is implemented as
-foundation-only runtime under `lib/subscriptions`.
-
-It provides:
-
-- server-only entitlement enforcement contracts;
-- Free / Premium / Professional capability enforcement;
-- fail-closed entitlement checks over trusted entitlement snapshots;
-- Decision Simulation Engine-safe capability restrictions;
-- rejection of client-supplied tier, capability, and owner fields;
-- deterministic validation catalog.
-
-It composes the entitlement persistence foundation and existing subscription
-runtime foundation. It does not connect Stripe, Billing provider, checkout,
-webhooks, pricing engine, payment UI, subscription UI, API routes, OpenAI, or
-product behavior.
-
-## Subscription Runtime Integration Result
-
-Subscription Runtime Integration Foundation is implemented as foundation-only
-runtime under `lib/subscriptions`.
-
-It provides:
-
-- unified server-only subscription runtime facade;
-- integration of entitlement persistence and entitlement enforcement;
-- Free / Premium / Professional capability model integration;
-- fail-closed runtime resolution;
-- disabled-by-default rollback-safe behavior;
-- Decision Simulation Engine-safe runtime limits;
-- rejection of client-supplied tier, owner, capability, customer, and billing fields;
-- deterministic validation catalog.
-
-It does not connect Stripe, Billing provider, checkout, webhooks, pricing
-engine, payment UI, subscription UI, API routes, OpenAI, or product behavior.
+Stage 5.1 does not connect OpenAI SDK, real provider SDKs, API keys,
+environment variables, fetch/network calls, model execution, API routes, UI,
+Simulator runtime, Decision Engine runtime, Prompt Context runtime, database,
+Supabase, auth, persistence, subscriptions, dashboard, or product behavior.
 
 ## Stage 4.4 Closure Result
 
-Stage 4.4 is closed as Subscription Runtime Foundation Complete /
+Stage 4.4 remains closed as Subscription Runtime Foundation Complete /
 Production Billing Deferred.
 
 Closed at foundation/runtime-boundary level:
@@ -147,10 +94,6 @@ Production billing is deferred because:
 - pricing, legal, and tax scope are not approved;
 - checkout, webhooks, and customer portal are not ready.
 
-This closure does not connect Stripe, Billing provider, checkout, webhooks,
-pricing engine, payment UI, subscription UI, public API, OpenAI, or product
-behavior.
-
 ## Current Runtime Boundaries
 
 Allowed at current closure:
@@ -161,6 +104,9 @@ Allowed at current closure:
 - entitlement persistence foundation;
 - entitlement enforcement foundation;
 - subscription runtime integration foundation;
+- AI Provider adapter contracts foundation;
+- AI Provider runtime selection/preflight foundation;
+- AI Provider controlled boundary/facade foundation;
 - canonical owner model based on `levio_principals.principal_id`;
 - fail-closed behavior;
 - deterministic validation functions;
@@ -178,9 +124,18 @@ Not allowed or not present:
 - hard delete;
 - account deletion orchestration;
 - production Supabase read provider for User Data Controls;
-- OpenAI integration;
+- OpenAI SDK;
+- real AI provider SDK;
+- environment variable reads for AI;
+- API keys for AI;
+- model calls;
+- AI API routes;
+- AI UI;
+- Simulator integration with AI Provider;
+- Decision Engine integration with AI Provider;
+- Prompt Context integration with AI Provider;
 - Billing;
-- production Subscription Runtime product integration.
+- production Subscription Runtime product integration;
 - Stripe integration;
 - checkout/customer portal;
 - subscription API routes;
@@ -206,7 +161,18 @@ Stage 4.4 subscription scope does not change the product object. Entitlements
 control access to decision simulation capabilities; they do not create AI chat
 history or generic assistant behavior.
 
+Stage 5.1 AI Provider scope does not change the product object. AI Provider
+foundation controls internal candidate-material infrastructure only; it does not
+create assistant memory, chat history, direct answers, or generic prompt logs.
+
 ## Production Readiness
+
+Stage 5.1 is not production-ready real AI.
+
+Real AI work remains blocked until a separately approved future stage defines
+provider integration, SDK/env/key handling, Prompt Context connection,
+post-provider Decision Engine validation, safety/cost/quality QA, observability,
+and rollback.
 
 Stage 4.4 is not production-ready billing.
 
@@ -216,9 +182,8 @@ webhooks, UI/API, QA, and rollback rehearsal.
 
 ## Next Roadmap Step
 
-Stage 5.1 AI Provider Abstraction / Real AI Integration Foundation is the next
-roadmap step.
+Stage 5.2 Prompt / Context Layer is the next roadmap step.
 
-AI Provider remains an internal replaceable component. Stage 5.1 must preserve
-the immutable Decision Simulation Engine architecture and must not create AI
-Chat, Answer Engine, Generic Assistant, or direct AI-to-user behavior.
+Stage 5.2 is not started by this checkpoint. It must preserve the immutable
+Decision Simulation Engine architecture and must not create AI Chat, Answer
+Engine, Generic Assistant, or direct AI-to-user behavior.

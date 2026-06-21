@@ -34,9 +34,9 @@
 ```text
 Product Alignment        ██████████ 100%
 Foundation Readiness     ██████████ 100%
-Runtime Completion       ████░░░░░░ 40%
+Runtime Completion       █████░░░░░ 50%
 Commercial Readiness     ██░░░░░░░░ 15%
-Overall Project Progress ███████░░░ 70%
+Overall Project Progress ███████░░░ 72%
 ```
 
 ## Current Position
@@ -57,6 +57,8 @@ Overall Project Progress ███████░░░ 70%
 - Subscription Runtime Integration Foundation реализован на foundation-only уровне.
 - Stage 4.4 Subscription Runtime закрыт как foundation/runtime-boundary complete.
 - Production billing deferred: provider/Stripe/pricing/legal/tax/checkout/webhooks/customer portal не утверждены или не готовы.
+- Stage 5.1 AI Provider Abstraction / Real AI Integration Foundation закрыт как foundation/runtime-boundary/QA complete.
+- Real model calls deferred: OpenAI SDK/env/API keys/fetch/model calls/API routes/UI/Simulator integration не подключены.
 - Product behavior не изменен.
 
 ## Block Progress
@@ -117,14 +119,15 @@ Review result: accepted. Scope соответствует roadmap, не разд
 Implementation update: Subscription Entitlement Persistence Foundation добавил owner-scoped entitlement snapshot model, server-only read/write contracts, fail-closed resolution и validation catalog.
 Implementation update: Subscription Entitlement Enforcement Foundation добавил server-only enforcement contracts, Free/Premium/Professional capability enforcement, fail-closed checks и Decision Simulation Engine-safe restrictions.
 Implementation update: Subscription Runtime Integration Foundation добавил unified server-only facade, integration of persistence/enforcement, fail-closed runtime resolution, disabled-by-default rollback-safe behavior, Decision Simulation Engine-safe runtime limits и rejection of client tier/owner/capability/customer/billing fields.
-Следующий шаг: Stage 5.1 AI Provider Abstraction / Real AI Integration Foundation.
+Следующий шаг: Stage 5.1 закрыт; следующий roadmap-шаг Stage 5.2 Prompt / Context Layer.
 
 ### 9. Real AI Integration
 
-Статус: Следующий roadmap-шаг; real AI runtime не подключен.
-Прогресс: ██░░░░░░░░ 20%.
-Блокер: Нет real model calls.
-Следующий шаг: Stage 5.1 AI Provider Abstraction / Real AI Integration Foundation; AI Provider должен оставаться внутренним компонентом, не AI Chat / Answer Engine / Generic Assistant.
+Статус: Stage 5.1 foundation/runtime-boundary/QA complete; real AI runtime не подключен.
+Прогресс: ████░░░░░░ 40%.
+Блокер: Нет real model calls; OpenAI SDK/env/API keys/provider SDK/fetch/model execution не утверждены и не подключены.
+Последнее изменение: Stage 5.1 добавил provider-agnostic AI Provider Adapter contracts, Runtime Selection / Preflight, Controlled Adapter Boundary / Facade и Stage 5.1 QA/regression aggregation under `lib/ai-provider`.
+Следующий шаг: Stage 5.2 Prompt / Context Layer; AI Provider должен оставаться внутренним компонентом, не AI Chat / Answer Engine / Generic Assistant.
 
 ### 10. Product Quality Hardening
 
@@ -164,10 +167,15 @@ Implementation update: Subscription Runtime Integration Foundation добави�
 
 ## Current Roadmap Focus
 
-Stage 5.1 AI Provider Abstraction / Real AI Integration Foundation.
+Stage 5.2 Prompt / Context Layer.
 
 Billing provider implementation remains deferred until provider/commercial/legal
 approval exists.
+
+Real AI provider/model-call implementation remains deferred until provider,
+SDK/env/key handling, Prompt Context connection, post-provider Decision Engine
+validation, safety/cost/quality QA, observability, and rollback are separately
+approved.
 
 Do not continue:
 
@@ -223,3 +231,17 @@ Do not continue:
 - Закрыто: Free/Premium/Professional contracts, entitlement owner boundary, persistence foundation, enforcement foundation, unified server-only runtime integration facade, fail-closed checks, disabled-by-default rollback-safe behavior, Decision Simulation Engine-safe limits.
 - Deferred: production billing, billing provider, Stripe, pricing/legal/tax scope, checkout, webhooks, customer portal, payment/subscription UI, billing API.
 - Следующий roadmap-шаг: Stage 5.1 AI Provider Abstraction / Real AI Integration Foundation.
+- Реализован Stage 5.1A AI Provider Adapter Contracts Foundation.
+- Добавлены provider-agnostic AI Provider Adapter contracts, AI Provider request/response/capability/error models, fail-closed contract validation и disabled-by-default adapter behavior.
+- Не подключались: OpenAI SDK, env/API keys, fetch/model calls, API routes, UI, Simulator, Decision Engine runtime, Prompt Context runtime или product behavior.
+- Реализован Stage 5.1B AI Provider Runtime Selection / Preflight Foundation.
+- Добавлены provider availability/preflight result, fail-closed provider resolution, disabled-by-default runtime behavior и safe errors для missing/disabled/unavailable/unsupported provider.
+- Не подключались: OpenAI SDK, env/API keys, fetch/model calls, API routes, UI, Simulator, Decision Engine runtime, Prompt Context runtime или product behavior.
+- Реализован Stage 5.1C Controlled Adapter Boundary / Facade.
+- Добавлены controlled boundary/facade, runtime preflight перед boundary-ready result, structured controlled result/error и rejection of raw prompts, secrets, API keys, env names, and client runtime fields.
+- Не подключались: OpenAI SDK, env/API keys, fetch/model calls, API routes, UI, Simulator, Decision Engine runtime, Prompt Context runtime или product behavior.
+- Реализован Stage 5.1D QA / Regression Aggregation.
+- Добавлен `lib/ai-provider/runtime-qa-regression.ts`, который агрегирует проверки contracts, runtime selection и controlled boundary.
+- Stage 5.1 закрыт как AI Provider Abstraction / Real AI Integration Foundation Complete.
+- Deferred: real model calls, OpenAI SDK, real provider SDK, env/API keys, fetch/network model calls, API routes, UI, Simulator integration, Decision Engine runtime integration, Prompt Context runtime integration, AI quality/cost/safety production enforcement.
+- Следующий roadmap-шаг: Stage 5.2 Prompt / Context Layer.
