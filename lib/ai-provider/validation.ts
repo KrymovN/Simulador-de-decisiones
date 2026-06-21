@@ -189,6 +189,14 @@ export function validateAIProviderRequest(
     });
   }
 
+  if (provider.availability === "unavailable") {
+    return blocked({
+      request,
+      code: "provider_unavailable",
+      message: "Requested AI provider is unavailable.",
+    });
+  }
+
   if (!provider.capabilities.includes(request.capability)) {
     return blocked({
       request,

@@ -4,6 +4,12 @@ export const AI_PROVIDER_ADAPTER_CONTRACTS_VERSION =
 export const AI_PROVIDER_ADAPTER_CONTRACTS_MODE =
   "ai_provider_adapter_contracts_foundation_only" as const;
 
+export const AI_PROVIDER_RUNTIME_SELECTION_VERSION =
+  "5.1B-ai-provider-runtime-selection-preflight-foundation.1" as const;
+
+export const AI_PROVIDER_RUNTIME_SELECTION_MODE =
+  "ai_provider_runtime_selection_preflight_foundation_only" as const;
+
 export type AIProviderCapability =
   | "decision_simulation_structuring"
   | "scenario_generation"
@@ -16,6 +22,7 @@ export type AIProviderErrorCode =
   | "request_missing"
   | "provider_missing"
   | "provider_disabled"
+  | "provider_unavailable"
   | "capability_not_supported"
   | "request_id_missing"
   | "input_fingerprint_missing"
@@ -34,6 +41,7 @@ export type AIProviderError = {
 export type AIProviderDefinition = {
   providerId: string;
   enabled: boolean;
+  availability?: "available" | "unavailable";
   capabilities: AIProviderCapability[];
 };
 
@@ -106,4 +114,80 @@ export type AIProviderContractsValidationResult = {
     passed: number;
     failed: number;
   };
+};
+
+export type AIProviderRuntimeSelectionStrategy =
+  | "requested_provider_first"
+  | "first_available_provider";
+
+export type AIProviderRuntimeErrorCode =
+  | "runtime_disabled"
+  | "request_missing"
+  | "provider_missing"
+  | "provider_disabled"
+  | "provider_unavailable"
+  | "provider_unsupported"
+  | "capability_not_supported"
+  | "contract_preflight_failed";
+
+export type AIProviderRuntimeError = {
+  code: AIProviderRuntimeErrorCode;
+  message: string;
+  recoverable: false;
+};
+
+export type AIProviderRuntimeSelectionRequest = {
+  request?: Partial<AIProviderRequest> | null;
+  preferredProviderIds?: string[];
+  selectionStrategy?: AIProviderRuntimeSelectionStrategy;
+};
+
+export type AIProviderAvailabilityPreflight = {
+  providerId: string;
+  available: boolean;
+  enabled: boolean;
+  supportsCapability: boolean;
+  capability?: AIProviderCapability;
+  reason?: AIProviderRuntimeErrorCode;
+};
+
+export type AIProviderRuntimePreflightResult =
+  | {
+      status: "ready";
+      execution: "provider_selection_preflight_only";
+      version: typeof AI_PROVIDER_RUNTIME_SELECTION_VERSION;
+      providerId: string;
+      capability: AIProviderCapability;
+      selectionStrategy: AIProviderRuntimeSelectionStrategy;
+      availability: AIProviderAvailabilityPreflight;
+      contractResponse: Extract<AIProviderResponse, { status: "validated" }>;
+      modelCallExecuted: false;
+    }
+  | {
+      status: "blocked";
+      execution: "none";
+      version: typeof AI_PROVIDER_RUNTIME_SELECTION_VERSION;
+      providerId?: string;
+      capability?: AIProviderCapability;
+      selectionStrategy: AIProviderRuntimeSelectionStrategy;
+      availability?: AIProviderAvailabilityPreflight;
+      contractResponse?: AIProviderResponse;
+      modelCallExecuted: false;
+      error: AIProviderRuntimeError;
+    };
+
+export type AIProviderRuntimeSelectionConfig = {
+  enabled: boolean;
+  adapter: AIProviderAdapter;
+  selectionStrategy: AIProviderRuntimeSelectionStrategy;
+};
+
+export type AIProviderRuntimeSelection = {
+  version: typeof AI_PROVIDER_RUNTIME_SELECTION_VERSION;
+  mode: typeof AI_PROVIDER_RUNTIME_SELECTION_MODE;
+  enabled: boolean;
+  modelCallsEnabled: false;
+  selectProvider(
+    request: AIProviderRuntimeSelectionRequest,
+  ): AIProviderRuntimePreflightResult;
 };
