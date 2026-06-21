@@ -2,7 +2,7 @@
 
 ## Active Checkpoint
 
-Subscription Entitlement Enforcement Foundation.
+Subscription Runtime Integration Foundation.
 
 Status: implemented / foundation-only.
 
@@ -10,8 +10,9 @@ Date: 21 June 2026, Europe/Madrid.
 
 Stage 4.3 remains closed as User Data Controls foundation/runtime-boundary
 complete. Stage 4.4A is accepted. Subscription Entitlement Persistence
-Foundation is complete. Subscription Entitlement Enforcement Foundation adds
-server-only capability enforcement over trusted entitlement snapshots.
+Foundation and Subscription Entitlement Enforcement Foundation are complete.
+Subscription Runtime Integration Foundation adds a unified server-only facade
+over trusted entitlement persistence and enforcement.
 
 ## Product Invariant
 
@@ -27,16 +28,18 @@ USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISIO
 
 ## What Is Closed
 
-Subscription Entitlement Enforcement Foundation is implemented as
-foundation-only runtime.
+Subscription Runtime Integration Foundation is implemented as foundation-only
+runtime.
 
 It adds:
 
-- server-only entitlement enforcement contracts;
-- Free / Premium / Professional capability enforcement;
-- fail-closed entitlement checks through entitlement persistence and subscription runtime;
-- Decision Simulation Engine-safe capability restrictions;
-- rejection of client-supplied tier, capability, and owner fields;
+- unified server-only subscription runtime facade;
+- integration of entitlement persistence and entitlement enforcement;
+- Free / Premium / Professional capability model integration;
+- fail-closed runtime resolution;
+- disabled-by-default rollback-safe behavior;
+- Decision Simulation Engine-safe runtime limits;
+- rejection of client-supplied tier, owner, capability, customer, and billing fields;
 - deterministic validation catalog.
 
 ## Current Non-Scope
@@ -47,9 +50,8 @@ subscription UI, OpenAI integration, API exposure, or product behavior changes.
 
 ## Production Readiness
 
-Subscription Entitlement Enforcement Foundation is not production billing.
-Billing and production subscription behavior are not production-ready and not
-approved.
+Subscription Runtime Integration Foundation is not production billing. Billing
+and production subscription behavior are not production-ready and not approved.
 
 Any future billing implementation requires separate owner approval and a
 dedicated implementation plan.
@@ -58,6 +60,6 @@ dedicated implementation plan.
 
 Owner-approved decision on the next Stage 4.4 implementation target.
 
-The next logical target is billing provider integration scope, but it remains
-blocked until provider/commercial/legal scope is approved.
+The next logical target is owner-approved billing provider integration, but it
+remains blocked until provider/commercial/legal scope is approved.
 Do not create a follow-up micro-stage automatically.

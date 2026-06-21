@@ -6,7 +6,7 @@ Date: 21 June 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Subscription Entitlement Enforcement Foundation
+The current confirmed state is Subscription Runtime Integration Foundation
 implemented. Stage 4.3 remains closed after consolidation and Stage 4.4A remains
 accepted.
 
@@ -28,15 +28,17 @@ Levio must not become:
 - generic prompt history system;
 - assistant conversation log product.
 
-## Subscription Entitlement Enforcement State
+## Subscription Runtime Integration State
 
 Implemented as foundation-only runtime:
 
-- server-only entitlement enforcement contracts;
-- Free / Premium / Professional capability enforcement;
-- fail-closed entitlement checks;
-- Decision Simulation Engine-safe capability restrictions;
-- rejection of client-supplied tier, capability, and owner fields;
+- unified server-only subscription runtime facade;
+- integration of entitlement persistence and entitlement enforcement;
+- Free / Premium / Professional capability model integration;
+- fail-closed runtime resolution;
+- disabled-by-default rollback-safe behavior;
+- Decision Simulation Engine-safe runtime limits;
+- rejection of client-supplied tier, owner, capability, customer, and billing fields;
 - deterministic validation catalog.
 
 The foundation is isolated under `lib/subscriptions` and is not connected to UI,
@@ -65,7 +67,7 @@ There is no product behavior change from Stage 4.4A.
 
 ## Production Status
 
-Subscription Entitlement Enforcement Foundation is not production-ready billing.
+Subscription Runtime Integration Foundation is not production-ready billing.
 
 Future billing implementation requires separate owner approval, provider scope,
 legal/commercial terms, entitlement sync/enforcement, webhook security, QA, and

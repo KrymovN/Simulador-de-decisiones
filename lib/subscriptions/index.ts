@@ -9,3 +9,5 @@ export * from "./entitlement-persistence";
 export * from "./entitlement-persistence-validation";
 export * from "./entitlement-enforcement";
 export * from "./entitlement-enforcement-validation";
+export * from "./runtime-integration";
+export * from "./runtime-integration-validation";

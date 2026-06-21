@@ -12,7 +12,7 @@ Levio is not an Answer Engine.
 
 Levio is not a Generic AI Assistant.
 
-The active checkpoint is Subscription Entitlement Enforcement Foundation
+The active checkpoint is Subscription Runtime Integration Foundation
 implemented. Stage 4.3 remains closed as User Data Controls
 foundation/runtime-boundary complete after the excessive Stage 4.3
 gate/audit/micro-stage chain was removed.
@@ -102,6 +102,25 @@ runtime foundation. It does not connect Stripe, Billing provider, checkout,
 webhooks, pricing engine, payment UI, subscription UI, API routes, OpenAI, or
 product behavior.
 
+## Subscription Runtime Integration Result
+
+Subscription Runtime Integration Foundation is implemented as foundation-only
+runtime under `lib/subscriptions`.
+
+It provides:
+
+- unified server-only subscription runtime facade;
+- integration of entitlement persistence and entitlement enforcement;
+- Free / Premium / Professional capability model integration;
+- fail-closed runtime resolution;
+- disabled-by-default rollback-safe behavior;
+- Decision Simulation Engine-safe runtime limits;
+- rejection of client-supplied tier, owner, capability, customer, and billing fields;
+- deterministic validation catalog.
+
+It does not connect Stripe, Billing provider, checkout, webhooks, pricing
+engine, payment UI, subscription UI, API routes, OpenAI, or product behavior.
+
 ## Current Runtime Boundaries
 
 Allowed at current closure:
@@ -111,6 +130,7 @@ Allowed at current closure:
 - subscription scope reasoning;
 - entitlement persistence foundation;
 - entitlement enforcement foundation;
+- subscription runtime integration foundation;
 - canonical owner model based on `levio_principals.principal_id`;
 - fail-closed behavior;
 - deterministic validation functions;
@@ -130,7 +150,7 @@ Not allowed or not present:
 - production Supabase read provider for User Data Controls;
 - OpenAI integration;
 - Billing;
-- Subscription Runtime product integration.
+- production Subscription Runtime product integration.
 - Stripe integration;
 - checkout/customer portal;
 - subscription API routes;
@@ -158,10 +178,10 @@ history or generic assistant behavior.
 
 ## Production Readiness
 
-Subscription Entitlement Enforcement Foundation is not production-ready billing.
+Subscription Runtime Integration Foundation is not production-ready billing.
 
 Billing/product work remains blocked until a separately approved future stage
-defines provider integration, entitlement sync/enforcement, webhooks, UI/API,
+defines provider integration, entitlement sync, webhooks, UI/API,
 legal/commercial copy, QA, and rollback rehearsal.
 
 ## Next Roadmap Step

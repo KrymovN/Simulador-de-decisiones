@@ -54,6 +54,7 @@ Overall Project Progress ███████░░░ 70%
 - Stage 4.4A owner review/readiness check завершен: accepted.
 - Subscription Entitlement Persistence Foundation реализован на foundation-only уровне.
 - Subscription Entitlement Enforcement Foundation реализован на foundation-only уровне.
+- Subscription Runtime Integration Foundation реализован на foundation-only уровне.
 - Product behavior не изменен.
 
 ## Block Progress
@@ -106,13 +107,14 @@ Overall Project Progress ███████░░░ 70%
 
 ### 8. Subscription Runtime
 
-Статус: Entitlement persistence/enforcement foundation реализованы, billing не начат.
-Прогресс: ███░░░░░░░ 30%.
+Статус: Entitlement persistence/enforcement/runtime integration foundation реализованы, billing не начат.
+Прогресс: ████░░░░░░ 40%.
 Блокер: Billing provider, payments и commercial entitlement runtime не подключены.
 Последнее изменение: Stage 4.4A зафиксировал Free/Premium/Professional, entitlement definition, допустимые restriction categories, Decision Simulation Engine invariants, billing dependencies и deferred work.
 Review result: accepted. Scope соответствует roadmap, не раздувает subscription layer, не превращает Levio в AI Chat / Answer Engine / Generic Assistant.
 Implementation update: Subscription Entitlement Persistence Foundation добавил owner-scoped entitlement snapshot model, server-only read/write contracts, fail-closed resolution и validation catalog.
 Implementation update: Subscription Entitlement Enforcement Foundation добавил server-only enforcement contracts, Free/Premium/Professional capability enforcement, fail-closed checks и Decision Simulation Engine-safe restrictions.
+Implementation update: Subscription Runtime Integration Foundation добавил unified server-only facade, integration of persistence/enforcement, fail-closed runtime resolution, disabled-by-default rollback-safe behavior, Decision Simulation Engine-safe runtime limits и rejection of client tier/owner/capability/customer/billing fields.
 Следующий шаг: owner-approved decision on next Stage 4.4 implementation target; следующий этап не создавать автоматически.
 
 ### 9. Real AI Integration
@@ -203,5 +205,11 @@ Do not continue:
 - Добавлены `lib/subscriptions/entitlement-enforcement.ts` и `lib/subscriptions/entitlement-enforcement-validation.ts`.
 - Обновлен `lib/subscriptions/index.ts`.
 - Реализовано: server-only entitlement enforcement contracts, Free/Premium/Professional capability enforcement, fail-closed entitlement checks, Decision Simulation Engine-safe restrictions, rejection of client tier/capability/owner fields, rollback-safe disabled-by-default behavior.
+- Не подключались: Stripe, Billing provider, checkout, webhooks, pricing engine, payment UI, subscription UI, OpenAI, public API, product behavior.
+- Validation catalog: 13 passed / 0 failed.
+- Реализован Subscription Runtime Integration Foundation.
+- Добавлены `lib/subscriptions/runtime-integration.ts` и `lib/subscriptions/runtime-integration-validation.ts`.
+- Обновлен `lib/subscriptions/index.ts`.
+- Реализовано: unified server-only subscription runtime facade, integration of entitlement persistence and enforcement, Free/Premium/Professional capability model integration, fail-closed runtime resolution, disabled-by-default rollback-safe behavior, Decision Simulation Engine-safe runtime limits, rejection of client tier/owner/capability/customer/billing fields.
 - Не подключались: Stripe, Billing provider, checkout, webhooks, pricing engine, payment UI, subscription UI, OpenAI, public API, product behavior.
 - Validation catalog: 13 passed / 0 failed.
