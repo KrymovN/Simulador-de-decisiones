@@ -10,6 +10,12 @@ export const AI_PROVIDER_RUNTIME_SELECTION_VERSION =
 export const AI_PROVIDER_RUNTIME_SELECTION_MODE =
   "ai_provider_runtime_selection_preflight_foundation_only" as const;
 
+export const AI_PROVIDER_CONTROLLED_BOUNDARY_VERSION =
+  "5.1C-ai-provider-controlled-adapter-boundary-foundation.1" as const;
+
+export const AI_PROVIDER_CONTROLLED_BOUNDARY_MODE =
+  "ai_provider_controlled_adapter_boundary_foundation_only" as const;
+
 export type AIProviderCapability =
   | "decision_simulation_structuring"
   | "scenario_generation"
@@ -190,4 +196,61 @@ export type AIProviderRuntimeSelection = {
   selectProvider(
     request: AIProviderRuntimeSelectionRequest,
   ): AIProviderRuntimePreflightResult;
+};
+
+export type AIProviderBoundaryErrorCode =
+  | "boundary_disabled"
+  | "request_missing"
+  | "payload_rejected"
+  | "client_runtime_field_rejected"
+  | "runtime_preflight_blocked";
+
+export type AIProviderBoundaryError = {
+  code: AIProviderBoundaryErrorCode;
+  message: string;
+  recoverable: false;
+};
+
+export type AIProviderBoundaryRequest = {
+  request?: Partial<AIProviderRequest> | null;
+  preferredProviderIds?: string[];
+  selectionStrategy?: AIProviderRuntimeSelectionStrategy;
+  clientRuntimeFields?: AIProviderRequest["clientRuntimeFields"];
+  rawPrompt?: string;
+  providerSecret?: string;
+  unexpectedPayload?: unknown;
+};
+
+export type AIProviderBoundaryResult =
+  | {
+      status: "ready";
+      execution: "controlled_boundary_preflight_only";
+      version: typeof AI_PROVIDER_CONTROLLED_BOUNDARY_VERSION;
+      providerId: string;
+      capability: AIProviderCapability;
+      preflight: Extract<AIProviderRuntimePreflightResult, { status: "ready" }>;
+      modelCallExecuted: false;
+    }
+  | {
+      status: "blocked";
+      execution: "none";
+      version: typeof AI_PROVIDER_CONTROLLED_BOUNDARY_VERSION;
+      providerId?: string;
+      capability?: AIProviderCapability;
+      preflight?: AIProviderRuntimePreflightResult;
+      modelCallExecuted: false;
+      error: AIProviderBoundaryError;
+    };
+
+export type AIProviderBoundaryConfig = {
+  enabled: boolean;
+  runtime: AIProviderRuntimeSelection;
+};
+
+export type AIProviderBoundary = {
+  version: typeof AI_PROVIDER_CONTROLLED_BOUNDARY_VERSION;
+  mode: typeof AI_PROVIDER_CONTROLLED_BOUNDARY_MODE;
+  enabled: boolean;
+  modelCallsEnabled: false;
+  evaluate(input: AIProviderBoundaryRequest): AIProviderBoundaryResult;
 };
