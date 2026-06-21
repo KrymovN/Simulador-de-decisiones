@@ -181,7 +181,7 @@ function createWorkflow(input?: {
 function expectWorkflowEvidence(
   evidence: UserDataControlsServerWorkflowSafetyEvidence,
 ): string[] {
-  return evidence.stage === "4.3S" &&
+  return evidence.stage === "4.3" &&
     evidence.serverWorkflowOnly &&
     evidence.foundationOnly &&
     evidence.failClosedByDefault &&
@@ -207,7 +207,7 @@ function expectWorkflowEvidence(
     evidence.memoryRuntimeIntegrated === false &&
     evidence.productBehaviorChanged === false
     ? []
-    : ["Stage 4.3S server workflow safety evidence changed."];
+    : ["Stage 4.3 server workflow safety evidence changed."];
 }
 
 function expectBlocked(
@@ -243,7 +243,7 @@ function cases(): ValidationCase[] {
       id: "disabled_workflow_blocks",
       title: "Disabled server workflow fails closed",
       expectedBehavior:
-        "The Stage 4.3S server workflow cannot resolve principals while disabled.",
+        "The Stage 4.3 server workflow cannot resolve principals while disabled.",
       run: async () => {
         const result = await createWorkflow({ enabled: false }).resolveCanonicalPrincipal({
           authContext: authenticatedContext,
@@ -275,7 +275,7 @@ function cases(): ValidationCase[] {
       id: "canonical_principal_resolution_allowed",
       title: "Provider reference resolves to canonical Levio principal",
       expectedBehavior:
-        "Stage 4.3S replaces provider-derived auth principal with levio_principals.principal_id.",
+        "Stage 4.3 replaces provider-derived auth principal with levio_principals.principal_id.",
       run: async () => {
         const result = await createWorkflow().resolveCanonicalPrincipal({
           authContext: authenticatedContext,

@@ -28,7 +28,7 @@ import type {
 } from "./contracts";
 
 export const USER_DATA_CONTROLS_SERVER_WORKFLOW_VERSION =
-  "4.3S-server-workflow-foundation.1" as const;
+  "4.3-server-workflow-foundation.1" as const;
 export const USER_DATA_CONTROLS_SERVER_WORKFLOW_MODE =
   "server_workflow_foundation_only" as const;
 
@@ -67,7 +67,7 @@ export type UserDataControlsServerWorkflowBlockedReason =
   | "deletion_contract_blocked";
 
 export type UserDataControlsServerWorkflowSafetyEvidence = {
-  stage: "4.3S";
+  stage: "4.3";
   serverWorkflowOnly: true;
   foundationOnly: true;
   failClosedByDefault: true;
@@ -92,7 +92,7 @@ export type UserDataControlsServerWorkflowSafetyEvidence = {
   subscriptionsIntegrated: false;
   memoryRuntimeIntegrated: false;
   productBehaviorChanged: false;
-  rollback: "disable_server_workflow_foundation_or_remove_stage_4_3s_exports";
+  rollback: "disable_server_workflow_foundation_or_remove_stage_4_3_exports";
 };
 
 export type UserDataControlsClientOwnerFields = {
@@ -293,7 +293,7 @@ const UUID_PATTERN =
 
 export function userDataControlsServerWorkflowSafetyEvidence(): UserDataControlsServerWorkflowSafetyEvidence {
   return {
-    stage: "4.3S",
+    stage: "4.3",
     serverWorkflowOnly: true,
     foundationOnly: true,
     failClosedByDefault: true,
@@ -318,7 +318,7 @@ export function userDataControlsServerWorkflowSafetyEvidence(): UserDataControls
     subscriptionsIntegrated: false,
     memoryRuntimeIntegrated: false,
     productBehaviorChanged: false,
-    rollback: "disable_server_workflow_foundation_or_remove_stage_4_3s_exports",
+    rollback: "disable_server_workflow_foundation_or_remove_stage_4_3_exports",
   };
 }
 
@@ -501,7 +501,7 @@ export function createUserDataControlsServerWorkflowFoundation(
       return blocked(
         "resolve_canonical_principal",
         "principal_type_not_supported",
-        "Stage 4.3S supports registered_user ownership only.",
+        "Stage 4.3 supports registered_user ownership only.",
       );
     }
 
@@ -513,7 +513,7 @@ export function createUserDataControlsServerWorkflowFoundation(
       return blocked(
         "resolve_canonical_principal",
         "provider_reference_invalid",
-        "Stage 4.3S requires a Supabase UUID provider reference.",
+        "Stage 4.3 requires a Supabase UUID provider reference.",
       );
     }
 
@@ -661,7 +661,7 @@ export function createUserDataControlsServerWorkflowFoundation(
       return blocked(
         "access_owner_scoped_artifacts",
         "artifact_source_unavailable",
-        "Owner-scoped artifact source is not configured for Stage 4.3S.",
+        "Owner-scoped artifact source is not configured for Stage 4.3.",
       );
     }
 

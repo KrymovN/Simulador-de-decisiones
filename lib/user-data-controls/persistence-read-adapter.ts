@@ -23,7 +23,7 @@ import type {
 } from "./server-workflow";
 
 export const USER_DATA_CONTROLS_PERSISTENCE_READ_ADAPTER_VERSION =
-  "4.3T-persistence-read-adapter-foundation.1" as const;
+  "4.3-persistence-read-adapter-foundation.1" as const;
 export const USER_DATA_CONTROLS_PERSISTENCE_READ_ADAPTER_MODE =
   "persistence_read_adapter_foundation_only" as const;
 
@@ -73,7 +73,7 @@ export type UserDataControlsPersistenceReadProvider = {
 };
 
 export type UserDataControlsPersistenceReadAdapterSafetyEvidence = {
-  stage: "4.3T";
+  stage: "4.3";
   persistenceReadAdapterOnly: true;
   foundationOnly: true;
   serverOnlyBoundaryRequired: true;
@@ -98,7 +98,7 @@ export type UserDataControlsPersistenceReadAdapterSafetyEvidence = {
   subscriptionsIntegrated: false;
   memoryRuntimeIntegrated: false;
   productBehaviorChanged: false;
-  rollback: "disable_persistence_read_adapter_or_remove_stage_4_3t_exports";
+  rollback: "disable_persistence_read_adapter_or_remove_stage_4_3_exports";
 };
 
 export type UserDataControlsPersistenceReadAdapterConfig = {
@@ -121,7 +121,7 @@ const DEFAULT_ACCOUNT_STATE: DeletionAccountState = {
 
 export function userDataControlsPersistenceReadAdapterSafetyEvidence(): UserDataControlsPersistenceReadAdapterSafetyEvidence {
   return {
-    stage: "4.3T",
+    stage: "4.3",
     persistenceReadAdapterOnly: true,
     foundationOnly: true,
     serverOnlyBoundaryRequired: true,
@@ -146,7 +146,7 @@ export function userDataControlsPersistenceReadAdapterSafetyEvidence(): UserData
     subscriptionsIntegrated: false,
     memoryRuntimeIntegrated: false,
     productBehaviorChanged: false,
-    rollback: "disable_persistence_read_adapter_or_remove_stage_4_3t_exports",
+    rollback: "disable_persistence_read_adapter_or_remove_stage_4_3_exports",
   };
 }
 

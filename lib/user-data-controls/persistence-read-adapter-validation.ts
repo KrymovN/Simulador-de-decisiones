@@ -207,7 +207,7 @@ function issueUnless(condition: boolean, message: string): string[] {
 function expectAdapterEvidence(
   evidence: UserDataControlsPersistenceReadAdapterSafetyEvidence,
 ): string[] {
-  return evidence.stage === "4.3T" &&
+  return evidence.stage === "4.3" &&
     evidence.persistenceReadAdapterOnly &&
     evidence.foundationOnly &&
     evidence.serverOnlyBoundaryRequired &&
@@ -233,7 +233,7 @@ function expectAdapterEvidence(
     evidence.memoryRuntimeIntegrated === false &&
     evidence.productBehaviorChanged === false
     ? []
-    : ["Stage 4.3T persistence read adapter safety evidence changed."];
+    : ["Stage 4.3 persistence read adapter safety evidence changed."];
 }
 
 function createReadProvider(input?: {
@@ -575,7 +575,7 @@ function cases(): ValidationCase[] {
       id: "workflow_export_plan_uses_adapter",
       title: "Server workflow export plan uses persistence read adapter",
       expectedBehavior:
-        "Stage 4.3S workflow can use the 4.3T adapter to create manifest-only export plans.",
+        "Stage 4.3 workflow can use the persistence read adapter to create manifest-only export plans.",
       run: async () => {
         const result = await createWorkflow().planExport({
           authContext: authenticatedContext,
@@ -604,7 +604,7 @@ function cases(): ValidationCase[] {
       id: "workflow_deletion_plan_uses_adapter",
       title: "Server workflow deletion plan uses persistence read adapter",
       expectedBehavior:
-        "Stage 4.3S workflow can use the 4.3T adapter to create lifecycle-only deletion plans.",
+        "Stage 4.3 workflow can use the persistence read adapter to create lifecycle-only deletion plans.",
       run: async () => {
         const result = await createWorkflow().planDeletion({
           authContext: authenticatedContext,
