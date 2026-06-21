@@ -6,12 +6,12 @@ Date: 21 June 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Stage 4.3 User Data Controls Foundation Closure.
-Stage 4.3 has been consolidated after excessive micro-stage fragmentation.
+The current confirmed state is Stage 4.4A Subscription Runtime Scope Lock.
+Stage 4.3 remains closed after consolidation.
 
 Active closure document:
 
-- `LEVIO_STAGE_4_3_USER_DATA_CONTROLS_FOUNDATION_CLOSURE.md`
+- `LEVIO_STAGE_4_4A_SUBSCRIPTION_RUNTIME_SCOPE_LOCK.md`
 
 ## Architecture Invariant
 
@@ -27,61 +27,47 @@ Levio must not become:
 - generic prompt history system;
 - assistant conversation log product.
 
-## Stage 4.3 Final State
+## Stage 4.4A Final State
 
-Closed as foundation/runtime-boundary complete:
+Closed as documentation-only scope lock:
 
-- owner-scoped User Data Controls contracts;
-- consent foundation;
-- retention foundation;
-- export planning foundation;
-- deletion planning foundation;
-- runtime boundary;
-- deterministic QA/regression catalogs;
-- canonical principal resolution foundation;
-- ownership verification foundation;
-- owner-scoped persistence read adapter foundation.
+- Free, Premium, and Professional tier model fixed;
+- entitlement definition fixed;
+- subscription restriction categories fixed;
+- Decision Simulation Engine invariants preserved;
+- dependencies before billing implementation documented;
+- deferred billing/product work documented.
 
 The owner model remains anchored on `levio_principals.principal_id`.
-
-## Removed From Active Runtime
-
-Removed because it exceeded the required Stage 4.3 foundation closure:
-
-- User Data Controls API route files;
-- API route foundation;
-- route hardening foundation;
-- production read-provider foundation;
-- route enablement/read-provider governance chain;
-- Stage 4.3P through Stage 4.3Z documents.
+Billing status, payment provider IDs, and client-supplied tier fields are not
+ownership proof.
 
 ## Current Product Behavior
 
 Public simulator behavior is unchanged.
 
-There is no User Data Controls UI.
+There is no Stripe integration.
 
-There is no public User Data Controls API.
+There is no Billing integration.
 
-There is no real export package generation.
+There is no checkout or customer portal.
 
-There are no deletion writes.
+There is no subscription API or billing UI.
 
 There is no OpenAI runtime integration.
 
-There is no Billing or Subscription Runtime integration enabled by this closure.
+There is no product behavior change from Stage 4.4A.
 
 ## Production Status
 
-Stage 4.3 is not production-ready.
+Stage 4.4A is not production-ready.
 
-Future production exposure requires a separate roadmap step for product/API
-scope, legal/privacy copy, QA, security, rollback rehearsal, and explicit owner
-approval.
+Future billing implementation requires separate owner approval, provider scope,
+legal/commercial terms, entitlement persistence, webhook security, QA, and
+rollback planning.
 
 ## Next Roadmap Step
 
-The next permitted roadmap direction is Stage 4.4 commercial/subscription/billing
-scope review, or another owner-approved roadmap block after Stage 4.3.
+The next logical step is owner review of Stage 4.4A.
 
-Do not continue Stage 4.3 as Stage 4.3Z-1 or another gate/audit micro-stage.
+Do not create the next micro-stage automatically.

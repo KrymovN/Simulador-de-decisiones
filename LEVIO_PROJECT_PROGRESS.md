@@ -50,6 +50,7 @@ Overall Project Progress ███████░░░ 70%
 - Public User Data Controls API удален из runtime.
 - Production read-provider foundation удален из runtime.
 - Route hardening foundation, созданный ради удаленных routes, удален из runtime.
+- Stage 4.4A Subscription Runtime Scope Lock закрыт как документационный scope lock.
 - Product behavior не изменен.
 
 ## Block Progress
@@ -102,10 +103,11 @@ Overall Project Progress ███████░░░ 70%
 
 ### 8. Subscription Runtime
 
-Статус: Foundation завершен, billing не начат.
+Статус: Scope lock завершен, billing не начат.
 Прогресс: █░░░░░░░░░ 10%.
 Блокер: Billing provider, payments и commercial entitlement runtime не подключены.
-Следующий шаг: Stage 4.4 commercial/subscription/billing scope review.
+Последнее изменение: Stage 4.4A зафиксировал Free/Premium/Professional, entitlement definition, допустимые restriction categories, Decision Simulation Engine invariants, billing dependencies и deferred work.
+Следующий шаг: Owner review Stage 4.4A; следующий этап не создавать автоматически.
 
 ### 9. Real AI Integration
 
@@ -152,8 +154,7 @@ Overall Project Progress ███████░░░ 70%
 
 ## Current Roadmap Focus
 
-Stage 4.4 commercial/subscription/billing scope review -> Real AI Integration
-only after required runtime, product, legal, QA, and owner approval gates.
+Owner review Stage 4.4A -> only owner-approved next roadmap instruction.
 
 Do not continue:
 
@@ -161,6 +162,7 @@ Do not continue:
 - Stage 4.3 route enablement gates;
 - Stage 4.3 read-provider gates;
 - Stage 4.3 blocker audits as a new chain.
+- automatic Stage 4.4 micro-stage creation without owner review.
 
 ## Decision Log
 
@@ -175,3 +177,8 @@ Do not continue:
 - Stage 4.3 закрыт как foundation/runtime-boundary complete.
 - Production readiness не одобрен.
 - Следующий допустимый roadmap-шаг: Stage 4.4 commercial/subscription/billing scope review или другой явно утвержденный roadmap block after Stage 4.3.
+- Выполнен Stage 4.4A Subscription Runtime Scope Lock.
+- Создан `LEVIO_STAGE_4_4A_SUBSCRIPTION_RUNTIME_SCOPE_LOCK.md`.
+- Runtime code, Stripe, Billing, UI, API, OpenAI и product behavior не изменялись.
+- Зафиксированы Free/Premium/Professional tiers, entitlement definition, restriction categories, subscription invariants, billing implementation dependencies и deferred work.
+- Stage 4.4A не одобряет billing implementation и не создает следующий micro-stage автоматически.

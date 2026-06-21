@@ -12,18 +12,19 @@ Levio is not an Answer Engine.
 
 Levio is not a Generic AI Assistant.
 
-The active checkpoint is Stage 4.3 User Data Controls Foundation Closure. The
-project has deliberately removed the excessive Stage 4.3 gate/audit/micro-stage
-chain and returned Stage 4.3 to a bounded roadmap state.
+The active checkpoint is Stage 4.4A Subscription Runtime Scope Lock. Stage 4.3
+remains closed as User Data Controls foundation/runtime-boundary complete after
+the excessive Stage 4.3 gate/audit/micro-stage chain was removed.
 
 Active closure reference:
 
-- `LEVIO_STAGE_4_3_USER_DATA_CONTROLS_FOUNDATION_CLOSURE.md`
+- `LEVIO_STAGE_4_4A_SUBSCRIPTION_RUNTIME_SCOPE_LOCK.md`
 
 Supporting references:
 
 - `LEVIO_STAGE_4_3A_USER_DATA_CONTROLS_SCOPE_LOCK.md`
 - `LEVIO_STAGE_4_3_RUNTIME_DEPENDENCY_SCOPE_LOCK.md`
+- `LEVIO_STAGE_4_3_USER_DATA_CONTROLS_FOUNDATION_CLOSURE.md`
 - `LEVIO_TARGET_RUNTIME_ARCHITECTURE.md`
 
 ## Immutable Runtime Architecture
@@ -37,40 +38,31 @@ Context, or post-provider Decision Engine validation. User Data Controls are
 supporting ownership and lifecycle infrastructure around decision simulation
 artifacts only.
 
-## Stage 4.3 Consolidation Result
+## Stage 4.4A Scope Lock Result
 
-Stage 4.3 is closed as foundation/runtime-boundary complete.
+Stage 4.4A is closed as documentation-only subscription runtime scope lock.
 
-Retained:
+It defines:
 
-- User Data Controls contracts;
-- consent runtime foundation;
-- retention runtime foundation;
-- export planning foundation;
-- deletion planning foundation;
-- runtime boundary and deterministic QA catalogs;
-- server workflow foundation for canonical principal resolution and ownership verification;
-- persistence read adapter foundation for owner-scoped artifact reads through injected server-only providers.
+- Free, Premium, and Professional tier vocabulary;
+- entitlement meaning and owner boundary;
+- allowed subscription restriction categories;
+- subscription product invariants;
+- dependencies before billing implementation;
+- deferred billing/product work.
 
-Removed from active Stage 4.3:
+It does not create runtime code, connect Stripe, connect Billing, change UI,
+change API, connect OpenAI, or approve production subscription behavior.
 
-- `app/api/user-data-controls/*` route files;
-- API route foundation handlers;
-- route hardening foundation;
-- production read-provider foundation;
-- Stage 4.3P through Stage 4.3Z micro-stage documents;
-- Stage 4.3Z-1 follow-up path.
-
-Reason: those items converted Stage 4.3 into a continuing API exposure and
-production route enablement program. That is beyond what is needed to close User
-Data Controls foundation.
+Stage 4.3 remains closed and must not restart as a micro-stage chain.
 
 ## Current Runtime Boundaries
 
-Allowed at Stage 4.3 closure:
+Allowed at current closure:
 
 - foundation-only evaluation;
 - owner-scoped planning contracts;
+- subscription scope reasoning;
 - canonical owner model based on `levio_principals.principal_id`;
 - fail-closed behavior;
 - deterministic validation functions;
@@ -91,6 +83,10 @@ Not allowed or not present:
 - OpenAI integration;
 - Billing;
 - Subscription Runtime integration.
+- Stripe integration;
+- checkout/customer portal;
+- subscription API routes;
+- billing UI.
 
 ## Ownership Model
 
@@ -108,21 +104,20 @@ Stage 4.3 protects decision simulation artifacts:
 - simulation history entries;
 - owner metadata needed to control those artifacts.
 
-Stage 4.3 does not create or protect generic AI chat history as a primary
-product object.
+Stage 4.4 subscription scope does not change the product object. Entitlements
+control access to decision simulation capabilities; they do not create AI chat
+history or generic assistant behavior.
 
 ## Production Readiness
 
-Stage 4.3 is not production-ready.
+Stage 4.4A is not production-ready.
 
-Production/product work remains blocked until a separately approved future stage
-defines scope for UI, API exposure, production read provider wiring, real export
-packages, deletion writes, legal/privacy copy, QA, and rollback rehearsal.
+Billing/product work remains blocked until a separately approved future stage
+defines provider integration, entitlement persistence, webhooks, UI/API,
+legal/commercial copy, QA, and rollback rehearsal.
 
 ## Next Roadmap Step
 
-The next normal roadmap step after Stage 4.3 closure is Stage 4.4
-commercial/subscription/billing scope review, or another owner-approved roadmap
-block after Stage 4.3.
+The next logical step is owner review of the Stage 4.4A scope lock.
 
-The next step must not implicitly restart Stage 4.3 gate/audit fragmentation.
+No follow-up micro-stage is created automatically.
