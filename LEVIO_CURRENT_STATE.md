@@ -6,8 +6,11 @@ Date: 21 June 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Stage 5.2 Prompt / Context Layer Foundation
-Complete. Real model calls and real AI provider integration are deferred.
+The current confirmed state is Stage 5.3 AI Quality / Cost / Safety Validation
+Foundation Complete. Real model calls and real AI provider integration are
+deferred.
+
+Stage 5.2 remains closed as Prompt / Context Layer Foundation Complete.
 
 Stage 5.1 remains closed as AI Provider Abstraction / Real AI Integration
 Foundation Complete.
@@ -30,9 +33,34 @@ Levio must not become:
 - assistant conversation log product;
 - direct AI-to-user wrapper.
 
+## AI Quality Foundation State
+
+Stage 5.3 is closed as contracts/runtime-boundary/QA complete.
+
+Implemented as internal runtime-only foundation under `lib/ai-quality`:
+
+- quality criteria, score-band, cost-budget, safety-policy, evidence, release
+  gate, and fail-closed error contracts;
+- contracts validation catalog covering chat, answer engine, generic assistant,
+  model-call, env/API-key, and provider-payload rejection;
+- disabled-by-default runtime foundation;
+- fail-closed quality/cost/safety release-gate evaluation;
+- structured runtime result/error contracts;
+- controlled boundary/facade foundation;
+- runtime evaluation before boundary-ready result;
+- boundary-level rejection of unsafe mode, provider-payload, env/API-key, and
+  model-call payload fields;
+- Stage 5.3 QA/regression aggregation.
+
+The foundation is isolated under `lib/ai-quality` and is not connected to UI,
+API routes, OpenAI SDK, environment variables, API keys, fetch/network calls,
+real model calls, Simulator runtime, Decision Engine runtime, Prompt Context
+runtime, AI Provider runtime, database, Supabase, auth, persistence,
+subscriptions, dashboard, or product behavior.
+
 ## Prompt Context Foundation State
 
-Stage 5.2 is closed as contracts/runtime-boundary/QA complete.
+Stage 5.2 remains closed as contracts/runtime-boundary/QA complete.
 
 Implemented as internal runtime-only foundation under `lib/prompt-context`:
 
@@ -48,12 +76,6 @@ Implemented as internal runtime-only foundation under `lib/prompt-context`:
   boundary-ready result;
 - structured controlled result/error contracts;
 - Stage 5.2 QA/regression aggregation.
-
-The foundation is isolated under `lib/prompt-context` and is not connected to
-UI, API routes, OpenAI SDK, environment variables, API keys, fetch/network
-calls, real model calls, Simulator runtime, Decision Engine runtime, AI Provider
-runtime, database, Supabase, auth, persistence, subscriptions, dashboard, or
-product behavior.
 
 ## AI Provider Foundation State
 
@@ -74,11 +96,6 @@ Implemented as internal runtime-only foundation under `lib/ai-provider`:
   client runtime fields;
 - structured controlled result/error contracts;
 - Stage 5.1 QA/regression aggregation.
-
-The foundation remains isolated under `lib/ai-provider` and is not connected to
-Prompt Context runtime, real provider SDKs, OpenAI SDK, environment variables,
-API keys, fetch/network calls, real model calls, UI, API routes, Simulator
-runtime, Decision Engine runtime, or product behavior.
 
 ## Subscription Runtime State
 
@@ -107,27 +124,29 @@ There is no OpenAI runtime integration.
 
 There are no real AI provider calls.
 
-There is no AI Provider runtime call from Prompt Context.
+There is no AI Provider runtime call from Prompt Context or AI Quality.
 
-There is no Decision Engine runtime integration with Prompt Context.
+There is no Prompt Context runtime call from AI Quality.
 
-There is no Simulator, UI, or API integration with Prompt Context.
+There is no Decision Engine runtime integration with AI Quality.
 
-There is no product behavior change from Stage 5.2.
+There is no Simulator, UI, or API integration with AI Quality.
+
+There is no product behavior change from Stage 5.3.
 
 ## Production Status
 
-Stage 5.2 is not production-ready real AI.
+Stage 5.3 is not production-ready real AI.
 
 Future real AI implementation requires separate owner approval, provider scope,
 SDK/env/key handling, Prompt Context to AI Provider connection, post-provider
-Decision Engine validation, safety/cost/quality QA, observability, and rollback
-planning.
+Decision Engine validation, production safety/cost/quality enforcement,
+observability, and rollback planning.
 
 ## Next Roadmap Step
 
-Stage 5.3 AI Quality / Cost / Safety Validation.
+Stage 5.4.
 
-Stage 5.3 is not started. It must preserve Levio as a Decision Simulation
+Stage 5.4 is not started. It must preserve Levio as a Decision Simulation
 Engine and must not create AI Chat, Answer Engine, Generic Assistant, or direct
 AI-to-user behavior.
