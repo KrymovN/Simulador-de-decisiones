@@ -10,6 +10,7 @@ import {
   type AiQualityObservedMetric,
   type AiQualityRuntimeBlockedReason,
   type AiQualityRuntimeConfig,
+  type AiQualityRuntimeError,
   type AiQualityRuntimeEvaluationInput,
   type AiQualityRuntimeEvaluationResult,
   type AiQualityRuntimeFoundation,
@@ -47,6 +48,7 @@ export function aiQualityRuntimeSafetyEvidence(): AiQualityRuntimeSafetyEvidence
     safetyGateEvaluated: true,
     releaseGateEvaluated: true,
     severityAggregated: true,
+    genericAssistantBehaviorAllowed: false,
     modelCallExecuted: false,
     openAiSdkConnected: false,
     apiKeysRead: false,
@@ -68,6 +70,17 @@ export function aiQualityRuntimeSafetyEvidence(): AiQualityRuntimeSafetyEvidence
   };
 }
 
+function runtimeError(input: {
+  reason: AiQualityRuntimeBlockedReason;
+  message: string;
+}): AiQualityRuntimeError {
+  return {
+    code: input.reason,
+    message: input.message,
+    recoverable: false,
+  };
+}
+
 function blocked(input: {
   reason: AiQualityRuntimeBlockedReason;
   message: string;
@@ -81,6 +94,10 @@ function blocked(input: {
     releaseGateDecision: "blocked",
     reason: input.reason,
     message: input.message,
+    error: runtimeError({
+      reason: input.reason,
+      message: input.message,
+    }),
     severitySummary: input.severitySummary ?? EMPTY_SEVERITY_SUMMARY,
     contractResult: input.contractResult,
     evidence: aiQualityRuntimeSafetyEvidence(),
@@ -101,6 +118,7 @@ function contractEvidenceIsIsolated(result: AiQualityEvaluationResult): boolean 
     evidence.safetyValidationDefined &&
     evidence.releaseGateDefined &&
     evidence.validationEvidenceDefined &&
+    evidence.genericAssistantBehaviorAllowed === false &&
     evidence.modelCallExecuted === false &&
     evidence.openAiSdkConnected === false &&
     evidence.apiKeysRead === false &&
@@ -168,8 +186,13 @@ function costBudgetExceeded(input: AiQualityValidationInputContract): boolean {
 }
 
 function safetyGateFailed(input: AiQualityValidationInputContract): boolean {
+  const genericAssistantModeAllowed = (
+    input.safety as { allowGenericAssistantMode?: boolean }
+  ).allowGenericAssistantMode;
+
   return input.safety.allowChatMode ||
     input.safety.allowAnswerEngineMode ||
+    genericAssistantModeAllowed === true ||
     input.safety.allowUnsafeAdvice ||
     input.safety.allowSensitivePersonalData ||
     input.safety.allowPromptInjection ||
@@ -281,3 +304,6 @@ export function createAiQualityRuntimeFoundation(
     evaluate: (input) => evaluateAiQualityRuntime(config, input),
   };
 }
+
+export const evaluateAIQualityRuntime = evaluateAiQualityRuntime;
+export const createAIQualityRuntime = createAiQualityRuntimeFoundation;

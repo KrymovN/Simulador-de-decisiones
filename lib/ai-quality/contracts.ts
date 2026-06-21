@@ -306,6 +306,12 @@ export type AiQualityRuntimeBlockedReason =
   | "contracts_isolation_failed"
   | "release_gate_decision_failed";
 
+export type AiQualityRuntimeError = {
+  code: AiQualityRuntimeBlockedReason;
+  message: string;
+  recoverable: false;
+};
+
 export type AiQualitySeveritySummary = {
   info: number;
   warning: number;
@@ -325,6 +331,7 @@ export type AiQualityRuntimeSafetyEvidence = {
   safetyGateEvaluated: true;
   releaseGateEvaluated: true;
   severityAggregated: true;
+  genericAssistantBehaviorAllowed: false;
   modelCallExecuted: false;
   openAiSdkConnected: false;
   apiKeysRead: false;
@@ -367,6 +374,7 @@ export type AiQualityRuntimeBlockedDecision = {
   releaseGateDecision: "blocked";
   reason: AiQualityRuntimeBlockedReason;
   message: string;
+  error: AiQualityRuntimeError;
   severitySummary: AiQualitySeveritySummary;
   contractResult?: AiQualityEvaluationResult;
   evidence: AiQualityRuntimeSafetyEvidence;
@@ -406,6 +414,24 @@ export type AiQualityRuntimeValidationResult = {
     failed: number;
   };
 };
+
+export type AIQualityRuntimeVersion = AiQualityRuntimeVersion;
+export type AIQualityRuntimeMode = AiQualityRuntimeMode;
+export type AIQualityRuntimeConfig = AiQualityRuntimeConfig;
+export type AIQualityRuntimeError = AiQualityRuntimeError;
+export type AIQualityRuntimeBlockedReason = AiQualityRuntimeBlockedReason;
+export type AIQualitySeveritySummary = AiQualitySeveritySummary;
+export type AIQualityRuntimeSafetyEvidence = AiQualityRuntimeSafetyEvidence;
+export type AIQualityRuntimeRequest = AiQualityRuntimeEvaluationInput;
+export type AIQualityRuntimeResult = AiQualityRuntimeEvaluationResult;
+export type AIQualityRuntimeEvaluationInput = AiQualityRuntimeEvaluationInput;
+export type AIQualityRuntimeEvaluationResult = AiQualityRuntimeEvaluationResult;
+export type AIQualityRuntimeAllowedDecision = AiQualityRuntimeAllowedDecision;
+export type AIQualityRuntimeBlockedDecision = AiQualityRuntimeBlockedDecision;
+export type AIQualityRuntimeFoundation = AiQualityRuntimeFoundation;
+export type AIQualityRuntimeValidationCaseResult =
+  AiQualityRuntimeValidationCaseResult;
+export type AIQualityRuntimeValidationResult = AiQualityRuntimeValidationResult;
 
 export type AiQualityBoundaryOperation = "ai_quality_runtime_preflight";
 

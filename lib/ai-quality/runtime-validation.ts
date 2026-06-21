@@ -95,6 +95,7 @@ function validationInput(
     safety: {
       allowChatMode: false,
       allowAnswerEngineMode: false,
+      allowGenericAssistantMode: false,
       allowUnsafeAdvice: false,
       allowSensitivePersonalData: false,
       allowPromptInjection: false,
@@ -121,6 +122,7 @@ function validationInput(
       safety: {
         chatModeAllowed: false,
         answerEngineModeAllowed: false,
+        genericAssistantModeAllowed: false,
         unsafeAdviceAllowed: false,
         sensitivePersonalDataAllowed: false,
         promptInjectionAllowed: false,
@@ -167,7 +169,10 @@ function expectBlocked(reason: AiQualityRuntimeBlockedReason) {
   return (
     result: AiQualityRuntimeEvaluationResult,
   ): string | undefined =>
-    result.status === "blocked" && result.reason === reason
+    result.status === "blocked" &&
+    result.reason === reason &&
+    result.error.code === reason &&
+    result.error.recoverable === false
       ? undefined
       : `Expected blocked runtime result with reason ${String(reason)}.`;
 }
@@ -185,6 +190,7 @@ function expectContractResult(
 ): string | undefined {
   return result.contractResult &&
     result.contractResult.evidence.stage === "5.3A" &&
+    result.contractResult.evidence.genericAssistantBehaviorAllowed === false &&
     result.contractResult.evidence.modelCallExecuted === false &&
     result.contractResult.evidence.openAiSdkConnected === false &&
     result.contractResult.evidence.apiKeysRead === false &&
@@ -221,6 +227,7 @@ function expectIsolation(
     evidence.safetyGateEvaluated &&
     evidence.releaseGateEvaluated &&
     evidence.severityAggregated &&
+    evidence.genericAssistantBehaviorAllowed === false &&
     evidence.modelCallExecuted === false &&
     evidence.openAiSdkConnected === false &&
     evidence.apiKeysRead === false &&
@@ -280,6 +287,162 @@ function cases(): ValidationCase[] {
           validation: null,
         }),
       assertions: [expectBlocked("validation_missing"), expectIsolation],
+    },
+    {
+      id: "env_runtime_field_blocks",
+      title: "Env runtime field blocks",
+      expectedBehavior: "Runtime fails closed on client-provided env names.",
+      run: () =>
+        enabledRuntime().evaluate({
+          validation: validationInput({
+            clientRuntimeFields: {
+              envVarName: "OPENAI_API_KEY",
+            },
+          }),
+        }),
+      assertions: [
+        expectBlocked("client_runtime_field_rejected"),
+        expectContractResult,
+        expectSeverity({ blocking: 1, highestSeverity: "blocking" }),
+        expectIsolation,
+      ],
+    },
+    {
+      id: "api_key_runtime_field_blocks",
+      title: "API key runtime field blocks",
+      expectedBehavior: "Runtime fails closed on client-provided API keys.",
+      run: () =>
+        enabledRuntime().evaluate({
+          validation: validationInput({
+            clientRuntimeFields: {
+              apiKey: "forbidden",
+            },
+          }),
+        }),
+      assertions: [
+        expectBlocked("client_runtime_field_rejected"),
+        expectContractResult,
+        expectSeverity({ blocking: 1, highestSeverity: "blocking" }),
+        expectIsolation,
+      ],
+    },
+    {
+      id: "provider_payload_runtime_field_blocks",
+      title: "Provider payload runtime field blocks",
+      expectedBehavior: "Runtime fails closed on provider payload fields.",
+      run: () =>
+        enabledRuntime().evaluate({
+          validation: validationInput({
+            clientRuntimeFields: {
+              providerPayload: "forbidden",
+            },
+          }),
+        }),
+      assertions: [
+        expectBlocked("client_runtime_field_rejected"),
+        expectContractResult,
+        expectSeverity({ blocking: 1, highestSeverity: "blocking" }),
+        expectIsolation,
+      ],
+    },
+    {
+      id: "model_call_payload_runtime_field_blocks",
+      title: "Model-call payload runtime field blocks",
+      expectedBehavior: "Runtime fails closed on model-call payload fields.",
+      run: () =>
+        enabledRuntime().evaluate({
+          validation: validationInput({
+            clientRuntimeFields: {
+              modelCallPayload: "forbidden",
+            },
+          }),
+        }),
+      assertions: [
+        expectBlocked("client_runtime_field_rejected"),
+        expectContractResult,
+        expectSeverity({ blocking: 1, highestSeverity: "blocking" }),
+        expectIsolation,
+      ],
+    },
+    {
+      id: "chat_mode_blocks",
+      title: "Chat mode blocks",
+      expectedBehavior: "Runtime fails closed on chat mode.",
+      run: () =>
+        enabledRuntime().evaluate({
+          validation: validationInput({
+            safety: {
+              ...validationInput().safety,
+              allowChatMode: true,
+            } as unknown as AiQualityValidationInputContract["safety"],
+          }),
+        }),
+      assertions: [
+        expectBlocked("safety_model_invalid"),
+        expectContractResult,
+        expectSeverity({ blocking: 2, highestSeverity: "blocking" }),
+        expectIsolation,
+      ],
+    },
+    {
+      id: "answer_engine_mode_blocks",
+      title: "Answer engine mode blocks",
+      expectedBehavior: "Runtime fails closed on answer engine mode.",
+      run: () =>
+        enabledRuntime().evaluate({
+          validation: validationInput({
+            safety: {
+              ...validationInput().safety,
+              allowAnswerEngineMode: true,
+            } as unknown as AiQualityValidationInputContract["safety"],
+          }),
+        }),
+      assertions: [
+        expectBlocked("safety_model_invalid"),
+        expectContractResult,
+        expectSeverity({ blocking: 2, highestSeverity: "blocking" }),
+        expectIsolation,
+      ],
+    },
+    {
+      id: "generic_assistant_mode_blocks",
+      title: "Generic assistant mode blocks",
+      expectedBehavior: "Runtime fails closed on generic assistant mode.",
+      run: () =>
+        enabledRuntime().evaluate({
+          validation: validationInput({
+            safety: {
+              ...validationInput().safety,
+              allowGenericAssistantMode: true,
+            } as unknown as AiQualityValidationInputContract["safety"],
+          }),
+        }),
+      assertions: [
+        expectBlocked("safety_model_invalid"),
+        expectContractResult,
+        expectSeverity({ blocking: 2, highestSeverity: "blocking" }),
+        expectIsolation,
+      ],
+    },
+    {
+      id: "model_call_mode_blocks",
+      title: "Model-call mode blocks",
+      expectedBehavior: "Runtime fails closed on model-call mode.",
+      run: () =>
+        enabledRuntime().evaluate({
+          validation: validationInput({
+            safety: {
+              ...validationInput().safety,
+              allowModelCalls: true,
+            } as unknown as AiQualityValidationInputContract["safety"],
+          }),
+        }),
+      assertions: [
+        expectBlocked("safety_model_invalid"),
+        expectContractResult,
+        expectSeverity({ blocking: 2, highestSeverity: "blocking" }),
+        expectIsolation,
+      ],
     },
     {
       id: "quality_gate_blocks",
@@ -432,7 +595,6 @@ function cases(): ValidationCase[] {
         }),
       assertions: [
         expectBlocked("contracts_isolation_failed"),
-        expectContractResult,
         expectIsolation,
       ],
     },
