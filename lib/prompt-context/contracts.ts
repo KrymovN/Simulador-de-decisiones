@@ -1,181 +1,27 @@
 export const PROMPT_CONTEXT_CONTRACTS_VERSION =
   "5.2A-prompt-context-contracts-foundation.1" as const;
+
 export const PROMPT_CONTEXT_CONTRACTS_MODE =
   "prompt_context_contracts_foundation_only" as const;
-export const PROMPT_CONTEXT_RUNTIME_VERSION =
-  "5.2B-prompt-context-runtime-foundation.1" as const;
-export const PROMPT_CONTEXT_RUNTIME_MODE =
-  "prompt_context_runtime_foundation_only" as const;
-export const PROMPT_CONTEXT_BOUNDARY_VERSION =
-  "5.2C-prompt-context-runtime-boundary.1" as const;
-export const PROMPT_CONTEXT_BOUNDARY_MODE =
-  "prompt_context_runtime_boundary_only" as const;
-
-export type PromptContextContractsVersion =
-  typeof PROMPT_CONTEXT_CONTRACTS_VERSION;
-export type PromptContextContractsMode =
-  typeof PROMPT_CONTEXT_CONTRACTS_MODE;
-export type PromptContextRuntimeVersion = typeof PROMPT_CONTEXT_RUNTIME_VERSION;
-export type PromptContextRuntimeMode = typeof PROMPT_CONTEXT_RUNTIME_MODE;
-export type PromptContextBoundaryVersion = typeof PROMPT_CONTEXT_BOUNDARY_VERSION;
-export type PromptContextBoundaryMode = typeof PROMPT_CONTEXT_BOUNDARY_MODE;
-
-export type PromptContextInputKind =
-  | "decision_simulation_brief"
-  | "decision_simulation_revision";
-
-export type PromptContextSource = "user_supplied_decision_context";
-
-export type PromptContextHorizon =
-  | "immediate"
-  | "short_term"
-  | "medium_term"
-  | "long_term";
-
-export type PromptContextTradeoffFocus =
-  | "cost"
-  | "speed"
-  | "risk"
-  | "reversibility"
-  | "opportunity"
-  | "confidence"
-  | "stakeholder_impact";
-
-export type PromptContextPacketKind = "decision_simulation_context_packet";
-
-export type PromptContextItemKind =
-  | "decision_objective"
-  | "decision_question"
-  | "scenario_anchor"
-  | "known_constraint"
-  | "tradeoff_focus"
-  | "desired_output_shape";
-
-export type DecisionSimulationInstructionTask =
-  | "model_scenarios"
-  | "compare_tradeoffs"
-  | "surface_risks"
-  | "map_consequences"
-  | "identify_reversibility"
-  | "preserve_uncertainty";
-
-export type DecisionSimulationInstructionOutputShape =
-  "structured_decision_simulation_context";
-
-export type PromptContextForbiddenPatternCategory =
-  | "chat_mode"
-  | "answer_engine_mode"
-  | "prompt_injection"
-  | "secret_or_env_access"
-  | "provider_runtime_request"
-  | "raw_prompt_forwarding"
-  | "model_call_request"
-  | "sensitive_personal_data";
-
-export type PromptContextForbiddenPattern = {
-  patternId: string;
-  category: PromptContextForbiddenPatternCategory;
-  tokens: string[];
-  severity: "block";
-  action: "fail_closed";
-};
-
-export type PromptContextSafetyModel = {
-  requireDecisionSimulationFrame: true;
-  requireScenarioTradeoffRiskFrame: true;
-  allowChatMode: false;
-  allowAnswerEngineMode: false;
-  allowRawPromptForwarding: false;
-  allowPromptInjection: false;
-  allowSensitivePersonalData: false;
-  allowProviderRuntimeDirectAccess: false;
-  allowModelCalls: false;
-  promptContextLayerOnly: true;
-};
-
-export type PromptContextBudgetModel = {
-  maxUserInputCharacters: number;
-  maxContextItems: number;
-  maxContextItemCharacters: number;
-  maxInstructionCharacters: number;
-  maxTotalPacketCharacters: number;
-  enforcement: "foundation_validation_only";
-};
-
-export type PromptContextClientRuntimeFields = {
-  rawPrompt?: string;
-  apiKey?: string;
-  envVarName?: string;
-  providerPayload?: string;
-  modelCallPayload?: string;
-};
-
-export type PromptContextInputContract = {
-  inputId: string;
-  inputKind: PromptContextInputKind;
-  source: PromptContextSource;
-  submittedAt: string;
-  locale: "en" | "es" | "ru";
-  objective: string;
-  decisionQuestion: string;
-  decisionHorizon: PromptContextHorizon;
-  scenarioAnchors: string[];
-  knownConstraints: string[];
-  tradeoffFocus: PromptContextTradeoffFocus[];
-  desiredOutcomeFormat: DecisionSimulationInstructionOutputShape;
-  safety: PromptContextSafetyModel;
-  budget: PromptContextBudgetModel;
-  clientRuntimeFields?: PromptContextClientRuntimeFields;
-};
-
-export type DecisionSimulationInstructionModel = {
-  instructionId: string;
-  mode: "decision_simulation";
-  outputShape: DecisionSimulationInstructionOutputShape;
-  tasks: DecisionSimulationInstructionTask[];
-  forbiddenModes: ["ai_chat", "answer_engine", "raw_prompt_forwarding"];
-  requiresTradeoffs: true;
-  requiresRisks: true;
-  requiresConsequences: true;
-  requiresUncertainty: true;
-};
-
-export type PromptContextPacketItem = {
-  itemId: string;
-  kind: PromptContextItemKind;
-  value: string;
-  source: PromptContextSource;
-};
-
-export type PromptContextPacketModel = {
-  packetId: string;
-  inputId: string;
-  packetKind: PromptContextPacketKind;
-  instruction: DecisionSimulationInstructionModel;
-  items: PromptContextPacketItem[];
-  safety: PromptContextSafetyModel;
-  budget: PromptContextBudgetModel;
-  forbiddenPatterns: PromptContextForbiddenPattern[];
-  packetFingerprint: string;
-};
 
 export type PromptContextErrorCode =
-  | "prompt_context_contracts_disabled"
+  | "contract_disabled"
+  | "input_missing"
+  | "output_missing"
   | "input_id_missing"
-  | "input_kind_invalid"
-  | "input_source_invalid"
   | "timestamp_invalid"
-  | "objective_missing"
-  | "decision_question_missing"
-  | "decision_horizon_invalid"
-  | "scenario_anchor_missing"
-  | "tradeoff_focus_missing"
-  | "desired_outcome_invalid"
-  | "safety_model_invalid"
-  | "budget_model_invalid"
+  | "decision_frame_missing"
+  | "decision_simulation_framing_missing"
+  | "risk_boundary_invalid"
+  | "policy_invalid"
   | "context_budget_exceeded"
-  | "forbidden_prompt_pattern_detected"
-  | "client_runtime_field_rejected";
+  | "forbidden_client_field_rejected"
+  | "raw_chat_message_rejected"
+  | "user_system_prompt_rejected"
+  | "direct_answer_mode_rejected"
+  | "generic_assistant_mode_rejected"
+  | "provider_runtime_field_rejected"
+  | "output_contract_invalid";
 
 export type PromptContextError = {
   code: PromptContextErrorCode;
@@ -183,310 +29,156 @@ export type PromptContextError = {
   recoverable: false;
 };
 
-export type PromptContextContractsConfig = {
-  enabled: boolean;
-  forbiddenPatterns: PromptContextForbiddenPattern[];
-  budget: PromptContextBudgetModel;
+export type PromptContextRiskBoundary = {
+  requireScenarioFrame: true;
+  requireRiskFrame: true;
+  requireTradeoffFrame: true;
+  requireConsequenceFrame: true;
+  requireUncertaintyFrame: true;
+  allowFinalAdvice: false;
+  allowDirectAnswer: false;
 };
 
-export type PromptContextSafetyEvidence = {
+export type PromptContextPolicy = {
+  mode: "decision_simulation_context";
+  requireStructuredContext: true;
+  promptContextOnly: true;
+  allowRawChatMessages: false;
+  allowUserSystemPrompt: false;
+  allowDirectAnswerMode: false;
+  allowGenericAssistantBehavior: false;
+  allowProviderRuntimeFields: false;
+  allowModelCalls: false;
+  maxContextCharacters: number;
+};
+
+export type PromptContextEvidence = {
   stage: "5.2A";
   promptContextOnly: true;
   contractsOnly: true;
-  foundationOnly: true;
-  deterministicOnly: true;
-  failClosedByDefault: true;
-  decisionSimulationFrameRequired: true;
-  chatModeAllowed: false;
-  answerEngineModeAllowed: false;
-  rawPromptForwardingAllowed: false;
-  promptInjectionAllowed: false;
-  sensitivePersonalDataAllowed: false;
+  providerAgnostic: true;
+  decisionSimulationFramePreserved: true;
+  rawChatMessagesAllowed: false;
+  userSystemPromptAllowed: false;
+  directAnswerModeAllowed: false;
+  genericAssistantBehaviorAllowed: false;
+  providerRuntimeFieldsAllowed: false;
   modelCallExecuted: false;
-  openAiSdkConnected: false;
-  apiKeysRead: false;
-  envVariablesRead: false;
+  aiProviderRuntimeCalled: false;
+  envRead: false;
+  apiKeyRead: false;
   apiRouteIntegrated: false;
-  simulatorIntegrated: false;
-  decisionEngineRuntimeConnected: false;
-  aiProviderRuntimeConnected: false;
-  databaseConnected: false;
-  supabaseConnected: false;
-  authRuntimeConnected: false;
-  persistenceRuntimeConnected: false;
-  subscriptionsRuntimeConnected: false;
+  simulatorRuntimeIntegrated: false;
+  decisionEngineRuntimeIntegrated: false;
   uiIntegrated: false;
-  dashboardIntegrated: false;
   stage52BStarted: false;
   stage53Started: false;
-  rollback: "disable_prompt_context_contracts_or_remove_prompt_context_exports";
 };
 
-export type PromptContextAllowedEvaluation = {
-  status: "allowed";
-  execution: "contract_validation_only";
-  version: PromptContextContractsVersion;
-  packet: PromptContextPacketModel;
-  evidence: PromptContextSafetyEvidence;
+export type PromptContextDecisionFrame = {
+  objective: string;
+  decisionQuestion: string;
+  scenarioSeeds: string[];
+  knownConstraints: string[];
+  tradeoffFocus: string[];
 };
 
-export type PromptContextBlockedEvaluation = {
-  status: "blocked";
-  execution: "none";
-  version: PromptContextContractsVersion;
-  inputId?: string;
-  error: PromptContextError;
-  matchedPattern?: PromptContextForbiddenPattern;
-  evidence: PromptContextSafetyEvidence;
+export type PromptContextForbiddenClientFields = {
+  rawChatMessages?: string[];
+  rawPrompt?: string;
+  userSystemPrompt?: string;
+  directAnswerMode?: boolean;
+  genericAssistantMode?: boolean;
+  providerId?: string;
+  modelId?: string;
+  envVarName?: string;
+  apiKey?: string;
+  providerPayload?: unknown;
 };
 
-export type PromptContextEvaluationResult =
-  | PromptContextAllowedEvaluation
-  | PromptContextBlockedEvaluation;
-
-export type PromptContextContractsFoundation = {
-  version: PromptContextContractsVersion;
-  mode: PromptContextContractsMode;
-  enabled: boolean;
-  modelCallsEnabled: false;
-  evaluateInput(input: PromptContextInputContract): PromptContextEvaluationResult;
+export type PromptContextInput = {
+  inputId: string;
+  submittedAt: string;
+  locale: "en" | "es" | "ru";
+  decisionFrame: PromptContextDecisionFrame;
+  policy: PromptContextPolicy;
+  riskBoundary: PromptContextRiskBoundary;
+  clientFields?: PromptContextForbiddenClientFields;
 };
 
-export type PromptContextValidationCaseResult = {
-  caseId: string;
-  title: string;
-  expectedBehavior: string;
-  actualStatus: PromptContextEvaluationResult["status"];
-  passed: boolean;
-  failed: boolean;
-  issues: string[];
-};
-
-export type PromptContextValidationResult = {
-  passed: boolean;
-  failed: boolean;
-  cases: PromptContextValidationCaseResult[];
-  summary: {
-    total: number;
-    passed: number;
-    failed: number;
-  };
-};
-
-export type PromptContextRuntimeConfig = {
-  enabled: boolean;
-  contracts: PromptContextContractsFoundation;
-  maxRuntimePacketCharacters: number;
-  requireDecisionSimulationInstruction: true;
-  failClosedOnContractBlock: true;
-};
-
-export type PromptContextRuntimeBlockedReason =
-  | PromptContextErrorCode
-  | "prompt_context_runtime_disabled"
-  | "input_missing"
-  | "contract_isolation_failed"
-  | "context_packet_missing"
-  | "instruction_resolution_failed"
-  | "runtime_context_budget_exceeded"
-  | "runtime_safety_guard_failed";
-
-export type PromptContextRuntimeSafetyEvidence = {
-  stage: "5.2B";
-  promptContextOnly: true;
-  runtimeFoundationOnly: true;
-  contractsFoundationUsed: true;
-  deterministicOnly: true;
-  failClosedByDefault: true;
-  contextPacketAssemblyPreflightOnly: true;
-  decisionSimulationInstructionResolved: boolean;
-  forbiddenPromptPatternsChecked: true;
-  contextBudgetEvaluated: true;
-  contextSafetyGuardEvaluated: true;
+export type PromptContextOutput = {
+  outputId: string;
+  inputId: string;
+  outputKind: "structured_decision_simulation_context";
+  contextFrame: PromptContextDecisionFrame;
+  policy: PromptContextPolicy;
+  riskBoundary: PromptContextRiskBoundary;
+  evidence: PromptContextEvidence;
+  directAnswerMode: false;
+  genericAssistantMode: false;
+  chatMode: false;
   modelCallExecuted: false;
-  openAiSdkConnected: false;
-  apiKeysRead: false;
-  envVariablesRead: false;
-  apiRouteIntegrated: false;
-  simulatorIntegrated: false;
-  decisionEngineRuntimeConnected: false;
-  aiProviderRuntimeConnected: false;
-  databaseConnected: false;
-  supabaseConnected: false;
-  authRuntimeConnected: false;
-  persistenceRuntimeConnected: false;
-  subscriptionsRuntimeConnected: false;
-  uiIntegrated: false;
-  dashboardIntegrated: false;
-  stage52CStarted: false;
-  stage53Started: false;
-  rollback: "disable_prompt_context_runtime_or_remove_runtime_exports";
+  aiProviderRuntimeCalled: false;
 };
 
-export type PromptContextRuntimeEvaluationInput = {
-  input?: PromptContextInputContract | null;
+export type PromptContextValidationResult =
+  | {
+      status: "valid";
+      execution: "contract_validation_only";
+      version: typeof PROMPT_CONTEXT_CONTRACTS_VERSION;
+      evidence: PromptContextEvidence;
+    }
+  | {
+      status: "blocked";
+      execution: "none";
+      version: typeof PROMPT_CONTEXT_CONTRACTS_VERSION;
+      error: PromptContextError;
+      evidence: PromptContextEvidence;
+    };
+
+export type PromptContextCreateResult =
+  | {
+      status: "created";
+      execution: "contract_creation_only";
+      version: typeof PROMPT_CONTEXT_CONTRACTS_VERSION;
+      output: PromptContextOutput;
+      evidence: PromptContextEvidence;
+    }
+  | {
+      status: "blocked";
+      execution: "none";
+      version: typeof PROMPT_CONTEXT_CONTRACTS_VERSION;
+      error: PromptContextError;
+      evidence: PromptContextEvidence;
+    };
+
+export type PromptContextContractConfig = {
+  enabled: boolean;
+  policy: PromptContextPolicy;
+  riskBoundary: PromptContextRiskBoundary;
 };
 
-export type PromptContextRuntimeAllowedDecision = {
-  status: "allowed";
-  execution: "preflight_only";
-  version: PromptContextRuntimeVersion;
-  packet: PromptContextPacketModel;
-  instruction: DecisionSimulationInstructionModel;
-  contractResult: PromptContextAllowedEvaluation;
-  evidence: PromptContextRuntimeSafetyEvidence;
-};
-
-export type PromptContextRuntimeBlockedDecision = {
-  status: "blocked";
-  execution: "none";
-  version: PromptContextRuntimeVersion;
-  reason: PromptContextRuntimeBlockedReason;
-  message: string;
-  contractResult?: PromptContextEvaluationResult;
-  packet?: PromptContextPacketModel;
-  evidence: PromptContextRuntimeSafetyEvidence;
-};
-
-export type PromptContextRuntimeEvaluationResult =
-  | PromptContextRuntimeAllowedDecision
-  | PromptContextRuntimeBlockedDecision;
-
-export type PromptContextRuntimeFoundation = {
-  version: PromptContextRuntimeVersion;
-  mode: PromptContextRuntimeMode;
+export type PromptContextContract = {
+  version: typeof PROMPT_CONTEXT_CONTRACTS_VERSION;
+  mode: typeof PROMPT_CONTEXT_CONTRACTS_MODE;
   enabled: boolean;
   modelCallsEnabled: false;
-  evaluate(
-    input: PromptContextRuntimeEvaluationInput,
-  ): PromptContextRuntimeEvaluationResult;
+  aiProviderRuntimeEnabled: false;
+  create(input: PromptContextInput): PromptContextCreateResult;
+  validateInput(input: PromptContextInput): PromptContextValidationResult;
+  validateOutput(output: PromptContextOutput): PromptContextValidationResult;
 };
 
-export type PromptContextRuntimeValidationCaseResult = {
+export type PromptContextContractsValidationCase = {
   caseId: string;
-  title: string;
-  expectedBehavior: string;
-  actualStatus: PromptContextRuntimeEvaluationResult["status"];
+  passed: boolean;
+  errorCode?: PromptContextErrorCode;
+};
+
+export type PromptContextContractsValidationResult = {
   passed: boolean;
   failed: boolean;
-  issues: string[];
-};
-
-export type PromptContextRuntimeValidationResult = {
-  passed: boolean;
-  failed: boolean;
-  cases: PromptContextRuntimeValidationCaseResult[];
-  summary: {
-    total: number;
-    passed: number;
-    failed: number;
-  };
-};
-
-export type PromptContextBoundaryOperation =
-  "prompt_context_runtime_preflight";
-
-export type PromptContextBoundaryConfig = {
-  enabled: boolean;
-  allowedOperations: PromptContextBoundaryOperation[];
-  runtime: PromptContextRuntimeFoundation;
-};
-
-export type PromptContextBoundaryBlockedReason =
-  | PromptContextRuntimeBlockedReason
-  | "prompt_context_boundary_disabled"
-  | "operation_missing"
-  | "operation_not_supported"
-  | "operation_not_allowed"
-  | "payload_missing"
-  | "payload_mismatch"
-  | "runtime_isolation_failed";
-
-export type PromptContextBoundarySafetyEvidence = {
-  stage: "5.2C";
-  promptContextOnly: true;
-  boundaryOnly: true;
-  facadeOnly: true;
-  deterministicOnly: true;
-  failClosedByDefault: true;
-  allowedOperationsExplicit: true;
-  payloadIsolationEnforced: true;
-  runtimeIsolationEnforced: true;
-  modelCallExecuted: false;
-  openAiSdkConnected: false;
-  apiKeysRead: false;
-  envVariablesRead: false;
-  apiRouteIntegrated: false;
-  simulatorIntegrated: false;
-  decisionEngineRuntimeConnected: false;
-  aiProviderRuntimeConnected: false;
-  databaseConnected: false;
-  supabaseConnected: false;
-  authRuntimeConnected: false;
-  persistenceRuntimeConnected: false;
-  subscriptionsRuntimeConnected: false;
-  uiIntegrated: false;
-  dashboardIntegrated: false;
-  stage52DStarted: false;
-  stage53Started: false;
-  rollback: "disable_prompt_context_boundary_or_remove_boundary_exports";
-};
-
-export type PromptContextBoundaryEvaluationInput = {
-  operation?: PromptContextBoundaryOperation | string;
-  runtime?: PromptContextRuntimeEvaluationInput | null;
-  unexpectedPayload?: unknown;
-};
-
-export type PromptContextBoundaryAllowedResult = {
-  status: "allowed";
-  execution: "preflight_only";
-  version: PromptContextBoundaryVersion;
-  operation: PromptContextBoundaryOperation;
-  runtimeResult: PromptContextRuntimeAllowedDecision;
-  evidence: PromptContextBoundarySafetyEvidence;
-};
-
-export type PromptContextBoundaryBlockedResult = {
-  status: "blocked";
-  execution: "none";
-  version: PromptContextBoundaryVersion;
-  operation?: PromptContextBoundaryOperation | string;
-  reason: PromptContextBoundaryBlockedReason;
-  message: string;
-  runtimeResult?: PromptContextRuntimeEvaluationResult;
-  evidence: PromptContextBoundarySafetyEvidence;
-};
-
-export type PromptContextBoundaryEvaluationResult =
-  | PromptContextBoundaryAllowedResult
-  | PromptContextBoundaryBlockedResult;
-
-export type PromptContextBoundaryFoundation = {
-  version: PromptContextBoundaryVersion;
-  mode: PromptContextBoundaryMode;
-  enabled: boolean;
-  modelCallsEnabled: false;
-  allowedOperations: PromptContextBoundaryOperation[];
-  evaluate(
-    input: PromptContextBoundaryEvaluationInput,
-  ): PromptContextBoundaryEvaluationResult;
-};
-
-export type PromptContextBoundaryValidationCaseResult = {
-  caseId: string;
-  title: string;
-  expectedBehavior: string;
-  actualStatus: PromptContextBoundaryEvaluationResult["status"];
-  passed: boolean;
-  failed: boolean;
-  issues: string[];
-};
-
-export type PromptContextBoundaryValidationResult = {
-  passed: boolean;
-  failed: boolean;
-  cases: PromptContextBoundaryValidationCaseResult[];
+  cases: PromptContextContractsValidationCase[];
   summary: {
     total: number;
     passed: number;
