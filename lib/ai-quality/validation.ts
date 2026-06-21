@@ -14,6 +14,7 @@ import {
   type AiQualityReleaseGateModel,
   type AiQualityValidationCaseResult,
   type AiQualityValidationInputContract,
+  type AiQualityValidationOutputContract,
   type AiQualityValidationResult,
 } from "./contracts";
 
@@ -57,6 +58,7 @@ export function aiQualityContractsSafetyEvidence(): AiQualityContractsSafetyEvid
     safetyValidationDefined: true,
     releaseGateDefined: true,
     validationEvidenceDefined: true,
+    genericAssistantBehaviorAllowed: false,
     modelCallExecuted: false,
     openAiSdkConnected: false,
     apiKeysRead: false,
@@ -238,9 +240,13 @@ function costBudgetExceeded(input: AiQualityValidationInputContract): boolean {
 
 function safetyModelIsValid(input: AiQualityValidationInputContract): boolean {
   const safety = input.safety;
+  const genericAssistantModeAllowed = (
+    safety as { allowGenericAssistantMode?: boolean }
+  ).allowGenericAssistantMode;
 
   return safety.allowChatMode === false &&
     safety.allowAnswerEngineMode === false &&
+    genericAssistantModeAllowed !== true &&
     safety.allowUnsafeAdvice === false &&
     safety.allowSensitivePersonalData === false &&
     safety.allowPromptInjection === false &&
@@ -252,9 +258,13 @@ function safetyModelIsValid(input: AiQualityValidationInputContract): boolean {
 
 function safetyEvidenceIsValid(input: AiQualityValidationInputContract): boolean {
   const evidence = input.evidence.safety;
+  const genericAssistantModeAllowed = (
+    evidence as { genericAssistantModeAllowed?: boolean }
+  ).genericAssistantModeAllowed;
 
   return evidence.chatModeAllowed === false &&
     evidence.answerEngineModeAllowed === false &&
+    genericAssistantModeAllowed !== true &&
     evidence.unsafeAdviceAllowed === false &&
     evidence.sensitivePersonalDataAllowed === false &&
     evidence.promptInjectionAllowed === false &&
@@ -275,7 +285,62 @@ function releaseGateIsValid(input: AiQualityValidationInputContract): boolean {
     gate.blockOnSafetyFailure === true;
 }
 
-export function evaluateAiQualityValidation(
+function outputPreservesContracts(
+  output: Partial<AiQualityValidationOutputContract> | null | undefined,
+): output is AiQualityValidationOutputContract {
+  if (!output) {
+    return false;
+  }
+
+  const evidence = output.evidence;
+
+  if (
+    !evidence ||
+    evidence.stage !== "5.3A" ||
+    evidence.aiQualityOnly !== true ||
+    evidence.contractsOnly !== true ||
+    evidence.foundationOnly !== true ||
+    evidence.deterministicOnly !== true ||
+    evidence.failClosedByDefault !== true ||
+    evidence.genericAssistantBehaviorAllowed !== false ||
+    evidence.modelCallExecuted !== false ||
+    evidence.openAiSdkConnected !== false ||
+    evidence.apiKeysRead !== false ||
+    evidence.envVariablesRead !== false ||
+    evidence.apiRouteIntegrated !== false ||
+    evidence.simulatorIntegrated !== false ||
+    evidence.decisionEngineRuntimeConnected !== false ||
+    evidence.aiProviderRuntimeConnected !== false ||
+    evidence.promptContextRuntimeConnected !== false ||
+    evidence.uiIntegrated !== false
+  ) {
+    return false;
+  }
+
+  if (
+    output.status === "allowed" &&
+    output.execution === "contract_validation_only" &&
+    output.version === AI_QUALITY_CONTRACTS_VERSION &&
+    output.releaseGateStatus === "approved_for_foundation_preflight"
+  ) {
+    const weightedQualityScore = (
+      output as { weightedQualityScore?: unknown }
+    ).weightedQualityScore;
+
+    return typeof weightedQualityScore === "number" &&
+      Number.isFinite(weightedQualityScore) &&
+      weightedQualityScore >= 0 &&
+      weightedQualityScore <= 1;
+  }
+
+  return output.status === "blocked" &&
+    output.execution === "none" &&
+    output.version === AI_QUALITY_CONTRACTS_VERSION &&
+    output.releaseGateStatus === "blocked" &&
+    output.error?.recoverable === false;
+}
+
+export function validateAIQualityInput(
   config: AiQualityContractsConfig,
   input: AiQualityValidationInputContract,
 ): AiQualityEvaluationResult {
@@ -434,6 +499,45 @@ export function evaluateAiQualityValidation(
   };
 }
 
+export function validateAIQualityOutput(
+  config: AiQualityContractsConfig,
+  output: Partial<AiQualityValidationOutputContract> | null | undefined,
+): AiQualityEvaluationResult {
+  if (!config.enabled) {
+    return blocked({
+      code: "ai_quality_contracts_disabled",
+      message: "AI quality/cost/safety contracts foundation is disabled by default.",
+    });
+  }
+
+  if (!outputPreservesContracts(output)) {
+    return blocked({
+      code: "output_contract_invalid",
+      message: "AI quality output must remain contracts-only, fail-closed, and integration-free.",
+    });
+  }
+
+  if (output.status === "blocked") {
+    return output;
+  }
+
+  return {
+    status: "allowed",
+    execution: "contract_validation_only",
+    version: AI_QUALITY_CONTRACTS_VERSION,
+    releaseGateStatus: "approved_for_foundation_preflight",
+    weightedQualityScore: output.weightedQualityScore,
+    evidence: aiQualityContractsSafetyEvidence(),
+  };
+}
+
+export function evaluateAiQualityValidation(
+  config: AiQualityContractsConfig,
+  input: AiQualityValidationInputContract,
+): AiQualityEvaluationResult {
+  return validateAIQualityInput(config, input);
+}
+
 export function createAiQualityContractsFoundation(
   config: AiQualityContractsConfig = DEFAULT_AI_QUALITY_CONTRACTS_CONFIG,
 ): AiQualityContractsFoundation {
@@ -442,9 +546,12 @@ export function createAiQualityContractsFoundation(
     mode: AI_QUALITY_CONTRACTS_MODE,
     enabled: config.enabled,
     modelCallsEnabled: false,
-    evaluateValidation: (input) => evaluateAiQualityValidation(config, input),
+    evaluateValidation: (input) => validateAIQualityInput(config, input),
   };
 }
+
+export const createAIQualityContractsFoundation =
+  createAiQualityContractsFoundation;
 
 function criteria(): AiQualityEvaluationCriterion[] {
   return [
@@ -514,6 +621,7 @@ function validationInput(
     safety: {
       allowChatMode: false,
       allowAnswerEngineMode: false,
+      allowGenericAssistantMode: false,
       allowUnsafeAdvice: false,
       allowSensitivePersonalData: false,
       allowPromptInjection: false,
@@ -540,6 +648,7 @@ function validationInput(
       safety: {
         chatModeAllowed: false,
         answerEngineModeAllowed: false,
+        genericAssistantModeAllowed: false,
         unsafeAdviceAllowed: false,
         sensitivePersonalDataAllowed: false,
         promptInjectionAllowed: false,
@@ -593,6 +702,7 @@ function expectIsolation(
     evidence.safetyValidationDefined &&
     evidence.releaseGateDefined &&
     evidence.validationEvidenceDefined &&
+    evidence.genericAssistantBehaviorAllowed === false &&
     evidence.modelCallExecuted === false &&
     evidence.openAiSdkConnected === false &&
     evidence.apiKeysRead === false &&
@@ -634,14 +744,56 @@ function cases(): ValidationCase[] {
       assertions: [expectBlocked("validation_id_missing"), expectIsolation],
     },
     {
-      id: "client_runtime_fields_block",
-      title: "Client runtime fields block",
-      expectedBehavior: "Reject API keys, env names, raw prompts, provider payloads, and model-call payloads.",
+      id: "env_runtime_field_blocks",
+      title: "Env runtime field blocks",
+      expectedBehavior: "Reject client-provided env names.",
       run: () =>
         enabledFoundation().evaluateValidation(
           validationInput({
             clientRuntimeFields: {
               envVarName: "OPENAI_API_KEY",
+            },
+          }),
+        ),
+      assertions: [expectBlocked("client_runtime_field_rejected"), expectIsolation],
+    },
+    {
+      id: "api_key_runtime_field_blocks",
+      title: "API key runtime field blocks",
+      expectedBehavior: "Reject client-provided API keys.",
+      run: () =>
+        enabledFoundation().evaluateValidation(
+          validationInput({
+            clientRuntimeFields: {
+              apiKey: "forbidden",
+            },
+          }),
+        ),
+      assertions: [expectBlocked("client_runtime_field_rejected"), expectIsolation],
+    },
+    {
+      id: "provider_payload_runtime_field_blocks",
+      title: "Provider payload runtime field blocks",
+      expectedBehavior: "Reject client-provided provider payloads.",
+      run: () =>
+        enabledFoundation().evaluateValidation(
+          validationInput({
+            clientRuntimeFields: {
+              providerPayload: "forbidden",
+            },
+          }),
+        ),
+      assertions: [expectBlocked("client_runtime_field_rejected"), expectIsolation],
+    },
+    {
+      id: "model_call_payload_runtime_field_blocks",
+      title: "Model-call payload runtime field blocks",
+      expectedBehavior: "Reject client-provided model-call payloads.",
+      run: () =>
+        enabledFoundation().evaluateValidation(
+          validationInput({
+            clientRuntimeFields: {
+              modelCallPayload: "forbidden",
             },
           }),
         ),
@@ -763,9 +915,54 @@ function cases(): ValidationCase[] {
       assertions: [expectBlocked("cost_budget_exceeded"), expectIsolation],
     },
     {
-      id: "unsafe_safety_model_blocks",
-      title: "Unsafe safety model blocks",
-      expectedBehavior: "Reject chat mode, answer-engine mode, unsafe advice, prompt injection, raw persistence, and model calls.",
+      id: "chat_mode_blocks",
+      title: "Chat mode blocks",
+      expectedBehavior: "Reject chat mode.",
+      run: () =>
+        enabledFoundation().evaluateValidation(
+          validationInput({
+            safety: {
+              ...validationInput().safety,
+              allowChatMode: true,
+            } as unknown as AiQualityValidationInputContract["safety"],
+          }),
+        ),
+      assertions: [expectBlocked("safety_model_invalid"), expectIsolation],
+    },
+    {
+      id: "answer_engine_mode_blocks",
+      title: "Answer engine mode blocks",
+      expectedBehavior: "Reject answer engine mode.",
+      run: () =>
+        enabledFoundation().evaluateValidation(
+          validationInput({
+            safety: {
+              ...validationInput().safety,
+              allowAnswerEngineMode: true,
+            } as unknown as AiQualityValidationInputContract["safety"],
+          }),
+        ),
+      assertions: [expectBlocked("safety_model_invalid"), expectIsolation],
+    },
+    {
+      id: "generic_assistant_mode_blocks",
+      title: "Generic assistant mode blocks",
+      expectedBehavior: "Reject generic assistant mode.",
+      run: () =>
+        enabledFoundation().evaluateValidation(
+          validationInput({
+            safety: {
+              ...validationInput().safety,
+              allowGenericAssistantMode: true,
+            } as unknown as AiQualityValidationInputContract["safety"],
+          }),
+        ),
+      assertions: [expectBlocked("safety_model_invalid"), expectIsolation],
+    },
+    {
+      id: "model_call_mode_blocks",
+      title: "Model-call mode blocks",
+      expectedBehavior: "Reject model calls.",
       run: () =>
         enabledFoundation().evaluateValidation(
           validationInput({
@@ -832,6 +1029,23 @@ function cases(): ValidationCase[] {
       run: () => enabledFoundation().evaluateValidation(validationInput()),
       assertions: [expectAllowed, expectIsolation],
     },
+    {
+      id: "valid_output_validation_allows",
+      title: "Valid output validation allows",
+      expectedBehavior: "Valid contract output passes output validation without runtime execution.",
+      run: () => {
+        const result = enabledFoundation().evaluateValidation(validationInput());
+
+        return validateAIQualityOutput(
+          {
+            enabled: true,
+            defaultReleaseGate: DEFAULT_AI_QUALITY_RELEASE_GATE,
+          },
+          result,
+        );
+      },
+      assertions: [expectAllowed, expectIsolation],
+    },
   ];
 }
 
@@ -868,3 +1082,6 @@ export function runAiQualityContractsValidation(): AiQualityValidationResult {
     },
   };
 }
+
+export const runAIQualityContractsValidation =
+  runAiQualityContractsValidation;

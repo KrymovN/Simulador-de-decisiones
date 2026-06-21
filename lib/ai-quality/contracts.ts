@@ -87,6 +87,7 @@ export type AiQualityObservedMetric = {
 export type AiQualitySafetyValidationModel = {
   allowChatMode: false;
   allowAnswerEngineMode: false;
+  allowGenericAssistantMode?: false;
   allowUnsafeAdvice: false;
   allowSensitivePersonalData: false;
   allowPromptInjection: false;
@@ -99,6 +100,7 @@ export type AiQualitySafetyValidationModel = {
 export type AiQualitySafetyEvidenceModel = {
   chatModeAllowed: false;
   answerEngineModeAllowed: false;
+  genericAssistantModeAllowed?: false;
   unsafeAdviceAllowed: false;
   sensitivePersonalDataAllowed: false;
   promptInjectionAllowed: false;
@@ -159,6 +161,7 @@ export type AiQualityErrorCode =
   | "release_gate_invalid"
   | "release_gate_blocked"
   | "timestamp_invalid"
+  | "output_contract_invalid"
   | "client_runtime_field_rejected";
 
 export type AiQualityError = {
@@ -185,6 +188,7 @@ export type AiQualityContractsSafetyEvidence = {
   safetyValidationDefined: true;
   releaseGateDefined: true;
   validationEvidenceDefined: true;
+  genericAssistantBehaviorAllowed: false;
   modelCallExecuted: false;
   openAiSdkConnected: false;
   apiKeysRead: false;
@@ -226,6 +230,8 @@ export type AiQualityEvaluationResult =
   | AiQualityAllowedEvaluation
   | AiQualityBlockedEvaluation;
 
+export type AiQualityValidationOutputContract = AiQualityEvaluationResult;
+
 export type AiQualityContractsFoundation = {
   version: AiQualityContractsVersion;
   mode: AiQualityContractsMode;
@@ -256,6 +262,36 @@ export type AiQualityValidationResult = {
     failed: number;
   };
 };
+
+export type AIQualityContractsVersion = AiQualityContractsVersion;
+export type AIQualityContractsMode = AiQualityContractsMode;
+export type AIQualityValidationScope = AiQualityValidationScope;
+export type AIQualityEvaluationDimension = AiQualityEvaluationDimension;
+export type AIQualityScoreBand = AiQualityScoreBand;
+export type AIQualityFailureSeverity = AiQualityFailureSeverity;
+export type AIQualityReleaseGateStatus = AiQualityReleaseGateStatus;
+export type AIQualityCostCurrency = AiQualityCostCurrency;
+export type AIQualityCostBudgetModel = AiQualityCostBudgetModel;
+export type AIQualityCostEvidenceModel = AiQualityCostEvidenceModel;
+export type AIQualityEvaluationCriterion = AiQualityEvaluationCriterion;
+export type AIQualityEvaluationModel = AiQualityEvaluationModel;
+export type AIQualityObservedMetric = AiQualityObservedMetric;
+export type AIQualitySafetyValidationModel = AiQualitySafetyValidationModel;
+export type AIQualitySafetyEvidenceModel = AiQualitySafetyEvidenceModel;
+export type AIQualityReleaseGateModel = AiQualityReleaseGateModel;
+export type AIQualityValidationEvidenceModel = AiQualityValidationEvidenceModel;
+export type AIQualityValidationInputContract = AiQualityValidationInputContract;
+export type AIQualityValidationOutputContract = AiQualityValidationOutputContract;
+export type AIQualityErrorCode = AiQualityErrorCode;
+export type AIQualityError = AiQualityError;
+export type AIQualityContractsConfig = AiQualityContractsConfig;
+export type AIQualityContractsSafetyEvidence = AiQualityContractsSafetyEvidence;
+export type AIQualityAllowedEvaluation = AiQualityAllowedEvaluation;
+export type AIQualityBlockedEvaluation = AiQualityBlockedEvaluation;
+export type AIQualityEvaluationResult = AiQualityEvaluationResult;
+export type AIQualityContractsFoundation = AiQualityContractsFoundation;
+export type AIQualityValidationCaseResult = AiQualityValidationCaseResult;
+export type AIQualityValidationResult = AiQualityValidationResult;
 
 export type AiQualityRuntimeConfig = {
   enabled: boolean;
