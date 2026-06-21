@@ -4,6 +4,12 @@ export const PROMPT_CONTEXT_CONTRACTS_VERSION =
 export const PROMPT_CONTEXT_CONTRACTS_MODE =
   "prompt_context_contracts_foundation_only" as const;
 
+export const PROMPT_CONTEXT_RUNTIME_VERSION =
+  "5.2B-prompt-context-runtime-foundation.1" as const;
+
+export const PROMPT_CONTEXT_RUNTIME_MODE =
+  "prompt_context_runtime_foundation_only" as const;
+
 export type PromptContextErrorCode =
   | "contract_disabled"
   | "input_missing"
@@ -184,4 +190,85 @@ export type PromptContextContractsValidationResult = {
     passed: number;
     failed: number;
   };
+};
+
+export type PromptContextRuntimeErrorCode =
+  | "runtime_disabled"
+  | "runtime_request_missing"
+  | "input_validation_failed"
+  | "contract_creation_failed"
+  | "output_validation_failed"
+  | "runtime_output_invalid";
+
+export type PromptContextRuntimeError = {
+  code: PromptContextRuntimeErrorCode;
+  message: string;
+  recoverable: false;
+  contractError?: PromptContextError;
+};
+
+export type PromptContextRuntimeEvidence = {
+  stage: "5.2B";
+  promptContextOnly: true;
+  runtimeOnly: true;
+  contractsFoundationUsed: true;
+  providerAgnostic: true;
+  decisionSimulationFramePreserved: true;
+  structuredContextBuilt: boolean;
+  rawChatMessagesAllowed: false;
+  userSystemPromptAllowed: false;
+  directAnswerModeAllowed: false;
+  genericAssistantBehaviorAllowed: false;
+  providerRuntimeFieldsAllowed: false;
+  modelCallExecuted: false;
+  aiProviderRuntimeCalled: false;
+  envRead: false;
+  apiKeyRead: false;
+  apiRouteIntegrated: false;
+  simulatorRuntimeIntegrated: false;
+  decisionEngineRuntimeIntegrated: false;
+  uiIntegrated: false;
+  stage52CStarted: false;
+  stage53Started: false;
+};
+
+export type PromptContextRuntimeRequest = {
+  requestId: string;
+  input?: PromptContextInput | null;
+};
+
+export type PromptContextRuntimeResult =
+  | {
+      status: "ready";
+      execution: "runtime_build_only";
+      version: typeof PROMPT_CONTEXT_RUNTIME_VERSION;
+      requestId: string;
+      output: PromptContextOutput;
+      inputValidation: Extract<PromptContextValidationResult, { status: "valid" }>;
+      outputValidation: Extract<PromptContextValidationResult, { status: "valid" }>;
+      evidence: PromptContextRuntimeEvidence;
+    }
+  | {
+      status: "blocked";
+      execution: "none";
+      version: typeof PROMPT_CONTEXT_RUNTIME_VERSION;
+      requestId?: string;
+      error: PromptContextRuntimeError;
+      inputValidation?: PromptContextValidationResult;
+      outputValidation?: PromptContextValidationResult;
+      evidence: PromptContextRuntimeEvidence;
+    };
+
+export type PromptContextRuntimeConfig = {
+  enabled: boolean;
+  contract: PromptContextContract;
+};
+
+export type PromptContextRuntime = {
+  version: typeof PROMPT_CONTEXT_RUNTIME_VERSION;
+  mode: typeof PROMPT_CONTEXT_RUNTIME_MODE;
+  enabled: boolean;
+  modelCallsEnabled: false;
+  aiProviderRuntimeEnabled: false;
+  build(request: PromptContextRuntimeRequest): PromptContextRuntimeResult;
 };
