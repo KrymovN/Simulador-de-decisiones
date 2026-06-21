@@ -10,6 +10,12 @@ export const PROMPT_CONTEXT_RUNTIME_VERSION =
 export const PROMPT_CONTEXT_RUNTIME_MODE =
   "prompt_context_runtime_foundation_only" as const;
 
+export const PROMPT_CONTEXT_BOUNDARY_VERSION =
+  "5.2C-prompt-context-boundary-facade-foundation.1" as const;
+
+export const PROMPT_CONTEXT_BOUNDARY_MODE =
+  "prompt_context_boundary_facade_foundation_only" as const;
+
 export type PromptContextErrorCode =
   | "contract_disabled"
   | "input_missing"
@@ -271,4 +277,86 @@ export type PromptContextRuntime = {
   modelCallsEnabled: false;
   aiProviderRuntimeEnabled: false;
   build(request: PromptContextRuntimeRequest): PromptContextRuntimeResult;
+};
+
+export type PromptContextBoundaryErrorCode =
+  | "boundary_disabled"
+  | "boundary_request_missing"
+  | "payload_rejected"
+  | "runtime_build_blocked"
+  | "unsafe_client_fields_rejected";
+
+export type PromptContextBoundaryError = {
+  code: PromptContextBoundaryErrorCode;
+  message: string;
+  recoverable: false;
+  runtimeError?: PromptContextRuntimeError;
+};
+
+export type PromptContextBoundaryEvidence = {
+  stage: "5.2C";
+  promptContextOnly: true;
+  boundaryOnly: true;
+  runtimeFoundationUsed: true;
+  providerAgnostic: true;
+  decisionSimulationFramePreserved: true;
+  rawChatMessagesAllowed: false;
+  userSystemPromptAllowed: false;
+  directAnswerModeAllowed: false;
+  genericAssistantBehaviorAllowed: false;
+  providerRuntimeFieldsAllowed: false;
+  modelCallExecuted: false;
+  aiProviderRuntimeCalled: false;
+  envRead: false;
+  apiKeyRead: false;
+  apiRouteIntegrated: false;
+  simulatorRuntimeIntegrated: false;
+  decisionEngineRuntimeIntegrated: false;
+  uiIntegrated: false;
+  stage52DStarted: false;
+  stage53Started: false;
+};
+
+export type PromptContextBoundaryRequest = {
+  requestId: string;
+  runtime?: PromptContextRuntimeRequest | null;
+  clientFields?: PromptContextForbiddenClientFields;
+  rawPrompt?: string;
+  userSystemPrompt?: string;
+  providerPayload?: unknown;
+  unexpectedPayload?: unknown;
+};
+
+export type PromptContextBoundaryResult =
+  | {
+      status: "ready";
+      execution: "boundary_facade_only";
+      version: typeof PROMPT_CONTEXT_BOUNDARY_VERSION;
+      requestId: string;
+      runtimeResult: Extract<PromptContextRuntimeResult, { status: "ready" }>;
+      output: PromptContextOutput;
+      evidence: PromptContextBoundaryEvidence;
+    }
+  | {
+      status: "blocked";
+      execution: "none";
+      version: typeof PROMPT_CONTEXT_BOUNDARY_VERSION;
+      requestId?: string;
+      runtimeResult?: PromptContextRuntimeResult;
+      error: PromptContextBoundaryError;
+      evidence: PromptContextBoundaryEvidence;
+    };
+
+export type PromptContextBoundaryConfig = {
+  enabled: boolean;
+  runtime: PromptContextRuntime;
+};
+
+export type PromptContextBoundary = {
+  version: typeof PROMPT_CONTEXT_BOUNDARY_VERSION;
+  mode: typeof PROMPT_CONTEXT_BOUNDARY_MODE;
+  enabled: boolean;
+  modelCallsEnabled: false;
+  aiProviderRuntimeEnabled: false;
+  evaluate(request: PromptContextBoundaryRequest): PromptContextBoundaryResult;
 };
