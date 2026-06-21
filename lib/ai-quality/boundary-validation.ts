@@ -97,6 +97,7 @@ function validationInput(
     safety: {
       allowChatMode: false,
       allowAnswerEngineMode: false,
+      allowGenericAssistantMode: false,
       allowUnsafeAdvice: false,
       allowSensitivePersonalData: false,
       allowPromptInjection: false,
@@ -123,6 +124,7 @@ function validationInput(
       safety: {
         chatModeAllowed: false,
         answerEngineModeAllowed: false,
+        genericAssistantModeAllowed: false,
         unsafeAdviceAllowed: false,
         sensitivePersonalDataAllowed: false,
         promptInjectionAllowed: false,
@@ -190,7 +192,10 @@ function expectBlocked(reason: AiQualityBoundaryBlockedReason) {
   return (
     result: AiQualityBoundaryEvaluationResult,
   ): string | undefined =>
-    result.status === "blocked" && result.reason === reason
+    result.status === "blocked" &&
+    result.reason === reason &&
+    result.error.code === reason &&
+    result.error.recoverable === false
       ? undefined
       : `Expected blocked boundary result with reason ${String(reason)}.`;
 }
@@ -222,6 +227,7 @@ function expectRuntimeResult(
     runtimeResult.evidence.safetyGateEvaluated &&
     runtimeResult.evidence.releaseGateEvaluated &&
     runtimeResult.evidence.severityAggregated &&
+    runtimeResult.evidence.genericAssistantBehaviorAllowed === false &&
     runtimeResult.evidence.modelCallExecuted === false &&
     runtimeResult.evidence.openAiSdkConnected === false &&
     runtimeResult.evidence.apiKeysRead === false &&
@@ -257,6 +263,7 @@ function expectBoundaryIsolation(
     evidence.allowedOperationsExplicit &&
     evidence.payloadIsolationEnforced &&
     evidence.runtimeIsolationEnforced &&
+    evidence.genericAssistantBehaviorAllowed === false &&
     evidence.modelCallExecuted === false &&
     evidence.openAiSdkConnected === false &&
     evidence.apiKeysRead === false &&
@@ -353,8 +360,115 @@ function cases(): ValidationCase[] {
           operation: "ai_quality_runtime_preflight",
           runtime: { validation: validationInput() },
           unexpectedPayload: { providerPayload: "forbidden" },
-        }),
+      }),
       assertions: [expectBlocked("payload_mismatch"), expectBoundaryIsolation],
+    },
+    {
+      id: "boundary_env_field_blocks",
+      title: "Boundary env field blocks",
+      expectedBehavior: "Boundary rejects client-provided env fields before runtime.",
+      run: () =>
+        enabledBoundary().evaluate({
+          operation: "ai_quality_runtime_preflight",
+          runtime: { validation: validationInput() },
+          clientRuntimeFields: {
+            envVarName: "OPENAI_API_KEY",
+          },
+        }),
+      assertions: [
+        expectBlocked("client_runtime_field_rejected"),
+        expectBoundaryIsolation,
+      ],
+    },
+    {
+      id: "boundary_api_key_field_blocks",
+      title: "Boundary API key field blocks",
+      expectedBehavior: "Boundary rejects client-provided API key fields before runtime.",
+      run: () =>
+        enabledBoundary().evaluate({
+          operation: "ai_quality_runtime_preflight",
+          runtime: { validation: validationInput() },
+          apiKey: "forbidden",
+        }),
+      assertions: [
+        expectBlocked("client_runtime_field_rejected"),
+        expectBoundaryIsolation,
+      ],
+    },
+    {
+      id: "boundary_provider_payload_blocks",
+      title: "Boundary provider payload blocks",
+      expectedBehavior: "Boundary rejects provider payload fields before runtime.",
+      run: () =>
+        enabledBoundary().evaluate({
+          operation: "ai_quality_runtime_preflight",
+          runtime: { validation: validationInput() },
+          providerPayload: "forbidden",
+        }),
+      assertions: [
+        expectBlocked("client_runtime_field_rejected"),
+        expectBoundaryIsolation,
+      ],
+    },
+    {
+      id: "boundary_chat_mode_blocks",
+      title: "Boundary chat mode blocks",
+      expectedBehavior: "Boundary rejects chat mode fields before runtime.",
+      run: () =>
+        enabledBoundary().evaluate({
+          operation: "ai_quality_runtime_preflight",
+          runtime: { validation: validationInput() },
+          chatMode: true,
+        }),
+      assertions: [
+        expectBlocked("client_runtime_field_rejected"),
+        expectBoundaryIsolation,
+      ],
+    },
+    {
+      id: "boundary_answer_engine_mode_blocks",
+      title: "Boundary answer engine mode blocks",
+      expectedBehavior: "Boundary rejects answer engine mode fields before runtime.",
+      run: () =>
+        enabledBoundary().evaluate({
+          operation: "ai_quality_runtime_preflight",
+          runtime: { validation: validationInput() },
+          answerEngineMode: true,
+        }),
+      assertions: [
+        expectBlocked("client_runtime_field_rejected"),
+        expectBoundaryIsolation,
+      ],
+    },
+    {
+      id: "boundary_generic_assistant_mode_blocks",
+      title: "Boundary generic assistant mode blocks",
+      expectedBehavior: "Boundary rejects generic assistant mode fields before runtime.",
+      run: () =>
+        enabledBoundary().evaluate({
+          operation: "ai_quality_runtime_preflight",
+          runtime: { validation: validationInput() },
+          genericAssistantMode: true,
+        }),
+      assertions: [
+        expectBlocked("client_runtime_field_rejected"),
+        expectBoundaryIsolation,
+      ],
+    },
+    {
+      id: "boundary_model_call_payload_blocks",
+      title: "Boundary model-call payload blocks",
+      expectedBehavior: "Boundary rejects model-call payload fields before runtime.",
+      run: () =>
+        enabledBoundary().evaluate({
+          operation: "ai_quality_runtime_preflight",
+          runtime: { validation: validationInput() },
+          modelCallPayload: "forbidden",
+        }),
+      assertions: [
+        expectBlocked("client_runtime_field_rejected"),
+        expectBoundaryIsolation,
+      ],
     },
     {
       id: "runtime_block_propagates",

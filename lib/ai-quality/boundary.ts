@@ -7,6 +7,7 @@ import {
   AI_QUALITY_BOUNDARY_VERSION,
   type AiQualityBoundaryBlockedReason,
   type AiQualityBoundaryConfig,
+  type AiQualityBoundaryError,
   type AiQualityBoundaryEvaluationInput,
   type AiQualityBoundaryEvaluationResult,
   type AiQualityBoundaryFoundation,
@@ -39,6 +40,7 @@ export function aiQualityBoundarySafetyEvidence(): AiQualityBoundarySafetyEviden
     allowedOperationsExplicit: true,
     payloadIsolationEnforced: true,
     runtimeIsolationEnforced: true,
+    genericAssistantBehaviorAllowed: false,
     modelCallExecuted: false,
     openAiSdkConnected: false,
     apiKeysRead: false,
@@ -60,6 +62,17 @@ export function aiQualityBoundarySafetyEvidence(): AiQualityBoundarySafetyEviden
   };
 }
 
+function boundaryError(input: {
+  reason: AiQualityBoundaryBlockedReason;
+  message: string;
+}): AiQualityBoundaryError {
+  return {
+    code: input.reason,
+    message: input.message,
+    recoverable: false,
+  };
+}
+
 function blocked(input: {
   operation?: AiQualityBoundaryOperation | string;
   reason: AiQualityBoundaryBlockedReason;
@@ -73,6 +86,10 @@ function blocked(input: {
     operation: input.operation,
     reason: input.reason,
     message: input.message,
+    error: boundaryError({
+      reason: input.reason,
+      message: input.message,
+    }),
     runtimeResult: input.runtimeResult,
     evidence: aiQualityBoundarySafetyEvidence(),
   };
@@ -92,6 +109,29 @@ function payloadCount(input: AiQualityBoundaryEvaluationInput): number {
   ).length;
 }
 
+function hasUnsafeBoundaryFields(input: AiQualityBoundaryEvaluationInput): boolean {
+  const fields = input.clientRuntimeFields;
+
+  return Boolean(
+    fields?.apiKey ||
+      fields?.envVarName ||
+      fields?.rawPrompt ||
+      fields?.providerPayload ||
+      fields?.modelCallPayload ||
+      fields?.chatMode ||
+      fields?.answerEngineMode ||
+      fields?.genericAssistantMode ||
+      input.apiKey ||
+      input.envVarName ||
+      input.rawPrompt ||
+      input.providerPayload ||
+      input.modelCallPayload ||
+      input.chatMode ||
+      input.answerEngineMode ||
+      input.genericAssistantMode,
+  );
+}
+
 function runtimeEvidenceIsIsolated(
   result: AiQualityRuntimeEvaluationResult,
 ): boolean {
@@ -108,6 +148,7 @@ function runtimeEvidenceIsIsolated(
     evidence.safetyGateEvaluated &&
     evidence.releaseGateEvaluated &&
     evidence.severityAggregated &&
+    evidence.genericAssistantBehaviorAllowed === false &&
     evidence.modelCallExecuted === false &&
     evidence.openAiSdkConnected === false &&
     evidence.apiKeysRead === false &&
@@ -159,6 +200,15 @@ export function evaluateAiQualityBoundary(
       operation: input.operation,
       reason: "operation_not_allowed",
       message: "AI quality/cost/safety boundary operation is not allowed.",
+    });
+  }
+
+  if (hasUnsafeBoundaryFields(input)) {
+    return blocked({
+      operation: input.operation,
+      reason: "client_runtime_field_rejected",
+      message:
+        "AI quality/cost/safety boundary rejects chat, answer, assistant, provider, key, env, prompt, and model-call fields.",
     });
   }
 
@@ -222,3 +272,6 @@ export function createAiQualityBoundary(
     evaluate: (input) => evaluateAiQualityBoundary(config, input),
   };
 }
+
+export const evaluateAIQualityBoundary = evaluateAiQualityBoundary;
+export const createAIQualityBoundary = createAiQualityBoundary;

@@ -449,7 +449,14 @@ export type AiQualityBoundaryBlockedReason =
   | "operation_not_allowed"
   | "payload_missing"
   | "payload_mismatch"
+  | "client_runtime_field_rejected"
   | "runtime_isolation_failed";
+
+export type AiQualityBoundaryError = {
+  code: AiQualityBoundaryBlockedReason;
+  message: string;
+  recoverable: false;
+};
 
 export type AiQualityBoundarySafetyEvidence = {
   stage: "5.3C";
@@ -461,6 +468,7 @@ export type AiQualityBoundarySafetyEvidence = {
   allowedOperationsExplicit: true;
   payloadIsolationEnforced: true;
   runtimeIsolationEnforced: true;
+  genericAssistantBehaviorAllowed: false;
   modelCallExecuted: false;
   openAiSdkConnected: false;
   apiKeysRead: false;
@@ -484,6 +492,24 @@ export type AiQualityBoundarySafetyEvidence = {
 export type AiQualityBoundaryEvaluationInput = {
   operation?: AiQualityBoundaryOperation | string;
   runtime?: AiQualityRuntimeEvaluationInput | null;
+  clientRuntimeFields?: {
+    apiKey?: string;
+    envVarName?: string;
+    rawPrompt?: string;
+    providerPayload?: string;
+    modelCallPayload?: string;
+    chatMode?: boolean;
+    answerEngineMode?: boolean;
+    genericAssistantMode?: boolean;
+  };
+  apiKey?: string;
+  envVarName?: string;
+  rawPrompt?: string;
+  providerPayload?: string;
+  modelCallPayload?: string;
+  chatMode?: boolean;
+  answerEngineMode?: boolean;
+  genericAssistantMode?: boolean;
   unexpectedPayload?: unknown;
 };
 
@@ -503,6 +529,7 @@ export type AiQualityBoundaryBlockedDecision = {
   operation?: AiQualityBoundaryOperation | string;
   reason: AiQualityBoundaryBlockedReason;
   message: string;
+  error: AiQualityBoundaryError;
   runtimeResult?: AiQualityRuntimeEvaluationResult;
   evidence: AiQualityBoundarySafetyEvidence;
 };
@@ -542,3 +569,21 @@ export type AiQualityBoundaryValidationResult = {
     failed: number;
   };
 };
+
+export type AIQualityBoundaryVersion = AiQualityBoundaryVersion;
+export type AIQualityBoundaryMode = AiQualityBoundaryMode;
+export type AIQualityBoundaryOperation = AiQualityBoundaryOperation;
+export type AIQualityBoundaryConfig = AiQualityBoundaryConfig;
+export type AIQualityBoundaryError = AiQualityBoundaryError;
+export type AIQualityBoundaryBlockedReason = AiQualityBoundaryBlockedReason;
+export type AIQualityBoundarySafetyEvidence = AiQualityBoundarySafetyEvidence;
+export type AIQualityBoundaryRequest = AiQualityBoundaryEvaluationInput;
+export type AIQualityBoundaryResult = AiQualityBoundaryEvaluationResult;
+export type AIQualityBoundaryEvaluationInput = AiQualityBoundaryEvaluationInput;
+export type AIQualityBoundaryEvaluationResult = AiQualityBoundaryEvaluationResult;
+export type AIQualityBoundaryAllowedDecision = AiQualityBoundaryAllowedDecision;
+export type AIQualityBoundaryBlockedDecision = AiQualityBoundaryBlockedDecision;
+export type AIQualityBoundaryFoundation = AiQualityBoundaryFoundation;
+export type AIQualityBoundaryValidationCaseResult =
+  AiQualityBoundaryValidationCaseResult;
+export type AIQualityBoundaryValidationResult = AiQualityBoundaryValidationResult;
