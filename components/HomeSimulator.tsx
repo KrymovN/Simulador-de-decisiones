@@ -1,9 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
-import { createMockSession } from "./MockAuthGate";
 import type { MockSimulation } from "../lib/mockSimulations";
 import {
   buildMockSimulation,
@@ -93,7 +91,6 @@ function preserveReachedRevealState(origin: HTMLElement | null) {
 }
 
 export default function HomeSimulator() {
-  const router = useRouter();
   const [input, setInput] = useState("");
   const [activeStage, setActiveStage] = useState(-1);
   const [isRunning, setIsRunning] = useState(false);
@@ -256,12 +253,7 @@ export default function HomeSimulator() {
     const saved = readSavedSimulations();
     const next = [result.simulation, ...saved.filter((simulation) => simulation.id !== result.simulation.id)].slice(0, 12);
     window.localStorage.setItem(LOCAL_SIMULATIONS_KEY, JSON.stringify(next));
-    setMessage("Simulación guardada localmente en este navegador.");
-  }
-
-  function handleDemoSession() {
-    createMockSession();
-    router.push("/dashboard/simulations");
+    setMessage("Simulación guardada localmente en este navegador. Entra para abrir el historial protegido.");
   }
 
   return (
@@ -376,12 +368,9 @@ export default function HomeSimulator() {
             <button onClick={handleSave} type="button">
               Guardar localmente
             </button>
-            <Link className="secondary-button" href="/dashboard/simulations">
-              Ver historial local
+            <Link className="secondary-button" href="/login?next=%2Fdashboard%2Fsimulations">
+              Entrar para ver historial
             </Link>
-            <button className="ghost-button" onClick={handleDemoSession} type="button">
-              Crear sesión demo
-            </button>
             <Link className="text-link" href="/register">
               Crear cuenta
             </Link>
