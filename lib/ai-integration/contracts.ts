@@ -1,3 +1,7 @@
+import type { AIProviderBoundaryResult } from "../ai-provider/contracts";
+import type { AiQualityBoundaryEvaluationResult } from "../ai-quality/contracts";
+import type { PromptContextBoundaryResult } from "../prompt-context/contracts";
+
 export const AI_INTEGRATION_PREFLIGHT_CONTRACTS_VERSION =
   "5.4A-controlled-ai-integration-preflight-contracts-foundation.1" as const;
 
@@ -10,6 +14,12 @@ export const AI_INTEGRATION_PREFLIGHT_RUNTIME_VERSION =
 export const AI_INTEGRATION_PREFLIGHT_RUNTIME_MODE =
   "controlled_ai_integration_preflight_runtime_validation_foundation_only" as const;
 
+export const AI_INTEGRATION_BOUNDARY_COMPOSITION_VERSION =
+  "5.4C-controlled-ai-integration-boundary-composition-foundation.1" as const;
+
+export const AI_INTEGRATION_BOUNDARY_COMPOSITION_MODE =
+  "controlled_ai_integration_boundary_composition_foundation_only" as const;
+
 export type AIIntegrationPreflightContractsVersion =
   typeof AI_INTEGRATION_PREFLIGHT_CONTRACTS_VERSION;
 
@@ -21,6 +31,12 @@ export type AIIntegrationPreflightRuntimeVersion =
 
 export type AIIntegrationPreflightRuntimeMode =
   typeof AI_INTEGRATION_PREFLIGHT_RUNTIME_MODE;
+
+export type AIIntegrationBoundaryCompositionVersion =
+  typeof AI_INTEGRATION_BOUNDARY_COMPOSITION_VERSION;
+
+export type AIIntegrationBoundaryCompositionMode =
+  typeof AI_INTEGRATION_BOUNDARY_COMPOSITION_MODE;
 
 export type AIIntegrationPreflightOperation =
   "controlled_ai_integration_preflight";
@@ -142,7 +158,20 @@ export type AIIntegrationErrorCode =
   | "runtime_request_missing"
   | "contract_preflight_blocked"
   | "runtime_output_validation_failed"
-  | "runtime_isolation_failed";
+  | "runtime_isolation_failed"
+  | "composition_disabled"
+  | "composition_request_missing"
+  | "composition_id_missing"
+  | "composition_timestamp_invalid"
+  | "composition_input_fingerprint_missing"
+  | "composition_policy_invalid"
+  | "composition_runtime_disabled"
+  | "composition_runtime_isolation_failed"
+  | "prompt_context_boundary_blocked"
+  | "ai_integration_preflight_blocked"
+  | "ai_provider_boundary_blocked"
+  | "ai_quality_boundary_blocked"
+  | "composition_output_invalid";
 
 export type AIIntegrationError = {
   code: AIIntegrationErrorCode;
@@ -227,11 +256,106 @@ export type AIIntegrationRuntimeFoundation = {
   ): AIIntegrationPreflightResult;
 };
 
+export type AIIntegrationBoundaryCompositionInput = {
+  compositionId: string;
+  requestedAt: string;
+  inputFingerprint: string;
+  policy: AIIntegrationPolicy;
+  promptContextBoundary: PromptContextBoundaryResult;
+  preflightInput: Partial<AIIntegrationPreflightInput> | null;
+  aiProviderBoundary: AIProviderBoundaryResult;
+  aiQualityBoundary: AiQualityBoundaryEvaluationResult;
+  clientRuntimeFields?: AIIntegrationForbiddenClientFields;
+};
+
+export type AIIntegrationBoundaryCompositionEvidence = {
+  stage: "5.4C";
+  controlledAIIntegrationOnly: true;
+  boundaryCompositionOnly: true;
+  foundationOnly: true;
+  preflightOnly: true;
+  deterministicOnly: true;
+  failClosedByDefault: true;
+  promptContextBoundaryComposed: boolean;
+  aiIntegrationRuntimePreflightComposed: boolean;
+  aiProviderBoundaryComposed: boolean;
+  aiQualityBoundaryComposed: boolean;
+  promptContextRuntimeExecutedByComposition: false;
+  aiProviderExecutedByComposition: false;
+  aiQualityRealEnforcementExecuted: false;
+  providerExecutionAllowed: false;
+  streamingAllowed: false;
+  rawPromptAllowed: false;
+  providerPayloadAllowed: false;
+  modelCallPayloadAllowed: false;
+  modelCallExecuted: false;
+  providerExecutionCompleted: false;
+  openAiSdkConnected: false;
+  aiSdkConnected: false;
+  apiKeyRead: false;
+  envRead: false;
+  apiRouteIntegrated: false;
+  simulatorIntegrated: false;
+  decisionEngineRuntimeConnected: false;
+  uiIntegrated: false;
+};
+
+export type AIIntegrationBoundaryCompositionResult =
+  | {
+      status: "allowed";
+      execution: "boundary_composition_preflight_only";
+      version: AIIntegrationBoundaryCompositionVersion;
+      compositionId: string;
+      inputFingerprint: string;
+      promptContextBoundary: Extract<PromptContextBoundaryResult, { status: "ready" }>;
+      aiIntegrationPreflight: Extract<AIIntegrationPreflightResult, { status: "allowed" }>;
+      aiProviderBoundary: Extract<AIProviderBoundaryResult, { status: "ready" }>;
+      aiQualityBoundary: Extract<AiQualityBoundaryEvaluationResult, { status: "allowed" }>;
+      evidence: AIIntegrationBoundaryCompositionEvidence;
+    }
+  | {
+      status: "blocked";
+      execution: "none";
+      version: AIIntegrationBoundaryCompositionVersion;
+      compositionId?: string;
+      inputFingerprint?: string;
+      reason: AIIntegrationErrorCode;
+      error: AIIntegrationError;
+      promptContextBoundary?: PromptContextBoundaryResult;
+      aiIntegrationPreflight?: AIIntegrationPreflightResult;
+      aiProviderBoundary?: AIProviderBoundaryResult;
+      aiQualityBoundary?: AiQualityBoundaryEvaluationResult;
+      evidence: AIIntegrationBoundaryCompositionEvidence;
+    };
+
+export type AIIntegrationBoundaryCompositionConfig = {
+  enabled: boolean;
+  runtime: AIIntegrationRuntimeFoundation;
+};
+
+export type AIIntegrationBoundaryCompositionFoundation = {
+  version: AIIntegrationBoundaryCompositionVersion;
+  mode: AIIntegrationBoundaryCompositionMode;
+  enabled: boolean;
+  modelCallsEnabled: false;
+  providerExecutionEnabled: false;
+  streamingEnabled: false;
+  apiRoutesEnabled: false;
+  simulatorRuntimeEnabled: false;
+  decisionEngineRuntimeEnabled: false;
+  uiRuntimeEnabled: false;
+  compose(
+    input: Partial<AIIntegrationBoundaryCompositionInput> | null | undefined,
+  ): AIIntegrationBoundaryCompositionResult;
+};
+
 export type AIIntegrationValidationCaseResult = {
   caseId: string;
   title: string;
   expectedBehavior: string;
-  actualStatus: AIIntegrationPreflightResult["status"];
+  actualStatus:
+    | AIIntegrationPreflightResult["status"]
+    | AIIntegrationBoundaryCompositionResult["status"];
   passed: boolean;
   failed: boolean;
   issues: string[];
