@@ -4,11 +4,23 @@ export const AI_INTEGRATION_PREFLIGHT_CONTRACTS_VERSION =
 export const AI_INTEGRATION_PREFLIGHT_CONTRACTS_MODE =
   "controlled_ai_integration_preflight_contracts_foundation_only" as const;
 
+export const AI_INTEGRATION_PREFLIGHT_RUNTIME_VERSION =
+  "5.4B-controlled-ai-integration-preflight-runtime-validation-foundation.1" as const;
+
+export const AI_INTEGRATION_PREFLIGHT_RUNTIME_MODE =
+  "controlled_ai_integration_preflight_runtime_validation_foundation_only" as const;
+
 export type AIIntegrationPreflightContractsVersion =
   typeof AI_INTEGRATION_PREFLIGHT_CONTRACTS_VERSION;
 
 export type AIIntegrationPreflightContractsMode =
   typeof AI_INTEGRATION_PREFLIGHT_CONTRACTS_MODE;
+
+export type AIIntegrationPreflightRuntimeVersion =
+  typeof AI_INTEGRATION_PREFLIGHT_RUNTIME_VERSION;
+
+export type AIIntegrationPreflightRuntimeMode =
+  typeof AI_INTEGRATION_PREFLIGHT_RUNTIME_MODE;
 
 export type AIIntegrationPreflightOperation =
   "controlled_ai_integration_preflight";
@@ -125,7 +137,12 @@ export type AIIntegrationErrorCode =
   | "model_call_rejected"
   | "streaming_rejected"
   | "product_runtime_rejected"
-  | "output_contract_invalid";
+  | "output_contract_invalid"
+  | "runtime_disabled"
+  | "runtime_request_missing"
+  | "contract_preflight_blocked"
+  | "runtime_output_validation_failed"
+  | "runtime_isolation_failed";
 
 export type AIIntegrationError = {
   code: AIIntegrationErrorCode;
@@ -181,6 +198,32 @@ export type AIIntegrationContractsFoundation = {
   ): AIIntegrationPreflightResult;
   validateOutput(
     output: Partial<AIIntegrationPreflightResult> | null | undefined,
+  ): AIIntegrationPreflightResult;
+};
+
+export type AIIntegrationRuntimeConfig = {
+  enabled: boolean;
+  contracts: AIIntegrationContractsFoundation;
+  failClosedOnContractBlock: true;
+};
+
+export type AIIntegrationRuntimePreflightRequest = {
+  input?: Partial<AIIntegrationPreflightInput> | null;
+};
+
+export type AIIntegrationRuntimeFoundation = {
+  version: AIIntegrationPreflightRuntimeVersion;
+  mode: AIIntegrationPreflightRuntimeMode;
+  enabled: boolean;
+  modelCallsEnabled: false;
+  providerExecutionEnabled: false;
+  streamingEnabled: false;
+  apiRoutesEnabled: false;
+  simulatorRuntimeEnabled: false;
+  decisionEngineRuntimeEnabled: false;
+  uiRuntimeEnabled: false;
+  validate(
+    request: AIIntegrationRuntimePreflightRequest,
   ): AIIntegrationPreflightResult;
 };
 
