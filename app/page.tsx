@@ -145,7 +145,7 @@ const footerColumns = [
   {
     title: "Confianza",
     links: [
-      { label: "Privacidad", href: "/dashboard/privacy" },
+      { label: "Privacidad", href: "/privacy-policy" },
       { label: "Contacto", href: "mailto:hola@levio.es" },
     ],
   },
