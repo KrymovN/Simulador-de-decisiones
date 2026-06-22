@@ -82,11 +82,21 @@ export default function RegisterPage() {
         </label>
         <label className="checkbox-row">
           <input required type="checkbox" />
-          <span>Acepto la política de privacidad</span>
+          <span>
+            Acepto la{" "}
+            <Link href="/privacy-policy">
+              política de privacidad
+            </Link>
+          </span>
         </label>
         <label className="checkbox-row">
           <input required type="checkbox" />
-          <span>Acepto los términos de uso</span>
+          <span>
+            Acepto los{" "}
+            <Link href="/terms">
+              términos de uso
+            </Link>
+          </span>
         </label>
         <button disabled={isSubmitting} type="submit">
           {isSubmitting ? "Enviando enlace" : "Crear acceso seguro"}
