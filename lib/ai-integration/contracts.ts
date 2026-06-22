@@ -20,6 +20,12 @@ export const AI_INTEGRATION_BOUNDARY_COMPOSITION_VERSION =
 export const AI_INTEGRATION_BOUNDARY_COMPOSITION_MODE =
   "controlled_ai_integration_boundary_composition_foundation_only" as const;
 
+export const AI_INTEGRATION_DRY_RUN_VERSION =
+  "5.4D-controlled-ai-integration-dry-run-execution-foundation.1" as const;
+
+export const AI_INTEGRATION_DRY_RUN_MODE =
+  "controlled_ai_integration_dry_run_execution_foundation_only" as const;
+
 export type AIIntegrationPreflightContractsVersion =
   typeof AI_INTEGRATION_PREFLIGHT_CONTRACTS_VERSION;
 
@@ -37,6 +43,10 @@ export type AIIntegrationBoundaryCompositionVersion =
 
 export type AIIntegrationBoundaryCompositionMode =
   typeof AI_INTEGRATION_BOUNDARY_COMPOSITION_MODE;
+
+export type AIIntegrationDryRunVersion = typeof AI_INTEGRATION_DRY_RUN_VERSION;
+
+export type AIIntegrationDryRunMode = typeof AI_INTEGRATION_DRY_RUN_MODE;
 
 export type AIIntegrationPreflightOperation =
   "controlled_ai_integration_preflight";
@@ -171,7 +181,16 @@ export type AIIntegrationErrorCode =
   | "ai_integration_preflight_blocked"
   | "ai_provider_boundary_blocked"
   | "ai_quality_boundary_blocked"
-  | "composition_output_invalid";
+  | "composition_output_invalid"
+  | "dry_run_disabled"
+  | "dry_run_request_missing"
+  | "dry_run_id_missing"
+  | "dry_run_timestamp_invalid"
+  | "dry_run_input_fingerprint_missing"
+  | "dry_run_composition_missing"
+  | "dry_run_composition_disabled"
+  | "dry_run_composition_blocked"
+  | "dry_run_isolation_failed";
 
 export type AIIntegrationError = {
   code: AIIntegrationErrorCode;
@@ -349,13 +368,100 @@ export type AIIntegrationBoundaryCompositionFoundation = {
   ): AIIntegrationBoundaryCompositionResult;
 };
 
+export type AIIntegrationDryRunRequest = {
+  dryRunId: string;
+  requestedAt: string;
+  inputFingerprint: string;
+  composition: Partial<AIIntegrationBoundaryCompositionInput> | null;
+  clientRuntimeFields?: AIIntegrationForbiddenClientFields;
+};
+
+export type AIIntegrationDryRunEvidence = {
+  stage: "5.4D";
+  controlledAIIntegrationOnly: true;
+  dryRunOnly: true;
+  boundaryCompositionUsed: true;
+  foundationOnly: true;
+  preflightOnly: true;
+  deterministicOnly: true;
+  failClosedByDefault: true;
+  aiCallConfirmedAbsent: true;
+  envConfirmedUntouched: true;
+  apiConfirmedUntouched: true;
+  uiConfirmedUntouched: true;
+  simulatorConfirmedUntouched: true;
+  decisionEngineRuntimeConfirmedUntouched: true;
+  promptContextRuntimeExecutedByDryRun: false;
+  aiProviderExecutedByDryRun: false;
+  aiQualityRealEnforcementExecuted: false;
+  providerExecutionAllowed: false;
+  streamingAllowed: false;
+  rawPromptAllowed: false;
+  providerPayloadAllowed: false;
+  modelCallPayloadAllowed: false;
+  modelCallExecuted: false;
+  providerExecutionCompleted: false;
+  openAiSdkConnected: false;
+  aiSdkConnected: false;
+  apiKeyRead: false;
+  envRead: false;
+  apiRouteIntegrated: false;
+  simulatorIntegrated: false;
+  decisionEngineRuntimeConnected: false;
+  uiIntegrated: false;
+};
+
+export type AIIntegrationDryRunResult =
+  | {
+      status: "completed";
+      execution: "dry_run_preflight_only";
+      version: AIIntegrationDryRunVersion;
+      dryRunId: string;
+      inputFingerprint: string;
+      composition: Extract<AIIntegrationBoundaryCompositionResult, { status: "allowed" }>;
+      evidence: AIIntegrationDryRunEvidence;
+    }
+  | {
+      status: "blocked";
+      execution: "none";
+      version: AIIntegrationDryRunVersion;
+      dryRunId?: string;
+      inputFingerprint?: string;
+      reason: AIIntegrationErrorCode;
+      error: AIIntegrationError;
+      composition?: AIIntegrationBoundaryCompositionResult;
+      evidence: AIIntegrationDryRunEvidence;
+    };
+
+export type AIIntegrationDryRunConfig = {
+  enabled: boolean;
+  composition: AIIntegrationBoundaryCompositionFoundation;
+};
+
+export type AIIntegrationDryRunFoundation = {
+  version: AIIntegrationDryRunVersion;
+  mode: AIIntegrationDryRunMode;
+  enabled: boolean;
+  modelCallsEnabled: false;
+  providerExecutionEnabled: false;
+  streamingEnabled: false;
+  apiRoutesEnabled: false;
+  simulatorRuntimeEnabled: false;
+  decisionEngineRuntimeEnabled: false;
+  uiRuntimeEnabled: false;
+  execute(
+    request: Partial<AIIntegrationDryRunRequest> | null | undefined,
+  ): AIIntegrationDryRunResult;
+};
+
 export type AIIntegrationValidationCaseResult = {
   caseId: string;
   title: string;
   expectedBehavior: string;
   actualStatus:
     | AIIntegrationPreflightResult["status"]
-    | AIIntegrationBoundaryCompositionResult["status"];
+    | AIIntegrationBoundaryCompositionResult["status"]
+    | AIIntegrationDryRunResult["status"];
   passed: boolean;
   failed: boolean;
   issues: string[];
