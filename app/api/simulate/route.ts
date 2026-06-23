@@ -3,19 +3,30 @@ import { buildMockSimulation } from "../../../lib/simulationEngine";
 const SIMULATE_API_CONTRACT_VERSION = "simulate-api-v1-mock";
 const MAX_BODY_LENGTH = 8192;
 const MAX_INPUT_LENGTH = 1200;
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX_REQUESTS = 12;
+const RATE_LIMIT_MAX_BUCKETS = 500;
 
 type SimulateErrorCode =
   | "invalid_content_type"
   | "body_too_large"
   | "invalid_json"
   | "input_required"
-  | "input_too_long";
+  | "input_too_long"
+  | "rate_limited";
+
+type RateLimitBucket = {
+  count: number;
+  windowStartedAt: number;
+};
+
+const rateLimitBuckets = new Map<string, RateLimitBucket>();
 
 function createRequestId() {
   return crypto.randomUUID();
 }
 
-function meta() {
+function meta(options?: { retryAfterSeconds?: number }) {
   return {
     lang: "es",
     safeRender: true,
@@ -24,6 +35,9 @@ function meta() {
     maxInputLength: MAX_INPUT_LENGTH,
     maxBodyLength: MAX_BODY_LENGTH,
     generatedAt: new Date().toISOString(),
+    ...(options?.retryAfterSeconds === undefined
+      ? {}
+      : { retryAfterSeconds: options.retryAfterSeconds }),
   };
 }
 
@@ -32,6 +46,10 @@ function errorResponse(
   code: SimulateErrorCode,
   message: string,
   status: number,
+  options?: {
+    headers?: HeadersInit;
+    retryAfterSeconds?: number;
+  },
 ) {
   return Response.json(
     {
@@ -43,10 +61,77 @@ function errorResponse(
         code,
         message,
       },
-      meta: meta(),
+      meta: meta({ retryAfterSeconds: options?.retryAfterSeconds }),
     },
-    { status },
+    {
+      status,
+      headers: options?.headers,
+    },
   );
+}
+
+function pruneExpiredRateLimitBuckets(now: number) {
+  if (rateLimitBuckets.size <= RATE_LIMIT_MAX_BUCKETS) {
+    return;
+  }
+
+  for (const [source, bucket] of rateLimitBuckets) {
+    if (now - bucket.windowStartedAt >= RATE_LIMIT_WINDOW_MS) {
+      rateLimitBuckets.delete(source);
+    }
+  }
+}
+
+function getRequestSource(req: Request) {
+  const forwardedFor = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  const realIp = req.headers.get("x-real-ip")?.trim();
+  const vercelForwardedFor = req.headers.get("x-vercel-forwarded-for")?.split(",")[0]?.trim();
+  const connectingIp = req.headers.get("cf-connecting-ip")?.trim();
+  const userAgent = req.headers.get("user-agent")?.trim();
+
+  return (
+    forwardedFor ||
+    realIp ||
+    vercelForwardedFor ||
+    connectingIp ||
+    `anonymous:${userAgent || "unknown"}`
+  );
+}
+
+function checkRateLimit(source: string) {
+  const now = Date.now();
+  pruneExpiredRateLimitBuckets(now);
+
+  const bucket = rateLimitBuckets.get(source);
+
+  if (!bucket || now - bucket.windowStartedAt >= RATE_LIMIT_WINDOW_MS) {
+    rateLimitBuckets.set(source, {
+      count: 1,
+      windowStartedAt: now,
+    });
+
+    return {
+      limited: false as const,
+    };
+  }
+
+  const retryAfterSeconds = Math.max(
+    1,
+    Math.ceil((bucket.windowStartedAt + RATE_LIMIT_WINDOW_MS - now) / 1000),
+  );
+
+  if (bucket.count >= RATE_LIMIT_MAX_REQUESTS) {
+    return {
+      limited: true as const,
+      retryAfterSeconds,
+    };
+  }
+
+  bucket.count += 1;
+
+  return {
+    limited: false as const,
+  };
 }
 
 async function readJsonBody(req: Request, requestId: string) {
@@ -112,6 +197,23 @@ async function readJsonBody(req: Request, requestId: string) {
 
 export async function POST(req: Request) {
   const requestId = createRequestId();
+  const rateLimit = checkRateLimit(getRequestSource(req));
+
+  if (rateLimit.limited) {
+    return errorResponse(
+      requestId,
+      "rate_limited",
+      `Demasiadas simulaciones en poco tiempo. Inténtalo de nuevo en ${rateLimit.retryAfterSeconds} segundos.`,
+      429,
+      {
+        headers: {
+          "Retry-After": String(rateLimit.retryAfterSeconds),
+        },
+        retryAfterSeconds: rateLimit.retryAfterSeconds,
+      },
+    );
+  }
+
   const bodyResult = await readJsonBody(req, requestId);
 
   if (!bodyResult.ok) {

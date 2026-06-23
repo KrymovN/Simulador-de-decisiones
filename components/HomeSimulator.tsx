@@ -46,6 +46,7 @@ type SimulationErrorState = {
   title: string;
   message: string;
   requestId?: string;
+  retryAfterSeconds?: number;
 };
 
 type SimulateApiError = {
@@ -61,6 +62,7 @@ type SimulateApiMeta = {
   maxInputLength: number;
   maxBodyLength: number;
   generatedAt: string;
+  retryAfterSeconds?: number;
 };
 
 type SimulateApiResponse =
@@ -82,12 +84,19 @@ type SimulateApiResponse =
     };
 
 class SimulateApiFailure extends Error {
+  code?: string;
   requestId?: string;
+  retryAfterSeconds?: number;
 
-  constructor(message: string, requestId?: string) {
+  constructor(
+    message: string,
+    options?: { code?: string; requestId?: string; retryAfterSeconds?: number },
+  ) {
     super(message);
     this.name = "SimulateApiFailure";
-    this.requestId = requestId;
+    this.code = options?.code;
+    this.requestId = options?.requestId;
+    this.retryAfterSeconds = options?.retryAfterSeconds;
   }
 }
 
@@ -231,7 +240,11 @@ export default function HomeSimulator() {
       const payload = await response.json().catch(() => null);
 
       if (isSimulateApiResponse(payload) && payload.status === "failed") {
-        throw new SimulateApiFailure(payload.error.message, payload.requestId);
+        throw new SimulateApiFailure(payload.error.message, {
+          code: payload.error.code,
+          requestId: payload.requestId,
+          retryAfterSeconds: payload.meta.retryAfterSeconds,
+        });
       }
 
       throw new Error("El simulador público devolvió un fallo sin contrato válido.");
@@ -244,7 +257,11 @@ export default function HomeSimulator() {
     }
 
     if (payload.status === "failed") {
-      throw new SimulateApiFailure(payload.error.message, payload.requestId);
+      throw new SimulateApiFailure(payload.error.message, {
+        code: payload.error.code,
+        requestId: payload.requestId,
+        retryAfterSeconds: payload.meta.retryAfterSeconds,
+      });
     }
 
     return payload.data;
@@ -283,14 +300,23 @@ export default function HomeSimulator() {
         status: "completed" as const,
         simulation,
       }),
-      (error: unknown) => ({
-        status: "failed" as const,
-        message:
-          error instanceof Error
-            ? error.message
-            : "El simulador público devolvió un fallo controlado.",
-        requestId: error instanceof SimulateApiFailure ? error.requestId : undefined,
-      }),
+      (error: unknown) => {
+        const simulateError = error instanceof SimulateApiFailure ? error : null;
+
+        return {
+          status: "failed" as const,
+          title:
+            simulateError?.code === "rate_limited"
+              ? "Límite temporal alcanzado"
+              : "Simulación no ejecutada",
+          message:
+            error instanceof Error
+              ? error.message
+              : "El simulador público devolvió un fallo controlado.",
+          requestId: simulateError?.requestId,
+          retryAfterSeconds: simulateError?.retryAfterSeconds,
+        };
+      },
     );
 
     for (let index = 0; index < stages.length; index += 1) {
@@ -306,9 +332,10 @@ export default function HomeSimulator() {
     } else {
       setResult(null);
       setErrorState({
-        title: "Simulación no ejecutada",
+        title: simulationResult.title,
         message: simulationResult.message,
         requestId: simulationResult.requestId,
+        retryAfterSeconds: simulationResult.retryAfterSeconds,
       });
       setMessage("Simulación detenida. No se generó un resultado local de sustitución.");
     }
@@ -498,6 +525,9 @@ export default function HomeSimulator() {
           <span>Fallo controlado</span>
           <strong>{errorState.title}</strong>
           <p>{errorState.message}</p>
+          {typeof errorState.retryAfterSeconds === "number" && (
+            <small>Reintento disponible en {errorState.retryAfterSeconds} s.</small>
+          )}
           {errorState.requestId && <small>Referencia: {errorState.requestId}</small>}
           <small>No se ha generado una simulación local de sustitución.</small>
         </article>
