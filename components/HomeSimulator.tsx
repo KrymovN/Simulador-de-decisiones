@@ -40,11 +40,56 @@ type SpeechRecognitionConstructor = new () => SpeechRecognitionLike;
 const defaultInput =
   "Aceptar una oferta, lanzar un producto, cambiar de país, invertir en una nueva dirección...";
 const MAX_SIMULATION_INPUT_LENGTH = 1200;
+const SIMULATE_API_CONTRACT_VERSION = "simulate-api-v1-mock";
 
 type SimulationErrorState = {
   title: string;
   message: string;
+  requestId?: string;
 };
+
+type SimulateApiError = {
+  code: string;
+  message: string;
+};
+
+type SimulateApiMeta = {
+  lang: "es";
+  safeRender: true;
+  mockOnly: true;
+  apiReady: true;
+  maxInputLength: number;
+  maxBodyLength: number;
+  generatedAt: string;
+};
+
+type SimulateApiResponse =
+  | {
+      contractVersion: typeof SIMULATE_API_CONTRACT_VERSION;
+      requestId: string;
+      status: "completed";
+      data: SimulationResponse;
+      error: null;
+      meta: SimulateApiMeta;
+    }
+  | {
+      contractVersion: typeof SIMULATE_API_CONTRACT_VERSION;
+      requestId: string;
+      status: "failed";
+      data: null;
+      error: SimulateApiError;
+      meta: SimulateApiMeta;
+    };
+
+class SimulateApiFailure extends Error {
+  requestId?: string;
+
+  constructor(message: string, requestId?: string) {
+    super(message);
+    this.name = "SimulateApiFailure";
+    this.requestId = requestId;
+  }
+}
 
 function wait(ms: number) {
   return new Promise((resolve) => {
@@ -93,6 +138,44 @@ function preserveReachedRevealState(origin: HTMLElement | null) {
       section.classList.add("reveal-state-preserved");
     }
   });
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function isSimulateApiResponse(value: unknown): value is SimulateApiResponse {
+  if (!isRecord(value)) {
+    return false;
+  }
+
+  if (
+    value.contractVersion !== SIMULATE_API_CONTRACT_VERSION ||
+    typeof value.requestId !== "string" ||
+    !isRecord(value.meta) ||
+    value.meta.lang !== "es" ||
+    value.meta.safeRender !== true ||
+    value.meta.mockOnly !== true ||
+    value.meta.apiReady !== true ||
+    typeof value.meta.maxInputLength !== "number" ||
+    typeof value.meta.maxBodyLength !== "number" ||
+    typeof value.meta.generatedAt !== "string"
+  ) {
+    return false;
+  }
+
+  if (value.status === "failed") {
+    return value.data === null &&
+      isRecord(value.error) &&
+      typeof value.error.code === "string" &&
+      typeof value.error.message === "string";
+  }
+
+  return value.status === "completed" &&
+    value.error === null &&
+    isRecord(value.data) &&
+    isRecord(value.data.simulation) &&
+    Array.isArray(value.data.thinkingStages);
 }
 
 export default function HomeSimulator() {
@@ -145,26 +228,26 @@ export default function HomeSimulator() {
     });
 
     if (!response.ok) {
-      let message = "No se pudo completar la simulación mock.";
+      const payload = await response.json().catch(() => null);
 
-      try {
-        const payload = await response.json() as {
-          error?: {
-            message?: unknown;
-          };
-        };
-
-        if (typeof payload.error?.message === "string") {
-          message = payload.error.message;
-        }
-      } catch {
-        message = "No se pudo leer la respuesta de error del simulador.";
+      if (isSimulateApiResponse(payload) && payload.status === "failed") {
+        throw new SimulateApiFailure(payload.error.message, payload.requestId);
       }
 
-      throw new Error(message);
+      throw new Error("El simulador público devolvió un fallo sin contrato válido.");
     }
 
-    return (await response.json()) as SimulationResponse;
+    const payload = await response.json();
+
+    if (!isSimulateApiResponse(payload)) {
+      throw new Error("El simulador público devolvió una respuesta fuera de contrato.");
+    }
+
+    if (payload.status === "failed") {
+      throw new SimulateApiFailure(payload.error.message, payload.requestId);
+    }
+
+    return payload.data;
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -206,6 +289,7 @@ export default function HomeSimulator() {
           error instanceof Error
             ? error.message
             : "El simulador público devolvió un fallo controlado.",
+        requestId: error instanceof SimulateApiFailure ? error.requestId : undefined,
       }),
     );
 
@@ -224,6 +308,7 @@ export default function HomeSimulator() {
       setErrorState({
         title: "Simulación no ejecutada",
         message: simulationResult.message,
+        requestId: simulationResult.requestId,
       });
       setMessage("Simulación detenida. No se generó un resultado local de sustitución.");
     }
@@ -413,6 +498,7 @@ export default function HomeSimulator() {
           <span>Fallo controlado</span>
           <strong>{errorState.title}</strong>
           <p>{errorState.message}</p>
+          {errorState.requestId && <small>Referencia: {errorState.requestId}</small>}
           <small>No se ha generado una simulación local de sustitución.</small>
         </article>
       )}
