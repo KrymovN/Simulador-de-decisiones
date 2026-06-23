@@ -2,13 +2,17 @@
 
 ## Confirmed Project Position
 
-Date: 21 June 2026, Europe/Madrid.
+Date: 23 June 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Stage 5.3 AI Quality / Cost / Safety Validation
-Foundation Complete. Real model calls and real AI provider integration are
-deferred.
+The current confirmed state is Stage 5.4 AI Integration Foundation Complete /
+Real AI Runtime Deferred. Stage 5.4A-D are closed as controlled
+foundation-only preflight, runtime validation, boundary composition, and dry-run
+execution. Real model calls and real AI provider integration remain deferred.
+
+Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
+Complete.
 
 Stage 5.2 remains closed as Prompt / Context Layer Foundation Complete.
 
@@ -57,6 +61,30 @@ API routes, OpenAI SDK, environment variables, API keys, fetch/network calls,
 real model calls, Simulator runtime, Decision Engine runtime, Prompt Context
 runtime, AI Provider runtime, database, Supabase, auth, persistence,
 subscriptions, dashboard, or product behavior.
+
+## Controlled AI Integration Foundation State
+
+Stage 5.4A-D is closed as controlled foundation-only runtime work under
+`lib/ai-integration`.
+
+Implemented:
+
+- controlled AI integration preflight contracts foundation;
+- controlled AI integration runtime validation foundation;
+- controlled AI integration boundary composition foundation;
+- controlled AI integration dry-run execution foundation;
+- composition of Prompt Context Boundary, AI Provider Boundary, and AI Quality
+  Boundary references for deterministic preflight evidence only;
+- fail-closed validation and rejection of unsafe client/runtime fields.
+
+Stage 5.4 does not connect OpenAI SDK, real provider SDKs, API keys,
+environment variables, fetch/network calls, model execution, provider
+execution, streaming, API routes, UI, Simulator runtime, Decision Engine
+runtime, Prompt Context runtime calls, AI Provider runtime calls, database,
+Supabase, auth, persistence, subscriptions, dashboard, or product behavior.
+
+Stage 5.4 closure does not approve production model execution or user-facing AI
+runtime.
 
 ## Prompt Context Foundation State
 
@@ -124,19 +152,27 @@ There is no OpenAI runtime integration.
 
 There are no real AI provider calls.
 
-There is no AI Provider runtime call from Prompt Context or AI Quality.
+There is no provider execution.
+
+There are no model calls.
+
+There is no AI Provider runtime call from Prompt Context, AI Quality, or
+Controlled AI Integration.
 
 There is no Prompt Context runtime call from AI Quality.
 
 There is no Decision Engine runtime integration with AI Quality.
 
-There is no Simulator, UI, or API integration with AI Quality.
+There is no Decision Engine runtime integration with Controlled AI Integration.
 
-There is no product behavior change from Stage 5.3.
+There is no Simulator, UI, or API integration with AI Quality or Controlled AI
+Integration.
+
+There is no product behavior change from Stage 5.4A-D.
 
 ## Production Status
 
-Stage 5.3 is not production-ready real AI.
+Stage 5.4 is not production-ready real AI.
 
 Future real AI implementation requires separate owner approval, provider scope,
 SDK/env/key handling, Prompt Context to AI Provider connection, post-provider
@@ -145,8 +181,11 @@ observability, and rollback planning.
 
 ## Next Roadmap Step
 
-Stage 5.4.
+Product Quality Hardening.
 
-Stage 5.4 is not started. It must preserve Levio as a Decision Simulation
-Engine and must not create AI Chat, Answer Engine, Generic Assistant, or direct
-AI-to-user behavior.
+Product Quality Hardening may proceed only as QA/security/privacy/performance
+hardening. Any next step must preserve Levio as a Decision Simulation Engine
+and must not create AI Chat, Answer Engine, Generic Assistant, direct
+AI-to-user behavior, model calls, provider execution, API keys/env/SDKs, AI API
+routes, UI AI runtime, Simulator runtime integration, or Decision Engine
+runtime integration.

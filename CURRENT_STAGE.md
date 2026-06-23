@@ -2,16 +2,18 @@
 
 ## Active Checkpoint
 
-Stage 5.3 AI Quality / Cost / Safety Validation Foundation Complete.
+Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred.
 
-Status: contracts/runtime-boundary/QA complete; real AI integration deferred.
+Status: Stage 5.4A-D controlled AI integration foundation closed as
+foundation-only. Real AI runtime remains deferred.
 
-Date: 21 June 2026, Europe/Madrid.
+Date: 23 June 2026, Europe/Madrid.
 
-Stage 5.2 remains closed as Prompt / Context Layer Foundation Complete. Stage
-5.1 remains closed as AI Provider Abstraction / Real AI Integration Foundation
-Complete. Stage 4.4 remains closed as Subscription Runtime Foundation Complete /
-Production Billing Deferred.
+Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
+Complete. Stage 5.2 remains closed as Prompt / Context Layer Foundation
+Complete. Stage 5.1 remains closed as AI Provider Abstraction / Real AI
+Integration Foundation Complete. Stage 4.4 remains closed as Subscription
+Runtime Foundation Complete / Production Billing Deferred.
 
 ## Product Invariant
 
@@ -25,10 +27,10 @@ Immutable architecture:
 USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI
 ```
 
-AI Quality / Cost / Safety Validation is an internal structured-evidence layer.
-It validates quality, cost, safety, and release-gate evidence for future real AI
-integration, but it does not call providers, generate answers, or own final
-decision semantics.
+Controlled AI Integration is an internal foundation layer. It composes existing
+Prompt Context, AI Provider, and AI Quality boundaries for preflight and dry-run
+evidence only. It does not call providers, execute models, generate answers, or
+own final decision semantics.
 
 ## What Is Closed
 
@@ -52,6 +54,25 @@ It includes:
 - Stage 5.3 runtime QA/regression aggregation;
 - exports through `lib/ai-quality/index.ts`.
 
+Stage 5.4 foundation-only controlled AI integration is closed.
+
+It is implemented under `lib/ai-integration` and includes:
+
+- Stage 5.4A controlled AI integration preflight contracts foundation;
+- Stage 5.4B controlled AI integration runtime validation foundation;
+- Stage 5.4C controlled AI integration boundary composition foundation;
+- Stage 5.4D controlled AI integration dry-run execution foundation;
+- foundation-only composition of Prompt Context Boundary, AI Provider Boundary,
+  and AI Quality Boundary references;
+- fail-closed rejection of raw prompts, chat messages, system prompts,
+  provider payloads, model-call payloads, provider execution, streaming,
+  env/API-key fields, API routes, Simulator runtime, Decision Engine runtime,
+  and UI runtime fields.
+
+Stage 5.4 closure does not approve production model execution, user-facing AI
+runtime, provider SDKs, env/API-key handling, API routes, UI integration,
+Simulator runtime integration, or Decision Engine runtime integration.
+
 ## Deferred Real AI Scope
 
 Real AI integration is explicitly deferred.
@@ -64,6 +85,8 @@ The current foundation does not include:
 - environment variable reads;
 - fetch/network model calls;
 - model execution;
+- provider execution;
+- streaming;
 - API routes;
 - UI integration;
 - Simulator runtime integration;
@@ -74,7 +97,7 @@ The current foundation does not include:
 
 ## Production Readiness
 
-Stage 5.3 is not production-ready real AI.
+Stage 5.4 is not production-ready real AI.
 
 Any future model-call implementation requires separate owner approval and a
 dedicated integration step covering provider scope, SDK/env/key handling,
@@ -84,8 +107,9 @@ rollback.
 
 ## Next Allowed Roadmap Step
 
-Stage 5.4.
+Product Quality Hardening.
 
-Stage 5.4 is not started by this checkpoint. It must preserve the immutable
-Decision Simulation Engine architecture and must not turn Levio into AI Chat,
-Answer Engine, Generic Assistant, or direct AI-to-user behavior.
+Product Quality Hardening may proceed only as QA/security/privacy/performance
+hardening. It must not add model calls, provider execution, API keys/env/SDKs,
+AI API routes, UI AI runtime, Simulator runtime integration, or Decision Engine
+runtime integration.

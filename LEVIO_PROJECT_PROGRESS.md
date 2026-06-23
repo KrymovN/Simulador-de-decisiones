@@ -2,7 +2,7 @@
 
 ## Last Updated
 
-21 июня 2026
+23 июня 2026
 
 ## Purpose
 
@@ -60,8 +60,10 @@ Overall Project Progress ███████░░░ 74%
 - Stage 5.1 AI Provider Abstraction / Real AI Integration Foundation закрыт как foundation/runtime-boundary/QA complete.
 - Stage 5.2 Prompt / Context Layer закрыт как foundation/runtime-boundary/QA complete.
 - Stage 5.3 AI Quality / Cost / Safety Validation закрыт как foundation/runtime-boundary/QA complete.
-- Real model calls deferred: OpenAI SDK/env/API keys/fetch/model calls/API routes/UI/Simulator integration не подключены.
-- AI Provider runtime calls, Prompt Context runtime calls, Decision Engine runtime integration, Simulator/UI/API integration из AI Quality deferred.
+- Stage 5.4 AI Integration Foundation закрыт как foundation-only / Real AI Runtime Deferred.
+- Stage 5.4A-D Controlled AI Integration Foundation реализован и закрыт как preflight, runtime validation, boundary composition и dry-run foundation.
+- Real model calls deferred: OpenAI SDK/provider SDK/env/API keys/fetch/model calls/provider execution/API routes/UI/Simulator integration не подключены.
+- AI Provider runtime calls, Prompt Context runtime calls, Decision Engine runtime integration, Simulator/UI/API integration из AI Quality или Controlled AI Integration deferred.
 - Product behavior не изменен.
 
 ## Block Progress
@@ -126,11 +128,11 @@ Implementation update: Subscription Runtime Integration Foundation добави�
 
 ### 9. Real AI Integration
 
-Статус: Stage 5.3 foundation/runtime-boundary/QA complete; real AI runtime не подключен.
+Статус: Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred.
 Прогресс: ██████░░░░ 60%.
-Блокер: Нет real model calls; OpenAI SDK/env/API keys/provider SDK/fetch/model execution, AI Provider runtime calls, Prompt Context runtime calls, Decision Engine runtime integration и Simulator/UI/API integration не утверждены и не подключены.
-Последнее изменение: Stage 5.3 добавил AI Quality / Cost / Safety contracts, Runtime foundation, Boundary / Facade и Stage 5.3 QA/regression aggregation under `lib/ai-quality`.
-Следующий шаг: Stage 5.4; AI Quality, Prompt Context и AI Provider должны оставаться внутренними компонентами Decision Simulation Engine, не AI Chat / Answer Engine / Generic Assistant.
+Блокер: Нет real model calls; OpenAI SDK/env/API keys/provider SDK/fetch/model execution, provider execution, AI Provider runtime calls, Prompt Context runtime calls, Decision Engine runtime integration и Simulator/UI/API integration не утверждены и не подключены.
+Последнее изменение: Stage 5.4A-D добавил Controlled AI Integration preflight contracts, runtime validation, boundary composition и dry-run foundation under `lib/ai-integration`.
+Следующий шаг: Product Quality Hardening; AI Quality, Prompt Context, AI Provider и Controlled AI Integration должны оставаться внутренними компонентами Decision Simulation Engine, не AI Chat / Answer Engine / Generic Assistant.
 
 ### 10. Product Quality Hardening
 
@@ -170,7 +172,13 @@ Implementation update: Subscription Runtime Integration Foundation добави�
 
 ## Current Roadmap Focus
 
-Stage 5.4.
+Product Quality Hardening.
+
+Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
+Runtime Deferred. Product Quality Hardening is the next roadmap focus, but it
+must remain QA/security/privacy/performance hardening and must not add model
+calls, provider execution, API keys/env/SDKs, AI API routes, UI AI runtime,
+Simulator runtime integration, or Decision Engine runtime integration.
 
 Billing provider implementation remains deferred until provider/commercial/legal
 approval exists.
@@ -276,3 +284,11 @@ Do not continue:
 - Stage 5.3 закрыт как AI Quality / Cost / Safety Validation Foundation Complete.
 - Deferred: real AI provider calls, AI Provider runtime calls, Prompt Context runtime calls, OpenAI SDK, real provider SDK, env/API keys, fetch/network model calls, API routes, UI, Simulator integration, Decision Engine runtime integration, production real-AI enforcement.
 - Следующий roadmap-шаг: Stage 5.4.
+- Реализован Stage 5.4A Controlled AI Integration Preflight Contracts Foundation.
+- Реализован Stage 5.4B Controlled AI Integration Runtime Validation Foundation.
+- Реализован Stage 5.4C Controlled AI Integration Boundary Composition Foundation.
+- Реализован Stage 5.4D Controlled AI Integration Dry-Run Execution Foundation.
+- Добавлен `lib/ai-integration` foundation package для preflight, runtime validation, boundary composition и dry-run evidence only.
+- Не подключались: OpenAI SDK, provider SDK, env/API keys, fetch/model calls, provider execution, streaming, API routes, UI, Simulator runtime, Decision Engine runtime, Prompt Context runtime calls, AI Provider runtime calls или product behavior.
+- Stage 5.4 закрыт как AI Integration Foundation Complete / Real AI Runtime Deferred.
+- Следующий roadmap focus: Product Quality Hardening.

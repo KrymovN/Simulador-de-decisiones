@@ -2,7 +2,7 @@
 
 ## Current Confirmed State
 
-Date: 21 June 2026, Europe/Madrid.
+Date: 23 June 2026, Europe/Madrid.
 
 Levio.es is a Decision Simulation Engine.
 
@@ -12,16 +12,18 @@ Levio is not an Answer Engine.
 
 Levio is not a Generic AI Assistant.
 
-The active checkpoint is Stage 5.3 AI Quality / Cost / Safety Validation
-Foundation Complete. Real model calls and real AI provider integration are
-deferred.
+The active checkpoint is Stage 5.4 AI Integration Foundation Complete / Real AI
+Runtime Deferred. Stage 5.4A-D are closed as foundation-only preflight, runtime
+validation, boundary composition, and dry-run execution. Real model calls and
+real AI provider integration remain deferred.
 
-Stage 5.2 remains closed as Prompt / Context Layer Foundation Complete. Stage
-5.1 remains closed as AI Provider Abstraction / Real AI Integration Foundation
-Complete. Stage 4.4 remains closed as Subscription Runtime Foundation Complete /
-Production Billing Deferred. Stage 4.3 remains closed as User Data Controls
-foundation/runtime-boundary complete after the excessive Stage 4.3
-gate/audit/micro-stage chain was removed.
+Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
+Complete. Stage 5.2 remains closed as Prompt / Context Layer Foundation
+Complete. Stage 5.1 remains closed as AI Provider Abstraction / Real AI
+Integration Foundation Complete. Stage 4.4 remains closed as Subscription
+Runtime Foundation Complete / Production Billing Deferred. Stage 4.3 remains
+closed as User Data Controls foundation/runtime-boundary complete after the
+excessive Stage 4.3 gate/audit/micro-stage chain was removed.
 
 Supporting references:
 
@@ -54,6 +56,39 @@ the owner of final decision semantics.
 AI Provider is an internal replaceable component. It supplies controlled
 candidate material only and must never become the product, the direct respondent
 to the user, or the owner of decision semantics.
+
+Controlled AI Integration is an internal foundation layer. It validates and
+composes existing Prompt Context, AI Provider, and AI Quality boundaries for
+preflight and dry-run evidence only. It must never become a provider caller,
+answer engine, chat surface, direct AI-to-user path, or owner of final decision
+semantics.
+
+## Stage 5.4 Implementation State
+
+Stage 5.4A-D is closed as Controlled AI Integration Foundation under
+`lib/ai-integration`.
+
+Implemented:
+
+- Stage 5.4A controlled AI integration preflight contracts foundation;
+- Stage 5.4B controlled AI integration runtime validation foundation;
+- Stage 5.4C controlled AI integration boundary composition foundation;
+- Stage 5.4D controlled AI integration dry-run execution foundation;
+- deterministic, fail-closed validation for Prompt Context Boundary, AI
+  Provider Boundary, and AI Quality Boundary references;
+- rejection of raw prompts, chat messages, user system prompts, provider
+  payloads, model-call payloads, provider execution, streaming, env/API-key
+  fields, API routes, Simulator runtime, Decision Engine runtime, and UI
+  runtime fields.
+
+Stage 5.4 does not connect OpenAI SDK, real provider SDKs, API keys,
+environment variables, fetch/network calls, model execution, provider
+execution, streaming, API routes, UI, Simulator runtime, Decision Engine
+runtime, Prompt Context runtime calls, AI Provider runtime calls, database,
+Supabase, auth, persistence, subscriptions, dashboard, or product behavior.
+
+Stage 5.4 closure does not approve production model execution or user-facing AI
+runtime.
 
 ## Stage 5.3 Closure Result
 
@@ -176,6 +211,10 @@ Allowed at current closure:
 - AI Quality / Cost / Safety runtime foundation;
 - AI Quality / Cost / Safety boundary/facade foundation;
 - AI Quality / Cost / Safety runtime QA/regression aggregation;
+- Controlled AI Integration preflight contracts foundation;
+- Controlled AI Integration runtime validation foundation;
+- Controlled AI Integration boundary composition foundation;
+- Controlled AI Integration dry-run execution foundation;
 - canonical owner model based on `levio_principals.principal_id`;
 - fail-closed behavior;
 - deterministic validation functions;
@@ -198,12 +237,17 @@ Not allowed or not present:
 - environment variable reads for AI;
 - API keys for AI;
 - model calls;
+- provider execution;
+- streaming;
 - AI API routes;
 - AI UI;
 - Simulator integration with Prompt Context, AI Provider, or AI Quality;
+- Simulator integration with Controlled AI Integration;
 - Decision Engine integration with Prompt Context, AI Provider, or AI Quality;
+- Decision Engine integration with Controlled AI Integration;
 - Prompt Context runtime calls from AI Quality;
-- AI Provider runtime calls from Prompt Context or AI Quality;
+- AI Provider runtime calls from Prompt Context, AI Quality, or Controlled AI
+  Integration;
 - Billing;
 - production Subscription Runtime product integration;
 - Stripe integration;
@@ -244,9 +288,14 @@ Stage 5.3 AI Quality scope does not change the product object. AI Quality
 foundation validates internal structured quality/cost/safety evidence only; it
 does not call providers, execute models, generate answers, or present UI.
 
+Stage 5.4 Controlled AI Integration scope does not change the product object.
+Controlled AI Integration composes internal foundation boundaries for preflight
+and dry-run evidence only; it does not execute providers, execute models,
+generate answers, present UI, or connect product runtime.
+
 ## Production Readiness
 
-Stage 5.3 is not production-ready real AI.
+Stage 5.4 is not production-ready real AI.
 
 Real AI work remains blocked until a separately approved future stage defines
 provider integration, SDK/env/key handling, Prompt Context to AI Provider
@@ -261,8 +310,11 @@ webhooks, UI/API, QA, and rollback rehearsal.
 
 ## Next Roadmap Step
 
-Stage 5.4 is the next roadmap step.
+Product Quality Hardening is the next roadmap focus.
 
-Stage 5.4 is not started by this checkpoint. It must preserve the immutable
-Decision Simulation Engine architecture and must not create AI Chat, Answer
-Engine, Generic Assistant, or direct AI-to-user behavior.
+Product Quality Hardening may proceed only as QA/security/privacy/performance
+hardening. The immutable Decision Simulation Engine architecture remains
+mandatory, and the next step must not create AI Chat, Answer Engine, Generic
+Assistant, direct AI-to-user behavior, model calls, provider execution, API
+keys/env/SDKs, AI API routes, UI AI runtime, Simulator runtime integration, or
+Decision Engine runtime integration.
