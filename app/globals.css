@@ -1794,6 +1794,11 @@ textarea:focus,
   color: rgba(76, 69, 84, 0.78);
 }
 
+.simulation-error-panel,
+.strategic-conclusion {
+  overflow-wrap: anywhere;
+}
+
 .ai-core-stage {
   min-height: 610px;
   position: relative;
