@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import type { MockSimulation } from "../lib/mockSimulations";
 import {
-  buildMockSimulation,
   LOCAL_SIMULATIONS_KEY,
   type SimulationResponse,
 } from "../lib/simulationEngine";
@@ -40,6 +39,12 @@ type SpeechRecognitionConstructor = new () => SpeechRecognitionLike;
 
 const defaultInput =
   "Aceptar una oferta, lanzar un producto, cambiar de país, invertir en una nueva dirección...";
+const MAX_SIMULATION_INPUT_LENGTH = 1200;
+
+type SimulationErrorState = {
+  title: string;
+  message: string;
+};
 
 function wait(ms: number) {
   return new Promise((resolve) => {
@@ -96,6 +101,7 @@ export default function HomeSimulator() {
   const [isRunning, setIsRunning] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [result, setResult] = useState<SimulationResponse | null>(null);
+  const [errorState, setErrorState] = useState<SimulationErrorState | null>(null);
   const [message, setMessage] = useState("");
   const consoleRef = useRef<HTMLElement>(null);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
@@ -103,7 +109,29 @@ export default function HomeSimulator() {
   const outputRef = useRef<HTMLDivElement>(null);
 
   const stages = useMemo(
-    () => result?.thinkingStages ?? buildMockSimulation("simulación inicial").thinkingStages,
+    () =>
+      result?.thinkingStages ?? [
+        {
+          title: "Comprendiendo la situación",
+          detail: "Separando objetivo, presión externa, urgencia y coste de no decidir.",
+        },
+        {
+          title: "Detectando variables críticas",
+          detail: "Identificando energía disponible, dinero, relaciones, timing y reversibilidad.",
+        },
+        {
+          title: "Simulando escenarios",
+          detail: "Abriendo rutas probables con oportunidad, tensión acumulada y alternativas.",
+        },
+        {
+          title: "Evaluando riesgos y beneficios",
+          detail: "Comparando exposición, ventaja potencial, latencia y consecuencias secundarias.",
+        },
+        {
+          title: "Preparando marco de decisión",
+          detail: "Construyendo un mapa de opciones sin presentar una certeza falsa.",
+        },
+      ],
     [result],
   );
 
@@ -117,7 +145,23 @@ export default function HomeSimulator() {
     });
 
     if (!response.ok) {
-      throw new Error("No se pudo completar la simulación mock.");
+      let message = "No se pudo completar la simulación mock.";
+
+      try {
+        const payload = await response.json() as {
+          error?: {
+            message?: unknown;
+          };
+        };
+
+        if (typeof payload.error?.message === "string") {
+          message = payload.error.message;
+        }
+      } catch {
+        message = "No se pudo leer la respuesta de error del simulador.";
+      }
+
+      throw new Error(message);
     }
 
     return (await response.json()) as SimulationResponse;
@@ -130,26 +174,61 @@ export default function HomeSimulator() {
 
     if (!situation) {
       setMessage("Describe una situación concreta para iniciar la simulación.");
+      setErrorState(null);
+      return;
+    }
+
+    if (situation.length > MAX_SIMULATION_INPUT_LENGTH) {
+      setResult(null);
+      setErrorState({
+        title: "Simulación no ejecutada",
+        message: `La situación supera el límite de ${MAX_SIMULATION_INPUT_LENGTH} caracteres del simulador público.`,
+      });
+      setMessage("Reduce el texto antes de simular.");
       return;
     }
 
     preserveReachedRevealState(consoleRef.current);
     setMessage("");
     setResult(null);
+    setErrorState(null);
     setActiveStage(-1);
     setIsRunning(true);
 
-    const simulationPromise = requestSimulation(situation).catch(() => buildMockSimulation(situation));
+    const simulationPromise = requestSimulation(situation).then(
+      (simulation) => ({
+        status: "completed" as const,
+        simulation,
+      }),
+      (error: unknown) => ({
+        status: "failed" as const,
+        message:
+          error instanceof Error
+            ? error.message
+            : "El simulador público devolvió un fallo controlado.",
+      }),
+    );
 
     for (let index = 0; index < stages.length; index += 1) {
       setActiveStage(index);
       await wait(index === 0 ? 520 : 760);
     }
 
-    const simulation = await simulationPromise;
-    setResult(simulation);
+    const simulationResult = await simulationPromise;
+
+    if (simulationResult.status === "completed") {
+      setResult(simulationResult.simulation);
+      setMessage("Simulación completada. Escenarios listos para revisar.");
+    } else {
+      setResult(null);
+      setErrorState({
+        title: "Simulación no ejecutada",
+        message: simulationResult.message,
+      });
+      setMessage("Simulación detenida. No se generó un resultado local de sustitución.");
+    }
+
     setIsRunning(false);
-    setMessage("Simulación completada. Escenarios listos para revisar.");
   }
 
   function handleTextareaKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
@@ -184,8 +263,14 @@ export default function HomeSimulator() {
         .trim();
 
       if (transcript) {
-        setInput((currentInput) => `${currentInput.trimEnd()}${currentInput.trim() ? " " : ""}${transcript}`);
+        setInput((currentInput) =>
+          `${currentInput.trimEnd()}${currentInput.trim() ? " " : ""}${transcript}`.slice(
+            0,
+            MAX_SIMULATION_INPUT_LENGTH,
+          ),
+        );
         setMessage("Dictado añadido. Revisa el texto antes de simular.");
+        setErrorState(null);
       }
     };
     recognition.onerror = (event) => {
@@ -264,8 +349,12 @@ export default function HomeSimulator() {
           <div className="decision-input-shell">
             <textarea
               id="decision-input"
-              onChange={(event) => setInput(event.target.value)}
+              onChange={(event) => {
+                setInput(event.target.value);
+                setErrorState(null);
+              }}
               onKeyDown={handleTextareaKeyDown}
+              maxLength={MAX_SIMULATION_INPUT_LENGTH}
               placeholder={defaultInput}
               value={input}
             />
@@ -289,9 +378,15 @@ export default function HomeSimulator() {
         </div>
       </form>
 
-      <div className={`console-status ${isRunning ? "is-live" : ""}`} aria-live="polite">
+      <div
+        className={`console-status ${isRunning ? "is-live" : ""} ${errorState ? "is-error" : ""}`}
+        aria-live={errorState ? "assertive" : "polite"}
+        role={errorState ? "alert" : "status"}
+      >
         <span></span>
-        <p>{message || "Levio.es está listo para simular escenarios, riesgos y consecuencias."}</p>
+        <p>
+          {message || `Levio.es está listo para simular escenarios, riesgos y consecuencias. Límite: ${MAX_SIMULATION_INPUT_LENGTH} caracteres.`}
+        </p>
       </div>
 
       {(isRunning || result) && (
@@ -311,6 +406,15 @@ export default function HomeSimulator() {
             </article>
           ))}
         </div>
+      )}
+
+      {errorState && (
+        <article className="simulation-error-panel">
+          <span>Fallo controlado</span>
+          <strong>{errorState.title}</strong>
+          <p>{errorState.message}</p>
+          <small>No se ha generado una simulación local de sustitución.</small>
+        </article>
       )}
 
       {result && (

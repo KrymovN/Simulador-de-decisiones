@@ -20,6 +20,7 @@ function errorResponse(code: SimulateErrorCode, message: string, status: number)
       meta: {
         safeRender: true,
         mockOnly: true,
+        maxInputLength: MAX_INPUT_LENGTH,
       },
     },
     { status },
@@ -118,6 +119,7 @@ export async function POST(req: Request) {
       safeRender: true,
       mockOnly: true,
       apiReady: true,
+      maxInputLength: MAX_INPUT_LENGTH,
       note: "Respuesta mock en español. Sustituir buildMockSimulation por un proveedor real cuando el MVP pase a backend.",
     },
   });

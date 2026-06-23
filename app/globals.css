@@ -1758,6 +1758,42 @@ textarea:focus,
   box-shadow: 0 0 18px rgba(255, 183, 73, 0.9);
 }
 
+.console-status.is-error {
+  color: #5c221b;
+}
+
+.console-status.is-error span {
+  background: #d84b31;
+  box-shadow: 0 0 18px rgba(216, 75, 49, 0.42);
+}
+
+.simulation-error-panel {
+  border: 1px solid rgba(216, 75, 49, 0.22);
+  border-radius: 8px;
+  padding: 18px;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(216, 75, 49, 0.12), transparent 38%),
+    rgba(255, 255, 255, 0.68);
+  color: #2c1714;
+}
+
+.simulation-error-panel span,
+.simulation-error-panel small {
+  display: block;
+  color: #7c3a2d;
+}
+
+.simulation-error-panel strong {
+  display: block;
+  margin-top: 6px;
+  color: #17141a;
+}
+
+.simulation-error-panel p {
+  margin: 8px 0;
+  color: rgba(76, 69, 84, 0.78);
+}
+
 .ai-core-stage {
   min-height: 610px;
   position: relative;
