@@ -49,6 +49,13 @@ type SimulationErrorState = {
   retryAfterSeconds?: number;
 };
 
+type SimulationPreviewState = {
+  contractVersion: typeof SIMULATE_API_CONTRACT_VERSION;
+  requestId: string;
+  mockOnly: true;
+  apiReady: true;
+};
+
 type SimulateApiError = {
   code: string;
   message: string;
@@ -193,6 +200,7 @@ export default function HomeSimulator() {
   const [isRunning, setIsRunning] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [result, setResult] = useState<SimulationResponse | null>(null);
+  const [previewState, setPreviewState] = useState<SimulationPreviewState | null>(null);
   const [errorState, setErrorState] = useState<SimulationErrorState | null>(null);
   const [message, setMessage] = useState("");
   const consoleRef = useRef<HTMLElement>(null);
@@ -264,7 +272,7 @@ export default function HomeSimulator() {
       });
     }
 
-    return payload.data;
+    return payload;
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -275,11 +283,13 @@ export default function HomeSimulator() {
     if (!situation) {
       setMessage("Describe una situación concreta para iniciar la simulación.");
       setErrorState(null);
+      setPreviewState(null);
       return;
     }
 
     if (situation.length > MAX_SIMULATION_INPUT_LENGTH) {
       setResult(null);
+      setPreviewState(null);
       setErrorState({
         title: "Simulación no ejecutada",
         message: `La situación supera el límite de ${MAX_SIMULATION_INPUT_LENGTH} caracteres del simulador público.`,
@@ -291,14 +301,21 @@ export default function HomeSimulator() {
     preserveReachedRevealState(consoleRef.current);
     setMessage("");
     setResult(null);
+    setPreviewState(null);
     setErrorState(null);
     setActiveStage(-1);
     setIsRunning(true);
 
     const simulationPromise = requestSimulation(situation).then(
-      (simulation) => ({
+      (payload) => ({
         status: "completed" as const,
-        simulation,
+        simulation: payload.data,
+        preview: {
+          contractVersion: payload.contractVersion,
+          requestId: payload.requestId,
+          mockOnly: payload.meta.mockOnly,
+          apiReady: payload.meta.apiReady,
+        },
       }),
       (error: unknown) => {
         const simulateError = error instanceof SimulateApiFailure ? error : null;
@@ -328,9 +345,11 @@ export default function HomeSimulator() {
 
     if (simulationResult.status === "completed") {
       setResult(simulationResult.simulation);
-      setMessage("Simulación completada. Escenarios listos para revisar.");
+      setPreviewState(simulationResult.preview);
+      setMessage("Simulación demo completada. Escenarios orientativos listos para revisar.");
     } else {
       setResult(null);
+      setPreviewState(null);
       setErrorState({
         title: simulationResult.title,
         message: simulationResult.message,
@@ -464,6 +483,7 @@ export default function HomeSimulator() {
               onChange={(event) => {
                 setInput(event.target.value);
                 setErrorState(null);
+                setPreviewState(null);
               }}
               onKeyDown={handleTextareaKeyDown}
               maxLength={MAX_SIMULATION_INPUT_LENGTH}
@@ -497,7 +517,7 @@ export default function HomeSimulator() {
       >
         <span></span>
         <p>
-          {message || `Levio.es está listo para simular escenarios, riesgos y consecuencias. Límite: ${MAX_SIMULATION_INPUT_LENGTH} caracteres.`}
+          {message || `Preview público: Levio.es genera una simulación demostrativa mock-only, sin runtime de IA real conectado. Límite: ${MAX_SIMULATION_INPUT_LENGTH} caracteres.`}
         </p>
       </div>
 
@@ -537,14 +557,24 @@ export default function HomeSimulator() {
         <div className="simulation-output" ref={outputRef}>
           <div className="simulation-output-header">
             <div>
-              <p className="eyebrow">Mapa de escenarios</p>
+              <p className="eyebrow">Mapa de escenarios demo</p>
               <h2>{result.simulation.result}</h2>
             </div>
             <div className="output-confidence">
-              <span>Claridad del mapa</span>
+              <span>Claridad orientativa</span>
               <strong>{result.simulation.signals.confidence}%</strong>
             </div>
           </div>
+
+          <article className="strategic-conclusion">
+            <span>Preview controlado</span>
+            <strong>Simulación demostrativa; el runtime de IA real aún no está conectado.</strong>
+            <p>
+              Este mapa usa el contrato público {previewState?.contractVersion ?? SIMULATE_API_CONTRACT_VERSION} en modo mock-only. Sirve para
+              explorar escenarios, riesgos y consecuencias sin presentarse como predicción production-grade.
+              {previewState?.requestId ? ` Referencia: ${previewState.requestId}.` : ""}
+            </p>
+          </article>
 
           <div className="home-scenario-grid">
             {result.simulation.scenarios.map((scenario) => (
@@ -553,7 +583,7 @@ export default function HomeSimulator() {
                 <h3>{scenario.title}</h3>
                 <dl>
                   <div>
-                    <dt>Probabilidad</dt>
+                    <dt>Probabilidad orientativa</dt>
                     <dd>{scenario.probability}</dd>
                   </div>
                   <div>

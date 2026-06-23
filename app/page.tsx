@@ -20,7 +20,7 @@ const processSteps = [
   },
   {
     title: "Simula escenarios",
-    copy: "Genera rutas posibles con consecuencias, riesgos, oportunidades y trade-offs.",
+    copy: "En el preview público, genera rutas demostrativas con consecuencias, riesgos y trade-offs.",
   },
   {
     title: "Evalúa riesgos",
@@ -80,7 +80,7 @@ const lowerCapabilities = [
 ];
 
 const trustSignals = [
-  "Simulación de decisiones 24/7",
+  "Preview público mock-only",
   "Escenarios comparables",
   "Riesgo y consecuencia",
 ];
@@ -89,7 +89,7 @@ const decisionIntelligence = [
   {
     label: "Escenarios",
     title: "No una respuesta. Una simulación de futuros posibles.",
-    copy: "Levio organiza alternativas y muestra cómo puede evolucionar cada ruta si actúas ahora, esperas o cambias de estrategia.",
+    copy: "Levio organiza alternativas y muestra rutas demostrativas para pensar antes de actuar, esperar o cambiar de estrategia.",
   },
   {
     label: "Consecuencias",
@@ -251,7 +251,7 @@ export default function Home() {
               <span>de actuar.</span>
             </h1>
             <p className="hero-subtitle">
-              Simula escenarios, riesgos y consecuencias antes de tomar una decisión.
+              Explora escenarios, riesgos y consecuencias en un preview demostrativo antes de tomar una decisión.
             </p>
           </div>
 
@@ -295,6 +295,7 @@ export default function Home() {
             <MotionLetters text="Simula una decisión cuando estés listo." />
           </h2>
           <p>El motor de escenarios es el punto de partida para comparar opciones, riesgos y consecuencias.</p>
+          <p>Modo preview: la simulación pública es demostrativa y el runtime de IA real todavía no está conectado.</p>
         </div>
         <HomeSimulator />
       </section>
@@ -398,8 +399,8 @@ export default function Home() {
           <h2 className="desktop-motion-heading" id="reference-cta-title" aria-label="Empieza con una decisión real.">
             <MotionLetters text="Empieza con una decisión real." />
           </h2>
-          <p aria-label="Levio.es simulará escenarios, riesgos y consecuencias antes de que actúes.">
-            <MotionLetters text="Levio.es simulará escenarios, riesgos y consecuencias antes de que actúes." />
+          <p aria-label="Levio.es te ayuda a explorar escenarios, riesgos y consecuencias antes de que actúes.">
+            <MotionLetters text="Levio.es te ayuda a explorar escenarios, riesgos y consecuencias antes de que actúes." />
           </p>
         </div>
         <HomepageAnchorLink href="#decision-input">
