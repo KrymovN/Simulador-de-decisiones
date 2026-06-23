@@ -15,6 +15,10 @@ Complete. Stage 5.1 remains closed as AI Provider Abstraction / Real AI
 Integration Foundation Complete. Stage 4.4 remains closed as Subscription
 Runtime Foundation Complete / Production Billing Deferred.
 
+Product Quality Hardening is active. Its first bounded public simulator
+hardening steps are complete, but the full Product Quality Hardening block is
+not closed.
+
 ## Product Invariant
 
 Levio remains a Decision Simulation Engine.
@@ -73,6 +77,22 @@ Stage 5.4 closure does not approve production model execution, user-facing AI
 runtime, provider SDKs, env/API-key handling, API routes, UI integration,
 Simulator runtime integration, or Decision Engine runtime integration.
 
+Product Quality Hardening #1-#5 are complete:
+
+- #1 Public Simulator Failure & Input Boundary Hardening;
+- #2 API Response Contract Hardening;
+- #3 API Abuse Boundary Hardening;
+- #4 Public Simulator Mock Truth Boundary;
+- #5 Manual QA Matrix Verification, 12/12 PASS.
+
+These steps hardened the mock-only public simulator, unified the `/api/simulate`
+response contract, added a lightweight abuse boundary, made mock/preview state
+explicit in public UI copy, and verified the public simulator QA matrix.
+
+They did not add AI runtime integration, provider execution, SDK/env/API keys,
+auth changes, billing changes, persistence changes, subscription changes, or
+real AI product behavior.
+
 ## Deferred Real AI Scope
 
 Real AI integration is explicitly deferred.
@@ -107,9 +127,12 @@ rollback.
 
 ## Next Allowed Roadmap Step
 
-Product Quality Hardening.
+Continue Product Quality Hardening.
 
 Product Quality Hardening may proceed only as QA/security/privacy/performance
 hardening. It must not add model calls, provider execution, API keys/env/SDKs,
 AI API routes, UI AI runtime, Simulator runtime integration, or Decision Engine
 runtime integration.
+
+The next substep must remain inside Product Quality Hardening and must not open
+Legal & Trust Layer, Market Readiness, Closed Beta, Public Launch, or Scale.

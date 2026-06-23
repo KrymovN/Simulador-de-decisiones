@@ -17,6 +17,12 @@ Runtime Deferred. Stage 5.4A-D are closed as foundation-only preflight, runtime
 validation, boundary composition, and dry-run execution. Real model calls and
 real AI provider integration remain deferred.
 
+Product Quality Hardening is active. The first five bounded public simulator
+hardening steps are complete: Public Simulator Failure & Input Boundary
+Hardening, API Response Contract Hardening, API Abuse Boundary Hardening,
+Public Simulator Mock Truth Boundary, and Manual QA Matrix Verification with
+12/12 PASS. The full Product Quality Hardening block remains open.
+
 Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
 Complete. Stage 5.2 remains closed as Prompt / Context Layer Foundation
 Complete. Stage 5.1 remains closed as AI Provider Abstraction / Real AI
@@ -89,6 +95,32 @@ Supabase, auth, persistence, subscriptions, dashboard, or product behavior.
 
 Stage 5.4 closure does not approve production model execution or user-facing AI
 runtime.
+
+## Product Quality Hardening State
+
+Product Quality Hardening #1-#5 is complete for the public mock simulator
+surface.
+
+Completed:
+
+- Public Simulator Failure & Input Boundary Hardening;
+- API Response Contract Hardening;
+- API Abuse Boundary Hardening;
+- Public Simulator Mock Truth Boundary;
+- Manual QA Matrix Verification, 12/12 PASS.
+
+The public simulator remains mock-only. It explicitly presents preview/demo
+state, uses a unified `/api/simulate` response contract, exposes controlled
+error states, avoids local fallback simulation after API failure, applies
+client/API input boundaries, and has a lightweight in-memory abuse boundary.
+
+Product Quality Hardening #1-#5 did not add AI runtime integration, provider
+execution, SDK/env/API keys, auth changes, billing changes, persistence changes,
+subscription changes, analytics, telemetry, logging systems, or real AI product
+behavior.
+
+The next roadmap focus remains inside Product Quality Hardening. Legal & Trust
+Layer, Market Readiness, Closed Beta, Public Launch, and Scale are not active.
 
 ## Stage 5.3 Closure Result
 
@@ -215,6 +247,11 @@ Allowed at current closure:
 - Controlled AI Integration runtime validation foundation;
 - Controlled AI Integration boundary composition foundation;
 - Controlled AI Integration dry-run execution foundation;
+- public simulator failure/input boundary hardening;
+- `/api/simulate` response contract hardening;
+- lightweight public simulator abuse boundary hardening;
+- public simulator mock/preview truth boundary;
+- public simulator manual QA matrix verification, 12/12 PASS;
 - canonical owner model based on `levio_principals.principal_id`;
 - fail-closed behavior;
 - deterministic validation functions;

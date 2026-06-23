@@ -11,6 +11,17 @@ Real AI Runtime Deferred. Stage 5.4A-D are closed as controlled
 foundation-only preflight, runtime validation, boundary composition, and dry-run
 execution. Real model calls and real AI provider integration remain deferred.
 
+Product Quality Hardening is active. The first five bounded public simulator
+hardening steps are complete:
+
+- #1 Public Simulator Failure & Input Boundary Hardening;
+- #2 API Response Contract Hardening;
+- #3 API Abuse Boundary Hardening;
+- #4 Public Simulator Mock Truth Boundary;
+- #5 Manual QA Matrix Verification, 12/12 PASS.
+
+The full Product Quality Hardening block remains open.
+
 Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
 Complete.
 
@@ -138,7 +149,13 @@ Production billing remains deferred because:
 
 ## Current Product Behavior
 
-Public simulator behavior is unchanged.
+The public simulator remains mock-only and now explicitly presents its
+preview/demo state. `/api/simulate` uses a unified response envelope with
+`contractVersion`, `requestId`, `status`, `data`, `error`, and predictable
+`meta`. Public simulator failures no longer fall back to a local replacement
+simulation after API failure. The public simulator has client/API input
+boundaries, a lightweight in-memory abuse boundary, controlled error states,
+and a manual QA matrix result of 12/12 PASS.
 
 There is no Stripe integration.
 
@@ -170,6 +187,11 @@ Integration.
 
 There is no product behavior change from Stage 5.4A-D.
 
+Product Quality Hardening #1-#5 did not add AI runtime integration, provider
+execution, SDK/env/API keys, auth changes, billing changes, persistence changes,
+subscription changes, analytics, telemetry, logging systems, or real AI product
+behavior.
+
 ## Production Status
 
 Stage 5.4 is not production-ready real AI.
@@ -181,7 +203,7 @@ observability, and rollback planning.
 
 ## Next Roadmap Step
 
-Product Quality Hardening.
+Continue Product Quality Hardening.
 
 Product Quality Hardening may proceed only as QA/security/privacy/performance
 hardening. Any next step must preserve Levio as a Decision Simulation Engine
@@ -189,3 +211,7 @@ and must not create AI Chat, Answer Engine, Generic Assistant, direct
 AI-to-user behavior, model calls, provider execution, API keys/env/SDKs, AI API
 routes, UI AI runtime, Simulator runtime integration, or Decision Engine
 runtime integration.
+
+The next substep must remain within Product Quality Hardening. Legal & Trust
+Layer, Market Readiness, Closed Beta, Public Launch, and Scale are not the
+active roadmap focus yet.
