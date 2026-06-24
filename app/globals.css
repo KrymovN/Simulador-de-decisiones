@@ -12914,80 +12914,6 @@ html {
     grid-column: 1;
     width: 100%;
   }
-
-  .reference-hero .hero-motion-title,
-  .reference-hero .hero-feature-card,
-  .reference-system-card,
-  .reference-process-card,
-  .reference-capability-card,
-  .reference-decision-system .motion-letter,
-  .reference-process .motion-letter,
-  .reference-workspace .desktop-motion-heading .motion-letter,
-  .reference-cta-banner,
-  .reference-cta-banner .motion-letter {
-    animation: mobileCinematicReveal 520ms cubic-bezier(0.2, 0.74, 0.24, 1) both !important;
-    animation-delay: 0ms !important;
-    animation-range: normal !important;
-    animation-timeline: auto !important;
-    opacity: 1;
-    filter: none;
-  }
-
-  @supports (animation-timeline: view()) {
-    .reference-hero .hero-motion-title,
-    .reference-hero .hero-feature-card,
-    .reference-system-card,
-    .reference-process-card,
-    .reference-capability-card,
-    .reference-decision-system .motion-letter,
-    .reference-process .motion-letter,
-    .reference-workspace .desktop-motion-heading .motion-letter,
-    .reference-cta-banner,
-    .reference-cta-banner .motion-letter {
-      animation-duration: 1ms !important;
-      animation-range: entry 0% cover 18% !important;
-      animation-timeline: view(block) !important;
-    }
-  }
-
-  @supports (animation-timeline: scroll()) {
-    .future-branch-card:nth-child(1) { animation-range: 37% 47%; }
-    .future-branch-card:nth-child(2) { animation-range: 40% 50%; }
-    .future-branch-card:nth-child(3) { animation-range: 43% 53%; }
-
-    .reference-process .motion-word:nth-child(1) .motion-letter { animation-range: 50% 60%; }
-    .reference-process .motion-word:nth-child(2) .motion-letter { animation-range: 51% 61%; }
-    .reference-process .motion-word:nth-child(3) .motion-letter { animation-range: 52% 62%; }
-    .reference-process .motion-word:nth-child(4) .motion-letter { animation-range: 53% 63%; }
-    .reference-process .motion-word:nth-child(5) .motion-letter,
-    .reference-process .motion-word:nth-child(6) .motion-letter { animation-range: 54% 64%; }
-
-    .reference-process-card:nth-child(1) { animation-range: 57% 66%; }
-    .reference-process-card:nth-child(2) { animation-range: 60% 69%; }
-    .reference-process-card:nth-child(3) { animation-range: 63% 72%; }
-    .reference-process-card:nth-child(4) { animation-range: 66% 75%; }
-
-    .reference-capability-card:nth-child(1) { animation-range: 72% 81%; }
-    .reference-capability-card:nth-child(2) { animation-range: 74% 83%; }
-    .reference-capability-card:nth-child(3) { animation-range: 76% 85%; }
-    .reference-capability-card:nth-child(4) { animation-range: 78% 87%; }
-  }
-
-  @supports (animation-timeline: view()) {
-    .reference-hero .hero-motion-title,
-    .reference-hero .hero-feature-card,
-    .reference-system-card,
-    .reference-process-card,
-    .reference-capability-card,
-    .reference-decision-system .motion-letter,
-    .reference-process .motion-letter,
-    .reference-workspace .desktop-motion-heading .motion-letter,
-    .reference-cta-banner,
-    .reference-cta-banner .motion-letter {
-      animation-range: entry 0% cover 18% !important;
-      animation-timeline: view(block) !important;
-    }
-  }
 }
 
 @media (min-width: 981px) {
@@ -13011,152 +12937,31 @@ html {
   }
 }
 
-@keyframes mobileCinematicReveal {
-  from {
-    opacity: 0.74;
-    filter: blur(1.5px);
-    transform: translate3d(0, 10px, 0) scale(0.992);
+@media (min-width: 861px) {
+  @supports (animation-timeline: scroll()) {
+    .reference-process-card:nth-child(5) { animation-range: 54% 61%; }
+    .reference-process-card:nth-child(6) { animation-range: 56% 63%; }
   }
-
-  to {
-    opacity: 1;
-    filter: blur(0);
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-}
-
-@supports (animation-timeline: scroll()) {
-  .reference-process-card:nth-child(5) { animation-range: 54% 61%; }
-  .reference-process-card:nth-child(6) { animation-range: 56% 63%; }
 }
 
 @media (max-width: 860px) {
-  .reference-hero .hero-motion-title {
-    animation-name: mobileHeroCinematicReveal !important;
-  }
-
+  .reference-hero .hero-intro,
+  .reference-hero .hero-motion-title,
   .reference-hero .hero-feature-card,
   .reference-system-card,
   .reference-process-card,
-  .reference-capability-card {
-    animation-name: mobileCardAssembleLeft !important;
-  }
-
-  .reference-hero .hero-feature-card:nth-child(even),
-  .reference-system-card:nth-child(even),
-  .reference-process-card:nth-child(even),
-  .reference-capability-card:nth-child(even) {
-    animation-name: mobileCardAssembleRight !important;
-  }
-
-  .reference-decision-system .motion-letter-left,
-  .reference-process .motion-letter-left,
-  .reference-workspace .desktop-motion-heading .motion-letter-left,
-  .reference-cta-banner .motion-letter-left {
-    animation-name: sectionLetterFromViewerLeft !important;
-  }
-
-  .reference-decision-system .motion-letter-right,
-  .reference-process .motion-letter-right,
-  .reference-workspace .desktop-motion-heading .motion-letter-right,
-  .reference-cta-banner .motion-letter-right {
-    animation-name: sectionLetterFromViewerRight !important;
-  }
-
-  .reference-cta-banner {
-    animation-name: mobileCardAssembleRight !important;
-  }
-
-  @supports (animation-timeline: view()) {
-    .reference-hero .hero-motion-title,
-    .reference-hero .hero-feature-card,
-    .reference-system-card,
-    .reference-process-card,
-    .reference-capability-card,
-    .reference-decision-system .motion-letter,
-    .reference-process .motion-letter,
-    .reference-workspace .desktop-motion-heading .motion-letter,
-    .reference-cta-banner,
-    .reference-cta-banner .motion-letter {
-      animation-duration: 1ms !important;
-      animation-range: entry 0% cover 26% !important;
-      animation-timeline: view(block) !important;
-    }
-
-    .reference-hero .hero-feature-card:nth-child(2),
-    .reference-system-card:nth-child(2),
-    .reference-process-card:nth-child(2),
-    .reference-capability-card:nth-child(2) {
-      animation-range: entry 4% cover 30% !important;
-    }
-
-    .reference-hero .hero-feature-card:nth-child(3),
-    .reference-system-card:nth-child(3),
-    .reference-process-card:nth-child(3),
-    .reference-capability-card:nth-child(3) {
-      animation-range: entry 8% cover 34% !important;
-    }
-
-    .reference-hero .hero-feature-card:nth-child(4),
-    .reference-system-card:nth-child(4),
-    .reference-process-card:nth-child(4),
-    .reference-capability-card:nth-child(4) {
-      animation-range: entry 12% cover 38% !important;
-    }
-
-    .reference-process-card:nth-child(5) {
-      animation-range: entry 5% cover 31% !important;
-    }
-
-    .reference-process-card:nth-child(6) {
-      animation-range: entry 9% cover 35% !important;
-    }
-  }
-}
-
-@keyframes mobileHeroCinematicReveal {
-  from {
-    opacity: 0.82;
-    filter: blur(2px);
-    transform: translate3d(-10px, 8px, 0) scale(1.015);
-  }
-
-  to {
+  .reference-capability-card,
+  .future-branch-card,
+  .reference-decision-system .motion-letter,
+  .reference-process .motion-letter,
+  .reference-workspace .desktop-motion-heading .motion-letter,
+  .reference-cta-banner,
+  .reference-cta-banner .motion-letter {
     opacity: 1;
-    filter: blur(0);
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-}
-
-@keyframes mobileCardAssembleLeft {
-  from {
-    opacity: 0.78;
-    filter: blur(2px);
-    transform: translate3d(-20px, 12px, 0) scale(1.018) rotate(-0.7deg);
+    filter: none;
+    transform: none;
   }
 
-  to {
-    opacity: 1;
-    filter: blur(0);
-    transform: translate3d(0, 0, 0) scale(1) rotate(0);
-  }
-}
-
-@keyframes mobileCardAssembleRight {
-  from {
-    opacity: 0.78;
-    filter: blur(2px);
-    transform: translate3d(20px, 12px, 0) scale(1.018) rotate(0.7deg);
-  }
-
-  to {
-    opacity: 1;
-    filter: blur(0);
-    transform: translate3d(0, 0, 0) scale(1) rotate(0);
-  }
-}
-
-@media (max-width: 860px) {
   .reference-hero .hero-intro {
     transform-origin: 50% 0%;
     will-change: opacity, transform, filter;
@@ -13169,12 +12974,6 @@ html {
     justify-items: stretch;
     padding-inline: clamp(18px, 5vw, 24px);
     transform-origin: 42% 50%;
-    will-change: opacity, transform, filter;
-    animation-name: mobileFeatureCardPremiumIn !important;
-  }
-
-  .reference-hero .hero-feature-card:nth-child(even) {
-    animation-name: mobileFeatureCardPremiumIn !important;
   }
 
   .reference-hero .hero-feature-card > div {
@@ -13189,83 +12988,256 @@ html {
     max-width: min(100%, 22rem);
   }
 
-  .reference-hero .hero-feature-card:nth-child(4) {
-    justify-self: stretch;
-    margin-left: 0;
-    transform-origin: 42% 50%;
+  .reference-decision-system .motion-letter-left,
+  .reference-process .motion-letter-left,
+  .reference-workspace .desktop-motion-heading .motion-letter-left,
+  .reference-cta-banner .motion-letter-left {
+    animation-name: responsiveLetterAssembleLeft !important;
+  }
+
+  .reference-decision-system .motion-letter-right,
+  .reference-process .motion-letter-right,
+  .reference-workspace .desktop-motion-heading .motion-letter-right,
+  .reference-cta-banner .motion-letter-right {
+    animation-name: responsiveLetterAssembleRight !important;
+  }
+
+  .reference-hero .hero-feature-card,
+  .reference-system-card,
+  .reference-process-card,
+  .reference-capability-card,
+  .future-branch-card {
+    animation-name: responsiveCardAssemble !important;
+    will-change: opacity, transform, filter;
+  }
+
+  .reference-cta-banner {
+    animation-name: responsivePanelAssemble !important;
+    will-change: opacity, transform, filter;
   }
 
   @supports (animation-timeline: scroll()) {
     .reference-hero .hero-intro {
-      animation: mobileHeroIntroLift 1ms linear both;
-      animation-range: 0% 12%;
+      animation: responsiveHeroIntroLift 1ms linear both;
+      animation-range: 0% 11%;
       animation-timeline: scroll(root block);
     }
   }
 
   @supports (animation-timeline: view()) {
+    .reference-hero .hero-motion-title,
     .reference-hero .hero-feature-card,
-    .reference-hero .hero-feature-card:first-child,
-    .reference-hero .hero-feature-card:last-child {
+    .reference-system-card,
+    .reference-process-card,
+    .reference-capability-card,
+    .future-branch-card,
+    .reference-decision-system .motion-letter,
+    .reference-process .motion-letter,
+    .reference-workspace .desktop-motion-heading .motion-letter,
+    .reference-cta-banner,
+    .reference-cta-banner .motion-letter {
       animation-duration: 1ms !important;
+      animation-fill-mode: both !important;
       animation-timeline: view(block) !important;
     }
 
-    .reference-hero .hero-feature-card:nth-child(1) {
+    .reference-hero .hero-motion-title {
+      animation-name: responsiveHeroTitleAssemble !important;
+      animation-range: entry 0% cover 30% !important;
+    }
+
+    .reference-hero .hero-feature-card:nth-child(1),
+    .reference-system-card:nth-child(1),
+    .reference-process-card:nth-child(1),
+    .reference-capability-card:nth-child(1),
+    .future-branch-card:nth-child(1) {
       animation-range: entry 0% cover 34% !important;
     }
 
-    .reference-hero .hero-feature-card:nth-child(2) {
-      animation-range: entry 3% cover 37% !important;
+    .reference-hero .hero-feature-card:nth-child(2),
+    .reference-system-card:nth-child(2),
+    .reference-process-card:nth-child(2),
+    .reference-capability-card:nth-child(2),
+    .future-branch-card:nth-child(2) {
+      animation-range: entry 4% cover 38% !important;
     }
 
-    .reference-hero .hero-feature-card:nth-child(3) {
+    .reference-hero .hero-feature-card:nth-child(3),
+    .reference-system-card:nth-child(3),
+    .reference-process-card:nth-child(3),
+    .reference-capability-card:nth-child(3),
+    .future-branch-card:nth-child(3) {
+      animation-range: entry 8% cover 42% !important;
+    }
+
+    .reference-hero .hero-feature-card:nth-child(4),
+    .reference-system-card:nth-child(4),
+    .reference-process-card:nth-child(4),
+    .reference-capability-card:nth-child(4) {
+      animation-range: entry 12% cover 46% !important;
+    }
+
+    .reference-process-card:nth-child(5) {
       animation-range: entry 6% cover 40% !important;
     }
 
-    .reference-hero .hero-feature-card:nth-child(4) {
+    .reference-process-card:nth-child(6) {
+      animation-range: entry 10% cover 44% !important;
+    }
+
+    .reference-decision-system .motion-word:nth-child(1) .motion-letter,
+    .reference-process .motion-word:nth-child(1) .motion-letter,
+    .reference-workspace .desktop-motion-heading .motion-word:nth-child(1) .motion-letter,
+    .reference-cta-banner .motion-word:nth-child(1) .motion-letter {
+      animation-range: entry 0% cover 34% !important;
+    }
+
+    .reference-decision-system .motion-word:nth-child(2) .motion-letter,
+    .reference-process .motion-word:nth-child(2) .motion-letter,
+    .reference-workspace .desktop-motion-heading .motion-word:nth-child(2) .motion-letter,
+    .reference-cta-banner .motion-word:nth-child(2) .motion-letter {
+      animation-range: entry 3% cover 37% !important;
+    }
+
+    .reference-decision-system .motion-word:nth-child(3) .motion-letter,
+    .reference-process .motion-word:nth-child(3) .motion-letter,
+    .reference-workspace .desktop-motion-heading .motion-word:nth-child(3) .motion-letter,
+    .reference-cta-banner .motion-word:nth-child(3) .motion-letter {
+      animation-range: entry 6% cover 40% !important;
+    }
+
+    .reference-decision-system .motion-word:nth-child(4) .motion-letter,
+    .reference-process .motion-word:nth-child(4) .motion-letter,
+    .reference-workspace .desktop-motion-heading .motion-word:nth-child(4) .motion-letter,
+    .reference-cta-banner .motion-word:nth-child(4) .motion-letter {
       animation-range: entry 9% cover 43% !important;
+    }
+
+    .reference-decision-system .motion-word:nth-child(5) .motion-letter,
+    .reference-process .motion-word:nth-child(5) .motion-letter,
+    .reference-workspace .desktop-motion-heading .motion-word:nth-child(5) .motion-letter,
+    .reference-cta-banner .motion-word:nth-child(5) .motion-letter {
+      animation-range: entry 12% cover 46% !important;
+    }
+
+    .reference-decision-system .motion-word:nth-child(6) .motion-letter,
+    .reference-process .motion-word:nth-child(6) .motion-letter,
+    .reference-workspace .desktop-motion-heading .motion-word:nth-child(6) .motion-letter,
+    .reference-cta-banner .motion-word:nth-child(6) .motion-letter {
+      animation-range: entry 15% cover 49% !important;
+    }
+
+    .reference-cta-banner {
+      animation-range: entry 2% cover 38% !important;
     }
   }
 }
 
-@keyframes mobileHeroIntroLift {
+@keyframes responsiveHeroIntroLift {
   from {
     opacity: 1;
     filter: blur(0);
     transform: translate3d(0, 0, 0) scale(1);
   }
 
-  72% {
-    opacity: 0.9;
-    filter: blur(0.2px);
-    transform: translate3d(0, -18px, 0) scale(0.992);
+  68% {
+    opacity: 0.92;
+    filter: blur(0.25px);
+    transform: translate3d(0, -16px, 0) scale(0.994);
   }
 
   to {
-    opacity: 0.62;
-    filter: blur(1px);
-    transform: translate3d(0, -34px, 0) scale(0.982);
+    opacity: 0.66;
+    filter: blur(0.9px);
+    transform: translate3d(0, -30px, 0) scale(0.986);
   }
 }
 
-@keyframes mobileFeatureCardPremiumIn {
+@keyframes responsiveHeroTitleAssemble {
   from {
-    opacity: 0.66;
+    opacity: 0.8;
+    filter: blur(2.6px);
+    transform: translate3d(-18px, 8px, 0) scale(1.012);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes responsiveLetterAssembleLeft {
+  from {
+    opacity: 0.58;
     filter: blur(4px);
-    transform: translate3d(-34px, 10px, 0) scale(0.976) rotateY(-7deg);
+    transform: translate3d(-18px, 8px, 0) scale(0.985) rotate(-3deg);
+  }
+
+  62% {
+    opacity: 0.92;
+    filter: blur(1.1px);
+    transform: translate3d(-4px, 2px, 0) scale(0.997) rotate(-0.6deg);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) scale(1) rotate(0);
+  }
+}
+
+@keyframes responsiveLetterAssembleRight {
+  from {
+    opacity: 0.58;
+    filter: blur(4px);
+    transform: translate3d(18px, -8px, 0) scale(0.985) rotate(3deg);
+  }
+
+  62% {
+    opacity: 0.92;
+    filter: blur(1.1px);
+    transform: translate3d(4px, -2px, 0) scale(0.997) rotate(0.6deg);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) scale(1) rotate(0);
+  }
+}
+
+@keyframes responsiveCardAssemble {
+  from {
+    opacity: 0.62;
+    filter: blur(4px);
+    transform: translate3d(-30px, 10px, 0) scale(0.978) rotateY(-6deg);
   }
 
   58% {
-    opacity: 0.94;
+    opacity: 0.92;
     filter: blur(1.1px);
-    transform: translate3d(-7px, 3px, 0) scale(0.997) rotateY(-1.4deg);
+    transform: translate3d(-6px, 3px, 0) scale(0.997) rotateY(-1.2deg);
   }
 
   to {
     opacity: 1;
     filter: blur(0);
     transform: translate3d(0, 0, 0) scale(1) rotateY(0);
+  }
+}
+
+@keyframes responsivePanelAssemble {
+  from {
+    opacity: 0.7;
+    filter: blur(3px);
+    transform: translate3d(-22px, 10px, 0) scale(0.986);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 
