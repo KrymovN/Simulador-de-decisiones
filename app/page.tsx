@@ -340,14 +340,13 @@ export default function Home() {
           <span aria-hidden="true"></span>
         </div>
 
-        <div className="reference-system-grid">
+        <div className="reference-system-grid decision-intelligence-grid">
           {decisionIntelligence.map((item, index) => (
             <article
-              className="reference-system-card"
+              className="reference-system-card decision-intelligence-card"
               key={item.title}
               style={{ "--card-index": index } as CSSProperties}
             >
-              <small>{String(index + 1).padStart(2, "0")}</small>
               <strong>{item.label}</strong>
               <h3>{item.title}</h3>
               <p>{item.copy}</p>

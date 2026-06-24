@@ -12754,7 +12754,7 @@ html {
   .auth-shell {
     width: min(1180px, calc(100% - 48px));
     grid-template-columns: minmax(0, 1fr) minmax(410px, 0.94fr);
-    align-items: center;
+    align-items: start;
   }
 
   .auth-visual,
@@ -12780,6 +12780,23 @@ html {
   .auth-card {
     padding: clamp(34px, 3.7vw, 50px);
   }
+}
+
+.decision-intelligence-card {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto 1fr;
+  align-content: start;
+}
+
+.decision-intelligence-card strong,
+.decision-intelligence-card h3,
+.decision-intelligence-card p {
+  grid-column: 1;
+  width: 100%;
+}
+
+.decision-intelligence-card p {
+  max-width: 22rem;
 }
 
 .auth-visual::before,
