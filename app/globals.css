@@ -12988,6 +12988,11 @@ html {
     max-width: min(100%, 22rem);
   }
 
+  .future-branches-heading .eyebrow,
+  .criteria-heading .eyebrow {
+    transform-origin: 50% 58%;
+  }
+
   .reference-decision-system .motion-letter-left,
   .reference-process .motion-letter-left,
   .reference-workspace .desktop-motion-heading .motion-letter-left,
@@ -13016,10 +13021,23 @@ html {
     will-change: opacity, transform, filter;
   }
 
+  .future-branches-heading .eyebrow,
+  .criteria-heading .eyebrow {
+    animation-name: responsiveTextAssemble !important;
+    will-change: opacity, transform, filter;
+  }
+
+  .reference-cta-banner p .motion-letter {
+    animation: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+
   @supports (animation-timeline: scroll()) {
     .reference-hero .hero-intro {
-      animation: responsiveHeroIntroLift 1ms linear both;
-      animation-range: 0% 11%;
+      animation: responsiveHeroIntroLift 1ms cubic-bezier(0.18, 0.72, 0.2, 1) both;
+      animation-range: 0% 24%;
       animation-timeline: scroll(root block);
     }
   }
@@ -13035,100 +13053,57 @@ html {
     .reference-process .motion-letter,
     .reference-workspace .desktop-motion-heading .motion-letter,
     .reference-cta-banner,
-    .reference-cta-banner .motion-letter {
+    .reference-cta-banner .motion-letter,
+    .future-branches-heading .eyebrow,
+    .criteria-heading .eyebrow {
       animation-duration: 1ms !important;
       animation-fill-mode: both !important;
+      animation-timing-function: cubic-bezier(0.18, 0.72, 0.2, 1) !important;
       animation-timeline: view(block) !important;
     }
 
     .reference-hero .hero-motion-title {
       animation-name: responsiveHeroTitleAssemble !important;
-      animation-range: entry 0% cover 30% !important;
+      animation-range: entry 0% cover 58% !important;
     }
 
-    .reference-hero .hero-feature-card:nth-child(1),
-    .reference-system-card:nth-child(1),
-    .reference-process-card:nth-child(1),
-    .reference-capability-card:nth-child(1),
-    .future-branch-card:nth-child(1) {
-      animation-range: entry 0% cover 34% !important;
+    .reference-hero .hero-feature-card,
+    .reference-system-card,
+    .reference-process-card,
+    .reference-capability-card,
+    .future-branch-card {
+      animation-range: entry 0% cover 62% !important;
     }
 
-    .reference-hero .hero-feature-card:nth-child(2),
-    .reference-system-card:nth-child(2),
-    .reference-process-card:nth-child(2),
-    .reference-capability-card:nth-child(2),
-    .future-branch-card:nth-child(2) {
-      animation-range: entry 4% cover 38% !important;
+    .reference-decision-system .motion-letter {
+      animation-range: entry 16% cover 68% !important;
     }
 
-    .reference-hero .hero-feature-card:nth-child(3),
-    .reference-system-card:nth-child(3),
-    .reference-process-card:nth-child(3),
-    .reference-capability-card:nth-child(3),
-    .future-branch-card:nth-child(3) {
-      animation-range: entry 8% cover 42% !important;
+    .reference-process .motion-letter,
+    .future-branches-heading .eyebrow,
+    .criteria-heading .eyebrow {
+      animation-range: entry 10% cover 62% !important;
     }
 
-    .reference-hero .hero-feature-card:nth-child(4),
-    .reference-system-card:nth-child(4),
-    .reference-process-card:nth-child(4),
-    .reference-capability-card:nth-child(4) {
-      animation-range: entry 12% cover 46% !important;
+    .reference-workspace .desktop-motion-heading .motion-letter,
+    .reference-cta-banner h2 .motion-letter {
+      animation-range: entry 8% cover 64% !important;
     }
 
-    .reference-process-card:nth-child(5) {
-      animation-range: entry 6% cover 40% !important;
-    }
-
-    .reference-process-card:nth-child(6) {
-      animation-range: entry 10% cover 44% !important;
-    }
-
-    .reference-decision-system .motion-word:nth-child(1) .motion-letter,
-    .reference-process .motion-word:nth-child(1) .motion-letter,
-    .reference-workspace .desktop-motion-heading .motion-word:nth-child(1) .motion-letter,
-    .reference-cta-banner .motion-word:nth-child(1) .motion-letter {
-      animation-range: entry 0% cover 34% !important;
-    }
-
-    .reference-decision-system .motion-word:nth-child(2) .motion-letter,
-    .reference-process .motion-word:nth-child(2) .motion-letter,
-    .reference-workspace .desktop-motion-heading .motion-word:nth-child(2) .motion-letter,
-    .reference-cta-banner .motion-word:nth-child(2) .motion-letter {
-      animation-range: entry 3% cover 37% !important;
-    }
-
-    .reference-decision-system .motion-word:nth-child(3) .motion-letter,
-    .reference-process .motion-word:nth-child(3) .motion-letter,
-    .reference-workspace .desktop-motion-heading .motion-word:nth-child(3) .motion-letter,
-    .reference-cta-banner .motion-word:nth-child(3) .motion-letter {
-      animation-range: entry 6% cover 40% !important;
-    }
-
-    .reference-decision-system .motion-word:nth-child(4) .motion-letter,
-    .reference-process .motion-word:nth-child(4) .motion-letter,
-    .reference-workspace .desktop-motion-heading .motion-word:nth-child(4) .motion-letter,
-    .reference-cta-banner .motion-word:nth-child(4) .motion-letter {
-      animation-range: entry 9% cover 43% !important;
-    }
-
-    .reference-decision-system .motion-word:nth-child(5) .motion-letter,
-    .reference-process .motion-word:nth-child(5) .motion-letter,
-    .reference-workspace .desktop-motion-heading .motion-word:nth-child(5) .motion-letter,
-    .reference-cta-banner .motion-word:nth-child(5) .motion-letter {
-      animation-range: entry 12% cover 46% !important;
-    }
-
-    .reference-decision-system .motion-word:nth-child(6) .motion-letter,
-    .reference-process .motion-word:nth-child(6) .motion-letter,
-    .reference-workspace .desktop-motion-heading .motion-word:nth-child(6) .motion-letter,
-    .reference-cta-banner .motion-word:nth-child(6) .motion-letter {
-      animation-range: entry 15% cover 49% !important;
+    .reference-cta-banner p .motion-letter,
+    .reference-cta-banner p .motion-word:nth-child(n) .motion-letter,
+    .reference-cta-banner p .motion-letter-left,
+    .reference-cta-banner p .motion-letter-right {
+      animation: none !important;
+      animation-range: normal !important;
+      animation-timeline: auto !important;
+      opacity: 1 !important;
+      filter: none !important;
+      transform: none !important;
     }
 
     .reference-cta-banner {
-      animation-range: entry 2% cover 38% !important;
+      animation-range: entry 0% cover 58% !important;
     }
   }
 }
@@ -13140,24 +13115,30 @@ html {
     transform: translate3d(0, 0, 0) scale(1);
   }
 
-  68% {
-    opacity: 0.92;
-    filter: blur(0.25px);
-    transform: translate3d(0, -16px, 0) scale(0.994);
+  58% {
+    opacity: 0.94;
+    filter: blur(0);
+    transform: translate3d(0, -34px, 0) scale(0.994);
   }
 
   to {
-    opacity: 0.66;
-    filter: blur(0.9px);
-    transform: translate3d(0, -30px, 0) scale(0.986);
+    opacity: 0.72;
+    filter: blur(0.35px);
+    transform: translate3d(0, -78px, 0) scale(0.982);
   }
 }
 
 @keyframes responsiveHeroTitleAssemble {
   from {
-    opacity: 0.8;
-    filter: blur(2.6px);
-    transform: translate3d(-18px, 8px, 0) scale(1.012);
+    opacity: 0.9;
+    filter: blur(0.6px);
+    transform: translate3d(34px, 18px, 0) scale(0.975);
+  }
+
+  58% {
+    opacity: 0.97;
+    filter: blur(0.25px);
+    transform: translate3d(9px, 5px, 0) scale(0.994);
   }
 
   to {
@@ -13169,15 +13150,15 @@ html {
 
 @keyframes responsiveLetterAssembleLeft {
   from {
-    opacity: 0.58;
-    filter: blur(4px);
-    transform: translate3d(-18px, 8px, 0) scale(0.985) rotate(-3deg);
+    opacity: 0.82;
+    filter: blur(0.7px);
+    transform: translate3d(-30px, 14px, 0) scale(0.975) rotate(-2.4deg);
   }
 
   62% {
-    opacity: 0.92;
-    filter: blur(1.1px);
-    transform: translate3d(-4px, 2px, 0) scale(0.997) rotate(-0.6deg);
+    opacity: 0.96;
+    filter: blur(0.25px);
+    transform: translate3d(-7px, 3px, 0) scale(0.995) rotate(-0.5deg);
   }
 
   to {
@@ -13189,15 +13170,15 @@ html {
 
 @keyframes responsiveLetterAssembleRight {
   from {
-    opacity: 0.58;
-    filter: blur(4px);
-    transform: translate3d(18px, -8px, 0) scale(0.985) rotate(3deg);
+    opacity: 0.82;
+    filter: blur(0.7px);
+    transform: translate3d(30px, -14px, 0) scale(0.975) rotate(2.4deg);
   }
 
   62% {
-    opacity: 0.92;
-    filter: blur(1.1px);
-    transform: translate3d(4px, -2px, 0) scale(0.997) rotate(0.6deg);
+    opacity: 0.96;
+    filter: blur(0.25px);
+    transform: translate3d(7px, -3px, 0) scale(0.995) rotate(0.5deg);
   }
 
   to {
@@ -13209,15 +13190,15 @@ html {
 
 @keyframes responsiveCardAssemble {
   from {
-    opacity: 0.62;
-    filter: blur(4px);
-    transform: translate3d(-30px, 10px, 0) scale(0.978) rotateY(-6deg);
+    opacity: 0.86;
+    filter: blur(0.65px);
+    transform: translate3d(46px, 24px, 0) scale(0.965) rotateY(4.5deg);
   }
 
-  58% {
-    opacity: 0.92;
-    filter: blur(1.1px);
-    transform: translate3d(-6px, 3px, 0) scale(0.997) rotateY(-1.2deg);
+  62% {
+    opacity: 0.97;
+    filter: blur(0.2px);
+    transform: translate3d(12px, 6px, 0) scale(0.993) rotateY(1deg);
   }
 
   to {
@@ -13229,9 +13210,35 @@ html {
 
 @keyframes responsivePanelAssemble {
   from {
-    opacity: 0.7;
-    filter: blur(3px);
-    transform: translate3d(-22px, 10px, 0) scale(0.986);
+    opacity: 0.88;
+    filter: blur(0.55px);
+    transform: translate3d(38px, 18px, 0) scale(0.972);
+  }
+
+  58% {
+    opacity: 0.97;
+    filter: blur(0.2px);
+    transform: translate3d(9px, 4px, 0) scale(0.994);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes responsiveTextAssemble {
+  from {
+    opacity: 0.86;
+    filter: blur(0.55px);
+    transform: translate3d(32px, 14px, 0) scale(0.976);
+  }
+
+  58% {
+    opacity: 0.97;
+    filter: blur(0.18px);
+    transform: translate3d(8px, 3px, 0) scale(0.994);
   }
 
   to {
