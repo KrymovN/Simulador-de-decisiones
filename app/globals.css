@@ -12820,6 +12820,40 @@ html {
   max-width: 22rem;
 }
 
+.future-branches-heading {
+  width: min(100%, 980px);
+  margin-top: clamp(64px, 6vw, 104px);
+  margin-bottom: clamp(38px, 4.2vw, 64px);
+}
+
+.future-branches-heading .eyebrow,
+.criteria-heading .eyebrow {
+  color: rgba(216, 168, 74, 0.9);
+  font-weight: 820;
+  letter-spacing: 0.18em;
+}
+
+.reference-capabilities .criteria-heading {
+  margin-bottom: clamp(42px, 4.5vw, 72px);
+}
+
+.reference-process-grid {
+  max-width: min(100%, 1280px);
+  margin-inline: auto;
+}
+
+@media (min-width: 1080px) {
+  .reference-process-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 681px) and (max-width: 1079px) {
+  .reference-process-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @supports (animation-timeline: scroll()) {
   .future-branch-card:nth-child(1) { animation-range: 29% 36%; }
   .future-branch-card:nth-child(2) { animation-range: 31% 38%; }
@@ -12850,6 +12884,53 @@ html {
 }
 
 @media (max-width: 860px) {
+  .future-branches-heading {
+    margin-top: 42px;
+    margin-bottom: 28px;
+  }
+
+  .reference-capabilities .criteria-heading {
+    margin-bottom: 30px;
+  }
+
+  .reference-process-card,
+  .reference-capability-card,
+  .decision-intelligence-card,
+  .future-branch-card {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+  }
+
+  .reference-process-card h3,
+  .reference-process-card p,
+  .reference-capability-card h3,
+  .reference-capability-card p,
+  .decision-intelligence-card strong,
+  .decision-intelligence-card h3,
+  .decision-intelligence-card p,
+  .future-branch-card strong,
+  .future-branch-card h3,
+  .future-branch-card p {
+    grid-column: 1;
+    width: 100%;
+  }
+
+  .reference-hero .hero-motion-title,
+  .reference-hero .hero-feature-card,
+  .reference-system-card,
+  .reference-process-card,
+  .reference-capability-card,
+  .reference-decision-system .motion-letter,
+  .reference-process .motion-letter,
+  .reference-workspace .desktop-motion-heading .motion-letter,
+  .reference-cta-banner,
+  .reference-cta-banner .motion-letter {
+    animation: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+
   @supports (animation-timeline: scroll()) {
     .future-branch-card:nth-child(1) { animation-range: 37% 47%; }
     .future-branch-card:nth-child(2) { animation-range: 40% 50%; }
@@ -12871,6 +12952,22 @@ html {
     .reference-capability-card:nth-child(2) { animation-range: 74% 83%; }
     .reference-capability-card:nth-child(3) { animation-range: 76% 85%; }
     .reference-capability-card:nth-child(4) { animation-range: 78% 87%; }
+  }
+}
+
+@media (min-width: 981px) {
+  .auth-shell {
+    align-items: stretch;
+  }
+
+  .auth-visual,
+  .auth-card {
+    align-self: stretch;
+  }
+
+  .auth-card {
+    display: grid;
+    align-content: center;
   }
 }
 

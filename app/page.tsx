@@ -317,7 +317,7 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="reference-section-heading compact-heading">
+        <div className="reference-section-heading compact-heading future-branches-heading">
           <p className="eyebrow">Tres ramas del futuro</p>
         </div>
 
@@ -362,7 +362,7 @@ export default function Home() {
       </section>
 
       <section className="reference-capabilities" id="producto" aria-labelledby="capabilities-title">
-        <div className="reference-section-heading compact-heading">
+        <div className="reference-section-heading compact-heading criteria-heading">
           <p className="eyebrow" id="capabilities-title">Criterios que hacen comparables las opciones</p>
         </div>
 
