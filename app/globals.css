@@ -12945,7 +12945,6 @@ html {
 }
 
 @media (max-width: 860px) {
-  .reference-hero .hero-intro,
   .reference-hero .hero-motion-title,
   .reference-hero .hero-feature-card,
   .reference-system-card,
@@ -12962,7 +12961,7 @@ html {
     transform: none;
   }
 
-  .reference-hero .hero-intro {
+  .reference-hero .hero-motion-title {
     transform-origin: 50% 0%;
     will-change: opacity, transform, filter;
   }
@@ -13012,7 +13011,7 @@ html {
   .reference-process-card,
   .reference-capability-card,
   .future-branch-card {
-    animation-name: responsiveCardAssemble !important;
+    animation-name: mobileBaselineCardReveal !important;
     will-change: opacity, transform, filter;
   }
 
@@ -13035,15 +13034,33 @@ html {
   }
 
   @supports (animation-timeline: scroll()) {
-    .reference-hero .hero-intro {
-      animation: responsiveHeroIntroLift 1ms cubic-bezier(0.18, 0.72, 0.2, 1) both;
-      animation-range: 0% 24%;
+    .reference-hero .hero-feature-card,
+    .reference-system-card,
+    .reference-process-card,
+    .reference-capability-card,
+    .future-branch-card,
+    .reference-decision-system .motion-letter,
+    .reference-process .motion-letter,
+    .reference-workspace .desktop-motion-heading .motion-letter,
+    .reference-cta-banner,
+    .reference-cta-banner .motion-letter,
+    .future-branches-heading .eyebrow,
+    .criteria-heading .eyebrow {
+      animation-range: normal !important;
+      animation-timeline: auto !important;
+      opacity: 1 !important;
+      filter: none !important;
+      transform: none !important;
+    }
+
+    .reference-hero .hero-motion-title {
+      animation: mobileHeroHeadingLift 1ms cubic-bezier(0.18, 0.72, 0.2, 1) both;
+      animation-range: 0% 16%;
       animation-timeline: scroll(root block);
     }
   }
 
   @supports (animation-timeline: view()) {
-    .reference-hero .hero-motion-title,
     .reference-hero .hero-feature-card,
     .reference-system-card,
     .reference-process-card,
@@ -13062,17 +13079,12 @@ html {
       animation-timeline: view(block) !important;
     }
 
-    .reference-hero .hero-motion-title {
-      animation-name: responsiveHeroTitleAssemble !important;
-      animation-range: entry 0% cover 58% !important;
-    }
-
     .reference-hero .hero-feature-card,
     .reference-system-card,
     .reference-process-card,
     .reference-capability-card,
     .future-branch-card {
-      animation-range: entry 0% cover 62% !important;
+      animation-range: entry 0% cover 56% !important;
     }
 
     .reference-decision-system .motion-letter {
@@ -13108,43 +13120,23 @@ html {
   }
 }
 
-@keyframes responsiveHeroIntroLift {
+@keyframes mobileHeroHeadingLift {
   from {
     opacity: 1;
     filter: blur(0);
     transform: translate3d(0, 0, 0) scale(1);
   }
 
-  58% {
-    opacity: 0.94;
+  54% {
+    opacity: 0.88;
     filter: blur(0);
-    transform: translate3d(0, -34px, 0) scale(0.994);
+    transform: translate3d(0, -42px, 0) scale(0.992);
   }
 
   to {
-    opacity: 0.72;
-    filter: blur(0.35px);
-    transform: translate3d(0, -78px, 0) scale(0.982);
-  }
-}
-
-@keyframes responsiveHeroTitleAssemble {
-  from {
-    opacity: 0.9;
-    filter: blur(0.6px);
-    transform: translate3d(34px, 18px, 0) scale(0.975);
-  }
-
-  58% {
-    opacity: 0.97;
-    filter: blur(0.25px);
-    transform: translate3d(9px, 5px, 0) scale(0.994);
-  }
-
-  to {
-    opacity: 1;
-    filter: blur(0);
-    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0;
+    filter: blur(0.2px);
+    transform: translate3d(0, -96px, 0) scale(0.982);
   }
 }
 
@@ -13188,23 +13180,23 @@ html {
   }
 }
 
-@keyframes responsiveCardAssemble {
+@keyframes mobileBaselineCardReveal {
   from {
     opacity: 0.86;
-    filter: blur(0.65px);
-    transform: translate3d(46px, 24px, 0) scale(0.965) rotateY(4.5deg);
+    filter: blur(0.45px);
+    transform: translate3d(-42px, 12px, 0) scale(0.982);
   }
 
-  62% {
-    opacity: 0.97;
-    filter: blur(0.2px);
-    transform: translate3d(12px, 6px, 0) scale(0.993) rotateY(1deg);
+  58% {
+    opacity: 0.96;
+    filter: blur(0.15px);
+    transform: translate3d(-10px, 3px, 0) scale(0.996);
   }
 
   to {
     opacity: 1;
     filter: blur(0);
-    transform: translate3d(0, 0, 0) scale(1) rotateY(0);
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 
