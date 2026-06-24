@@ -288,43 +288,6 @@ export default function Home() {
 
       </section>
 
-      <section className="reference-workspace" id="escenarios" aria-labelledby="workspace-title">
-        <div className="reference-workspace-heading">
-          <p className="eyebrow">Área de trabajo levio.es</p>
-          <h2 className="desktop-motion-heading" id="workspace-title" aria-label="Simula una decisión cuando estés listo.">
-            <MotionLetters text="Simula una decisión cuando estés listo." />
-          </h2>
-          <p>El motor de escenarios es el punto de partida para comparar opciones, riesgos y consecuencias.</p>
-          <p>Modo preview: la simulación pública es demostrativa y el runtime de IA real todavía no está conectado.</p>
-        </div>
-        <HomeSimulator />
-      </section>
-
-      <section className="reference-process" id="motor" aria-labelledby="process-title">
-        <div className="reference-section-heading">
-          <p className="eyebrow motion-heading-line" aria-label="Proceso de simulación">
-            <MotionLetters text="Proceso de simulación" />
-          </p>
-          <h2 className="motion-heading-line" id="process-title" aria-label="Cómo piensa Levio">
-            <MotionLetters text="Cómo piensa Levio" />
-          </h2>
-          <span aria-hidden="true"></span>
-        </div>
-
-        <div className="reference-process-grid">
-          {processSteps.map((step, index) => (
-            <article
-              className="reference-process-card"
-              key={step.title}
-              style={{ "--card-index": index } as CSSProperties}
-            >
-              <h3>{step.title}</h3>
-              <p>{step.copy}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
       <section className="reference-decision-system" aria-labelledby="decision-system-title">
         <div className="reference-section-heading">
           <p className="eyebrow motion-heading-line" aria-label="Sistema de simulación de decisiones">
@@ -358,17 +321,41 @@ export default function Home() {
           <p className="eyebrow">Tres ramas del futuro</p>
         </div>
 
-        <div className="reference-system-grid" aria-label="Tres ramas del futuro">
+        <div className="reference-system-grid future-branches-grid" aria-label="Tres ramas del futuro">
           {futureBranches.map((branch, index) => (
             <article
-              className="reference-system-card"
+              className="reference-system-card future-branch-card"
               key={branch.label}
               style={{ "--card-index": index } as CSSProperties}
             >
-              <small>{String(index + 1).padStart(2, "0")}</small>
               <strong>{branch.label}</strong>
               <h3>{branch.title}</h3>
               <p>{branch.copy}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="reference-process" id="motor" aria-labelledby="process-title">
+        <div className="reference-section-heading">
+          <p className="eyebrow motion-heading-line" aria-label="Proceso de simulación">
+            <MotionLetters text="Proceso de simulación" />
+          </p>
+          <h2 className="motion-heading-line" id="process-title" aria-label="Cómo piensa Levio">
+            <MotionLetters text="Cómo piensa Levio" />
+          </h2>
+          <span aria-hidden="true"></span>
+        </div>
+
+        <div className="reference-process-grid">
+          {processSteps.map((step, index) => (
+            <article
+              className="reference-process-card"
+              key={step.title}
+              style={{ "--card-index": index } as CSSProperties}
+            >
+              <h3>{step.title}</h3>
+              <p>{step.copy}</p>
             </article>
           ))}
         </div>
@@ -391,6 +378,18 @@ export default function Home() {
             </article>
           ))}
         </div>
+      </section>
+
+      <section className="reference-workspace" id="escenarios" aria-labelledby="workspace-title">
+        <div className="reference-workspace-heading">
+          <p className="eyebrow">Área de trabajo levio.es</p>
+          <h2 className="desktop-motion-heading" id="workspace-title" aria-label="Simula una decisión cuando estés listo.">
+            <MotionLetters text="Simula una decisión cuando estés listo." />
+          </h2>
+          <p>El motor de escenarios es el punto de partida para comparar opciones, riesgos y consecuencias.</p>
+          <p>Modo preview: la simulación pública es demostrativa y el runtime de IA real todavía no está conectado.</p>
+        </div>
+        <HomeSimulator />
       </section>
 
       <section className="reference-cta-banner" aria-labelledby="reference-cta-title">

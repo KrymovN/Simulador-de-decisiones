@@ -12799,6 +12799,81 @@ html {
   max-width: 22rem;
 }
 
+.future-branches-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.future-branch-card {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto 1fr;
+  align-content: start;
+}
+
+.future-branch-card strong,
+.future-branch-card h3,
+.future-branch-card p {
+  grid-column: 1;
+  width: 100%;
+}
+
+.future-branch-card p {
+  max-width: 22rem;
+}
+
+@supports (animation-timeline: scroll()) {
+  .future-branch-card:nth-child(1) { animation-range: 29% 36%; }
+  .future-branch-card:nth-child(2) { animation-range: 31% 38%; }
+  .future-branch-card:nth-child(3) { animation-range: 33% 40%; }
+
+  .reference-process .motion-word:nth-child(1) .motion-letter { animation-range: 39% 47%; }
+  .reference-process .motion-word:nth-child(2) .motion-letter { animation-range: 40% 48%; }
+  .reference-process .motion-word:nth-child(3) .motion-letter { animation-range: 41% 49%; }
+  .reference-process .motion-word:nth-child(4) .motion-letter { animation-range: 42% 50%; }
+  .reference-process .motion-word:nth-child(5) .motion-letter,
+  .reference-process .motion-word:nth-child(6) .motion-letter { animation-range: 43% 51%; }
+
+  .reference-process-card:nth-child(1) { animation-range: 46% 53%; }
+  .reference-process-card:nth-child(2) { animation-range: 48% 55%; }
+  .reference-process-card:nth-child(3) { animation-range: 50% 57%; }
+  .reference-process-card:nth-child(4) { animation-range: 52% 59%; }
+
+  .reference-capability-card:nth-child(1) { animation-range: 60% 67%; }
+  .reference-capability-card:nth-child(2) { animation-range: 62% 69%; }
+  .reference-capability-card:nth-child(3) { animation-range: 64% 71%; }
+  .reference-capability-card:nth-child(4) { animation-range: 66% 73%; }
+}
+
+@media (max-width: 900px) {
+  .future-branches-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  @supports (animation-timeline: scroll()) {
+    .future-branch-card:nth-child(1) { animation-range: 37% 47%; }
+    .future-branch-card:nth-child(2) { animation-range: 40% 50%; }
+    .future-branch-card:nth-child(3) { animation-range: 43% 53%; }
+
+    .reference-process .motion-word:nth-child(1) .motion-letter { animation-range: 50% 60%; }
+    .reference-process .motion-word:nth-child(2) .motion-letter { animation-range: 51% 61%; }
+    .reference-process .motion-word:nth-child(3) .motion-letter { animation-range: 52% 62%; }
+    .reference-process .motion-word:nth-child(4) .motion-letter { animation-range: 53% 63%; }
+    .reference-process .motion-word:nth-child(5) .motion-letter,
+    .reference-process .motion-word:nth-child(6) .motion-letter { animation-range: 54% 64%; }
+
+    .reference-process-card:nth-child(1) { animation-range: 57% 66%; }
+    .reference-process-card:nth-child(2) { animation-range: 60% 69%; }
+    .reference-process-card:nth-child(3) { animation-range: 63% 72%; }
+    .reference-process-card:nth-child(4) { animation-range: 66% 75%; }
+
+    .reference-capability-card:nth-child(1) { animation-range: 72% 81%; }
+    .reference-capability-card:nth-child(2) { animation-range: 74% 83%; }
+    .reference-capability-card:nth-child(3) { animation-range: 76% 85%; }
+    .reference-capability-card:nth-child(4) { animation-range: 78% 87%; }
+  }
+}
+
 .auth-visual::before,
 .auth-card::before {
   background: linear-gradient(
