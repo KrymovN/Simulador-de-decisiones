@@ -13156,6 +13156,119 @@ html {
   }
 }
 
+@media (max-width: 860px) {
+  .reference-hero .hero-intro {
+    transform-origin: 50% 0%;
+    will-change: opacity, transform, filter;
+  }
+
+  .reference-hero .hero-feature-card,
+  .reference-hero .hero-feature-card:first-child,
+  .reference-hero .hero-feature-card:last-child {
+    grid-template-columns: 1fr;
+    justify-items: stretch;
+    padding-inline: clamp(18px, 5vw, 24px);
+    transform-origin: 42% 50%;
+    will-change: opacity, transform, filter;
+    animation-name: mobileFeatureCardPremiumIn !important;
+  }
+
+  .reference-hero .hero-feature-card:nth-child(even) {
+    animation-name: mobileFeatureCardPremiumIn !important;
+  }
+
+  .reference-hero .hero-feature-card > div {
+    grid-column: 1;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+  }
+
+  .reference-hero .hero-feature-card h3,
+  .reference-hero .hero-feature-card p {
+    max-width: min(100%, 22rem);
+  }
+
+  .reference-hero .hero-feature-card:nth-child(4) {
+    justify-self: stretch;
+    margin-left: 0;
+    transform-origin: 42% 50%;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .reference-hero .hero-intro {
+      animation: mobileHeroIntroLift 1ms linear both;
+      animation-range: 0% 12%;
+      animation-timeline: scroll(root block);
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    .reference-hero .hero-feature-card,
+    .reference-hero .hero-feature-card:first-child,
+    .reference-hero .hero-feature-card:last-child {
+      animation-duration: 1ms !important;
+      animation-timeline: view(block) !important;
+    }
+
+    .reference-hero .hero-feature-card:nth-child(1) {
+      animation-range: entry 0% cover 34% !important;
+    }
+
+    .reference-hero .hero-feature-card:nth-child(2) {
+      animation-range: entry 3% cover 37% !important;
+    }
+
+    .reference-hero .hero-feature-card:nth-child(3) {
+      animation-range: entry 6% cover 40% !important;
+    }
+
+    .reference-hero .hero-feature-card:nth-child(4) {
+      animation-range: entry 9% cover 43% !important;
+    }
+  }
+}
+
+@keyframes mobileHeroIntroLift {
+  from {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  72% {
+    opacity: 0.9;
+    filter: blur(0.2px);
+    transform: translate3d(0, -18px, 0) scale(0.992);
+  }
+
+  to {
+    opacity: 0.62;
+    filter: blur(1px);
+    transform: translate3d(0, -34px, 0) scale(0.982);
+  }
+}
+
+@keyframes mobileFeatureCardPremiumIn {
+  from {
+    opacity: 0.66;
+    filter: blur(4px);
+    transform: translate3d(-34px, 10px, 0) scale(0.976) rotateY(-7deg);
+  }
+
+  58% {
+    opacity: 0.94;
+    filter: blur(1.1px);
+    transform: translate3d(-7px, 3px, 0) scale(0.997) rotateY(-1.4deg);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) scale(1) rotateY(0);
+  }
+}
+
 .auth-visual::before,
 .auth-card::before {
   background: linear-gradient(
