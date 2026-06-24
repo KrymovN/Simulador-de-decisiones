@@ -12925,10 +12925,29 @@ html {
   .reference-workspace .desktop-motion-heading .motion-letter,
   .reference-cta-banner,
   .reference-cta-banner .motion-letter {
-    animation: none !important;
-    opacity: 1 !important;
-    filter: none !important;
-    transform: none !important;
+    animation: mobileCinematicReveal 520ms cubic-bezier(0.2, 0.74, 0.24, 1) both !important;
+    animation-delay: 0ms !important;
+    animation-range: normal !important;
+    animation-timeline: auto !important;
+    opacity: 1;
+    filter: none;
+  }
+
+  @supports (animation-timeline: view()) {
+    .reference-hero .hero-motion-title,
+    .reference-hero .hero-feature-card,
+    .reference-system-card,
+    .reference-process-card,
+    .reference-capability-card,
+    .reference-decision-system .motion-letter,
+    .reference-process .motion-letter,
+    .reference-workspace .desktop-motion-heading .motion-letter,
+    .reference-cta-banner,
+    .reference-cta-banner .motion-letter {
+      animation-duration: 1ms !important;
+      animation-range: entry 0% cover 18% !important;
+      animation-timeline: view(block) !important;
+    }
   }
 
   @supports (animation-timeline: scroll()) {
@@ -12953,21 +12972,56 @@ html {
     .reference-capability-card:nth-child(3) { animation-range: 76% 85%; }
     .reference-capability-card:nth-child(4) { animation-range: 78% 87%; }
   }
+
+  @supports (animation-timeline: view()) {
+    .reference-hero .hero-motion-title,
+    .reference-hero .hero-feature-card,
+    .reference-system-card,
+    .reference-process-card,
+    .reference-capability-card,
+    .reference-decision-system .motion-letter,
+    .reference-process .motion-letter,
+    .reference-workspace .desktop-motion-heading .motion-letter,
+    .reference-cta-banner,
+    .reference-cta-banner .motion-letter {
+      animation-range: entry 0% cover 18% !important;
+      animation-timeline: view(block) !important;
+    }
+  }
 }
 
 @media (min-width: 981px) {
   .auth-shell {
-    align-items: stretch;
+    align-items: start;
+  }
+
+  .auth-shell > .section-frame + .section-frame,
+  .auth-shell > .auth-card {
+    margin-top: 0;
   }
 
   .auth-visual,
   .auth-card {
-    align-self: stretch;
+    align-self: start;
   }
 
   .auth-card {
     display: grid;
     align-content: center;
+  }
+}
+
+@keyframes mobileCinematicReveal {
+  from {
+    opacity: 0.74;
+    filter: blur(1.5px);
+    transform: translate3d(0, 10px, 0) scale(0.992);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 
