@@ -6,22 +6,20 @@ Date: 1 July 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Stage 11.5 - Cookies & Consent Scope Foundation
-Complete. This is a documentation-only cookies/consent/tracking architecture
-foundation. It defines cookie / consent / tracking surfaces, mandatory /
-conditional / deferred / future-only classifications, strictly necessary
-boundaries, analytics boundaries, billing/subscription boundaries, auth/session
-boundaries, Local Storage / saved simulations / memory boundaries, AI Provider
-and external-service boundaries, consent-required surfaces, no-consent
-architecture surfaces, legal-review-blocked surfaces, prohibited surfaces,
-cross-surface links, boundaries between cookies, Local Storage, Runtime Memory,
-logs, and analytics, production-launch mandatory requirements, and
-deferred/future-only requirements. It does not write legal documents, Cookie
-Policy, Privacy Policy, consent banner text, user notices, UI copy, modal copy,
-page copy, consent UI, runtime behavior, API behavior, UI behavior, simulator
-behavior, Decision Engine behavior, product behavior, AI integration, auth,
-database, subscriptions, billing, analytics, tracking, logging, Market
-Readiness, Closed Beta, or Public Launch.
+The current confirmed state is Stage 11.7 - User Trust Surface Requirements
+Foundation Complete. This is a documentation-only trust surface requirements
+architecture foundation. It defines trust surfaces, production-launch mandatory
+trust surfaces, conditional / deferred / future-only trust surfaces, required
+status visibility for data, AI, Local Storage, account, billing, privacy,
+cookies, consent, and simulations, trust indicators for no AI Chat / no Answer
+Engine / Decision Simulation Engine positioning, cross-surface links, trust UX
+/ legal disclosure / product explanation / technical enforcement boundaries,
+legal-review-blocked trust surfaces, and source-of-truth requirements for
+future UI implementation. It does not write legal documents, page text, UI
+copy, banners, modals, user notifications, trust page copy, runtime behavior,
+API behavior, UI behavior, simulator behavior, Decision Engine behavior,
+product behavior, AI integration, auth, database, subscriptions, billing,
+analytics, tracking, logging, Market Readiness, Closed Beta, or Public Launch.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as controlled foundation-only preflight,
@@ -134,10 +132,11 @@ The full Product Quality Hardening block is closed.
 Stage 11 Legal & Trust Layer is open only for documentation-only legal/trust
 architecture work. Legal & Trust Foundation Inventory, Stage 11.2 Legal Surface
 Scope & Ownership Lock, Stage 11.3 Privacy & Data Processing Scope Foundation,
-Stage 11.4 Terms & Acceptable Use Scope Foundation, and Stage 11.5 Cookies &
-Consent Scope Foundation are complete. The next implementation subblock is
-Stage 11.6 AI Transparency & Decision Simulation Disclaimer Foundation. The
-full Stage 11 structure is:
+Stage 11.4 Terms & Acceptable Use Scope Foundation, Stage 11.5 Cookies &
+Consent Scope Foundation, Stage 11.6 AI Transparency & Decision Simulation
+Disclaimer Foundation, and Stage 11.7 User Trust Surface Requirements
+Foundation are complete. The next implementation subblock is Stage 11.8
+Regulatory Readiness Matrix. The full Stage 11 structure is:
 
 1. Legal & Trust Foundation Inventory.
    Goal: define the complete Stage 11 map without legal-content
@@ -378,8 +377,82 @@ notices, UI copy, modal copy, page copy, or legal prose. It did not change
 runtime, UI, API, simulator, Decision Engine, AI integration, auth, database,
 subscriptions, billing, analytics, tracking, logging, or product behavior.
 
-Next implementation subblock: Stage 11.6 AI Transparency & Decision Simulation
-Disclaimer Foundation.
+Stage 11.6 AI Transparency & Decision Simulation Disclaimer Foundation is
+complete as a documentation-only architecture foundation. Canonical document:
+`docs/stages/stage-11-legal-trust/LEVIO_STAGE_11_6_AI_TRANSPARENCY_DECISION_SIMULATION_DISCLAIMER_FOUNDATION.md`.
+
+Locked AI Transparency surfaces:
+
+- Product Identity Transparency;
+- Deterministic Preview Runtime Transparency;
+- AI Provider Role Transparency;
+- Prompt Context / AI Quality / Controlled Integration Transparency;
+- AI Processing of Personal Data Transparency;
+- AI Capability / Limitation Transparency.
+
+Locked Decision Simulation Disclaimer surfaces:
+
+- Public Simulator Entry Disclaimer Surface;
+- Simulation Result Disclaimer Surface;
+- Scenario / Probability / Confidence Disclaimer Surface;
+- Risk / Tradeoff / Outcome Disclaimer Surface;
+- Recommendation / Suggested Direction Disclaimer Surface;
+- High-Risk Decision Disclaimer Surface;
+- Clarification / Cannot Recommend / Refusal Disclaimer Surface;
+- Local Saved Simulation Disclaimer Surface;
+- Auth / Dashboard Placeholder Disclaimer Surface;
+- Future AI-Backed Simulation Disclaimer Surface.
+
+Stage 11.6 locked where users must understand Levio is not AI Chat, an Answer
+Engine, or a financial, medical, legal, or other professional advisor; AI
+Provider role explanation requirements; Decision Engine and Simulator role
+explanation requirements; production-launch mandatory requirements; future-only
+requirements; high-risk decision warning requirements; uncertainty / scenario /
+probability / risk / tradeoff / outcome warning requirements; cross-surface
+links; product-positioning / legal-disclaimer / UI-explanation /
+technical-enforcement boundaries; legal-review-blocked surfaces; and deferred /
+future-only surfaces. Stage 11.6 did not write AI Disclaimer, legal disclaimer
+text, Terms text, Privacy text, UI copy, user notices, modal text, page text,
+or legal prose. It did not change runtime, UI, API, simulator, Decision Engine,
+AI integration, auth, database, subscriptions, billing, analytics, tracking,
+logging, or product behavior.
+
+Stage 11.7 User Trust Surface Requirements Foundation is complete as a
+documentation-only architecture foundation. Canonical document:
+`docs/stages/stage-11-legal-trust/LEVIO_STAGE_11_7_USER_TRUST_SURFACE_REQUIREMENTS_FOUNDATION.md`.
+
+Locked trust surfaces:
+
+- Product Identity and Readiness Trust Surface;
+- Simulation Status Trust Surface;
+- Data Status Trust Surface;
+- Local Storage and Saved Simulation Trust Surface;
+- Privacy and Data Processing Trust Surface;
+- Cookies, Consent, Analytics, and Tracking Trust Surface;
+- AI Status and Provider Trust Surface;
+- Account and Auth Trust Surface;
+- Billing and Subscription Trust Surface;
+- User Data Controls Trust Surface;
+- Security, Abuse, and Operational Trust Surface;
+- Support, Contact, and Legal Identity Trust Surface;
+- Legal Document Status Trust Surface;
+- Regulatory and Production Readiness Trust Surface.
+
+Stage 11.7 locked mandatory trust surfaces before production public launch;
+conditional trust surfaces for local saved simulations, production auth,
+billing/subscriptions, Real AI public use, and user data controls; deferred and
+future-only trust surfaces; required status visibility for data, AI, Local
+Storage, account, billing, privacy, cookies, consent, and simulations; trust
+indicators for Decision Simulation Engine positioning, no AI Chat, and no
+Answer Engine; cross-surface links; trust UX / legal disclosure / product
+explanation / technical enforcement boundaries; legal-review-blocked trust
+surfaces; and source-of-truth rules for future UI implementation. Stage 11.7
+did not write legal documents, page text, UI copy, banner text, modal text,
+user notifications, trust page copy, or legal prose. It did not change runtime,
+UI, API, simulator, Decision Engine, AI integration, auth, database,
+subscriptions, billing, analytics, tracking, logging, or product behavior.
+
+Next implementation subblock: Stage 11.8 Regulatory Readiness Matrix.
 
 Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
 Complete.
@@ -646,16 +719,16 @@ observability, and rollback planning.
 
 ## Next Roadmap Step
 
-Stage 11.5 - Cookies & Consent Scope Foundation Complete.
+Stage 11.7 - User Trust Surface Requirements Foundation Complete.
 
-Stage 11.5 is complete as documentation-only cookies/consent/tracking
-architecture work. The next implementation subblock is Stage 11.6 AI
-Transparency & Decision Simulation Disclaimer Foundation. The next step is not
-a new Product Quality Hardening subblock. It must preserve Levio as a Decision
-Simulation Engine and must not create AI Chat, Answer Engine, Generic
-Assistant, direct AI-to-user behavior, model calls, provider execution, API
-keys/env/SDKs, AI provider API routes, UI AI runtime, auth, persistence,
-billing, subscriptions, analytics, tracking, logging, consent UI, cookie
-banner, AI disclosure UI, disclaimer UI, or a new public contract without a
-separate approved step. Market Readiness, Closed Beta, Public Launch, and Scale
-are not active.
+Stage 11.7 is complete as documentation-only trust surface requirements
+architecture work. The next implementation subblock is Stage 11.8 Regulatory
+Readiness Matrix. The next step is not a new Product Quality Hardening
+subblock. It must preserve Levio as a Decision Simulation Engine and must not
+create AI Chat, Answer Engine, Generic Assistant, direct AI-to-user behavior,
+model calls, provider execution, API keys/env/SDKs, AI provider API routes, UI
+AI runtime, auth, persistence, billing, subscriptions, analytics, tracking,
+logging, consent UI, cookie banner, AI disclosure UI, disclaimer UI, trust UI,
+trust page copy, legal-document text, regulatory claims, compliance claims, or
+a new public contract without a separate approved step. Market Readiness,
+Closed Beta, Public Launch, and Scale are not active.
