@@ -2,16 +2,33 @@
 
 ## Confirmed Project Position
 
-Date: 23 June 2026, Europe/Madrid.
+Date: 1 July 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Stage 5.4 AI Integration Foundation Complete /
-Real AI Runtime Deferred. Stage 5.4A-D are closed as controlled
-foundation-only preflight, runtime validation, boundary composition, and dry-run
-execution. Real model calls and real AI provider integration remain deferred.
+The current confirmed state is Stage 11.5 - Cookies & Consent Scope Foundation
+Complete. This is a documentation-only cookies/consent/tracking architecture
+foundation. It defines cookie / consent / tracking surfaces, mandatory /
+conditional / deferred / future-only classifications, strictly necessary
+boundaries, analytics boundaries, billing/subscription boundaries, auth/session
+boundaries, Local Storage / saved simulations / memory boundaries, AI Provider
+and external-service boundaries, consent-required surfaces, no-consent
+architecture surfaces, legal-review-blocked surfaces, prohibited surfaces,
+cross-surface links, boundaries between cookies, Local Storage, Runtime Memory,
+logs, and analytics, production-launch mandatory requirements, and
+deferred/future-only requirements. It does not write legal documents, Cookie
+Policy, Privacy Policy, consent banner text, user notices, UI copy, modal copy,
+page copy, consent UI, runtime behavior, API behavior, UI behavior, simulator
+behavior, Decision Engine behavior, product behavior, AI integration, auth,
+database, subscriptions, billing, analytics, tracking, logging, Market
+Readiness, Closed Beta, or Public Launch.
 
-Product Quality Hardening is active. The first five bounded public simulator
+Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
+closed. Stage 5.4A-D are closed as controlled foundation-only preflight,
+runtime validation, boundary composition, and dry-run execution. Real model
+calls and real AI provider integration remain deferred.
+
+Stage 10 Product Quality Hardening is closed. The first five bounded public simulator
 hardening steps are complete:
 
 - #1 Public Simulator Failure & Input Boundary Hardening;
@@ -20,7 +37,349 @@ hardening steps are complete:
 - #4 Public Simulator Mock Truth Boundary;
 - #5 Manual QA Matrix Verification, 12/12 PASS.
 
-The full Product Quality Hardening block remains open.
+The first automated Public Simulator regression gate is implemented as
+`npm run quality:public-simulator` and currently passes 56/56.
+
+The second automated Home + Public Simulator quality gate is implemented as
+`npm run quality:public-home` and currently passes 68/68.
+
+The deterministic Decision Engine public backend runtime switch is accepted.
+`/api/simulate` now executes Raw User Input -> DecisionContext Builder ->
+`runSimulationPipeline` -> `SimulationResponseV2Draft` -> Public Adapter ->
+`/api/simulate` while preserving `contractVersion:
+"simulate-api-v1-mock"`, `mockOnly=true`, `safeRender=true`, and
+`apiReady=true`.
+
+Internal runtime quality gates are implemented and passing:
+
+- `npm run quality:decision-context-builder`, 12/12 PASS;
+- `npm run quality:simulation-pipeline-runner`, 13/13 PASS;
+- `npm run quality:simulation-response-public-adapter`, 13/13 PASS;
+- `npm run quality:deterministic-runtime-observability`, 23/23 PASS;
+- `npm run quality:deterministic-runtime-security-boundary`, 34/34 PASS;
+- `npm run quality:deterministic-runtime-contract-regression`, 25/25 PASS;
+- `npm run quality:public-home-simulator-api-integration`, 57/57 PASS;
+- `npm run quality:public-site-trust-readiness`, 85/85 PASS.
+- `npm run quality:rendered-public-surface-regression`, 97/97 PASS.
+
+The bounded public deterministic runtime edge-status hardening subblock is
+closed. Public `/api/simulate` now has explicit acceptance coverage for
+`REFUSED`, `CANNOT_RECOMMEND`, `CLARIFICATION_REQUIRED`, and route-level
+`SIMULATION_FAILED` fallback. Failed edge statuses fail-close with `data:null`,
+structured `error.code`, preserved `mockOnly=true`, `safeRender=true`,
+`apiReady=true`, and no simulation, scenario, or recommendation artifacts.
+
+The bounded deterministic runtime observability / rollback semantics subblock is
+closed. The deterministic public runtime now has an internal
+`deterministic-engine-preview` marker, outcome semantics for
+success/refused/clarification/cannot_recommend/simulation_failed, a
+route-level rollback-safe `SIMULATION_FAILED` fallback, public envelope
+validation before response, and no internal trace/debug/provider leakage in the
+public envelope.
+
+The bounded deterministic runtime security boundary / abuse protection subblock
+is closed. Public `/api/simulate` now validates payload shape before the
+deterministic runner, allows only `input` and `lang`, rejects malformed JSON
+shapes, unexpected field types, unsupported `lang`, unknown top-level fields,
+prototype-like/provider-like fields, oversized bodies, and oversized inputs
+fail-closed, and preserves the public envelope without leaking internal runtime
+details.
+
+The bounded deterministic runtime contract regression / public envelope
+stability subblock is closed. Public `/api/simulate` now has a dedicated
+end-to-end public contract gate that verifies exact top-level/meta/data/error
+shape for successful deterministic responses and fail-close responses,
+including `REFUSED`, `CLARIFICATION_REQUIRED`, `CANNOT_RECOMMEND`,
+`invalid_payload`, and source-level `SIMULATION_FAILED` guards.
+
+The bounded HomeSimulator -> `/api/simulate` integration stability subblock is
+closed. Public Home now has a dedicated integration gate that verifies the
+HomeSimulator boundary against the approved `/api/simulate` envelope: successful
+deterministic responses, `REFUSED`, `CLARIFICATION_REQUIRED`,
+`CANNOT_RECOMMEND`, and `invalid_payload` fail-close responses with
+`data:null`, no simulation/scenario/recommendation artifacts on failed
+envelopes, no dependency on internal/debug/provider metadata, no local
+substitute simulation, and preserved Decision Simulation Engine positioning.
+
+The bounded Public Site Trust / Readiness Copy Audit subblock is closed. Public
+site copy now has dedicated coverage for Home, HomeSimulator, auth pages,
+dashboard redirects/placeholders, privacy/security/profile/memory placeholders,
+provisional privacy policy, provisional terms, CTA, footer, and navigation. The
+copy remains prepared/demo/local/mock/deterministic where needed and avoids
+premature promises around Real AI, production AI provider, real accounts,
+production persistence, billing/subscriptions, paid plans, permanent memory,
+legal-grade/high-stakes advice, closed beta, public launch, guaranteed correct
+decisions, AI chat, or answer-engine positioning.
+
+The bounded Rendered Public Surface Regression subblock is closed. The actual
+public surface was checked across desktop, tablet, and mobile for Home, Hero,
+HomeSimulator, CTA, login, register, forgot password, privacy, terms, and
+dashboard protected redirects/placeholders. One real mobile layout issue was
+fixed: the HomeSimulator textarea placeholder could clip vertically on mobile
+when the voice control reserved bottom space. The dedicated gate now verifies
+rendered public route HTML, protected dashboard redirect safety, responsive
+guardrails, dashboard placeholder source readiness, no premature promises, and
+the approved `/api/simulate` public contract flags.
+
+Stage 10 Readiness Review is complete. Product Quality Hardening is now assessed
+as closed rather than open-ended: deterministic runtime,
+public API, HomeSimulator integration, public envelope safety, security,
+rollback, observability, trust/readiness copy, and rendered public surface
+guardrails are complete for the deterministic preview surface. The full Stage
+10 block is closed after the Stage 10 Closure Aggregate Gate / Documentation
+Lock documentation-only decision.
+
+The full Product Quality Hardening block is closed.
+
+Stage 11 Legal & Trust Layer is open only for documentation-only legal/trust
+architecture work. Legal & Trust Foundation Inventory, Stage 11.2 Legal Surface
+Scope & Ownership Lock, Stage 11.3 Privacy & Data Processing Scope Foundation,
+Stage 11.4 Terms & Acceptable Use Scope Foundation, and Stage 11.5 Cookies &
+Consent Scope Foundation are complete. The next implementation subblock is
+Stage 11.6 AI Transparency & Decision Simulation Disclaimer Foundation. The
+full Stage 11 structure is:
+
+1. Legal & Trust Foundation Inventory.
+   Goal: define the complete Stage 11 map without legal-content
+   implementation.
+   Engineering value: prevents premature document drafting, runtime changes, and
+   Stage 12 expansion.
+   Dependency: Stage 10 closure baseline and Repository Structure
+   Normalization.
+   Completion criterion: Stage 11 bounded subblocks, sequence, dependencies,
+   completion criteria, and first recommended implementation subblock are
+   recorded.
+2. Legal Surface Scope & Ownership Lock.
+   Goal: identify legal surfaces, owners, jurisdiction assumptions, legal review
+   responsibilities, and allowed change boundaries.
+   Engineering value: creates a controlled owner/legal review interface.
+   Dependency: Legal & Trust Foundation Inventory.
+   Completion criterion: surfaces and ownership are locked while runtime/API/UI
+   changes remain deferred.
+3. Privacy & Data Processing Scope Foundation.
+   Goal: map privacy scope, data categories, processing purposes, retention
+   expectations, processors/subprocessors, and User Data Controls dependencies
+   at requirements level only.
+   Engineering value: makes privacy obligations traceable before policy
+   drafting.
+   Dependency: Legal Surface Scope & Ownership Lock plus existing User Data
+   Controls and Persistence foundations.
+   Completion criterion: privacy/data-processing requirements and blockers are
+   listed without writing a Privacy Policy.
+4. Terms & Acceptable Use Scope Foundation.
+   Goal: define Terms requirement areas, product limitations, acceptable-use
+   boundaries, account/subscription deferrals, and responsibility model.
+   Engineering value: prevents Terms scope from promising unavailable product
+   behavior.
+   Dependency: Legal Surface Scope & Ownership Lock and current product
+   baseline.
+   Completion criterion: Terms requirements are recorded without writing Terms.
+5. Cookies & Consent Scope Foundation.
+   Goal: inventory cookie/storage categories, consent needs,
+   analytics/marketing deferrals, and consent-state dependencies.
+   Engineering value: keeps cookie/consent obligations separate from
+   implementation.
+   Dependency: Legal Surface Scope & Ownership Lock and frontend/storage
+   baseline.
+   Completion criterion: cookie and consent requirements are captured without
+   writing a Cookie Policy or adding consent UI.
+6. AI Transparency & Decision Simulation Disclaimer Foundation.
+   Goal: define disclosure requirements for deterministic preview behavior, Real
+   AI deferral, Decision Simulation limitations, and no high-stakes advice
+   positioning.
+   Engineering value: protects Decision Simulation Engine positioning.
+   Dependency: Stage 10 trust/readiness audit and current `/api/simulate`
+   public contract.
+   Completion criterion: transparency/disclaimer requirements are recorded
+   without changing UI copy or runtime behavior.
+7. User Trust Surface Requirements Foundation.
+   Goal: define trust requirements for security, privacy, support/contact,
+   account state, data-control state, and product-readiness honesty.
+   Engineering value: provides a bounded trust checklist for future document/UI
+   work.
+   Dependency: Privacy/Data Processing, Cookies/Consent, and AI Transparency
+   requirements.
+   Completion criterion: trust requirements and deferred claims are documented
+   with no UI implementation.
+8. Regulatory Readiness Matrix.
+   Goal: map GDPR, ePrivacy/cookies, consumer transparency, AI transparency,
+   data-subject rights, and production review blockers at requirements level.
+   Engineering value: exposes compliance dependencies before Market Readiness.
+   Dependency: Privacy/Data Processing, Terms, Cookies/Consent, AI
+   Transparency, and User Trust requirements.
+   Completion criterion: readiness matrix and unresolved blockers are
+   documented without opening Stage 12.
+9. Legal Review Packet & Drafting Handoff.
+   Goal: package requirements, blockers, source truths, and review questions for
+   owner/legal drafting.
+   Engineering value: creates a controlled future handoff for Privacy, Terms,
+   Cookie, and transparency documents.
+   Dependency: Regulatory Readiness Matrix.
+   Completion criterion: review packet exists without treating generated text as
+   final legal policy.
+10. Production Legal Blockers Closure Gate.
+    Goal: aggregate Stage 11 evidence, unresolved blockers, approvals, and
+    deferrals before any production-readiness step.
+    Engineering value: prevents Market Readiness, Closed Beta, Public Launch, or
+    commercial runtime work from opening with unresolved legal blockers.
+    Dependency: Legal Review Packet & Drafting Handoff.
+    Completion criterion: blockers and approvals are accepted, or unresolved
+    blockers remain documented as preventing Stage 12.
+
+Bounded subblocks count: 10.
+
+Recommended first implementation subblock: Legal Surface Scope & Ownership
+Lock. It is recommended only, not automatically opened. It remains
+documentation-only until separately approved and must not write Privacy Policy,
+Terms, Cookie Policy, or change runtime, API, UI, Decision Engine, product
+behavior, Real AI, billing, subscriptions, Market Readiness, Closed Beta, or
+Public Launch.
+
+Stage 11.2 Legal Surface Scope & Ownership Lock is complete as a
+documentation-only architecture lock. Canonical document:
+`docs/stages/stage-11-legal-trust/LEVIO_STAGE_11_2_LEGAL_SURFACE_SCOPE_OWNERSHIP_LOCK.md`.
+
+Locked legal surfaces:
+
+- Privacy Surface;
+- Terms Surface;
+- Cookie & Local Storage Surface;
+- Consent Surface;
+- Data Processing Surface;
+- User Data Controls Surface;
+- AI Transparency Surface;
+- Decision Simulation Limitations Surface;
+- Legal Identity & Contact Surface;
+- Auth & Account Legal Surface;
+- Subscription & Billing Legal Surface;
+- User Trust Surface;
+- Regulatory Readiness Surface;
+- Production Legal Blockers Surface.
+
+Stage 11.2 locked primary legal ownership, engineering responsibility limits,
+source-of-truth hierarchy, required/conditional/deferred status, public/
+production/internal status, allowed surface links, dependencies, and
+deduplication rules. Stage 11.2 did not write Privacy Policy, Terms of Service,
+Cookie Policy, AI Disclaimer, or legal-document prose. It did not change
+runtime, UI, API, simulator, Decision Engine, AI, auth, database,
+subscriptions, billing, or product behavior.
+
+Stage 11.2 successor subblock: Stage 11.3 Privacy & Data Processing Scope
+Foundation, now complete.
+
+Stage 11.3 Privacy & Data Processing Scope Foundation is complete as a
+documentation-only architecture foundation. Canonical document:
+`docs/stages/stage-11-legal-trust/LEVIO_STAGE_11_3_PRIVACY_DATA_PROCESSING_SCOPE_FOUNDATION.md`.
+
+Locked data categories:
+
+- Public Decision Input;
+- Simulation Output Artifacts;
+- Public API Metadata;
+- Abuse Boundary / Rate-Limit Source Data;
+- Local Simulation History;
+- Mock Session Flag;
+- Auth Email and Login Intent;
+- Auth Session and Principal Data;
+- Account Profile and Security Placeholder Data;
+- Memory / Preference / Strategic Context Data;
+- Consent, Retention, Export, and Deletion Records;
+- Persistence Owner / Principal Mapping Data;
+- Subscription and Billing Data;
+- Operational Logs and Error Evidence;
+- Analytics and Marketing Events;
+- AI Provider Payload and Candidate Material;
+- Browser Speech Recognition Transcript.
+
+Stage 11.3 locked category origin, lifecycle, where data appears, where data may
+be used, where data must not be used, required/conditional/future-only status,
+processing-zone boundaries, prohibited external transfers, legal-reference
+routing, and Decision Simulation Engine versus platform infrastructure
+classification. Stage 11.3 did not write Privacy Policy, GDPR text, Data
+Processing Agreement, Cookie Policy, user notices, or legal prose. It did not
+change runtime, UI, API, simulator, Decision Engine, AI integration, auth,
+database, subscriptions, analytics, logging, or product behavior.
+
+Stage 11.3 successor subblock: Stage 11.4 Terms & Acceptable Use Scope
+Foundation, now complete.
+
+Stage 11.4 Terms & Acceptable Use Scope Foundation is complete as a
+documentation-only architecture foundation. Canonical document:
+`docs/stages/stage-11-legal-trust/LEVIO_STAGE_11_4_TERMS_ACCEPTABLE_USE_SCOPE_FOUNDATION.md`.
+
+Locked Terms coverage zones:
+
+- Public Website and Informational Surfaces;
+- Public Decision Simulator;
+- Public `/api/simulate` Contract;
+- Local Storage and Local Saved Simulations;
+- Auth, Account, and Dashboard Surfaces;
+- User Data Controls and Saved Account Data;
+- AI Provider and Real AI Runtime;
+- Subscriptions, Billing, and Entitlements;
+- Support, Contact, Trust, and Official Notices.
+
+Locked Acceptable Use coverage zones:
+
+- Public Simulator Input;
+- Simulation Output Use;
+- Abuse, Security, and Availability;
+- Account and Identity Misuse;
+- Local Storage and Saved Simulations;
+- AI Provider Misuse;
+- Billing and Subscription Misuse.
+
+Stage 11.4 locked allowed, restricted, prohibited, deferred, and future-only
+action classes; Decision Simulation Engine restrictions; AI Provider
+restrictions; account restrictions; subscription and billing restrictions; Local
+Storage / user data / saved simulation restrictions; future roadmap-stage
+restrictions; required cross-surface references; product-rule / legal-rule /
+technical-enforcement boundaries; production-launch mandatory rules; and
+deferred/future-only rule categories. Stage 11.4 did not write Terms of
+Service, Acceptable Use Policy, legal clauses, user notices, modal copy, page
+copy, or legal prose. It did not change runtime, UI, API, simulator, Decision
+Engine, AI integration, auth, database, subscriptions, billing, analytics,
+logging, or product behavior.
+
+Stage 11.4 successor subblock: Stage 11.5 Cookies & Consent Scope Foundation,
+now complete.
+
+Stage 11.5 Cookies & Consent Scope Foundation is complete as a
+documentation-only architecture foundation. Canonical document:
+`docs/stages/stage-11-legal-trust/LEVIO_STAGE_11_5_COOKIES_CONSENT_SCOPE_FOUNDATION.md`.
+
+Locked cookie / consent / tracking surfaces:
+
+- Public Request Runtime Memory;
+- Public API Abuse / Rate-Limit Runtime Memory;
+- Local Simulation History;
+- Legacy Mock Session Local Storage;
+- Supabase Auth / Session Cookies;
+- Consent Preference / Consent Record Storage;
+- Analytics Events and Analytics Cookies;
+- Marketing / Retargeting / Advertising Tracking;
+- Billing / Subscription Provider Cookies and Checkout State;
+- AI Provider / External AI Service State;
+- Operational Logs / Monitoring / Error Evidence;
+- Browser Speech Recognition Vendor Processing;
+- Future Memory / Personalization Storage.
+
+Stage 11.5 locked mandatory/conditional/deferred/future-only classifications;
+strictly necessary architecture boundaries; analytics and marketing tracking
+boundaries; billing/subscription cookie boundaries; auth/session cookie
+boundaries; Local Storage, saved simulation, and memory boundaries; AI Provider
+and external-service boundaries; consent-required surfaces; no-consent
+architecture surfaces; production-legal-review-blocked surfaces; prohibited
+tracking/storage surfaces; cross-surface links; boundaries between cookies,
+Local Storage, Runtime Memory, logs, and analytics; production-launch mandatory
+requirements; and deferred/future-only requirements. Stage 11.5 did not write
+Cookie Policy, Privacy Policy, consent banner text, legal clauses, user
+notices, UI copy, modal copy, page copy, or legal prose. It did not change
+runtime, UI, API, simulator, Decision Engine, AI integration, auth, database,
+subscriptions, billing, analytics, tracking, logging, or product behavior.
+
+Next implementation subblock: Stage 11.6 AI Transparency & Decision Simulation
+Disclaimer Foundation.
 
 Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
 Complete.
@@ -149,13 +508,60 @@ Production billing remains deferred because:
 
 ## Current Product Behavior
 
-The public simulator remains mock-only and now explicitly presents its
-preview/demo state. `/api/simulate` uses a unified response envelope with
-`contractVersion`, `requestId`, `status`, `data`, `error`, and predictable
-`meta`. Public simulator failures no longer fall back to a local replacement
-simulation after API failure. The public simulator has client/API input
-boundaries, a lightweight in-memory abuse boundary, controlled error states,
-and a manual QA matrix result of 12/12 PASS.
+The public simulator now uses the deterministic Decision Engine preview in the
+backend and keeps the existing mock-compatible public envelope. `/api/simulate`
+uses Raw User Input -> DecisionContext Builder -> `runSimulationPipeline` ->
+`SimulationResponseV2Draft` -> Public Adapter -> `/api/simulate`, with
+`contractVersion: "simulate-api-v1-mock"`, `requestId`, `status`, `data`,
+`error`, and predictable `meta`. `mockOnly=true`, `safeRender=true`, and
+`apiReady=true` remain public truth-boundary flags: the route is not Real AI and
+not production AI. Public simulator failures no longer fall back to a local
+replacement simulation after API failure. The public simulator has client/API
+input boundaries, a lightweight in-memory abuse boundary, controlled error
+states, and a manual QA matrix result of 12/12 PASS.
+
+The public simulator now has an automated regression gate:
+`npm run quality:public-simulator`. The gate verifies the public API contract,
+status codes, response schema, `contractVersion`, `mockOnly=true`,
+`safeRender=true`, `apiReady=true`, deterministic engine preview response
+envelope, controlled error states, rate-limit failure metadata, route usage of
+the internal runner and adapter, no `buildMockSimulation` route call, no
+provider/env/model-call leakage, edge-status fail-closed behavior, no failed
+edge-status simulation artifacts, route-level `SIMULATION_FAILED` fallback
+guarding, deterministic runtime observability / rollback semantics, no internal
+runtime leakage, deterministic runtime security boundary / abuse protection,
+deterministic runtime contract regression / public envelope stability, and the
+`HomeSimulator` UI boundary for API-contract usage, successful response
+rendering, controlled error rendering, no local fallback, and the mock-only /
+Real AI deferred truth boundary.
+
+The public Home + Simulator flow now has an automated quality gate:
+`npm run quality:public-home`. The gate verifies mobile/tablet responsive
+guardrails, public DOM presence, accessibility invariants, performance / UX
+safety, no Real AI/provider/env leakage, no local fallback builder, and the
+single `/api/simulate` request path.
+
+The public HomeSimulator -> `/api/simulate` integration now has a dedicated
+quality gate: `npm run quality:public-home-simulator-api-integration`. The gate
+verifies stable HomeSimulator handling of approved success and fail-close
+public envelopes, controlled error UI, `data:null` refusal handling, no failed
+response artifacts, no internal metadata dependency, and no Real AI/account
+memory/billing/closed-beta promise in the public Home simulator surface.
+
+The public site trust/readiness copy audit now has a dedicated quality gate:
+`npm run quality:public-site-trust-readiness`. The gate verifies public
+copy/readiness consistency, prepared/demo/local/mock/deterministic disclosures,
+auth/dashboard placeholder honesty, legal/medical/financial advice disclaimers,
+and absence of premature account, persistence, billing, subscription, paid
+plan, permanent memory, Real AI, closed beta, public launch, guarantee, AI chat,
+or answer-engine promises.
+
+The rendered public surface regression pass now has a dedicated quality gate:
+`npm run quality:rendered-public-surface-regression`. The gate verifies
+production-rendered public route HTML for Home, auth, privacy, terms, and
+protected dashboard redirects, plus responsive guardrails for the public
+simulator textarea, CTA/readiness source invariants, dashboard placeholder
+readiness, and preservation of the `/api/simulate` public contract flags.
 
 There is no Stripe integration.
 
@@ -178,6 +584,9 @@ Controlled AI Integration.
 
 There is no Prompt Context runtime call from AI Quality.
 
+There is now public backend Decision Engine runtime integration through the
+deterministic Builder -> Pipeline Runner -> Public Adapter path.
+
 There is no Decision Engine runtime integration with AI Quality.
 
 There is no Decision Engine runtime integration with Controlled AI Integration.
@@ -187,10 +596,44 @@ Integration.
 
 There is no product behavior change from Stage 5.4A-D.
 
-Product Quality Hardening #1-#5 did not add AI runtime integration, provider
-execution, SDK/env/API keys, auth changes, billing changes, persistence changes,
-subscription changes, analytics, telemetry, logging systems, or real AI product
-behavior.
+Product Quality Hardening #1-#5, the internal deterministic runtime bridge, the
+public backend switch, edge-status hardening, and observability / rollback
+semantics, security boundary / abuse protection, and contract regression /
+public envelope stability plus HomeSimulator API integration stability and
+Public Site Trust / Readiness Copy Audit did not add Real AI runtime
+integration, provider
+execution, SDK/env/API keys, fetch/model calls, auth changes, billing changes,
+persistence changes, subscription changes, analytics, telemetry logging
+systems, new heavy dependencies, Home visual concept changes, public contract
+changes, or
+production AI behavior. The gates, public deterministic runtime switch,
+edge-status hardening, observability / rollback semantics, security boundary /
+abuse protection, contract regression / public envelope stability, and
+HomeSimulator API integration stability plus Public Site Trust / Readiness Copy
+Audit, Rendered Public Surface Regression, and Stage 10 Closure Aggregate Gate /
+Documentation Lock complete Stage 10 Product Quality Hardening. They are not a
+new Stage.
+
+Stage 10 baseline quality gates:
+
+- `npm run quality:public-simulator`, 56/56 PASS;
+- `npm run quality:public-home`, 68/68 PASS;
+- `npm run quality:decision-context-builder`, 12/12 PASS;
+- `npm run quality:simulation-pipeline-runner`, 13/13 PASS;
+- `npm run quality:simulation-response-public-adapter`, 13/13 PASS;
+- `npm run quality:deterministic-runtime-observability`, 23/23 PASS;
+- `npm run quality:deterministic-runtime-security-boundary`, 34/34 PASS;
+- `npm run quality:deterministic-runtime-contract-regression`, 25/25 PASS;
+- `npm run quality:public-home-simulator-api-integration`, 57/57 PASS;
+- `npm run quality:public-site-trust-readiness`, 85/85 PASS;
+- `npm run quality:rendered-public-surface-regression`, 97/97 PASS.
+
+Stage 10 closure preserves the public contract:
+
+- `contractVersion: "simulate-api-v1-mock"`;
+- `mockOnly=true`;
+- `safeRender=true`;
+- `apiReady=true`.
 
 ## Production Status
 
@@ -203,15 +646,16 @@ observability, and rollback planning.
 
 ## Next Roadmap Step
 
-Continue Product Quality Hardening.
+Stage 11.5 - Cookies & Consent Scope Foundation Complete.
 
-Product Quality Hardening may proceed only as QA/security/privacy/performance
-hardening. Any next step must preserve Levio as a Decision Simulation Engine
-and must not create AI Chat, Answer Engine, Generic Assistant, direct
-AI-to-user behavior, model calls, provider execution, API keys/env/SDKs, AI API
-routes, UI AI runtime, Simulator runtime integration, or Decision Engine
-runtime integration.
-
-The next substep must remain within Product Quality Hardening. Legal & Trust
-Layer, Market Readiness, Closed Beta, Public Launch, and Scale are not the
-active roadmap focus yet.
+Stage 11.5 is complete as documentation-only cookies/consent/tracking
+architecture work. The next implementation subblock is Stage 11.6 AI
+Transparency & Decision Simulation Disclaimer Foundation. The next step is not
+a new Product Quality Hardening subblock. It must preserve Levio as a Decision
+Simulation Engine and must not create AI Chat, Answer Engine, Generic
+Assistant, direct AI-to-user behavior, model calls, provider execution, API
+keys/env/SDKs, AI provider API routes, UI AI runtime, auth, persistence,
+billing, subscriptions, analytics, tracking, logging, consent UI, cookie
+banner, AI disclosure UI, disclaimer UI, or a new public contract without a
+separate approved step. Market Readiness, Closed Beta, Public Launch, and Scale
+are not active.
