@@ -12,14 +12,16 @@ Levio is not an Answer Engine.
 
 Levio is not a Generic AI Assistant.
 
-The active checkpoint is Stage 11.7 - User Trust Surface Requirements
-Foundation Complete. This is a documentation-only trust surface requirements
-architecture foundation. It does not write legal documents, page text, UI copy,
-banner text, modal text, user notifications, trust page copy, or legal prose.
-It does not implement backend, runtime behavior, API behavior, UI behavior,
-simulator behavior, Decision Engine behavior, AI integration, auth, database,
-subscriptions, billing, analytics, logging, Market Readiness, Closed Beta, or
-Public Launch.
+The active checkpoint is Stage 11.8 - Regulatory Readiness Matrix Complete.
+This is a documentation-only regulatory readiness architecture foundation. It
+maps GDPR, ePrivacy/cookies, consumer transparency, AI transparency,
+data-subject rights, and production review blockers at requirements level. It
+does not claim compliance, write legal documents, page text, UI copy, consent
+notices, trust page copy, launch copy, or legal prose. It does not implement
+backend, runtime behavior, API behavior, UI behavior, simulator behavior,
+Decision Engine behavior, AI integration, auth, database, subscriptions,
+billing, analytics, logging, tracking, Market Readiness, Closed Beta, Public
+Launch, or Stage 12.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as foundation-only preflight, runtime
@@ -76,8 +78,9 @@ Scope & Ownership Lock, Stage 11.3 Privacy & Data Processing Scope Foundation,
 Stage 11.4 Terms & Acceptable Use Scope Foundation, Stage 11.5 Cookies &
 Consent Scope Foundation, Stage 11.6 AI Transparency & Decision Simulation
 Disclaimer Foundation, and Stage 11.7 User Trust Surface Requirements
-Foundation are complete. The next implementation subblock is Stage 11.8
-Regulatory Readiness Matrix. The complete Stage 11
+Foundation, and Stage 11.8 Regulatory Readiness Matrix are complete. The next
+implementation subblock is Stage 11.9 Legal Review Packet & Drafting Handoff.
+The complete Stage 11
 structure contains 10 bounded subblocks:
 
 1. Legal & Trust Foundation Inventory.
@@ -401,7 +404,40 @@ runtime, production account trust claims, billing trust claims, analytics trust
 claims, Market Readiness, Closed Beta, Public Launch, or product behavior
 changes.
 
-Next implementation subblock: Stage 11.8 Regulatory Readiness Matrix.
+Stage 11.8 Regulatory Readiness Matrix is complete as a documentation-only
+regulatory readiness architecture foundation under
+`docs/stages/stage-11-legal-trust/LEVIO_STAGE_11_8_REGULATORY_READINESS_MATRIX.md`.
+It maps GDPR / personal-data processing readiness, data-subject rights
+readiness, ePrivacy / cookies / Local Storage / consent readiness, consumer
+transparency / product representation readiness, AI transparency / AI-related
+readiness, high-risk / professional-advice boundary readiness, security /
+abuse / operational readiness, auth / account / persistence readiness,
+subscription / billing / commercial readiness, analytics / marketing /
+tracking readiness, legal identity / contact / support readiness, and
+Production Legal Blockers / Stage 12 gate readiness.
+
+Stage 11.8 locked:
+
+- mandatory production-launch readiness areas;
+- mandatory readiness dependencies before production auth/account;
+- mandatory readiness dependencies before paid plans;
+- mandatory readiness dependencies before Real AI public use;
+- mandatory readiness dependencies before analytics or marketing;
+- consolidated unresolved legal blockers;
+- consolidated unresolved engineering blockers;
+- boundary between readiness, compliance claims, legal approval, and technical
+  enforcement;
+- deferred and future-only regulatory dependencies;
+- Stage 11.9 handoff inputs.
+
+Stage 11.8 does not claim compliance, approve Privacy Policy, Terms, Cookie
+Policy, AI Disclaimer, consent notice, user-facing copy, legal prose, production
+auth, production persistence, billing, analytics, Real AI, consent runtime,
+Market Readiness, Closed Beta, Public Launch, Stage 12, or product behavior
+changes.
+
+Next implementation subblock: Stage 11.9 Legal Review Packet & Drafting
+Handoff.
 
 Supporting references:
 
@@ -930,9 +966,9 @@ webhooks, UI/API, QA, and rollback rehearsal.
 
 ## Next Roadmap Step
 
-The current roadmap position is Stage 11.7 - User Trust Surface Requirements
-Foundation Complete. The next implementation subblock is Stage 11.8 Regulatory
-Readiness Matrix.
+The current roadmap position is Stage 11.8 - Regulatory Readiness Matrix
+Complete. The next implementation subblock is Stage 11.9 Legal Review Packet &
+Drafting Handoff.
 
 The next step is not a new Product Quality Hardening subblock. The immutable
 Decision Simulation Engine architecture remains mandatory, and the next step
@@ -941,5 +977,5 @@ behavior, model calls, provider execution, API keys/env/SDKs, AI provider API
 routes, UI AI runtime, auth, persistence, billing, subscriptions, analytics,
 tracking, logging, consent UI, cookie banner, AI disclosure UI, disclaimer UI,
 trust UI, trust page copy, legal-document text, regulatory claims, compliance
-claims, or a new public contract without a separate approved step. It must not
-open Market Readiness, Closed Beta, Public Launch, or Scale.
+claims, Stage 12, or a new public contract without a separate approved step. It
+must not open Market Readiness, Closed Beta, Public Launch, or Scale.

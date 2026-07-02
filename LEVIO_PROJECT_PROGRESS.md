@@ -143,8 +143,8 @@ Overall Project Progress ████████░░ 80%
   contract invariants, runtime invariants и deferred scope зафиксированы.
 - Stage 11 Legal & Trust Layer открыт только для documentation-only legal/trust
   architecture work; Legal & Trust Foundation Inventory, Stage 11.2, Stage
-  11.3, Stage 11.4, Stage 11.5, Stage 11.6 и Stage 11.7 завершены как
-  documentation-only bounded subblocks.
+  11.3, Stage 11.4, Stage 11.5, Stage 11.6, Stage 11.7 и Stage 11.8 завершены
+  как documentation-only bounded subblocks.
 - Legal & Trust Foundation Inventory определил 10 bounded subblocks Stage 11,
   последовательность выполнения, зависимости, критерии завершения и
   рекомендуемый первый implementation subblock.
@@ -204,7 +204,24 @@ Overall Project Progress ████████░░ 80%
   UX / legal disclosure / product explanation / technical enforcement
   boundaries, legal-review-blocked trust surfaces и source-of-truth
   requirements для будущей UI implementation.
-- Следующий implementation subblock: Stage 11.8 Regulatory Readiness Matrix.
+- Stage 11.8 Regulatory Readiness Matrix завершен как documentation-only
+  regulatory readiness architecture foundation.
+- Stage 11.8 зафиксировал GDPR / personal-data processing readiness,
+  data-subject rights readiness, ePrivacy / cookies / Local Storage / consent
+  readiness, consumer transparency / product representation readiness, AI
+  transparency / AI-related readiness, high-risk / professional-advice
+  boundary readiness, security / abuse / operational readiness, auth / account
+  / persistence readiness, subscription / billing / commercial readiness,
+  analytics / marketing / tracking readiness, legal identity / contact /
+  support readiness и Production Legal Blockers / Stage 12 gate readiness.
+- Stage 11.8 зафиксировал mandatory production-launch readiness areas,
+  mandatory readiness dependencies before production auth/account, paid plans,
+  Real AI public use, analytics or marketing, consolidated unresolved legal
+  blockers, consolidated unresolved engineering blockers, readiness /
+  compliance-claim / legal-approval / technical-enforcement boundaries,
+  deferred/future-only regulatory dependencies и Stage 11.9 handoff inputs.
+- Следующий implementation subblock: Stage 11.9 Legal Review Packet & Drafting
+  Handoff.
 - Stage 11 не реализует Privacy Policy, Terms, Cookie Policy, consent UI,
   runtime, API, Decision Engine, Product behavior, Real AI, analytics,
   tracking, Market Readiness, Closed Beta или Public Launch.
@@ -409,8 +426,8 @@ public envelope stability plus HomeSimulator integration stability, public site
 trust/readiness copy audit, rendered public surface regression, and closure
 aggregate/documentation lock не являются новым Stage.
 Repository Structure Normalization завершен.
-Текущий шаг: Stage 11.7 User Trust Surface Requirements Foundation завершен;
-следующий implementation subblock - Stage 11.8 Regulatory Readiness Matrix.
+Текущий шаг: Stage 11.8 Regulatory Readiness Matrix завершен; следующий
+implementation subblock - Stage 11.9 Legal Review Packet & Drafting Handoff.
 Market Readiness, Closed Beta, Public Launch и Scale еще не активны.
 
 Stage 10 baseline quality gates:
@@ -429,9 +446,9 @@ Stage 10 baseline quality gates:
 
 ### 11. Legal & Trust Layer
 
-Статус: Stage 11.7 User Trust Surface Requirements Foundation завершен как
-documentation-only trust surface requirements architecture foundation.
-Прогресс: ████████░░ 75%.
+Статус: Stage 11.8 Regulatory Readiness Matrix завершен как
+documentation-only regulatory readiness architecture foundation.
+Прогресс: ████████░░ 80%.
 Количество bounded subblocks: 10.
 Последовательность выполнения:
 
@@ -662,7 +679,26 @@ Stage 11.7 locked trust surfaces:
 Canonical Stage 11.7 document:
 `docs/stages/stage-11-legal-trust/LEVIO_STAGE_11_7_USER_TRUST_SURFACE_REQUIREMENTS_FOUNDATION.md`.
 
-Следующий implementation subblock: Stage 11.8 Regulatory Readiness Matrix.
+Stage 11.8 locked regulatory readiness areas:
+
+- GDPR / Personal Data Processing Readiness;
+- Data-Subject Rights Readiness;
+- ePrivacy / Cookies / Local Storage / Consent Readiness;
+- Consumer Transparency / Product Representation Readiness;
+- AI Transparency / AI-Related Readiness;
+- High-Risk / Professional-Advice Boundary Readiness;
+- Security / Abuse / Operational Readiness;
+- Auth / Account / Persistence Readiness;
+- Subscription / Billing / Commercial Readiness;
+- Analytics / Marketing / Tracking Readiness;
+- Legal Identity / Contact / Support Readiness;
+- Production Legal Blockers / Stage 12 Gate Readiness.
+
+Canonical Stage 11.8 document:
+`docs/stages/stage-11-legal-trust/LEVIO_STAGE_11_8_REGULATORY_READINESS_MATRIX.md`.
+
+Следующий implementation subblock: Stage 11.9 Legal Review Packet & Drafting
+Handoff.
 
 ### 12. Market Readiness
 
@@ -690,7 +726,7 @@ Canonical Stage 11.7 document:
 
 ## Current Roadmap Focus
 
-Stage 11.7 - User Trust Surface Requirements Foundation Complete.
+Stage 11.8 - Regulatory Readiness Matrix Complete.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.
@@ -712,9 +748,9 @@ accepted. Bounded Rendered Public Surface Regression is accepted. Stage 10
 Closure Aggregate Gate / Documentation Lock is complete. The full Product
 Quality Hardening block is closed.
 
-Stage 11.7 is complete as documentation-only trust surface requirements
-architecture work. The next implementation subblock is Stage 11.8 Regulatory
-Readiness Matrix. The next step is not a new Product Quality Hardening
+Stage 11.8 is complete as documentation-only regulatory readiness architecture
+work. The next implementation subblock is Stage 11.9 Legal Review Packet &
+Drafting Handoff. The next step is not a new Product Quality Hardening
 subblock. It must not add model calls, provider
 execution, API keys/env/SDKs, AI provider API routes, UI AI runtime, auth,
 persistence, billing, subscriptions, analytics, tracking, logging, consent UI,
@@ -1244,4 +1280,31 @@ Do not continue:
 - Не менялись runtime, UI, API, simulator, Decision Engine, AI integration,
   auth, database, subscriptions, billing, analytics implementation, tracking,
   logging или product behavior.
-- Следующий implementation subblock: Stage 11.8 Regulatory Readiness Matrix.
+- После Stage 11.7 был начат и завершен Stage 11.8 Regulatory Readiness
+  Matrix.
+- Завершен Stage 11.8 Regulatory Readiness Matrix как documentation-only
+  regulatory readiness architecture foundation.
+- Создан canonical Stage 11.8 документ:
+  `docs/stages/stage-11-legal-trust/LEVIO_STAGE_11_8_REGULATORY_READINESS_MATRIX.md`.
+- Зафиксированы regulatory readiness areas: GDPR / Personal Data Processing
+  Readiness; Data-Subject Rights Readiness; ePrivacy / Cookies / Local Storage
+  / Consent Readiness; Consumer Transparency / Product Representation
+  Readiness; AI Transparency / AI-Related Readiness; High-Risk /
+  Professional-Advice Boundary Readiness; Security / Abuse / Operational
+  Readiness; Auth / Account / Persistence Readiness; Subscription / Billing /
+  Commercial Readiness; Analytics / Marketing / Tracking Readiness; Legal
+  Identity / Contact / Support Readiness; Production Legal Blockers / Stage 12
+  Gate Readiness.
+- Зафиксированы mandatory production-launch readiness areas, mandatory
+  readiness dependencies before production auth/account, paid plans, Real AI
+  public use, analytics or marketing, consolidated unresolved legal blockers,
+  consolidated unresolved engineering blockers, readiness / compliance-claim /
+  legal-approval / technical-enforcement boundaries, deferred/future-only
+  regulatory dependencies и Stage 11.9 handoff inputs.
+- Не заявлялся compliance, не писались Privacy Policy, Terms, Cookie Policy,
+  AI Disclaimer, consent notice, user-facing copy, legal prose или launch copy.
+- Не менялись runtime, UI, API, simulator, Decision Engine, AI integration,
+  auth, database, subscriptions, billing, analytics implementation, tracking,
+  logging или product behavior. Stage 12 не открывался.
+- Следующий implementation subblock: Stage 11.9 Legal Review Packet & Drafting
+  Handoff.

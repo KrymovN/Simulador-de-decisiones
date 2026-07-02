@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Levio.es
 
-## Getting Started
+Levio.es is a Decision Simulation Engine. It is not an AI Chat, not an Answer
+Engine, and not a Generic AI Assistant.
 
-First, run the development server:
+The current confirmed runtime remains deterministic-preview only for the public
+`/api/simulate` surface. The public contract is intentionally preserved:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- `contractVersion: "simulate-api-v1-mock"`
+- `mockOnly=true`
+- `safeRender=true`
+- `apiReady=true`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Real AI Runtime, AI Provider execution, production auth, production
+persistence, billing, subscriptions, Market Readiness, Closed Beta, and Public
+Launch remain deferred until explicitly opened by the roadmap. Stage 11 Legal &
+Trust Layer is open only for documentation-only legal/trust architecture work.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Active Project State
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The canonical active state documents stay in the repository root:
 
-## Learn More
+- [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md)
+- [CURRENT_STAGE.md](CURRENT_STAGE.md)
+- [LEVIO_CURRENT_STATE.md](LEVIO_CURRENT_STATE.md)
+- [LEVIO_PROJECT_PROGRESS.md](LEVIO_PROJECT_PROGRESS.md)
 
-To learn more about Next.js, take a look at the following resources:
+`AGENTS.md` and `CLAUDE.md` also remain in the root as tooling instructions.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Documentation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Long-lived project documentation is organized under [docs/](docs/README.md):
 
-## Deploy on Vercel
+- `docs/architecture/` - architectural foundations and target runtime specs.
+- `docs/stages/` - historical stage documents grouped by stage number.
+- `docs/qa/` - quality, testing, readiness, and audit documents.
+- `docs/decisions/` - explicit project decisions.
+- `docs/archive/` - superseded or historical handoff material.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Stage 10 Product Quality Hardening is officially closed and baseline-locked.
+Repository Structure Normalization is complete. Stage 11.8 Regulatory
+Readiness Matrix is complete as documentation-only legal/trust architecture
+work. The next implementation subblock is Stage 11.9 Legal Review Packet &
+Drafting Handoff.

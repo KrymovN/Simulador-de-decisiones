@@ -1,0 +1,77 @@
+# Levio Documentation Index
+
+This directory holds long-lived Levio project documentation. The root keeps only
+active project state documents and tooling instructions.
+
+## Active Project State
+
+Canonical active state remains in the repository root:
+
+- [PROJECT_CONTEXT.md](../PROJECT_CONTEXT.md)
+- [CURRENT_STAGE.md](../CURRENT_STAGE.md)
+- [LEVIO_CURRENT_STATE.md](../LEVIO_CURRENT_STATE.md)
+- [LEVIO_PROJECT_PROGRESS.md](../LEVIO_PROJECT_PROGRESS.md)
+
+Tooling exceptions that intentionally remain in the root:
+
+- [AGENTS.md](../AGENTS.md)
+- [CLAUDE.md](../CLAUDE.md)
+
+## Architecture
+
+`docs/architecture/` contains foundation and target architecture documents:
+
+- AI abstraction, observability, and costs
+- Clarification Engine
+- Decision Engine and schemas
+- Identity, memory, user data, auth, subscription, trust/legal foundations
+- Multilingual architecture
+- Simulation Response V2
+- Target Runtime Architecture
+- Visual Engine research plan
+
+## Stage Documents
+
+`docs/stages/` contains historical stage material grouped by stable stage
+folder:
+
+- `stage-02-visual-mvp/`
+- `stage-03-decision-engine/`
+- `stage-04-runtime-architecture/`
+  - `stage-04-01-auth-runtime/`
+  - `stage-04-02-persistence-runtime/`
+  - `stage-04-03-user-data-controls/`
+  - `stage-04-04-subscription-runtime/`
+- `stage-05-ai-integration/`
+- `stage-11-legal-trust/`
+
+Stage 10 Product Quality Hardening is baseline-locked in the active state
+documents. Repository Structure Normalization is complete. Stage 11.8
+Regulatory Readiness Matrix is complete as documentation-only legal/trust
+architecture work. The next implementation subblock is Stage 11.9 Legal Review
+Packet & Drafting Handoff.
+
+## QA / Quality
+
+`docs/qa/` contains readiness, testing, dataset threshold, and documentation
+audit material.
+
+## Decisions
+
+`docs/decisions/` contains explicit project decisions, including provider or
+runtime choices that were made as foundation decisions.
+
+## Archive
+
+`docs/archive/` contains superseded historical handoff material. Archived
+documents are retained for traceability, not as active project state.
+
+## Current Invariants
+
+- Levio remains a Decision Simulation Engine.
+- Public `/api/simulate` keeps the approved deterministic-preview envelope.
+- Stage 10 Product Quality Hardening is closed.
+- Repository Structure Normalization is complete.
+- Real AI Runtime and AI Provider execution remain deferred.
+- Stage 11 Legal & Trust Layer is open only for documentation-only legal/trust
+  architecture work.

@@ -6,20 +6,18 @@ Date: 1 July 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Stage 11.7 - User Trust Surface Requirements
-Foundation Complete. This is a documentation-only trust surface requirements
-architecture foundation. It defines trust surfaces, production-launch mandatory
-trust surfaces, conditional / deferred / future-only trust surfaces, required
-status visibility for data, AI, Local Storage, account, billing, privacy,
-cookies, consent, and simulations, trust indicators for no AI Chat / no Answer
-Engine / Decision Simulation Engine positioning, cross-surface links, trust UX
-/ legal disclosure / product explanation / technical enforcement boundaries,
-legal-review-blocked trust surfaces, and source-of-truth requirements for
-future UI implementation. It does not write legal documents, page text, UI
-copy, banners, modals, user notifications, trust page copy, runtime behavior,
-API behavior, UI behavior, simulator behavior, Decision Engine behavior,
-product behavior, AI integration, auth, database, subscriptions, billing,
-analytics, tracking, logging, Market Readiness, Closed Beta, or Public Launch.
+The current confirmed state is Stage 11.8 - Regulatory Readiness Matrix
+Complete. This is a documentation-only regulatory readiness architecture
+foundation. It maps GDPR, ePrivacy/cookies, consumer transparency, AI
+transparency, data-subject rights, production review blockers, mandatory
+production-launch readiness areas, unresolved legal blockers, unresolved
+engineering blockers, deferred/future-only regulatory dependencies, and Stage
+11.9 handoff inputs at requirements level. It does not claim compliance, write
+legal documents, page text, UI copy, consent notices, trust page copy, launch
+copy, runtime behavior, API behavior, UI behavior, simulator behavior,
+Decision Engine behavior, product behavior, AI integration, auth, database,
+subscriptions, billing, analytics, tracking, logging, Market Readiness, Closed
+Beta, Public Launch, or Stage 12.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as controlled foundation-only preflight,
@@ -135,8 +133,9 @@ Scope & Ownership Lock, Stage 11.3 Privacy & Data Processing Scope Foundation,
 Stage 11.4 Terms & Acceptable Use Scope Foundation, Stage 11.5 Cookies &
 Consent Scope Foundation, Stage 11.6 AI Transparency & Decision Simulation
 Disclaimer Foundation, and Stage 11.7 User Trust Surface Requirements
-Foundation are complete. The next implementation subblock is Stage 11.8
-Regulatory Readiness Matrix. The full Stage 11 structure is:
+Foundation, and Stage 11.8 Regulatory Readiness Matrix are complete. The next
+implementation subblock is Stage 11.9 Legal Review Packet & Drafting Handoff.
+The full Stage 11 structure is:
 
 1. Legal & Trust Foundation Inventory.
    Goal: define the complete Stage 11 map without legal-content
@@ -452,7 +451,33 @@ user notifications, trust page copy, or legal prose. It did not change runtime,
 UI, API, simulator, Decision Engine, AI integration, auth, database,
 subscriptions, billing, analytics, tracking, logging, or product behavior.
 
-Next implementation subblock: Stage 11.8 Regulatory Readiness Matrix.
+Stage 11.8 Regulatory Readiness Matrix is complete as a documentation-only
+regulatory readiness architecture foundation. Canonical document:
+`docs/stages/stage-11-legal-trust/LEVIO_STAGE_11_8_REGULATORY_READINESS_MATRIX.md`.
+
+Stage 11.8 mapped GDPR / personal-data processing readiness, data-subject
+rights readiness, ePrivacy / cookies / Local Storage / consent readiness,
+consumer transparency / product representation readiness, AI transparency /
+AI-related readiness, high-risk / professional-advice boundary readiness,
+security / abuse / operational readiness, auth / account / persistence
+readiness, subscription / billing / commercial readiness, analytics / marketing
+/ tracking readiness, legal identity / contact / support readiness, and
+Production Legal Blockers / Stage 12 gate readiness.
+
+Stage 11.8 locked mandatory production-launch readiness areas; mandatory
+readiness dependencies before production auth/account, paid plans, Real AI
+public use, analytics, or marketing; consolidated unresolved legal blockers;
+consolidated unresolved engineering blockers; readiness / compliance-claim /
+legal-approval / technical-enforcement boundaries; deferred and future-only
+regulatory dependencies; and Stage 11.9 handoff inputs. Stage 11.8 did not
+claim compliance, write legal documents, page text, UI copy, consent notices,
+trust page copy, launch copy, or legal prose. It did not change runtime, UI,
+API, simulator, Decision Engine, AI integration, auth, database, subscriptions,
+billing, analytics, tracking, logging, product behavior, Market Readiness,
+Closed Beta, Public Launch, or Stage 12.
+
+Next implementation subblock: Stage 11.9 Legal Review Packet & Drafting
+Handoff.
 
 Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
 Complete.
@@ -719,16 +744,16 @@ observability, and rollback planning.
 
 ## Next Roadmap Step
 
-Stage 11.7 - User Trust Surface Requirements Foundation Complete.
+Stage 11.8 - Regulatory Readiness Matrix Complete.
 
-Stage 11.7 is complete as documentation-only trust surface requirements
-architecture work. The next implementation subblock is Stage 11.8 Regulatory
-Readiness Matrix. The next step is not a new Product Quality Hardening
+Stage 11.8 is complete as documentation-only regulatory readiness architecture
+work. The next implementation subblock is Stage 11.9 Legal Review Packet &
+Drafting Handoff. The next step is not a new Product Quality Hardening
 subblock. It must preserve Levio as a Decision Simulation Engine and must not
 create AI Chat, Answer Engine, Generic Assistant, direct AI-to-user behavior,
 model calls, provider execution, API keys/env/SDKs, AI provider API routes, UI
 AI runtime, auth, persistence, billing, subscriptions, analytics, tracking,
 logging, consent UI, cookie banner, AI disclosure UI, disclaimer UI, trust UI,
-trust page copy, legal-document text, regulatory claims, compliance claims, or
-a new public contract without a separate approved step. Market Readiness,
-Closed Beta, Public Launch, and Scale are not active.
+trust page copy, legal-document text, regulatory claims, compliance claims,
+Stage 12, or a new public contract without a separate approved step. Market
+Readiness, Closed Beta, Public Launch, and Scale are not active.

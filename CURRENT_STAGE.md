@@ -2,21 +2,19 @@
 
 ## Active Checkpoint
 
-Stage 11.7 - User Trust Surface Requirements Foundation Complete.
+Stage 11.8 - Regulatory Readiness Matrix Complete.
 
-Status: Stage 11.7 is complete as a documentation-only trust surface
-requirements architecture foundation. It defines trust surfaces,
-production-launch mandatory trust surfaces, conditional / deferred /
-future-only trust surfaces, required status visibility for data, AI, Local
-Storage, account, billing, privacy, cookies, consent, and simulations, trust
-indicators for no AI Chat / no Answer Engine / Decision Simulation Engine
-positioning, cross-surface links, trust UX / legal disclosure / product
-explanation / technical enforcement boundaries, legal-review-blocked trust
-surfaces, and source-of-truth requirements for future UI implementation. It
-does not write legal documents, page text, UI copy, banners, modals, user
-notifications, trust page copy, or legal prose, and it does not change runtime,
-UI, API, simulator, Decision Engine, AI integration, auth, database,
-subscriptions, billing, analytics, tracking, logging, or product behavior.
+Status: Stage 11.8 is complete as a documentation-only regulatory readiness
+architecture foundation. It maps GDPR, ePrivacy/cookies, consumer
+transparency, AI transparency, data-subject rights, production review blockers,
+mandatory production-launch readiness areas, unresolved legal blockers,
+unresolved engineering blockers, deferred/future-only regulatory dependencies,
+and Stage 11.9 handoff inputs at requirements level. It does not claim
+compliance, write legal documents, page text, UI copy, consent notices, trust
+page copy, launch copy, or legal prose, and it does not change runtime, UI,
+API, simulator, Decision Engine, AI integration, auth, database,
+subscriptions, billing, analytics, tracking, logging, product behavior, Market
+Readiness, Closed Beta, Public Launch, or Stage 12.
 
 Date: 1 July 2026, Europe/Madrid.
 
@@ -443,7 +441,51 @@ change runtime, UI, API, simulator, Decision Engine, AI integration, auth,
 database, subscriptions, billing, analytics, tracking, logging, or product
 behavior.
 
-Next implementation subblock: Stage 11.8 Regulatory Readiness Matrix.
+## Stage 11.8 Regulatory Readiness Matrix
+
+Status: complete as documentation-only regulatory readiness architecture
+foundation.
+
+Canonical document:
+`docs/stages/stage-11-legal-trust/LEVIO_STAGE_11_8_REGULATORY_READINESS_MATRIX.md`.
+
+Stage 11.8 mapped readiness areas:
+
+- GDPR / Personal Data Processing Readiness;
+- Data-Subject Rights Readiness;
+- ePrivacy / Cookies / Local Storage / Consent Readiness;
+- Consumer Transparency / Product Representation Readiness;
+- AI Transparency / AI-Related Readiness;
+- High-Risk / Professional-Advice Boundary Readiness;
+- Security / Abuse / Operational Readiness;
+- Auth / Account / Persistence Readiness;
+- Subscription / Billing / Commercial Readiness;
+- Analytics / Marketing / Tracking Readiness;
+- Legal Identity / Contact / Support Readiness;
+- Production Legal Blockers / Stage 12 Gate Readiness.
+
+Stage 11.8 locked:
+
+- mandatory production-launch readiness areas;
+- mandatory readiness dependencies before production auth/account;
+- mandatory readiness dependencies before paid plans;
+- mandatory readiness dependencies before Real AI public use;
+- mandatory readiness dependencies before analytics or marketing;
+- consolidated unresolved legal blockers;
+- consolidated unresolved engineering blockers;
+- readiness / compliance-claim / legal-approval / technical-enforcement
+  boundaries;
+- deferred and future-only regulatory dependencies;
+- Stage 11.9 handoff inputs.
+
+Stage 11.8 did not claim compliance, write legal documents, page text, UI copy,
+consent notices, trust page copy, launch copy, or legal prose. It did not
+change runtime, UI, API, simulator, Decision Engine, AI integration, auth,
+database, subscriptions, billing, analytics, tracking, logging, product
+behavior, Market Readiness, Closed Beta, Public Launch, or Stage 12.
+
+Next implementation subblock: Stage 11.9 Legal Review Packet & Drafting
+Handoff.
 
 ## Product Invariant
 
@@ -660,15 +702,15 @@ rollback.
 
 ## Next Allowed Roadmap Step
 
-Stage 11.7 - User Trust Surface Requirements Foundation Complete.
+Stage 11.8 - Regulatory Readiness Matrix Complete.
 
-Stage 11.7 is complete as documentation-only trust surface requirements
-architecture work. The next implementation subblock is Stage 11.8 Regulatory
-Readiness Matrix. The next step is not a new Product Quality Hardening
+Stage 11.8 is complete as documentation-only regulatory readiness architecture
+work. The next implementation subblock is Stage 11.9 Legal Review Packet &
+Drafting Handoff. The next step is not a new Product Quality Hardening
 subblock. It must not add model calls, provider
 execution, API keys/env/SDKs, AI provider API routes, UI AI runtime, auth,
 persistence, billing, subscriptions, analytics, tracking, logging, consent UI,
 cookie banner, AI disclosure UI, disclaimer UI, trust UI, trust page copy,
-legal-document text, regulatory claims, compliance claims, or a new public
-contract without a separate approved step. Market Readiness, Closed Beta,
-Public Launch, and Scale are not active.
+legal-document text, regulatory claims, compliance claims, Stage 12, or a new
+public contract without a separate approved step. Market Readiness, Closed
+Beta, Public Launch, and Scale are not active.
