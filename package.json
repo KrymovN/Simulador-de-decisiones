@@ -6,7 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "quality:public-simulator": "node scripts/public-simulator-quality.mjs",
+    "quality:decision-context-builder": "node scripts/decision-context-builder-quality.mjs",
+    "quality:simulation-pipeline-runner": "node scripts/simulation-pipeline-runner-quality.mjs",
+    "quality:simulation-response-public-adapter": "node scripts/simulation-response-public-adapter-quality.mjs",
+    "quality:deterministic-runtime-observability": "node scripts/deterministic-runtime-observability-quality.mjs",
+    "quality:deterministic-runtime-security-boundary": "node scripts/deterministic-runtime-security-boundary-quality.mjs",
+    "quality:deterministic-runtime-contract-regression": "node scripts/deterministic-runtime-contract-regression-quality.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",

@@ -1,4 +1,12 @@
-import { buildMockSimulation } from "../../../lib/simulationEngine";
+import {
+  adaptSimulationResponseV2ToPublicSimulatorEnvelope,
+  SIMULATION_RESPONSE_PUBLIC_ADAPTER_TRUTH_BOUNDARY,
+  validatePublicSimulationEnvelopeShape,
+} from "../../../lib/decision-engine/simulation-response-public-adapter";
+import {
+  DETERMINISTIC_ENGINE_PREVIEW_RUNTIME_MARKER,
+  runInternalSimulationPipeline,
+} from "../../../lib/decision-engine/simulation-pipeline-runner";
 
 const SIMULATE_API_CONTRACT_VERSION = "simulate-api-v1-mock";
 const MAX_BODY_LENGTH = 8192;
@@ -11,9 +19,11 @@ type SimulateErrorCode =
   | "invalid_content_type"
   | "body_too_large"
   | "invalid_json"
+  | "invalid_payload"
   | "input_required"
   | "input_too_long"
-  | "rate_limited";
+  | "rate_limited"
+  | "SIMULATION_FAILED";
 
 type RateLimitBucket = {
   count: number;
@@ -21,6 +31,7 @@ type RateLimitBucket = {
 };
 
 const rateLimitBuckets = new Map<string, RateLimitBucket>();
+const ALLOWED_PAYLOAD_FIELDS = new Set(["input", "lang"]);
 
 function createRequestId() {
   return crypto.randomUUID();
@@ -67,6 +78,33 @@ function errorResponse(
       status,
       headers: options?.headers,
     },
+  );
+}
+
+function simulationFailedResponse(requestId: string) {
+  return errorResponse(
+    requestId,
+    "SIMULATION_FAILED",
+    "No se pudo completar la simulación de forma segura.",
+    500,
+  );
+}
+
+function isJsonContentType(contentType: string) {
+  const mediaType = contentType.split(";")[0]?.trim() ?? "";
+  return mediaType === "application/json" || mediaType.endsWith("+json");
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function invalidPayloadResponse(requestId: string) {
+  return errorResponse(
+    requestId,
+    "invalid_payload",
+    "El cuerpo de la solicitud no cumple el contrato público del simulador.",
+    400,
   );
 }
 
@@ -137,7 +175,7 @@ function checkRateLimit(source: string) {
 async function readJsonBody(req: Request, requestId: string) {
   const contentType = req.headers.get("content-type")?.toLowerCase() ?? "";
 
-  if (!contentType.includes("application/json")) {
+  if (!isJsonContentType(contentType)) {
     return {
       ok: false as const,
       response: errorResponse(
@@ -195,6 +233,58 @@ async function readJsonBody(req: Request, requestId: string) {
   }
 }
 
+function validateSimulatePayload(body: unknown, requestId: string) {
+  if (!isRecord(body)) {
+    return {
+      ok: false as const,
+      response: invalidPayloadResponse(requestId),
+    };
+  }
+
+  for (const field of Object.keys(body)) {
+    if (!ALLOWED_PAYLOAD_FIELDS.has(field)) {
+      return {
+        ok: false as const,
+        response: invalidPayloadResponse(requestId),
+      };
+    }
+  }
+
+  if (!Object.prototype.hasOwnProperty.call(body, "input")) {
+    return {
+      ok: false as const,
+      response: errorResponse(
+        requestId,
+        "input_required",
+        "Describe una situación para poder simular escenarios.",
+        400,
+      ),
+    };
+  }
+
+  if (typeof body.input !== "string") {
+    return {
+      ok: false as const,
+      response: invalidPayloadResponse(requestId),
+    };
+  }
+
+  if (
+    Object.prototype.hasOwnProperty.call(body, "lang") &&
+    (typeof body.lang !== "string" || body.lang !== "es")
+  ) {
+    return {
+      ok: false as const,
+      response: invalidPayloadResponse(requestId),
+    };
+  }
+
+  return {
+    ok: true as const,
+    input: body.input.trim(),
+  };
+}
+
 export async function POST(req: Request) {
   const requestId = createRequestId();
   const rateLimit = checkRateLimit(getRequestSource(req));
@@ -220,8 +310,13 @@ export async function POST(req: Request) {
     return bodyResult.response;
   }
 
-  const body = bodyResult.body as { input?: unknown };
-  const input = typeof body.input === "string" ? body.input.trim() : "";
+  const payloadResult = validateSimulatePayload(bodyResult.body, requestId);
+
+  if (!payloadResult.ok) {
+    return payloadResult.response;
+  }
+
+  const input = payloadResult.input;
 
   if (!input) {
     return errorResponse(
@@ -241,14 +336,38 @@ export async function POST(req: Request) {
     );
   }
 
-  const response = buildMockSimulation(input);
+  try {
+    const runnerResult = runInternalSimulationPipeline({
+      requestId,
+      input,
+      inputLanguage: "es",
+      requestedOutputLanguage: "es",
+    });
 
-  return Response.json({
-    contractVersion: SIMULATE_API_CONTRACT_VERSION,
-    requestId,
-    status: "completed",
-    data: response,
-    error: null,
-    meta: meta(),
-  });
+    if (!runnerResult.response) {
+      return simulationFailedResponse(requestId);
+    }
+
+    if (
+      runnerResult.runtime.marker !== DETERMINISTIC_ENGINE_PREVIEW_RUNTIME_MARKER ||
+      !runnerResult.runtime.rollbackSafe
+    ) {
+      return simulationFailedResponse(requestId);
+    }
+
+    const response = adaptSimulationResponseV2ToPublicSimulatorEnvelope({
+      response: runnerResult.response,
+      requestId,
+      generatedAt: new Date().toISOString(),
+      truthBoundary: SIMULATION_RESPONSE_PUBLIC_ADAPTER_TRUTH_BOUNDARY,
+    });
+
+    if (!validatePublicSimulationEnvelopeShape(response)) {
+      return simulationFailedResponse(requestId);
+    }
+
+    return Response.json(response);
+  } catch {
+    return simulationFailedResponse(requestId);
+  }
 }
