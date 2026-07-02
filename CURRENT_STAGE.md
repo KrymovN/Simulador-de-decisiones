@@ -2,21 +2,21 @@
 
 ## Active Checkpoint
 
-Stage 11.8 - Regulatory Readiness Matrix Complete.
+Stage 11.9 - Legal Review Packet & Drafting Handoff Complete.
 
-Status: Stage 11.8 is complete as a documentation-only regulatory readiness
-architecture foundation. It maps GDPR, ePrivacy/cookies, consumer
-transparency, AI transparency, data-subject rights, production review blockers,
-mandatory production-launch readiness areas, unresolved legal blockers,
-unresolved engineering blockers, deferred/future-only regulatory dependencies,
-and Stage 11.9 handoff inputs at requirements level. It does not claim
-compliance, write legal documents, page text, UI copy, consent notices, trust
-page copy, launch copy, or legal prose, and it does not change runtime, UI,
-API, simulator, Decision Engine, AI integration, auth, database,
-subscriptions, billing, analytics, tracking, logging, product behavior, Market
-Readiness, Closed Beta, Public Launch, or Stage 12.
+Status: Stage 11.9 is complete as a documentation-only legal review and
+drafting handoff foundation. It packages prepared Stage 11 documents, covered
+legal areas, future legal documents to prepare, professional legal review
+questions, unresolved legal blockers, unresolved engineering/product blockers,
+prohibited pre-review actions, future drafting/publication ownership, and
+source-of-truth rules for future drafting. It does not write final legal
+policies, legal prose, page text, UI copy, consent notices, trust page copy, or
+launch copy, and it does not change runtime, UI, API, simulator, Decision
+Engine, AI integration, auth, database, subscriptions, billing, analytics,
+tracking, logging, product behavior, Market Readiness, Closed Beta, Public
+Launch, Stage 12, or the roadmap.
 
-Date: 1 July 2026, Europe/Madrid.
+Date: 2 July 2026, Europe/Madrid.
 
 Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
 Complete. Stage 5.2 remains closed as Prompt / Context Layer Foundation
@@ -484,8 +484,48 @@ change runtime, UI, API, simulator, Decision Engine, AI integration, auth,
 database, subscriptions, billing, analytics, tracking, logging, product
 behavior, Market Readiness, Closed Beta, Public Launch, or Stage 12.
 
-Next implementation subblock: Stage 11.9 Legal Review Packet & Drafting
-Handoff.
+Stage 11.8 successor subblock: Stage 11.9 Legal Review Packet & Drafting
+Handoff, now complete.
+
+## Stage 11.9 Legal Review Packet & Drafting Handoff
+
+Status: complete as documentation-only legal review and drafting handoff
+foundation.
+
+Canonical document:
+`docs/stages/stage-11-legal-trust/LEVIO_STAGE_11_9_LEGAL_REVIEW_PACKET_DRAFTING_HANDOFF.md`.
+
+Stage 11.9 packaged:
+
+- prepared Stage 11 documents from Stage 11.1 through Stage 11.8;
+- legal and trust areas covered by Stage 11;
+- future legal documents to prepare;
+- professional legal review questions;
+- consolidated unresolved legal blockers;
+- consolidated unresolved engineering/product blockers;
+- prohibited actions before legal review;
+- drafting handoff packet contents;
+- future drafting/publication responsibilities;
+- source-of-truth rules for future drafting.
+
+Future legal documents identified:
+
+- Privacy Policy;
+- Terms of Use;
+- Cookie Policy;
+- AI / Decision Simulation Disclaimer;
+- Data Processing / User Rights notices where applicable;
+- Legal Identity / Contact / Support notice.
+
+Stage 11.9 did not write final legal policies, public legal copy, UI copy,
+notices, banners, modals, consent text, trust page copy, legal prose, or
+compliance claims. It did not change runtime, UI, API, simulator, Decision
+Engine, AI integration, auth, database, subscriptions, billing, analytics,
+tracking, logging, product behavior, Market Readiness, Closed Beta, Public
+Launch, Stage 12, or the roadmap.
+
+Next implementation subblock: Stage 11.10 Production Legal Blockers Closure
+Gate.
 
 ## Product Invariant
 
@@ -702,11 +742,11 @@ rollback.
 
 ## Next Allowed Roadmap Step
 
-Stage 11.8 - Regulatory Readiness Matrix Complete.
+Stage 11.9 - Legal Review Packet & Drafting Handoff Complete.
 
-Stage 11.8 is complete as documentation-only regulatory readiness architecture
-work. The next implementation subblock is Stage 11.9 Legal Review Packet &
-Drafting Handoff. The next step is not a new Product Quality Hardening
+Stage 11.9 is complete as documentation-only legal review and drafting handoff
+work. The next implementation subblock is Stage 11.10 Production Legal Blockers
+Closure Gate. The next step is not a new Product Quality Hardening
 subblock. It must not add model calls, provider
 execution, API keys/env/SDKs, AI provider API routes, UI AI runtime, auth,
 persistence, billing, subscriptions, analytics, tracking, logging, consent UI,

@@ -38,7 +38,7 @@ Long-lived project documentation is organized under [docs/](docs/README.md):
 - `docs/archive/` - superseded or historical handoff material.
 
 Stage 10 Product Quality Hardening is officially closed and baseline-locked.
-Repository Structure Normalization is complete. Stage 11.8 Regulatory
-Readiness Matrix is complete as documentation-only legal/trust architecture
-work. The next implementation subblock is Stage 11.9 Legal Review Packet &
-Drafting Handoff.
+Repository Structure Normalization is complete. Stage 11.9 Legal Review Packet
+& Drafting Handoff is complete as documentation-only legal/trust architecture
+work. The next implementation subblock is Stage 11.10 Production Legal
+Blockers Closure Gate.
