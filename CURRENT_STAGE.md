@@ -2,19 +2,19 @@
 
 ## Active Checkpoint
 
-Stage 11.9 - Legal Review Packet & Drafting Handoff Complete.
+Stage 11.10 - Production Legal Blockers Closure Gate Complete.
 
-Status: Stage 11.9 is complete as a documentation-only legal review and
-drafting handoff foundation. It packages prepared Stage 11 documents, covered
-legal areas, future legal documents to prepare, professional legal review
-questions, unresolved legal blockers, unresolved engineering/product blockers,
-prohibited pre-review actions, future drafting/publication ownership, and
-source-of-truth rules for future drafting. It does not write final legal
-policies, legal prose, page text, UI copy, consent notices, trust page copy, or
-launch copy, and it does not change runtime, UI, API, simulator, Decision
-Engine, AI integration, auth, database, subscriptions, billing, analytics,
-tracking, logging, product behavior, Market Readiness, Closed Beta, Public
-Launch, Stage 12, or the roadmap.
+Status: Stage 11.10 is complete as a documentation-only final closure gate for
+Stage 11 blocker surfaces. It evaluates only blocker surfaces already recorded
+in Stage 11.1 through Stage 11.9, assigns Accepted Deferral statuses to
+existing production, public-launch, final-drafting, external-review, and
+production-implementation dependencies, and records the verdict: Stage 11
+Closed. Stage 12 may begin. It does not add legal topics, regulatory
+requirements, blockers, review questions, legal documents, public legal copy,
+UI copy, runtime behavior, API behavior, simulator behavior, Decision Engine
+behavior, AI integration, auth, database, subscriptions, billing, analytics,
+tracking, logging, Market Readiness, Closed Beta, Public Launch, Stage 12, or
+roadmap structure.
 
 Date: 2 July 2026, Europe/Madrid.
 
@@ -524,8 +524,53 @@ Engine, AI integration, auth, database, subscriptions, billing, analytics,
 tracking, logging, product behavior, Market Readiness, Closed Beta, Public
 Launch, Stage 12, or the roadmap.
 
-Next implementation subblock: Stage 11.10 Production Legal Blockers Closure
-Gate.
+Stage 11.9 successor subblock: Stage 11.10 Production Legal Blockers Closure
+Gate, now complete.
+
+## Stage 11.10 Production Legal Blockers Closure Gate
+
+Status: complete as documentation-only final closure gate.
+
+Canonical document:
+`docs/stages/stage-11-legal-trust/LEVIO_STAGE_11_10_PRODUCTION_LEGAL_BLOCKERS_CLOSURE_GATE.md`.
+
+Stage 11.10 evaluated only blocker surfaces already recorded in Stage 11.1
+through Stage 11.9. It did not create a new review, readiness matrix,
+inventory, handoff, legal policy, legal document, legal topic, regulatory
+requirement, blocker, review question, runtime change, UI change, API change,
+simulator change, Decision Engine change, AI integration change, auth/database/
+billing/analytics change, roadmap change, Market Readiness, Closed Beta,
+Public Launch, or Stage 12.
+
+Stage 11.10 assigned Accepted Deferral status to all existing blocker surfaces
+for Stage 12 opening. No existing blocker surface was marked Resolved,
+Blocking, or Not Applicable.
+
+Accepted deferral surfaces:
+
+- Privacy / Personal Data Processing;
+- Data-Subject Rights / User Data Controls;
+- Cookies / Local Storage / Consent;
+- Terms / Acceptable Use / Consumer Transparency;
+- AI Transparency / Decision Simulation Disclaimer;
+- High-Risk / Professional-Advice Boundary;
+- Security / Abuse / Operational Trust;
+- Legal Identity / Contact / Support;
+- Production Legal Blockers / Stage 12 Gate.
+
+Additional accepted deferrals:
+
+- production auth/account/persistence runtime;
+- subscription, billing, checkout, paid-plan, tax, refund, and commercial
+  runtime;
+- analytics, marketing, tracking, retargeting, session replay, heatmaps, and
+  fingerprinting runtime;
+- Real AI provider execution, model calls, streaming, provider routes, and UI AI
+  runtime;
+- production monitoring/logging provider integration;
+- high-risk runtime classifier/gate/escalation behavior.
+
+Final closure verdict: Stage 11 Closed. Stage 12 may begin.
 
 ## Product Invariant
 
@@ -742,15 +787,15 @@ rollback.
 
 ## Next Allowed Roadmap Step
 
-Stage 11.9 - Legal Review Packet & Drafting Handoff Complete.
+Stage 11.10 - Production Legal Blockers Closure Gate Complete.
 
-Stage 11.9 is complete as documentation-only legal review and drafting handoff
-work. The next implementation subblock is Stage 11.10 Production Legal Blockers
-Closure Gate. The next step is not a new Product Quality Hardening
+Stage 11.10 is complete as documentation-only final closure gate work. The
+closure verdict is Stage 11 Closed. Stage 12 may begin.
+The next step is not a new Product Quality Hardening
 subblock. It must not add model calls, provider
 execution, API keys/env/SDKs, AI provider API routes, UI AI runtime, auth,
 persistence, billing, subscriptions, analytics, tracking, logging, consent UI,
 cookie banner, AI disclosure UI, disclaimer UI, trust UI, trust page copy,
-legal-document text, regulatory claims, compliance claims, Stage 12, or a new
-public contract without a separate approved step. Market Readiness, Closed
-Beta, Public Launch, and Scale are not active.
+legal-document text, regulatory claims, compliance claims, Production Release,
+Closed Beta, Public Launch, Scale, or a new public contract without a separate
+approved step.

@@ -46,10 +46,10 @@ folder:
 - `stage-11-legal-trust/`
 
 Stage 10 Product Quality Hardening is baseline-locked in the active state
-documents. Repository Structure Normalization is complete. Stage 11.9 Legal
-Review Packet & Drafting Handoff is complete as documentation-only legal/trust
-architecture work. The next implementation subblock is Stage 11.10 Production
-Legal Blockers Closure Gate.
+documents. Repository Structure Normalization is complete. Stage 11.10
+Production Legal Blockers Closure Gate is complete as documentation-only
+legal/trust closure work. The closure verdict is Stage 11 Closed. Stage 12 may
+begin.
 
 ## QA / Quality
 
