@@ -53,7 +53,9 @@ legal/trust closure work. The closure verdict is Stage 11 Closed. Stage 12 may
 begin. Stage 12.1 Market Readiness Scope & Entry Lock and Stage 12.2 Market
 Readiness Surfaces Definition are complete as documentation-only Market
 Readiness work. Stage 12.3 Market Readiness Dependencies & Execution Order is
-complete as documentation-only Market Readiness work.
+complete as documentation-only Market Readiness work. Stage 12.4 Market
+Readiness Evidence Inventory & Dependency Map is complete as documentation-only
+Market Readiness work.
 
 ## QA / Quality
 
@@ -84,5 +86,7 @@ documents are retained for traceability, not as active project state.
   documentation-only surfaces-definition work.
 - Stage 12.3 Market Readiness Dependencies & Execution Order is complete as
   documentation-only dependency/order work.
+- Stage 12.4 Market Readiness Evidence Inventory & Dependency Map is complete
+  as documentation-only evidence-inventory work.
 - Production Release, Closed Beta, Public Launch, Commercial Launch, and Scale
   remain closed.

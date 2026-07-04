@@ -278,7 +278,17 @@ Overall Project Progress ████████░░ 80%
   Logging, legal documents, Production Release, Closed Beta, Public Launch,
   Commercial Launch или Scale.
 - Stage 12.3 successor subblock: Stage 12.4 Market Readiness Evidence
-  Inventory & Dependency Map.
+  Inventory & Dependency Map, now complete.
+- Stage 12.4 Market Readiness Evidence Inventory & Dependency Map завершен
+  как documentation-only evidence inventory and dependency map.
+- Stage 12.4 определил evidence inventory для Stage 12 completion,
+  классифицировал evidence по Market Readiness surfaces, построил карту
+  Evidence -> Surfaces -> completed stages, определил Confirmed Evidence,
+  Future Evidence и Accepted Deferral Evidence.
+- Stage 12.4 подтвердил, что roadmap не меняется и implementation не
+  открывается.
+- Stage 12.4 successor subblock: Stage 12.5 Market Readiness Completion
+  Criteria & Exit Gate.
 - Product Quality Hardening #1-#5 и automated quality gates не добавляли AI
   provider execution, SDK/env/API keys, fetch/model calls, auth, billing,
   persistence, subscription changes, heavy dependencies или Real AI product
@@ -811,8 +821,8 @@ Final closure verdict: Stage 11 Closed. Stage 12 may begin.
 
 ### 12. Market Readiness
 
-Статус: Stage 12.3 Market Readiness Dependencies & Execution Order завершен
-как documentation-only dependency and execution-order lock.
+Статус: Stage 12.4 Market Readiness Evidence Inventory & Dependency Map
+завершен как documentation-only evidence inventory and dependency map.
 Прогресс: ░░░░░░░░░░ 5%.
 Canonical Stage 12.1 document:
 `docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_1_MARKET_READINESS_SCOPE_ENTRY_LOCK.md`.
@@ -820,6 +830,8 @@ Canonical Stage 12.2 document:
 `docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_2_MARKET_READINESS_SURFACES_DEFINITION.md`.
 Canonical Stage 12.3 document:
 `docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_3_MARKET_READINESS_DEPENDENCIES_EXECUTION_ORDER.md`.
+Canonical Stage 12.4 document:
+`docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_4_MARKET_READINESS_EVIDENCE_INVENTORY_DEPENDENCY_MAP.md`.
 Зафиксировано:
 
 - Stage 12 boundaries;
@@ -834,6 +846,12 @@ Canonical Stage 12.3 document:
 - Market Readiness Critical Path;
 - parallelizable documentation/preparation blocks;
 - roadmap and architecture invariant confirmation;
+- Stage 12 evidence inventory;
+- evidence classification by Market Readiness surfaces;
+- Evidence -> Surfaces -> completed stages dependency map;
+- Confirmed Evidence;
+- Future Evidence;
+- Accepted Deferral Evidence;
 - mandatory readiness surfaces;
 - Accepted Deferral implementation surfaces;
 - dependencies from closed Stage 10 and closed Stage 11;
@@ -847,10 +865,11 @@ Canonical Stage 12.3 document:
 - completion criteria for Stage 12.1;
 - completion criteria for Stage 12.2;
 - completion criteria for Stage 12.3;
+- completion criteria for Stage 12.4;
 - one next bounded subblock only.
 
-Следующий bounded subblock: Stage 12.4 Market Readiness Evidence Inventory &
-Dependency Map. Он должен оставаться documentation-only до отдельного approval.
+Следующий bounded subblock: Stage 12.5 Market Readiness Completion Criteria &
+Exit Gate. Он должен оставаться documentation-only до отдельного approval.
 
 ### 13. Closed Beta
 
@@ -872,7 +891,7 @@ Dependency Map. Он должен оставаться documentation-only до �
 
 ## Current Roadmap Focus
 
-Stage 12.3 - Market Readiness Dependencies & Execution Order Complete.
+Stage 12.4 - Market Readiness Evidence Inventory & Dependency Map Complete.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.
@@ -910,8 +929,15 @@ order, the Market Readiness Critical Path, parallelizable
 documentation/preparation blocks, and roadmap/architecture invariant
 confirmation.
 
-The next bounded subblock is Stage 12.4 Market Readiness Evidence Inventory &
-Dependency Map. The next step is not a new Product Quality Hardening subblock
+Stage 12.4 is complete as documentation-only Market Readiness evidence
+inventory and dependency map. It defines evidence required for Stage 12
+completion, classifies evidence by surfaces, maps Evidence to Surfaces and
+prior completed stages, identifies Confirmed Evidence, Future Evidence, and
+Accepted Deferral Evidence, and confirms that no roadmap or implementation
+change is opened.
+
+The next bounded subblock is Stage 12.5 Market Readiness Completion Criteria &
+Exit Gate. The next step is not a new Product Quality Hardening subblock
 and not an implementation task. It must not add model calls, provider
 execution, API keys/env/SDKs, AI provider API routes, UI AI runtime, auth,
 persistence, billing, subscriptions, analytics, tracking, logging, consent UI,
@@ -1568,5 +1594,19 @@ Do not continue:
   или product behavior.
 - Не создавались legal documents, Production Release, Closed Beta, Public
   Launch, Commercial Launch или Scale.
-- Next bounded Stage 12 subblock: Stage 12.4 Market Readiness Evidence
-  Inventory & Dependency Map.
+- Завершен Stage 12.4 Market Readiness Evidence Inventory & Dependency Map
+  как documentation-only bounded block.
+- Создан canonical Stage 12.4 документ:
+  `docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_4_MARKET_READINESS_EVIDENCE_INVENTORY_DEPENDENCY_MAP.md`.
+- Stage 12.4 определил evidence inventory, classification by surfaces,
+  Evidence -> Surfaces -> completed stages dependency map, Confirmed Evidence,
+  Future Evidence и Accepted Deferral Evidence.
+- Stage 12.4 подтвердил, что roadmap не меняется и implementation не
+  открывается.
+- Не менялись runtime, UI, API, Decision Engine, Simulator, Prompt Context,
+  AI, Auth, Database, Billing, Analytics, Tracking, Logging, infrastructure
+  или product behavior.
+- Не создавались legal documents, Production Release, Closed Beta, Public
+  Launch, Commercial Launch или Scale.
+- Next bounded Stage 12 subblock: Stage 12.5 Market Readiness Completion
+  Criteria & Exit Gate.

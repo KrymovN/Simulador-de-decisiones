@@ -2,21 +2,20 @@
 
 ## Active Checkpoint
 
-Stage 12.3 - Market Readiness Dependencies & Execution Order Complete.
+Stage 12.4 - Market Readiness Evidence Inventory & Dependency Map Complete.
 
-Status: Stage 12.3 is complete as a documentation-only Market Readiness
-dependency and execution-order lock. It defines the complete dependency graph
-between Market Readiness surfaces, fixes the mandatory readiness execution
-order, identifies the Market Readiness Critical Path, identifies
-parallelizable documentation/preparation blocks, confirms roadmap and
-architecture invariant preservation, and identifies the next bounded Stage 12
-subblock. It does not open implementation, Production Release, Closed Beta,
-Public Launch, Scale, Commercial Launch, runtime behavior, UI behavior, API
-behavior, simulator behavior, Decision Engine behavior, Prompt Context
-behavior, AI integration, auth, persistence, database, billing, subscriptions,
-analytics, tracking, logging, infrastructure, product behavior,
-legal-document text, consent UI, trust UI, AI disclosure UI, disclaimer UI, or
-a new public contract.
+Status: Stage 12.4 is complete as a documentation-only Market Readiness
+evidence inventory and dependency map. It defines the evidence required for
+Stage 12 completion, classifies evidence by Market Readiness surface, maps
+Evidence to Surfaces and prior completed stages, identifies confirmed
+evidence, future evidence, and Accepted Deferral Evidence, confirms roadmap
+preservation, and identifies the next bounded Stage 12 subblock. It does not
+open implementation, Production Release, Closed Beta, Public Launch, Scale,
+Commercial Launch, runtime behavior, UI behavior, API behavior, simulator
+behavior, Decision Engine behavior, Prompt Context behavior, AI integration,
+auth, persistence, database, billing, subscriptions, analytics, tracking,
+logging, infrastructure, product behavior, legal-document text, consent UI,
+trust UI, AI disclosure UI, disclaimer UI, or a new public contract.
 
 Date: 4 July 2026, Europe/Madrid.
 
@@ -207,8 +206,47 @@ documents, Production Release, Closed Beta, Public Launch, Commercial Launch,
 Scale, or a new public contract.
 
 Stage 12.3 successor subblock: Stage 12.4 Market Readiness Evidence Inventory
-& Dependency Map. It is the only next bounded Stage 12 subblock identified and
-must remain documentation-only until separately approved.
+& Dependency Map, now complete.
+
+## Stage 12.4 Market Readiness Evidence Inventory & Dependency Map
+
+Status: complete as documentation-only Market Readiness evidence inventory and
+dependency map.
+
+Canonical document:
+`docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_4_MARKET_READINESS_EVIDENCE_INVENTORY_DEPENDENCY_MAP.md`.
+
+Stage 12.4 defines the evidence inventory required for Stage 12 completion,
+classifies evidence by Market Readiness surfaces S1-S12, maps Evidence to
+Surfaces and prior completed stages, identifies already confirmed evidence,
+future evidence, and Accepted Deferral Evidence, and confirms that Stage 12.4
+does not change the roadmap or open implementation.
+
+Stage 12.4 evidence statuses:
+
+- Confirmed Evidence;
+- Future Evidence;
+- Accepted Deferral Evidence.
+
+Stage 12.4 identifies confirmed evidence E1-E19, E23, and E25 as already
+available for Stage 12 documentation work. It identifies E20-E22 and E24 as
+future evidence or production-operational evidence to be produced only by
+separately approved later roadmap work.
+
+Stage 12.4 preserves Accepted Deferral implementation evidence for privacy/
+data/cookies/consent, AI transparency/disclosure, auth/account/persistence/
+user data controls, subscription/billing/commercial, Real AI, analytics/
+marketing/tracking/monitoring/logging, and operational support/legal identity.
+
+Stage 12.4 does not change runtime, UI, API, simulator, Decision Engine,
+Prompt Context, AI integration, auth, persistence, database, billing,
+subscriptions, analytics, tracking, logging, infrastructure, public contract,
+or product behavior. It does not write legal documents, public legal copy,
+trust copy, consent text, launch copy, or compliance claims.
+
+Stage 12.4 successor subblock: Stage 12.5 Market Readiness Completion Criteria
+& Exit Gate. It is the only next bounded Stage 12 subblock identified and must
+remain documentation-only until separately approved.
 
 ## Stage 11 Foundation Inventory
 
@@ -947,10 +985,10 @@ rollback.
 
 ## Next Allowed Roadmap Step
 
-Stage 12.4 - Market Readiness Evidence Inventory & Dependency Map.
+Stage 12.5 - Market Readiness Completion Criteria & Exit Gate.
 
-Stage 12.3 is complete as documentation-only Market Readiness dependency and
-execution-order lock. The next step is not an implementation task and not a new Product
+Stage 12.4 is complete as documentation-only Market Readiness evidence
+inventory and dependency map. The next step is not an implementation task and not a new Product
 Quality Hardening subblock. It must not add model calls, provider execution,
 API keys/env/SDKs, AI provider API routes, UI AI runtime, auth, persistence,
 billing, subscriptions, analytics, tracking, logging, consent UI, cookie

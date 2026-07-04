@@ -18,7 +18,9 @@ the roadmap. Stage 11 Legal & Trust Layer is closed. Stage 12.1 Market
 Readiness Scope & Entry Lock and Stage 12.2 Market Readiness Surfaces
 Definition are complete as documentation-only Market Readiness work. Stage
 12.3 Market Readiness Dependencies & Execution Order is complete as
-documentation-only Market Readiness work.
+documentation-only Market Readiness work. Stage 12.4 Market Readiness
+Evidence Inventory & Dependency Map is complete as documentation-only Market
+Readiness work.
 
 ## Active Project State
 
@@ -48,6 +50,7 @@ work. The closure verdict is Stage 11 Closed. Stage 12 may begin. Stage 12.1
 Market Readiness Scope & Entry Lock is complete as documentation-only entry
 work. Stage 12.2 Market Readiness Surfaces Definition is complete as
 documentation-only work. Stage 12.3 Market Readiness Dependencies & Execution
-Order is complete as documentation-only work. The next bounded Stage 12
-subblock is Stage 12.4
-Market Readiness Evidence Inventory & Dependency Map.
+Order is complete as documentation-only work. Stage 12.4 Market Readiness
+Evidence Inventory & Dependency Map is complete as documentation-only work.
+The next bounded Stage 12 subblock is Stage 12.5 Market Readiness Completion
+Criteria & Exit Gate.
