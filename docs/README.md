@@ -55,7 +55,9 @@ Readiness Surfaces Definition are complete as documentation-only Market
 Readiness work. Stage 12.3 Market Readiness Dependencies & Execution Order is
 complete as documentation-only Market Readiness work. Stage 12.4 Market
 Readiness Evidence Inventory & Dependency Map is complete as documentation-only
-Market Readiness work.
+Market Readiness work. Stage 12.5 Market Readiness Completion Criteria & Exit
+Gate is complete as documentation-only Market Readiness work. Stage 12 is
+ready to close as a documentation-only roadmap stage.
 
 ## QA / Quality
 
@@ -88,5 +90,8 @@ documents are retained for traceability, not as active project state.
   documentation-only dependency/order work.
 - Stage 12.4 Market Readiness Evidence Inventory & Dependency Map is complete
   as documentation-only evidence-inventory work.
+- Stage 12.5 Market Readiness Completion Criteria & Exit Gate is complete as
+  documentation-only exit-gate work.
+- No further bounded Stage 12 subblock is required.
 - Production Release, Closed Beta, Public Launch, Commercial Launch, and Scale
   remain closed.

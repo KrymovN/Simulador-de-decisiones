@@ -288,7 +288,18 @@ Overall Project Progress ████████░░ 80%
 - Stage 12.4 подтвердил, что roadmap не меняется и implementation не
   открывается.
 - Stage 12.4 successor subblock: Stage 12.5 Market Readiness Completion
-  Criteria & Exit Gate.
+  Criteria & Exit Gate, now complete.
+- Stage 12.5 Market Readiness Completion Criteria & Exit Gate завершен как
+  documentation-only completion criteria and exit gate.
+- Stage 12.5 определил exhaustive Stage 12 completion criteria, official
+  Stage 12 Exit Gate, mandatory conditions before any transition to the next
+  roadmap block и treatment of Remaining Accepted Deferrals.
+- Stage 12.5 Exit Gate verdict: Stage 12 Market Readiness ready for closure
+  as documentation-only roadmap stage; no further bounded Stage 12 subblock is
+  required.
+- Stage 13 Closed Beta не открыт и требует separate explicit approval и own
+  entry gate before any beta/runtime/UI/API/legal/data/commercial/analytics/
+  tracking/logging/support/infrastructure implementation.
 - Product Quality Hardening #1-#5 и automated quality gates не добавляли AI
   provider execution, SDK/env/API keys, fetch/model calls, auth, billing,
   persistence, subscription changes, heavy dependencies или Real AI product
@@ -821,8 +832,9 @@ Final closure verdict: Stage 11 Closed. Stage 12 may begin.
 
 ### 12. Market Readiness
 
-Статус: Stage 12.4 Market Readiness Evidence Inventory & Dependency Map
-завершен как documentation-only evidence inventory and dependency map.
+Статус: Stage 12.5 Market Readiness Completion Criteria & Exit Gate завершен
+как documentation-only completion criteria and exit gate. Stage 12 ready for
+closure as documentation-only roadmap stage.
 Прогресс: ░░░░░░░░░░ 5%.
 Canonical Stage 12.1 document:
 `docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_1_MARKET_READINESS_SCOPE_ENTRY_LOCK.md`.
@@ -832,6 +844,8 @@ Canonical Stage 12.3 document:
 `docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_3_MARKET_READINESS_DEPENDENCIES_EXECUTION_ORDER.md`.
 Canonical Stage 12.4 document:
 `docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_4_MARKET_READINESS_EVIDENCE_INVENTORY_DEPENDENCY_MAP.md`.
+Canonical Stage 12.5 document:
+`docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_5_MARKET_READINESS_COMPLETION_CRITERIA_EXIT_GATE.md`.
 Зафиксировано:
 
 - Stage 12 boundaries;
@@ -852,6 +866,11 @@ Canonical Stage 12.4 document:
 - Confirmed Evidence;
 - Future Evidence;
 - Accepted Deferral Evidence;
+- exhaustive Stage 12 completion criteria;
+- official Stage 12 Exit Gate;
+- mandatory conditions before transition to the next roadmap block;
+- Remaining Accepted Deferrals compatibility with Stage 12 closure;
+- Stage 12 ready-for-closure verdict;
 - mandatory readiness surfaces;
 - Accepted Deferral implementation surfaces;
 - dependencies from closed Stage 10 and closed Stage 11;
@@ -866,10 +885,12 @@ Canonical Stage 12.4 document:
 - completion criteria for Stage 12.2;
 - completion criteria for Stage 12.3;
 - completion criteria for Stage 12.4;
-- one next bounded subblock only.
+- completion criteria for Stage 12.5;
+- no further bounded Stage 12 subblock required.
 
-Следующий bounded subblock: Stage 12.5 Market Readiness Completion Criteria &
-Exit Gate. Он должен оставаться documentation-only до отдельного approval.
+Stage 12 ready for closure as documentation-only Market Readiness roadmap
+stage. Stage 13 Closed Beta остается not started and requires separate explicit
+approval and its own entry gate.
 
 ### 13. Closed Beta
 
@@ -891,7 +912,7 @@ Exit Gate. Он должен оставаться documentation-only до отд
 
 ## Current Roadmap Focus
 
-Stage 12.4 - Market Readiness Evidence Inventory & Dependency Map Complete.
+Stage 12.5 - Market Readiness Completion Criteria & Exit Gate Complete.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.
@@ -936,15 +957,17 @@ prior completed stages, identifies Confirmed Evidence, Future Evidence, and
 Accepted Deferral Evidence, and confirms that no roadmap or implementation
 change is opened.
 
-The next bounded subblock is Stage 12.5 Market Readiness Completion Criteria &
-Exit Gate. The next step is not a new Product Quality Hardening subblock
-and not an implementation task. It must not add model calls, provider
-execution, API keys/env/SDKs, AI provider API routes, UI AI runtime, auth,
-persistence, billing, subscriptions, analytics, tracking, logging, consent UI,
-cookie banner, AI disclosure UI, disclaimer UI, trust UI, trust page copy,
-legal-document text, regulatory claims, compliance claims, Production Release,
-Closed Beta, Public Launch, Commercial Launch, Scale, or a new public contract
-without a separate approved step.
+Stage 12.5 is complete as documentation-only Market Readiness completion
+criteria and exit gate. It defines exhaustive Stage 12 completion criteria,
+the official Stage 12 Exit Gate, mandatory conditions before transition to the
+next roadmap block, treatment of Remaining Accepted Deferrals, and the Stage
+12 ready-for-closure verdict.
+
+No further bounded Stage 12 subblock is required. Stage 12 is ready to close
+as a documentation-only Market Readiness roadmap stage. Stage 13 Closed Beta
+remains not started and requires separate explicit approval and its own entry
+gate before any beta, runtime, UI, API, legal, data, commercial, analytics,
+tracking, logging, support, or infrastructure implementation begins.
 
 Billing provider implementation remains deferred until provider/commercial/legal
 approval exists.
@@ -1608,5 +1631,21 @@ Do not continue:
   или product behavior.
 - Не создавались legal documents, Production Release, Closed Beta, Public
   Launch, Commercial Launch или Scale.
-- Next bounded Stage 12 subblock: Stage 12.5 Market Readiness Completion
-  Criteria & Exit Gate.
+- Завершен Stage 12.5 Market Readiness Completion Criteria & Exit Gate как
+  documentation-only bounded block.
+- Создан canonical Stage 12.5 документ:
+  `docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_5_MARKET_READINESS_COMPLETION_CRITERIA_EXIT_GATE.md`.
+- Stage 12.5 определил exhaustive Stage 12 completion criteria, official
+  Stage 12 Exit Gate, mandatory conditions before transition to the next
+  roadmap block, treatment of Remaining Accepted Deferrals и Stage 12
+  ready-for-closure verdict.
+- Remaining Accepted Deferrals совместимы с Stage 12 closure, но продолжают
+  блокировать later production/public/commercial/beta/launch/scale decisions
+  until separately resolved or explicitly carried forward by a later gate.
+- Не менялись runtime, UI, API, Decision Engine, Simulator, Prompt Context,
+  AI, Auth, Database, Billing, Analytics, Tracking, Logging, infrastructure
+  или product behavior.
+- Не создавались legal documents, Production Release, Closed Beta, Public
+  Launch, Commercial Launch или Scale.
+- No further bounded Stage 12 subblock is required. Stage 13 Closed Beta is
+  not opened and requires separate explicit approval plus its own entry gate.

@@ -2,15 +2,14 @@
 
 ## Active Checkpoint
 
-Stage 12.4 - Market Readiness Evidence Inventory & Dependency Map Complete.
+Stage 12.5 - Market Readiness Completion Criteria & Exit Gate Complete.
 
-Status: Stage 12.4 is complete as a documentation-only Market Readiness
-evidence inventory and dependency map. It defines the evidence required for
-Stage 12 completion, classifies evidence by Market Readiness surface, maps
-Evidence to Surfaces and prior completed stages, identifies confirmed
-evidence, future evidence, and Accepted Deferral Evidence, confirms roadmap
-preservation, and identifies the next bounded Stage 12 subblock. It does not
-open implementation, Production Release, Closed Beta, Public Launch, Scale,
+Status: Stage 12.5 is complete as a documentation-only Market Readiness
+completion criteria and exit gate. It defines exhaustive Stage 12 completion
+criteria, the official Stage 12 Exit Gate, mandatory conditions before any
+transition to the next roadmap block, treatment of Remaining Accepted
+Deferrals, and the Stage 12 closure readiness verdict. It does not open
+implementation, Production Release, Closed Beta, Public Launch, Scale,
 Commercial Launch, runtime behavior, UI behavior, API behavior, simulator
 behavior, Decision Engine behavior, Prompt Context behavior, AI integration,
 auth, persistence, database, billing, subscriptions, analytics, tracking,
@@ -245,8 +244,34 @@ or product behavior. It does not write legal documents, public legal copy,
 trust copy, consent text, launch copy, or compliance claims.
 
 Stage 12.4 successor subblock: Stage 12.5 Market Readiness Completion Criteria
-& Exit Gate. It is the only next bounded Stage 12 subblock identified and must
-remain documentation-only until separately approved.
+& Exit Gate, now complete.
+
+## Stage 12.5 Market Readiness Completion Criteria & Exit Gate
+
+Status: complete as documentation-only Market Readiness completion criteria
+and exit gate.
+
+Canonical document:
+`docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_5_MARKET_READINESS_COMPLETION_CRITERIA_EXIT_GATE.md`.
+
+Stage 12.5 defines exhaustive Stage 12 completion criteria, the official Stage
+12 Exit Gate, mandatory conditions before any transition to the next roadmap
+block, and the treatment of Remaining Accepted Deferrals.
+
+Stage 12.5 Exit Gate verdict: Stage 12 Market Readiness is ready for closure
+as a documentation-only roadmap stage. No further bounded Stage 12 subblock is
+required.
+
+Remaining Accepted Deferrals are compatible with Stage 12 closure because
+Stage 12 is a documentation-only Market Readiness stage. They continue to
+block later production, public, commercial, beta, launch, or scale decisions
+until a later approved gate resolves them or explicitly carries them forward.
+
+Stage 12.5 does not change runtime, UI, API, simulator, Decision Engine,
+Prompt Context, AI integration, auth, persistence, database, billing,
+subscriptions, analytics, tracking, logging, infrastructure, public contract,
+or product behavior. It does not write legal documents, public legal copy,
+trust copy, consent text, launch copy, or compliance claims.
 
 ## Stage 11 Foundation Inventory
 
@@ -985,14 +1010,13 @@ rollback.
 
 ## Next Allowed Roadmap Step
 
-Stage 12.5 - Market Readiness Completion Criteria & Exit Gate.
+No further bounded Stage 12 subblock is required.
 
-Stage 12.4 is complete as documentation-only Market Readiness evidence
-inventory and dependency map. The next step is not an implementation task and not a new Product
-Quality Hardening subblock. It must not add model calls, provider execution,
-API keys/env/SDKs, AI provider API routes, UI AI runtime, auth, persistence,
-billing, subscriptions, analytics, tracking, logging, consent UI, cookie
-banner, AI disclosure UI, disclaimer UI, trust UI, trust page copy,
-legal-document text, regulatory claims, compliance claims, Production Release,
-Closed Beta, Public Launch, Commercial Launch, Scale, or a new public contract
-without a separate approved step.
+Stage 12.5 is complete as documentation-only Market Readiness completion
+criteria and exit gate. Stage 12 is ready to close as a documentation-only
+Market Readiness roadmap stage.
+
+The next roadmap block remains Stage 13 Closed Beta, but Stage 13 is not
+opened by Stage 12.5. Stage 13 requires a separate explicit approval and its
+own entry gate before any beta, runtime, UI, API, legal, data, commercial,
+analytics, tracking, logging, support, or infrastructure implementation begins.

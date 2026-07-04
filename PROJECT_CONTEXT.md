@@ -12,20 +12,18 @@ Levio is not an Answer Engine.
 
 Levio is not a Generic AI Assistant.
 
-The active checkpoint is Stage 12.4 - Market Readiness Evidence Inventory &
-Dependency Map Complete. This is a documentation-only evidence inventory and
-dependency map for the Stage 12 Market Readiness surfaces. It defines the
-evidence required for Stage 12 completion, classifies evidence by Market
-Readiness surface, maps Evidence to Surfaces and prior completed stages,
-identifies confirmed evidence, future evidence, and Accepted Deferral
-Evidence, confirms roadmap preservation, and identifies the next bounded Stage
-12 subblock. It does not open implementation, Production Release, Closed Beta,
-Public Launch, Scale, Commercial Launch, runtime behavior, UI behavior, API
-behavior, simulator behavior, Decision Engine behavior, Prompt Context
-behavior, AI integration, auth, persistence, database, billing, subscriptions,
-analytics, tracking, logging, infrastructure, product behavior,
-legal-document text, consent UI, trust UI, AI disclosure UI, disclaimer UI, or
-a new public contract.
+The active checkpoint is Stage 12.5 - Market Readiness Completion Criteria &
+Exit Gate Complete. This is a documentation-only completion criteria and exit
+gate for Stage 12 Market Readiness. It defines exhaustive Stage 12 completion
+criteria, the official Stage 12 Exit Gate, mandatory conditions before any
+transition to the next roadmap block, treatment of Remaining Accepted
+Deferrals, and the Stage 12 closure readiness verdict. It does not open
+implementation, Production Release, Closed Beta, Public Launch, Scale,
+Commercial Launch, runtime behavior, UI behavior, API behavior, simulator
+behavior, Decision Engine behavior, Prompt Context behavior, AI integration,
+auth, persistence, database, billing, subscriptions, analytics, tracking,
+logging, infrastructure, product behavior, legal-document text, consent UI,
+trust UI, AI disclosure UI, disclaimer UI, or a new public contract.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as foundation-only preflight, runtime
@@ -648,11 +646,29 @@ or product behavior. It does not write legal documents, public legal copy,
 trust copy, consent text, launch copy, or compliance claims.
 
 Stage 12.4 successor subblock: Stage 12.5 Market Readiness Completion Criteria
-& Exit Gate. It is documentation-only until separately approved and must not
-open Production Release, Closed Beta, Public Launch, Scale, Commercial Launch,
-runtime changes, UI changes, API changes, legal copy, consent UI, trust UI,
-Real AI, auth, persistence, billing, analytics, tracking, logging, or
-infrastructure changes.
+& Exit Gate, now complete.
+
+Stage 12.5 Market Readiness Completion Criteria & Exit Gate is complete as a
+documentation-only completion criteria and exit gate under
+`docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_5_MARKET_READINESS_COMPLETION_CRITERIA_EXIT_GATE.md`.
+It defines exhaustive Stage 12 completion criteria, the official Stage 12 Exit
+Gate, mandatory conditions before any transition to the next roadmap block,
+and the treatment of Remaining Accepted Deferrals.
+
+Stage 12.5 Exit Gate verdict: Stage 12 Market Readiness is ready for closure
+as a documentation-only roadmap stage. No further bounded Stage 12 subblock is
+required.
+
+Remaining Accepted Deferrals are compatible with Stage 12 closure because
+Stage 12 is a documentation-only Market Readiness stage. They continue to
+block later production, public, commercial, beta, launch, or scale decisions
+until a later approved gate resolves them or explicitly carries them forward.
+
+Stage 12.5 does not change runtime, UI, API, simulator, Decision Engine,
+Prompt Context, AI integration, auth, persistence, database, billing,
+subscriptions, analytics, tracking, logging, infrastructure, public contract,
+or product behavior. It does not write legal documents, public legal copy,
+trust copy, consent text, launch copy, or compliance claims.
 
 Supporting references:
 
@@ -1181,18 +1197,13 @@ webhooks, UI/API, QA, and rollback rehearsal.
 
 ## Next Roadmap Step
 
-The current roadmap position is Stage 12.4 - Market Readiness Evidence
-Inventory & Dependency Map Complete.
+The current roadmap position is Stage 12.5 - Market Readiness Completion
+Criteria & Exit Gate Complete.
 
-The next bounded Stage 12 subblock is Stage 12.5 Market Readiness Completion
-Criteria & Exit Gate. It must remain documentation-only until separately
-approved. The immutable Decision Simulation Engine architecture remains
-mandatory, and the next step must not create AI Chat, Answer Engine, Generic
-Assistant, direct AI-to-user behavior, model calls, provider execution, API
-keys/env/SDKs, AI provider API routes, UI AI runtime, auth, persistence,
-billing, subscriptions, analytics, tracking, logging, consent UI, cookie
-banner, AI disclosure UI, disclaimer UI, trust UI, trust page copy,
-legal-document text, regulatory claims, compliance claims, Production Release,
-Closed Beta, Public Launch, Commercial Launch, Scale, or a new public contract
-without a separate approved step. Production Release, Closed Beta, Public
-Launch, Commercial Launch, and Scale remain deferred until separately approved.
+No further bounded Stage 12 subblock is required. Stage 12 is ready to close
+as a documentation-only Market Readiness roadmap stage.
+
+The next roadmap block remains Stage 13 Closed Beta, but Stage 13 is not
+opened by Stage 12.5. Stage 13 requires a separate explicit approval and its
+own entry gate before any beta, runtime, UI, API, legal, data, commercial,
+analytics, tracking, logging, support, or infrastructure implementation begins.
