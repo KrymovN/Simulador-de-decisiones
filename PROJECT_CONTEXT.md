@@ -12,17 +12,19 @@ Levio is not an Answer Engine.
 
 Levio is not a Generic AI Assistant.
 
-The active checkpoint is Stage 12.2 - Market Readiness Surfaces Definition
-Complete. This is a documentation-only definition lock for the Stage 12 Market
-Readiness surfaces. It finalizes the readiness surface categories, purpose of
-each surface, dependencies between surfaces, future readiness order, mandatory
-readiness surfaces, and Accepted Deferral implementation surfaces. It does not
-open implementation, Production Release, Closed Beta, Public Launch, Scale,
-Commercial Launch, runtime behavior, UI behavior, API behavior, simulator
-behavior, Decision Engine behavior, Prompt Context behavior, AI integration,
-auth, persistence, database, billing, subscriptions, analytics, tracking,
-logging, infrastructure, product behavior, legal-document text, consent UI,
-trust UI, AI disclosure UI, disclaimer UI, or a new public contract.
+The active checkpoint is Stage 12.3 - Market Readiness Dependencies &
+Execution Order Complete. This is a documentation-only dependency and
+execution-order lock for the Stage 12 Market Readiness surfaces. It defines
+the complete dependency graph between surfaces, mandatory readiness execution
+order, Critical Path, parallelizable documentation/preparation blocks, roadmap
+and architecture invariant confirmation, and the next bounded Stage 12
+subblock. It does not open implementation, Production Release, Closed Beta,
+Public Launch, Scale, Commercial Launch, runtime behavior, UI behavior, API
+behavior, simulator behavior, Decision Engine behavior, Prompt Context
+behavior, AI integration, auth, persistence, database, billing, subscriptions,
+analytics, tracking, logging, infrastructure, product behavior,
+legal-document text, consent UI, trust UI, AI disclosure UI, disclaimer UI, or
+a new public contract.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as foundation-only preflight, runtime
@@ -588,7 +590,35 @@ subscriptions, analytics, tracking, logging, infrastructure, public contract,
 or product behavior. It does not write legal documents, public legal copy,
 trust copy, consent text, launch copy, or compliance claims.
 
-Stage 12.2 successor subblock: Stage 12.3 Market Readiness Evidence Inventory
+Stage 12.2 successor subblock: Stage 12.3 Market Readiness Dependencies &
+Execution Order, now complete.
+
+Stage 12.3 Market Readiness Dependencies & Execution Order is complete as a
+documentation-only dependency and execution-order lock under
+`docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_3_MARKET_READINESS_DEPENDENCIES_EXECUTION_ORDER.md`.
+It defines stable surface identifiers S1-S12, the complete dependency graph
+between Market Readiness surfaces, the mandatory readiness execution order,
+the Market Readiness Critical Path, independent blocks that allow parallel
+documentation/preparation work, and confirmation that the order preserves the
+approved roadmap and immutable Decision Simulation Engine architecture.
+
+Stage 12.3 Critical Path:
+
+`S1 Product Positioning -> S2 Public Simulator -> S3 Product Quality Evidence -> S4 Legal and Trust Evidence -> S5 Privacy/Data/Cookies/Consent -> S7 Auth/Account/Persistence/User Data Controls -> S8 Subscription/Billing/Commercial -> S12 Future Release Gate`.
+
+Stage 12.3 planning branches:
+
+- Real AI branch: S1 -> S2 -> S3 -> S4 -> S6 -> S9 -> S12.
+- Measurement branch: S4 -> S5 -> S10 -> S12.
+- Operations branch: S4 -> S5 -> S6 -> S11 -> S12.
+
+Stage 12.3 does not change runtime, UI, API, simulator, Decision Engine,
+Prompt Context, AI integration, auth, persistence, database, billing,
+subscriptions, analytics, tracking, logging, infrastructure, public contract,
+or product behavior. It does not write legal documents, public legal copy,
+trust copy, consent text, launch copy, or compliance claims.
+
+Stage 12.3 successor subblock: Stage 12.4 Market Readiness Evidence Inventory
 & Dependency Map. It is documentation-only until separately approved and must
 not open Production Release, Closed Beta, Public Launch, Scale, Commercial
 Launch, runtime changes, UI changes, API changes, legal copy, consent UI, trust
@@ -1122,10 +1152,10 @@ webhooks, UI/API, QA, and rollback rehearsal.
 
 ## Next Roadmap Step
 
-The current roadmap position is Stage 12.2 - Market Readiness Surfaces
-Definition Complete.
+The current roadmap position is Stage 12.3 - Market Readiness Dependencies &
+Execution Order Complete.
 
-The next bounded Stage 12 subblock is Stage 12.3 Market Readiness Evidence
+The next bounded Stage 12 subblock is Stage 12.4 Market Readiness Evidence
 Inventory & Dependency Map. It must remain documentation-only until separately
 approved. The immutable Decision Simulation Engine architecture remains
 mandatory, and the next step must not create AI Chat, Answer Engine, Generic
