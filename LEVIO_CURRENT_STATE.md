@@ -2,22 +2,22 @@
 
 ## Confirmed Project Position
 
-Date: 2 July 2026, Europe/Madrid.
+Date: 4 July 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Stage 11.10 - Production Legal Blockers Closure
-Gate Complete. This is a documentation-only final closure gate for Stage 11
-blocker surfaces. It evaluates only blocker surfaces already recorded in Stage
-11.1 through Stage 11.9, assigns Accepted Deferral statuses to existing
-production, public-launch, final-drafting, external-review, and
-production-implementation dependencies, and records the verdict: Stage 11
-Closed. Stage 12 may begin. It does not add legal topics, regulatory
-requirements, blockers, review questions, legal documents, public legal copy,
-UI copy, runtime behavior, API behavior, UI behavior, simulator behavior,
-Decision Engine behavior, product behavior, AI integration, auth, database,
-subscriptions, billing, analytics, tracking, logging, Market Readiness, Closed
-Beta, Public Launch, or roadmap changes.
+The current confirmed state is Stage 12.1 - Market Readiness Scope & Entry
+Lock Complete. This is a documentation-only entry lock for Stage 12 - Market
+Readiness. It defines the Stage 12 boundary, readiness surfaces, dependencies
+from closed Stage 10 and closed Stage 11, continuing Stage 11.10 Accepted
+Deferrals, explicit non-opened stages, explicit non-changes, completion
+criteria, and one next bounded Stage 12 subblock. It does not implement Market
+Readiness work and does not open Production Release, Closed Beta, Public
+Launch, Scale, Commercial Launch, runtime behavior, UI behavior, API behavior,
+simulator behavior, Decision Engine behavior, Prompt Context behavior, product
+behavior, AI integration, auth, persistence, database, subscriptions, billing,
+analytics, tracking, logging, infrastructure, legal-document text, consent UI,
+trust UI, AI disclosure UI, disclaimer UI, or roadmap changes outside Stage 12.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as controlled foundation-only preflight,
@@ -535,6 +535,44 @@ change, roadmap change, Market Readiness, Closed Beta, Public Launch, or Stage
 
 Final closure verdict: Stage 11 Closed. Stage 12 may begin.
 
+Stage 12.1 Market Readiness Scope & Entry Lock is complete as a
+documentation-only Market Readiness entry lock. Canonical document:
+`docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_1_MARKET_READINESS_SCOPE_ENTRY_LOCK.md`.
+
+Locked Stage 12 Market Readiness surfaces:
+
+- Product Positioning Readiness Surface;
+- Public Simulator Readiness Surface;
+- Product Quality Evidence Surface;
+- Legal and Trust Evidence Surface;
+- Privacy, Data, Cookies, and Consent Readiness Surface;
+- Auth, Account, Persistence, and User Data Controls Readiness Surface;
+- Subscription, Billing, and Commercial Readiness Surface;
+- Real AI Readiness Surface;
+- Analytics, Marketing, Tracking, and Monitoring Readiness Surface;
+- Operational Support and Legal Identity Readiness Surface;
+- Future Release Gate Readiness Surface.
+
+Stage 12.1 depends on the Stage 10 closure baseline, the Stage 11 legal/trust
+architecture closure, and Stage 11.10 Accepted Deferrals. It keeps all Stage
+11.10 Accepted Deferrals active and does not mark any accepted deferral as
+resolved, blocking, or not applicable.
+
+Stage 12.1 does not open Production Release, Closed Beta, Public Launch, Scale,
+Commercial Launch, production account runtime, production persistence runtime,
+production billing or paid-plan runtime, Real AI provider execution, analytics,
+tracking, marketing, monitoring runtime, public legal documents, or final legal
+copy.
+
+Stage 12.1 does not change runtime, UI, API, simulator, Decision Engine, Prompt
+Context, AI integration, auth, persistence, database, billing, subscriptions,
+analytics, tracking, logging, infrastructure, public contract, or product
+behavior.
+
+Stage 12.1 successor subblock: Stage 12.2 Market Readiness Evidence Inventory
+& Dependency Map. It is the only next bounded Stage 12 subblock identified and
+must remain documentation-only until separately approved.
+
 Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
 Complete.
 
@@ -800,16 +838,15 @@ observability, and rollback planning.
 
 ## Next Roadmap Step
 
-Stage 11.10 - Production Legal Blockers Closure Gate Complete.
+Stage 12.2 - Market Readiness Evidence Inventory & Dependency Map.
 
-Stage 11.10 is complete as documentation-only final closure gate work. The
-closure verdict is Stage 11 Closed. Stage 12 may begin.
-The next step is not a new Product Quality Hardening
-subblock. It must preserve Levio as a Decision Simulation Engine and must not
-create AI Chat, Answer Engine, Generic Assistant, direct AI-to-user behavior,
-model calls, provider execution, API keys/env/SDKs, AI provider API routes, UI
-AI runtime, auth, persistence, billing, subscriptions, analytics, tracking,
-logging, consent UI, cookie banner, AI disclosure UI, disclaimer UI, trust UI,
-trust page copy, legal-document text, regulatory claims, compliance claims,
-Production Release, Closed Beta, Public Launch, Scale, or a new public contract
-without a separate approved step.
+Stage 12.1 is complete as documentation-only Market Readiness scope and entry
+lock. The next step is not an implementation task and not a new Product Quality
+Hardening subblock. It must preserve Levio as a Decision Simulation Engine and
+must not create AI Chat, Answer Engine, Generic Assistant, direct AI-to-user
+behavior, model calls, provider execution, API keys/env/SDKs, AI provider API
+routes, UI AI runtime, auth, persistence, billing, subscriptions, analytics,
+tracking, logging, consent UI, cookie banner, AI disclosure UI, disclaimer UI,
+trust UI, trust page copy, legal-document text, regulatory claims, compliance
+claims, Production Release, Closed Beta, Public Launch, Commercial Launch,
+Scale, or a new public contract without a separate approved step.

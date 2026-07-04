@@ -2,7 +2,7 @@
 
 ## Last Updated
 
-2 июля 2026
+4 июля 2026
 
 ## Purpose
 
@@ -239,6 +239,21 @@ Overall Project Progress ████████░░ 80%
 - Stage 11 не реализует Privacy Policy, Terms, Cookie Policy, consent UI,
   runtime, API, Decision Engine, Product behavior, Real AI, analytics,
   tracking, Market Readiness, Closed Beta или Public Launch.
+- Stage 12.1 Market Readiness Scope & Entry Lock завершен как
+  documentation-only entry lock для Stage 12.
+- Stage 12.1 зафиксировал границы Stage 12, Market Readiness surfaces,
+  зависимости от закрытых Stage 10 и Stage 11, continuing Stage 11.10 Accepted
+  Deferrals, explicit non-opened stages, explicit non-changes, completion
+  criteria и один следующий bounded Stage 12 subblock.
+- Stage 12.1 не реализует Market Readiness work, Production Release, Closed
+  Beta, Public Launch, Scale, Commercial Launch, runtime, UI, API, Simulator,
+  Decision Engine, Prompt Context, AI Integration, auth, persistence,
+  database, billing, subscriptions, analytics, tracking, logging,
+  infrastructure или product behavior.
+- Stage 12.1 не пишет Privacy Policy, Terms, Cookie Policy, AI Disclaimer,
+  legal prose, trust copy, consent text, launch copy или compliance claims.
+- Stage 12.1 successor subblock: Stage 12.2 Market Readiness Evidence
+  Inventory & Dependency Map.
 - Product Quality Hardening #1-#5 и automated quality gates не добавляли AI
   provider execution, SDK/env/API keys, fetch/model calls, auth, billing,
   persistence, subscription changes, heavy dependencies или Real AI product
@@ -771,9 +786,28 @@ Final closure verdict: Stage 11 Closed. Stage 12 may begin.
 
 ### 12. Market Readiness
 
-Статус: Почти не начато.
+Статус: Stage 12.1 Market Readiness Scope & Entry Lock завершен как
+documentation-only entry lock.
 Прогресс: ░░░░░░░░░░ 5%.
-Следующий шаг: Начать после стабилизации core runtime и trust layer.
+Canonical Stage 12.1 document:
+`docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_1_MARKET_READINESS_SCOPE_ENTRY_LOCK.md`.
+Зафиксировано:
+
+- Stage 12 boundaries;
+- Market Readiness surfaces;
+- dependencies from closed Stage 10 and closed Stage 11;
+- continuing Stage 11.10 Accepted Deferrals;
+- explicit non-opened Production Release, Closed Beta, Public Launch, Scale
+  and Commercial Launch;
+- explicit non-changes for runtime, UI, API, simulator, Decision Engine,
+  Prompt Context, AI Integration, auth, persistence, database, billing,
+  subscriptions, analytics, tracking, logging, infrastructure and product
+  behavior;
+- completion criteria for Stage 12.1;
+- one next bounded subblock only.
+
+Следующий bounded subblock: Stage 12.2 Market Readiness Evidence Inventory &
+Dependency Map. Он должен оставаться documentation-only до отдельного approval.
 
 ### 13. Closed Beta
 
@@ -795,7 +829,7 @@ Final closure verdict: Stage 11 Closed. Stage 12 may begin.
 
 ## Current Roadmap Focus
 
-Stage 11.10 - Production Legal Blockers Closure Gate Complete.
+Stage 12.1 - Market Readiness Scope & Entry Lock Complete.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.
@@ -819,14 +853,22 @@ Quality Hardening block is closed.
 
 Stage 11.10 is complete as documentation-only final closure gate work. The
 closure verdict is Stage 11 Closed. Stage 12 may begin.
-The next step is not a new Product Quality Hardening
-subblock. It must not add model calls, provider
+
+Stage 12.1 is complete as documentation-only Market Readiness scope and entry
+lock. Stage 12.1 defines Stage 12 boundaries, Market Readiness surfaces, Stage
+10 and Stage 11 dependencies, continuing Stage 11.10 Accepted Deferrals,
+explicit non-opened stages, explicit non-changes, completion criteria, and one
+next bounded Stage 12 subblock.
+
+The next bounded subblock is Stage 12.2 Market Readiness Evidence Inventory &
+Dependency Map. The next step is not a new Product Quality Hardening subblock
+and not an implementation task. It must not add model calls, provider
 execution, API keys/env/SDKs, AI provider API routes, UI AI runtime, auth,
 persistence, billing, subscriptions, analytics, tracking, logging, consent UI,
 cookie banner, AI disclosure UI, disclaimer UI, trust UI, trust page copy,
 legal-document text, regulatory claims, compliance claims, Production Release,
-Closed Beta, Public Launch, Scale, or a new public contract without a separate
-approved step.
+Closed Beta, Public Launch, Commercial Launch, Scale, or a new public contract
+without a separate approved step.
 
 Billing provider implementation remains deferred until provider/commercial/legal
 approval exists.
@@ -1406,3 +1448,31 @@ Do not continue:
   auth, database, subscriptions, billing, analytics implementation, tracking,
   logging или product behavior.
 - Final closure verdict: Stage 11 Closed. Stage 12 may begin.
+
+### 4 июля 2026
+
+- Начат следующий официальный roadmap block: Stage 12 - Market Readiness.
+- Завершен Stage 12.1 Market Readiness Scope & Entry Lock как
+  documentation-only bounded block.
+- Создан canonical Stage 12.1 документ:
+  `docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_1_MARKET_READINESS_SCOPE_ENTRY_LOCK.md`.
+- Зафиксированы Market Readiness surfaces: Product Positioning Readiness;
+  Public Simulator Readiness; Product Quality Evidence; Legal and Trust
+  Evidence; Privacy, Data, Cookies, and Consent Readiness; Auth, Account,
+  Persistence, and User Data Controls Readiness; Subscription, Billing, and
+  Commercial Readiness; Real AI Readiness; Analytics, Marketing, Tracking, and
+  Monitoring Readiness; Operational Support and Legal Identity Readiness;
+  Future Release Gate Readiness.
+- Stage 12.1 использует Stage 10 closure baseline и Stage 11 legal/trust
+  closure as dependencies.
+- Stage 11.10 Accepted Deferrals продолжили существовать; ни один accepted
+  deferral не помечен resolved, blocking или not applicable.
+- Production Release, Closed Beta, Public Launch, Scale и Commercial Launch не
+  открывались.
+- Не менялись runtime, UI, API, simulator, Decision Engine, Prompt Context, AI
+  Integration, auth, persistence, database, billing, subscriptions, analytics,
+  tracking, logging, infrastructure или product behavior.
+- Не писались Privacy Policy, Terms, Cookie Policy, AI Disclaimer, legal prose,
+  public trust copy, consent text, launch copy или compliance claims.
+- Next bounded Stage 12 subblock: Stage 12.2 Market Readiness Evidence
+  Inventory & Dependency Map.

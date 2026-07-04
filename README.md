@@ -12,9 +12,11 @@ The current confirmed runtime remains deterministic-preview only for the public
 - `apiReady=true`
 
 Real AI Runtime, AI Provider execution, production auth, production
-persistence, billing, subscriptions, Market Readiness, Closed Beta, and Public
-Launch remain deferred until explicitly opened by the roadmap. Stage 11 Legal &
-Trust Layer is open only for documentation-only legal/trust architecture work.
+persistence, billing, subscriptions, Closed Beta, Production Release, Public
+Launch, Commercial Launch, and Scale remain deferred until explicitly opened by
+the roadmap. Stage 11 Legal & Trust Layer is closed. Stage 12.1 Market
+Readiness Scope & Entry Lock is complete as documentation-only Market
+Readiness entry work.
 
 ## Active Project State
 
@@ -40,4 +42,7 @@ Long-lived project documentation is organized under [docs/](docs/README.md):
 Stage 10 Product Quality Hardening is officially closed and baseline-locked.
 Repository Structure Normalization is complete. Stage 11.10 Production Legal
 Blockers Closure Gate is complete as documentation-only legal/trust closure
-work. The closure verdict is Stage 11 Closed. Stage 12 may begin.
+work. The closure verdict is Stage 11 Closed. Stage 12 may begin. Stage 12.1
+Market Readiness Scope & Entry Lock is complete as documentation-only entry
+work. The next bounded Stage 12 subblock is Stage 12.2 Market Readiness
+Evidence Inventory & Dependency Map.

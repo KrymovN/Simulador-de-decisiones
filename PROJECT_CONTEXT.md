@@ -2,7 +2,7 @@
 
 ## Current Confirmed State
 
-Date: 2 July 2026, Europe/Madrid.
+Date: 4 July 2026, Europe/Madrid.
 
 Levio.es is a Decision Simulation Engine.
 
@@ -12,17 +12,18 @@ Levio is not an Answer Engine.
 
 Levio is not a Generic AI Assistant.
 
-The active checkpoint is Stage 11.10 - Production Legal Blockers Closure Gate
-Complete. This is a documentation-only final closure gate for Stage 11 blocker
-surfaces. It evaluates only blocker surfaces already recorded in Stage 11.1
-through Stage 11.9, assigns Accepted Deferral statuses to existing production,
-public-launch, final-drafting, external-review, and production-implementation
-dependencies, and records the verdict: Stage 11 Closed. Stage 12 may begin. It
-does not add legal topics, regulatory requirements, blockers, review questions,
-legal documents, public legal copy, UI copy, runtime behavior, API behavior,
-simulator behavior, Decision Engine behavior, AI integration, auth, database,
-subscriptions, billing, analytics, tracking, logging, Market Readiness, Closed
-Beta, Public Launch, Stage 12, or roadmap structure.
+The active checkpoint is Stage 12.1 - Market Readiness Scope & Entry Lock
+Complete. This is a documentation-only entry lock for Stage 12 - Market
+Readiness. It starts the next official roadmap block only by defining Market
+Readiness boundaries, readiness surfaces, dependencies from closed Stage 10 and
+closed Stage 11, continuing Stage 11.10 Accepted Deferrals, completion
+criteria, and exactly one next bounded Stage 12 subblock. It does not open
+Production Release, Closed Beta, Public Launch, Scale, Commercial Launch,
+runtime behavior, UI behavior, API behavior, simulator behavior, Decision
+Engine behavior, Prompt Context behavior, AI integration, auth, persistence,
+database, billing, subscriptions, analytics, tracking, logging,
+infrastructure, product behavior, legal-document text, consent UI, trust UI, AI
+disclosure UI, disclaimer UI, or a new public contract.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as foundation-only preflight, runtime
@@ -503,6 +504,43 @@ Additional accepted deferrals:
 - high-risk runtime classifier/gate/escalation behavior.
 
 Final closure verdict: Stage 11 Closed. Stage 12 may begin.
+
+Stage 12.1 Market Readiness Scope & Entry Lock is complete as a
+documentation-only Market Readiness entry lock under
+`docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_1_MARKET_READINESS_SCOPE_ENTRY_LOCK.md`.
+It defines the allowed Stage 12 boundary, Market Readiness surfaces, Stage 10
+and Stage 11 dependencies, continuing Stage 11.10 Accepted Deferrals, explicit
+non-opened stages, explicit non-changes, completion criteria, and the next
+bounded Stage 12 subblock.
+
+Locked Stage 12 Market Readiness surfaces:
+
+- Product Positioning Readiness Surface;
+- Public Simulator Readiness Surface;
+- Product Quality Evidence Surface;
+- Legal and Trust Evidence Surface;
+- Privacy, Data, Cookies, and Consent Readiness Surface;
+- Auth, Account, Persistence, and User Data Controls Readiness Surface;
+- Subscription, Billing, and Commercial Readiness Surface;
+- Real AI Readiness Surface;
+- Analytics, Marketing, Tracking, and Monitoring Readiness Surface;
+- Operational Support and Legal Identity Readiness Surface;
+- Future Release Gate Readiness Surface.
+
+Stage 12.1 does not write Privacy Policy, Terms, Cookie Policy, AI Disclaimer,
+legal prose, public trust copy, consent text, launch copy, or compliance
+claims. It does not create consent UI, trust UI, AI disclosure UI, or
+disclaimer UI. It does not change runtime, UI, API, simulator, Decision Engine,
+Prompt Context, AI integration, auth, persistence, database, billing,
+subscriptions, analytics, tracking, logging, infrastructure, public contract,
+or product behavior.
+
+Stage 12.1 successor subblock: Stage 12.2 Market Readiness Evidence Inventory
+& Dependency Map. It is documentation-only until separately approved and must
+not open Production Release, Closed Beta, Public Launch, Scale, Commercial
+Launch, runtime changes, UI changes, API changes, legal copy, consent UI, trust
+UI, Real AI, auth, persistence, billing, analytics, tracking, logging, or
+infrastructure changes.
 
 Supporting references:
 
@@ -1031,16 +1069,18 @@ webhooks, UI/API, QA, and rollback rehearsal.
 
 ## Next Roadmap Step
 
-The current roadmap position is Stage 11.10 - Production Legal Blockers Closure
-Gate Complete. The closure verdict is Stage 11 Closed. Stage 12 may begin.
+The current roadmap position is Stage 12.1 - Market Readiness Scope & Entry
+Lock Complete.
 
-The next step is not a new Product Quality Hardening subblock. The immutable
-Decision Simulation Engine architecture remains mandatory, and the next step
-must not create AI Chat, Answer Engine, Generic Assistant, direct AI-to-user
-behavior, model calls, provider execution, API keys/env/SDKs, AI provider API
-routes, UI AI runtime, auth, persistence, billing, subscriptions, analytics,
-tracking, logging, consent UI, cookie banner, AI disclosure UI, disclaimer UI,
-trust UI, trust page copy, legal-document text, regulatory claims, compliance
-claims, Production Release, Closed Beta, Public Launch, Scale, or a new public
-contract without a separate approved step. Production Release, Closed Beta,
-Public Launch, and Scale remain deferred until separately approved.
+The next bounded Stage 12 subblock is Stage 12.2 Market Readiness Evidence
+Inventory & Dependency Map. It must remain documentation-only until separately
+approved. The immutable Decision Simulation Engine architecture remains
+mandatory, and the next step must not create AI Chat, Answer Engine, Generic
+Assistant, direct AI-to-user behavior, model calls, provider execution, API
+keys/env/SDKs, AI provider API routes, UI AI runtime, auth, persistence,
+billing, subscriptions, analytics, tracking, logging, consent UI, cookie
+banner, AI disclosure UI, disclaimer UI, trust UI, trust page copy,
+legal-document text, regulatory claims, compliance claims, Production Release,
+Closed Beta, Public Launch, Commercial Launch, Scale, or a new public contract
+without a separate approved step. Production Release, Closed Beta, Public
+Launch, Commercial Launch, and Scale remain deferred until separately approved.

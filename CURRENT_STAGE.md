@@ -2,21 +2,22 @@
 
 ## Active Checkpoint
 
-Stage 11.10 - Production Legal Blockers Closure Gate Complete.
+Stage 12.1 - Market Readiness Scope & Entry Lock Complete.
 
-Status: Stage 11.10 is complete as a documentation-only final closure gate for
-Stage 11 blocker surfaces. It evaluates only blocker surfaces already recorded
-in Stage 11.1 through Stage 11.9, assigns Accepted Deferral statuses to
-existing production, public-launch, final-drafting, external-review, and
-production-implementation dependencies, and records the verdict: Stage 11
-Closed. Stage 12 may begin. It does not add legal topics, regulatory
-requirements, blockers, review questions, legal documents, public legal copy,
-UI copy, runtime behavior, API behavior, simulator behavior, Decision Engine
-behavior, AI integration, auth, database, subscriptions, billing, analytics,
-tracking, logging, Market Readiness, Closed Beta, Public Launch, Stage 12, or
-roadmap structure.
+Status: Stage 12.1 is complete as a documentation-only Market Readiness entry
+lock. It opens Stage 12 only by defining the Stage 12 boundary, Market
+Readiness surfaces, dependencies from closed Stage 10 and closed Stage 11,
+continuing Stage 11.10 Accepted Deferrals, explicit non-opened stages,
+explicit non-changes, completion criteria, and one next bounded Stage 12
+subblock. It does not implement Market Readiness work and does not open
+Production Release, Closed Beta, Public Launch, Scale, Commercial Launch,
+runtime behavior, UI behavior, API behavior, simulator behavior, Decision
+Engine behavior, Prompt Context behavior, AI integration, auth, persistence,
+database, billing, subscriptions, analytics, tracking, logging,
+infrastructure, product behavior, legal-document text, consent UI, trust UI, AI
+disclosure UI, disclaimer UI, or a new public contract.
 
-Date: 2 July 2026, Europe/Madrid.
+Date: 4 July 2026, Europe/Madrid.
 
 Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
 Complete. Stage 5.2 remains closed as Prompt / Context Layer Foundation
@@ -49,6 +50,54 @@ Context, AI Provider, or product behavior changes.
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D controlled AI integration foundation is closed as
 foundation-only. Real AI runtime remains deferred.
+
+## Stage 12.1 Market Readiness Scope & Entry Lock
+
+Status: complete as documentation-only Market Readiness entry lock.
+
+Canonical document:
+`docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_1_MARKET_READINESS_SCOPE_ENTRY_LOCK.md`.
+
+Locked Market Readiness surfaces:
+
+- Product Positioning Readiness Surface;
+- Public Simulator Readiness Surface;
+- Product Quality Evidence Surface;
+- Legal and Trust Evidence Surface;
+- Privacy, Data, Cookies, and Consent Readiness Surface;
+- Auth, Account, Persistence, and User Data Controls Readiness Surface;
+- Subscription, Billing, and Commercial Readiness Surface;
+- Real AI Readiness Surface;
+- Analytics, Marketing, Tracking, and Monitoring Readiness Surface;
+- Operational Support and Legal Identity Readiness Surface;
+- Future Release Gate Readiness Surface.
+
+Stage 12.1 depends on:
+
+- Stage 10 Product Quality Hardening closure baseline;
+- Stage 11 Legal & Trust Layer closure;
+- Stage 11.10 Accepted Deferrals.
+
+Stage 12.1 preserves the continuing accepted deferrals for privacy/data
+processing, data-subject rights/user data controls, cookies/local storage/
+consent, terms/acceptable use/consumer transparency, AI transparency/Decision
+Simulation disclaimer, high-risk/professional-advice boundary, security/abuse/
+operational trust, legal identity/contact/support, production legal blockers,
+production auth/account/persistence, subscription/billing/commercial runtime,
+analytics/marketing/tracking, Real AI provider execution, production
+monitoring/logging, and high-risk runtime classifier/gate/escalation behavior.
+
+Stage 12.1 did not write Privacy Policy, Terms, Cookie Policy, AI Disclaimer,
+legal prose, public trust copy, consent text, launch copy, or compliance
+claims. It did not create consent UI, trust UI, AI disclosure UI, or disclaimer
+UI. It did not change runtime, UI, API, simulator, Decision Engine, Prompt
+Context, AI integration, auth, persistence, database, billing, subscriptions,
+analytics, tracking, logging, infrastructure, public contract, or product
+behavior.
+
+Stage 12.1 successor subblock: Stage 12.2 Market Readiness Evidence Inventory
+& Dependency Map. It is the only next bounded Stage 12 subblock identified and
+must remain documentation-only until separately approved.
 
 ## Stage 11 Foundation Inventory
 
@@ -787,15 +836,14 @@ rollback.
 
 ## Next Allowed Roadmap Step
 
-Stage 11.10 - Production Legal Blockers Closure Gate Complete.
+Stage 12.2 - Market Readiness Evidence Inventory & Dependency Map.
 
-Stage 11.10 is complete as documentation-only final closure gate work. The
-closure verdict is Stage 11 Closed. Stage 12 may begin.
-The next step is not a new Product Quality Hardening
-subblock. It must not add model calls, provider
-execution, API keys/env/SDKs, AI provider API routes, UI AI runtime, auth,
-persistence, billing, subscriptions, analytics, tracking, logging, consent UI,
-cookie banner, AI disclosure UI, disclaimer UI, trust UI, trust page copy,
+Stage 12.1 is complete as documentation-only Market Readiness scope and entry
+lock. The next step is not an implementation task and not a new Product Quality
+Hardening subblock. It must not add model calls, provider execution, API
+keys/env/SDKs, AI provider API routes, UI AI runtime, auth, persistence,
+billing, subscriptions, analytics, tracking, logging, consent UI, cookie
+banner, AI disclosure UI, disclaimer UI, trust UI, trust page copy,
 legal-document text, regulatory claims, compliance claims, Production Release,
-Closed Beta, Public Launch, Scale, or a new public contract without a separate
-approved step.
+Closed Beta, Public Launch, Commercial Launch, Scale, or a new public contract
+without a separate approved step.
