@@ -58,7 +58,7 @@ export default function DashboardShell({
           <LevioMark size="sm" />
           <span>levio.es</span>
         </Link>
-        <p>Área personal del motor de simulación de decisiones.</p>
+        <p>Vista preparada del motor de simulación de decisiones.</p>
         <details className="dashboard-nav-menu">
           <summary>
             <span>Vista actual</span>
@@ -90,8 +90,8 @@ export default function DashboardShell({
           ))}
         </nav>
         <div className="dashboard-sidebar-status">
-          <span>Sesión</span>
-          <strong>{auth.identityState === "authenticated" ? "Autenticada" : "No iniciada"}</strong>
+          <span>Acceso</span>
+          <strong>{auth.identityState === "authenticated" ? "Configurado" : "No configurado"}</strong>
           <small>{auth.email ?? "Supabase Auth foundation"}</small>
         </div>
         <button className="ghost-button" onClick={handleLogout} type="button">
@@ -107,8 +107,8 @@ export default function DashboardShell({
             <p>{description}</p>
           </div>
           <div className="privacy-state">
-            <span>Nivel de privacidad</span>
-            <strong>Alto</strong>
+            <span>Privacidad</span>
+            <strong>Preparada</strong>
           </div>
         </header>
         {children}

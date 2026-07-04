@@ -16,7 +16,7 @@ const privacyActions = [
   },
   {
     title: "Solicitud futura de eliminación",
-    copy: "Preparar la supresión de cuenta y datos asociados cuando exista backend productivo.",
+    copy: "Preparar la supresión del acceso y datos asociados cuando exista backend productivo.",
   },
   {
     title: "Borrado futuro de historial",

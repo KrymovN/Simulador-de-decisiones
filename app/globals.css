@@ -9707,7 +9707,7 @@ html {
   .reference-workspace .decision-console textarea:hover,
   .reference-workspace .decision-console textarea:focus,
   .reference-workspace .decision-console textarea:focus-visible {
-    min-height: 116px;
+    min-height: 168px;
   }
 }
 
@@ -14141,5 +14141,15 @@ html {
   .dashboard-shell .detail-timeline > div,
   .dashboard-shell .remembered-patterns > div {
     padding: 14px;
+  }
+}
+
+/* Stage 10 rendered public surface regression: final mobile simulator fit guard. */
+@media (max-width: 560px) {
+  .reference-workspace .decision-input-shell textarea,
+  .reference-workspace .decision-input-shell textarea:hover,
+  .reference-workspace .decision-input-shell textarea:focus,
+  .reference-workspace .decision-input-shell textarea:focus-visible {
+    min-height: 168px;
   }
 }

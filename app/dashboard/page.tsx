@@ -44,7 +44,7 @@ export default function DashboardPage() {
     <MockAuthGate>
       <DashboardShell
         description="Vista preparada para revisar simulaciones locales, decisiones de ejemplo y futura evolución estratégica."
-        eyebrow="levio.es / Área personal"
+        eyebrow="levio.es / Vista preparada"
         title="Panel de simulación preparado."
       >
         <section className="dashboard-grid">
@@ -63,7 +63,7 @@ export default function DashboardPage() {
           </div>
           <div>
             <p className="eyebrow">Estado del entorno preparado</p>
-            <h2 id="engine-state-title">Tu espacio de simulación está listo para revisar decisiones de ejemplo.</h2>
+            <h2 id="engine-state-title">La vista de simulación está preparada para revisar decisiones de ejemplo.</h2>
             <div className="engine-stage-list" aria-label="Estado actual del motor">
               {engineStages.map((stage, index) => (
                 <div className="engine-stage" key={stage}>

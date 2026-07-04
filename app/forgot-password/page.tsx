@@ -21,14 +21,14 @@ export default function ForgotPasswordPage() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setMessage("El acceso productivo usa enlace seguro por correo. El restablecimiento de contraseña no está activado.");
+    setMessage("La recuperación productiva todavía no está activada; esta vista solo muestra el estado preparado.");
   }
 
   return (
     <AuthShell
-      description="Recuperación preparada para el futuro proveedor de autenticación. En este MVP no se envían correos reales."
-      eyebrow="levio.es / Recuperar acceso"
-      title="Recupera tu entrada al espacio estratégico."
+      description="Recuperación preparada para un futuro proveedor de autenticación. En este MVP no se envían correos reales."
+      eyebrow="levio.es / Recuperación preparada"
+      title="Revisa el estado de recuperación."
     >
       <AuthStateView signedOutLabel="Password reset no está activado para esta fase." />
       <form className="auth-form" onSubmit={handleSubmit}>
@@ -46,8 +46,8 @@ export default function ForgotPasswordPage() {
       )}
 
       <div className="auth-links">
-        <Link href="/login">Volver a entrar</Link>
-        <Link href="/register">Crear cuenta</Link>
+        <Link href="/login">Volver al acceso preparado</Link>
+        <Link href="/register">Preparar acceso</Link>
       </div>
     </AuthShell>
   );

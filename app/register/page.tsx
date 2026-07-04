@@ -65,16 +65,16 @@ export default function RegisterPage() {
     }
 
     router.refresh();
-    setMessage("Te hemos enviado un enlace seguro para activar tu acceso.");
+    setMessage("Solicitud de acceso registrada por Auth Runtime para esta fase preparada.");
   }
 
   return (
     <AuthShell
-      description="Prepara un acceso para futuras vistas de simulación, idioma preferido y controles de datos cuando estén disponibles."
-      eyebrow="levio.es / Crear cuenta"
-      title="Prepara tu espacio de simulación."
+      description="Prepara una vista de acceso para futuras simulaciones, idioma preferido y controles de datos cuando estén disponibles."
+      eyebrow="levio.es / Acceso preparado"
+      title="Prepara tu acceso de simulación."
     >
-      <AuthStateView signedOutLabel="Registro mediante enlace seguro por correo." />
+      <AuthStateView signedOutLabel="Registro por correo condicionado a Auth Runtime configurado." />
       <form className="auth-form" onSubmit={handleSubmit}>
         <label>
           Correo electrónico
@@ -115,7 +115,7 @@ export default function RegisterPage() {
       )}
 
       <div className="auth-links">
-        <Link href="/login">Ya tengo cuenta</Link>
+        <Link href="/login">Ya tengo acceso preparado</Link>
       </div>
     </AuthShell>
   );

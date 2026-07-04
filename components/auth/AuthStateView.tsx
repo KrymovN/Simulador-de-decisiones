@@ -9,8 +9,8 @@ type AuthStateViewProps = {
 };
 
 export default function AuthStateView({
-  authenticatedLabel = "Sesión autenticada",
-  signedOutLabel = "Sesión no iniciada",
+  authenticatedLabel = "Acceso configurado",
+  signedOutLabel = "Acceso no configurado",
   errorLabel = "No se pudo verificar la sesión",
 }: AuthStateViewProps) {
   const auth = useAuthRuntime();

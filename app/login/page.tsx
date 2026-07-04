@@ -77,16 +77,16 @@ export default function LoginPage() {
     }
 
     router.refresh();
-    setMessage("Te hemos enviado un enlace seguro para entrar.");
+    setMessage("Solicitud de enlace registrada por Auth Runtime para esta fase preparada.");
   }
 
   return (
     <AuthShell
-      description="Accede al área preparada para revisar simulaciones locales y futuras preferencias de decisión."
-      eyebrow="levio.es / Acceso seguro"
-      title="Entra en tu espacio de simulación."
+      description="Revisa el estado del acceso preparado para simulaciones locales y futuras preferencias de decisión."
+      eyebrow="levio.es / Acceso preparado"
+      title="Acceso preparado al entorno de simulación."
     >
-      <AuthStateView signedOutLabel="Acceso mediante enlace seguro por correo." />
+      <AuthStateView signedOutLabel="Acceso por correo condicionado a Auth Runtime configurado." />
       {queryError && !error && (
         <div className="mock-feedback" role="alert">
           {queryError}
@@ -98,7 +98,7 @@ export default function LoginPage() {
           <input autoComplete="email" name="email" placeholder="tu@correo.com" required type="email" />
         </label>
         <button disabled={isSubmitting} type="submit">
-          {isSubmitting ? "Enviando enlace" : "Enviar enlace seguro"}
+          {isSubmitting ? "Preparando enlace" : "Preparar enlace de acceso"}
         </button>
       </form>
 
@@ -114,8 +114,8 @@ export default function LoginPage() {
       )}
 
       <div className="auth-links">
-        <Link href="/register">Crear cuenta</Link>
-        <Link href="/forgot-password">Recuperar acceso</Link>
+        <Link href="/register">Preparar acceso</Link>
+        <Link href="/forgot-password">Ver recuperación preparada</Link>
       </div>
     </AuthShell>
   );

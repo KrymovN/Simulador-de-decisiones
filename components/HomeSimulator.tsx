@@ -469,7 +469,7 @@ export default function HomeSimulator() {
     const saved = readSavedSimulations();
     const next = [result.simulation, ...saved.filter((simulation) => simulation.id !== result.simulation.id)].slice(0, 12);
     window.localStorage.setItem(LOCAL_SIMULATIONS_KEY, JSON.stringify(next));
-    setMessage("Simulación guardada localmente en este navegador. Entra para abrir el historial protegido.");
+    setMessage("Simulación guardada localmente en este navegador. La vista de historial sigue en modo preparado.");
   }
 
   return (
@@ -517,7 +517,7 @@ export default function HomeSimulator() {
       >
         <span></span>
         <p>
-          {message || `Preview público: Levio.es genera una simulación demostrativa mock-only, sin runtime de IA real conectado. Límite: ${MAX_SIMULATION_INPUT_LENGTH} caracteres.`}
+          {message || `Preview público: Simulación de decisiones 24/7 en modo demostrativo mock-only, sin runtime de IA real conectado. Límite: ${MAX_SIMULATION_INPUT_LENGTH} caracteres.`}
         </p>
       </div>
 
@@ -619,10 +619,10 @@ export default function HomeSimulator() {
               Guardar localmente
             </button>
             <Link className="secondary-button" href="/login?next=%2Fdashboard%2Fsimulations">
-              Entrar para ver historial
+              Revisar acceso preparado
             </Link>
             <Link className="text-link" href="/register">
-              Crear cuenta
+              Preparar acceso
             </Link>
           </div>
         </div>

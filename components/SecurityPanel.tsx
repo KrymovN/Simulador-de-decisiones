@@ -17,12 +17,12 @@ export default function SecurityPanel() {
   return (
     <div className="security-layout">
       <section className="dashboard-card section-frame">
-        <p className="eyebrow">Protección preparada</p>
+        <p className="eyebrow">Protección en preparación</p>
         <h2>Seguridad lista para futura autenticación real.</h2>
-        <div className="security-score" aria-label="Estado de protección de cuenta">
+        <div className="security-score" aria-label="Estado de protección futura">
           <span></span>
-          <strong>Protección preparada</strong>
-          <p>Contraseña, sesión actual y futura autenticación en dos pasos.</p>
+          <strong>Protección preparada para demo</strong>
+          <p>Controles de acceso, sesión de ejemplo y futura autenticación en dos pasos.</p>
         </div>
       </section>
 

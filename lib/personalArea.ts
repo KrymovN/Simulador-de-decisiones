@@ -40,7 +40,7 @@ export const userProfile = {
   language: "Español",
   country: "España",
   timezone: "Europe/Madrid",
-  privacyLevel: "Alto",
+  privacyLevel: "Preparada",
   accountState: "Demo protegido",
   strategicMode: "Decisiones complejas",
 };
@@ -49,7 +49,7 @@ export const accountSignals = [
   {
     label: "Contexto personal",
     value: "Preparado",
-    copy: "Perfil, idioma y preferencias listos para futura persistencia.",
+    copy: "Perfil, idioma y preferencias preparados para una futura persistencia aprobada.",
   },
   {
     label: "Privacidad",

@@ -28,7 +28,7 @@ export default function TermsPage() {
           información que requiera garantías legales finales.
         </p>
         <div className="auth-links">
-          <Link href="/register">Volver al registro</Link>
+          <Link href="/register">Volver al acceso preparado</Link>
           <Link href="/">Volver al simulador</Link>
         </div>
       </div>

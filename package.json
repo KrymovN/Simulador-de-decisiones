@@ -13,7 +13,11 @@
     "quality:simulation-response-public-adapter": "node scripts/simulation-response-public-adapter-quality.mjs",
     "quality:deterministic-runtime-observability": "node scripts/deterministic-runtime-observability-quality.mjs",
     "quality:deterministic-runtime-security-boundary": "node scripts/deterministic-runtime-security-boundary-quality.mjs",
-    "quality:deterministic-runtime-contract-regression": "node scripts/deterministic-runtime-contract-regression-quality.mjs"
+    "quality:deterministic-runtime-contract-regression": "node scripts/deterministic-runtime-contract-regression-quality.mjs",
+    "quality:public-home": "node scripts/public-home-quality.mjs",
+    "quality:public-home-simulator-api-integration": "node scripts/public-home-simulator-api-integration-quality.mjs",
+    "quality:public-site-trust-readiness": "node scripts/public-site-trust-readiness-quality.mjs",
+    "quality:rendered-public-surface-regression": "node scripts/rendered-public-surface-regression-quality.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",

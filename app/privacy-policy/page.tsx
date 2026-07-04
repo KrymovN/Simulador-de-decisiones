@@ -29,7 +29,7 @@ export default function PrivacyPolicyPage() {
           controles de consentimiento, derechos de datos y políticas operativas.
         </p>
         <div className="auth-links">
-          <Link href="/register">Volver al registro</Link>
+          <Link href="/register">Volver al acceso preparado</Link>
           <Link href="/">Volver al simulador</Link>
         </div>
       </div>

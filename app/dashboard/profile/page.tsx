@@ -40,7 +40,7 @@ export default function ProfilePage() {
 
         <section className="profile-layout">
           <article className="dashboard-card section-frame">
-            <h2>Datos preparados de cuenta</h2>
+            <h2>Datos preparados de acceso</h2>
             <form className="profile-form">
               <label>
                 Nombre
@@ -67,8 +67,8 @@ export default function ProfilePage() {
                 <input defaultValue={userProfile.timezone} type="text" />
               </label>
               <label>
-                Contraseña futura
-                <input placeholder="Nueva contraseña" type="password" />
+                Campo de contraseña futura
+                <input placeholder="Contraseña futura" type="password" />
               </label>
               <MockFeedbackButton label="Preparar cambios" feedback="Cambios de perfil preparados en modo demo." />
             </form>
