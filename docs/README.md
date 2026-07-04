@@ -50,8 +50,9 @@ Stage 10 Product Quality Hardening is baseline-locked in the active state
 documents. Repository Structure Normalization is complete. Stage 11.10
 Production Legal Blockers Closure Gate is complete as documentation-only
 legal/trust closure work. The closure verdict is Stage 11 Closed. Stage 12 may
-begin. Stage 12.1 Market Readiness Scope & Entry Lock is complete as
-documentation-only entry work.
+begin. Stage 12.1 Market Readiness Scope & Entry Lock and Stage 12.2 Market
+Readiness Surfaces Definition are complete as documentation-only Market
+Readiness work.
 
 ## QA / Quality
 
@@ -78,5 +79,7 @@ documents are retained for traceability, not as active project state.
 - Stage 11 Legal & Trust Layer is closed.
 - Stage 12.1 Market Readiness Scope & Entry Lock is complete as
   documentation-only entry work.
+- Stage 12.2 Market Readiness Surfaces Definition is complete as
+  documentation-only surfaces-definition work.
 - Production Release, Closed Beta, Public Launch, Commercial Launch, and Scale
   remain closed.
