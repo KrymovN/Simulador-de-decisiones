@@ -204,7 +204,7 @@ function runPerformanceSafetyChecks(pageSource, simulatorSource, packageSource) 
   sourceExcludes(simulatorSource, "local fallback", "Simulator does not reintroduce local fallback wording");
   sourceIncludes(simulatorSource, 'fetch("/api/simulate"', "Simulator keeps single public API request path");
   sourceIncludes(simulatorSource, "isSimulateApiResponse(payload)", "Simulator validates API payload before render");
-  sourceIncludes(simulatorSource, "runtime de IA real aún no está conectado", "Simulator keeps Real AI deferred truth boundary");
+  sourceIncludes(simulatorSource, "la conexión con IA real aún no está activada", "Simulator keeps Real AI deferred truth boundary");
 }
 
 async function runRuntimeHtmlChecks(baseUrl) {
@@ -230,7 +230,7 @@ async function runRuntimeHtmlChecks(baseUrl) {
     htmlIncludes(html, "Ver cómo funciona", "Runtime HTML includes secondary CTA");
     htmlIncludes(html, "Simular decisión", "Runtime HTML includes simulator submit action");
     htmlIncludes(html, "Preview público", "Runtime HTML includes mock preview status");
-    htmlIncludes(html, "runtime de IA real conectado", "Runtime HTML keeps Real AI deferred copy");
+    htmlIncludes(html, "conexión con IA real", "Runtime HTML keeps Real AI deferred copy");
 
     assertCheck(
       "Runtime HTML does not contain fatal Next.js error markers",

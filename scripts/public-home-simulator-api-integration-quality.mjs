@@ -248,7 +248,7 @@ function runSimulatorSourceChecks() {
   sourceIncludes(source, "safeRender !== true", "HomeSimulator checks safeRender before render");
   sourceIncludes(source, "mockOnly !== true", "HomeSimulator checks mockOnly before render");
   sourceIncludes(source, "apiReady !== true", "HomeSimulator checks apiReady before render");
-  sourceIncludes(source, "runtime de IA real aún no está conectado", "HomeSimulator keeps Real AI deferred copy");
+  sourceIncludes(source, "la conexión con IA real aún no está activada", "HomeSimulator keeps Real AI deferred copy");
   sourceIncludes(source, "Simulación demo completada.", "HomeSimulator has controlled success message");
   sourceIncludes(source, "Simulación detenida. No se generó un resultado local de sustitución.", "HomeSimulator has controlled failure message");
   sourceIncludes(source, 'simulateError?.code === "rate_limited"', "HomeSimulator recognizes public rate-limit error code");
@@ -288,9 +288,9 @@ function runHomePositioningChecks() {
   sourceIncludes(pageSource, "Sistema de simulación de decisiones", "Public Home keeps Decision Simulation Engine positioning");
   sourceIncludes(pageSource, "No una respuesta. Una simulación de futuros posibles.", "Public Home rejects answer-engine positioning");
   sourceIncludes(pageSource, "Motor de simulación para decisiones con consecuencias reales.", "Public Home footer keeps simulation-engine positioning");
-  sourceIncludes(pageSource, "Preview público mock-only", "Public Home keeps mock-only trust signal");
-  sourceIncludes(pageSource, "runtime de IA real todavía no está conectado", "Public Home keeps Real AI deferred truth boundary");
-  sourceIncludes(simulatorSource, "Simulación de decisiones 24/7", "HomeSimulator keeps approved 24/7 decision simulation line");
+  sourceIncludes(pageSource, "Preview público con respuestas de ejemplo", "Public Home keeps demonstrative public state");
+  sourceIncludes(pageSource, "la conexión con IA real todavía no está activada", "Public Home keeps Real AI deferred truth boundary");
+  sourceIncludes(simulatorSource, "Simulación de decisiones disponible 24/7", "HomeSimulator keeps approved 24/7 decision simulation line");
 
   sourceExcludes(combinedSource, "AI Chat", "Public Home does not position Levio as AI Chat");
   sourceExcludes(combinedSource, "Answer Engine", "Public Home does not position Levio as Answer Engine");
@@ -300,7 +300,7 @@ function runHomePositioningChecks() {
   sourceExcludes(combinedSource, "billing", "Public Home does not promise billing");
   sourceExcludes(combinedSource, "closed beta", "Public Home does not promise closed beta");
   sourceExcludes(combinedSource, "memoria de cuenta", "Public Home does not promise account memory");
-  sourceIncludes(simulatorSource, "sin presentarse como predicción production-grade", "HomeSimulator keeps production-grade disclaimer");
+  sourceIncludes(simulatorSource, "sin presentarse como predicción lista para producción", "HomeSimulator keeps production-readiness disclaimer");
 }
 
 async function runApiEnvelopeChecks(baseUrl) {
@@ -364,9 +364,9 @@ async function runRuntimeHomeChecks(baseUrl) {
 
     assert(response.status === 200, `Expected / to return 200, received ${response.status}.`);
     assert(html.includes('id="decision-input"'), "Runtime HTML must include simulator textarea.");
-    assert(html.includes("Simulación de decisiones 24/7"), "Runtime HTML must keep approved simulator line.");
+    assert(html.includes("Simulación de decisiones disponible 24/7"), "Runtime HTML must keep approved simulator line.");
     assert(html.includes("Preview público"), "Runtime HTML must include public preview status.");
-    assert(html.includes("runtime de IA real conectado"), "Runtime HTML must keep deferred Real AI copy.");
+    assert(html.includes("conexión con IA real"), "Runtime HTML must keep deferred Real AI copy.");
     assert(!/Application error|Internal Server Error|Unhandled Runtime Error/i.test(html), "Runtime HTML contains fatal error marker.");
     pass("Runtime Home mounts simulator with safe public positioning");
   } catch (error) {

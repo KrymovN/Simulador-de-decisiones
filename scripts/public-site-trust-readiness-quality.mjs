@@ -153,13 +153,13 @@ function runPositioningSourceChecks(sources) {
   sourceIncludes(sources.home, "No una respuesta. Una simulación de futuros posibles.", "Home rejects answer-engine positioning");
   sourceIncludes(sources.home, "escenarios, riesgos y consecuencias", "Home keeps scenarios/risks/consequences line");
   sourceIncludes(sources.home, "trade-offs", "Home keeps tradeoffs positioning");
-  sourceIncludes(sources.home, "Preview público mock-only", "Home keeps mock-only public state");
-  sourceIncludes(sources.home, "runtime de IA real todavía no está conectado", "Home keeps Real AI deferred copy");
-  sourceIncludes(sources.homeSimulator, "Simulación de decisiones 24/7", "HomeSimulator keeps 24/7 decision simulation line");
-  sourceIncludes(sources.homeSimulator, "modo demostrativo mock-only", "HomeSimulator keeps mock-only demo status");
-  sourceIncludes(sources.homeSimulator, "sin runtime de IA real conectado", "HomeSimulator avoids Real AI promise");
-  sourceIncludes(sources.homeSimulator, "Simulación demostrativa; el runtime de IA real aún no está conectado.", "Result copy keeps Real AI deferred truth boundary");
-  sourceIncludes(sources.homeSimulator, "sin presentarse como predicción production-grade", "HomeSimulator avoids production-grade promise");
+  sourceIncludes(sources.home, "Preview público con respuestas de ejemplo", "Home keeps demonstrative public state");
+  sourceIncludes(sources.home, "la conexión con IA real todavía no está activada", "Home keeps Real AI deferred copy");
+  sourceIncludes(sources.homeSimulator, "Simulación de decisiones disponible 24/7", "HomeSimulator keeps 24/7 decision simulation line");
+  sourceIncludes(sources.homeSimulator, "modo demostrativo", "HomeSimulator keeps demo status");
+  sourceIncludes(sources.homeSimulator, "sin conexión todavía a IA real", "HomeSimulator avoids Real AI promise");
+  sourceIncludes(sources.homeSimulator, "Simulación demostrativa; la conexión con IA real aún no está activada.", "Result copy keeps Real AI deferred truth boundary");
+  sourceIncludes(sources.homeSimulator, "sin presentarse como predicción lista para producción", "HomeSimulator avoids production-readiness promise");
 }
 
 function runAuthReadinessSourceChecks(sources) {
@@ -172,12 +172,12 @@ function runAuthReadinessSourceChecks(sources) {
   sourceIncludes(sources.authStateView, "Acceso configurado", "Auth status copy avoids account wording");
   sourceIncludes(sources.authStateView, "Acceso no configurado", "Signed-out status copy avoids account wording");
   sourceIncludes(sources.login, "Acceso preparado", "Login is positioned as prepared access");
-  sourceIncludes(sources.login, "condicionado a Auth Runtime configurado", "Login discloses auth runtime condition");
+  sourceIncludes(sources.login, "condicionado a la configuración del sistema de acceso", "Login discloses access-system condition");
   sourceIncludes(sources.login, "Preparar enlace de acceso", "Login CTA avoids production account promise");
   sourceIncludes(sources.login, "Preparar acceso", "Login links to prepared access instead of account creation");
   sourceIncludes(sources.register, "Acceso preparado", "Register is positioned as prepared access");
   sourceIncludes(sources.register, "cuando estén disponibles", "Register copy defers future controls");
-  sourceIncludes(sources.register, "Registro por correo condicionado a Auth Runtime configurado.", "Register discloses auth runtime condition");
+  sourceIncludes(sources.register, "Registro por correo condicionado a la configuración del sistema de acceso.", "Register discloses access-system condition");
   sourceIncludes(sources.register, "Ya tengo acceso preparado", "Register avoids existing-account promise");
   sourceIncludes(sources.forgotPassword, "no se envían correos reales", "Recovery page discloses no real emails");
   sourceIncludes(sources.forgotPassword, "La recuperación productiva todavía no está activada", "Recovery action discloses deferred production recovery");
@@ -185,7 +185,7 @@ function runAuthReadinessSourceChecks(sources) {
 
 function runLegalReadinessSourceChecks(sources) {
   sourceIncludes(sources.privacyPolicy, "política legal final", "Privacy page discloses non-final legal status");
-  sourceIncludes(sources.privacyPolicy, "respuestas mock", "Privacy page discloses mock simulator state");
+  sourceIncludes(sources.privacyPolicy, "respuestas de ejemplo", "Privacy page discloses example simulator state");
   sourceIncludes(sources.privacyPolicy, "se almacenan localmente en este navegador", "Privacy page discloses local-only saved simulations");
   sourceIncludes(sources.privacyPolicy, "Antes de procesar datos personales reales en producción", "Privacy page defers production personal-data processing");
   sourceIncludes(sources.terms, "borrador provisional", "Terms page discloses provisional status");
@@ -299,9 +299,9 @@ async function runRuntimePublicPageChecks(baseUrl) {
     {
       path: "/",
       includes: [
-        "Preview público mock-only",
-        "Simulación de decisiones 24/7",
-        "runtime de IA real conectado",
+        "Preview público con respuestas de ejemplo",
+        "Simulación de decisiones disponible 24/7",
+        "conexión con IA real",
         "No una respuesta. Una simulación de futuros posibles.",
       ],
     },
@@ -326,7 +326,7 @@ async function runRuntimePublicPageChecks(baseUrl) {
       includes: [
         "Recuperación preparada",
         "En este MVP no se envían correos reales.",
-        "Password reset no está activado para esta fase.",
+        "La recuperación de contraseña no está activada para esta fase.",
       ],
     },
     {

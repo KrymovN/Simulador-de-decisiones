@@ -57,7 +57,7 @@ const publicPages = [
     includes: [
       'class="auth-shell"',
       "Prepara tu acceso",
-      "Crear acceso seguro",
+      "Solicitar enlace de acceso",
       "política de privacidad",
       "términos de uso",
     ],
@@ -229,8 +229,8 @@ function runRenderedSurfaceSourceChecks(sources) {
   sourceIncludes(sources.home, '<HomeSimulator />', "Home keeps HomeSimulator mounted");
   sourceIncludes(sources.home, 'className="reference-cta-banner"', "Home keeps final CTA rendered");
   sourceIncludes(sources.homeSimulator, 'id="decision-input"', "HomeSimulator keeps stable textarea anchor");
-  sourceIncludes(sources.homeSimulator, "Simulación de decisiones 24/7", "HomeSimulator keeps 24/7 decision simulation line");
-  sourceIncludes(sources.homeSimulator, "sin runtime de IA real conectado", "HomeSimulator keeps Real AI deferred copy");
+  sourceIncludes(sources.homeSimulator, "Simulación de decisiones disponible 24/7", "HomeSimulator keeps 24/7 decision simulation line");
+  sourceIncludes(sources.homeSimulator, "sin conexión todavía a IA real", "HomeSimulator keeps Real AI deferred copy");
   sourceIncludes(sources.dashboardLayout, "requireAuthenticatedDashboardSession", "Dashboard routes remain protected before placeholders render publicly");
   sourceIncludes(sources.dashboardHome, "Vista preparada", "Dashboard placeholder source remains prepared");
   sourceIncludes(sources.dashboardSecurity, "cuando exista auth productivo", "Dashboard security placeholder source remains prepared");
