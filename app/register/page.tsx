@@ -38,7 +38,7 @@ export default function RegisterPage() {
     const supabase = createSupabaseBrowserAuthClient();
 
     if (!supabase) {
-      setError("Auth Runtime no está configurado todavía.");
+      setError("El sistema de acceso no está configurado todavía.");
       return;
     }
 
@@ -58,14 +58,14 @@ export default function RegisterPage() {
         return;
       }
     } catch {
-      setError("No se pudo conectar con Auth Runtime. Inténtalo de nuevo.");
+      setError("No se pudo conectar con el sistema de acceso. Inténtalo de nuevo.");
       return;
     } finally {
       setIsSubmitting(false);
     }
 
     router.refresh();
-    setMessage("Solicitud de acceso registrada por Auth Runtime para esta fase preparada.");
+    setMessage("Solicitud de acceso registrada para esta fase preparada.");
   }
 
   return (
@@ -74,7 +74,7 @@ export default function RegisterPage() {
       eyebrow="levio.es / Acceso preparado"
       title="Prepara tu acceso de simulación."
     >
-      <AuthStateView signedOutLabel="Registro por correo condicionado a Auth Runtime configurado." />
+      <AuthStateView signedOutLabel="Registro por correo condicionado a la configuración del sistema de acceso." />
       <form className="auth-form" onSubmit={handleSubmit}>
         <label>
           Correo electrónico
@@ -99,7 +99,7 @@ export default function RegisterPage() {
           </span>
         </label>
         <button disabled={isSubmitting} type="submit">
-          {isSubmitting ? "Enviando enlace" : "Crear acceso seguro"}
+          {isSubmitting ? "Enviando enlace" : "Solicitar enlace de acceso"}
         </button>
       </form>
 

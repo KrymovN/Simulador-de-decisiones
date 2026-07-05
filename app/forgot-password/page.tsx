@@ -30,7 +30,7 @@ export default function ForgotPasswordPage() {
       eyebrow="levio.es / Recuperación preparada"
       title="Revisa el estado de recuperación."
     >
-      <AuthStateView signedOutLabel="Password reset no está activado para esta fase." />
+      <AuthStateView signedOutLabel="La recuperación de contraseña no está activada para esta fase." />
       <form className="auth-form" onSubmit={handleSubmit}>
         <label>
           Correo electrónico

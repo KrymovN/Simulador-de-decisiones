@@ -51,7 +51,7 @@ export default function LoginPage() {
     const supabase = createSupabaseBrowserAuthClient();
 
     if (!supabase) {
-      setError("Auth Runtime no está configurado todavía.");
+      setError("El sistema de acceso no está configurado todavía.");
       return;
     }
 
@@ -70,14 +70,14 @@ export default function LoginPage() {
         return;
       }
     } catch {
-      setError("No se pudo conectar con Auth Runtime. Inténtalo de nuevo.");
+      setError("No se pudo conectar con el sistema de acceso. Inténtalo de nuevo.");
       return;
     } finally {
       setIsSubmitting(false);
     }
 
     router.refresh();
-    setMessage("Solicitud de enlace registrada por Auth Runtime para esta fase preparada.");
+    setMessage("Solicitud de enlace registrada para esta fase preparada.");
   }
 
   return (
@@ -86,7 +86,7 @@ export default function LoginPage() {
       eyebrow="levio.es / Acceso preparado"
       title="Acceso preparado al entorno de simulación."
     >
-      <AuthStateView signedOutLabel="Acceso por correo condicionado a Auth Runtime configurado." />
+      <AuthStateView signedOutLabel="Acceso por correo condicionado a la configuración del sistema de acceso." />
       {queryError && !error && (
         <div className="mock-feedback" role="alert">
           {queryError}

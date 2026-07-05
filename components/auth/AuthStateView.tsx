@@ -35,7 +35,7 @@ export default function AuthStateView({
   if (auth.error === "auth_config_missing") {
     return (
       <div className="mock-feedback" role="status">
-        Auth Runtime no está configurado todavía.
+        El sistema de acceso no está configurado todavía.
       </div>
     );
   }

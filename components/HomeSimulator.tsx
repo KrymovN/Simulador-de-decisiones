@@ -517,7 +517,7 @@ export default function HomeSimulator() {
       >
         <span></span>
         <p>
-          {message || `Preview público: Simulación de decisiones 24/7 en modo demostrativo mock-only, sin runtime de IA real conectado. Límite: ${MAX_SIMULATION_INPUT_LENGTH} caracteres.`}
+          {message || `Preview público: Simulación de decisiones disponible 24/7 en modo demostrativo, con respuestas de ejemplo y sin conexión todavía a IA real. Límite: ${MAX_SIMULATION_INPUT_LENGTH} caracteres.`}
         </p>
       </div>
 
@@ -568,10 +568,10 @@ export default function HomeSimulator() {
 
           <article className="strategic-conclusion">
             <span>Preview controlado</span>
-            <strong>Simulación demostrativa; el runtime de IA real aún no está conectado.</strong>
+            <strong>Simulación demostrativa; la conexión con IA real aún no está activada.</strong>
             <p>
-              Este mapa usa el contrato público {previewState?.contractVersion ?? SIMULATE_API_CONTRACT_VERSION} en modo mock-only. Sirve para
-              explorar escenarios, riesgos y consecuencias sin presentarse como predicción production-grade.
+              Este mapa usa la versión pública {previewState?.contractVersion ?? SIMULATE_API_CONTRACT_VERSION} con respuestas de ejemplo. Sirve para
+              explorar escenarios, riesgos y consecuencias sin presentarse como predicción lista para producción.
               {previewState?.requestId ? ` Referencia: ${previewState.requestId}.` : ""}
             </p>
           </article>

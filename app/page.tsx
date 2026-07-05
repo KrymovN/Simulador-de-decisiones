@@ -80,7 +80,7 @@ const lowerCapabilities = [
 ];
 
 const trustSignals = [
-  "Preview público mock-only",
+  "Preview público con respuestas de ejemplo",
   "Escenarios comparables",
   "Riesgo y consecuencia",
 ];
@@ -388,7 +388,7 @@ export default function Home() {
             <MotionLetters text="Simula una decisión cuando estés listo." />
           </h2>
           <p>El motor de escenarios es el punto de partida para comparar opciones, riesgos y consecuencias.</p>
-          <p>Modo preview: la simulación pública es demostrativa y el runtime de IA real todavía no está conectado.</p>
+          <p>Modo preview: la simulación pública es demostrativa y la conexión con IA real todavía no está activada.</p>
         </div>
         <HomeSimulator />
       </section>

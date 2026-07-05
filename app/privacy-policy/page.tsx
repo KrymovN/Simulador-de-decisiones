@@ -20,9 +20,9 @@ export default function PrivacyPolicyPage() {
           preparación completa para producción.
         </p>
         <p>
-          En el estado actual, el simulador público usa respuestas mock y las simulaciones guardadas desde la página
+          En el estado actual, el simulador público usa respuestas de ejemplo y las simulaciones guardadas desde la página
           principal se almacenan localmente en este navegador. El acceso al dashboard requiere autenticación cuando el
-          runtime de auth esté configurado.
+          sistema de acceso esté configurado.
         </p>
         <p>
           Antes de procesar datos personales reales en producción, Levio.es deberá completar su documentación legal,
