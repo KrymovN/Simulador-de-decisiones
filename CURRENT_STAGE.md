@@ -2,22 +2,22 @@
 
 ## Active Checkpoint
 
-Stage 13.6 - Closed Beta Completion Criteria & Exit Gate Complete.
+Stage 13.7 - Closed Beta Closure Gate Complete.
 
-Status: Stage 13.6 is complete as a documentation-only Closed Beta completion
-criteria and exit gate definition. It defines exhaustive Closed Beta
-completion criteria, the official Stage 13 Exit Gate, mandatory conditions
-before transition to the next roadmap block, Remaining Accepted Deferrals
-compatibility with Stage 13 closure, non-closure conditions, explicit
-non-changes, and the next bounded Stage 13 subblock. It does not invite
-participants, open beta execution, collect beta data, enable accounts, enable
-persistence, add analytics, add tracking, add logging, create feedback forms,
-create evidence databases, create test tooling, create support tooling, change
-runtime behavior, UI behavior, API behavior, architecture, simulator behavior,
-Decision Engine behavior, Prompt Context behavior, AI integration, auth,
-persistence, database, billing, subscriptions, infrastructure, product
-behavior, legal-document text, consent UI, trust UI, AI disclosure UI,
-disclaimer UI, or a new public contract.
+Status: Stage 13.7 is complete as a documentation-only Closed Beta closure
+gate. It confirms completion of Stage 13.1 through Stage 13.7, verifies
+canonical state document consistency, confirms no contradiction between Stage
+13.1 and Stage 13.6, records the official closure verdict Stage 13 Closed,
+identifies Stage 14 Public Launch as the only next admissible roadmap block,
+and confirms that Stage 14 is not opened. It does not invite participants,
+open beta execution, collect beta data, enable accounts, enable persistence,
+add analytics, add tracking, add logging, create feedback forms, create
+evidence databases, create test tooling, create support tooling, change runtime
+behavior, UI behavior, API behavior, architecture, simulator behavior, Decision
+Engine behavior, Prompt Context behavior, AI integration, auth, persistence,
+database, billing, subscriptions, infrastructure, product behavior,
+legal-document text, consent UI, trust UI, AI disclosure UI, disclaimer UI, or
+a new public contract.
 
 Date: 5 July 2026, Europe/Madrid.
 
@@ -453,6 +453,35 @@ Commercial Launch, or Scale.
 
 Stage 13.6 successor subblock: Stage 13.7 Closed Beta Closure Gate. It must
 remain documentation-only until separately approved.
+
+## Stage 13.7 Closed Beta Closure Gate
+
+Status: complete as documentation-only Closed Beta closure gate.
+
+Canonical document:
+`docs/stages/stage-13-closed-beta/LEVIO_STAGE_13_7_CLOSED_BETA_CLOSURE_GATE.md`.
+
+Stage 13.7 confirms Stage 13.1 through Stage 13.7 completion, canonical state
+document consistency, absence of contradictions between Stage 13.1 and Stage
+13.6, Remaining Accepted Deferrals compatibility with Stage 13 closure, and no
+implementation work opened.
+
+Official closure verdict: Stage 13 Closed.
+
+The only next admissible roadmap block is Stage 14 Public Launch. Stage 14 is
+not opened by Stage 13.7 and requires separate explicit approval plus its own
+entry lock before any Public Launch, production, runtime, UI, API, legal, data,
+commercial, analytics, tracking, logging, support, or infrastructure
+implementation begins.
+
+Stage 13.7 does not invite participants, start a Closed Beta, enable beta
+traffic, collect beta data, create accounts, enable persistence, add feedback
+forms, add evidence databases, add test tooling, add feedback tooling, add
+support tooling, add incident tooling, change runtime, UI, API, architecture,
+Decision Engine, Simulator, Prompt Context, AI Integration, Auth, Database,
+Billing, Analytics, Tracking, Logging, infrastructure, public contract, or
+product behavior. It does not open Stage 14, Public Launch, Production
+Release, Commercial Launch, or Scale.
 
 ## Stage 11 Foundation Inventory
 
@@ -1191,11 +1220,10 @@ rollback.
 
 ## Next Allowed Roadmap Step
 
-Stage 13.7 - Closed Beta Closure Gate.
+Stage 14 - Public Launch.
 
-Stage 13.6 is complete as documentation-only Closed Beta completion criteria
-and exit gate definition. Stage 12 remains closed. The next bounded Stage 13
-subblock must remain
-documentation-only until separately approved and must not open beta execution,
-runtime, UI, API, legal, data, commercial, analytics, tracking, logging,
-support, or infrastructure implementation.
+Stage 13 is closed. Stage 14 is the only next admissible roadmap block, but it
+is not opened and requires separate explicit approval plus its own entry lock.
+No Public Launch, production, runtime, UI, API, legal, data, commercial,
+analytics, tracking, logging, support, or infrastructure implementation is
+opened by Stage 13.7.

@@ -68,7 +68,9 @@ Beta Test Scenarios & Success Criteria is complete as documentation-only
 Closed Beta planning work. Stage 13.5 Closed Beta Feedback & Evidence
 Collection is complete as documentation-only Closed Beta planning work. Stage
 13.6 Closed Beta Completion Criteria & Exit Gate is complete as
-documentation-only Closed Beta planning work.
+documentation-only Closed Beta planning work. Stage 13.7 Closed Beta Closure
+Gate is complete as documentation-only Closed Beta closure work. Stage 13 is
+closed.
 
 ## QA / Quality
 
@@ -119,7 +121,11 @@ documents are retained for traceability, not as active project state.
   documentation-only feedback/evidence work.
 - Stage 13.6 Closed Beta Completion Criteria & Exit Gate is complete as
   documentation-only completion/exit-gate work.
-- The next bounded Stage 13 subblock is Stage 13.7 Closed Beta Closure Gate.
+- Stage 13.7 Closed Beta Closure Gate is complete as documentation-only closure
+  work.
+- Stage 13 is closed.
+- Stage 14 Public Launch is the only next admissible roadmap block, but Stage
+  14 is not opened.
 - Closed Beta execution remains unopened.
 - Production Release, Public Launch, Commercial Launch, and Scale remain
   closed.
