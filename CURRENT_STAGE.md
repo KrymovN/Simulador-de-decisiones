@@ -2,24 +2,23 @@
 
 ## Active Checkpoint
 
-Stage 14.2 - Public Launch Readiness Checklist / Verification Matrix Complete.
+Stage 14.3 - Public Launch Exit Criteria Complete.
 
-Status: Stage 14.2 is complete as a documentation-only Public Launch readiness
-matrix. It translates Stage 14.1 scope into verifiable pre-launch categories:
-public site clarity, Decision Simulation Engine positioning, trust/legal
-visibility, privacy and user-data expectations, production safety, deployment
-readiness, rollback awareness, and owner/operator handoff readiness. It defines
-what must be verified, expected status at entry, and launch-blocking conditions
-for each category. It does not execute Public Launch, authorize implementation
-changes, publish launch copy, announce availability, open Production Release,
-open Commercial Launch, open Scale, enable accounts, enable persistence, add
-analytics, add tracking, add logging, create support tooling, create incident
-tooling, change runtime behavior, UI behavior, API behavior, architecture,
-simulator behavior, Decision Engine behavior, Prompt Context behavior, AI
-integration, auth, persistence, database, billing, subscriptions,
-infrastructure, dependencies, config, tests, product behavior, legal-document
-text, consent UI, trust UI, AI disclosure UI, disclaimer UI, or a new public
-contract.
+Status: Stage 14.3 is complete as documentation-only Public Launch exit
+criteria. It defines Ready for launch execution, Public Launch, Stage 14
+completion, mandatory blockers, acceptable known limitations, post-launch
+improvements, future roadmap work, and launch sign-off responsibilities for
+technical readiness, product readiness, documentation readiness, and deployment
+readiness. It does not execute Public Launch, authorize implementation changes,
+authorize roadmap expansion, publish launch copy, announce availability, open
+Production Release, open Commercial Launch, open Scale, enable accounts, enable
+persistence, add analytics, add tracking, add logging, create support tooling,
+create incident tooling, change runtime behavior, UI behavior, API behavior,
+architecture, simulator behavior, Decision Engine behavior, Prompt Context
+behavior, AI integration, auth, persistence, database, billing, subscriptions,
+infrastructure, dependencies, config, tests, product behavior,
+legal-document text, consent UI, trust UI, AI disclosure UI, disclaimer UI, or
+a new public contract.
 
 Date: 5 July 2026, Europe/Madrid.
 
@@ -140,8 +139,49 @@ change runtime, UI, API, architecture, dependencies, config, tests, auth,
 database, billing, analytics, tracking, logging, infrastructure, public
 contract, roadmap, or product behavior.
 
-Stage 14.2 successor subblock: Stage 14.3 Public Launch Go/No-Go Gate
-Definition.
+Stage 14.2 successor subblock: Stage 14.3 Public Launch Exit Criteria, now
+complete.
+
+## Stage 14.3 Public Launch Exit Criteria
+
+Status: complete as documentation-only Public Launch exit criteria.
+
+Canonical document:
+`docs/stages/stage-14-public-launch/LEVIO_STAGE_14_3_PUBLIC_LAUNCH_EXIT_CRITERIA.md`.
+
+Stage 14.3 defines:
+
+- Definition of Ready for launch execution;
+- Definition of Public Launch;
+- Definition of Stage 14 completion;
+- mandatory blockers;
+- acceptable known limitations;
+- post-launch improvements;
+- future roadmap work;
+- launch sign-off responsibilities.
+
+Launch sign-off responsibilities:
+
+- technical readiness;
+- product readiness;
+- documentation readiness;
+- deployment readiness.
+
+Stage 14.3 preserves the immutable architecture:
+
+```text
+USER → SIMULATOR → DECISION ENGINE → PROMPT CONTEXT → AI PROVIDER → DECISION ENGINE → SIMULATOR → UI
+```
+
+Stage 14.3 does not authorize Public Launch execution, implementation changes,
+or roadmap expansion. It did not change runtime, UI, API, architecture,
+dependencies, config, tests, auth, database, billing, analytics, tracking,
+logging, infrastructure, public contract, roadmap, or product behavior.
+
+No further bounded Stage 14 documentation-foundation subblock is required by
+Stage 14.3. Any later Public Launch execution, Stage 14 closure, Production
+Release, Commercial Launch, Scale, implementation work, or roadmap expansion
+requires separate explicit approval.
 
 ## Stage 12.1 Market Readiness Scope & Entry Lock
 
@@ -1312,12 +1352,14 @@ rollback.
 
 Stage 14 - Public Launch.
 
-Stage 13 is closed. Stage 14.1 Public Launch Scope & Entry Lock and Stage 14.2
-Public Launch Readiness Checklist / Verification Matrix are complete as
-documentation-only Public Launch planning work. Public Launch execution remains
-unopened.
+Stage 13 is closed. Stage 14.1 Public Launch Scope & Entry Lock, Stage 14.2
+Public Launch Readiness Checklist / Verification Matrix, and Stage 14.3 Public
+Launch Exit Criteria are complete as documentation-only Public Launch planning
+work. Public Launch execution remains unopened.
 
-The next bounded Stage 14 subblock is Stage 14.3 Public Launch Go/No-Go Gate
-Definition. No Public Launch execution, production, runtime, UI, API, legal,
+No further bounded Stage 14 documentation-foundation subblock is required by
+Stage 14.3. Any later Public Launch execution, Stage 14 closure, Production
+Release, Commercial Launch, Scale, implementation work, or roadmap expansion
+requires separate explicit approval. No production, runtime, UI, API, legal,
 data, commercial, analytics, tracking, logging, support, infrastructure,
-dependency, config, test, or product implementation is opened by Stage 14.2.
+dependency, config, test, or product implementation is opened by Stage 14.3.
