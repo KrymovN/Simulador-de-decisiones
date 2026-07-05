@@ -12,9 +12,9 @@ The current confirmed runtime remains deterministic-preview only for the public
 - `apiReady=true`
 
 Real AI Runtime, AI Provider execution, production auth, production
-persistence, billing, subscriptions, Closed Beta, Production Release, Public
-Launch, Commercial Launch, and Scale remain deferred until explicitly opened by
-the roadmap. Stage 11 Legal & Trust Layer is closed. Stage 12.1 Market
+persistence, billing, subscriptions, Closed Beta execution, Production Release,
+Public Launch execution, Commercial Launch, and Scale remain deferred until
+explicitly opened by the roadmap. Stage 11 Legal & Trust Layer is closed. Stage 12.1 Market
 Readiness Scope & Entry Lock and Stage 12.2 Market Readiness Surfaces
 Definition are complete as documentation-only Market Readiness work. Stage
 12.3 Market Readiness Dependencies & Execution Order is complete as
@@ -34,7 +34,10 @@ Collection is complete as documentation-only Closed Beta planning work. Stage
 13.6 Closed Beta Completion Criteria & Exit Gate is complete as
 documentation-only Closed Beta planning work. Stage 13.7 Closed Beta Closure
 Gate is complete as documentation-only Closed Beta closure work. Stage 13 is
-closed.
+closed. Stage 14.1 Public Launch Scope & Entry Lock is complete as
+documentation-only Public Launch planning work. Stage 14 is open only as
+bounded documentation-only Public Launch planning; Public Launch execution
+remains unopened.
 
 ## Active Project State
 
@@ -81,5 +84,8 @@ Stage 13.5 Closed Beta Feedback & Evidence Collection is complete as
 documentation-only feedback/evidence work. Stage 13.6 Closed Beta Completion
 Criteria & Exit Gate is complete as documentation-only completion/exit-gate
 work. Stage 13.7 Closed Beta Closure Gate is complete as documentation-only
-closure work. Stage 13 is closed. Stage 14 Public Launch is the only next
-admissible roadmap block, but Stage 14 is not opened.
+closure work. Stage 13 is closed. Stage 14.1 Public Launch Scope & Entry Lock
+is complete as documentation-only scope and entry-lock work. Stage 14 is open
+only as bounded Public Launch planning; Public Launch execution remains
+unopened. The next bounded Stage 14 subblock is Stage 14.2 Public Launch
+Surfaces & Launch Readiness Definition.

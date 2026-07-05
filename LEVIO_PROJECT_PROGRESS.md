@@ -390,7 +390,26 @@ Overall Project Progress ████████░░ 80%
   canonical state docs и отсутствие contradictions между Stage 13.1-13.6.
 - Official closure verdict: Stage 13 Closed.
 - Единственный следующий допустимый roadmap block: Stage 14 Public Launch.
-  Stage 14 не открыт.
+  Stage 14 не был открыт Stage 13.7.
+- Stage 14.1 Public Launch Scope & Entry Lock завершен как
+  documentation-only scope and entry-lock bounded block.
+- Создан canonical Stage 14.1 документ:
+  `docs/stages/stage-14-public-launch/LEVIO_STAGE_14_1_PUBLIC_LAUNCH_SCOPE_ENTRY_LOCK.md`.
+- Stage 14.1 открыл Stage 14 только как bounded Public Launch planning block.
+  Public Launch execution остается unopened.
+- Stage 14.1 определил Stage 14 boundaries, Public Launch goals, included and
+  excluded Public Launch planning surfaces, dependencies from Stage 10/11/12/13,
+  Public Launch entry criteria, Accepted Deferrals carried into Stage 14,
+  explicit non-changes и next bounded Stage 14 subblock.
+- Stage 14.1 successor subblock: Stage 14.2 Public Launch Surfaces & Launch
+  Readiness Definition.
+- Stage 14.1 не выполняет Public Launch, не публикует launch copy, не
+  объявляет availability, не открывает Production Release, Commercial Launch
+  или Scale.
+- Не менялись runtime, UI, API, architecture, Decision Engine, Simulator,
+  Prompt Context, AI Integration, Auth, Database, Billing, Analytics,
+  Tracking, Logging, infrastructure, public contract, roadmap или product
+  behavior.
 - Product Quality Hardening #1-#5 и automated quality gates не добавляли AI
   provider execution, SDK/env/API keys, fetch/model calls, auth, billing,
   persistence, subscription changes, heavy dependencies или Real AI product
@@ -592,9 +611,10 @@ public envelope stability plus HomeSimulator integration stability, public site
 trust/readiness copy audit, rendered public surface regression, and closure
 aggregate/documentation lock не являются новым Stage.
 Repository Structure Normalization завершен.
-Текущий шаг: Stage 11.10 Production Legal Blockers Closure Gate завершен;
-closure verdict - Stage 11 Closed; Stage 12 may begin.
-Production Release, Closed Beta, Public Launch и Scale еще не активны.
+Stage 11.10 Production Legal Blockers Closure Gate завершен; closure verdict -
+Stage 11 Closed. Stage 12 и Stage 13 закрыты. Stage 14 открыт только как
+bounded documentation-only Public Launch planning through Stage 14.1. Public
+Launch execution, Production Release, Commercial Launch и Scale еще не активны.
 
 Stage 10 baseline quality gates:
 
@@ -1056,17 +1076,39 @@ Canonical Stage 13.7 document:
 - contradiction check across Stage 13.1-13.6;
 - official Stage 13 Closed verdict;
 - Stage 14 Public Launch as the only next admissible roadmap block;
-- Stage 14 not opened.
+- Stage 14 not opened by Stage 13.7.
 
-Stage 13 Closed. Stage 14 Public Launch is the only next admissible roadmap
-block, but Stage 14 is not opened and requires separate explicit approval plus
-its own entry lock.
+Stage 13 Closed. Stage 14 Public Launch became the next admissible roadmap
+block and is now opened only through Stage 14.1 as documentation-only Public
+Launch planning. Public Launch execution remains unopened.
+
+Canonical Stage 14.1 document:
+`docs/stages/stage-14-public-launch/LEVIO_STAGE_14_1_PUBLIC_LAUNCH_SCOPE_ENTRY_LOCK.md`.
+
+Stage 14.1 defines:
+
+- Stage 14 boundaries;
+- Public Launch goals;
+- included and excluded Public Launch planning surfaces;
+- dependencies from Stage 10, Stage 11, Stage 12, and Stage 13;
+- Public Launch entry criteria;
+- Accepted Deferrals carried into Stage 14;
+- explicit non-changes;
+- next bounded Stage 14 subblock.
+
+Stage 14.1 did not execute Public Launch, publish launch copy, announce
+availability, open Production Release, open Commercial Launch, open Scale,
+write legal documents, create consent UI, trust UI, AI disclosure UI,
+disclaimer UI, change runtime, UI, API, architecture, Decision Engine,
+Simulator, Prompt Context, AI Integration, Auth, Database, Billing, Analytics,
+Tracking, Logging, infrastructure, public contract, roadmap, or product
+behavior.
 
 ### 14. Public Launch
 
-Статус: Не начато.
-Прогресс: ░░░░░░░░░░ 0%.
-Следующий шаг: Планировать после closed beta.
+Статус: Stage 14.1 завершен как documentation-only scope and entry lock.
+Прогресс: █░░░░░░░░░ 10%.
+Следующий шаг: Stage 14.2 Public Launch Surfaces & Launch Readiness Definition.
 
 ### 15. Scale
 
@@ -1076,7 +1118,7 @@ its own entry lock.
 
 ## Current Roadmap Focus
 
-Stage 13.7 - Closed Beta Closure Gate Complete.
+Stage 14.1 - Public Launch Scope & Entry Lock Complete.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.
@@ -1229,11 +1271,19 @@ consistent, no contradictions exist between Stage 13.1-13.6, Remaining
 Accepted Deferrals remain compatible with Stage 13 closure, and the official
 closure verdict is Stage 13 Closed.
 
-Stage 13 Closed. Stage 14 Public Launch is the only next admissible roadmap
-block. Stage 14 is not opened and requires separate explicit approval plus its
-own entry lock before any Public Launch, production, runtime, UI, API, legal,
-data, commercial, analytics, tracking, logging, support, or infrastructure
-implementation begins.
+Stage 14.1 is complete as documentation-only Public Launch scope and entry
+lock. It opens Stage 14 only as bounded Public Launch planning, defines Stage
+14 boundaries, Public Launch goals, dependencies from Stage 10 through Stage
+13, Public Launch entry criteria, Accepted Deferrals carried into Stage 14,
+explicit non-changes, and Stage 14.2 Public Launch Surfaces & Launch Readiness
+Definition as the next bounded Stage 14 subblock.
+
+Stage 14.1 does not execute Public Launch, publish launch copy, announce
+availability, open Production Release, open Commercial Launch, open Scale,
+write legal documents, create consent UI, trust UI, AI disclosure UI,
+disclaimer UI, change runtime, UI, API, legal, data, commercial, analytics,
+tracking, logging, support, infrastructure, public contract, roadmap, or
+product behavior.
 
 Billing provider implementation remains deferred until provider/commercial/legal
 approval exists.
@@ -2017,7 +2067,24 @@ Do not continue:
   Remaining Accepted Deferrals.
 - Official closure verdict: Stage 13 Closed.
 - Единственный следующий допустимый roadmap block: Stage 14 Public Launch.
-  Stage 14 не открыт.
+  Stage 14 не был открыт Stage 13.7.
 - Не менялись runtime, UI, API, architecture, Decision Engine, Simulator,
   Prompt Context, AI, Auth, Database, Billing, Analytics, Tracking, Logging,
   infrastructure или product behavior.
+- Завершен Stage 14.1 Public Launch Scope & Entry Lock как documentation-only
+  bounded block.
+- Создан canonical Stage 14.1 документ:
+  `docs/stages/stage-14-public-launch/LEVIO_STAGE_14_1_PUBLIC_LAUNCH_SCOPE_ENTRY_LOCK.md`.
+- Stage 14.1 открыл Stage 14 только как bounded Public Launch planning block;
+  Public Launch execution остается unopened.
+- Stage 14.1 определил Stage 14 boundaries, Public Launch goals,
+  dependencies from Stage 10/11/12/13, Public Launch entry criteria, Accepted
+  Deferrals carried into Stage 14 и next bounded Stage 14 subblock.
+- Stage 14.1 successor subblock: Stage 14.2 Public Launch Surfaces & Launch
+  Readiness Definition.
+- Не выполнялся Public Launch, не публиковался launch copy, не объявлялась
+  availability, не открывались Production Release, Commercial Launch или
+  Scale.
+- Не менялись runtime, UI, API, architecture, Decision Engine, Simulator,
+  Prompt Context, AI, Auth, Database, Billing, Analytics, Tracking, Logging,
+  infrastructure, public contract, roadmap или product behavior.

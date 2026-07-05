@@ -46,6 +46,7 @@ folder:
 - `stage-11-legal-trust/`
 - `stage-12-market-readiness/`
 - `stage-13-closed-beta/`
+- `stage-14-public-launch/`
 
 Stage 10 Product Quality Hardening is baseline-locked in the active state
 documents. Repository Structure Normalization is complete. Stage 11.10
@@ -70,7 +71,8 @@ Collection is complete as documentation-only Closed Beta planning work. Stage
 13.6 Closed Beta Completion Criteria & Exit Gate is complete as
 documentation-only Closed Beta planning work. Stage 13.7 Closed Beta Closure
 Gate is complete as documentation-only Closed Beta closure work. Stage 13 is
-closed.
+closed. Stage 14.1 Public Launch Scope & Entry Lock is complete as
+documentation-only Public Launch planning work.
 
 ## QA / Quality
 
@@ -124,8 +126,11 @@ documents are retained for traceability, not as active project state.
 - Stage 13.7 Closed Beta Closure Gate is complete as documentation-only closure
   work.
 - Stage 13 is closed.
-- Stage 14 Public Launch is the only next admissible roadmap block, but Stage
-  14 is not opened.
+- Stage 14.1 Public Launch Scope & Entry Lock is complete as
+  documentation-only scope/entry-lock work.
+- Stage 14 is open only as bounded Public Launch planning.
+- The next bounded Stage 14 subblock is Stage 14.2 Public Launch Surfaces &
+  Launch Readiness Definition.
 - Closed Beta execution remains unopened.
-- Production Release, Public Launch, Commercial Launch, and Scale remain
-  closed.
+- Public Launch execution, Production Release, Commercial Launch, and Scale
+  remain closed.

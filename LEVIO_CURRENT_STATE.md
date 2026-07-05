@@ -6,21 +6,21 @@ Date: 5 July 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Stage 13.7 - Closed Beta Closure Gate Complete.
-This is a documentation-only Closed Beta closure gate. It confirms completion
-of Stage 13.1 through Stage 13.7, verifies canonical state document
-consistency, confirms no contradiction between Stage 13.1 and Stage 13.6,
-records the official closure verdict Stage 13 Closed, identifies Stage 14
-Public Launch as the only next admissible roadmap block, and confirms that
-Stage 14 is not opened. It does not invite participants, open beta execution,
-collect beta data, enable accounts, enable persistence, add analytics, add
-tracking, add logging, create feedback forms, create evidence databases,
-create test tooling, create support tooling, change runtime behavior, UI
-behavior, API behavior, architecture, simulator behavior, Decision Engine
-behavior, Prompt Context behavior, product behavior, AI integration, auth,
-persistence, database, subscriptions, billing, infrastructure,
-legal-document text, consent UI, trust UI, AI disclosure UI, disclaimer UI, or
-roadmap changes outside Stage 13.
+The current confirmed state is Stage 14.1 - Public Launch Scope & Entry Lock
+Complete. This is a documentation-only Public Launch scope and entry lock. It
+opens Stage 14 only as a bounded launch-readiness planning block, defines Stage
+14 boundaries, Public Launch goals, dependencies from Stage 10 through Stage
+13, Public Launch entry criteria, Accepted Deferrals carried into Stage 14,
+explicit non-changes, and Stage 14.2 Public Launch Surfaces & Launch Readiness
+Definition as the next bounded Stage 14 subblock. It does not execute Public
+Launch, publish launch copy, announce availability, open Production Release,
+open Commercial Launch, open Scale, enable accounts, enable persistence, add
+analytics, add tracking, add logging, create support tooling, create incident
+tooling, change runtime behavior, UI behavior, API behavior, architecture,
+simulator behavior, Decision Engine behavior, Prompt Context behavior, product
+behavior, AI integration, auth, persistence, database, subscriptions, billing,
+infrastructure, legal-document text, consent UI, trust UI, AI disclosure UI,
+disclaimer UI, or roadmap changes outside Stage 14.1.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as controlled foundation-only preflight,
@@ -889,6 +889,45 @@ Billing, Analytics, Tracking, Logging, infrastructure, public contract, or
 product behavior. It does not open Stage 14, Public Launch, Production
 Release, Commercial Launch, or Scale.
 
+Stage 14.1 Public Launch Scope & Entry Lock is complete as a documentation-only
+scope and entry lock. Canonical document:
+`docs/stages/stage-14-public-launch/LEVIO_STAGE_14_1_PUBLIC_LAUNCH_SCOPE_ENTRY_LOCK.md`.
+
+Stage 14.1 opens Stage 14 only as a bounded launch-readiness planning block.
+It defines Stage 14 boundaries, Public Launch goals, included and excluded
+Public Launch planning surfaces, dependencies from Stage 10 Product Quality
+Hardening closure baseline, Stage 11 Legal & Trust Layer closure, Stage 12
+Market Readiness closure, and Stage 13 Closed Beta closure, Public Launch
+entry criteria, Accepted Deferrals carried into Stage 14, explicit non-changes,
+and the next bounded Stage 14 subblock.
+
+Stage 14.1 preserves the continuing Accepted Deferrals for privacy/personal
+data processing, data-subject rights/user data controls, cookies/local storage/
+consent, terms/acceptable use/consumer transparency, AI transparency/Decision
+Simulation disclaimer, high-risk/professional-advice boundary, security/abuse/
+operational trust, legal identity/contact/support, production legal blockers,
+Closed Beta execution evidence and participant data, Public Launch execution,
+Production Release, Commercial Launch, Scale, production auth/account/
+persistence, subscription/billing/commercial runtime, analytics/marketing/
+tracking, Real AI provider execution, production monitoring/logging, support/
+feedback/evidence/incident tooling, final legal documents/legal copy/trust copy/
+consent text/AI disclosure/disclaimer/launch copy/compliance claims, and
+high-risk runtime classifier/gate/escalation behavior.
+
+Stage 14.1 does not execute Public Launch, publish launch copy, announce
+availability, open Production Release, open Commercial Launch, open Scale,
+write legal documents, write legal prose, write public trust copy, write
+consent text, write AI disclosure text, write disclaimer text, write launch
+copy, make compliance claims, create consent UI, create trust UI, create AI
+disclosure UI, create disclaimer UI, change runtime, UI, API, architecture,
+Decision Engine, Simulator, Prompt Context, AI Integration, Auth, Database,
+Billing, Analytics, Tracking, Logging, infrastructure, public contract,
+roadmap, or product behavior.
+
+Stage 14.1 successor subblock: Stage 14.2 Public Launch Surfaces & Launch
+Readiness Definition. It must remain documentation-only until separately
+approved.
+
 Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
 Complete.
 
@@ -1156,11 +1195,14 @@ observability, and rollback planning.
 
 Stage 14 - Public Launch.
 
-Stage 13 is closed. Stage 14 is the only next admissible roadmap block, but it
-is not opened and requires separate explicit approval plus its own entry lock.
-No Public Launch, production, runtime, UI, API, legal, data, commercial,
-analytics, tracking, logging, support, or infrastructure implementation is
-opened by Stage 13.7.
+Stage 13 is closed. Stage 14.1 Public Launch Scope & Entry Lock is complete as
+documentation-only scope and entry-lock work. Stage 14 is open only as bounded
+Public Launch planning; Public Launch execution remains unopened.
+
+The next bounded Stage 14 subblock is Stage 14.2 Public Launch Surfaces &
+Launch Readiness Definition. No Public Launch execution, production, runtime,
+UI, API, legal, data, commercial, analytics, tracking, logging, support, or
+infrastructure implementation is opened by Stage 14.1.
 
 Levio must remain a Decision Simulation Engine and must not create AI Chat,
 Answer Engine, Generic Assistant, direct AI-to-user behavior, model calls,
