@@ -2,22 +2,21 @@
 
 ## Active Checkpoint
 
-Stage 12.6 - Market Readiness Closure Gate Complete.
+Stage 13.1 - Closed Beta Scope & Entry Lock Complete.
 
-Status: Stage 12.6 is complete as a documentation-only Market Readiness
-closure gate. It confirms Stage 12.1 through Stage 12.5 are complete,
-canonical state documents are consistent, no contradiction exists between
-Stage 12.1 and Stage 12.5, and Stage 12 is officially closed. It identifies
-Stage 13 Closed Beta as the only next admissible roadmap block, but Stage 13
-is not opened. It does not open implementation, Production Release, Closed
-Beta, Public Launch, Scale, Commercial Launch, runtime behavior, UI behavior,
-API behavior, architecture, simulator behavior, Decision Engine behavior,
-Prompt Context behavior, AI integration, auth, persistence, database, billing,
-subscriptions, analytics, tracking, logging, infrastructure, product behavior,
-legal-document text, consent UI, trust UI, AI disclosure UI, disclaimer UI, or
-a new public contract.
+Status: Stage 13.1 is complete as a documentation-only Closed Beta scope and
+entry lock. It defines the Stage 13 boundary, Closed Beta goals, included and
+excluded Closed Beta surfaces, dependencies from Stage 10, Stage 11, and Stage
+12, Closed Beta entry criteria, Accepted Deferrals carried forward from Stage
+12, and the next bounded Stage 13 subblock. It does not open beta execution,
+Production Release, Public Launch, Commercial Launch, runtime behavior, UI
+behavior, API behavior, architecture, simulator behavior, Decision Engine
+behavior, Prompt Context behavior, AI integration, auth, persistence,
+database, billing, subscriptions, analytics, tracking, logging,
+infrastructure, product behavior, legal-document text, consent UI, trust UI,
+AI disclosure UI, disclaimer UI, or a new public contract.
 
-Date: 4 July 2026, Europe/Madrid.
+Date: 5 July 2026, Europe/Madrid.
 
 Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
 Complete. Stage 5.2 remains closed as Prompt / Context Layer Foundation
@@ -293,6 +292,28 @@ The only next admissible roadmap block is Stage 13 Closed Beta. Stage 13 is
 not opened by Stage 12.6 and requires separate explicit approval plus its own
 entry gate before any beta, runtime, UI, API, legal, data, commercial,
 analytics, tracking, logging, support, or infrastructure implementation begins.
+
+## Stage 13.1 Closed Beta Scope & Entry Lock
+
+Status: complete as documentation-only Closed Beta scope and entry lock.
+
+Canonical document:
+`docs/stages/stage-13-closed-beta/LEVIO_STAGE_13_1_CLOSED_BETA_SCOPE_ENTRY_LOCK.md`.
+
+Stage 13.1 opens Stage 13 only as a bounded documentation and readiness
+planning block. It defines Closed Beta boundaries, goals, included and
+excluded surfaces, dependencies from Stage 10, Stage 11, and Stage 12, Closed
+Beta entry criteria, Accepted Deferrals carried forward from Stage 12,
+explicit non-changes, and the next bounded Stage 13 subblock.
+
+Stage 13.1 does not start a Closed Beta, invite participants, enable beta
+traffic, change runtime, UI, API, Decision Engine, Simulator, Prompt Context,
+AI Integration, Auth, Database, Billing, Analytics, Tracking, Logging,
+infrastructure, architecture, public contract, or product behavior. It does
+not open Production Release, Public Launch, or Commercial Launch.
+
+Stage 13.1 successor subblock: Stage 13.2 Closed Beta Participant Scope &
+Operating Model. It must remain documentation-only until separately approved.
 
 ## Stage 11 Foundation Inventory
 
@@ -1031,9 +1052,10 @@ rollback.
 
 ## Next Allowed Roadmap Step
 
-Official status: Stage 12 Closed.
+Stage 13.2 - Closed Beta Participant Scope & Operating Model.
 
-The only next admissible roadmap block is Stage 13 Closed Beta, but Stage 13
-is not opened by Stage 12.6. Stage 13 requires separate explicit approval and
-its own entry gate before any beta, runtime, UI, API, legal, data, commercial,
-analytics, tracking, logging, support, or infrastructure implementation begins.
+Stage 13.1 is complete as documentation-only Closed Beta scope and entry lock.
+Stage 12 remains closed. The next bounded Stage 13 subblock must remain
+documentation-only until separately approved and must not open beta execution,
+runtime, UI, API, legal, data, commercial, analytics, tracking, logging,
+support, or infrastructure implementation.

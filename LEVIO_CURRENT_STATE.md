@@ -2,23 +2,22 @@
 
 ## Confirmed Project Position
 
-Date: 4 July 2026, Europe/Madrid.
+Date: 5 July 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Stage 12.6 - Market Readiness Closure Gate
-Complete. This is a documentation-only closure gate for Stage 12 Market
-Readiness. It confirms Stage 12.1 through Stage 12.5 are complete, canonical
-state documents are consistent, no contradiction exists between Stage 12.1 and
-Stage 12.5, and Stage 12 is officially closed. It identifies Stage 13 Closed
-Beta as the only next admissible roadmap block, but Stage 13 is not opened. It
-does not open implementation, Production Release, Closed Beta, Public Launch,
-Scale, Commercial Launch, runtime behavior, UI behavior, API behavior,
-architecture, simulator behavior, Decision Engine behavior, Prompt Context
-behavior, product behavior, AI integration, auth, persistence, database,
-subscriptions, billing, analytics, tracking, logging, infrastructure,
-legal-document text, consent UI, trust UI, AI disclosure UI, disclaimer UI, or
-roadmap changes outside Stage 12.
+The current confirmed state is Stage 13.1 - Closed Beta Scope & Entry Lock
+Complete. This is a documentation-only Closed Beta scope and entry lock. It
+defines the Stage 13 boundary, Closed Beta goals, included and excluded Closed
+Beta surfaces, dependencies from Stage 10, Stage 11, and Stage 12, Closed Beta
+entry criteria, Accepted Deferrals carried forward from Stage 12, and the next
+bounded Stage 13 subblock. It does not open beta execution, Production
+Release, Public Launch, Commercial Launch, runtime behavior, UI behavior, API
+behavior, architecture, simulator behavior, Decision Engine behavior, Prompt
+Context behavior, product behavior, AI integration, auth, persistence,
+database, subscriptions, billing, analytics, tracking, logging,
+infrastructure, legal-document text, consent UI, trust UI, AI disclosure UI,
+disclaimer UI, or roadmap changes outside Stage 13.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as controlled foundation-only preflight,
@@ -722,6 +721,25 @@ not opened by Stage 12.6 and requires separate explicit approval plus its own
 entry gate before any beta, runtime, UI, API, legal, data, commercial,
 analytics, tracking, logging, support, or infrastructure implementation begins.
 
+Stage 13.1 Closed Beta Scope & Entry Lock is complete as a documentation-only
+entry lock. Canonical document:
+`docs/stages/stage-13-closed-beta/LEVIO_STAGE_13_1_CLOSED_BETA_SCOPE_ENTRY_LOCK.md`.
+
+Stage 13.1 opens Stage 13 only as a bounded documentation and readiness
+planning block. It defines Closed Beta boundaries, goals, included and
+excluded surfaces, dependencies from Stage 10, Stage 11, and Stage 12, Closed
+Beta entry criteria, Accepted Deferrals carried forward from Stage 12,
+explicit non-changes, and the next bounded Stage 13 subblock.
+
+Stage 13.1 does not start a Closed Beta, invite participants, enable beta
+traffic, change runtime, UI, API, Decision Engine, Simulator, Prompt Context,
+AI Integration, Auth, Database, Billing, Analytics, Tracking, Logging,
+infrastructure, architecture, public contract, or product behavior. It does
+not open Production Release, Public Launch, or Commercial Launch.
+
+Stage 13.1 successor subblock: Stage 13.2 Closed Beta Participant Scope &
+Operating Model. It must remain documentation-only until separately approved.
+
 Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
 Complete.
 
@@ -987,12 +1005,13 @@ observability, and rollback planning.
 
 ## Next Roadmap Step
 
-Official status: Stage 12 Closed.
+Stage 13.2 - Closed Beta Participant Scope & Operating Model.
 
-The only next admissible roadmap block is Stage 13 Closed Beta, but Stage 13
-is not opened by Stage 12.6. Stage 13 requires separate explicit approval and
-its own entry gate before any beta, runtime, UI, API, legal, data, commercial,
-analytics, tracking, logging, support, or infrastructure implementation begins.
+Stage 13.1 is complete as documentation-only Closed Beta scope and entry lock.
+Stage 12 remains closed. The next bounded Stage 13 subblock must remain
+documentation-only until separately approved and must not open beta execution,
+runtime, UI, API, legal, data, commercial, analytics, tracking, logging,
+support, or infrastructure implementation.
 
 Levio must remain a Decision Simulation Engine and must not create AI Chat,
 Answer Engine, Generic Assistant, direct AI-to-user behavior, model calls,

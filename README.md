@@ -23,7 +23,8 @@ Evidence Inventory & Dependency Map is complete as documentation-only Market
 Readiness work. Stage 12.5 Market Readiness Completion Criteria & Exit Gate
 is complete as documentation-only Market Readiness work. Stage 12.6 Market
 Readiness Closure Gate is complete as documentation-only Market Readiness
-work. Stage 12 is closed.
+work. Stage 12 is closed. Stage 13.1 Closed Beta Scope & Entry Lock is
+complete as documentation-only Closed Beta planning work.
 
 ## Active Project State
 
@@ -59,4 +60,7 @@ Stage 12.5 Market Readiness Completion Criteria & Exit Gate is complete as
 documentation-only work. No further bounded Stage 12 subblock is required.
 Stage 12.6 Market Readiness Closure Gate is complete as documentation-only
 work. Stage 12 is closed. Stage 13 Closed Beta is the only next admissible
-roadmap block, remains unopened, and requires separate explicit approval.
+roadmap block. Stage 13.1 Closed Beta Scope & Entry Lock is complete as
+documentation-only scope and entry-lock work. Closed Beta execution remains
+unopened. The next bounded Stage 13 subblock is Stage 13.2 Closed Beta
+Participant Scope & Operating Model.

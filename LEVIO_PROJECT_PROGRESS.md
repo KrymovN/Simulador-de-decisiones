@@ -2,7 +2,7 @@
 
 ## Last Updated
 
-4 июля 2026
+5 июля 2026
 
 ## Purpose
 
@@ -307,6 +307,15 @@ Overall Project Progress ████████░░ 80%
 - Official closure verdict: Stage 12 Closed.
 - Единственный следующий допустимый roadmap block: Stage 13 Closed Beta.
   Stage 13 не открыт.
+- Stage 13.1 Closed Beta Scope & Entry Lock завершен как documentation-only
+  scope and entry lock.
+- Stage 13.1 открыл Stage 13 только как bounded documentation/readiness
+  planning block; Closed Beta execution не открыт.
+- Stage 13.1 определил boundaries, goals, included/excluded surfaces,
+  dependencies from Stage 10/11/12, entry criteria, Accepted Deferrals carried
+  from Stage 12 и next bounded Stage 13 subblock.
+- Stage 13.1 successor subblock: Stage 13.2 Closed Beta Participant Scope &
+  Operating Model.
 - Product Quality Hardening #1-#5 и automated quality gates не добавляли AI
   provider execution, SDK/env/API keys, fetch/model calls, auth, billing,
   persistence, subscription changes, heavy dependencies или Real AI product
@@ -902,14 +911,33 @@ Canonical Stage 12.6 document:
 - completion criteria for Stage 12.6;
 - no further bounded Stage 12 subblock required.
 
-Stage 12 Closed. Stage 13 Closed Beta остается not started and requires
-separate explicit approval and its own entry gate.
+Stage 12 Closed. Closed Beta execution remains unopened and requires separate
+explicit approval and its own entry gate.
 
 ### 13. Closed Beta
 
-Статус: Не начато.
-Прогресс: ░░░░░░░░░░ 0%.
-Следующий шаг: Запускать только после production-ready runtime, data controls, trust layer и QA.
+Статус: Stage 13.1 Closed Beta Scope & Entry Lock завершен как
+documentation-only scope and entry lock.
+Прогресс: ░░░░░░░░░░ 5%.
+Canonical Stage 13.1 document:
+`docs/stages/stage-13-closed-beta/LEVIO_STAGE_13_1_CLOSED_BETA_SCOPE_ENTRY_LOCK.md`.
+Зафиксировано:
+
+- Stage 13 boundaries;
+- Closed Beta goals;
+- included and excluded Closed Beta surfaces;
+- dependencies from closed Stage 10, closed Stage 11 and closed Stage 12;
+- Closed Beta entry criteria;
+- Accepted Deferrals carried forward from Stage 12;
+- explicit non-changes for runtime, UI, API, Decision Engine, Simulator,
+  Prompt Context, AI Integration, Auth, Database, Billing, Analytics,
+  Tracking, Logging, architecture, infrastructure and product behavior;
+- Closed Beta execution not opened;
+- Production Release, Public Launch and Commercial Launch not opened.
+
+Следующий bounded subblock: Stage 13.2 Closed Beta Participant Scope &
+Operating Model. Он должен оставаться documentation-only до отдельного
+approval.
 
 ### 14. Public Launch
 
@@ -925,7 +953,7 @@ separate explicit approval and its own entry gate.
 
 ## Current Roadmap Focus
 
-Stage 12.6 - Market Readiness Closure Gate Complete.
+Stage 13.1 - Closed Beta Scope & Entry Lock Complete.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.
@@ -981,11 +1009,23 @@ confirms all Stage 12 subblocks are complete, canonical state docs are
 consistent, no contradictions exist between Stage 12.1-12.5, and the official
 closure verdict is Stage 12 Closed.
 
-Stage 12 Closed. The only next admissible roadmap block is Stage 13 Closed
-Beta, but Stage 13 remains not started and requires separate explicit approval
+Stage 12 Closed. Stage 13 is open only as documentation/readiness planning.
+Closed Beta execution remains unopened and requires separate explicit approval
 and its own entry gate before any beta, runtime, UI, API, legal, data,
 commercial, analytics, tracking, logging, support, or infrastructure
 implementation begins.
+
+Stage 13.1 is complete as documentation-only Closed Beta scope and entry lock.
+It opens Stage 13 only as a bounded documentation/readiness planning block,
+defines boundaries, goals, included/excluded surfaces, dependencies from Stage
+10/11/12, Closed Beta entry criteria, Accepted Deferrals carried forward from
+Stage 12, and the next bounded Stage 13 subblock. Closed Beta execution is not
+opened.
+
+The next bounded subblock is Stage 13.2 Closed Beta Participant Scope &
+Operating Model. It must remain documentation-only until separately approved
+and must not open beta execution, runtime, UI, API, legal, data, commercial,
+analytics, tracking, logging, support, or infrastructure implementation.
 
 Billing provider implementation remains deferred until provider/commercial/legal
 approval exists.

@@ -45,6 +45,7 @@ folder:
 - `stage-05-ai-integration/`
 - `stage-11-legal-trust/`
 - `stage-12-market-readiness/`
+- `stage-13-closed-beta/`
 
 Stage 10 Product Quality Hardening is baseline-locked in the active state
 documents. Repository Structure Normalization is complete. Stage 11.10
@@ -58,7 +59,8 @@ Readiness Evidence Inventory & Dependency Map is complete as documentation-only
 Market Readiness work. Stage 12.5 Market Readiness Completion Criteria & Exit
 Gate is complete as documentation-only Market Readiness work. Stage 12.6
 Market Readiness Closure Gate is complete as documentation-only Market
-Readiness work. Stage 12 is closed.
+Readiness work. Stage 12 is closed. Stage 13.1 Closed Beta Scope & Entry Lock
+is complete as documentation-only Closed Beta planning work.
 
 ## QA / Quality
 
@@ -97,5 +99,8 @@ documents are retained for traceability, not as active project state.
   closure-gate work.
 - Stage 12 is closed.
 - No further bounded Stage 12 subblock is required.
-- Production Release, Closed Beta, Public Launch, Commercial Launch, and Scale
-  remain closed.
+- Stage 13.1 Closed Beta Scope & Entry Lock is complete as documentation-only
+  scope/entry-lock work.
+- Closed Beta execution remains unopened.
+- Production Release, Public Launch, Commercial Launch, and Scale remain
+  closed.
