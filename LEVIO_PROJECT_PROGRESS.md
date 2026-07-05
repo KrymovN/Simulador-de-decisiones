@@ -35,8 +35,8 @@
 Product Alignment        ██████████ 100%
 Foundation Readiness     ██████████ 100%
 Runtime Completion       ██████░░░░ 60%
-Commercial Readiness     ██░░░░░░░░ 22%
-Overall Project Progress ████████░░ 80%
+Commercial Readiness     ███░░░░░░░ 25%
+Overall Project Progress ████████░░ 82%
 ```
 
 ## Current Position
@@ -441,14 +441,55 @@ Overall Project Progress ████████░░ 80%
   expansion.
 - No further bounded Stage 14 documentation-foundation subblock is required by
   Stage 14.3.
-- Любые Public Launch execution, Stage 14 closure, Production Release,
-  Commercial Launch, Scale, implementation work или roadmap expansion требуют
-  separate explicit approval.
+- Stage 14.3 сам не закрывал Stage 14; closure позже завершен в Stage 14.9.
+  Production Release, Commercial Launch, Scale, implementation work или
+  roadmap expansion требуют separate explicit approval.
 - Stage 14.3 не выполняет Public Launch и не авторизует implementation
   changes.
 - Не менялись runtime, UI, API, architecture, dependencies, config, tests,
   Auth, Database, Billing, Analytics, Tracking, Logging, infrastructure,
   public contract, roadmap или product behavior.
+- Stage 14.4 Public Launch Surface Audit завершен как audit-only bounded
+  block.
+- Stage 14.4 проверил Home, Simulator, Login, Register, Forgot Password,
+  Privacy, Terms, dashboard entry/redirect behavior, public navigation/footer
+  links, Spanish UI copy, trust/legal signals и Decision Simulation Engine
+  positioning.
+- Stage 14.4 не нашел AI Chat / Answer Engine / generic assistant positioning
+  и выделил bounded public-surface blockers для Stage 14.5-14.8.
+- Stage 14.5 Public Surface Isolation завершен.
+- Commit Stage 14.5: `1ae2d98`.
+- `/visual-lab` больше не является публичным App Router route; внутренний
+  Visual Lab sandbox изолирован от public product surface.
+- Stage 14.6 Trust & Legal Visibility завершен.
+- Commit Stage 14.6: `63b568d`.
+- Public Home footer trust/legal navigation теперь содержит Terms рядом с
+  Privacy и Contact.
+- Stage 14.7 Public Copy Hardening завершен.
+- Commit Stage 14.7: `44623ba`.
+- Public UI copy hardened: technical English/Spanglish wording вроде
+  `mock-only`, `runtime de IA`, `production-grade`, `Auth Runtime` и
+  `Password reset` заменены на естественную Spanish launch-copy; auth/security
+  wording больше не обещает production readiness сверх фактического состояния.
+- Decision Simulation Engine positioning сохранен.
+- Stage 14.8 Production Runtime Readiness завершен.
+- Commit Stage 14.8: `c013b8c`.
+- Public runtime scenarios для Homepage, Simulator, Login, Register и Forgot
+  Password проверены; крупных runtime blockers не найдено.
+- Quality gates обновлены под approved Stage 14.7 launch-copy и проходят:
+  `npm run build` PASS, `quality:public-home` 68/68 PASS,
+  `quality:public-site-trust-readiness` 85/85 PASS,
+  `quality:public-home-simulator-api-integration` 57/57 PASS,
+  `quality:rendered-public-surface-regression` 97/97 PASS.
+- Stage 14.9 Public Launch Closure Gate завершен.
+- Official closure verdict: Stage 14 Closed.
+- Public surface blockers закрыты; Visual Lab изолирован; legal/trust
+  navigation исправлена; public launch copy hardened; public runtime readiness
+  verified; quality gates updated and passing.
+- Stage 14.9 не открывает Production Release, Commercial Launch, Scale,
+  roadmap expansion, Real AI execution, production auth/account/persistence,
+  subscription/billing/commercial runtime, analytics, tracking, logging,
+  support tooling, incident tooling или новый public contract.
 - Product Quality Hardening #1-#5 и automated quality gates не добавляли AI
   provider execution, SDK/env/API keys, fetch/model calls, auth, billing,
   persistence, subscription changes, heavy dependencies или Real AI product
@@ -1118,8 +1159,8 @@ Canonical Stage 13.7 document:
 - Stage 14 not opened by Stage 13.7.
 
 Stage 13 Closed. Stage 14 Public Launch became the next admissible roadmap
-block and is now opened only through Stage 14.1 as documentation-only Public
-Launch planning. Public Launch execution remains unopened.
+block and was opened through Stage 14.1 as bounded Public Launch planning. It
+was later closed by Stage 14.9 as a completed readiness block.
 
 Canonical Stage 14.1 document:
 `docs/stages/stage-14-public-launch/LEVIO_STAGE_14_1_PUBLIC_LAUNCH_SCOPE_ENTRY_LOCK.md`.
@@ -1172,17 +1213,19 @@ future roadmap work, and launch sign-off responsibilities for technical,
 product, documentation, and deployment readiness.
 
 Stage 14.3 confirms that Stage 14 completion does not authorize roadmap
-expansion. No further bounded Stage 14 documentation-foundation subblock is
-required by Stage 14.3. Public Launch execution, Stage 14 closure, Production
-Release, Commercial Launch, Scale, implementation work, or roadmap expansion
-requires separate explicit approval.
+expansion. No further bounded Stage 14 documentation-foundation subblock was
+required by Stage 14.3. Stage 14.3 itself did not close Stage 14; closure was
+later completed by Stage 14.9. Production Release, Commercial Launch, Scale,
+implementation work, or roadmap expansion still require separate explicit
+approval.
 
 ### 14. Public Launch
 
-Статус: Stage 14.3 завершен как documentation-only exit criteria.
-Прогресс: ███░░░░░░░ 30%.
-Следующий шаг: отдельное explicit approval для Public Launch execution,
-Stage 14 closure или следующего bounded roadmap action.
+Статус: Stage 14 Closed as Public Launch readiness block.
+Прогресс: ██████████ 100%.
+Следующий шаг: нет активного открытого roadmap block. Любой Stage 15 Scale,
+Production Release, Commercial Launch или дальнейший implementation требует
+отдельного explicit approval.
 
 ### 15. Scale
 
@@ -1192,7 +1235,7 @@ Stage 14 closure или следующего bounded roadmap action.
 
 ## Current Roadmap Focus
 
-Stage 14.3 - Public Launch Exit Criteria Complete.
+Stage 14.9 - Public Launch Readiness Closed.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.
@@ -2207,10 +2250,39 @@ Do not continue:
   expansion.
 - No further bounded Stage 14 documentation-foundation subblock is required by
   Stage 14.3.
-- Любые Public Launch execution, Stage 14 closure, Production Release,
-  Commercial Launch, Scale, implementation work или roadmap expansion требуют
-  separate explicit approval.
+- Stage 14.3 сам не закрывал Stage 14; closure позже завершен в Stage 14.9.
+  Production Release, Commercial Launch, Scale, implementation work или
+  roadmap expansion требуют separate explicit approval.
 - Не выполнялся Public Launch, не авторизовывались implementation changes и не
   менялись runtime, UI, API, architecture, dependencies, config, tests, Auth,
   Database, Billing, Analytics, Tracking, Logging, infrastructure, public
   contract, roadmap или product behavior.
+- Завершен Stage 14.4 Public Launch Surface Audit как audit-only bounded
+  block.
+- Stage 14.4 проверил public launch-facing surface и не нашел AI Chat /
+  Answer Engine / generic assistant positioning.
+- Stage 14.4 выделил bounded public-surface blockers: Visual Lab public route,
+  incomplete Terms visibility, technical/Spanglish launch copy, auth/security
+  wording risk и stale quality expectations after copy hardening.
+- Завершен Stage 14.5 Public Surface Isolation.
+- Commit Stage 14.5: `1ae2d98`.
+- `/visual-lab` изолирован от public product surface.
+- Завершен Stage 14.6 Trust & Legal Visibility.
+- Commit Stage 14.6: `63b568d`.
+- Public footer trust/legal navigation включает Terms.
+- Завершен Stage 14.7 Public Copy Hardening.
+- Commit Stage 14.7: `44623ba`.
+- Public UI copy hardened; Decision Simulation Engine positioning preserved.
+- Завершен Stage 14.8 Production Runtime Readiness.
+- Commit Stage 14.8: `c013b8c`.
+- Public runtime scenarios проверены; больших runtime blockers не найдено.
+- Accepted Stage 14.8 gates: `npm run build` PASS,
+  `quality:public-home` 68/68 PASS, `quality:public-site-trust-readiness`
+  85/85 PASS, `quality:public-home-simulator-api-integration` 57/57 PASS,
+  `quality:rendered-public-surface-regression` 97/97 PASS.
+- Завершен Stage 14.9 Public Launch Closure Gate.
+- Official closure verdict: Stage 14 Closed.
+- Stage 14.9 не открывает Production Release, Commercial Launch, Scale,
+  roadmap expansion, Real AI execution, production auth/account/persistence,
+  subscription/billing/commercial runtime, analytics, tracking, logging,
+  support tooling, incident tooling или новый public contract.

@@ -2,23 +2,20 @@
 
 ## Active Checkpoint
 
-Stage 14.3 - Public Launch Exit Criteria Complete.
+Stage 14.9 - Public Launch Readiness Closed.
 
-Status: Stage 14.3 is complete as documentation-only Public Launch exit
-criteria. It defines Ready for launch execution, Public Launch, Stage 14
-completion, mandatory blockers, acceptable known limitations, post-launch
-improvements, future roadmap work, and launch sign-off responsibilities for
-technical readiness, product readiness, documentation readiness, and deployment
-readiness. It does not execute Public Launch, authorize implementation changes,
-authorize roadmap expansion, publish launch copy, announce availability, open
-Production Release, open Commercial Launch, open Scale, enable accounts, enable
-persistence, add analytics, add tracking, add logging, create support tooling,
-create incident tooling, change runtime behavior, UI behavior, API behavior,
-architecture, simulator behavior, Decision Engine behavior, Prompt Context
-behavior, AI integration, auth, persistence, database, billing, subscriptions,
-infrastructure, dependencies, config, tests, product behavior,
-legal-document text, consent UI, trust UI, AI disclosure UI, disclaimer UI, or
-a new public contract.
+Status: Stage 14 Public Launch is closed as a completed launch-readiness block.
+Stage 14.1-14.3 established scope, readiness verification, and exit criteria.
+Stage 14.4 audited the public launch surface. Stage 14.5-14.8 closed the
+bounded public-surface blockers found during the audit: Visual Lab was isolated
+from public routing, public legal navigation now includes Terms, public launch
+copy was hardened against technical jargon and misleading auth/security
+wording, and public runtime readiness was verified with updated quality gates.
+Stage 14.9 records the closure decision only. It does not open Production
+Release, Commercial Launch, Scale, production auth/account/persistence,
+subscription/billing/commercial runtime, analytics, tracking, logging, Real AI
+provider execution, production monitoring, support tooling, incident tooling,
+new roadmap stages, or a new public contract.
 
 Date: 5 July 2026, Europe/Madrid.
 
@@ -61,8 +58,8 @@ Status: complete as documentation-only Public Launch scope and entry lock.
 Canonical document:
 `docs/stages/stage-14-public-launch/LEVIO_STAGE_14_1_PUBLIC_LAUNCH_SCOPE_ENTRY_LOCK.md`.
 
-Stage 14.1 opens Stage 14 only as a bounded launch-readiness planning block.
-Public Launch execution remains unopened.
+Stage 14.1 opened Stage 14 only as a bounded launch-readiness planning block.
+At Stage 14.1 completion, Public Launch execution remained unopened.
 
 Stage 14.1 defines:
 
@@ -178,10 +175,103 @@ or roadmap expansion. It did not change runtime, UI, API, architecture,
 dependencies, config, tests, auth, database, billing, analytics, tracking,
 logging, infrastructure, public contract, roadmap, or product behavior.
 
-No further bounded Stage 14 documentation-foundation subblock is required by
-Stage 14.3. Any later Public Launch execution, Stage 14 closure, Production
-Release, Commercial Launch, Scale, implementation work, or roadmap expansion
-requires separate explicit approval.
+No further bounded Stage 14 documentation-foundation subblock was required by
+Stage 14.3. Stage 14.3 itself did not close Stage 14; closure was later
+completed by Stage 14.9. Production Release, Commercial Launch, Scale,
+implementation work, or roadmap expansion still require separate explicit
+approval.
+
+## Stage 14.4 Public Launch Surface Audit
+
+Status: complete as audit-only Public Launch surface review.
+
+Stage 14.4 reviewed the launch-facing public surface: Home, Simulator,
+login/register/forgot-password pages, privacy policy, terms page, dashboard
+entry/redirect behavior, public navigation/footer links, visible Spanish UI
+copy, trust/legal signals, and Decision Simulation Engine positioning.
+
+Audit verdict: no AI Chat, Answer Engine, or generic assistant positioning was
+found. The audit identified bounded public-surface blockers: a publicly
+reachable Visual Lab sandbox route, missing Terms visibility in public footer
+trust navigation, technical English/Spanglish launch copy, potentially
+over-strong auth/security wording, and stale quality expectations after copy
+hardening.
+
+Stage 14.4 made no file changes, no commit, and no push.
+
+## Stage 14.5 Public Surface Isolation
+
+Status: complete.
+
+Commit: `1ae2d98`.
+
+Stage 14.5 removed the public App Router entrypoint for `/visual-lab`, making
+the internal Visual Lab sandbox no longer reachable as a public product
+surface. It did not change runtime behavior, simulator logic, Decision Engine,
+Prompt Context, AI integration, auth, database, billing, analytics, tracking,
+logging, architecture, or public product positioning.
+
+## Stage 14.6 Trust & Legal Visibility
+
+Status: complete.
+
+Commit: `63b568d`.
+
+Stage 14.6 added the public Terms link to the Home footer trust/legal
+navigation while preserving the existing Privacy and Contact links. Privacy and
+Terms remain accessible and logically aligned with the register page legal
+acceptance links. Legal text meaning was not rewritten.
+
+## Stage 14.7 Public Copy Hardening
+
+Status: complete.
+
+Commit: `44623ba`.
+
+Stage 14.7 replaced technical English/Spanglish public UI wording such as
+`mock-only`, `runtime de IA`, `production-grade`, `Auth Runtime`, and
+`Password reset` with natural Spanish launch copy. The register action was
+softened from `Crear acceso seguro` to `Solicitar enlace de acceso` to avoid
+overstating production auth/security guarantees. Decision Simulation Engine
+positioning was preserved.
+
+## Stage 14.8 Production Runtime Readiness
+
+Status: complete.
+
+Commit: `c013b8c`.
+
+Stage 14.8 checked public runtime readiness for Homepage, Simulator, Login,
+Register, and Forgot Password flows. No large runtime blocker was found. The
+bounded fix updated public quality gate invariants so they validate the
+approved Stage 14.7 Spanish launch copy rather than the prior technical copy.
+
+Accepted verification baseline after Stage 14.8:
+
+- `npm run build`, PASS;
+- `npm run quality:public-home`, 68/68 PASS;
+- `npm run quality:public-site-trust-readiness`, 85/85 PASS;
+- `npm run quality:public-home-simulator-api-integration`, 57/57 PASS;
+- `npm run quality:rendered-public-surface-regression`, 97/97 PASS.
+
+## Stage 14.9 Public Launch Closure Gate
+
+Status: complete.
+
+Stage 14.9 closes Stage 14 Public Launch as a readiness block. Public surface
+blockers identified by Stage 14.4 are closed, Visual Lab is isolated, legal/
+trust navigation is complete for the current public footer, public launch copy
+is hardened, public runtime readiness has been verified, and quality gates are
+updated and passing.
+
+Closure verdict: Stage 14 Closed.
+
+Stage 14 closure does not authorize roadmap expansion or open a new audit
+cycle. Production Release, Commercial Launch, Scale, Real AI execution,
+production auth/account/persistence, subscription/billing/commercial runtime,
+analytics, tracking, logging, support tooling, incident tooling, legal-document
+finalization, compliance claims, and any new public contract remain outside
+this closure unless separately approved.
 
 ## Stage 12.1 Market Readiness Scope & Entry Lock
 
@@ -1350,16 +1440,15 @@ rollback.
 
 ## Next Allowed Roadmap Step
 
-Stage 14 - Public Launch.
+Stage 14 - Public Launch is closed as a readiness block.
 
-Stage 13 is closed. Stage 14.1 Public Launch Scope & Entry Lock, Stage 14.2
-Public Launch Readiness Checklist / Verification Matrix, and Stage 14.3 Public
-Launch Exit Criteria are complete as documentation-only Public Launch planning
-work. Public Launch execution remains unopened.
+Stage 13 is closed. Stage 14.1-14.9 are complete. The public launch readiness
+block closed the Stage 14 audit blockers and verified the current public
+surface without opening Production Release, Commercial Launch, Scale, roadmap
+expansion, Real AI execution, production auth/account/persistence,
+subscription/billing/commercial runtime, analytics, tracking, logging, support
+tooling, incident tooling, or a new public contract.
 
-No further bounded Stage 14 documentation-foundation subblock is required by
-Stage 14.3. Any later Public Launch execution, Stage 14 closure, Production
-Release, Commercial Launch, Scale, implementation work, or roadmap expansion
-requires separate explicit approval. No production, runtime, UI, API, legal,
-data, commercial, analytics, tracking, logging, support, infrastructure,
-dependency, config, test, or product implementation is opened by Stage 14.3.
+No active next roadmap block is opened by Stage 14.9. Any Stage 15 Scale work,
+Production Release, Commercial Launch, or further implementation requires a
+separate explicit approval.
