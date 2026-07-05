@@ -2,19 +2,22 @@
 
 ## Active Checkpoint
 
-Stage 15.2 - Scale Preconditions & Evidence Inventory Complete.
+Stage 15.3 - Scale Readiness Evidence Validation Framework Complete.
 
-Status: Stage 15.2 is complete as documentation-only Scale preconditions and
-evidence inventory work. Stage 15 remains open only as a bounded
+Status: Stage 15.3 is complete as documentation-only Scale readiness evidence
+validation framework work. Stage 15 remains open only as a bounded
 scale-readiness planning stage. Stage 15.1 Scale Scope & Entry Lock is
-complete. Stage 15.2 records the canonical inventory of objective Scale
-preconditions, readiness evidence, readiness criteria, current prerequisite
-status, and dependency mapping. Stage 15.2 does not execute Scale, increase
-traffic, open Production Release, open Commercial Launch, enable production
-auth/account/persistence, add subscription/billing/commercial runtime, add
-analytics, tracking, logging, Real AI provider execution, production
-monitoring, support tooling, incident tooling, legal documents, implementation
-plans, audits, compliance claims, or a new public contract.
+complete. Stage 15.2 Scale Preconditions & Evidence Inventory is complete.
+Stage 15.3 records the unified validation process, prerequisite confirmation
+rules, evidence sufficiency criteria, verification result recording rules,
+READY / PARTIALLY READY / NOT READY verdict rules, and independent vs
+complete-set prerequisite handling. Stage 15.3 does not perform readiness
+validation, collect evidence, assign any readiness verdict, execute Scale,
+increase traffic, open Production Release, open Commercial Launch, enable
+production auth/account/persistence, add subscription/billing/commercial
+runtime, add analytics, tracking, logging, Real AI provider execution,
+production monitoring, support tooling, incident tooling, legal documents,
+implementation plans, audits, compliance claims, or a new public contract.
 
 Date: 5 July 2026, Europe/Madrid.
 
@@ -372,6 +375,53 @@ No additional documentation-only subblock is required to complete the Stage
 15.2 inventory. Any later Scale execution, Production Release, Commercial
 Launch, implementation work, audit, or roadmap expansion requires separate
 explicit approval.
+
+## Stage 15.3 Scale Readiness Evidence Validation
+
+Status: complete as documentation-only Scale readiness evidence validation
+framework.
+
+Canonical document:
+`docs/stages/stage-15-scale/LEVIO_STAGE_15_3_SCALE_READINESS_EVIDENCE_VALIDATION.md`.
+
+Stage 15.3 defines the canonical framework for objectively validating Scale
+readiness evidence against the Stage 15.2 prerequisite inventory. It defines:
+
+- unified readiness evidence validation process;
+- confirmation rules for each Stage 15.2 prerequisite;
+- evidence sufficiency criteria;
+- verification result recording rules;
+- READY / PARTIALLY READY / NOT READY verdict rules;
+- independently confirmable prerequisites;
+- prerequisites requiring complete evidence sets or dependency-chain
+  validation.
+
+Stage 15.3 preserves the immutable architecture:
+
+```text
+USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI
+```
+
+Stage 15.3 does not perform readiness validation. At Stage 15.3 completion no
+prerequisite changes status, no evidence is accepted or rejected, no readiness
+verdict is assigned to Levio, Scale execution remains unopened, Production
+Release remains unopened, Commercial Launch remains unopened, Real AI remains
+unopened, Auth/Persistence/Billing implementations remain unopened, and
+Analytics/Tracking/Logging remain unopened.
+
+Stage 15.3 does not change runtime, UI, API, public contract, architecture,
+simulator behavior, Decision Engine behavior, Prompt Context behavior, AI
+Provider behavior, auth, persistence, database, billing, analytics, tracking,
+logging, infrastructure, product behavior, or roadmap branches. Stage 15.3
+does not create readiness validation results, Scale execution, Production
+Release, Commercial Launch, Real AI, auth implementation, persistence
+implementation, billing implementation, analytics implementation, tracking
+implementation, logging implementation, implementation plan, new audit, legal
+documents, public copy, compliance claims, or a new public contract.
+
+Stage 15.3 completion does not authorize readiness validation, Scale execution,
+Production Release, Commercial Launch, implementation work, audit, or roadmap
+expansion.
 
 ## Stage 12.1 Market Readiness Scope & Entry Lock
 
@@ -1540,7 +1590,7 @@ rollback.
 
 ## Next Allowed Roadmap Step
 
-Stage 15.2 - Scale Preconditions & Evidence Inventory is complete.
+Stage 15.3 - Scale Readiness Evidence Validation Framework is complete.
 
 Stage 14 is closed. Stage 15 is the next official roadmap stage after Stage
 14, and Stage 15 remains open only as bounded documentation-only
@@ -1548,15 +1598,16 @@ scale-readiness planning.
 
 Stage 15.2 records the canonical Scale prerequisite inventory, objective
 readiness evidence, readiness criteria, current prerequisite status, and
-dependency mapping. Its verdict is that Scale execution is not ready.
+dependency mapping. Stage 15.3 records the canonical framework for a later
+separately approved readiness evidence validation run.
 
-No additional documentation-only subblock is required to complete the Stage
-15.2 inventory. Any later Scale execution, Production Release, Commercial
-Launch, implementation work, audit, or roadmap expansion requires separate
-explicit approval.
+Stage 15.3 does not perform readiness validation and does not assign a
+readiness verdict to Levio. Any later readiness validation, Scale execution,
+Production Release, Commercial Launch, implementation work, audit, or roadmap
+expansion requires separate explicit approval.
 
 Scale execution, Production Release, Commercial Launch, Real AI execution,
 production auth/account/persistence, subscription/billing/commercial runtime,
 analytics, tracking, logging, support tooling, incident tooling, legal-document
 finalization, compliance claims, and any new public contract remain outside
-Stage 15.2.
+Stage 15.3.

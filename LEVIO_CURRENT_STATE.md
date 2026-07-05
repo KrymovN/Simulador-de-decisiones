@@ -6,14 +6,18 @@ Date: 5 July 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Stage 15.2 - Scale Preconditions & Evidence
-Inventory Complete. Stage 14 Public Launch is closed as a completed
+The current confirmed state is Stage 15.3 - Scale Readiness Evidence
+Validation Framework Complete. Stage 14 Public Launch is closed as a completed
 launch-readiness block. Stage 15 is open only as a bounded documentation and
 scale-readiness planning stage. Stage 15.1 Scale Scope & Entry Lock is
-complete. Stage 15.2 creates the canonical inventory of objective
-preconditions, readiness evidence, readiness criteria, current prerequisite
-status, and dependency mapping needed before any real Scale execution can
-begin. Stage 15.2 does not execute Scale, increase traffic, open Production
+complete. Stage 15.2 Scale Preconditions & Evidence Inventory is complete.
+Stage 15.3 creates the canonical framework for objectively validating Scale
+readiness evidence against the Stage 15.2 prerequisite inventory. It defines
+the unified validation process, prerequisite confirmation rules, evidence
+sufficiency criteria, verification result recording rules, READY / PARTIALLY
+READY / NOT READY verdict rules, and independent vs complete-set prerequisite
+handling. Stage 15.3 does not perform readiness validation, collect evidence,
+assign any readiness verdict, execute Scale, increase traffic, open Production
 Release, open Commercial Launch, connect Real AI, enable production
 auth/account/persistence, add subscription/billing/commercial runtime, add
 analytics, tracking, logging, support tooling, incident tooling, legal
@@ -1289,7 +1293,7 @@ observability, and rollback planning.
 
 ## Next Roadmap Step
 
-Stage 15.2 - Scale Preconditions & Evidence Inventory is complete.
+Stage 15.3 - Scale Readiness Evidence Validation Framework is complete.
 
 Stage 14 is closed. Stage 15 is the next official roadmap stage after Stage
 14, and Stage 15 remains open only as bounded documentation-only
@@ -1297,12 +1301,13 @@ scale-readiness planning.
 
 Stage 15.2 records the canonical Scale prerequisite inventory, objective
 readiness evidence, readiness criteria, current prerequisite status, and
-dependency mapping. Its verdict is that Scale execution is not ready.
+dependency mapping. Stage 15.3 records the canonical framework for a later
+separately approved readiness evidence validation run.
 
-No additional documentation-only subblock is required to complete the Stage
-15.2 inventory. Any later Scale execution, Production Release, Commercial
-Launch, implementation work, audit, or roadmap expansion requires separate
-explicit approval.
+Stage 15.3 does not perform readiness validation and does not assign a
+readiness verdict to Levio. Any later readiness validation, Scale execution,
+Production Release, Commercial Launch, implementation work, audit, or roadmap
+expansion requires separate explicit approval.
 
 Levio must remain a Decision Simulation Engine and must not create AI Chat,
 Answer Engine, Generic Assistant, direct AI-to-user behavior, model calls,

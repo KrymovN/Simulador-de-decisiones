@@ -12,18 +12,23 @@ Levio is not an Answer Engine.
 
 Levio is not a Generic AI Assistant.
 
-The active checkpoint is Stage 15.2 - Scale Preconditions & Evidence Inventory
-Complete. Stage 14 Public Launch is closed as a completed launch-readiness
-block. Stage 15 is open only as a bounded documentation and scale-readiness
-planning stage. Stage 15.1 Scale Scope & Entry Lock is complete. Stage 15.2
-creates the canonical inventory of objective preconditions, readiness evidence,
-readiness criteria, current prerequisite status, and dependency mapping needed
-before any real Scale execution can begin. Stage 15.2 does not execute Scale,
-increase traffic, open Production Release, open Commercial Launch, connect Real
-AI, enable production auth/account/persistence, add subscription/billing/
-commercial runtime, add analytics, tracking, logging, support tooling, incident
-tooling, legal documents, implementation plans, audits, compliance claims, or a
-new public contract.
+The active checkpoint is Stage 15.3 - Scale Readiness Evidence Validation
+Framework Complete. Stage 14 Public Launch is closed as a completed
+launch-readiness block. Stage 15 is open only as a bounded documentation and
+scale-readiness planning stage. Stage 15.1 Scale Scope & Entry Lock is
+complete. Stage 15.2 Scale Preconditions & Evidence Inventory is complete.
+Stage 15.3 creates the canonical framework for objectively validating Scale
+readiness evidence against the Stage 15.2 prerequisite inventory. It defines
+the unified validation process, prerequisite confirmation rules, evidence
+sufficiency criteria, verification result recording rules, READY / PARTIALLY
+READY / NOT READY verdict rules, and independent vs complete-set prerequisite
+handling. Stage 15.3 does not perform readiness validation, collect evidence,
+assign any readiness verdict, execute Scale, increase traffic, open Production
+Release, open Commercial Launch, connect Real AI, enable production
+auth/account/persistence, add subscription/billing/commercial runtime, add
+analytics, tracking, logging, support tooling, incident tooling, legal
+documents, implementation plans, audits, compliance claims, or a new public
+contract.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as foundation-only preflight, runtime
@@ -1502,8 +1507,8 @@ webhooks, UI/API, QA, and rollback rehearsal.
 
 ## Next Roadmap Step
 
-The current roadmap position is Stage 15.2 - Scale Preconditions & Evidence
-Inventory Complete.
+The current roadmap position is Stage 15.3 - Scale Readiness Evidence
+Validation Framework Complete.
 
 Official status: Stage 12 Closed.
 
@@ -1516,6 +1521,10 @@ Stage 15.2 is complete as documentation-only Scale Preconditions & Evidence
 Inventory work. It records the objective prerequisite inventory, readiness
 criteria, current evidence status, and dependency mapping for any later Scale
 execution decision.
+Stage 15.3 is complete as documentation-only Scale readiness evidence
+validation framework work. It records how a later separately approved
+validation run must confirm prerequisites, judge evidence sufficiency, record
+verification results, and assign READY / PARTIALLY READY / NOT READY verdicts.
 
 Stage 15.2 verdict: Scale execution is not ready. Public Launch execution
 evidence, first-customer evidence, traffic/capacity assumptions,
@@ -1524,13 +1533,13 @@ readiness, final legal/privacy/consent/Terms/AI transparency readiness,
 analytics/tracking/logging/monitoring scope, and production auth/persistence/
 billing/Real AI dependencies remain unresolved or deferred.
 
-No additional documentation-only subblock is required to complete the Stage
-15.2 inventory. Any later Scale execution, Production Release, Commercial
-Launch, implementation work, audit, or roadmap expansion requires separate
-explicit approval.
+Stage 15.3 does not perform readiness validation and does not assign a readiness
+verdict to Levio. Any later readiness validation, Scale execution, Production
+Release, Commercial Launch, implementation work, audit, or roadmap expansion
+requires separate explicit approval.
 
 Production Release, Commercial Launch, Scale execution, Real AI execution,
 production auth/account/persistence, subscription/billing/commercial runtime,
 analytics, tracking, logging, support tooling, incident tooling, legal
 document finalization, compliance claims, and any new public contract remain
-outside Stage 15.2.
+outside Stage 15.3.

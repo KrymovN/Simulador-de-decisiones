@@ -76,7 +76,8 @@ closed. Stage 14.1-14.9 are complete and Stage 14 is closed as a Public Launch
 readiness block. Stage 15.1 Scale Scope & Entry Lock is complete as
 documentation-only Scale planning work. Stage 15.2 Scale Preconditions &
 Evidence Inventory is complete as documentation-only prerequisite/evidence
-inventory work.
+inventory work. Stage 15.3 Scale Readiness Evidence Validation is complete as
+documentation-only validation framework work.
 
 ## QA / Quality
 
@@ -136,9 +137,10 @@ documents are retained for traceability, not as active project state.
   scope/entry-lock work.
 - Stage 15.2 Scale Preconditions & Evidence Inventory is complete as
   documentation-only prerequisite/evidence inventory work.
+- Stage 15.3 Scale Readiness Evidence Validation is complete as
+  documentation-only validation framework work.
 - Stage 15 is open only as bounded Scale planning.
-- No additional documentation-only subblock is required to complete the Stage
-  15.2 inventory.
+- Readiness validation remains unopened.
 - Closed Beta execution remains unopened.
 - Public Launch execution, Production Release, Commercial Launch, and Scale
   execution remain closed.
