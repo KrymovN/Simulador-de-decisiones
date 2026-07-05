@@ -62,7 +62,8 @@ Market Readiness Closure Gate is complete as documentation-only Market
 Readiness work. Stage 12 is closed. Stage 13.1 Closed Beta Scope & Entry Lock
 is complete as documentation-only Closed Beta planning work. Stage 13.2 Closed
 Beta Participants & Eligibility is complete as documentation-only Closed Beta
-planning work.
+planning work. Stage 13.3 Closed Beta Operating Model & Support Boundaries is
+complete as documentation-only Closed Beta planning work.
 
 ## QA / Quality
 
@@ -105,8 +106,10 @@ documents are retained for traceability, not as active project state.
   scope/entry-lock work.
 - Stage 13.2 Closed Beta Participants & Eligibility is complete as
   documentation-only participant/eligibility work.
-- The next bounded Stage 13 subblock is Stage 13.3 Closed Beta Operating
-  Model & Support Boundaries.
+- Stage 13.3 Closed Beta Operating Model & Support Boundaries is complete as
+  documentation-only operating/support-boundary work.
+- The next bounded Stage 13 subblock is Stage 13.4 Closed Beta Test Scenarios
+  & Success Criteria.
 - Closed Beta execution remains unopened.
 - Production Release, Public Launch, Commercial Launch, and Scale remain
   closed.
