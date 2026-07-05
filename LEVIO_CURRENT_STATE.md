@@ -6,18 +6,19 @@ Date: 4 July 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Stage 12.5 - Market Readiness Completion
-Criteria & Exit Gate Complete. This is a documentation-only completion
-criteria and exit gate for Stage 12 Market Readiness. It defines exhaustive
-Stage 12 completion criteria, the official Stage 12 Exit Gate, mandatory
-conditions before any transition to the next roadmap block, treatment of
-Remaining Accepted Deferrals, and the Stage 12 closure readiness verdict. It
+The current confirmed state is Stage 12.6 - Market Readiness Closure Gate
+Complete. This is a documentation-only closure gate for Stage 12 Market
+Readiness. It confirms Stage 12.1 through Stage 12.5 are complete, canonical
+state documents are consistent, no contradiction exists between Stage 12.1 and
+Stage 12.5, and Stage 12 is officially closed. It identifies Stage 13 Closed
+Beta as the only next admissible roadmap block, but Stage 13 is not opened. It
 does not open implementation, Production Release, Closed Beta, Public Launch,
 Scale, Commercial Launch, runtime behavior, UI behavior, API behavior,
-simulator behavior, Decision Engine behavior, Prompt Context behavior, product
-behavior, AI integration, auth, persistence, database, subscriptions, billing,
-analytics, tracking, logging, infrastructure, legal-document text, consent UI,
-trust UI, AI disclosure UI, disclaimer UI, or roadmap changes outside Stage 12.
+architecture, simulator behavior, Decision Engine behavior, Prompt Context
+behavior, product behavior, AI integration, auth, persistence, database,
+subscriptions, billing, analytics, tracking, logging, infrastructure,
+legal-document text, consent UI, trust UI, AI disclosure UI, disclaimer UI, or
+roadmap changes outside Stage 12.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as controlled foundation-only preflight,
@@ -704,6 +705,23 @@ subscriptions, analytics, tracking, logging, infrastructure, public contract,
 or product behavior. It does not write legal documents, public legal copy,
 trust copy, consent text, launch copy, or compliance claims.
 
+Stage 12.6 Market Readiness Closure Gate is complete as a documentation-only
+closure gate. Canonical document:
+`docs/stages/stage-12-market-readiness/LEVIO_STAGE_12_6_MARKET_READINESS_CLOSURE_GATE.md`.
+
+Stage 12.6 confirms that Stage 12.1, Stage 12.2, Stage 12.3, Stage 12.4, and
+Stage 12.5 are complete; canonical state documents are consistent; no
+contradiction exists between Stage 12.1 and Stage 12.5; Remaining Accepted
+Deferrals remain compatible with Stage 12 closure; and no implementation work
+is opened.
+
+Official closure verdict: Stage 12 Closed.
+
+The only next admissible roadmap block is Stage 13 Closed Beta. Stage 13 is
+not opened by Stage 12.6 and requires separate explicit approval plus its own
+entry gate before any beta, runtime, UI, API, legal, data, commercial,
+analytics, tracking, logging, support, or infrastructure implementation begins.
+
 Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
 Complete.
 
@@ -969,15 +987,11 @@ observability, and rollback planning.
 
 ## Next Roadmap Step
 
-No further bounded Stage 12 subblock is required.
+Official status: Stage 12 Closed.
 
-Stage 12.5 is complete as documentation-only Market Readiness completion
-criteria and exit gate. Stage 12 is ready to close as a documentation-only
-Market Readiness roadmap stage.
-
-The next roadmap block remains Stage 13 Closed Beta, but Stage 13 is not
-opened by Stage 12.5. Stage 13 requires a separate explicit approval and its
-own entry gate before any beta, runtime, UI, API, legal, data, commercial,
+The only next admissible roadmap block is Stage 13 Closed Beta, but Stage 13
+is not opened by Stage 12.6. Stage 13 requires separate explicit approval and
+its own entry gate before any beta, runtime, UI, API, legal, data, commercial,
 analytics, tracking, logging, support, or infrastructure implementation begins.
 
 Levio must remain a Decision Simulation Engine and must not create AI Chat,

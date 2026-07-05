@@ -21,8 +21,9 @@ Definition are complete as documentation-only Market Readiness work. Stage
 documentation-only Market Readiness work. Stage 12.4 Market Readiness
 Evidence Inventory & Dependency Map is complete as documentation-only Market
 Readiness work. Stage 12.5 Market Readiness Completion Criteria & Exit Gate
-is complete as documentation-only Market Readiness work. Stage 12 is ready to
-close as a documentation-only roadmap stage.
+is complete as documentation-only Market Readiness work. Stage 12.6 Market
+Readiness Closure Gate is complete as documentation-only Market Readiness
+work. Stage 12 is closed.
 
 ## Active Project State
 
@@ -56,4 +57,6 @@ Order is complete as documentation-only work. Stage 12.4 Market Readiness
 Evidence Inventory & Dependency Map is complete as documentation-only work.
 Stage 12.5 Market Readiness Completion Criteria & Exit Gate is complete as
 documentation-only work. No further bounded Stage 12 subblock is required.
-Stage 13 Closed Beta remains unopened and requires separate explicit approval.
+Stage 12.6 Market Readiness Closure Gate is complete as documentation-only
+work. Stage 12 is closed. Stage 13 Closed Beta is the only next admissible
+roadmap block, remains unopened, and requires separate explicit approval.
