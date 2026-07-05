@@ -2,19 +2,20 @@
 
 ## Active Checkpoint
 
-Stage 13.1 - Closed Beta Scope & Entry Lock Complete.
+Stage 13.2 - Closed Beta Participants & Eligibility Complete.
 
-Status: Stage 13.1 is complete as a documentation-only Closed Beta scope and
-entry lock. It defines the Stage 13 boundary, Closed Beta goals, included and
-excluded Closed Beta surfaces, dependencies from Stage 10, Stage 11, and Stage
-12, Closed Beta entry criteria, Accepted Deferrals carried forward from Stage
-12, and the next bounded Stage 13 subblock. It does not open beta execution,
-Production Release, Public Launch, Commercial Launch, runtime behavior, UI
-behavior, API behavior, architecture, simulator behavior, Decision Engine
-behavior, Prompt Context behavior, AI integration, auth, persistence,
-database, billing, subscriptions, analytics, tracking, logging,
-infrastructure, product behavior, legal-document text, consent UI, trust UI,
-AI disclosure UI, disclaimer UI, or a new public contract.
+Status: Stage 13.2 is complete as a documentation-only Closed Beta participant
+and eligibility definition. It defines participant categories, admission
+criteria, category limitations, participant responsibilities and expectations,
+excluded participant groups, dependencies from Stage 10, Stage 11, Stage 12,
+and Stage 13.1, continuing Accepted Deferrals, explicit non-changes, and the
+next bounded Stage 13 subblock. It does not invite participants, open beta
+execution, collect beta data, enable accounts, enable persistence, add
+analytics, add tracking, add logging, change runtime behavior, UI behavior,
+API behavior, architecture, simulator behavior, Decision Engine behavior,
+Prompt Context behavior, AI integration, auth, persistence, database, billing,
+subscriptions, infrastructure, product behavior, legal-document text, consent
+UI, trust UI, AI disclosure UI, disclaimer UI, or a new public contract.
 
 Date: 5 July 2026, Europe/Madrid.
 
@@ -314,6 +315,32 @@ not open Production Release, Public Launch, or Commercial Launch.
 
 Stage 13.1 successor subblock: Stage 13.2 Closed Beta Participant Scope &
 Operating Model. It must remain documentation-only until separately approved.
+
+## Stage 13.2 Closed Beta Participants & Eligibility
+
+Status: complete as documentation-only Closed Beta participant and eligibility
+definition.
+
+Canonical document:
+`docs/stages/stage-13-closed-beta/LEVIO_STAGE_13_2_CLOSED_BETA_PARTICIPANTS_ELIGIBILITY.md`.
+
+Stage 13.2 defines Closed Beta participant categories, admission criteria,
+limitations for each category, participant responsibilities and expectations,
+excluded participant groups, dependencies from closed Stage 10, closed Stage
+11, closed Stage 12, and Stage 13.1, continuing Accepted Deferrals, explicit
+non-changes, and the next bounded Stage 13 subblock.
+
+Stage 13.2 does not invite participants, start a Closed Beta, enable beta
+traffic, collect beta data, create accounts, enable persistence, add feedback
+tooling, add support tooling, change runtime, UI, API, Decision Engine,
+Simulator, Prompt Context, AI Integration, Auth, Database, Billing, Analytics,
+Tracking, Logging, infrastructure, architecture, public contract, or product
+behavior. It does not open Production Release, Public Launch, Commercial
+Launch, or Scale.
+
+Stage 13.2 successor subblock: Stage 13.3 Closed Beta Operating Model &
+Support Boundaries. It must remain documentation-only until separately
+approved.
 
 ## Stage 11 Foundation Inventory
 
@@ -1052,10 +1079,11 @@ rollback.
 
 ## Next Allowed Roadmap Step
 
-Stage 13.2 - Closed Beta Participant Scope & Operating Model.
+Stage 13.3 - Closed Beta Operating Model & Support Boundaries.
 
-Stage 13.1 is complete as documentation-only Closed Beta scope and entry lock.
-Stage 12 remains closed. The next bounded Stage 13 subblock must remain
+Stage 13.2 is complete as documentation-only Closed Beta participant and
+eligibility definition. Stage 12 remains closed. The next bounded Stage 13
+subblock must remain
 documentation-only until separately approved and must not open beta execution,
 runtime, UI, API, legal, data, commercial, analytics, tracking, logging,
 support, or infrastructure implementation.
