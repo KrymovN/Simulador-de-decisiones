@@ -27,7 +27,9 @@ work. Stage 12 is closed. Stage 13.1 Closed Beta Scope & Entry Lock is
 complete as documentation-only Closed Beta planning work. Stage 13.2 Closed
 Beta Participants & Eligibility is complete as documentation-only Closed Beta
 planning work. Stage 13.3 Closed Beta Operating Model & Support Boundaries is
-complete as documentation-only Closed Beta planning work.
+complete as documentation-only Closed Beta planning work. Stage 13.4 Closed
+Beta Test Scenarios & Success Criteria is complete as documentation-only
+Closed Beta planning work.
 
 ## Active Project State
 
@@ -68,5 +70,7 @@ documentation-only scope and entry-lock work. Closed Beta execution remains
 unopened. Stage 13.2 Closed Beta Participants & Eligibility is complete as
 documentation-only participant and eligibility work. Stage 13.3 Closed Beta
 Operating Model & Support Boundaries is complete as documentation-only
-operating/support work. The next bounded Stage 13 subblock is Stage 13.4
-Closed Beta Test Scenarios & Success Criteria.
+operating/support work. Stage 13.4 Closed Beta Test Scenarios & Success
+Criteria is complete as documentation-only scenario/success-criteria work. The
+next bounded Stage 13 subblock is Stage 13.5 Closed Beta Feedback & Evidence
+Collection.
