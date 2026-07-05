@@ -12,21 +12,23 @@ Levio is not an Answer Engine.
 
 Levio is not a Generic AI Assistant.
 
-The active checkpoint is Stage 14.1 - Public Launch Scope & Entry Lock
-Complete. This is a documentation-only scope and entry lock for Stage 14 Public
-Launch. It opens Stage 14 only as a bounded launch-readiness planning block,
-defines Stage 14 boundaries, Public Launch goals, dependencies from Stage 10
-through Stage 13, Public Launch entry criteria, Accepted Deferrals carried into
-Stage 14, and Stage 14.2 Public Launch Surfaces & Launch Readiness Definition
-as the next bounded Stage 14 subblock. It does not execute Public Launch,
-publish launch copy, announce availability, open production release, open
-commercial launch, scale traffic, enable accounts, enable persistence, add
-analytics, add tracking, add logging, create support tooling, create incident
-tooling, change runtime behavior, UI behavior, API behavior, architecture,
-simulator behavior, Decision Engine behavior, Prompt Context behavior, AI
-integration, auth, persistence, database, billing, subscriptions,
-infrastructure, product behavior, legal-document text, consent UI, trust UI,
-AI disclosure UI, disclaimer UI, or a new public contract.
+The active checkpoint is Stage 14.2 - Public Launch Readiness Checklist /
+Verification Matrix Complete. This is a documentation-only Public Launch
+readiness matrix. It translates Stage 14.1 scope into verifiable pre-launch
+categories: public site clarity, Decision Simulation Engine positioning,
+trust/legal visibility, privacy and user-data expectations, production safety,
+deployment readiness, rollback awareness, and owner/operator handoff readiness.
+For each category, it defines what must be verified, expected status at entry,
+and launch-blocking conditions. It does not execute Public Launch, authorize
+implementation changes, publish launch copy, announce availability, open
+production release, open commercial launch, scale traffic, enable accounts,
+enable persistence, add analytics, add tracking, add logging, create support
+tooling, create incident tooling, change runtime behavior, UI behavior, API
+behavior, architecture, simulator behavior, Decision Engine behavior, Prompt
+Context behavior, AI integration, auth, persistence, database, billing,
+subscriptions, infrastructure, dependencies, config, tests, product behavior,
+legal-document text, consent UI, trust UI, AI disclosure UI, disclaimer UI, or
+a new public contract.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as foundation-only preflight, runtime
@@ -877,9 +879,32 @@ Context, AI Integration, Auth, Database, Billing, Analytics, Tracking, Logging,
 infrastructure, product behavior, public contract, legal-document text, consent
 UI, trust UI, AI disclosure UI, or disclaimer UI.
 
-Stage 14.1 successor subblock: Stage 14.2 Public Launch Surfaces & Launch
-Readiness Definition. It must remain documentation-only until separately
-approved.
+Stage 14.1 successor subblock: Stage 14.2 Public Launch Readiness Checklist /
+Verification Matrix, now complete.
+
+Stage 14.2 Public Launch Readiness Checklist / Verification Matrix is complete
+as a documentation-only readiness matrix under
+`docs/stages/stage-14-public-launch/LEVIO_STAGE_14_2_PUBLIC_LAUNCH_READINESS_CHECKLIST_VERIFICATION_MATRIX.md`.
+It defines verification categories for public site clarity, Decision Simulation
+Engine positioning, trust/legal visibility, privacy and user-data expectations,
+production safety, deployment readiness, rollback awareness, and owner/operator
+handoff readiness. For each category, Stage 14.2 records what must be verified,
+expected status at entry, and what would block Public Launch.
+
+Stage 14.2 preserves the immutable architecture:
+
+```text
+USER → SIMULATOR → DECISION ENGINE → PROMPT CONTEXT → AI PROVIDER → DECISION ENGINE → SIMULATOR → UI
+```
+
+Stage 14.2 does not execute Public Launch or authorize implementation changes.
+It did not change runtime, UI, API, architecture, dependencies, config, tests,
+Decision Engine, Simulator, Prompt Context, AI Integration, Auth, Database,
+Billing, Analytics, Tracking, Logging, infrastructure, public contract,
+roadmap, or product behavior.
+
+Stage 14.2 successor subblock: Stage 14.3 Public Launch Go/No-Go Gate
+Definition. It must remain documentation-only until separately approved.
 
 Supporting references:
 
@@ -1410,8 +1435,8 @@ webhooks, UI/API, QA, and rollback rehearsal.
 
 ## Next Roadmap Step
 
-The current roadmap position is Stage 14.1 - Public Launch Scope & Entry Lock
-Complete.
+The current roadmap position is Stage 14.2 - Public Launch Readiness Checklist
+/ Verification Matrix Complete.
 
 Official status: Stage 12 Closed.
 
@@ -1420,7 +1445,8 @@ Official status: Stage 13 Closed.
 Stage 14 is open only as a bounded documentation-only Public Launch planning
 block. Public Launch execution remains unopened.
 
-The next bounded Stage 14 subblock is Stage 14.2 Public Launch Surfaces &
-Launch Readiness Definition. It requires separate explicit approval before any
-further Public Launch, production, runtime, UI, API, legal, data, commercial,
-analytics, tracking, logging, support, or infrastructure implementation.
+The next bounded Stage 14 subblock is Stage 14.3 Public Launch Go/No-Go Gate
+Definition. It requires separate explicit approval before any further Public
+Launch, production, runtime, UI, API, legal, data, commercial, analytics,
+tracking, logging, support, infrastructure, dependency, config, test, or
+product implementation.

@@ -401,8 +401,8 @@ Overall Project Progress ████████░░ 80%
   excluded Public Launch planning surfaces, dependencies from Stage 10/11/12/13,
   Public Launch entry criteria, Accepted Deferrals carried into Stage 14,
   explicit non-changes и next bounded Stage 14 subblock.
-- Stage 14.1 successor subblock: Stage 14.2 Public Launch Surfaces & Launch
-  Readiness Definition.
+- Stage 14.1 successor subblock: Stage 14.2 Public Launch Readiness Checklist
+  / Verification Matrix, now complete.
 - Stage 14.1 не выполняет Public Launch, не публикует launch copy, не
   объявляет availability, не открывает Production Release, Commercial Launch
   или Scale.
@@ -410,6 +410,23 @@ Overall Project Progress ████████░░ 80%
   Prompt Context, AI Integration, Auth, Database, Billing, Analytics,
   Tracking, Logging, infrastructure, public contract, roadmap или product
   behavior.
+- Stage 14.2 Public Launch Readiness Checklist / Verification Matrix завершен
+  как documentation-only readiness matrix.
+- Создан canonical Stage 14.2 документ:
+  `docs/stages/stage-14-public-launch/LEVIO_STAGE_14_2_PUBLIC_LAUNCH_READINESS_CHECKLIST_VERIFICATION_MATRIX.md`.
+- Stage 14.2 определил verification matrix для public site clarity, Decision
+  Simulation Engine positioning, trust/legal visibility, privacy and user-data
+  expectations, production safety, deployment readiness, rollback awareness и
+  owner/operator handoff readiness.
+- Для каждой категории Stage 14.2 зафиксировал what must be verified, expected
+  status at entry и what would block Public Launch.
+- Stage 14.2 successor subblock: Stage 14.3 Public Launch Go/No-Go Gate
+  Definition.
+- Stage 14.2 не выполняет Public Launch и не авторизует implementation
+  changes.
+- Не менялись runtime, UI, API, architecture, dependencies, config, tests,
+  Auth, Database, Billing, Analytics, Tracking, Logging, infrastructure,
+  public contract, roadmap или product behavior.
 - Product Quality Hardening #1-#5 и automated quality gates не добавляли AI
   provider execution, SDK/env/API keys, fetch/model calls, auth, billing,
   persistence, subscription changes, heavy dependencies или Real AI product
@@ -1104,11 +1121,30 @@ Simulator, Prompt Context, AI Integration, Auth, Database, Billing, Analytics,
 Tracking, Logging, infrastructure, public contract, roadmap, or product
 behavior.
 
+Canonical Stage 14.2 document:
+`docs/stages/stage-14-public-launch/LEVIO_STAGE_14_2_PUBLIC_LAUNCH_READINESS_CHECKLIST_VERIFICATION_MATRIX.md`.
+
+Stage 14.2 is complete as documentation-only Public Launch readiness matrix.
+It translates Stage 14.1 scope into verifiable pre-launch categories:
+
+- public site clarity;
+- Decision Simulation Engine positioning;
+- trust/legal visibility;
+- privacy and user-data expectations;
+- production safety;
+- deployment readiness;
+- rollback awareness;
+- owner/operator handoff readiness.
+
+For each category, Stage 14.2 defines what must be verified, expected status at
+entry, and what would block Public Launch. Stage 14.2 does not execute Public
+Launch or authorize implementation changes.
+
 ### 14. Public Launch
 
-Статус: Stage 14.1 завершен как documentation-only scope and entry lock.
-Прогресс: █░░░░░░░░░ 10%.
-Следующий шаг: Stage 14.2 Public Launch Surfaces & Launch Readiness Definition.
+Статус: Stage 14.2 завершен как documentation-only readiness matrix.
+Прогресс: ██░░░░░░░░ 20%.
+Следующий шаг: Stage 14.3 Public Launch Go/No-Go Gate Definition.
 
 ### 15. Scale
 
@@ -1118,7 +1154,7 @@ behavior.
 
 ## Current Roadmap Focus
 
-Stage 14.1 - Public Launch Scope & Entry Lock Complete.
+Stage 14.2 - Public Launch Readiness Checklist / Verification Matrix Complete.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.
@@ -1275,8 +1311,8 @@ Stage 14.1 is complete as documentation-only Public Launch scope and entry
 lock. It opens Stage 14 only as bounded Public Launch planning, defines Stage
 14 boundaries, Public Launch goals, dependencies from Stage 10 through Stage
 13, Public Launch entry criteria, Accepted Deferrals carried into Stage 14,
-explicit non-changes, and Stage 14.2 Public Launch Surfaces & Launch Readiness
-Definition as the next bounded Stage 14 subblock.
+explicit non-changes, and Stage 14.2 Public Launch Readiness Checklist /
+Verification Matrix as the next bounded Stage 14 subblock.
 
 Stage 14.1 does not execute Public Launch, publish launch copy, announce
 availability, open Production Release, open Commercial Launch, open Scale,
@@ -1284,6 +1320,14 @@ write legal documents, create consent UI, trust UI, AI disclosure UI,
 disclaimer UI, change runtime, UI, API, legal, data, commercial, analytics,
 tracking, logging, support, infrastructure, public contract, roadmap, or
 product behavior.
+
+Stage 14.2 is complete as documentation-only Public Launch readiness matrix. It
+defines the pre-launch verification categories, expected entry status, and
+launch-blocking conditions for public site clarity, Decision Simulation Engine
+positioning, trust/legal visibility, privacy and user-data expectations,
+production safety, deployment readiness, rollback awareness, and owner/operator
+handoff readiness. Stage 14.2 does not execute Public Launch or authorize
+implementation changes.
 
 Billing provider implementation remains deferred until provider/commercial/legal
 approval exists.
@@ -2080,11 +2124,26 @@ Do not continue:
 - Stage 14.1 определил Stage 14 boundaries, Public Launch goals,
   dependencies from Stage 10/11/12/13, Public Launch entry criteria, Accepted
   Deferrals carried into Stage 14 и next bounded Stage 14 subblock.
-- Stage 14.1 successor subblock: Stage 14.2 Public Launch Surfaces & Launch
-  Readiness Definition.
+- Stage 14.1 successor subblock: Stage 14.2 Public Launch Readiness Checklist
+  / Verification Matrix, now complete.
 - Не выполнялся Public Launch, не публиковался launch copy, не объявлялась
   availability, не открывались Production Release, Commercial Launch или
   Scale.
 - Не менялись runtime, UI, API, architecture, Decision Engine, Simulator,
   Prompt Context, AI, Auth, Database, Billing, Analytics, Tracking, Logging,
   infrastructure, public contract, roadmap или product behavior.
+- Завершен Stage 14.2 Public Launch Readiness Checklist / Verification Matrix
+  как documentation-only readiness matrix.
+- Создан canonical Stage 14.2 документ:
+  `docs/stages/stage-14-public-launch/LEVIO_STAGE_14_2_PUBLIC_LAUNCH_READINESS_CHECKLIST_VERIFICATION_MATRIX.md`.
+- Stage 14.2 определил verification categories, expected status at entry и
+  launch-blocking conditions для public site clarity, Decision Simulation
+  Engine positioning, trust/legal visibility, privacy/user-data expectations,
+  production safety, deployment readiness, rollback awareness и owner/operator
+  handoff readiness.
+- Stage 14.2 successor subblock: Stage 14.3 Public Launch Go/No-Go Gate
+  Definition.
+- Не выполнялся Public Launch, не авторизовывались implementation changes и не
+  менялись runtime, UI, API, architecture, dependencies, config, tests, Auth,
+  Database, Billing, Analytics, Tracking, Logging, infrastructure, public
+  contract, roadmap или product behavior.
