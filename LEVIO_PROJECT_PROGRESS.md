@@ -355,6 +355,20 @@ Overall Project Progress ████████░░ 80%
   infrastructure или product behavior.
 - Stage 13.4 successor subblock: Stage 13.5 Closed Beta Feedback & Evidence
   Collection.
+- Stage 13.5 Closed Beta Feedback & Evidence Collection завершен как
+  documentation-only feedback and evidence collection definition.
+- Stage 13.5 определил manual feedback collection process, feedback
+  categories, feedback quality criteria, evidence inventory, evidence quality
+  criteria, result handling and classification rules, dependencies from Stage
+  10/11/12/13.1/13.2/13.3/13.4, continuing Accepted Deferrals и next bounded
+  Stage 13 subblock.
+- Stage 13.5 не приглашает participants, не открывает Closed Beta execution,
+  не собирает beta data, не создает feedback forms, evidence databases,
+  test/feedback/support/incident tooling и не меняет runtime, UI, API,
+  Decision Engine, Simulator, Prompt Context, AI Integration, Auth, Database,
+  Billing, Analytics, Tracking, Logging, infrastructure или product behavior.
+- Stage 13.5 successor subblock: Stage 13.6 Closed Beta Completion Criteria &
+  Exit Gate.
 - Product Quality Hardening #1-#5 и automated quality gates не добавляли AI
   provider execution, SDK/env/API keys, fetch/model calls, auth, billing,
   persistence, subscription changes, heavy dependencies или Real AI product
@@ -955,9 +969,9 @@ explicit approval and its own entry gate.
 
 ### 13. Closed Beta
 
-Статус: Stage 13.4 Closed Beta Test Scenarios & Success Criteria завершен как
-documentation-only test scenario and success criteria definition.
-Прогресс: ███░░░░░░░ 30%.
+Статус: Stage 13.5 Closed Beta Feedback & Evidence Collection завершен как
+documentation-only feedback and evidence collection definition.
+Прогресс: ████░░░░░░ 40%.
 Canonical Stage 13.1 document:
 `docs/stages/stage-13-closed-beta/LEVIO_STAGE_13_1_CLOSED_BETA_SCOPE_ENTRY_LOCK.md`.
 Canonical Stage 13.2 document:
@@ -966,6 +980,8 @@ Canonical Stage 13.3 document:
 `docs/stages/stage-13-closed-beta/LEVIO_STAGE_13_3_CLOSED_BETA_OPERATING_MODEL_SUPPORT_BOUNDARIES.md`.
 Canonical Stage 13.4 document:
 `docs/stages/stage-13-closed-beta/LEVIO_STAGE_13_4_CLOSED_BETA_TEST_SCENARIOS_SUCCESS_CRITERIA.md`.
+Canonical Stage 13.5 document:
+`docs/stages/stage-13-closed-beta/LEVIO_STAGE_13_5_CLOSED_BETA_FEEDBACK_EVIDENCE_COLLECTION.md`.
 Зафиксировано:
 
 - Stage 13 boundaries;
@@ -996,10 +1012,17 @@ Canonical Stage 13.4 document:
 - per-scenario success criteria;
 - excluded scenario classes;
 - whole Closed Beta success criteria;
-- continuing Accepted Deferrals after Stage 13.4.
+- continuing Accepted Deferrals after Stage 13.4;
+- manual feedback collection process;
+- feedback categories;
+- feedback quality criteria;
+- evidence inventory;
+- evidence quality criteria;
+- result handling and classification rules;
+- continuing Accepted Deferrals after Stage 13.5.
 
-Следующий bounded subblock: Stage 13.5 Closed Beta Feedback & Evidence
-Collection. Он должен оставаться documentation-only до отдельного approval.
+Следующий bounded subblock: Stage 13.6 Closed Beta Completion Criteria & Exit
+Gate. Он должен оставаться documentation-only до отдельного approval.
 
 ### 14. Public Launch
 
@@ -1015,7 +1038,7 @@ Collection. Он должен оставаться documentation-only до от�
 
 ## Current Roadmap Focus
 
-Stage 13.4 - Closed Beta Test Scenarios & Success Criteria Complete.
+Stage 13.5 - Closed Beta Feedback & Evidence Collection Complete.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.
@@ -1127,10 +1150,26 @@ change runtime, UI, API, Decision Engine, Simulator, Prompt Context, AI
 Integration, Auth, Database, Billing, Analytics, Tracking, Logging,
 infrastructure, or product behavior.
 
-The next bounded subblock is Stage 13.5 Closed Beta Feedback & Evidence
-Collection. It must remain documentation-only until separately approved and
-must not open beta execution, runtime, UI, API, legal, data, commercial,
-analytics, tracking, logging, support, or infrastructure implementation.
+Stage 13.4 identified Stage 13.5 Closed Beta Feedback & Evidence Collection
+as the next bounded Stage 13 subblock. Stage 13.5 is now complete as
+documentation-only work.
+
+Stage 13.5 is complete as documentation-only Closed Beta feedback and evidence
+collection definition. It defines the manual feedback collection process,
+feedback categories, feedback quality criteria, evidence inventory, evidence
+quality criteria, result handling and classification rules, dependencies from
+Stage 10/11/12/13.1/13.2/13.3/13.4, continuing Accepted Deferrals, explicit
+non-changes, and the next bounded Stage 13 subblock. It does not invite
+participants, open beta execution, collect beta data, create feedback forms,
+evidence databases, test/feedback/support/incident tooling, change runtime,
+UI, API, Decision Engine, Simulator, Prompt Context, AI Integration, Auth,
+Database, Billing, Analytics, Tracking, Logging, infrastructure, or product
+behavior.
+
+The next bounded subblock is Stage 13.6 Closed Beta Completion Criteria & Exit
+Gate. It must remain documentation-only until separately approved and must not
+open beta execution, runtime, UI, API, legal, data, commercial, analytics,
+tracking, logging, support, or infrastructure implementation.
 
 Billing provider implementation remains deferred until provider/commercial/legal
 approval exists.
@@ -1867,8 +1906,25 @@ Do not continue:
 - Stage 13.4 подтвердил, что Closed Beta execution остается unopened, beta
   participants не приглашаются, beta data не собирается, test/feedback/
   support/incident tooling не создается, roadmap не меняется.
-- Следующий bounded subblock: Stage 13.5 Closed Beta Feedback & Evidence
-  Collection.
+- Stage 13.4 successor subblock был Stage 13.5 Closed Beta Feedback &
+  Evidence Collection, now complete.
+- Не менялись runtime, UI, API, Decision Engine, Simulator, Prompt Context,
+  AI, Auth, Database, Billing, Analytics, Tracking, Logging, infrastructure
+  или product behavior.
+- Завершен Stage 13.5 Closed Beta Feedback & Evidence Collection как
+  documentation-only bounded block.
+- Создан canonical Stage 13.5 документ:
+  `docs/stages/stage-13-closed-beta/LEVIO_STAGE_13_5_CLOSED_BETA_FEEDBACK_EVIDENCE_COLLECTION.md`.
+- Stage 13.5 определил feedback collection process, feedback categories,
+  feedback quality criteria, evidence inventory, evidence quality criteria,
+  result handling and classification rules, continuing Accepted Deferrals и
+  next bounded Stage 13 subblock.
+- Stage 13.5 подтвердил, что Closed Beta execution остается unopened, beta
+  participants не приглашаются, beta data не собирается, feedback forms,
+  evidence databases, test/feedback/support/incident tooling не создаются,
+  roadmap не меняется.
+- Следующий bounded subblock: Stage 13.6 Closed Beta Completion Criteria &
+  Exit Gate.
 - Не менялись runtime, UI, API, Decision Engine, Simulator, Prompt Context,
   AI, Auth, Database, Billing, Analytics, Tracking, Logging, infrastructure
   или product behavior.

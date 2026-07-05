@@ -6,22 +6,22 @@ Date: 5 July 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Stage 13.4 - Closed Beta Test Scenarios &
-Success Criteria Complete. This is a documentation-only Closed Beta test
-scenario and success criteria definition. It defines Closed Beta test scenario
-categories, mandatory scenario checks, success criteria for each scenario
-category, excluded scenario classes, whole Closed Beta success criteria,
-dependencies from Stage 10, Stage 11, Stage 12, Stage 13.1, Stage 13.2, and
-Stage 13.3, continuing Accepted Deferrals, explicit non-changes, and the next
-bounded Stage 13 subblock. It does not invite participants, open beta
-execution, collect beta data, enable accounts, enable persistence, add
-analytics, add tracking, add logging, create test tooling, create support
-tooling, create feedback tooling, change runtime behavior, UI behavior, API
-behavior, architecture, simulator behavior, Decision Engine behavior, Prompt
-Context behavior, product behavior, AI integration, auth, persistence,
-database, subscriptions, billing, infrastructure, legal-document text, consent
-UI, trust UI, AI disclosure UI, disclaimer UI, or roadmap changes outside
-Stage 13.
+The current confirmed state is Stage 13.5 - Closed Beta Feedback & Evidence
+Collection Complete. This is a documentation-only Closed Beta feedback and
+evidence collection definition. It defines the feedback collection process,
+feedback categories, feedback quality criteria, evidence inventory, evidence
+quality criteria, result handling and classification rules, dependencies from
+Stage 10, Stage 11, Stage 12, Stage 13.1, Stage 13.2, Stage 13.3, and Stage
+13.4, continuing Accepted Deferrals, explicit non-changes, and the next bounded
+Stage 13 subblock. It does not invite participants, open beta execution,
+collect beta data, enable accounts, enable persistence, add analytics, add
+tracking, add logging, create feedback forms, create evidence databases,
+create test tooling, create support tooling, change runtime behavior, UI
+behavior, API behavior, architecture, simulator behavior, Decision Engine
+behavior, Prompt Context behavior, product behavior, AI integration, auth,
+persistence, database, subscriptions, billing, infrastructure,
+legal-document text, consent UI, trust UI, AI disclosure UI, disclaimer UI, or
+roadmap changes outside Stage 13.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as controlled foundation-only preflight,
@@ -812,6 +812,30 @@ not open Production Release, Public Launch, Commercial Launch, or Scale.
 Stage 13.4 successor subblock: Stage 13.5 Closed Beta Feedback & Evidence
 Collection. It must remain documentation-only until separately approved.
 
+Stage 13.5 Closed Beta Feedback & Evidence Collection is complete as a
+documentation-only feedback and evidence collection definition. Canonical
+document:
+`docs/stages/stage-13-closed-beta/LEVIO_STAGE_13_5_CLOSED_BETA_FEEDBACK_EVIDENCE_COLLECTION.md`.
+
+Stage 13.5 defines the manual feedback collection process, feedback categories,
+feedback quality criteria, evidence inventory, evidence quality criteria,
+result handling and classification rules, dependencies from closed Stage 10,
+closed Stage 11, closed Stage 12, Stage 13.1, Stage 13.2, Stage 13.3, and
+Stage 13.4, continuing Accepted Deferrals, explicit non-changes, and the next
+bounded Stage 13 subblock.
+
+Stage 13.5 does not invite participants, start a Closed Beta, enable beta
+traffic, collect beta data, create accounts, enable persistence, add feedback
+forms, add evidence databases, add test tooling, add feedback tooling, add
+support tooling, add incident tooling, change runtime, UI, API, Decision
+Engine, Simulator, Prompt Context, AI Integration, Auth, Database, Billing,
+Analytics, Tracking, Logging, infrastructure, architecture, public contract,
+or product behavior. It does not open Production Release, Public Launch,
+Commercial Launch, or Scale.
+
+Stage 13.5 successor subblock: Stage 13.6 Closed Beta Completion Criteria &
+Exit Gate. It must remain documentation-only until separately approved.
+
 Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
 Complete.
 
@@ -1077,10 +1101,10 @@ observability, and rollback planning.
 
 ## Next Roadmap Step
 
-Stage 13.5 - Closed Beta Feedback & Evidence Collection.
+Stage 13.6 - Closed Beta Completion Criteria & Exit Gate.
 
-Stage 13.4 is complete as documentation-only Closed Beta test scenario and
-success criteria definition. Stage 12 remains closed. The next bounded Stage 13
+Stage 13.5 is complete as documentation-only Closed Beta feedback and evidence
+collection definition. Stage 12 remains closed. The next bounded Stage 13
 subblock must remain
 documentation-only until separately approved and must not open beta execution,
 runtime, UI, API, legal, data, commercial, analytics, tracking, logging,
