@@ -2,20 +2,20 @@
 
 ## Active Checkpoint
 
-Stage 14.9 - Public Launch Readiness Closed.
+Stage 15.1 - Scale Scope & Entry Lock Complete.
 
-Status: Stage 14 Public Launch is closed as a completed launch-readiness block.
-Stage 14.1-14.3 established scope, readiness verification, and exit criteria.
-Stage 14.4 audited the public launch surface. Stage 14.5-14.8 closed the
-bounded public-surface blockers found during the audit: Visual Lab was isolated
-from public routing, public legal navigation now includes Terms, public launch
-copy was hardened against technical jargon and misleading auth/security
-wording, and public runtime readiness was verified with updated quality gates.
-Stage 14.9 records the closure decision only. It does not open Production
-Release, Commercial Launch, Scale, production auth/account/persistence,
-subscription/billing/commercial runtime, analytics, tracking, logging, Real AI
-provider execution, production monitoring, support tooling, incident tooling,
-new roadmap stages, or a new public contract.
+Status: Stage 15.1 is complete as documentation-only Scale scope and
+entry-lock work. Stage 15 is the next official roadmap stage after the full
+closure of Stage 14. Stage 15.1 opens Stage 15 only as a bounded
+scale-readiness planning block and records Scale boundaries, Scale readiness
+goals, included and excluded planning surfaces, dependencies from Stage 10
+through Stage 14, entry criteria, Accepted Deferrals, explicit non-changes, and
+the next bounded Stage 15 subblock. Stage 15.1 does not execute Scale, increase
+traffic, open Production Release, open Commercial Launch, enable production
+auth/account/persistence, add subscription/billing/commercial runtime, add
+analytics, tracking, logging, Real AI provider execution, production
+monitoring, support tooling, incident tooling, legal documents, compliance
+claims, or a new public contract.
 
 Date: 5 July 2026, Europe/Madrid.
 
@@ -272,6 +272,53 @@ production auth/account/persistence, subscription/billing/commercial runtime,
 analytics, tracking, logging, support tooling, incident tooling, legal-document
 finalization, compliance claims, and any new public contract remain outside
 this closure unless separately approved.
+
+## Stage 15.1 Scale Scope & Entry Lock
+
+Status: complete as documentation-only Scale scope and entry lock.
+
+Canonical document:
+`docs/stages/stage-15-scale/LEVIO_STAGE_15_1_SCALE_SCOPE_ENTRY_LOCK.md`.
+
+Stage 15.1 opens Stage 15 only as a bounded documentation and scale-readiness
+planning block. Stage 15 is the next official roadmap stage after Stage 14.
+Stage 15.1 defines:
+
+- Stage 15 boundaries;
+- Scale readiness goals;
+- included and excluded Scale planning surfaces;
+- dependencies from Stage 10, Stage 11, Stage 12, Stage 13, and Stage 14;
+- Scale planning entry criteria;
+- Accepted Deferrals carried into Stage 15;
+- explicit non-changes;
+- the next bounded Stage 15 subblock.
+
+Stage 15.1 preserves the immutable architecture:
+
+```text
+USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI
+```
+
+Stage 15.1 does not execute Scale, increase traffic, start growth campaigns,
+start paid acquisition, open Production Release, open Commercial Launch, change
+runtime, change UI, change API, change architecture, change simulator behavior,
+change Decision Engine behavior, change Prompt Context behavior, connect Real
+AI, enable production auth/account/persistence, enable billing, add analytics,
+add tracking, add logging, change infrastructure, create legal documents,
+publish legal copy, create consent UI, create trust UI, create AI disclosure
+UI, create disclaimer UI, create support tooling, create incident tooling,
+create compliance claims, or create a new public contract.
+
+Accepted Deferrals carried into Stage 15 include Public Launch execution
+evidence, first-customer evidence, Production Release, Commercial Launch,
+Scale execution, production auth/account/persistence runtime, subscription/
+billing/commercial runtime, analytics/tracking/logging/monitoring runtime,
+Real AI provider execution, support/feedback/evidence/incident tooling, final
+legal documents and compliance claims.
+
+Stage 15.1 successor subblock: Stage 15.2 Scale Preconditions & Evidence
+Inventory. Stage 15.2 requires separate approval and must remain
+documentation-only unless a later approved step explicitly changes scope.
 
 ## Stage 12.1 Market Readiness Scope & Entry Lock
 
@@ -1440,15 +1487,18 @@ rollback.
 
 ## Next Allowed Roadmap Step
 
-Stage 14 - Public Launch is closed as a readiness block.
+Stage 15.1 - Scale Scope & Entry Lock is complete.
 
-Stage 13 is closed. Stage 14.1-14.9 are complete. The public launch readiness
-block closed the Stage 14 audit blockers and verified the current public
-surface without opening Production Release, Commercial Launch, Scale, roadmap
-expansion, Real AI execution, production auth/account/persistence,
-subscription/billing/commercial runtime, analytics, tracking, logging, support
-tooling, incident tooling, or a new public contract.
+Stage 14 is closed. Stage 15 is the next official roadmap stage after Stage
+14, and Stage 15.1 opened it only as bounded documentation-only
+scale-readiness planning.
 
-No active next roadmap block is opened by Stage 14.9. Any Stage 15 Scale work,
-Production Release, Commercial Launch, or further implementation requires a
-separate explicit approval.
+The next bounded Stage 15 subblock is Stage 15.2 Scale Preconditions &
+Evidence Inventory. Stage 15.2 requires separate approval and must remain
+documentation-only unless a later approved step explicitly changes scope.
+
+Scale execution, Production Release, Commercial Launch, Real AI execution,
+production auth/account/persistence, subscription/billing/commercial runtime,
+analytics, tracking, logging, support tooling, incident tooling, legal-document
+finalization, compliance claims, and any new public contract remain outside
+Stage 15.1.

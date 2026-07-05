@@ -6,19 +6,18 @@ Date: 5 July 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Stage 14.9 - Public Launch Readiness Closed.
-Stage 14 Public Launch is closed as a completed launch-readiness block.
-Stage 14.1-14.3 established the Public Launch scope, readiness checklist, and
-exit criteria. Stage 14.4 audited the launch-facing public surface. Stage
-14.5-14.8 closed the bounded blockers from that audit: Visual Lab was isolated
-from public routing, public legal navigation was completed with a Terms link,
-public launch copy was hardened, public runtime readiness was verified, and
-the public quality gates were updated to match the approved launch copy.
-Stage 14.9 records the closure verdict only. It does not open Production
-Release, Commercial Launch, Scale, Real AI execution, production
-auth/account/persistence, subscription/billing/commercial runtime, analytics,
-tracking, logging, support tooling, incident tooling, roadmap expansion, or a
-new public contract.
+The current confirmed state is Stage 15.1 - Scale Scope & Entry Lock Complete.
+Stage 14 Public Launch is closed as a completed launch-readiness block. Stage
+15 is the next official roadmap stage after Stage 14. Stage 15.1 opens Stage
+15 only as a bounded documentation and scale-readiness planning block. It
+defines Scale boundaries, readiness goals, included and excluded planning
+surfaces, dependencies from Stage 10 through Stage 14, entry criteria,
+Accepted Deferrals, explicit non-changes, and the next bounded Stage 15
+subblock. Stage 15.1 does not execute Scale, increase traffic, open Production
+Release, open Commercial Launch, connect Real AI, enable production
+auth/account/persistence, add subscription/billing/commercial runtime, add
+analytics, tracking, logging, support tooling, incident tooling, legal
+documents, compliance claims, or a new public contract.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as controlled foundation-only preflight,
@@ -1289,25 +1288,22 @@ observability, and rollback planning.
 
 ## Next Roadmap Step
 
-Stage 14 - Public Launch is closed as a readiness block.
+Stage 15.1 - Scale Scope & Entry Lock is complete.
 
-Stage 13 is closed. Stage 14.1-14.9 are complete. Stage 14 closed the public
-launch readiness audit blockers and verified the current public surface without
-opening Production Release, Commercial Launch, Scale, roadmap expansion, Real
-AI execution, production auth/account/persistence, subscription/billing/
-commercial runtime, analytics, tracking, logging, support tooling, incident
-tooling, or a new public contract.
+Stage 14 is closed. Stage 15 is the next official roadmap stage after Stage
+14, and Stage 15.1 opened it only as bounded documentation-only
+scale-readiness planning.
 
-No active next roadmap block is opened by Stage 14.9. Any Stage 15 Scale work,
-Production Release, Commercial Launch, or further implementation requires a
-separate explicit approval.
+The next bounded Stage 15 subblock is Stage 15.2 Scale Preconditions &
+Evidence Inventory. Stage 15.2 requires separate approval and must remain
+documentation-only unless a later approved step explicitly changes scope.
 
 Levio must remain a Decision Simulation Engine and must not create AI Chat,
 Answer Engine, Generic Assistant, direct AI-to-user behavior, model calls,
 provider execution, API keys/env/SDKs, AI provider API routes, UI AI runtime,
 auth, persistence, billing, subscriptions, analytics, tracking, logging,
-consent UI, cookie banner, AI disclosure UI,
-disclaimer UI, trust UI, trust page copy, legal-document text, regulatory
-claims, compliance claims, Production Release, Closed Beta, Public Launch,
-Commercial Launch, Scale, or a new public contract without a separate approved
+consent UI, cookie banner, AI disclosure UI, disclaimer UI, trust UI, trust
+page copy, legal-document text, regulatory claims, compliance claims,
+Production Release, Closed Beta execution, Public Launch execution, Commercial
+Launch, Scale execution, or a new public contract without a separate approved
 step.

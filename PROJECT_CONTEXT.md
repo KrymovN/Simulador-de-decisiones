@@ -12,18 +12,18 @@ Levio is not an Answer Engine.
 
 Levio is not a Generic AI Assistant.
 
-The active checkpoint is Stage 14.9 - Public Launch Readiness Closed.
+The active checkpoint is Stage 15.1 - Scale Scope & Entry Lock Complete.
 Stage 14 Public Launch is closed as a completed launch-readiness block.
-Stage 14.1-14.3 established Public Launch scope, readiness verification, and
-exit criteria. Stage 14.4 audited the public launch-facing surface. Stage
-14.5-14.8 closed the bounded public-surface blockers found during that audit:
-Visual Lab was isolated from public routing, public legal navigation now
-includes Terms, public launch copy was hardened, public runtime readiness was
-verified, and public quality gates were updated and passing. Stage 14.9 records
-the closure verdict only. It does not open Production Release, Commercial
-Launch, Scale, Real AI provider execution, production auth/account/persistence,
-subscription/billing/commercial runtime, analytics, tracking, logging, support
-tooling, incident tooling, roadmap expansion, or a new public contract.
+Stage 15 is the next official roadmap stage after Stage 14. Stage 15.1 opens
+Stage 15 only as a bounded documentation and scale-readiness planning block.
+It defines Scale boundaries, readiness goals, included and excluded planning
+surfaces, dependencies from Stage 10 through Stage 14, entry criteria,
+Accepted Deferrals, explicit non-changes, and the next bounded Stage 15
+subblock. Stage 15.1 does not execute Scale, increase traffic, open Production
+Release, open Commercial Launch, connect Real AI, enable production
+auth/account/persistence, add subscription/billing/commercial runtime, add
+analytics, tracking, logging, support tooling, incident tooling, legal
+documents, compliance claims, or a new public contract.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as foundation-only preflight, runtime
@@ -1162,9 +1162,10 @@ Quality Hardening. They did not open a new Stage.
 Repository Structure Normalization is complete. Stage 11 - Legal & Trust Layer
 has completed the Legal & Trust Foundation Inventory and Stage 11.2 Legal
 Surface Scope & Ownership Lock as documentation-only subblocks. Stage 12 Market
-Readiness is closed. Stage 13 Closed Beta is closed. Stage 14 is open only as
-bounded documentation-only Public Launch planning through Stage 14.1. Public
-Launch execution and Scale are not active.
+Readiness is closed. Stage 13 Closed Beta is closed. Stage 14 Public Launch is
+closed as a readiness block. Stage 15.1 Scale Scope & Entry Lock is complete as
+bounded documentation-only Scale planning. Public Launch execution and Scale
+execution are not active.
 
 Stage 10 Readiness Review result:
 
@@ -1501,19 +1502,25 @@ webhooks, UI/API, QA, and rollback rehearsal.
 
 ## Next Roadmap Step
 
-The current roadmap position is Stage 14.9 - Public Launch Readiness Closed.
+The current roadmap position is Stage 15.1 - Scale Scope & Entry Lock
+Complete.
 
 Official status: Stage 12 Closed.
 
 Official status: Stage 13 Closed.
 
-Stage 14.1-14.9 are complete. Stage 14 Public Launch is closed as a readiness
-block. It closed the public surface blockers identified by Stage 14.4 and
-verified the current public surface without opening Production Release,
-Commercial Launch, Scale, roadmap expansion, Real AI execution, production
-auth/account/persistence, subscription/billing/commercial runtime, analytics,
-tracking, logging, support tooling, incident tooling, or a new public contract.
+Official status: Stage 14 Closed.
 
-No active next roadmap block is opened by Stage 14.9. Any Stage 15 Scale work,
-Production Release, Commercial Launch, or further implementation requires a
-separate explicit approval.
+Stage 15.1 is complete as documentation-only Scale scope and entry-lock work.
+It records Stage 15 as the next official roadmap stage after Stage 14, while
+preserving that Scale execution remains unopened.
+
+The next bounded Stage 15 subblock is Stage 15.2 Scale Preconditions &
+Evidence Inventory. Stage 15.2 requires separate approval and must remain
+documentation-only unless a later approved step explicitly changes scope.
+
+Production Release, Commercial Launch, Scale execution, Real AI execution,
+production auth/account/persistence, subscription/billing/commercial runtime,
+analytics, tracking, logging, support tooling, incident tooling, legal
+document finalization, compliance claims, and any new public contract remain
+outside Stage 15.1.

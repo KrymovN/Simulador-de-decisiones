@@ -47,6 +47,7 @@ folder:
 - `stage-12-market-readiness/`
 - `stage-13-closed-beta/`
 - `stage-14-public-launch/`
+- `stage-15-scale/`
 
 Stage 10 Product Quality Hardening is baseline-locked in the active state
 documents. Repository Structure Normalization is complete. Stage 11.10
@@ -71,8 +72,9 @@ Collection is complete as documentation-only Closed Beta planning work. Stage
 13.6 Closed Beta Completion Criteria & Exit Gate is complete as
 documentation-only Closed Beta planning work. Stage 13.7 Closed Beta Closure
 Gate is complete as documentation-only Closed Beta closure work. Stage 13 is
-closed. Stage 14.1 Public Launch Scope & Entry Lock is complete as
-documentation-only Public Launch planning work.
+closed. Stage 14.1-14.9 are complete and Stage 14 is closed as a Public Launch
+readiness block. Stage 15.1 Scale Scope & Entry Lock is complete as
+documentation-only Scale planning work.
 
 ## QA / Quality
 
@@ -126,11 +128,13 @@ documents are retained for traceability, not as active project state.
 - Stage 13.7 Closed Beta Closure Gate is complete as documentation-only closure
   work.
 - Stage 13 is closed.
-- Stage 14.1 Public Launch Scope & Entry Lock is complete as
-  documentation-only scope/entry-lock work.
-- Stage 14 is open only as bounded Public Launch planning.
-- The next bounded Stage 14 subblock is Stage 14.2 Public Launch Surfaces &
-  Launch Readiness Definition.
+- Stage 14.1-14.9 are complete.
+- Stage 14 is closed as a Public Launch readiness block.
+- Stage 15.1 Scale Scope & Entry Lock is complete as documentation-only
+  scope/entry-lock work.
+- Stage 15 is open only as bounded Scale planning.
+- The next bounded Stage 15 subblock is Stage 15.2 Scale Preconditions &
+  Evidence Inventory.
 - Closed Beta execution remains unopened.
 - Public Launch execution, Production Release, Commercial Launch, and Scale
-  remain closed.
+  execution remain closed.

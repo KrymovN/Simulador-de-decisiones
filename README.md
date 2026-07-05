@@ -12,32 +12,14 @@ The current confirmed runtime remains deterministic-preview only for the public
 - `apiReady=true`
 
 Real AI Runtime, AI Provider execution, production auth, production
-persistence, billing, subscriptions, Closed Beta execution, Production Release,
-Public Launch execution, Commercial Launch, and Scale remain deferred until
-explicitly opened by the roadmap. Stage 11 Legal & Trust Layer is closed. Stage 12.1 Market
-Readiness Scope & Entry Lock and Stage 12.2 Market Readiness Surfaces
-Definition are complete as documentation-only Market Readiness work. Stage
-12.3 Market Readiness Dependencies & Execution Order is complete as
-documentation-only Market Readiness work. Stage 12.4 Market Readiness
-Evidence Inventory & Dependency Map is complete as documentation-only Market
-Readiness work. Stage 12.5 Market Readiness Completion Criteria & Exit Gate
-is complete as documentation-only Market Readiness work. Stage 12.6 Market
-Readiness Closure Gate is complete as documentation-only Market Readiness
-work. Stage 12 is closed. Stage 13.1 Closed Beta Scope & Entry Lock is
-complete as documentation-only Closed Beta planning work. Stage 13.2 Closed
-Beta Participants & Eligibility is complete as documentation-only Closed Beta
-planning work. Stage 13.3 Closed Beta Operating Model & Support Boundaries is
-complete as documentation-only Closed Beta planning work. Stage 13.4 Closed
-Beta Test Scenarios & Success Criteria is complete as documentation-only
-Closed Beta planning work. Stage 13.5 Closed Beta Feedback & Evidence
-Collection is complete as documentation-only Closed Beta planning work. Stage
-13.6 Closed Beta Completion Criteria & Exit Gate is complete as
-documentation-only Closed Beta planning work. Stage 13.7 Closed Beta Closure
-Gate is complete as documentation-only Closed Beta closure work. Stage 13 is
-closed. Stage 14.1 Public Launch Scope & Entry Lock is complete as
-documentation-only Public Launch planning work. Stage 14 is open only as
-bounded documentation-only Public Launch planning; Public Launch execution
-remains unopened.
+persistence, billing, subscriptions, Closed Beta execution, Public Launch
+execution, Production Release, Commercial Launch, and Scale execution remain
+deferred until explicitly opened by the roadmap. Stage 11 Legal & Trust Layer
+is closed. Stage 12 Market Readiness is closed. Stage 13 Closed Beta is
+closed. Stage 14 Public Launch is closed as a readiness block. Stage 15.1 Scale
+Scope & Entry Lock is complete as documentation-only Scale planning work.
+Stage 15 is open only as bounded documentation-only scale-readiness planning;
+Scale execution remains unopened.
 
 ## Active Project State
 
@@ -84,8 +66,9 @@ Stage 13.5 Closed Beta Feedback & Evidence Collection is complete as
 documentation-only feedback/evidence work. Stage 13.6 Closed Beta Completion
 Criteria & Exit Gate is complete as documentation-only completion/exit-gate
 work. Stage 13.7 Closed Beta Closure Gate is complete as documentation-only
-closure work. Stage 13 is closed. Stage 14.1 Public Launch Scope & Entry Lock
-is complete as documentation-only scope and entry-lock work. Stage 14 is open
-only as bounded Public Launch planning; Public Launch execution remains
-unopened. The next bounded Stage 14 subblock is Stage 14.2 Public Launch
-Surfaces & Launch Readiness Definition.
+closure work. Stage 13 is closed. Stage 14.1-14.9 are complete and Stage 14 is
+closed as a Public Launch readiness block. Stage 15.1 Scale Scope & Entry Lock
+is complete as documentation-only scope and entry-lock work. Stage 15 is open
+only as bounded Scale planning; Scale execution remains unopened. The next
+bounded Stage 15 subblock is Stage 15.2 Scale Preconditions & Evidence
+Inventory.
