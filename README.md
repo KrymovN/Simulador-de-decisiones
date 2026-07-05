@@ -30,7 +30,9 @@ planning work. Stage 13.3 Closed Beta Operating Model & Support Boundaries is
 complete as documentation-only Closed Beta planning work. Stage 13.4 Closed
 Beta Test Scenarios & Success Criteria is complete as documentation-only
 Closed Beta planning work. Stage 13.5 Closed Beta Feedback & Evidence
-Collection is complete as documentation-only Closed Beta planning work.
+Collection is complete as documentation-only Closed Beta planning work. Stage
+13.6 Closed Beta Completion Criteria & Exit Gate is complete as
+documentation-only Closed Beta planning work.
 
 ## Active Project State
 
@@ -74,5 +76,7 @@ Operating Model & Support Boundaries is complete as documentation-only
 operating/support work. Stage 13.4 Closed Beta Test Scenarios & Success
 Criteria is complete as documentation-only scenario/success-criteria work.
 Stage 13.5 Closed Beta Feedback & Evidence Collection is complete as
-documentation-only feedback/evidence work. The next bounded Stage 13 subblock
-is Stage 13.6 Closed Beta Completion Criteria & Exit Gate.
+documentation-only feedback/evidence work. Stage 13.6 Closed Beta Completion
+Criteria & Exit Gate is complete as documentation-only completion/exit-gate
+work. The next bounded Stage 13 subblock is Stage 13.7 Closed Beta Closure
+Gate.
