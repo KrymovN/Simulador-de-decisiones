@@ -2,20 +2,19 @@
 
 ## Active Checkpoint
 
-Stage 15.1 - Scale Scope & Entry Lock Complete.
+Stage 15.2 - Scale Preconditions & Evidence Inventory Complete.
 
-Status: Stage 15.1 is complete as documentation-only Scale scope and
-entry-lock work. Stage 15 is the next official roadmap stage after the full
-closure of Stage 14. Stage 15.1 opens Stage 15 only as a bounded
-scale-readiness planning block and records Scale boundaries, Scale readiness
-goals, included and excluded planning surfaces, dependencies from Stage 10
-through Stage 14, entry criteria, Accepted Deferrals, explicit non-changes, and
-the next bounded Stage 15 subblock. Stage 15.1 does not execute Scale, increase
+Status: Stage 15.2 is complete as documentation-only Scale preconditions and
+evidence inventory work. Stage 15 remains open only as a bounded
+scale-readiness planning stage. Stage 15.1 Scale Scope & Entry Lock is
+complete. Stage 15.2 records the canonical inventory of objective Scale
+preconditions, readiness evidence, readiness criteria, current prerequisite
+status, and dependency mapping. Stage 15.2 does not execute Scale, increase
 traffic, open Production Release, open Commercial Launch, enable production
 auth/account/persistence, add subscription/billing/commercial runtime, add
 analytics, tracking, logging, Real AI provider execution, production
-monitoring, support tooling, incident tooling, legal documents, compliance
-claims, or a new public contract.
+monitoring, support tooling, incident tooling, legal documents, implementation
+plans, audits, compliance claims, or a new public contract.
 
 Date: 5 July 2026, Europe/Madrid.
 
@@ -319,6 +318,60 @@ legal documents and compliance claims.
 Stage 15.1 successor subblock: Stage 15.2 Scale Preconditions & Evidence
 Inventory. Stage 15.2 requires separate approval and must remain
 documentation-only unless a later approved step explicitly changes scope.
+
+## Stage 15.2 Scale Preconditions & Evidence Inventory
+
+Status: complete as documentation-only Scale preconditions and evidence
+inventory.
+
+Canonical document:
+`docs/stages/stage-15-scale/LEVIO_STAGE_15_2_SCALE_PRECONDITIONS_EVIDENCE_INVENTORY.md`.
+
+Stage 15.2 creates the canonical inventory of objective preconditions that must
+be satisfied before any real Scale execution can begin. It contains only:
+
+- complete Scale Preconditions inventory;
+- objective readiness evidence;
+- readiness criteria;
+- current status for each prerequisite;
+- explicit dependency mapping.
+
+Stage 15.2 preserves the immutable architecture:
+
+```text
+USER -> SIMULATOR -> DECISION ENGINE -> PROMPT CONTEXT -> AI PROVIDER -> DECISION ENGINE -> SIMULATOR -> UI
+```
+
+Stage 15.2 verdict: Scale execution is not ready.
+
+The objective blockers are:
+
+- Public Launch execution evidence does not exist;
+- first-customer evidence does not exist;
+- traffic and capacity assumptions are not accepted;
+- infrastructure readiness evidence is not accepted;
+- operational ownership and support capacity evidence are not accepted;
+- incident, stop/pause, and scale rollback evidence is not accepted;
+- final legal, privacy, consent, Terms, AI transparency, disclaimer, and claim
+  readiness is not approved;
+- analytics/tracking/logging/monitoring provider scope remains deferred;
+- production auth/account/persistence, billing/commercial runtime, and Real AI
+  remain deferred unless excluded from the later scale scope.
+
+Stage 15.2 does not change runtime, UI, API, architecture, public contract,
+simulator behavior, Decision Engine behavior, Prompt Context behavior, AI
+Provider behavior, auth, persistence, database, billing, analytics, tracking,
+logging, infrastructure, product behavior, or roadmap branches. Stage 15.2 does
+not create Scale execution, Production Release, Commercial Launch, Real AI,
+auth implementation, persistence implementation, billing implementation,
+analytics implementation, tracking implementation, logging implementation,
+implementation plan, new audit, legal documents, public copy, compliance
+claims, or a new public contract.
+
+No additional documentation-only subblock is required to complete the Stage
+15.2 inventory. Any later Scale execution, Production Release, Commercial
+Launch, implementation work, audit, or roadmap expansion requires separate
+explicit approval.
 
 ## Stage 12.1 Market Readiness Scope & Entry Lock
 
@@ -1487,18 +1540,23 @@ rollback.
 
 ## Next Allowed Roadmap Step
 
-Stage 15.1 - Scale Scope & Entry Lock is complete.
+Stage 15.2 - Scale Preconditions & Evidence Inventory is complete.
 
 Stage 14 is closed. Stage 15 is the next official roadmap stage after Stage
-14, and Stage 15.1 opened it only as bounded documentation-only
+14, and Stage 15 remains open only as bounded documentation-only
 scale-readiness planning.
 
-The next bounded Stage 15 subblock is Stage 15.2 Scale Preconditions &
-Evidence Inventory. Stage 15.2 requires separate approval and must remain
-documentation-only unless a later approved step explicitly changes scope.
+Stage 15.2 records the canonical Scale prerequisite inventory, objective
+readiness evidence, readiness criteria, current prerequisite status, and
+dependency mapping. Its verdict is that Scale execution is not ready.
+
+No additional documentation-only subblock is required to complete the Stage
+15.2 inventory. Any later Scale execution, Production Release, Commercial
+Launch, implementation work, audit, or roadmap expansion requires separate
+explicit approval.
 
 Scale execution, Production Release, Commercial Launch, Real AI execution,
 production auth/account/persistence, subscription/billing/commercial runtime,
 analytics, tracking, logging, support tooling, incident tooling, legal-document
 finalization, compliance claims, and any new public contract remain outside
-Stage 15.1.
+Stage 15.2.

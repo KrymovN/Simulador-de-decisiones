@@ -74,7 +74,9 @@ documentation-only Closed Beta planning work. Stage 13.7 Closed Beta Closure
 Gate is complete as documentation-only Closed Beta closure work. Stage 13 is
 closed. Stage 14.1-14.9 are complete and Stage 14 is closed as a Public Launch
 readiness block. Stage 15.1 Scale Scope & Entry Lock is complete as
-documentation-only Scale planning work.
+documentation-only Scale planning work. Stage 15.2 Scale Preconditions &
+Evidence Inventory is complete as documentation-only prerequisite/evidence
+inventory work.
 
 ## QA / Quality
 
@@ -132,9 +134,11 @@ documents are retained for traceability, not as active project state.
 - Stage 14 is closed as a Public Launch readiness block.
 - Stage 15.1 Scale Scope & Entry Lock is complete as documentation-only
   scope/entry-lock work.
+- Stage 15.2 Scale Preconditions & Evidence Inventory is complete as
+  documentation-only prerequisite/evidence inventory work.
 - Stage 15 is open only as bounded Scale planning.
-- The next bounded Stage 15 subblock is Stage 15.2 Scale Preconditions &
-  Evidence Inventory.
+- No additional documentation-only subblock is required to complete the Stage
+  15.2 inventory.
 - Closed Beta execution remains unopened.
 - Public Launch execution, Production Release, Commercial Launch, and Scale
   execution remain closed.

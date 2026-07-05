@@ -490,14 +490,10 @@ Overall Project Progress ████████░░ 82%
   roadmap expansion, Real AI execution, production auth/account/persistence,
   subscription/billing/commercial runtime, analytics, tracking, logging,
   support tooling, incident tooling или новый public contract.
-- Завершен Stage 15.1 Scale Scope & Entry Lock как documentation-only
+- Stage 15.1 Scale Scope & Entry Lock завершен как documentation-only
   scale-readiness planning block.
 - Stage 15 является следующим официальным roadmap stage после Stage 14, но
   Scale execution, Production Release и Commercial Launch остаются закрытыми.
-- Stage 15.1 Scale Scope & Entry Lock завершен как documentation-only
-  scale-readiness planning block.
-- Stage 15 определен как следующий официальный roadmap stage после Stage 14,
-  но Scale execution остается закрытым.
 - Stage 15.1 зафиксировал Stage 15 boundaries, Scale readiness goals,
   included/excluded Scale planning surfaces, dependencies from Stage 10-14,
   entry criteria, Accepted Deferrals, explicit non-changes и next bounded Stage
@@ -507,6 +503,21 @@ Overall Project Progress ████████░░ 82%
   auth/account/persistence, subscription/billing/commercial runtime,
   analytics, tracking, logging, support tooling, incident tooling, legal
   documents, compliance claims или новый public contract.
+- Stage 15.2 Scale Preconditions & Evidence Inventory завершен как
+  documentation-only prerequisite/evidence inventory.
+- Stage 15.2 зафиксировал complete Scale Preconditions inventory, objective
+  readiness evidence, readiness criteria, current status каждого prerequisite
+  и explicit dependency mapping.
+- Stage 15.2 verdict: Scale execution is not ready. Public Launch execution
+  evidence, first-customer evidence, traffic/capacity assumptions,
+  infrastructure readiness, operational ownership, support capacity, incident
+  readiness, final legal/privacy/consent/Terms/AI transparency readiness,
+  analytics/tracking/logging/monitoring scope, production auth/persistence/
+  billing и Real AI dependencies остаются unresolved/deferred.
+- Stage 15.2 не создает implementation plan, new audit, roadmap branch,
+  runtime/UI/API/architecture/public-contract changes, Production Release,
+  Commercial Launch, Real AI, Auth/Persistence/Billing implementations,
+  analytics, tracking или logging.
 - Product Quality Hardening #1-#5 и automated quality gates не добавляли AI
   provider execution, SDK/env/API keys, fetch/model calls, auth, billing,
   persistence, subscription changes, heavy dependencies или Real AI product
@@ -1240,20 +1251,20 @@ approval.
 
 Статус: Stage 14 Closed as Public Launch readiness block.
 Прогресс: ██████████ 100%.
-Следующий шаг: Stage 15.1 Scale Scope & Entry Lock завершен как первый
-documentation-only Scale planning subblock.
+Следующий шаг: Stage 15 открыт как bounded documentation-only Scale planning;
+Stage 15.1 и Stage 15.2 завершены.
 
 ### 15. Scale
 
-Статус: Stage 15.1 Scale Scope & Entry Lock complete.
-Прогресс: █░░░░░░░░░ 10%.
-Следующий шаг: Stage 15.2 Scale Preconditions & Evidence Inventory. Требует
-separate approval и должен оставаться documentation-only unless separately
-approved.
+Статус: Stage 15.2 Scale Preconditions & Evidence Inventory complete.
+Прогресс: ██░░░░░░░░ 20%.
+Следующий шаг: нет автоматически открытого next documentation-only subblock.
+Любой Scale execution, Production Release, Commercial Launch, implementation
+work, audit или roadmap expansion требует separate explicit approval.
 
 ## Current Roadmap Focus
 
-Stage 15.1 - Scale Scope & Entry Lock Complete.
+Stage 15.2 - Scale Preconditions & Evidence Inventory Complete.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.

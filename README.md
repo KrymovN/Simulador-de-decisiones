@@ -18,8 +18,10 @@ deferred until explicitly opened by the roadmap. Stage 11 Legal & Trust Layer
 is closed. Stage 12 Market Readiness is closed. Stage 13 Closed Beta is
 closed. Stage 14 Public Launch is closed as a readiness block. Stage 15.1 Scale
 Scope & Entry Lock is complete as documentation-only Scale planning work.
-Stage 15 is open only as bounded documentation-only scale-readiness planning;
-Scale execution remains unopened.
+Stage 15.2 Scale Preconditions & Evidence Inventory is complete as
+documentation-only prerequisite/evidence inventory work. Stage 15 is open only
+as bounded documentation-only scale-readiness planning; Scale execution remains
+unopened.
 
 ## Active Project State
 
@@ -68,7 +70,8 @@ Criteria & Exit Gate is complete as documentation-only completion/exit-gate
 work. Stage 13.7 Closed Beta Closure Gate is complete as documentation-only
 closure work. Stage 13 is closed. Stage 14.1-14.9 are complete and Stage 14 is
 closed as a Public Launch readiness block. Stage 15.1 Scale Scope & Entry Lock
-is complete as documentation-only scope and entry-lock work. Stage 15 is open
-only as bounded Scale planning; Scale execution remains unopened. The next
-bounded Stage 15 subblock is Stage 15.2 Scale Preconditions & Evidence
-Inventory.
+is complete as documentation-only scope and entry-lock work. Stage 15.2 Scale
+Preconditions & Evidence Inventory is complete as documentation-only
+prerequisite/evidence inventory work. Stage 15 is open only as bounded Scale
+planning; Scale execution remains unopened. No additional documentation-only
+subblock is required to complete the Stage 15.2 inventory.
