@@ -30,9 +30,10 @@ Stage 15.4 aggregate verdict remains NOT READY. The later `Saved Decision
 Simulations Runtime Foundation` commit adds an internal server/runtime
 foundation for saving, loading, and listing saved Decision Simulations through
 approved Auth/Persistence boundaries. `LEVIO_IMPLEMENTATION_PLAN.md` is now the
-canonical V1 implementation comparator. It defines Levio V1 Complete, maps the
-current project state against Blocks A-F, and identifies Block A - Decision
-Simulation Persistence Implementation as the current implementation focus.
+canonical V1 implementation comparator. It defines Levio V1 Complete and maps
+the current project state against Blocks A-F. Block A - Decision Simulation
+Persistence Implementation is now complete for its approved persistence scope
+after closure validation.
 Block A1 Decision Simulation Domain Model is complete as architecture-only work
 under `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`. Block A2
 Persistence Runtime Mapping is complete as internal runtime mapping over
@@ -47,12 +48,18 @@ includes a bounded `Guardar simulación` flow through the server-only saved
 simulations save action. Ownership is derived from Auth ->
 `levio_principals.principal_id`, unauthenticated users receive a controlled
 login path, and successful saves link back to `/dashboard/simulations` without
-changing the public `/api/simulate` contract.
+changing the public `/api/simulate` contract. Block A Closure Validation is
+accepted through `npm run quality:block-a-decision-simulation-persistence-closure`,
+which covers domain/runtime mapping, Auth/Persistence owner boundaries,
+Supabase service-boundary filters, RLS/static schema constraints, product
+surface states, save-from-UI, owner spoofing, nested owner injection, archived
+record exclusion, and controlled auth/error states.
 
-Remaining Block A work includes production-like account ownership and
-persistence-boundary validation, export/delete integration for saved
-simulation records, separately approved history/revision lifecycle events, and
-account-bound user-flow QA.
+No new implementation block is opened by this checkpoint. Export/delete
+integration remains Block C User Data Management work. Real account runtime
+settings and account lifecycle validation remain Block B/E work. Separately
+approved history/revision lifecycle events remain deferred until explicitly
+scoped.
 
 This checkpoint does not open Scale, increase traffic, open Production Release,
 open Commercial Launch, enable Real AI provider execution, add billing,

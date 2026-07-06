@@ -60,10 +60,10 @@ and the conservative V1 completion estimate.
 ```text
 Product Alignment        ██████████ 100%
 Foundation Readiness     ██████████ 100%
-Runtime Completion       ██████░░░░ 60%
+Runtime Completion       ███████░░░ 65%
 Commercial Readiness     ███░░░░░░░ 25%
-Overall Project Progress ████████░░ 82%
-V1 Complete Readiness    ████░░░░░░ 39% estimated
+Overall Project Progress ████████░░ 83%
+V1 Complete Readiness    ████░░░░░░ 45% estimated
 ```
 
 ## Current Position
@@ -73,8 +73,8 @@ V1 Complete Readiness    ████░░░░░░ 39% estimated
 - Target runtime architecture зафиксирована и остается immutable.
 - `LEVIO_IMPLEMENTATION_PLAN.md` создан как canonical V1 implementation
   comparator.
-- Current implementation focus: Block A - Decision Simulation Persistence
-  Implementation.
+- Most recent implementation block: Block A - Decision Simulation Persistence
+  Implementation. Status: Completed for the approved persistence scope.
 - Block A1 Decision Simulation Domain Model завершён:
   `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`.
 - Block A2 Persistence Runtime Mapping завершён: internal runtime maps
@@ -90,10 +90,13 @@ V1 Complete Readiness    ████░░░░░░ 39% estimated
   simulations boundary, ownership is resolved from auth/session ->
   `levio_principals.principal_id`, unauthenticated users get a controlled
   login path, and successful saves link to `/dashboard/simulations`.
-- Remaining Block A work: production-like account ownership validation,
-  production Supabase/RLS/service-boundary validation, export/delete
-  integration, account-bound user-flow QA, and any separately approved
-  history/revision lifecycle events.
+- Block A Closure Validation принят:
+  `npm run quality:block-a-decision-simulation-persistence-closure`, 79/79
+  PASS.
+- Remaining Block A implementation work: none for the approved persistence
+  scope. Export/delete integration remains Block C work; real account runtime
+  configuration and production user-flow/readiness validation remain Block B/E
+  work; separately approved history/revision lifecycle events remain deferred.
 - Recent product implementation foundation:
   `Saved Decision Simulations Runtime Foundation`, internal server/runtime
   boundary for save/load/list of saved Decision Simulations through approved

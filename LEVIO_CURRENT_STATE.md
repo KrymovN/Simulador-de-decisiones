@@ -34,8 +34,9 @@ aggregate verdict remains NOT READY. The later `Saved Decision Simulations
 Runtime Foundation` commit adds an internal server/runtime foundation for
 saving, loading, and listing saved Decision Simulations through approved
 Auth/Persistence boundaries. `LEVIO_IMPLEMENTATION_PLAN.md` is now the
-canonical V1 implementation comparator and defines the current implementation
-focus as Block A - Decision Simulation Persistence Implementation.
+canonical V1 implementation comparator. Block A - Decision Simulation
+Persistence Implementation is now complete for its approved persistence scope
+after closure validation.
 Block A1 Decision Simulation Domain Model is complete as architecture-only work
 under `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`. Block A2
 Persistence Runtime Mapping is complete: `simulation_records` are mapped into
@@ -53,10 +54,19 @@ authenticated session through `levio_principals.principal_id`, rejects
 client-supplied owner fields, handles unauthenticated users with a controlled
 login path, and returns a clear path to `/dashboard/simulations`.
 
-Remaining Block A work: production-like account ownership validation,
-production Supabase/RLS/service-boundary validation, export/delete integration
-for saved simulation records, separately approved history/revision lifecycle
-events, and account-bound user-flow QA.
+Block A Closure Validation is accepted through
+`npm run quality:block-a-decision-simulation-persistence-closure`. The closure
+gate covers the domain model mapping, save/list/load/reopen/archive runtime,
+Auth -> `levio_principals` owner resolution, owner isolation, owner spoofing,
+nested owner injection, server-only save action, Supabase provider
+owner/status filters, RLS/static schema constraints, dashboard history/detail,
+empty/error/auth states, archived-record exclusion, and controlled save errors.
+
+No new implementation block is opened by this state change. Export/delete
+integration remains Block C User Data Management work. Real account runtime
+configuration, production account lifecycle, broader production user-flow QA,
+and production release readiness remain Block B/E work. Separately approved
+history/revision lifecycle events remain deferred until explicitly scoped.
 
 This state does not resolve Scale blockers, execute Scale, increase traffic,
 open Production Release, open Commercial Launch, connect Real AI, enable
