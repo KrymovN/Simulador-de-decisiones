@@ -55,11 +55,19 @@ Supabase service-boundary filters, RLS/static schema constraints, product
 surface states, save-from-UI, owner spoofing, nested owner injection, archived
 record exclusion, and controlled auth/error states.
 
-No new implementation block is opened by this checkpoint. Export/delete
-integration remains Block C User Data Management work. Real account runtime
-settings and account lifecycle validation remain Block B/E work. Separately
-approved history/revision lifecycle events remain deferred until explicitly
-scoped.
+Block B - Real User Account Runtime is now the next bounded implementation
+block after Block A, but only B1 Supabase Auth Configuration Lock is complete.
+B1 is documentation/configuration-contract work under
+`docs/stages/stage-04-runtime-architecture/stage-04-01-auth-runtime/LEVIO_BLOCK_B1_SUPABASE_AUTH_CONFIGURATION_LOCK.md`.
+It locks the required Supabase Auth Site URL, callback URL, redirect allowlist,
+environment variable boundaries, email delivery expectations, current
+implementation compatibility, and B2/B3 gaps without changing runtime, UI, API,
+database schema, migrations, middleware, or remote Supabase project settings.
+Export/delete integration remains Block C User Data Management work. Real
+account action boundaries, email confirmation/recovery validation, session
+lifecycle validation, account state, principal provisioning, and broader
+production user-flow QA remain Block B/E work. Separately approved
+history/revision lifecycle events remain deferred until explicitly scoped.
 
 This checkpoint does not open Scale, increase traffic, open Production Release,
 open Commercial Launch, enable Real AI provider execution, add billing,

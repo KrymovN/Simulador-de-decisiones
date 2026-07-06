@@ -62,9 +62,19 @@ nested owner injection, server-only save action, Supabase provider
 owner/status filters, RLS/static schema constraints, dashboard history/detail,
 empty/error/auth states, archived-record exclusion, and controlled save errors.
 
-No new implementation block is opened by this state change. Export/delete
-integration remains Block C User Data Management work. Real account runtime
-configuration, production account lifecycle, broader production user-flow QA,
+Block B - Real User Account Runtime is the next bounded implementation block
+after Block A. B1 Supabase Auth Configuration Lock is now complete as
+documentation/configuration-contract work under
+`docs/stages/stage-04-runtime-architecture/stage-04-01-auth-runtime/LEVIO_BLOCK_B1_SUPABASE_AUTH_CONFIGURATION_LOCK.md`.
+B1 defines the required Supabase Auth Site URL, callback URL, redirect
+allowlist, local/preview/production expectations, auth environment variables,
+server-only env boundaries, email delivery expectations, current implementation
+compatibility, and B2/B3 gaps. It does not configure a remote Supabase project,
+change runtime, change UI, change API, add middleware, change database schema,
+create migrations, open Production Release, enable Real AI, add billing, or
+open Block C. Real account action boundaries, real email confirmation/recovery
+validation, session lifecycle validation, dashboard account state, Supabase
+user -> `levio_principals` provisioning/sync, broader production user-flow QA,
 and production release readiness remain Block B/E work. Separately approved
 history/revision lifecycle events remain deferred until explicitly scoped.
 

@@ -97,6 +97,19 @@ V1 Complete Readiness    ████░░░░░░ 45% estimated
   scope. Export/delete integration remains Block C work; real account runtime
   configuration and production user-flow/readiness validation remain Block B/E
   work; separately approved history/revision lifecycle events remain deferred.
+- Current Block B status: Real User Account Runtime is Foundation Complete /
+  B1 Complete. B1 Supabase Auth Configuration Lock is complete as
+  documentation/configuration-contract work in
+  `docs/stages/stage-04-runtime-architecture/stage-04-01-auth-runtime/LEVIO_BLOCK_B1_SUPABASE_AUTH_CONFIGURATION_LOCK.md`.
+- B1 locked the required Supabase Auth Site URL, callback URL, redirect
+  allowlist, local/preview/production expectations, auth env variables,
+  server-only env boundaries, email delivery expectations, current
+  implementation compatibility, and B2/B3 gaps without remote Supabase
+  execution or runtime/UI/API/database changes.
+- Remaining Block B work: Auth Action Boundary Completion, real email
+  confirmation/recovery validation, session lifecycle validation, dashboard
+  account state, Supabase user -> `levio_principals` provisioning/sync, and
+  dedicated Block B quality/closure evidence.
 - Recent product implementation foundation:
   `Saved Decision Simulations Runtime Foundation`, internal server/runtime
   boundary for save/load/list of saved Decision Simulations through approved
