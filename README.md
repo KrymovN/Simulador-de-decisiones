@@ -21,9 +21,10 @@ Scope & Entry Lock is complete as documentation-only Scale planning work.
 Stage 15.2 Scale Preconditions & Evidence Inventory is complete as
 documentation-only prerequisite/evidence inventory work. Stage 15.3 Scale
 Readiness Evidence Validation is complete as documentation-only validation
-framework work. Stage 15 is open only as bounded documentation-only
-scale-readiness planning; readiness validation and Scale execution remain
-unopened.
+framework work. Stage 15.4 Scale Readiness Evidence Assessment is complete as
+documentation-only readiness assessment work with aggregate verdict NOT READY.
+Stage 15 is open only as bounded documentation-only scale-readiness planning;
+Scale execution remains unopened.
 
 ## Active Project State
 
@@ -76,5 +77,6 @@ is complete as documentation-only scope and entry-lock work. Stage 15.2 Scale
 Preconditions & Evidence Inventory is complete as documentation-only
 prerequisite/evidence inventory work. Stage 15.3 Scale Readiness Evidence
 Validation is complete as documentation-only validation framework work. Stage
-15 is open only as bounded Scale planning; readiness validation and Scale
-execution remain unopened.
+15.4 Scale Readiness Evidence Assessment is complete as documentation-only
+assessment work with aggregate verdict NOT READY. Stage 15 is open only as
+bounded Scale planning; Scale execution remains unopened.
