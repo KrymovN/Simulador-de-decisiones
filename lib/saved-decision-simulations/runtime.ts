@@ -31,7 +31,7 @@ import {
 } from "./contracts";
 
 const UUID_PATTERN =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{12}$/i;
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 const DEFAULT_LIST_LIMIT = 20;
 const MAX_LIST_LIMIT = 50;
@@ -152,6 +152,43 @@ function hasClientOwnerFields(value: unknown): boolean {
   return CLIENT_OWNER_FIELD_KEYS.some((key) =>
     Object.prototype.hasOwnProperty.call(value, key),
   );
+}
+
+function hasNestedClientOwnerFields(
+  value: unknown,
+  seen: WeakSet<object> = new WeakSet(),
+): boolean {
+  if (typeof value !== "object" || value === null) {
+    return false;
+  }
+
+  if (seen.has(value)) {
+    return false;
+  }
+
+  seen.add(value);
+
+  if (Array.isArray(value)) {
+    return value.some((item) => hasNestedClientOwnerFields(item, seen));
+  }
+
+  if (!isRecord(value)) {
+    return false;
+  }
+
+  return Object.entries(value).some(([key, nestedValue]) =>
+    CLIENT_OWNER_FIELD_KEYS.includes(
+      key as (typeof CLIENT_OWNER_FIELD_KEYS)[number],
+    ) || hasNestedClientOwnerFields(nestedValue, seen),
+  );
+}
+
+function hasClientOwnerInput(
+  input: unknown,
+  nestedClientValues: unknown[] = [],
+): boolean {
+  return hasClientOwnerFields(input) ||
+    nestedClientValues.some((value) => hasNestedClientOwnerFields(value));
 }
 
 function normalizeRecordId(value: string): string | null {
@@ -464,7 +501,7 @@ export async function saveDecisionSimulation(
 ): Promise<SavedDecisionSimulationSaveResult> {
   const config = resolveConfig(input.config);
 
-  if (hasClientOwnerFields(input)) {
+  if (hasClientOwnerInput(input, [input.simulation])) {
     return blocked(
       "client_owner_input_rejected",
       "Saved decision simulations do not accept client-supplied owner fields.",
@@ -514,7 +551,7 @@ export async function loadDecisionSimulation(
 ): Promise<SavedDecisionSimulationLoadResult> {
   const config = resolveConfig(input.config);
 
-  if (hasClientOwnerFields(input)) {
+  if (hasClientOwnerInput(input)) {
     return blocked(
       "client_owner_input_rejected",
       "Saved decision simulations do not accept client-supplied owner fields.",
@@ -585,7 +622,7 @@ export async function listDecisionSimulations(
 ): Promise<SavedDecisionSimulationListResult> {
   const config = resolveConfig(input.config);
 
-  if (hasClientOwnerFields(input)) {
+  if (hasClientOwnerInput(input)) {
     return blocked(
       "client_owner_input_rejected",
       "Saved decision simulations do not accept client-supplied owner fields.",
@@ -667,7 +704,7 @@ export async function archiveDecisionSimulation(
 ): Promise<SavedDecisionSimulationArchiveResult> {
   const config = resolveConfig(input.config);
 
-  if (hasClientOwnerFields(input)) {
+  if (hasClientOwnerInput(input)) {
     return blocked(
       "client_owner_input_rejected",
       "Saved decision simulations do not accept client-supplied owner fields.",

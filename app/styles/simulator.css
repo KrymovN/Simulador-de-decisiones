@@ -315,3 +315,19 @@ textarea:focus {
 .simulator-cta-row .ghost-button {
   color: #f7fff6;
 }
+
+.save-flow-state {
+  margin: 12px 0 0;
+  color: rgba(255, 243, 208, 0.72);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.save-flow-state a {
+  color: #ffd36a;
+  font-weight: 800;
+}
+
+.save-flow-state.is-error {
+  color: #ffb8ad;
+}

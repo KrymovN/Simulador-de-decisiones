@@ -43,7 +43,7 @@ export type SavedDecisionSimulationsRuntimeValidationResult = {
 
 const providerReference = "9f1e5a40-0a5f-4f76-8c9c-111111111111";
 const principalId = "3d25a625-7ad3-4995-9d13-222222222222";
-const savedRecordId = "5ce1e4a7-4494-45d9-a481-444444444444";
+const savedRecordId = "5ce1e4a7-4494-45d9-9481-444444444444";
 const otherPrincipalId = "19a54cf2-5d7d-4f1d-9e59-555555555555";
 
 const enabledConfig: SavedDecisionSimulationsRuntimeConfig = {
@@ -492,6 +492,41 @@ function cases(): ValidationCase[] {
           ...issueUnless(
             calls.resolve === 0 && calls.list === 0,
             "Client owner rejection must happen before provider access.",
+          ),
+        ];
+      },
+    },
+    {
+      id: "nested_client_owner_fields_rejected",
+      title: "Nested client-supplied owner fields are rejected",
+      expectedBehavior: "Runtime rejects owner identifiers inside simulation payloads before persistence is touched.",
+      run: async () => {
+        const calls = { resolve: 0, save: 0, read: 0, list: 0, archive: 0 };
+        const provider = createSavedDecisionSimulationsProvider(calls);
+        const runtime = initializePersistenceRuntimeWiring({ providerAdapter: provider });
+        const simulation = {
+          ...buildMockSimulation("Guardar una simulación de decisión"),
+          simulation: {
+            ...buildMockSimulation("Guardar una simulación de decisión").simulation,
+            owner_principal_id: otherPrincipalId,
+          },
+        };
+        const result = await saveDecisionSimulation({
+          authContext: authenticatedContext,
+          simulation,
+          runtime,
+          saveProvider: provider,
+          config: enabledConfig,
+        });
+
+        return [
+          ...issueUnless(
+            result.status === "blocked" && result.reason === "client_owner_input_rejected",
+            "Expected nested client owner input to be rejected.",
+          ),
+          ...issueUnless(
+            calls.resolve === 0 && calls.save === 0,
+            "Nested client owner rejection must happen before provider access.",
           ),
         ];
       },

@@ -2,11 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
-import type { MockSimulation } from "../lib/mockSimulations";
-import {
-  LOCAL_SIMULATIONS_KEY,
-  type SimulationResponse,
-} from "../lib/simulationEngine";
+import { saveCompletedSimulationFromUi } from "../lib/saved-decision-simulations/ui-save-action";
+import type { SimulationResponse } from "../lib/simulationEngine";
 
 interface SpeechRecognitionResultLike {
   isFinal: boolean;
@@ -55,6 +52,8 @@ type SimulationPreviewState = {
   mockOnly: true;
   apiReady: true;
 };
+
+type SaveSimulationState = Awaited<ReturnType<typeof saveCompletedSimulationFromUi>>;
 
 type SimulateApiError = {
   code: string;
@@ -111,20 +110,6 @@ function wait(ms: number) {
   return new Promise((resolve) => {
     window.setTimeout(resolve, ms);
   });
-}
-
-function readSavedSimulations() {
-  const raw = window.localStorage.getItem(LOCAL_SIMULATIONS_KEY);
-
-  if (!raw) {
-    return [];
-  }
-
-  try {
-    return JSON.parse(raw) as MockSimulation[];
-  } catch {
-    return [];
-  }
 }
 
 function getSpeechRecognitionConstructor() {
@@ -202,6 +187,8 @@ export default function HomeSimulator() {
   const [result, setResult] = useState<SimulationResponse | null>(null);
   const [previewState, setPreviewState] = useState<SimulationPreviewState | null>(null);
   const [errorState, setErrorState] = useState<SimulationErrorState | null>(null);
+  const [saveState, setSaveState] = useState<SaveSimulationState | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState("");
   const consoleRef = useRef<HTMLElement>(null);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
@@ -284,12 +271,14 @@ export default function HomeSimulator() {
       setMessage("Describe una situación concreta para iniciar la simulación.");
       setErrorState(null);
       setPreviewState(null);
+      setSaveState(null);
       return;
     }
 
     if (situation.length > MAX_SIMULATION_INPUT_LENGTH) {
       setResult(null);
       setPreviewState(null);
+      setSaveState(null);
       setErrorState({
         title: "Simulación no ejecutada",
         message: `La situación supera el límite de ${MAX_SIMULATION_INPUT_LENGTH} caracteres del simulador público.`,
@@ -302,6 +291,7 @@ export default function HomeSimulator() {
     setMessage("");
     setResult(null);
     setPreviewState(null);
+    setSaveState(null);
     setErrorState(null);
     setActiveStage(-1);
     setIsRunning(true);
@@ -461,15 +451,36 @@ export default function HomeSimulator() {
     });
   }, [result]);
 
-  function handleSave() {
+  async function handleSave() {
     if (!result) {
       return;
     }
 
-    const saved = readSavedSimulations();
-    const next = [result.simulation, ...saved.filter((simulation) => simulation.id !== result.simulation.id)].slice(0, 12);
-    window.localStorage.setItem(LOCAL_SIMULATIONS_KEY, JSON.stringify(next));
-    setMessage("Simulación guardada localmente en este navegador. La vista de historial sigue en modo preparado.");
+    setIsSaving(true);
+    setSaveState(null);
+
+    try {
+      const saved = await saveCompletedSimulationFromUi({ simulation: result });
+      setSaveState(saved);
+
+      if (saved.status === "saved") {
+        setMessage("Simulación guardada en tu historial de cuenta.");
+      } else if (saved.status === "auth_required") {
+        setMessage("Inicia sesión para guardar esta simulación en tu historial.");
+      } else {
+        setMessage("No se pudo guardar la simulación. El resultado sigue disponible en esta pantalla.");
+      }
+    } catch {
+      setSaveState({
+        status: "error",
+        version: "block-a-a3-saved-simulations-history-product-surface.1",
+        reason: "record_save_blocked",
+        message: "No se pudo guardar la simulación de forma controlada.",
+      });
+      setMessage("No se pudo guardar la simulación. El resultado sigue disponible en esta pantalla.");
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   return (
@@ -484,6 +495,7 @@ export default function HomeSimulator() {
                 setInput(event.target.value);
                 setErrorState(null);
                 setPreviewState(null);
+                setSaveState(null);
               }}
               onKeyDown={handleTextareaKeyDown}
               maxLength={MAX_SIMULATION_INPUT_LENGTH}
@@ -615,16 +627,52 @@ export default function HomeSimulator() {
           </article>
 
           <div className="simulator-cta-row" aria-label="Acciones posteriores a la simulación">
-            <button onClick={handleSave} type="button">
-              Guardar localmente
+            <button
+              disabled={isSaving || saveState?.status === "saved"}
+              onClick={handleSave}
+              type="button"
+            >
+              {isSaving
+                ? "Guardando..."
+                : saveState?.status === "saved"
+                  ? "Simulación guardada"
+                  : "Guardar simulación"}
             </button>
-            <Link className="secondary-button" href="/login?next=%2Fdashboard%2Fsimulations">
-              Revisar acceso preparado
-            </Link>
+            {saveState?.status === "saved" ? (
+              <Link className="secondary-button" href={saveState.historyHref}>
+                Ver historial
+              </Link>
+            ) : (
+              <Link
+                className="secondary-button"
+                href={
+                  saveState?.status === "auth_required"
+                    ? saveState.loginHref
+                    : "/login?next=%2Fdashboard%2Fsimulations"
+                }
+              >
+                Revisar acceso preparado
+              </Link>
+            )}
             <Link className="text-link" href="/register">
               Preparar acceso
             </Link>
           </div>
+
+          {saveState && (
+            <p
+              className={`save-flow-state ${saveState.status === "error" ? "is-error" : ""}`}
+              role={saveState.status === "error" ? "alert" : "status"}
+            >
+              {saveState.message}
+              {saveState.status === "saved" ? (
+                <>
+                  {" "}
+                  <Link href={saveState.detailHref}>Abrir simulación guardada</Link>
+                </>
+              ) : null}
+            </p>
+          )}
         </div>
       )}
     </section>

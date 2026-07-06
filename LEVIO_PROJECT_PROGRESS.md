@@ -85,8 +85,14 @@ V1 Complete Readiness    ████░░░░░░ 39% estimated
   реализован: `/dashboard/simulations` and `/dashboard/simulations/[id]` now
   render runtime-backed saved simulation history/detail states through the
   approved server-only saved simulations product-surface boundary.
+- Save-from-UI flow for completed Decision Simulations реализован: completed
+  HomeSimulator results can be saved through the approved server-only saved
+  simulations boundary, ownership is resolved from auth/session ->
+  `levio_principals.principal_id`, unauthenticated users get a controlled
+  login path, and successful saves link to `/dashboard/simulations`.
 - Remaining Block A work: production-like account ownership validation,
-  save-from-UI flow, export/delete integration, and any separately approved
+  production Supabase/RLS/service-boundary validation, export/delete
+  integration, account-bound user-flow QA, and any separately approved
   history/revision lifecycle events.
 - Recent product implementation foundation:
   `Saved Decision Simulations Runtime Foundation`, internal server/runtime

@@ -45,7 +45,18 @@ Persistence boundaries. No Supabase schema or migration change was required.
 Block A3 Saved Decision Simulation History / Product Surface Integration is
 implemented. The existing dashboard simulations routes now use the internal
 saved simulations product-surface boundary for saved list, detail/reopen,
-empty, auth, invalid-id, not-found, and controlled error states.
+empty, auth, invalid-id, not-found, and controlled error states. The completed
+HomeSimulator UI now offers `Guardar simulación` for completed Decision
+Simulations only. The save action is routed through the server-only saved
+simulations product surface and runtime, resolves owner identity from the
+authenticated session through `levio_principals.principal_id`, rejects
+client-supplied owner fields, handles unauthenticated users with a controlled
+login path, and returns a clear path to `/dashboard/simulations`.
+
+Remaining Block A work: production-like account ownership validation,
+production Supabase/RLS/service-boundary validation, export/delete integration
+for saved simulation records, separately approved history/revision lifecycle
+events, and account-bound user-flow QA.
 
 This state does not resolve Scale blockers, execute Scale, increase traffic,
 open Production Release, open Commercial Launch, connect Real AI, enable

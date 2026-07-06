@@ -14,6 +14,7 @@
     "quality:deterministic-runtime-observability": "node scripts/deterministic-runtime-observability-quality.mjs",
     "quality:deterministic-runtime-security-boundary": "node scripts/deterministic-runtime-security-boundary-quality.mjs",
     "quality:deterministic-runtime-contract-regression": "node scripts/deterministic-runtime-contract-regression-quality.mjs",
+    "quality:saved-simulation-ui-save-flow": "node scripts/saved-simulation-ui-save-flow-quality.mjs",
     "quality:public-home": "node scripts/public-home-quality.mjs",
     "quality:public-home-simulator-api-integration": "node scripts/public-home-simulator-api-integration-quality.mjs",
     "quality:public-site-trust-readiness": "node scripts/public-site-trust-readiness-quality.mjs",

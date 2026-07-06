@@ -42,7 +42,17 @@ schema. Block A3 Saved Decision Simulation History / Product Surface
 Integration is implemented: `/dashboard/simulations` and
 `/dashboard/simulations/[id]` now render runtime-backed saved simulation
 history/detail states through the approved server-only saved simulations
-product-surface boundary.
+product-surface boundary. The completed HomeSimulator result surface now
+includes a bounded `Guardar simulación` flow through the server-only saved
+simulations save action. Ownership is derived from Auth ->
+`levio_principals.principal_id`, unauthenticated users receive a controlled
+login path, and successful saves link back to `/dashboard/simulations` without
+changing the public `/api/simulate` contract.
+
+Remaining Block A work includes production-like account ownership and
+persistence-boundary validation, export/delete integration for saved
+simulation records, separately approved history/revision lifecycle events, and
+account-bound user-flow QA.
 
 This checkpoint does not open Scale, increase traffic, open Production Release,
 open Commercial Launch, enable Real AI provider execution, add billing,

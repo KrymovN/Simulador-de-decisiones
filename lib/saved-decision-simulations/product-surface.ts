@@ -1,12 +1,15 @@
 import type { LevioAuthRuntimeContext } from "../auth/types";
 import { readServerAuthSession } from "../auth/session";
+import type { SimulationResponse } from "../simulationEngine";
 import type {
   PersistenceRuntimeWiring,
   SupabaseSimulationRecordReadProvider,
+  SupabaseSimulationRecordSaveProvider,
 } from "../persistence-runtime";
 import {
   listDecisionSimulations,
   reopenDecisionSimulation,
+  saveDecisionSimulation,
 } from "./runtime";
 import type {
   DecisionSimulationDomainModel,
@@ -59,6 +62,14 @@ export type SavedSimulationsProductSurfaceInput = {
   config?: SavedDecisionSimulationsRuntimeConfig;
 };
 
+export type SaveCompletedSimulationSurfaceInput = {
+  authContext?: LevioAuthRuntimeContext | null;
+  simulation: SimulationResponse;
+  runtime?: PersistenceRuntimeWiring;
+  saveProvider?: SupabaseSimulationRecordSaveProvider;
+  config?: SavedDecisionSimulationsRuntimeConfig;
+};
+
 export type SavedSimulationDetailSurfaceInput = SavedSimulationsProductSurfaceInput & {
   recordId: string;
 };
@@ -107,6 +118,28 @@ export type SavedSimulationDetailSurfaceResult =
       status: "loaded";
       version: typeof SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION;
       simulation: SavedSimulationDetailView;
+    }
+  | {
+      status: "error";
+      version: typeof SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION;
+      reason: SavedDecisionSimulationsBlockedReason;
+      message: string;
+    };
+
+export type SaveCompletedSimulationSurfaceResult =
+  | {
+      status: "auth_required";
+      version: typeof SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION;
+      message: string;
+      loginHref: string;
+    }
+  | {
+      status: "saved";
+      version: typeof SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION;
+      recordId: string;
+      historyHref: string;
+      detailHref: string;
+      message: string;
     }
   | {
       status: "error";
@@ -335,6 +368,47 @@ export function mapDecisionSimulationToDetail(
     engineStatusLabel: simulation.decisionEngineOutput.status,
     scenarios: scenarioViews(simulation),
     notices: noticeViews(simulation),
+  };
+}
+
+export async function saveCompletedSimulationSurface(
+  input: SaveCompletedSimulationSurfaceInput,
+): Promise<SaveCompletedSimulationSurfaceResult> {
+  const authContext = await authContextFromInput(input.authContext);
+
+  if (authContext.identityState !== "authenticated") {
+    return {
+      status: "auth_required",
+      version: SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION,
+      message: "Inicia sesión para guardar esta simulación en tu historial.",
+      loginHref: "/login?next=/dashboard/simulations",
+    };
+  }
+
+  const result = await saveDecisionSimulation({
+    authContext,
+    simulation: input.simulation,
+    runtime: input.runtime,
+    saveProvider: input.saveProvider,
+    config: input.config,
+  });
+
+  if (result.status === "blocked") {
+    return {
+      status: "error",
+      version: SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION,
+      reason: result.reason,
+      message: "No se pudo guardar la simulación de forma controlada.",
+    };
+  }
+
+  return {
+    status: "saved",
+    version: SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION,
+    recordId: result.record.record_id,
+    historyHref: "/dashboard/simulations",
+    detailHref: `/dashboard/simulations/${result.record.record_id}`,
+    message: "Simulación guardada en tu historial.",
   };
 }
 

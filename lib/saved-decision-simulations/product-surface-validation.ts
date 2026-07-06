@@ -4,6 +4,7 @@ import { initializePersistenceRuntimeWiring } from "../persistence-runtime";
 import { buildMockSimulation } from "../simulationEngine";
 import type { SavedDecisionSimulationsRuntimeConfig } from "./contracts";
 import {
+  saveCompletedSimulationSurface,
   readSavedSimulationDetailSurface,
   readSavedSimulationsHistorySurface,
 } from "./product-surface";
@@ -37,7 +38,7 @@ export type SavedSimulationsProductSurfaceValidationResult = {
 
 const providerReference = "9f1e5a40-0a5f-4f76-8c9c-111111111111";
 const principalId = "3d25a625-7ad3-4995-9d13-222222222222";
-const savedRecordId = "5ce1e4a7-4494-45d9-a481-444444444444";
+const savedRecordId = "5ce1e4a7-4494-45d9-9481-444444444444";
 const otherPrincipalId = "19a54cf2-5d7d-4f1d-9e59-555555555555";
 
 const enabledConfig: SavedDecisionSimulationsRuntimeConfig = {
@@ -164,8 +165,10 @@ function simulationRecord(
 
 function createProvider(calls: {
   resolve: number;
+  save: number;
   read: number;
   list: number;
+  leakOwnerOnSave?: boolean;
   leakOwnerOnList?: boolean;
   includeArchivedInList?: boolean;
 }) {
@@ -175,6 +178,10 @@ function createProvider(calls: {
     async resolvePrincipalByProviderReference() {
       calls.resolve += 1;
       return resolvedPrincipal;
+    },
+    async saveSimulationRecord() {
+      calls.save += 1;
+      return simulationRecord(calls.leakOwnerOnSave ? otherPrincipalId : principalId);
     },
     async readSimulationRecord(input: { recordId: string; ownerPrincipalId: string }) {
       calls.read += 1;
@@ -209,7 +216,7 @@ function cases(): ValidationCase[] {
       title: "Unauthenticated users cannot read saved simulations history",
       expectedBehavior: "Product surface returns controlled auth state without provider access.",
       run: async () => {
-        const calls = { resolve: 0, read: 0, list: 0 };
+        const calls = { resolve: 0, save: 0, read: 0, list: 0 };
         const provider = createProvider(calls);
         const runtime = initializePersistenceRuntimeWiring({ providerAdapter: provider });
         const result = await readSavedSimulationsHistorySurface({
@@ -230,7 +237,7 @@ function cases(): ValidationCase[] {
       title: "Authenticated users see only owner-scoped records",
       expectedBehavior: "Product surface maps active owner records into client-safe view models.",
       run: async () => {
-        const calls = { resolve: 0, read: 0, list: 0 };
+        const calls = { resolve: 0, save: 0, read: 0, list: 0 };
         const provider = createProvider(calls);
         const runtime = initializePersistenceRuntimeWiring({ providerAdapter: provider });
         const result = await readSavedSimulationsHistorySurface({
@@ -258,7 +265,7 @@ function cases(): ValidationCase[] {
       title: "Archived records are hidden from active history",
       expectedBehavior: "Product surface returns controlled error if provider leaks archived records into active list.",
       run: async () => {
-        const calls = { resolve: 0, read: 0, list: 0, includeArchivedInList: true };
+        const calls = { resolve: 0, save: 0, read: 0, list: 0, includeArchivedInList: true };
         const provider = createProvider(calls);
         const runtime = initializePersistenceRuntimeWiring({ providerAdapter: provider });
         const result = await readSavedSimulationsHistorySurface({
@@ -279,7 +286,7 @@ function cases(): ValidationCase[] {
       title: "Invalid detail id returns controlled state",
       expectedBehavior: "Malformed ids never reach persistence provider.",
       run: async () => {
-        const calls = { resolve: 0, read: 0, list: 0 };
+        const calls = { resolve: 0, save: 0, read: 0, list: 0 };
         const provider = createProvider(calls);
         const runtime = initializePersistenceRuntimeWiring({ providerAdapter: provider });
         const result = await readSavedSimulationDetailSurface({
@@ -301,7 +308,7 @@ function cases(): ValidationCase[] {
       title: "Missing owner record returns controlled state",
       expectedBehavior: "Unknown or cross-owner ids return not-found without leaking ownership.",
       run: async () => {
-        const calls = { resolve: 0, read: 0, list: 0 };
+        const calls = { resolve: 0, save: 0, read: 0, list: 0 };
         const provider = createProvider(calls);
         const runtime = initializePersistenceRuntimeWiring({ providerAdapter: provider });
         const result = await readSavedSimulationDetailSurface({
@@ -320,7 +327,7 @@ function cases(): ValidationCase[] {
       title: "Detail view reopens through runtime boundary",
       expectedBehavior: "Product surface uses reopen runtime and maps the loaded record.",
       run: async () => {
-        const calls = { resolve: 0, read: 0, list: 0 };
+        const calls = { resolve: 0, save: 0, read: 0, list: 0 };
         const provider = createProvider(calls);
         const runtime = initializePersistenceRuntimeWiring({ providerAdapter: provider });
         const result = await readSavedSimulationDetailSurface({
@@ -341,6 +348,83 @@ function cases(): ValidationCase[] {
             "Expected detail view to represent a reopened saved simulation.",
           ),
         ];
+      },
+    },
+    {
+      id: "unauthenticated_save_requires_auth",
+      title: "Unauthenticated users cannot save owner-bound simulations",
+      expectedBehavior: "Save surface returns controlled auth state without provider access.",
+      run: async () => {
+        const calls = { resolve: 0, save: 0, read: 0, list: 0 };
+        const provider = createProvider(calls);
+        const runtime = initializePersistenceRuntimeWiring({ providerAdapter: provider });
+        const result = await saveCompletedSimulationSurface({
+          authContext: signedOutContext,
+          simulation: buildMockSimulation("Guardar una simulación sin sesión"),
+          runtime,
+          saveProvider: provider,
+          config: enabledConfig,
+        });
+
+        return [
+          ...issueUnless(result.status === "auth_required", "Expected auth-required save state."),
+          ...issueUnless(
+            calls.resolve === 0 && calls.save === 0,
+            "Auth-required save must not touch provider.",
+          ),
+        ];
+      },
+    },
+    {
+      id: "authenticated_save_uses_owner_runtime",
+      title: "Authenticated save uses owner-scoped runtime",
+      expectedBehavior: "Save surface delegates to runtime and returns only client-safe navigation.",
+      run: async () => {
+        const calls = { resolve: 0, save: 0, read: 0, list: 0 };
+        const provider = createProvider(calls);
+        const runtime = initializePersistenceRuntimeWiring({ providerAdapter: provider });
+        const result = await saveCompletedSimulationSurface({
+          authContext: authenticatedContext,
+          simulation: buildMockSimulation("Guardar una simulación autenticada"),
+          runtime,
+          saveProvider: provider,
+          config: enabledConfig,
+        });
+
+        return [
+          ...issueUnless(result.status === "saved", "Expected saved surface state."),
+          ...issueUnless(calls.resolve === 1 && calls.save === 1, "Expected runtime owner resolution and save."),
+          ...issueUnless(
+            result.status === "saved" &&
+              result.recordId === savedRecordId &&
+              result.historyHref === "/dashboard/simulations" &&
+              result.detailHref === `/dashboard/simulations/${savedRecordId}` &&
+              !("ownerPrincipalId" in result),
+            "Expected client-safe saved navigation without owner fields.",
+          ),
+        ];
+      },
+    },
+    {
+      id: "save_owner_leak_fails_closed",
+      title: "Save blocks provider owner leakage",
+      expectedBehavior: "Save surface reports controlled error if saved row leaves resolved owner scope.",
+      run: async () => {
+        const calls = { resolve: 0, save: 0, read: 0, list: 0, leakOwnerOnSave: true };
+        const provider = createProvider(calls);
+        const runtime = initializePersistenceRuntimeWiring({ providerAdapter: provider });
+        const result = await saveCompletedSimulationSurface({
+          authContext: authenticatedContext,
+          simulation: buildMockSimulation("Guardar una simulación con fuga de owner"),
+          runtime,
+          saveProvider: provider,
+          config: enabledConfig,
+        });
+
+        return issueUnless(
+          result.status === "error" && result.reason === "record_owner_scope_failed",
+          "Expected owner leakage during save to fail closed.",
+        );
       },
     },
   ];
