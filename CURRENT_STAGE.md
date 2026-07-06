@@ -2,22 +2,24 @@
 
 ## Active Checkpoint
 
-Stage 15.4 - Scale Readiness Evidence Assessment Complete.
+Stage 15.5 - Scale Blocker Resolution Framework Complete.
 
-Status: Stage 15.4 is complete as documentation-only Scale readiness evidence
-assessment work. Stage 15 remains open only as a bounded scale-readiness
+Status: Stage 15.5 is complete as documentation-only Scale blocker resolution
+framework work. Stage 15 remains open only as a bounded scale-readiness
 planning stage. Stage 15.1 Scale Scope & Entry Lock is complete. Stage 15.2
 Scale Preconditions & Evidence Inventory is complete. Stage 15.3 Scale
-Readiness Evidence Validation Framework is complete. Stage 15.4 applies that
-framework to the current canonical project state, assesses every Stage 15.2
-prerequisite, assigns VERIFIED / PARTIALLY VERIFIED / NOT VERIFIED status, and
-records the aggregate verdict NOT READY. Stage 15.4 does not resolve blockers,
-execute Scale, increase traffic, open Production Release, open Commercial
-Launch, enable production auth/account/persistence, add subscription/billing/
+Readiness Evidence Validation Framework is complete. Stage 15.4 Scale
+Readiness Evidence Assessment is complete with aggregate verdict NOT READY.
+Stage 15.5 classifies every PARTIALLY VERIFIED and NOT VERIFIED prerequisite,
+groups blockers by engineering direction, defines objective closure
+conditions, required evidence, verification criteria, blocker dependencies,
+and required resolution order. Stage 15.5 does not resolve blockers, execute
+Scale, increase traffic, open Production Release, open Commercial Launch,
+enable production auth/account/persistence, add subscription/billing/
 commercial runtime, add analytics, tracking, logging, Real AI provider
 execution, production monitoring, support tooling, incident tooling, legal
-documents, implementation plans, audits, compliance claims, or a new public
-contract.
+documents, implementation plans, audits, compliance claims, roadmap changes,
+or a new public contract.
 
 Date: 6 July 2026, Europe/Madrid.
 
@@ -458,6 +460,38 @@ production auth/account/persistence, add billing, add analytics, add tracking,
 add logging, change runtime, change UI, change API, change public contract,
 change architecture, create implementation plans, create audits, create new
 roadmap branches, or change product behavior.
+
+## Stage 15.5 Scale Blocker Resolution Framework
+
+Status: complete as documentation-only Scale blocker resolution framework.
+
+Canonical document:
+`docs/stages/stage-15-scale/LEVIO_STAGE_15_5_SCALE_BLOCKER_RESOLUTION_FRAMEWORK.md`.
+
+Stage 15.5 converts the Stage 15.4 NOT READY assessment into a canonical
+framework for resolving blockers. It classifies all 23 PARTIALLY VERIFIED and
+NOT VERIFIED prerequisites, groups them by engineering direction, defines
+objective closure conditions, required evidence, verification criteria,
+dependencies, and required resolution order.
+
+Stage 15.5 engineering directions:
+
+- product quality and public-contract evidence;
+- launch and customer evidence;
+- traffic, infrastructure, cost, and release authority;
+- operations, support, incident, abuse, and evidence handling;
+- legal, privacy, consent, terms, transparency, and claims;
+- deferred runtime scope boundaries.
+
+Stage 15.5 preserves the Stage 15.4 aggregate verdict: NOT READY.
+
+Stage 15.5 does not resolve blockers, execute Scale, increase traffic, open
+Production Release, open Commercial Launch, connect Real AI, enable
+production auth/account/persistence, add billing, add analytics, add tracking,
+add logging, change runtime, change UI, change API, change public contract,
+change architecture, change roadmap, create legal documents, create public
+copy, create support tooling, create incident tooling, or change product
+behavior.
 
 ## Stage 12.1 Market Readiness Scope & Entry Lock
 
@@ -1626,7 +1660,7 @@ rollback.
 
 ## Next Allowed Roadmap Step
 
-Stage 15.4 - Scale Readiness Evidence Assessment is complete.
+Stage 15.5 - Scale Blocker Resolution Framework is complete.
 
 Stage 14 is closed. Stage 15 is the next official roadmap stage after Stage
 14, and Stage 15 remains open only as bounded documentation-only
@@ -1636,14 +1670,16 @@ Stage 15.2 records the canonical Scale prerequisite inventory, objective
 readiness evidence, readiness criteria, current prerequisite status, and
 dependency mapping. Stage 15.3 records the canonical readiness evidence
 validation framework. Stage 15.4 applies that framework to the current
-canonical state and records the aggregate verdict NOT READY.
+canonical state and records the aggregate verdict NOT READY. Stage 15.5
+converts that NOT READY assessment into a blocker resolution framework without
+closing blockers.
 
-Stage 15.4 does not resolve blockers. Any later blocker remediation, Scale
+Stage 15.5 does not resolve blockers. Any later blocker remediation, Scale
 execution, Production Release, Commercial Launch, implementation work, audit,
-or roadmap expansion requires separate explicit approval.
+roadmap change, or public-contract change requires separate explicit approval.
 
 Scale execution, Production Release, Commercial Launch, Real AI execution,
 production auth/account/persistence, subscription/billing/commercial runtime,
 analytics, tracking, logging, support tooling, incident tooling, legal-document
 finalization, compliance claims, and any new public contract remain outside
-Stage 15.4.
+Stage 15.5.

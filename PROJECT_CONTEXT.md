@@ -12,7 +12,7 @@ Levio is not an Answer Engine.
 
 Levio is not a Generic AI Assistant.
 
-The active checkpoint is Stage 15.4 - Scale Readiness Evidence Assessment
+The active checkpoint is Stage 15.5 - Scale Blocker Resolution Framework
 Complete. Stage 14 Public Launch is closed as a completed
 launch-readiness block. Stage 15 is open only as a bounded documentation and
 scale-readiness planning stage. Stage 15.1 Scale Scope & Entry Lock is
@@ -26,12 +26,16 @@ handling. Stage 15.4 applies that framework to the current canonical project
 state and records the first objective Scale readiness evidence assessment.
 Stage 15.4 verifies 7 prerequisites, partially verifies 9 prerequisites, does
 not verify 14 prerequisites, and assigns the aggregate verdict NOT READY.
-Stage 15.4 does not resolve blockers, execute Scale, increase traffic, open
-Production Release, open Commercial Launch, connect Real AI, enable production
-auth/account/persistence, add subscription/billing/commercial runtime, add
-analytics, tracking, logging, support tooling, incident tooling, legal
-documents, implementation plans, audits, compliance claims, or a new public
-contract.
+Stage 15.5 converts the Stage 15.4 NOT READY assessment into the canonical
+Scale blocker resolution framework. It classifies all PARTIALLY VERIFIED and
+NOT VERIFIED prerequisites, groups them by engineering direction, defines
+objective closure conditions, required evidence, verification criteria,
+blocker dependencies, and required resolution order. Stage 15.5 does not
+resolve blockers, execute Scale, increase traffic, open Production Release,
+open Commercial Launch, connect Real AI, enable production auth/account/
+persistence, add subscription/billing/commercial runtime, add analytics,
+tracking, logging, support tooling, incident tooling, legal documents,
+implementation plans, audits, compliance claims, or a new public contract.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as foundation-only preflight, runtime
@@ -1510,8 +1514,8 @@ webhooks, UI/API, QA, and rollback rehearsal.
 
 ## Next Roadmap Step
 
-The current roadmap position is Stage 15.4 - Scale Readiness Evidence
-Assessment Complete.
+The current roadmap position is Stage 15.5 - Scale Blocker Resolution
+Framework Complete.
 
 Official status: Stage 12 Closed.
 
@@ -1532,6 +1536,11 @@ Stage 15.4 is complete as documentation-only Scale readiness evidence
 assessment work. It applies the Stage 15.3 framework to the current canonical
 project state, assigns VERIFIED / PARTIALLY VERIFIED / NOT VERIFIED status to
 all Stage 15.2 prerequisites, and records the aggregate verdict NOT READY.
+Stage 15.5 is complete as documentation-only Scale blocker resolution
+framework work. It classifies the 23 PARTIALLY VERIFIED and NOT VERIFIED
+prerequisites from Stage 15.4, groups them by engineering direction, defines
+objective closure conditions, required evidence, verification criteria,
+dependencies, and required resolution order.
 
 Stage 15.2 verdict: Scale execution is not ready. Public Launch execution
 evidence, first-customer evidence, traffic/capacity assumptions,
@@ -1540,15 +1549,19 @@ readiness, final legal/privacy/consent/Terms/AI transparency readiness,
 analytics/tracking/logging/monitoring scope, and production auth/persistence/
 billing/Real AI dependencies remain unresolved or deferred.
 
-Stage 15.4 verdict: Scale readiness is NOT READY. The objective blockers are
+Stage 15.4 verdict remains: Scale readiness is NOT READY. The objective blockers are
 Public Launch execution evidence, first-customer or first-user evidence,
 traffic/capacity assumptions, infrastructure readiness, operational ownership,
 support capacity, incident/stop/pause readiness, final legal/privacy/consent/
 Terms/AI transparency readiness, feedback/evidence handling, cost assumptions,
 and release/rollback decision authority.
 
+Stage 15.5 does not close those blockers. Any later blocker remediation, Scale
+execution, Production Release, Commercial Launch, implementation work, audit,
+roadmap change, or public-contract change requires separate explicit approval.
+
 Production Release, Commercial Launch, Scale execution, Real AI execution,
 production auth/account/persistence, subscription/billing/commercial runtime,
 analytics, tracking, logging, support tooling, incident tooling, legal
 document finalization, compliance claims, and any new public contract remain
-outside Stage 15.4.
+outside Stage 15.5.

@@ -546,6 +546,17 @@ Overall Project Progress ████████░░ 82%
   Release, Commercial Launch, Real AI, Auth/Persistence/Billing
   implementations, Analytics/Tracking/Logging и не меняет runtime/UI/API/
   architecture/public contract.
+- Stage 15.5 Scale Blocker Resolution Framework завершен как
+  documentation-only blocker resolution framework.
+- Stage 15.5 классифицировал все 23 PARTIALLY VERIFIED и NOT VERIFIED
+  prerequisites из Stage 15.4, сгруппировал blockers по engineering
+  directions и определил objective closure conditions, required evidence,
+  verification criteria, blocker dependencies и required resolution order.
+- Stage 15.5 сохраняет Stage 15.4 aggregate verdict: NOT READY.
+- Stage 15.5 не устраняет blockers, не меняет roadmap, не открывает Scale
+  execution, Production Release, Commercial Launch, Real AI,
+  Auth/Persistence/Billing implementations, Analytics/Tracking/Logging и не
+  меняет runtime/UI/API/architecture/public contract.
 - Product Quality Hardening #1-#5 и automated quality gates не добавляли AI
   provider execution, SDK/env/API keys, fetch/model calls, auth, billing,
   persistence, subscription changes, heavy dependencies или Real AI product
@@ -1280,20 +1291,20 @@ approval.
 Статус: Stage 14 Closed as Public Launch readiness block.
 Прогресс: ██████████ 100%.
 Следующий шаг: Stage 15 открыт как bounded documentation-only Scale planning;
-Stage 15.1, Stage 15.2, Stage 15.3 и Stage 15.4 завершены.
+Stage 15.1, Stage 15.2, Stage 15.3, Stage 15.4 и Stage 15.5 завершены.
 
 ### 15. Scale
 
-Статус: Stage 15.4 Scale Readiness Evidence Assessment complete.
-Прогресс: ████░░░░░░ 40%.
-Следующий шаг: Scale readiness verdict is NOT READY. Любое устранение
+Статус: Stage 15.5 Scale Blocker Resolution Framework complete.
+Прогресс: █████░░░░░ 50%.
+Следующий шаг: Scale readiness verdict remains NOT READY. Любое устранение
 blockers, Scale execution, Production Release, Commercial Launch,
-implementation work, audit или roadmap expansion требует separate explicit
-approval.
+implementation work, audit, roadmap change или public-contract change требует
+separate explicit approval.
 
 ## Current Roadmap Focus
 
-Stage 15.4 - Scale Readiness Evidence Assessment Complete.
+Stage 15.5 - Scale Blocker Resolution Framework Complete.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.

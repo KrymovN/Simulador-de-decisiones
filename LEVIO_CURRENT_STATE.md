@@ -6,8 +6,8 @@ Date: 6 July 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is Stage 15.4 - Scale Readiness Evidence
-Assessment Complete. Stage 14 Public Launch is closed as a completed
+The current confirmed state is Stage 15.5 - Scale Blocker Resolution
+Framework Complete. Stage 14 Public Launch is closed as a completed
 launch-readiness block. Stage 15 is open only as a bounded documentation and
 scale-readiness planning stage. Stage 15.1 Scale Scope & Entry Lock is
 complete. Stage 15.2 Scale Preconditions & Evidence Inventory is complete.
@@ -20,12 +20,16 @@ handling. Stage 15.4 applies that framework to the current canonical project
 state and records the first objective Scale readiness evidence assessment.
 Stage 15.4 verifies 7 prerequisites, partially verifies 9 prerequisites, does
 not verify 14 prerequisites, and assigns the aggregate verdict NOT READY.
-Stage 15.4 does not resolve blockers, execute Scale, increase traffic, open
-Production Release, open Commercial Launch, connect Real AI, enable production
-auth/account/persistence, add subscription/billing/commercial runtime, add
-analytics, tracking, logging, support tooling, incident tooling, legal
-documents, implementation plans, audits, compliance claims, or a new public
-contract.
+Stage 15.5 converts the Stage 15.4 NOT READY assessment into the canonical
+Scale blocker resolution framework. It classifies all PARTIALLY VERIFIED and
+NOT VERIFIED prerequisites, groups them by engineering direction, defines
+objective closure conditions, required evidence, verification criteria,
+blocker dependencies, and required resolution order. Stage 15.5 does not
+resolve blockers, execute Scale, increase traffic, open Production Release,
+open Commercial Launch, connect Real AI, enable production auth/account/
+persistence, add subscription/billing/commercial runtime, add analytics,
+tracking, logging, support tooling, incident tooling, legal documents,
+implementation plans, audits, compliance claims, or a new public contract.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as controlled foundation-only preflight,
@@ -1296,7 +1300,7 @@ observability, and rollback planning.
 
 ## Next Roadmap Step
 
-Stage 15.4 - Scale Readiness Evidence Assessment is complete.
+Stage 15.5 - Scale Blocker Resolution Framework is complete.
 
 Stage 14 is closed. Stage 15 is the next official roadmap stage after Stage
 14, and Stage 15 remains open only as bounded documentation-only
@@ -1306,13 +1310,18 @@ Stage 15.2 records the canonical Scale prerequisite inventory, objective
 readiness evidence, readiness criteria, current prerequisite status, and
 dependency mapping. Stage 15.3 records the canonical readiness evidence
 validation framework. Stage 15.4 applies that framework to the current
-canonical state and records the aggregate verdict NOT READY.
+canonical state and records the aggregate verdict NOT READY. Stage 15.5
+converts that NOT READY assessment into a blocker resolution framework without
+closing blockers.
 
 Stage 15.4 assessment totals are 7 VERIFIED prerequisites, 9 PARTIALLY
-VERIFIED prerequisites, and 14 NOT VERIFIED prerequisites. Stage 15.4 does not
+VERIFIED prerequisites, and 14 NOT VERIFIED prerequisites. Stage 15.5
+classifies the 23 unresolved prerequisites by engineering direction and
+defines objective closure conditions, required evidence, verification
+criteria, dependencies, and required resolution order. Stage 15.5 does not
 resolve blockers. Any later blocker remediation, Scale execution, Production
-Release, Commercial Launch, implementation work, audit, or roadmap expansion
-requires separate explicit approval.
+Release, Commercial Launch, implementation work, audit, roadmap change, or
+public-contract change requires separate explicit approval.
 
 Levio must remain a Decision Simulation Engine and must not create AI Chat,
 Answer Engine, Generic Assistant, direct AI-to-user behavior, model calls,

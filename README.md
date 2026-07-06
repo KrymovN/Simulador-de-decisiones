@@ -23,6 +23,8 @@ documentation-only prerequisite/evidence inventory work. Stage 15.3 Scale
 Readiness Evidence Validation is complete as documentation-only validation
 framework work. Stage 15.4 Scale Readiness Evidence Assessment is complete as
 documentation-only readiness assessment work with aggregate verdict NOT READY.
+Stage 15.5 Scale Blocker Resolution Framework is complete as
+documentation-only blocker framework work.
 Stage 15 is open only as bounded documentation-only scale-readiness planning;
 Scale execution remains unopened.
 
@@ -78,5 +80,7 @@ Preconditions & Evidence Inventory is complete as documentation-only
 prerequisite/evidence inventory work. Stage 15.3 Scale Readiness Evidence
 Validation is complete as documentation-only validation framework work. Stage
 15.4 Scale Readiness Evidence Assessment is complete as documentation-only
-assessment work with aggregate verdict NOT READY. Stage 15 is open only as
-bounded Scale planning; Scale execution remains unopened.
+assessment work with aggregate verdict NOT READY. Stage 15.5 Scale Blocker
+Resolution Framework is complete as documentation-only blocker framework work.
+Stage 15 is open only as bounded Scale planning; Scale execution remains
+unopened.
