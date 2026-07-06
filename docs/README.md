@@ -3,11 +3,17 @@
 This directory holds long-lived Levio project documentation. The root keeps only
 active project state documents and tooling instructions.
 
+`LEVIO_PROJECT_CONSTITUTION.md` is the highest-level canonical authority for
+Levio.es. If project documents conflict, the higher-level document in the
+constitutional hierarchy prevails unless explicitly amended.
+
 ## Active Project State
 
 Canonical active state remains in the repository root:
 
+- [LEVIO_PROJECT_CONSTITUTION.md](../LEVIO_PROJECT_CONSTITUTION.md)
 - [PROJECT_CONTEXT.md](../PROJECT_CONTEXT.md)
+- [LEVIO_IMPLEMENTATION_PLAN.md](../LEVIO_IMPLEMENTATION_PLAN.md)
 - [CURRENT_STAGE.md](../CURRENT_STAGE.md)
 - [LEVIO_CURRENT_STATE.md](../LEVIO_CURRENT_STATE.md)
 - [LEVIO_PROJECT_PROGRESS.md](../LEVIO_PROJECT_PROGRESS.md)

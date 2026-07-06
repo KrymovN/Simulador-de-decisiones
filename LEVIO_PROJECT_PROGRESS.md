@@ -1,5 +1,26 @@
 # LEVIO PROJECT PROGRESS TRACKER
 
+## Constitutional Authority
+
+`LEVIO_PROJECT_CONSTITUTION.md` is the highest-level canonical authority for
+Levio.es. This tracker is subordinate to the Constitution,
+`PROJECT_CONTEXT.md`, `LEVIO_IMPLEMENTATION_PLAN.md`, `CURRENT_STAGE.md`, and
+`LEVIO_CURRENT_STATE.md`.
+
+Documentation hierarchy:
+
+1. `LEVIO_PROJECT_CONSTITUTION.md`
+2. `PROJECT_CONTEXT.md`
+3. `LEVIO_IMPLEMENTATION_PLAN.md`
+4. `CURRENT_STAGE.md`
+5. `LEVIO_CURRENT_STATE.md`
+6. `LEVIO_PROJECT_PROGRESS.md`
+7. Stage, architecture, QA, legal, readiness, README, decision, and archive
+   documents
+
+If project documents conflict, the higher-level document in the hierarchy
+prevails unless it has been explicitly amended.
+
 ## Last Updated
 
 6 июля 2026

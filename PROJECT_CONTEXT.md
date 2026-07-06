@@ -1,5 +1,23 @@
 # PROJECT CONTEXT
 
+## Constitutional Authority
+
+`LEVIO_PROJECT_CONSTITUTION.md` is the highest-level canonical authority for
+Levio.es. This document is subordinate to the Constitution and must be read
+under the following hierarchy:
+
+1. `LEVIO_PROJECT_CONSTITUTION.md`
+2. `PROJECT_CONTEXT.md`
+3. `LEVIO_IMPLEMENTATION_PLAN.md`
+4. `CURRENT_STAGE.md`
+5. `LEVIO_CURRENT_STATE.md`
+6. `LEVIO_PROJECT_PROGRESS.md`
+7. Stage, architecture, QA, legal, readiness, README, decision, and archive
+   documents
+
+If project documents conflict, the higher-level document in the hierarchy
+prevails unless it has been explicitly amended.
+
 ## Current Confirmed State
 
 Date: 6 July 2026, Europe/Madrid.

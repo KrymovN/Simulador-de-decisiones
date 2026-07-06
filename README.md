@@ -3,6 +3,10 @@
 Levio.es is a Decision Simulation Engine. It is not an AI Chat, not an Answer
 Engine, and not a Generic AI Assistant.
 
+`LEVIO_PROJECT_CONSTITUTION.md` is the highest-level canonical authority for
+the project. If project documents conflict, the higher-level document in the
+constitutional hierarchy prevails unless explicitly amended.
+
 The current confirmed runtime remains deterministic-preview only for the public
 `/api/simulate` surface. The public contract is intentionally preserved:
 
@@ -32,7 +36,9 @@ Scale execution remains unopened.
 
 The canonical active state documents stay in the repository root:
 
+- [LEVIO_PROJECT_CONSTITUTION.md](LEVIO_PROJECT_CONSTITUTION.md)
 - [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md)
+- [LEVIO_IMPLEMENTATION_PLAN.md](LEVIO_IMPLEMENTATION_PLAN.md)
 - [CURRENT_STAGE.md](CURRENT_STAGE.md)
 - [LEVIO_CURRENT_STATE.md](LEVIO_CURRENT_STATE.md)
 - [LEVIO_PROJECT_PROGRESS.md](LEVIO_PROJECT_PROGRESS.md)
