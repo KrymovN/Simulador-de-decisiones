@@ -175,6 +175,12 @@ export type SupabaseSimulationDraftUpdatePayload = {
   expires_at?: string;
 };
 
+export type SupabaseSimulationRecordArchivePayload = {
+  record_status: "archived";
+  archived_at: string;
+  updated_at: string;
+};
+
 export type SupabasePrincipalQuery = {
   eq(column: string, value: string): SupabasePrincipalQuery;
   maybeSingle(): Promise<SupabaseQueryResponse>;
@@ -199,6 +205,13 @@ export type SupabaseSimulationDraftMutation = {
   };
 };
 
+export type SupabaseSimulationRecordArchiveMutation = {
+  eq(column: string, value: string): SupabaseSimulationRecordArchiveMutation;
+  select(columns: string): {
+    single(): Promise<SupabaseQueryResponse>;
+  };
+};
+
 export type SupabasePrincipalResolutionClient = {
   from(table: "levio_principals"): {
     select(columns: string): SupabasePrincipalQuery;
@@ -208,6 +221,12 @@ export type SupabasePrincipalResolutionClient = {
 export type SupabaseSimulationRecordMutationClient = {
   from(table: "simulation_records"): {
     insert(payload: SupabaseSimulationRecordInsertPayload): SupabaseSimulationRecordMutation;
+  };
+};
+
+export type SupabaseSimulationRecordArchiveClient = {
+  from(table: "simulation_records"): {
+    update(payload: SupabaseSimulationRecordArchivePayload): SupabaseSimulationRecordArchiveMutation;
   };
 };
 
@@ -259,6 +278,14 @@ export type SupabaseSimulationRecordReadProvider = PersistenceProviderAdapter & 
   }): Promise<SimulationRecordRow[]>;
 };
 
+export type SupabaseSimulationRecordArchiveProvider = PersistenceProviderAdapter & {
+  archiveSimulationRecord(input: {
+    recordId: string;
+    ownerPrincipalId: string;
+    archivedAt: string;
+  }): Promise<SimulationRecordRow | null>;
+};
+
 export type SupabaseSimulationHistoryEntrySaveProvider = PersistenceProviderAdapter & {
   saveSimulationHistoryEntry(
     payload: SupabaseSimulationHistoryEntryInsertPayload,
@@ -277,6 +304,7 @@ export type SupabaseSimulationDraftSaveProvider = PersistenceProviderAdapter & {
 export type SupabasePersistenceRuntimeProvider =
   SupabaseSimulationRecordSaveProvider &
     SupabaseSimulationRecordReadProvider &
+    SupabaseSimulationRecordArchiveProvider &
     SupabaseSimulationHistoryEntrySaveProvider &
     SupabaseSimulationDraftSaveProvider;
 
@@ -595,6 +623,7 @@ export function createSupabasePersistenceProviderAdapter(input: {
   client?: SupabasePrincipalResolutionClient;
   mutationClient?: SupabaseSimulationRecordMutationClient;
   recordReadClient?: SupabaseSimulationRecordReadClient;
+  recordArchiveClient?: SupabaseSimulationRecordArchiveClient;
   historyMutationClient?: SupabaseSimulationHistoryEntryMutationClient;
   draftMutationClient?: SupabaseSimulationDraftMutationClient;
 }): SupabasePersistenceRuntimeProvider {
@@ -605,6 +634,9 @@ export function createSupabasePersistenceProviderAdapter(input: {
   const recordReadClient =
     input.recordReadClient ??
     (client as unknown as SupabaseSimulationRecordReadClient);
+  const recordArchiveClient =
+    input.recordArchiveClient ??
+    (client as unknown as SupabaseSimulationRecordArchiveClient);
   const historyMutationClient =
     input.historyMutationClient ??
     (client as unknown as SupabaseSimulationHistoryEntryMutationClient);
@@ -708,6 +740,32 @@ export function createSupabasePersistenceProviderAdapter(input: {
         !response.data.every(isSimulationRecordRow)
       ) {
         return [];
+      }
+
+      return response.data;
+    },
+    async archiveSimulationRecord(input) {
+      if (!isServerRuntime()) {
+        return null;
+      }
+
+      const response = await recordArchiveClient
+        .from("simulation_records")
+        .update({
+          record_status: "archived",
+          archived_at: input.archivedAt,
+          updated_at: input.archivedAt,
+        })
+        .eq("record_id", input.recordId)
+        .eq("owner_principal_id", input.ownerPrincipalId)
+        .eq("owner_principal_type", "registered_user")
+        .eq("record_status", "active")
+        .eq("deletion_state", "active")
+        .select("*")
+        .single();
+
+      if (response.error || !isSimulationRecordRow(response.data)) {
+        return null;
       }
 
       return response.data;

@@ -219,7 +219,7 @@ module, planning document, or readiness checklist as production completion.
 
 | Block | Current status | Evidence | Remaining work |
 | --- | --- | --- | --- |
-| A. Decision Simulation Persistence Implementation | In Progress | Stage 4.2 persistence runtime foundation is closed. `lib/persistence-runtime` exists with owner contracts, Supabase provider, runtime wiring, simulation record save, history append, and draft save/update services. The recent `Saved Decision Simulations Runtime Foundation` commit adds an internal `lib/saved-decision-simulations` runtime boundary for save/load/list over owner-scoped simulation records. `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md` defines the final Decision Simulation product domain model for A1. | A2 Persistence Runtime must map the domain model through approved server/runtime boundaries. Product surface or approved dashboard boundary for saved simulation list/load is not complete. Real account ownership must be connected end-to-end. Production Supabase environment/RLS/service boundary and user-flow QA remain incomplete. |
+| A. Decision Simulation Persistence Implementation | In Progress | Stage 4.2 persistence runtime foundation is closed. `lib/persistence-runtime` exists with owner contracts, Supabase provider, runtime wiring, simulation record save, history append, and draft save/update services. The recent `Saved Decision Simulations Runtime Foundation` commit adds an internal `lib/saved-decision-simulations` runtime boundary for save/load/list over owner-scoped simulation records. `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md` defines the final Decision Simulation product domain model for A1. A2 Persistence Runtime Mapping is started: internal runtime now maps saved `simulation_records` into canonical Decision Simulation domain objects and supports owner-scoped save/list/load/reopen/archive through existing server-only Auth/Persistence boundaries. | Product surface or approved dashboard boundary for saved simulation list/load is not complete. Real account ownership must be connected end-to-end in production-like runtime. Export/delete integration, history/revision lifecycle events where approved, production Supabase environment/RLS/service-boundary validation, and user-flow QA remain incomplete. |
 | B. Real User Account Runtime | Foundation Complete | Stage 4.1 auth runtime hardening exists. Supabase Auth boundary, server session validation, auth callback, protected dashboard layout, redirects, and fail-closed protected access are implemented at foundation level. | Real Supabase project settings, email delivery, redirect allowlist, session behavior, password reset policy, production validation, and account-to-persistence ownership path are not complete. |
 | C. User Data Management | Foundation Complete | Stage 4.3 User Data Controls foundation is closed. Export, deletion, retention, consent, server workflow, runtime boundary, and persistence read adapter modules exist as internal foundations. | User-facing export/delete flows are not product-executable. Stored decision artifact controls are not integrated with account-bound product flows. Privacy/data-control legal blockers remain open for production. |
 | D. Production AI Integration | Deferred | Stage 5.1, 5.2, 5.3, and 5.4 foundation work is closed. AI provider abstraction, Prompt Context foundation, quality/cost/safety validation, controlled integration preflight, boundary composition, and dry-run foundation exist. | Real provider SDK/env/key execution, model calls, Prompt Context -> AI Provider runtime path, Decision Engine post-provider validation, cost controls, error controls, and user-safe AI output path remain deferred. |
@@ -235,11 +235,13 @@ Overall Levio V1 Completion: **39% estimated**
 
 Block A: In Progress, **35% estimated**, remaining work:
 
-- implement A2 Persistence Runtime mapping from the canonical Decision
-  Simulation Domain Model to existing persistence boundaries;
+- complete remaining A2 Persistence Runtime work after the initial domain
+  mapping subblock: approved dashboard/product boundary integration,
+  production-like account ownership validation, export/delete integration, and
+  separately approved history/revision lifecycle events;
 - connect saved simulation runtime to an approved product surface or dashboard
   boundary;
-- complete list/load/reopen product behavior;
+- complete user-visible list/load/reopen product behavior;
 - connect ownership to real account sessions;
 - validate production persistence boundary and owner scope;
 - verify no mock ownership is used for production paths.
@@ -322,15 +324,19 @@ Current evidence:
 - `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md` completes A1 by
   defining the final Decision Simulation product object, lifecycle, fields,
   ownership model, constraints, and persistence requirements;
+- the first A2 runtime mapping subblock maps saved `simulation_records` into
+  canonical Decision Simulation domain objects and adds owner-scoped
+  save/list/load/reopen/archive capabilities without schema changes;
 - Stage 15.4 aggregate Scale verdict remains NOT READY;
 - Stage 15.5 blocker framework remains relevant for production/scale blockers.
 
 Next correct implementation step:
 
-Continue Block A with A2 Persistence Runtime: map the canonical Decision
-Simulation Domain Model through existing server-only Auth/Persistence
-boundaries for owner-scoped save/list/load/reopen behavior, without bypassing
-the existing foundations and without changing the public `/api/simulate`
+Continue Block A with the remaining A2 Persistence Runtime work after the
+initial runtime mapping: connect the mapped saved-simulation runtime to an
+approved dashboard/product boundary, validate production-like account ownership
+and service-boundary behavior, and prepare export/delete integration without
+bypassing the existing foundations or changing the public `/api/simulate`
 contract.
 
 This next step is **runtime implementation**. UI/dashboard boundary work must

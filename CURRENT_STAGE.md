@@ -14,8 +14,11 @@ canonical V1 implementation comparator. It defines Levio V1 Complete, maps the
 current project state against Blocks A-F, and identifies Block A - Decision
 Simulation Persistence Implementation as the current implementation focus.
 Block A1 Decision Simulation Domain Model is complete as architecture-only work
-under `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`. The next
-correct Block A implementation step is A2 Persistence Runtime.
+under `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`. Block A2
+Persistence Runtime Mapping is started. Its first runtime subblock implements
+the internal Decision Simulation persistence mapping over existing
+Auth/Persistence boundaries for owner-scoped save/list/load/reopen/archive,
+without changing UI, API, public contract, architecture, or Supabase schema.
 
 This checkpoint does not open Scale, increase traffic, open Production Release,
 open Commercial Launch, enable Real AI provider execution, add billing,

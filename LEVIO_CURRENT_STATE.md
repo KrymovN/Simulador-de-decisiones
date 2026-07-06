@@ -17,8 +17,12 @@ Auth/Persistence boundaries. `LEVIO_IMPLEMENTATION_PLAN.md` is now the
 canonical V1 implementation comparator and defines the current implementation
 focus as Block A - Decision Simulation Persistence Implementation.
 Block A1 Decision Simulation Domain Model is complete as architecture-only work
-under `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`. The next
-correct Block A implementation step is A2 Persistence Runtime.
+under `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`. Block A2
+Persistence Runtime Mapping is started. Its first runtime subblock now maps
+`simulation_records` into the canonical Decision Simulation domain aggregate
+and supports owner-scoped save, list, load/reopen, and archive through the
+existing server-only Auth/Persistence boundaries. No Supabase schema or
+migration change was required.
 
 This state does not resolve Scale blockers, execute Scale, increase traffic,
 open Production Release, open Commercial Launch, connect Real AI, enable

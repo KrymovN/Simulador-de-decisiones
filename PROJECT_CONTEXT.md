@@ -37,8 +37,12 @@ Block A1 Decision Simulation Domain Model is complete as architecture-only work
 under `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`. It defines
 the final Decision Simulation product object, lifecycle, field categories,
 ownership model, constraints, cross-block relationships, and future persistence
-requirements. The next correct Block A implementation step is A2 Persistence
-Runtime.
+requirements. Block A2 Persistence Runtime Mapping is started. The first A2
+runtime subblock maps saved `simulation_records` into the canonical Decision
+Simulation domain aggregate, adds owner-scoped save/list/load/reopen/archive
+runtime capabilities through the existing server-only Auth/Persistence
+boundaries, rejects client-supplied owner fields, and uses the existing
+Supabase schema without adding a migration.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as foundation-only preflight, runtime
