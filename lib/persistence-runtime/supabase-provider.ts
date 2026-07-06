@@ -211,6 +211,24 @@ export type SupabaseSimulationRecordMutationClient = {
   };
 };
 
+export type SupabaseSimulationRecordReadQuery = {
+  eq(column: string, value: string): SupabaseSimulationRecordReadQuery;
+  order(
+    column: string,
+    options: {
+      ascending: boolean;
+    },
+  ): SupabaseSimulationRecordReadQuery;
+  limit(count: number): Promise<SupabaseQueryResponse>;
+  maybeSingle(): Promise<SupabaseQueryResponse>;
+};
+
+export type SupabaseSimulationRecordReadClient = {
+  from(table: "simulation_records"): {
+    select(columns: string): SupabaseSimulationRecordReadQuery;
+  };
+};
+
 export type SupabaseSimulationHistoryEntryMutationClient = {
   from(table: "simulation_history_entries"): {
     insert(
@@ -230,6 +248,17 @@ export type SupabaseSimulationRecordSaveProvider = PersistenceProviderAdapter & 
   saveSimulationRecord(payload: SupabaseSimulationRecordInsertPayload): Promise<SimulationRecordRow | null>;
 };
 
+export type SupabaseSimulationRecordReadProvider = PersistenceProviderAdapter & {
+  readSimulationRecord(input: {
+    recordId: string;
+    ownerPrincipalId: string;
+  }): Promise<SimulationRecordRow | null>;
+  listSimulationRecords(input: {
+    ownerPrincipalId: string;
+    limit: number;
+  }): Promise<SimulationRecordRow[]>;
+};
+
 export type SupabaseSimulationHistoryEntrySaveProvider = PersistenceProviderAdapter & {
   saveSimulationHistoryEntry(
     payload: SupabaseSimulationHistoryEntryInsertPayload,
@@ -247,6 +276,7 @@ export type SupabaseSimulationDraftSaveProvider = PersistenceProviderAdapter & {
 
 export type SupabasePersistenceRuntimeProvider =
   SupabaseSimulationRecordSaveProvider &
+    SupabaseSimulationRecordReadProvider &
     SupabaseSimulationHistoryEntrySaveProvider &
     SupabaseSimulationDraftSaveProvider;
 
@@ -564,6 +594,7 @@ export function createSupabasePersistenceProviderAdapter(input: {
   config: SupabasePersistenceProviderConfig;
   client?: SupabasePrincipalResolutionClient;
   mutationClient?: SupabaseSimulationRecordMutationClient;
+  recordReadClient?: SupabaseSimulationRecordReadClient;
   historyMutationClient?: SupabaseSimulationHistoryEntryMutationClient;
   draftMutationClient?: SupabaseSimulationDraftMutationClient;
 }): SupabasePersistenceRuntimeProvider {
@@ -571,6 +602,9 @@ export function createSupabasePersistenceProviderAdapter(input: {
   const mutationClient =
     input.mutationClient ??
     (client as unknown as SupabaseSimulationRecordMutationClient);
+  const recordReadClient =
+    input.recordReadClient ??
+    (client as unknown as SupabaseSimulationRecordReadClient);
   const historyMutationClient =
     input.historyMutationClient ??
     (client as unknown as SupabaseSimulationHistoryEntryMutationClient);
@@ -628,6 +662,52 @@ export function createSupabasePersistenceProviderAdapter(input: {
 
       if (response.error || !isSimulationRecordRow(response.data)) {
         return null;
+      }
+
+      return response.data;
+    },
+    async readSimulationRecord(input) {
+      if (!isServerRuntime()) {
+        return null;
+      }
+
+      const response = await recordReadClient
+        .from("simulation_records")
+        .select("*")
+        .eq("record_id", input.recordId)
+        .eq("owner_principal_id", input.ownerPrincipalId)
+        .eq("owner_principal_type", "registered_user")
+        .eq("record_status", "active")
+        .eq("deletion_state", "active")
+        .maybeSingle();
+
+      if (response.error || !isSimulationRecordRow(response.data)) {
+        return null;
+      }
+
+      return response.data;
+    },
+    async listSimulationRecords(input) {
+      if (!isServerRuntime()) {
+        return [];
+      }
+
+      const response = await recordReadClient
+        .from("simulation_records")
+        .select("*")
+        .eq("owner_principal_id", input.ownerPrincipalId)
+        .eq("owner_principal_type", "registered_user")
+        .eq("record_status", "active")
+        .eq("deletion_state", "active")
+        .order("created_at", { ascending: false })
+        .limit(input.limit);
+
+      if (
+        response.error ||
+        !Array.isArray(response.data) ||
+        !response.data.every(isSimulationRecordRow)
+      ) {
+        return [];
       }
 
       return response.data;
