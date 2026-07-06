@@ -1,18 +1,19 @@
 import DashboardShell from "../../../components/DashboardShell";
-import MockAuthGate from "../../../components/MockAuthGate";
-import SimulationsList from "../../../components/SimulationsList";
-import { mockSimulations } from "../../../lib/mockSimulations";
+import { SavedSimulationsHistorySurface } from "../../../components/SavedSimulationsHistorySurface";
+import { readSavedSimulationsHistorySurface } from "../../../lib/saved-decision-simulations/product-surface";
 
-export default function SimulationsPage() {
+export const dynamic = "force-dynamic";
+
+export default async function SimulationsPage() {
+  const state = await readSavedSimulationsHistorySurface();
+
   return (
-    <MockAuthGate>
-      <DashboardShell
-        description="Revisa simulaciones locales y ejemplos preparados con mapas de opciones, riesgos y consecuencias."
-        eyebrow="levio.es / Simulaciones locales"
-        title="Simulaciones locales."
-      >
-        <SimulationsList initialSimulations={mockSimulations} />
-      </DashboardShell>
-    </MockAuthGate>
+    <DashboardShell
+      description="Revisa las simulaciones guardadas de tu cuenta y vuelve a abrir mapas de decisión persistentes."
+      eyebrow="levio.es / Historial guardado"
+      title="Simulaciones guardadas."
+    >
+      <SavedSimulationsHistorySurface state={state} />
+    </DashboardShell>
   );
 }

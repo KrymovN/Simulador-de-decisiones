@@ -15,10 +15,14 @@ current project state against Blocks A-F, and identifies Block A - Decision
 Simulation Persistence Implementation as the current implementation focus.
 Block A1 Decision Simulation Domain Model is complete as architecture-only work
 under `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`. Block A2
-Persistence Runtime Mapping is started. Its first runtime subblock implements
-the internal Decision Simulation persistence mapping over existing
-Auth/Persistence boundaries for owner-scoped save/list/load/reopen/archive,
-without changing UI, API, public contract, architecture, or Supabase schema.
+Persistence Runtime Mapping is complete as internal runtime mapping over
+existing Auth/Persistence boundaries for owner-scoped save/list/load/reopen/
+archive, without changing API, public contract, architecture, or Supabase
+schema. Block A3 Saved Decision Simulation History / Product Surface
+Integration is implemented: `/dashboard/simulations` and
+`/dashboard/simulations/[id]` now render runtime-backed saved simulation
+history/detail states through the approved server-only saved simulations
+product-surface boundary.
 
 This checkpoint does not open Scale, increase traffic, open Production Release,
 open Commercial Launch, enable Real AI provider execution, add billing,

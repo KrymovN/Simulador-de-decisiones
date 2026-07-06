@@ -1,12 +1,8 @@
-import MockAuthGate from "../../../../components/MockAuthGate";
-import SimulationDetailClient from "../../../../components/SimulationDetailClient";
-import { getMockSimulation, mockSimulations } from "../../../../lib/mockSimulations";
+import DashboardShell from "../../../../components/DashboardShell";
+import { SavedSimulationDetailSurface } from "../../../../components/SavedSimulationsHistorySurface";
+import { readSavedSimulationDetailSurface } from "../../../../lib/saved-decision-simulations/product-surface";
 
-export function generateStaticParams() {
-  return mockSimulations.map((simulation) => ({
-    id: simulation.id,
-  }));
-}
+export const dynamic = "force-dynamic";
 
 type SimulationDetailPageProps = {
   params: {
@@ -14,10 +10,18 @@ type SimulationDetailPageProps = {
   };
 };
 
-export default function SimulationDetailPage({ params }: SimulationDetailPageProps) {
+export default async function SimulationDetailPage({ params }: SimulationDetailPageProps) {
+  const state = await readSavedSimulationDetailSurface({ recordId: params.id });
+  const title =
+    state.status === "loaded" ? state.simulation.title : "Simulación guardada";
+
   return (
-    <MockAuthGate>
-      <SimulationDetailClient id={params.id} initialSimulation={getMockSimulation(params.id) ?? null} />
-    </MockAuthGate>
+    <DashboardShell
+      description="Reabre una simulación persistente de tu cuenta sin convertirla en chat ni respuesta directa."
+      eyebrow="levio.es / Simulación guardada"
+      title={title}
+    >
+      <SavedSimulationDetailSurface state={state} />
+    </DashboardShell>
   );
 }

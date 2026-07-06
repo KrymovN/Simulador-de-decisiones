@@ -56,13 +56,17 @@ V1 Complete Readiness    ████░░░░░░ 39% estimated
   Implementation.
 - Block A1 Decision Simulation Domain Model завершён:
   `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`.
-- Block A2 Persistence Runtime Mapping начат: internal runtime now maps
+- Block A2 Persistence Runtime Mapping завершён: internal runtime maps
   `simulation_records` into the canonical Decision Simulation domain aggregate
   and supports owner-scoped save/list/load/reopen/archive through existing
   Auth/Persistence boundaries.
-- Remaining A2 work: approved dashboard/product surface integration,
-  production-like account ownership validation, export/delete integration, and
-  any separately approved history/revision lifecycle events.
+- Block A3 Saved Decision Simulation History / Product Surface Integration
+  реализован: `/dashboard/simulations` and `/dashboard/simulations/[id]` now
+  render runtime-backed saved simulation history/detail states through the
+  approved server-only saved simulations product-surface boundary.
+- Remaining Block A work: production-like account ownership validation,
+  save-from-UI flow, export/delete integration, and any separately approved
+  history/revision lifecycle events.
 - Recent product implementation foundation:
   `Saved Decision Simulations Runtime Foundation`, internal server/runtime
   boundary for save/load/list of saved Decision Simulations through approved
