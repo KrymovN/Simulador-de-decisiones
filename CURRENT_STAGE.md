@@ -2,24 +2,22 @@
 
 ## Active Checkpoint
 
-Stage 15.5 - Scale Blocker Resolution Framework Complete.
+Post-Stage 15.5 V1 Implementation Plan Baseline.
 
 Status: Stage 15.5 is complete as documentation-only Scale blocker resolution
-framework work. Stage 15 remains open only as a bounded scale-readiness
-planning stage. Stage 15.1 Scale Scope & Entry Lock is complete. Stage 15.2
-Scale Preconditions & Evidence Inventory is complete. Stage 15.3 Scale
-Readiness Evidence Validation Framework is complete. Stage 15.4 Scale
-Readiness Evidence Assessment is complete with aggregate verdict NOT READY.
-Stage 15.5 classifies every PARTIALLY VERIFIED and NOT VERIFIED prerequisite,
-groups blockers by engineering direction, defines objective closure
-conditions, required evidence, verification criteria, blocker dependencies,
-and required resolution order. Stage 15.5 does not resolve blockers, execute
-Scale, increase traffic, open Production Release, open Commercial Launch,
-enable production auth/account/persistence, add subscription/billing/
-commercial runtime, add analytics, tracking, logging, Real AI provider
-execution, production monitoring, support tooling, incident tooling, legal
-documents, implementation plans, audits, compliance claims, roadmap changes,
-or a new public contract.
+framework work. Stage 15 remains a bounded scale-readiness planning stage, and
+Stage 15.4 aggregate verdict remains NOT READY. The later `Saved Decision
+Simulations Runtime Foundation` commit adds an internal server/runtime
+foundation for saving, loading, and listing saved Decision Simulations through
+approved Auth/Persistence boundaries. `LEVIO_IMPLEMENTATION_PLAN.md` is now the
+canonical V1 implementation comparator. It defines Levio V1 Complete, maps the
+current project state against Blocks A-F, and identifies Block A - Decision
+Simulation Persistence Implementation as the current implementation focus.
+
+This checkpoint does not open Scale, increase traffic, open Production Release,
+open Commercial Launch, enable Real AI provider execution, add billing,
+analytics, tracking, logging, compliance claims, roadmap changes, or a new
+public contract.
 
 Date: 6 July 2026, Europe/Madrid.
 

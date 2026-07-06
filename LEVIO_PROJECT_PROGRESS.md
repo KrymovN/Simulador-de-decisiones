@@ -9,6 +9,11 @@
 Этот документ фиксирует текущее состояние Levio.es от идеи до коммерческого
 продукта. Foundation-ready не означает production-ready.
 
+Canonical V1 implementation comparison is now defined in
+`LEVIO_IMPLEMENTATION_PLAN.md`. That document is the source of truth for
+Levio V1 Complete criteria, implementation Blocks A-F, current block mapping,
+and the conservative V1 completion estimate.
+
 ## Source Plan
 
 Базовый план взят из `Levio.es.rtf`:
@@ -37,6 +42,7 @@ Foundation Readiness     ██████████ 100%
 Runtime Completion       ██████░░░░ 60%
 Commercial Readiness     ███░░░░░░░ 25%
 Overall Project Progress ████████░░ 82%
+V1 Complete Readiness    ████░░░░░░ 38% estimated
 ```
 
 ## Current Position
@@ -44,6 +50,14 @@ Overall Project Progress ████████░░ 82%
 - Product Alignment завершен.
 - Levio остается Decision Simulation Engine.
 - Target runtime architecture зафиксирована и остается immutable.
+- `LEVIO_IMPLEMENTATION_PLAN.md` создан как canonical V1 implementation
+  comparator.
+- Current implementation focus: Block A - Decision Simulation Persistence
+  Implementation.
+- Recent product implementation foundation:
+  `Saved Decision Simulations Runtime Foundation`, internal server/runtime
+  boundary for save/load/list of saved Decision Simulations through approved
+  Auth/Persistence boundaries.
 - Stage 4.2 Persistence Runtime закрыт как foundation / isolated runtime boundary complete.
 - Stage 4.3 User Data Controls закрыт как foundation/runtime-boundary complete.
 - Чрезмерная цепочка Stage 4.3P-4.3Z удалена из активного roadmap state.
