@@ -42,7 +42,7 @@ Foundation Readiness     ██████████ 100%
 Runtime Completion       ██████░░░░ 60%
 Commercial Readiness     ███░░░░░░░ 25%
 Overall Project Progress ████████░░ 82%
-V1 Complete Readiness    ████░░░░░░ 38% estimated
+V1 Complete Readiness    ████░░░░░░ 39% estimated
 ```
 
 ## Current Position
@@ -54,6 +54,9 @@ V1 Complete Readiness    ████░░░░░░ 38% estimated
   comparator.
 - Current implementation focus: Block A - Decision Simulation Persistence
   Implementation.
+- Block A1 Decision Simulation Domain Model завершён:
+  `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`.
+- Next correct implementation step: A2 Persistence Runtime.
 - Recent product implementation foundation:
   `Saved Decision Simulations Runtime Foundation`, internal server/runtime
   boundary for save/load/list of saved Decision Simulations through approved

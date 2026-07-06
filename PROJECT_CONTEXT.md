@@ -33,6 +33,13 @@ security, legal, privacy, support, rollback, monitoring, and scale readiness.
 It does not open Production Release, Commercial Launch, Scale Execution, Real
 AI execution, billing, analytics, tracking, or a new roadmap branch.
 
+Block A1 Decision Simulation Domain Model is complete as architecture-only work
+under `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`. It defines
+the final Decision Simulation product object, lifecycle, field categories,
+ownership model, constraints, cross-block relationships, and future persistence
+requirements. The next correct Block A implementation step is A2 Persistence
+Runtime.
+
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as foundation-only preflight, runtime
 validation, boundary composition, and dry-run execution. Real model calls and
