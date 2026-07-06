@@ -63,7 +63,7 @@ owner/status filters, RLS/static schema constraints, dashboard history/detail,
 empty/error/auth states, archived-record exclusion, and controlled save errors.
 
 Block B - Real User Account Runtime is the next bounded implementation block
-after Block A. B1 Supabase Auth Configuration Lock is now complete as
+after Block A. B1 Supabase Auth Configuration Lock is complete as
 documentation/configuration-contract work under
 `docs/stages/stage-04-runtime-architecture/stage-04-01-auth-runtime/LEVIO_BLOCK_B1_SUPABASE_AUTH_CONFIGURATION_LOCK.md`.
 B1 defines the required Supabase Auth Site URL, callback URL, redirect
@@ -72,11 +72,19 @@ server-only env boundaries, email delivery expectations, current implementation
 compatibility, and B2/B3 gaps. It does not configure a remote Supabase project,
 change runtime, change UI, change API, add middleware, change database schema,
 create migrations, open Production Release, enable Real AI, add billing, or
-open Block C. Real account action boundaries, real email confirmation/recovery
-validation, session lifecycle validation, dashboard account state, Supabase
-user -> `levio_principals` provisioning/sync, broader production user-flow QA,
-and production release readiness remain Block B/E work. Separately approved
-history/revision lifecycle events remain deferred until explicitly scoped.
+open Block C. B2 Auth Action Boundary Completion is now implemented: login and
+register no longer build Supabase `emailRedirectTo` from uncontrolled
+`window.location.origin`; they use the server-only auth action boundary and
+approved `buildAuthRedirectUrl()` helper. Callback routing remains
+`{origin}/auth/callback`, post-auth destinations remain dashboard-only,
+password recovery remains controlled inactive, and logout still clears Supabase
+client state plus the legacy mock marker. `npm run
+quality:block-b-auth-action-boundary` is added for B2. Real email
+confirmation/recovery validation, session lifecycle validation, dashboard
+account state, Supabase user -> `levio_principals` provisioning/sync, broader
+production user-flow QA, and production release readiness remain Block B/E
+work. Separately approved history/revision lifecycle events remain deferred
+until explicitly scoped.
 
 This state does not resolve Scale blockers, execute Scale, increase traffic,
 open Production Release, open Commercial Launch, connect Real AI, enable

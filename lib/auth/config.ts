@@ -118,9 +118,42 @@ export function readBrowserAuthRuntimeConfig() {
   };
 }
 
-export function buildAuthRedirectUrl(pathname = "/auth/callback") {
+function originFromUrl(value: string): string | null {
+  try {
+    return new URL(value).origin;
+  } catch {
+    return null;
+  }
+}
+
+function redirectOriginAllowed(config: AuthRuntimeConfig, origin: string) {
+  return config.redirectAllowlist
+    .map(originFromUrl)
+    .filter((value): value is string => Boolean(value))
+    .includes(origin);
+}
+
+export function buildAuthRedirectUrl(pathname = "/auth/callback", nextPath = "/dashboard") {
   const config = readAuthRuntimeConfig();
-  return new URL(pathname, config.appUrl).toString();
+
+  if (config.status === "disabled") {
+    throw new Error("Auth Runtime is not enabled for redirect construction.");
+  }
+
+  const appOrigin = originFromUrl(config.appUrl);
+
+  if (!appOrigin || !redirectOriginAllowed(config, appOrigin)) {
+    throw new Error("Auth redirect origin is not approved by Levio auth config.");
+  }
+
+  if (pathname !== "/auth/callback") {
+    throw new Error("Auth callback route is not approved by Levio auth config.");
+  }
+
+  const redirectUrl = new URL(pathname, appOrigin);
+  redirectUrl.searchParams.set("next", sanitizeRedirectPath(nextPath, "/dashboard"));
+
+  return redirectUrl.toString();
 }
 
 export { sanitizeRedirectPath };

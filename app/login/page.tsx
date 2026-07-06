@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import AuthStateView from "../../components/auth/AuthStateView";
 import { useAuthRuntime } from "../../components/auth/AuthRuntimeProvider";
 import AuthShell from "../../components/AuthShell";
+import { prepareEmailOtpAuthRedirect } from "../../lib/auth/actions";
 import { getAuthErrorMessage } from "../../lib/auth/messages";
 import { sanitizeRedirectPath } from "../../lib/auth/redirects";
 import { createSupabaseBrowserAuthClient } from "../../lib/auth/supabase/client";
@@ -58,10 +59,17 @@ export default function LoginPage() {
     setIsSubmitting(true);
 
     try {
+      const redirectResult = await prepareEmailOtpAuthRedirect({ nextPath });
+
+      if (redirectResult.status !== "ready") {
+        setError("El destino de acceso no está configurado todavía.");
+        return;
+      }
+
       const { error: signInError } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
+          emailRedirectTo: redirectResult.emailRedirectTo,
         },
       });
 
