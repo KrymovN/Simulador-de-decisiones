@@ -71,18 +71,27 @@ Post-auth destinations remain dashboard-only, password recovery remains a
 controlled inactive/prepared surface, and logout continues to clear Supabase
 client state plus the legacy mock marker. The dedicated B2 gate is
 `npm run quality:block-b-auth-action-boundary`.
+B3 Email Confirmation and Recovery Flow Validation is now implemented at
+runtime/source-validation level. The auth callback normalizes provider and code
+exchange failures into controlled `callback_invalid`, `callback_expired`,
+`callback_cancelled`, `callback_missing_code`, and fallback exchange/provider
+states without reflecting provider internals to the UI. Login/register show a
+controlled email-pending state after OTP initiation through the approved
+boundary. Password recovery remains an explicit inactive/prepared surface and
+does not send recovery email. The dedicated B3 gate is
+`npm run quality:block-b-email-flow`.
 Export/delete integration remains Block C User Data Management work. Real
-email confirmation/recovery validation, session lifecycle validation, account
-state, principal provisioning, and broader production user-flow QA remain Block
-B/E work. Separately approved history/revision lifecycle events remain
-deferred until explicitly scoped.
+remote Supabase project execution/email delivery evidence, session lifecycle
+validation, account state, principal provisioning, and broader production
+user-flow QA remain Block B/E work. Separately approved history/revision
+lifecycle events remain deferred until explicitly scoped.
 
 This checkpoint does not open Scale, increase traffic, open Production Release,
 open Commercial Launch, enable Real AI provider execution, add billing,
 analytics, tracking, logging, compliance claims, roadmap changes, or a new
 public contract.
 
-Date: 6 July 2026, Europe/Madrid.
+Date: 7 July 2026, Europe/Madrid.
 
 Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
 Complete. Stage 5.2 remains closed as Prompt / Context Layer Foundation

@@ -73,7 +73,7 @@ export default function RegisterPage() {
     }
 
     router.refresh();
-    setMessage("Solicitud de acceso registrada para esta fase preparada.");
+    setMessage("Si el correo está habilitado, recibirás un enlace de confirmación o acceso. Revisa tu bandeja.");
   }
 
   return (

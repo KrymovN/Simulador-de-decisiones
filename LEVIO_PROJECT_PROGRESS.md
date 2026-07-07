@@ -98,7 +98,7 @@ V1 Complete Readiness    ████░░░░░░ 45% estimated
   configuration and production user-flow/readiness validation remain Block B/E
   work; separately approved history/revision lifecycle events remain deferred.
 - Current Block B status: Real User Account Runtime is Foundation Complete /
-  B2 Complete. B1 Supabase Auth Configuration Lock is complete as
+  B3 Complete. B1 Supabase Auth Configuration Lock is complete as
   documentation/configuration-contract work in
   `docs/stages/stage-04-runtime-architecture/stage-04-01-auth-runtime/LEVIO_BLOCK_B1_SUPABASE_AUTH_CONFIGURATION_LOCK.md`.
 - B1 locked the required Supabase Auth Site URL, callback URL, redirect
@@ -112,8 +112,14 @@ V1 Complete Readiness    ████░░░░░░ 45% estimated
   `{origin}/auth/callback`, post-auth destinations remain dashboard-only,
   password recovery remains controlled inactive, logout cleanup is preserved,
   and `npm run quality:block-b-auth-action-boundary` is added.
-- Remaining Block B work: real email confirmation/recovery validation, session
-  lifecycle validation, dashboard account state, Supabase user ->
+- B3 Email Confirmation and Recovery Flow Validation реализован at
+  runtime/source-validation level: callback failures normalize to controlled
+  invalid, expired, cancelled, missing-code, exchange-failed, or provider-error
+  states; login/register show email-pending copy after approved OTP initiation;
+  password recovery remains inactive/prepared with no recovery email; and
+  `npm run quality:block-b-email-flow` is added.
+- Remaining Block B work: real remote Supabase project/email delivery evidence,
+  session lifecycle validation, dashboard account state, Supabase user ->
   `levio_principals` provisioning/sync, and full Block B quality/closure
   evidence.
 - Recent product implementation foundation:

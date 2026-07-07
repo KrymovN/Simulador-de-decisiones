@@ -85,7 +85,7 @@ export default function LoginPage() {
     }
 
     router.refresh();
-    setMessage("Solicitud de enlace registrada para esta fase preparada.");
+    setMessage("Si el correo está habilitado, recibirás un enlace de acceso. Revisa tu bandeja.");
   }
 
   return (

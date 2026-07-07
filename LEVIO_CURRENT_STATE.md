@@ -79,12 +79,18 @@ approved `buildAuthRedirectUrl()` helper. Callback routing remains
 `{origin}/auth/callback`, post-auth destinations remain dashboard-only,
 password recovery remains controlled inactive, and logout still clears Supabase
 client state plus the legacy mock marker. `npm run
-quality:block-b-auth-action-boundary` is added for B2. Real email
-confirmation/recovery validation, session lifecycle validation, dashboard
-account state, Supabase user -> `levio_principals` provisioning/sync, broader
-production user-flow QA, and production release readiness remain Block B/E
-work. Separately approved history/revision lifecycle events remain deferred
-until explicitly scoped.
+quality:block-b-auth-action-boundary` is added for B2. B3 Email Confirmation
+and Recovery Flow Validation is implemented at runtime/source-validation level:
+callback failures now map to controlled invalid, expired, cancelled,
+missing-code, exchange-failed, or provider-error states; login/register show
+email-pending copy after approved OTP initiation; password recovery remains
+explicitly inactive and sends no recovery email; and `npm run
+quality:block-b-email-flow` covers the B3 boundary. Real remote Supabase
+project execution/email delivery evidence, session lifecycle validation,
+dashboard account state, Supabase user -> `levio_principals`
+provisioning/sync, broader production user-flow QA, and production release
+readiness remain Block B/E work. Separately approved history/revision lifecycle
+events remain deferred until explicitly scoped.
 
 This state does not resolve Scale blockers, execute Scale, increase traffic,
 open Production Release, open Commercial Launch, connect Real AI, enable
