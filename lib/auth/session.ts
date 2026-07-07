@@ -1,7 +1,52 @@
 import { readAuthRuntimeConfig } from "./config";
 import { normalizeRegisteredUserSession } from "./identity";
 import { createSupabaseServerClient } from "./supabase/server";
-import type { LevioAuthRuntimeContext } from "./types";
+import type { LevioAuthError, LevioAuthErrorCode, LevioAuthRuntimeContext } from "./types";
+
+function classifySessionFailure(value: string | undefined, fallback: LevioAuthErrorCode): LevioAuthErrorCode {
+  const normalized = value?.toLowerCase() ?? "";
+
+  if (!normalized) {
+    return fallback;
+  }
+
+  if (normalized.includes("expired") || normalized.includes("jwt expired")) {
+    return "session_expired";
+  }
+
+  if (
+    normalized.includes("revoked") ||
+    normalized.includes("refresh_token_not_found") ||
+    normalized.includes("session_not_found") ||
+    normalized.includes("invalid refresh token")
+  ) {
+    return "session_revoked";
+  }
+
+  return fallback;
+}
+
+function buildSessionError(code: LevioAuthErrorCode): LevioAuthError {
+  const messages: Record<LevioAuthErrorCode, string> = {
+    auth_runtime_disabled: "Levio auth runtime is disabled by configuration.",
+    auth_config_missing: "Supabase auth runtime configuration is missing.",
+    session_missing: "No authenticated Supabase session is available.",
+    session_invalid: "Authenticated session validation failed.",
+    session_expired: "The authenticated session has expired.",
+    session_revoked: "The authenticated session is no longer active.",
+    callback_missing_code: "The auth callback did not include a valid code.",
+    callback_invalid: "The auth callback code is invalid.",
+    callback_expired: "The auth callback code has expired.",
+    callback_cancelled: "The auth callback was cancelled.",
+    callback_exchange_failed: "The auth callback code could not be exchanged.",
+    provider_error: "The auth provider rejected the request.",
+  };
+
+  return {
+    code,
+    message: messages[code],
+  };
+}
 
 export async function readServerAuthSession(): Promise<LevioAuthRuntimeContext> {
   const config = readAuthRuntimeConfig();
@@ -31,12 +76,13 @@ export async function readServerAuthSession(): Promise<LevioAuthRuntimeContext> 
   } = await supabase.auth.getSession();
 
   if (sessionError || !session) {
+    const code = sessionError
+      ? classifySessionFailure(sessionError.message, "session_invalid")
+      : "session_missing";
+
     return {
       identityState: "signed_out",
-      error: {
-        code: sessionError ? "session_invalid" : "session_missing",
-        message: sessionError?.message ?? "No authenticated Supabase session is available.",
-      },
+      error: buildSessionError(code),
     };
   }
 
@@ -46,12 +92,13 @@ export async function readServerAuthSession(): Promise<LevioAuthRuntimeContext> 
   } = await supabase.auth.getUser();
 
   if (userError || !user) {
+    const code = userError
+      ? classifySessionFailure(userError.message, "session_invalid")
+      : "session_invalid";
+
     return {
       identityState: "signed_out",
-      error: {
-        code: "session_invalid",
-        message: userError?.message ?? "Supabase user validation failed.",
-      },
+      error: buildSessionError(code),
     };
   }
 
@@ -60,10 +107,7 @@ export async function readServerAuthSession(): Promise<LevioAuthRuntimeContext> 
   if (normalized.sessionStatus === "expired") {
     return {
       identityState: "signed_out",
-      error: {
-        code: "session_expired",
-        message: "The authenticated session has expired.",
-      },
+      error: buildSessionError("session_expired"),
     };
   }
 

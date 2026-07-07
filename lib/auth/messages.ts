@@ -6,6 +6,7 @@ const AUTH_ERROR_MESSAGES: Record<LevioAuthErrorCode, string> = {
   session_missing: "Inicia sesión para acceder al dashboard.",
   session_invalid: "No se pudo validar la sesión. Vuelve a entrar.",
   session_expired: "La sesión ha caducado. Vuelve a entrar.",
+  session_revoked: "La sesión ya no está activa. Vuelve a entrar.",
   callback_missing_code: "El enlace de acceso no contiene un código válido.",
   callback_invalid: "El enlace de acceso no es válido. Solicita uno nuevo.",
   callback_expired: "El enlace de acceso ha caducado. Solicita uno nuevo.",

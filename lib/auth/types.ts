@@ -33,6 +33,7 @@ export type LevioAuthErrorCode =
   | "session_missing"
   | "session_invalid"
   | "session_expired"
+  | "session_revoked"
   | "callback_missing_code"
   | "callback_invalid"
   | "callback_expired"

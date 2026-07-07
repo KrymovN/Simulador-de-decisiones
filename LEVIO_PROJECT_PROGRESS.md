@@ -98,7 +98,7 @@ V1 Complete Readiness    ████░░░░░░ 45% estimated
   configuration and production user-flow/readiness validation remain Block B/E
   work; separately approved history/revision lifecycle events remain deferred.
 - Current Block B status: Real User Account Runtime is Foundation Complete /
-  B3 Complete. B1 Supabase Auth Configuration Lock is complete as
+  B4 Complete. B1 Supabase Auth Configuration Lock is complete as
   documentation/configuration-contract work in
   `docs/stages/stage-04-runtime-architecture/stage-04-01-auth-runtime/LEVIO_BLOCK_B1_SUPABASE_AUTH_CONFIGURATION_LOCK.md`.
 - B1 locked the required Supabase Auth Site URL, callback URL, redirect
@@ -118,10 +118,17 @@ V1 Complete Readiness    ████░░░░░░ 45% estimated
   states; login/register show email-pending copy after approved OTP initiation;
   password recovery remains inactive/prepared with no recovery email; and
   `npm run quality:block-b-email-flow` is added.
+- B4 Session Lifecycle and Protected Route Validation реализован at
+  runtime/source-validation level: server session validation uses
+  `getSession()` + `getUser()`, missing/invalid/expired/revoked sessions map to
+  controlled states, dashboard descendants stay behind the force-dynamic
+  dashboard layout guard, middleware is documented as unnecessary for the
+  current route shape, browser refresh remains in Supabase
+  `onAuthStateChange`, logout is idempotent and clears Supabase plus legacy
+  mock state, and `npm run quality:block-b-session-lifecycle` is added.
 - Remaining Block B work: real remote Supabase project/email delivery evidence,
-  session lifecycle validation, dashboard account state, Supabase user ->
-  `levio_principals` provisioning/sync, and full Block B quality/closure
-  evidence.
+  dashboard account state, Supabase user -> `levio_principals`
+  provisioning/sync, and full Block B quality/closure evidence.
 - Recent product implementation foundation:
   `Saved Decision Simulations Runtime Foundation`, internal server/runtime
   boundary for save/load/list of saved Decision Simulations through approved

@@ -80,11 +80,22 @@ controlled email-pending state after OTP initiation through the approved
 boundary. Password recovery remains an explicit inactive/prepared surface and
 does not send recovery email. The dedicated B3 gate is
 `npm run quality:block-b-email-flow`.
+B4 Session Lifecycle and Protected Route Validation is now implemented at
+runtime/source-validation level. Server session validation checks Supabase
+session cookies with `getSession()` and confirms them with `getUser()`, maps
+missing, invalid, expired, and revoked/stale sessions to controlled states, and
+keeps dashboard descendants behind the force-dynamic `app/dashboard/layout.tsx`
+guard. Browser auth refresh remains bounded to the Supabase browser client and
+`onAuthStateChange`, client auth errors no longer store provider messages, and
+logout is idempotent while clearing Supabase auth state plus the legacy mock
+marker. No middleware is required for the current dashboard route shape because
+all protected dashboard pages are descendants of the guarded dashboard layout.
+The dedicated B4 gate is `npm run quality:block-b-session-lifecycle`.
 Export/delete integration remains Block C User Data Management work. Real
-remote Supabase project execution/email delivery evidence, session lifecycle
-validation, account state, principal provisioning, and broader production
-user-flow QA remain Block B/E work. Separately approved history/revision
-lifecycle events remain deferred until explicitly scoped.
+remote Supabase project execution/email delivery evidence, account state,
+principal provisioning, and broader production user-flow QA remain Block B/E
+work. Separately approved history/revision lifecycle events remain deferred
+until explicitly scoped.
 
 This checkpoint does not open Scale, increase traffic, open Production Release,
 open Commercial Launch, enable Real AI provider execution, add billing,

@@ -86,11 +86,21 @@ missing-code, exchange-failed, or provider-error states; login/register show
 email-pending copy after approved OTP initiation; password recovery remains
 explicitly inactive and sends no recovery email; and `npm run
 quality:block-b-email-flow` covers the B3 boundary. Real remote Supabase
-project execution/email delivery evidence, session lifecycle validation,
-dashboard account state, Supabase user -> `levio_principals`
-provisioning/sync, broader production user-flow QA, and production release
-readiness remain Block B/E work. Separately approved history/revision lifecycle
-events remain deferred until explicitly scoped.
+project execution/email delivery evidence remain outside local execution. B4
+Session Lifecycle and Protected Route Validation is implemented at
+runtime/source-validation level: server session validation checks Supabase
+session cookies with `getSession()` and confirms them with `getUser()`;
+missing, invalid, expired, and revoked/stale sessions map to controlled states;
+dashboard descendants remain protected by the force-dynamic dashboard layout;
+browser refresh stays inside the Supabase browser client and
+`onAuthStateChange`; client auth errors avoid provider-message leakage; logout
+is idempotent and clears Supabase plus legacy mock state; and `npm run
+quality:block-b-session-lifecycle` covers the B4 boundary. Middleware is not
+required for the current protected route shape because every dashboard route is
+under the guarded dashboard layout. Dashboard account state, Supabase user ->
+`levio_principals` provisioning/sync, broader production user-flow QA, and
+production release readiness remain Block B/E work. Separately approved
+history/revision lifecycle events remain deferred until explicitly scoped.
 
 This state does not resolve Scale blockers, execute Scale, increase traffic,
 open Production Release, open Commercial Launch, connect Real AI, enable

@@ -58,7 +58,7 @@ export function AuthRuntimeProvider({ children }: { children: ReactNode }) {
     if (error) {
       setState({
         identityState: "auth_error",
-        error: error.message,
+        error: "session_invalid",
       });
       return;
     }
@@ -68,7 +68,11 @@ export function AuthRuntimeProvider({ children }: { children: ReactNode }) {
 
   const signOut = useCallback(async () => {
     if (supabase) {
-      await supabase.auth.signOut();
+      try {
+        await supabase.auth.signOut();
+      } catch {
+        // Logout must remain idempotent from the product UI perspective.
+      }
     }
 
     setState({ identityState: "signed_out" });
