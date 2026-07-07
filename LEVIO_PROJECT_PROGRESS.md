@@ -98,7 +98,7 @@ V1 Complete Readiness    ████░░░░░░ 45% estimated
   configuration and production user-flow/readiness validation remain Block B/E
   work; separately approved history/revision lifecycle events remain deferred.
 - Current Block B status: Real User Account Runtime is Foundation Complete /
-  B5 Complete. B1 Supabase Auth Configuration Lock is complete as
+  B6 Complete. B1 Supabase Auth Configuration Lock is complete as
   documentation/configuration-contract work in
   `docs/stages/stage-04-runtime-architecture/stage-04-01-auth-runtime/LEVIO_BLOCK_B1_SUPABASE_AUTH_CONFIGURATION_LOCK.md`.
 - B1 locked the required Supabase Auth Site URL, callback URL, redirect
@@ -133,9 +133,17 @@ V1 Complete Readiness    ████░░░░░░ 45% estimated
   runtime instead of browser Supabase state or demo `userProfile`; provider
   references, session ids, principal ids, and raw auth errors are not exposed;
   and `npm run quality:block-b-dashboard-account-state` is added.
+- B6 Account-Owned Simulation Persistence Boundary реализован: authenticated
+  Supabase users are resolved/provisioned/synchronized to
+  `levio_principals` inside the server-only persistence provider before
+  saved-simulation preflight; saved simulation save/list/load/reopen/archive
+  remain owner-scoped to canonical `levio_principals.principal_id`, reject
+  client owner injection, and do not expose provider ids or Supabase clients
+  to dashboard UI; and `npm run
+  quality:block-b-account-owned-simulation-persistence` is added.
 - Remaining Block B work: real remote Supabase project/email delivery evidence,
-  Supabase user -> `levio_principals` provisioning/sync, and full Block B
-  quality/closure evidence.
+  production-like user-flow validation, and full Block B quality/closure
+  evidence.
 - Recent product implementation foundation:
   `Saved Decision Simulations Runtime Foundation`, internal server/runtime
   boundary for save/load/list of saved Decision Simulations through approved

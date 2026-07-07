@@ -181,9 +181,49 @@ export type SupabaseSimulationRecordArchivePayload = {
   updated_at: string;
 };
 
+export type SupabasePrincipalProvisionPayload = {
+  principal_type: "registered_user";
+  principal_status: "active";
+  provider_name: "supabase";
+  provider_reference: string;
+  provider_reference_status: "active";
+  provider_subject_type: "user";
+  provider_email_snapshot: string | null;
+  provider_email_verified: boolean;
+  verified_at: string | null;
+  last_authenticated_at: string;
+  last_provider_sync_at: string;
+  deletion_state: "active";
+  retention_rule: "account_lifecycle";
+  metadata_version: number;
+  schema_version: number;
+};
+
+export type SupabasePrincipalSyncPayload = {
+  provider_email_snapshot: string | null;
+  provider_email_verified: boolean;
+  verified_at: string | null;
+  last_authenticated_at: string;
+  last_provider_sync_at: string;
+  updated_at: string;
+};
+
 export type SupabasePrincipalQuery = {
   eq(column: string, value: string): SupabasePrincipalQuery;
   maybeSingle(): Promise<SupabaseQueryResponse>;
+};
+
+export type SupabasePrincipalMutation = {
+  select(columns: string): {
+    single(): Promise<SupabaseQueryResponse>;
+  };
+};
+
+export type SupabasePrincipalUpdateMutation = {
+  eq(column: string, value: string): SupabasePrincipalUpdateMutation;
+  select(columns: string): {
+    single(): Promise<SupabaseQueryResponse>;
+  };
 };
 
 export type SupabaseSimulationRecordMutation = {
@@ -215,6 +255,13 @@ export type SupabaseSimulationRecordArchiveMutation = {
 export type SupabasePrincipalResolutionClient = {
   from(table: "levio_principals"): {
     select(columns: string): SupabasePrincipalQuery;
+  };
+};
+
+export type SupabasePrincipalProvisioningClient = {
+  from(table: "levio_principals"): {
+    insert(payload: SupabasePrincipalProvisionPayload): SupabasePrincipalMutation;
+    update(payload: SupabasePrincipalSyncPayload): SupabasePrincipalUpdateMutation;
   };
 };
 
@@ -370,6 +417,12 @@ function normalizeProviderReference(value: string): string | undefined {
     : trimmed;
 
   return UUID_PATTERN.test(withoutProviderPrefix) ? withoutProviderPrefix : undefined;
+}
+
+function normalizeEmailSnapshot(value: string | undefined): string | null {
+  const trimmed = value?.trim();
+
+  return trimmed ? trimmed : null;
 }
 
 function nullableString(value: unknown): value is string | null {
@@ -621,6 +674,7 @@ export function createSupabasePersistenceProviderClient(
 export function createSupabasePersistenceProviderAdapter(input: {
   config: SupabasePersistenceProviderConfig;
   client?: SupabasePrincipalResolutionClient;
+  principalProvisioningClient?: SupabasePrincipalProvisioningClient;
   mutationClient?: SupabaseSimulationRecordMutationClient;
   recordReadClient?: SupabaseSimulationRecordReadClient;
   recordArchiveClient?: SupabaseSimulationRecordArchiveClient;
@@ -628,6 +682,9 @@ export function createSupabasePersistenceProviderAdapter(input: {
   draftMutationClient?: SupabaseSimulationDraftMutationClient;
 }): SupabasePersistenceRuntimeProvider {
   const client = input.client ?? createSupabasePersistenceProviderClient(input.config);
+  const principalProvisioningClient =
+    input.principalProvisioningClient ??
+    (client as unknown as SupabasePrincipalProvisioningClient);
   const mutationClient =
     input.mutationClient ??
     (client as unknown as SupabaseSimulationRecordMutationClient);
@@ -644,12 +701,136 @@ export function createSupabasePersistenceProviderAdapter(input: {
     input.draftMutationClient ??
     (client as unknown as SupabaseSimulationDraftMutationClient);
 
+  async function resolvePrincipal(input: {
+    providerReference: string;
+    providerSubjectType: PersistenceProviderSubjectType;
+  }): Promise<LevioPrincipalRow | null> {
+    if (!isServerRuntime() || input.providerSubjectType !== "user") {
+      return null;
+    }
+
+    const providerReference = normalizeProviderReference(input.providerReference);
+
+    if (!providerReference) {
+      return null;
+    }
+
+    const response = await client
+      .from("levio_principals")
+      .select(PRINCIPAL_SELECT)
+      .eq("provider_name", "supabase")
+      .eq("provider_reference", providerReference)
+      .eq("provider_subject_type", input.providerSubjectType)
+      .eq("provider_reference_status", "active")
+      .eq("principal_type", "registered_user")
+      .eq("principal_status", "active")
+      .eq("deletion_state", "active")
+      .maybeSingle();
+
+    if (response.error || !isPrincipalRow(response.data)) {
+      return null;
+    }
+
+    return response.data;
+  }
+
+  async function syncPrincipal(input: {
+    principal: LevioPrincipalRow;
+    email?: string;
+    emailVerified?: boolean;
+    authenticatedAt?: string;
+    syncedAt: string;
+  }): Promise<LevioPrincipalRow> {
+    const emailVerified = input.emailVerified ?? input.principal.provider_email_verified;
+    const payload: SupabasePrincipalSyncPayload = {
+      provider_email_snapshot:
+        normalizeEmailSnapshot(input.email) ?? input.principal.provider_email_snapshot,
+      provider_email_verified: emailVerified,
+      verified_at: emailVerified
+        ? input.principal.verified_at ?? input.syncedAt
+        : input.principal.verified_at,
+      last_authenticated_at: input.authenticatedAt ?? input.syncedAt,
+      last_provider_sync_at: input.syncedAt,
+      updated_at: input.syncedAt,
+    };
+
+    const response = await principalProvisioningClient
+      .from("levio_principals")
+      .update(payload)
+      .eq("principal_id", input.principal.principal_id)
+      .eq("provider_name", "supabase")
+      .eq("provider_reference", input.principal.provider_reference)
+      .select(PRINCIPAL_SELECT)
+      .single();
+
+    return response.error || !isPrincipalRow(response.data)
+      ? input.principal
+      : response.data;
+  }
+
+  async function provisionPrincipal(input: {
+    providerReference: string;
+    email?: string;
+    emailVerified?: boolean;
+    authenticatedAt?: string;
+    syncedAt: string;
+  }): Promise<LevioPrincipalRow | null> {
+    const providerReference = normalizeProviderReference(input.providerReference);
+
+    if (!providerReference) {
+      return null;
+    }
+
+    const emailVerified = input.emailVerified === true;
+    const payload: SupabasePrincipalProvisionPayload = {
+      principal_type: "registered_user",
+      principal_status: "active",
+      provider_name: "supabase",
+      provider_reference: providerReference,
+      provider_reference_status: "active",
+      provider_subject_type: "user",
+      provider_email_snapshot: normalizeEmailSnapshot(input.email),
+      provider_email_verified: emailVerified,
+      verified_at: emailVerified ? input.syncedAt : null,
+      last_authenticated_at: input.authenticatedAt ?? input.syncedAt,
+      last_provider_sync_at: input.syncedAt,
+      deletion_state: "active",
+      retention_rule: "account_lifecycle",
+      metadata_version: 1,
+      schema_version: 1,
+    };
+
+    const response = await principalProvisioningClient
+      .from("levio_principals")
+      .insert(payload)
+      .select(PRINCIPAL_SELECT)
+      .single();
+
+    if (!response.error && isPrincipalRow(response.data)) {
+      return response.data;
+    }
+
+    return resolvePrincipal({
+      providerReference,
+      providerSubjectType: "user",
+    });
+  }
+
   return {
     providerId: "supabase",
     executionBoundary: "server_only",
     async resolvePrincipalByProviderReference(resolveInput: {
       providerReference: string;
       providerSubjectType: PersistenceProviderSubjectType;
+    }): Promise<LevioPrincipalRow | null> {
+      return resolvePrincipal(resolveInput);
+    },
+    async resolveOrProvisionPrincipalByProviderReference(resolveInput: {
+      providerReference: string;
+      providerSubjectType: PersistenceProviderSubjectType;
+      email?: string;
+      emailVerified?: boolean;
+      authenticatedAt?: string;
     }): Promise<LevioPrincipalRow | null> {
       if (!isServerRuntime() || resolveInput.providerSubjectType !== "user") {
         return null;
@@ -661,23 +842,29 @@ export function createSupabasePersistenceProviderAdapter(input: {
         return null;
       }
 
-      const response = await client
-        .from("levio_principals")
-        .select(PRINCIPAL_SELECT)
-        .eq("provider_name", "supabase")
-        .eq("provider_reference", providerReference)
-        .eq("provider_subject_type", resolveInput.providerSubjectType)
-        .eq("provider_reference_status", "active")
-        .eq("principal_type", "registered_user")
-        .eq("principal_status", "active")
-        .eq("deletion_state", "active")
-        .maybeSingle();
+      const syncedAt = new Date().toISOString();
+      const principal = await resolvePrincipal({
+        providerReference,
+        providerSubjectType: resolveInput.providerSubjectType,
+      });
 
-      if (response.error || !isPrincipalRow(response.data)) {
-        return null;
+      if (principal) {
+        return syncPrincipal({
+          principal,
+          email: resolveInput.email,
+          emailVerified: resolveInput.emailVerified,
+          authenticatedAt: resolveInput.authenticatedAt,
+          syncedAt,
+        });
       }
 
-      return response.data;
+      return provisionPrincipal({
+        providerReference,
+        email: resolveInput.email,
+        emailVerified: resolveInput.emailVerified,
+        authenticatedAt: resolveInput.authenticatedAt,
+        syncedAt,
+      });
     },
     async saveSimulationRecord(
       payload: SupabaseSimulationRecordInsertPayload,

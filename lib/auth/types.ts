@@ -51,6 +51,7 @@ export type LevioPrincipalContext = {
   principalType: Extract<LevioPrincipalType, "registered_user">;
   providerReference: string;
   email?: string;
+  emailVerified?: boolean;
 };
 
 export type LevioSessionContext = {

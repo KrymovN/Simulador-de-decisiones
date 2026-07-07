@@ -97,9 +97,9 @@ browser refresh stays inside the Supabase browser client and
 is idempotent and clears Supabase plus legacy mock state; and `npm run
 quality:block-b-session-lifecycle` covers the B4 boundary. Middleware is not
 required for the current protected route shape because every dashboard route is
-under the guarded dashboard layout. Dashboard account state, Supabase user ->
-`levio_principals` provisioning/sync, broader production user-flow QA, and
-production release readiness remain Block B/E work. B5 Real Account State in
+under the guarded dashboard layout. Dashboard account state, broader
+production user-flow QA, and production release readiness remain Block B/E
+work. B5 Real Account State in
 Dashboard is implemented: the guarded dashboard layout is the single boundary
 that obtains the authenticated account, converts the normalized session into a
 dashboard-scoped account state, and provides it through
@@ -108,10 +108,18 @@ read account/session display state from that provider instead of browser
 Supabase state or demo `userProfile`; provider references, session ids,
 principal ids, and raw auth errors are not exposed to dashboard UI; existing
 logout cleanup remains on the approved browser auth runtime; and `npm run
-quality:block-b-dashboard-account-state` covers the B5 boundary. Supabase user
--> `levio_principals` provisioning/sync, broader production user-flow QA, and
-production release readiness remain Block B/E work. Separately approved
-history/revision lifecycle events remain deferred until explicitly scoped.
+quality:block-b-dashboard-account-state` covers the B5 boundary. B6
+Account-Owned Simulation Persistence Boundary is implemented: authenticated
+Supabase users are resolved/provisioned/synchronized to `levio_principals`
+inside the server-only persistence provider before saved-simulation preflight;
+saved simulation save/list/load/reopen/archive remain owner-scoped to canonical
+`levio_principals.principal_id`, reject client owner injection, and do not
+expose provider ids, Supabase clients, raw sessions, or database errors to
+dashboard UI; and `npm run
+quality:block-b-account-owned-simulation-persistence` covers the B6 boundary.
+Broader production user-flow QA and production release readiness remain Block
+B/E work. Separately approved history/revision lifecycle events remain
+deferred until explicitly scoped.
 
 This state does not resolve Scale blockers, execute Scale, increase traffic,
 open Production Release, open Commercial Launch, connect Real AI, enable

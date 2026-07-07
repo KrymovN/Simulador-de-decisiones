@@ -55,6 +55,12 @@ export type PersistenceRuntimeResolvePrincipalInput = {
   providerSubjectType?: PersistenceProviderSubjectType;
 };
 
+type PersistenceRuntimeProvisionPrincipalInput = PersistenceRuntimeResolvePrincipalInput & {
+  email?: string;
+  emailVerified?: boolean;
+  authenticatedAt?: string;
+};
+
 export type PersistenceRuntimeResolvedPrincipal = {
   status: "resolved";
   principal: LevioPrincipalRow;
@@ -196,6 +202,37 @@ async function resolvePrincipalWithAdapter(
   };
 }
 
+async function resolveOrProvisionPrincipalWithAdapter(
+  adapter: PersistenceProviderAdapter | undefined,
+  input: PersistenceRuntimeProvisionPrincipalInput,
+  runtimeEvidence: PersistenceRuntimeWiringEvidence,
+): Promise<PersistenceRuntimeResolvePrincipalResult> {
+  if (!adapter?.resolveOrProvisionPrincipalByProviderReference) {
+    return resolvePrincipalWithAdapter(adapter, input, runtimeEvidence);
+  }
+
+  const principal = await adapter.resolveOrProvisionPrincipalByProviderReference({
+    providerReference: input.providerReference,
+    providerSubjectType: input.providerSubjectType ?? "user",
+    email: input.email,
+    emailVerified: input.emailVerified,
+    authenticatedAt: input.authenticatedAt,
+  });
+
+  if (!principal) {
+    return blockedPrincipalResolution(
+      "Persistence provider did not resolve an active Levio principal.",
+      runtimeEvidence,
+    );
+  }
+
+  return {
+    status: "resolved",
+    principal,
+    evidence: runtimeEvidence,
+  };
+}
+
 async function preflightWithOptionalResolution(input: {
   foundation: PersistenceRuntimeFoundation;
   adapter?: PersistenceProviderAdapter;
@@ -210,11 +247,14 @@ async function preflightWithOptionalResolution(input: {
 
   const resolvedPrincipal =
     input.preflightInput.resolvedPrincipal ??
-    (await resolvePrincipalWithAdapter(
+    (await resolveOrProvisionPrincipalWithAdapter(
       input.adapter,
       {
         providerReference: authContext.principal.providerReference,
         providerSubjectType: "user",
+        email: authContext.principal.email,
+        emailVerified: authContext.principal.emailVerified,
+        authenticatedAt: authContext.authTime,
       },
       input.runtimeEvidence,
     ));

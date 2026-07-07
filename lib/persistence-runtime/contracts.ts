@@ -198,6 +198,13 @@ export type PersistenceProviderAdapter = {
     providerReference: string;
     providerSubjectType: PersistenceProviderSubjectType;
   }): Promise<LevioPrincipalRow | null>;
+  resolveOrProvisionPrincipalByProviderReference?(input: {
+    providerReference: string;
+    providerSubjectType: PersistenceProviderSubjectType;
+    email?: string;
+    emailVerified?: boolean;
+    authenticatedAt?: string;
+  }): Promise<LevioPrincipalRow | null>;
 };
 
 export type PersistenceRuntimeOperation =

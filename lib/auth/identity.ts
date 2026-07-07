@@ -41,6 +41,10 @@ function readSessionStatus(session: Session): LevioSessionContext["sessionStatus
   return session.expires_at * 1000 <= Date.now() ? "expired" : "active";
 }
 
+function readEmailVerified(user: User) {
+  return Boolean(user.email_confirmed_at ?? user.confirmed_at);
+}
+
 export function normalizeRegisteredUserSession(session: Session, user: User): LevioSessionContext {
   const providerReference = `supabase:${user.id}`;
 
@@ -51,6 +55,7 @@ export function normalizeRegisteredUserSession(session: Session, user: User): Le
       principalType: "registered_user",
       providerReference,
       email: user.email,
+      emailVerified: readEmailVerified(user),
     },
     sessionId: readSessionId(session.access_token),
     sessionStatus: readSessionStatus(session),

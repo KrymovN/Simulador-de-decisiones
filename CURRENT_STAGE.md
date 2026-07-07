@@ -101,9 +101,18 @@ of browser Supabase state or demo `userProfile` values. UI surfaces do not
 receive provider references, session ids, principal ids, or raw auth errors.
 Existing logout cleanup remains on the approved browser auth runtime. The
 dedicated B5 gate is `npm run quality:block-b-dashboard-account-state`.
+B6 Account-Owned Simulation Persistence Boundary is now implemented. The
+server-only persistence provider resolves existing `levio_principals` rows,
+provisions a new active row for an authenticated Supabase user when missing,
+and syncs bounded email/auth timestamps before saved-simulation preflight.
+Saved simulation save/list/load/reopen/archive remain owner-scoped to canonical
+`levio_principals.principal_id`, reject client owner injection, and do not
+expose provider ids, Supabase clients, raw sessions, or database errors to
+dashboard UI. The dedicated B6 gate is
+`npm run quality:block-b-account-owned-simulation-persistence`.
 Export/delete integration remains Block C User Data Management work. Real
-remote Supabase project execution/email delivery evidence, principal
-provisioning, and broader production user-flow QA remain Block B/E work.
+remote Supabase project execution/email delivery evidence and broader
+production user-flow QA remain Block B/E work.
 Separately approved history/revision lifecycle events remain deferred until
 explicitly scoped.
 
