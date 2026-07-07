@@ -21,6 +21,7 @@
     "quality:block-b-session-lifecycle": "node scripts/block-b-session-lifecycle-quality.mjs",
     "quality:block-b-dashboard-account-state": "node scripts/block-b-dashboard-account-state-quality.mjs",
     "quality:block-b-account-owned-simulation-persistence": "node scripts/block-b-account-owned-simulation-persistence-quality.mjs",
+    "quality:block-b-dashboard-simulation-surface": "node scripts/block-b-dashboard-simulation-surface-quality.mjs",
     "quality:public-home": "node scripts/public-home-quality.mjs",
     "quality:public-home-simulator-api-integration": "node scripts/public-home-simulator-api-integration-quality.mjs",
     "quality:public-site-trust-readiness": "node scripts/public-site-trust-readiness-quality.mjs",

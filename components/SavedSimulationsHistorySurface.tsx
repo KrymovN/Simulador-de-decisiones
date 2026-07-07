@@ -3,6 +3,7 @@ import type {
   SavedSimulationDetailSurfaceResult,
   SavedSimulationsHistorySurfaceResult,
 } from "../lib/saved-decision-simulations/product-surface";
+import { archiveSavedSimulationFromDashboard } from "../lib/saved-decision-simulations/ui-save-action";
 
 type SavedSimulationsHistorySurfaceProps = {
   state: SavedSimulationsHistorySurfaceResult;
@@ -101,6 +102,12 @@ export function SavedSimulationsHistorySurface({
             <Link className="row-action-link" href={simulation.href}>
               Abrir simulación
             </Link>
+            <form action={archiveSavedSimulationFromDashboard}>
+              <input name="recordId" type="hidden" value={simulation.id} />
+              <button className="ghost-button" type="submit">
+                Archivar
+              </button>
+            </form>
           </div>
         </article>
       ))}
@@ -231,6 +238,12 @@ export function SavedSimulationDetailSurface({
         <Link className="dashboard-action" href="/dashboard/simulations">
           Volver al historial
         </Link>
+        <form action={archiveSavedSimulationFromDashboard}>
+          <input name="recordId" type="hidden" value={simulation.id} />
+          <button className="ghost-button" type="submit">
+            Archivar simulación
+          </button>
+        </form>
       </section>
     </>
   );

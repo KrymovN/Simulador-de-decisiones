@@ -3,10 +3,12 @@ import { readServerAuthSession } from "../auth/session";
 import type { SimulationResponse } from "../simulationEngine";
 import type {
   PersistenceRuntimeWiring,
+  SupabaseSimulationRecordArchiveProvider,
   SupabaseSimulationRecordReadProvider,
   SupabaseSimulationRecordSaveProvider,
 } from "../persistence-runtime";
 import {
+  archiveDecisionSimulation,
   listDecisionSimulations,
   reopenDecisionSimulation,
   saveDecisionSimulation,
@@ -74,6 +76,14 @@ export type SavedSimulationDetailSurfaceInput = SavedSimulationsProductSurfaceIn
   recordId: string;
 };
 
+export type ArchiveSavedSimulationSurfaceInput = {
+  authContext?: LevioAuthRuntimeContext | null;
+  recordId: string;
+  runtime?: PersistenceRuntimeWiring;
+  archiveProvider?: SupabaseSimulationRecordArchiveProvider;
+  config?: SavedDecisionSimulationsRuntimeConfig;
+};
+
 export type SavedSimulationsHistorySurfaceResult =
   | {
       status: "auth_required";
@@ -139,6 +149,26 @@ export type SaveCompletedSimulationSurfaceResult =
       recordId: string;
       historyHref: string;
       detailHref: string;
+      message: string;
+    }
+  | {
+      status: "error";
+      version: typeof SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION;
+      reason: SavedDecisionSimulationsBlockedReason;
+      message: string;
+    };
+
+export type ArchiveSavedSimulationSurfaceResult =
+  | {
+      status: "auth_required";
+      version: typeof SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION;
+      message: string;
+      loginHref: string;
+    }
+  | {
+      status: "archived";
+      version: typeof SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION;
+      historyHref: string;
       message: string;
     }
   | {
@@ -409,6 +439,45 @@ export async function saveCompletedSimulationSurface(
     historyHref: "/dashboard/simulations",
     detailHref: `/dashboard/simulations/${result.record.record_id}`,
     message: "Simulación guardada en tu historial.",
+  };
+}
+
+export async function archiveSavedSimulationSurface(
+  input: ArchiveSavedSimulationSurfaceInput,
+): Promise<ArchiveSavedSimulationSurfaceResult> {
+  const authContext = await authContextFromInput(input.authContext);
+
+  if (authContext.identityState !== "authenticated") {
+    return {
+      status: "auth_required",
+      version: SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION,
+      message: "Inicia sesión para archivar esta simulación guardada.",
+      loginHref: "/login?next=/dashboard/simulations",
+    };
+  }
+
+  const result = await archiveDecisionSimulation({
+    authContext,
+    recordId: input.recordId,
+    runtime: input.runtime,
+    archiveProvider: input.archiveProvider,
+    config: input.config,
+  });
+
+  if (result.status === "blocked") {
+    return {
+      status: "error",
+      version: SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION,
+      reason: result.reason,
+      message: "No se pudo archivar la simulación de forma controlada.",
+    };
+  }
+
+  return {
+    status: "archived",
+    version: SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION,
+    historyHref: "/dashboard/simulations",
+    message: "Simulación archivada fuera del historial activo.",
   };
 }
 

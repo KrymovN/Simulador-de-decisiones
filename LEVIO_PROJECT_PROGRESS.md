@@ -98,7 +98,7 @@ V1 Complete Readiness    ████░░░░░░ 45% estimated
   configuration and production user-flow/readiness validation remain Block B/E
   work; separately approved history/revision lifecycle events remain deferred.
 - Current Block B status: Real User Account Runtime is Foundation Complete /
-  B6 Complete. B1 Supabase Auth Configuration Lock is complete as
+  B7 Complete. B1 Supabase Auth Configuration Lock is complete as
   documentation/configuration-contract work in
   `docs/stages/stage-04-runtime-architecture/stage-04-01-auth-runtime/LEVIO_BLOCK_B1_SUPABASE_AUTH_CONFIGURATION_LOCK.md`.
 - B1 locked the required Supabase Auth Site URL, callback URL, redirect
@@ -141,6 +141,15 @@ V1 Complete Readiness    ████░░░░░░ 45% estimated
   client owner injection, and do not expose provider ids or Supabase clients
   to dashboard UI; and `npm run
   quality:block-b-account-owned-simulation-persistence` is added.
+- B7 Account-Owned Dashboard Simulation Surface Validation реализован:
+  `/dashboard/simulations` and `/dashboard/simulations/[id]` remain dynamic
+  server surfaces over the saved-simulation product boundary; authenticated
+  users list/open only owner-scoped active saved simulations; invalid,
+  archived, missing, or cross-owner records map to controlled states; archive
+  is exposed only through a server action over the same account-owned runtime;
+  dashboard simulation UI receives no Supabase clients, raw sessions, provider
+  references, owner ids, principal ids, or raw database/provider errors; and
+  `npm run quality:block-b-dashboard-simulation-surface` is added.
 - Remaining Block B work: real remote Supabase project/email delivery evidence,
   production-like user-flow validation, and full Block B quality/closure
   evidence.

@@ -110,6 +110,16 @@ Saved simulation save/list/load/reopen/archive remain owner-scoped to canonical
 expose provider ids, Supabase clients, raw sessions, or database errors to
 dashboard UI. The dedicated B6 gate is
 `npm run quality:block-b-account-owned-simulation-persistence`.
+B7 Account-Owned Dashboard Simulation Surface Validation is now implemented.
+`/dashboard/simulations` and `/dashboard/simulations/[id]` remain dynamic
+server surfaces over the saved-simulation product boundary. Authenticated users
+list/open only owner-scoped active saved simulations; invalid, archived,
+missing, or cross-owner records map to controlled states; and archive is
+available only through a server action over the same account-owned runtime.
+Dashboard simulation UI still does not receive Supabase clients, raw sessions,
+provider references, owner ids, principal ids, or raw database/provider
+errors. The dedicated B7 gate is
+`npm run quality:block-b-dashboard-simulation-surface`.
 Export/delete integration remains Block C User Data Management work. Real
 remote Supabase project execution/email delivery evidence and broader
 production user-flow QA remain Block B/E work.

@@ -117,9 +117,18 @@ saved simulation save/list/load/reopen/archive remain owner-scoped to canonical
 expose provider ids, Supabase clients, raw sessions, or database errors to
 dashboard UI; and `npm run
 quality:block-b-account-owned-simulation-persistence` covers the B6 boundary.
-Broader production user-flow QA and production release readiness remain Block
-B/E work. Separately approved history/revision lifecycle events remain
-deferred until explicitly scoped.
+B7 Account-Owned Dashboard Simulation Surface Validation is implemented:
+`/dashboard/simulations` and `/dashboard/simulations/[id]` remain dynamic
+server surfaces over the saved-simulation product boundary; authenticated users
+list/open only owner-scoped active saved simulations; invalid, archived,
+missing, or cross-owner records map to controlled states; archive is available
+only through a server action over the same account-owned runtime; dashboard
+simulation UI receives no Supabase clients, raw sessions, provider references,
+owner ids, principal ids, or raw database/provider errors; and `npm run
+quality:block-b-dashboard-simulation-surface` covers the B7 boundary. Broader
+production user-flow QA and production release readiness remain Block B/E
+work. Separately approved history/revision lifecycle events remain deferred
+until explicitly scoped.
 
 This state does not resolve Scale blockers, execute Scale, increase traffic,
 open Production Release, open Commercial Launch, connect Real AI, enable
