@@ -91,11 +91,21 @@ logout is idempotent while clearing Supabase auth state plus the legacy mock
 marker. No middleware is required for the current dashboard route shape because
 all protected dashboard pages are descendants of the guarded dashboard layout.
 The dedicated B4 gate is `npm run quality:block-b-session-lifecycle`.
+B5 Real Account State in Dashboard is now implemented. The dashboard layout
+remains the single boundary that obtains the authenticated account through the
+existing server-side guard, converts the normalized session into a
+dashboard-scoped account state, and provides it to dashboard UI through
+`DashboardAccountProvider`. Dashboard shell, profile, and security surfaces now
+read account/session display state from that dashboard account runtime instead
+of browser Supabase state or demo `userProfile` values. UI surfaces do not
+receive provider references, session ids, principal ids, or raw auth errors.
+Existing logout cleanup remains on the approved browser auth runtime. The
+dedicated B5 gate is `npm run quality:block-b-dashboard-account-state`.
 Export/delete integration remains Block C User Data Management work. Real
-remote Supabase project execution/email delivery evidence, account state,
-principal provisioning, and broader production user-flow QA remain Block B/E
-work. Separately approved history/revision lifecycle events remain deferred
-until explicitly scoped.
+remote Supabase project execution/email delivery evidence, principal
+provisioning, and broader production user-flow QA remain Block B/E work.
+Separately approved history/revision lifecycle events remain deferred until
+explicitly scoped.
 
 This checkpoint does not open Scale, increase traffic, open Production Release,
 open Commercial Launch, enable Real AI provider execution, add billing,

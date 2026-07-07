@@ -1,33 +1,37 @@
-import MockFeedbackButton from "./MockFeedbackButton";
+"use client";
 
-const sessions = [
-  {
-    device: "MacBook Air",
-    location: "Madrid, España",
-    state: "Sesión actual",
-  },
-  {
-    device: "iPhone",
-    location: "Dispositivo de ejemplo",
-    state: "Sin sincronización activa",
-  },
-];
+import MockFeedbackButton from "./MockFeedbackButton";
+import { useDashboardAccount } from "./dashboard/DashboardAccountProvider";
 
 export default function SecurityPanel() {
+  const { account } = useDashboardAccount();
+  const sessions = [
+    {
+      device: account.email,
+      location: "Cuenta autenticada",
+      state: account.sessionStatus === "active" ? "Sesión actual validada" : "Revisar sesión",
+    },
+    {
+      device: "Gestión futura",
+      location: "Dispositivo de ejemplo",
+      state: "Sin sincronización activa",
+    },
+  ];
+
   return (
     <div className="security-layout">
       <section className="dashboard-card section-frame">
         <p className="eyebrow">Protección en preparación</p>
-        <h2>Seguridad lista para futura autenticación real.</h2>
+        <h2>Seguridad conectada a la sesión validada.</h2>
         <div className="security-score" aria-label="Estado de protección futura">
           <span></span>
-          <strong>Protección preparada para demo</strong>
-          <p>Controles de acceso, sesión de ejemplo y futura autenticación en dos pasos.</p>
+          <strong>{account.accountState}</strong>
+          <p>Controles de acceso reales para la sesión actual; 2FA y gestión avanzada siguen preparados.</p>
         </div>
       </section>
 
       <section className="dashboard-card section-frame">
-        <h3>Sesión actual y ejemplo</h3>
+        <h3>Sesión actual</h3>
         <div className="session-list">
           {sessions.map((session) => (
             <div key={session.device}>

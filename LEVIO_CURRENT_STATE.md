@@ -99,6 +99,17 @@ quality:block-b-session-lifecycle` covers the B4 boundary. Middleware is not
 required for the current protected route shape because every dashboard route is
 under the guarded dashboard layout. Dashboard account state, Supabase user ->
 `levio_principals` provisioning/sync, broader production user-flow QA, and
+production release readiness remain Block B/E work. B5 Real Account State in
+Dashboard is implemented: the guarded dashboard layout is the single boundary
+that obtains the authenticated account, converts the normalized session into a
+dashboard-scoped account state, and provides it through
+`DashboardAccountProvider`; dashboard shell, profile, and security surfaces now
+read account/session display state from that provider instead of browser
+Supabase state or demo `userProfile`; provider references, session ids,
+principal ids, and raw auth errors are not exposed to dashboard UI; existing
+logout cleanup remains on the approved browser auth runtime; and `npm run
+quality:block-b-dashboard-account-state` covers the B5 boundary. Supabase user
+-> `levio_principals` provisioning/sync, broader production user-flow QA, and
 production release readiness remain Block B/E work. Separately approved
 history/revision lifecycle events remain deferred until explicitly scoped.
 

@@ -22,6 +22,7 @@ const sourcePaths = {
   dashboardHome: join(rootDir, "app", "dashboard", "page.tsx"),
   dashboardMemory: join(rootDir, "app", "dashboard", "memory", "page.tsx"),
   dashboardProfile: join(rootDir, "app", "dashboard", "profile", "page.tsx"),
+  dashboardProfileAccountState: join(rootDir, "components", "dashboard", "DashboardProfileAccountState.tsx"),
   dashboardPrivacy: join(rootDir, "app", "dashboard", "privacy", "page.tsx"),
   dashboardSecurity: join(rootDir, "app", "dashboard", "security", "page.tsx"),
   privacyPanel: join(rootDir, "components", "PrivacyPanel.tsx"),
@@ -201,7 +202,7 @@ function runLegalReadinessSourceChecks(sources) {
 function runDashboardPlaceholderSourceChecks(sources) {
   sourceIncludes(sources.dashboardLayout, "requireAuthenticatedDashboardSession", "Dashboard routes remain behind auth guard");
   sourceIncludes(sources.dashboardShell, "Vista preparada del motor de simulación de decisiones.", "Dashboard shell uses prepared-view positioning");
-  sourceIncludes(sources.dashboardShell, "Supabase Auth foundation", "Dashboard shell discloses auth foundation state");
+  sourceIncludes(sources.dashboardShell, "account.accountState", "Dashboard shell uses validated account runtime state");
   sourceIncludes(sources.dashboardShell, "Privacidad", "Dashboard privacy badge remains present");
   sourceIncludes(sources.dashboardShell, "Preparada", "Dashboard privacy badge avoids production-grade promise");
   sourceIncludes(sources.dashboardHome, "Vista preparada", "Dashboard home avoids personal-area promise");
@@ -210,13 +211,13 @@ function runDashboardPlaceholderSourceChecks(sources) {
   sourceIncludes(sources.dashboardMemory, "La memoria no es un chat ni una conversación guardada.", "Memory page avoids chat/history positioning");
   sourceIncludes(sources.dashboardMemory, "capa futura de contexto estratégico", "Memory page positions memory as future only");
   sourceIncludes(sources.dashboardMemory, "cuando exista backend y trazabilidad real", "Memory cleanup defers real backend");
-  sourceIncludes(sources.dashboardProfile, "Datos preparados de acceso", "Profile avoids account data promise");
-  sourceIncludes(sources.dashboardProfile, "Campo de contraseña futura", "Profile password field is future-only");
+  sourceIncludes(sources.dashboardProfileAccountState, "Datos preparados de acceso", "Profile avoids account data promise");
+  sourceIncludes(sources.dashboardProfileAccountState, "Campo de contraseña futura", "Profile password field is future-only");
   sourceIncludes(sources.dashboardPrivacy, "etapas productivas", "Privacy dashboard defers production controls");
   sourceIncludes(sources.dashboardSecurity, "cuando exista auth productivo", "Security dashboard defers production auth");
   sourceIncludes(sources.dashboardSecurity, "Contraseña de ejemplo", "Security password form is example-only");
-  sourceIncludes(sources.securityPanel, "Estado de protección futura", "Security panel avoids account-protection promise");
-  sourceIncludes(sources.securityPanel, "Protección preparada para demo", "Security panel discloses demo protection");
+  sourceIncludes(sources.securityPanel, "Sesión actual validada", "Security panel uses real account session state");
+  sourceIncludes(sources.securityPanel, "gestión avanzada siguen preparados", "Security panel keeps advanced controls deferred");
   sourceIncludes(sources.privacyPanel, "cuando exista backend productivo", "Privacy panel defers data deletion backend");
   sourceIncludes(sources.personalArea, "futura persistencia aprobada", "Personal area data defers persistence");
 }
