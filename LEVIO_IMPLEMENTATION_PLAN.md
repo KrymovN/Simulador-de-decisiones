@@ -1,6 +1,6 @@
 # LEVIO IMPLEMENTATION PLAN
 
-Date: 6 July 2026, Europe/Madrid.
+Date: 9 July 2026, Europe/Madrid.
 
 Status: Canonical V1 implementation comparison document.
 
@@ -30,6 +30,14 @@ stable comparison model between the current project state and the completed
 product state. It does not open Production Release, Commercial Launch, Scale
 Execution, Real AI execution, billing execution, analytics, tracking, or a new
 roadmap branch.
+
+The official roadmap remains the 15-Stage roadmap recorded in
+`LEVIO_PROJECT_PROGRESS.md`. Blocks A-F in this document are internal V1
+implementation comparison blocks only; they are not roadmap Stages, not a new
+project-management structure, and not authorization to expand the roadmap.
+The current V1 implementation focus is Stage 7 - User Data Controls. Current
+project progress is **84% overall** and Levio V1 Complete readiness is **47%
+estimated**.
 
 ## 1. Final Implementation Target
 
@@ -242,7 +250,7 @@ module, planning document, or readiness checklist as production completion.
 | --- | --- | --- | --- |
 | A. Decision Simulation Persistence Implementation | Completed | Stage 4.2 persistence runtime foundation is closed. `lib/persistence-runtime` exists with owner contracts, Supabase provider, runtime wiring, simulation record save, history append, and draft save/update services. The recent `Saved Decision Simulations Runtime Foundation` commit adds an internal `lib/saved-decision-simulations` runtime boundary for save/load/list over owner-scoped simulation records. `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md` defines the final Decision Simulation product domain model for A1. A2 Persistence Runtime Mapping is complete: internal runtime maps saved `simulation_records` into canonical Decision Simulation domain objects and supports owner-scoped save/list/load/reopen/archive through existing server-only Auth/Persistence boundaries. A3 Saved Decision Simulation History / Product Surface Integration is implemented through `/dashboard/simulations`, `/dashboard/simulations/[id]`, and the server-only saved simulations product-surface boundary. The bounded completed-simulation save-from-UI flow is implemented on the HomeSimulator completed result surface through the same server-only runtime boundary, with owner identity resolved from Auth -> `levio_principals`. Block A Closure Validation is accepted through `npm run quality:block-a-decision-simulation-persistence-closure`, 79/79 PASS. | No remaining Block A implementation work for the approved persistence scope. Export/delete integration belongs to Block C. Block B real-account runtime is closed for its approved scope. Separately approved history/revision lifecycle events remain deferred until explicitly scoped. |
 | B. Real User Account Runtime | Completed / Closure Accepted | Stage 4.1 auth runtime hardening exists. Supabase Auth boundary, browser auth boundary, server session validation, auth callback, protected dashboard layout, dashboard-only redirects, fail-closed protected access, magic-link login/register initiation, and client logout cleanup are implemented at foundation level. Block A already consumes authenticated session state through the approved saved-simulation product surface and resolves durable owners through `levio_principals`. B1 Supabase Auth Configuration Lock is complete in `docs/stages/stage-04-runtime-architecture/stage-04-01-auth-runtime/LEVIO_BLOCK_B1_SUPABASE_AUTH_CONFIGURATION_LOCK.md`. B2 Auth Action Boundary Completion is implemented and covered by `npm run quality:block-b-auth-action-boundary`. B3 Email Confirmation and Recovery Flow Validation is implemented and covered by `npm run quality:block-b-email-flow`. B4 Session Lifecycle and Protected Route Validation, B5 Real Account State in Dashboard, B6 Account-Owned Simulation Persistence Boundary, and B7 Account-Owned Dashboard Simulation Surface Validation are implemented and covered by their dedicated quality gates. Block B Closure evidence confirms real Supabase project validation, production email delivery, callback success, Supabase user creation, dashboard access after email confirmation, logout, and repeat sign-in reaching Supabase. The temporary Supabase diagnostic patch was removed. The final observed `over_email_send_rate_limit` / HTTP 429 response is a Supabase provider rate limit and not a Block B blocker. | No remaining Block B implementation or closure work for the approved real-account runtime scope. Export/delete integration belongs to Block C. Broader production readiness, operations, observability, security/privacy review, and release readiness belong to Block E/F. |
-| C. User Data Management | Foundation Complete | Stage 4.3 User Data Controls foundation is closed. Export, deletion, retention, consent, server workflow, runtime boundary, and persistence read adapter modules exist as internal foundations. | User-facing export/delete flows are not product-executable. Stored decision artifact controls are not integrated with account-bound product flows. Privacy/data-control legal blockers remain open for production. |
+| C. User Data Management | In Progress / C1-C2 Completed | Stage 4.3 User Data Controls foundation is closed. Export, deletion, retention, consent, server workflow, runtime boundary, and persistence read adapter modules exist as internal foundations. C1 account data export surface is complete in commit `904b4f5a835d09d621e2371b6c8f301c50e24069`: authenticated dashboard export JSON over owner-scoped saved simulations, with no client owner injection, no direct Supabase/env access from the route, and no deletion/retention mixing. C2 deletion planning surface is complete in commit `f42ea5f`: authenticated dashboard deletion planning JSON over owner-scoped saved simulations, with no deletion execution, hard delete, database writes, retention jobs, or account deletion orchestration. | Deletion execution, retention enforcement, broader drafts/history inclusion where approved, account lifecycle boundaries, privacy/data-control blockers, and production readiness remain open. |
 | D. Production AI Integration | Deferred | Stage 5.1, 5.2, 5.3, and 5.4 foundation work is closed. AI provider abstraction, Prompt Context foundation, quality/cost/safety validation, controlled integration preflight, boundary composition, and dry-run foundation exist. | Real provider SDK/env/key execution, model calls, Prompt Context -> AI Provider runtime path, Decision Engine post-provider validation, cost controls, error controls, and user-safe AI output path remain deferred. |
 | E. Product Validation & Production Readiness | In Progress | Stage 10 Product Quality Hardening is closed with deterministic preview gates for public simulator, public home, DecisionContext Builder, simulation pipeline runner, public adapter, observability, security, contract regression, HomeSimulator integration, trust readiness, and rendered public surface. Stage 15.4 aggregate verdict is NOT READY. | Full production user-flow QA, current pre-release gate reruns, observability/error tracking, infrastructure readiness, support readiness, incident/rollback decision authority, security/privacy review, and performance validation remain incomplete. |
 | F. Commercial Production | Foundation Complete / Deferred | Stage 4.4 subscription runtime foundation is closed. Stage 11 legal/trust layer, Stage 12 market readiness, Stage 13 closed beta planning, Stage 14 public launch readiness, and Stage 15 scale readiness planning are documented. | Billing provider, checkout, customer portal, webhooks, pricing/tax/legal approval, final legal documents, monitoring/logging/support, Production Release, Commercial Launch, and Scale Execution remain unopened or blocked. |
@@ -252,7 +260,7 @@ module, planning document, or readiness checklist as production completion.
 Percentages below are estimated, conservative, and evidence-based. They measure
 Levio V1 Complete, not documentation volume and not roadmap-stage count.
 
-Overall Levio V1 Completion: **45% estimated**
+Overall Levio V1 Completion: **47% estimated**
 
 Block A: Completed, **100% for approved persistence scope**, closed work:
 
@@ -318,9 +326,21 @@ Block B closure evidence:
 - `npm run quality:block-b-email-flow` and
   `npm run quality:block-b-auth-action-boundary` pass.
 
-Block C: Foundation Complete, **25% estimated**, remaining work:
+Block C: In Progress / C1-C2 Completed, **35% estimated**, closed work:
 
-- implement user-facing export/delete flows;
+- C1 account data export surface for authenticated dashboard users, exporting
+  owner-scoped saved simulations as JSON without client owner injection or
+  direct route-level Supabase/env access;
+- C2 deletion planning surface for authenticated dashboard users, exporting a
+  read-only deletion plan for owner-scoped saved simulations without deletion
+  execution, hard delete, database writes, retention jobs, or account deletion
+  orchestration.
+
+Remaining work:
+
+- implement only the next approved Stage 7 User Data Controls substep after
+  C2;
+- execute deletion only if separately approved within the roadmap scope;
 - include saved simulations, drafts, and history where approved;
 - enforce retention and deletion lifecycle behavior;
 - close privacy/data-control blockers;
@@ -375,45 +395,39 @@ Levio into AI Chat, an Answer Engine, or a generic assistant.
 
 ## 7. Current Next Correct Implementation Step
 
-Most recent implementation block: **Block A - Decision Simulation Persistence
-Implementation**.
+Current roadmap: **15 official Stages** as recorded in
+`LEVIO_PROJECT_PROGRESS.md`.
 
-Block A status: **Completed** for the approved persistence scope.
+Current roadmap/planning Stage: **Stage 15 - Scale**, bounded to
+documentation-only scale-readiness planning. Stage 15.5 is complete and Stage
+15.4 aggregate verdict remains NOT READY.
+
+Current V1 implementation focus: **Stage 7 - User Data Controls**.
+
+Most recent internal implementation substep: **Block C / C2 - deletion
+planning surface**, commit `f42ea5f`.
 
 Current evidence:
 
-- Stage 4.2 persistence runtime foundation exists;
-- Stage 4.1 auth runtime foundation exists;
-- Stage 4.3 user data controls foundation exists;
-- `Saved Decision Simulations Runtime Foundation` adds an internal save/load/list
-  runtime boundary for saved decision simulations;
-- `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md` completes A1 by
-  defining the final Decision Simulation product object, lifecycle, fields,
-  ownership model, constraints, and persistence requirements;
-- the first A2 runtime mapping subblock maps saved `simulation_records` into
-  canonical Decision Simulation domain objects and adds owner-scoped
-  save/list/load/reopen/archive capabilities without schema changes;
-- A3 connects the existing dashboard simulations routes to the server-only
-  saved simulations product-surface boundary for runtime-backed list,
-  detail/reopen, empty, auth, invalid-id, not-found, and controlled error
-  states;
-- the completed HomeSimulator result surface can now save completed Decision
-  Simulations through the server-only saved simulations action/runtime and
-  return users to `/dashboard/simulations`;
-- Block A Closure Validation is accepted through
-  `npm run quality:block-a-decision-simulation-persistence-closure`, 79/79
-  PASS;
+- Block A - Decision Simulation Persistence Implementation is complete for the
+  approved persistence scope;
+- Block B - Real User Account Runtime is complete / closure accepted for the
+  approved real-account runtime scope;
+- C1 account data export surface is complete in commit
+  `904b4f5a835d09d621e2371b6c8f301c50e24069`;
+- C2 deletion planning surface is complete in commit `f42ea5f`;
 - Stage 15.4 aggregate Scale verdict remains NOT READY;
 - Stage 15.5 blocker framework remains relevant for production/scale blockers.
 
 Next correct implementation step:
 
 No further Block A or Block B implementation task is currently required for
-their approved scopes. Future work requires separate approval and should remain
-bounded to the relevant block: Block C for export/delete over saved simulation
-records, Block E for broader production readiness validation, and Block F for
-commercial production readiness if later approved. Separately approved
-history/revision lifecycle events remain deferred until explicitly scoped.
+their approved scopes. The next implementation, if any, must remain inside
+Stage 7 User Data Controls and must be the next minimal approved substep after
+C2 within the existing export/delete/retention scope. This document does not
+create a new C substep name, new Stage, new Block, new roadmap branch, or
+automatic authorization for deletion writes, hard delete, retention jobs, or
+account deletion orchestration.
 
 Any next step must continue using the approved server-only boundaries and must
 not change the public `/api/simulate` contract unless separately approved.

@@ -62,8 +62,8 @@ Product Alignment        ██████████ 100%
 Foundation Readiness     ██████████ 100%
 Runtime Completion       ███████░░░ 65%
 Commercial Readiness     ███░░░░░░░ 25%
-Overall Project Progress ████████░░ 83%
-V1 Complete Readiness    ████░░░░░░ 45% estimated
+Overall Project Progress ████████░░ 84%
+V1 Complete Readiness    ████░░░░░░ 47% estimated
 ```
 
 ## Current Position
@@ -71,10 +71,18 @@ V1 Complete Readiness    ████░░░░░░ 45% estimated
 - Product Alignment завершен.
 - Levio остается Decision Simulation Engine.
 - Target runtime architecture зафиксирована и остается immutable.
+- Official roadmap: 15 Stages, from Stage 1 Idea / Positioning through Stage
+  15 Scale.
+- Current roadmap/planning Stage: Stage 15 - Scale. Stage 15.5 is complete as
+  documentation-only blocker resolution framework work, and Stage 15.4
+  aggregate verdict remains NOT READY.
+- Current V1 implementation focus: Stage 7 - User Data Controls.
 - `LEVIO_IMPLEMENTATION_PLAN.md` создан как canonical V1 implementation
   comparator.
-- Most recent implementation block: Block B - Real User Account Runtime.
-  Status: Completed / Closure Accepted for the approved account-runtime scope.
+- Blocks A/B/C are internal V1 implementation substeps only; they are not
+  roadmap Stages and not the project-management system.
+- Most recent internal implementation substep: Block C / C2 - deletion
+  planning surface, commit `f42ea5f`.
 - Block A1 Decision Simulation Domain Model завершён:
   `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`.
 - Block A2 Persistence Runtime Mapping завершён: internal runtime maps
@@ -94,8 +102,8 @@ V1 Complete Readiness    ████░░░░░░ 45% estimated
   `npm run quality:block-a-decision-simulation-persistence-closure`, 79/79
   PASS.
 - Remaining Block A implementation work: none for the approved persistence
-  scope. Export/delete integration remains Block C work; Block B real account
-  runtime is closed for its approved scope; broader production readiness
+  scope. Block B real account runtime is closed for its approved scope; broader
+  production readiness
   validation remains Block E work; separately approved history/revision
   lifecycle events remain deferred.
 - Current Block B status: Real User Account Runtime is Completed / Closure
@@ -160,6 +168,20 @@ V1 Complete Readiness    ████░░░░░░ 45% estimated
   limitation and not a Block B blocker. Closure-relevant gates passed:
   `npm run quality:block-b-email-flow` and
   `npm run quality:block-b-auth-action-boundary`.
+- Current Block C status: User Data Management is In Progress / C1-C2
+  Completed inside Stage 7 User Data Controls. C1 account data export surface
+  is complete in commit `904b4f5a835d09d621e2371b6c8f301c50e24069`;
+  authenticated dashboard users can export owner-scoped saved simulations as
+  JSON without client owner injection, direct route-level Supabase/env access,
+  or deletion/retention mixing. C2 deletion planning surface is complete in
+  commit `f42ea5f`; authenticated dashboard users can download a read-only
+  deletion planning JSON for owner-scoped saved simulations without deletion
+  execution, hard delete, database writes, retention jobs, or account deletion
+  orchestration.
+- Next implementation: the next minimal approved Stage 7 User Data Controls
+  substep after C2 within the existing export/delete/retention scope. This
+  does not create a new Stage, new Block, roadmap branch, or runtime
+  architecture change.
 - Recent product implementation foundation:
   `Saved Decision Simulations Runtime Foundation`, internal server/runtime
   boundary for save/load/list of saved Decision Simulations through approved
@@ -1425,6 +1447,15 @@ separate explicit approval.
 ## Current Roadmap Focus
 
 Stage 15.5 - Scale Blocker Resolution Framework Complete.
+
+The official roadmap contains 15 Stages. The current roadmap/planning Stage is
+Stage 15 - Scale, with Stage 15.4 NOT READY and Stage 15.5 complete as a
+blocker-resolution framework only. The current V1 implementation focus is
+Stage 7 - User Data Controls. Blocks A/B/C are internal V1 implementation
+substeps only and must not be used as the primary roadmap-management system.
+The next implementation, if approved, remains the next minimal Stage 7 User
+Data Controls substep after C2 within the existing export/delete/retention
+scope.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.

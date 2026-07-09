@@ -20,7 +20,7 @@ prevails unless it has been explicitly amended.
 
 ## Current Confirmed State
 
-Date: 6 July 2026, Europe/Madrid.
+Date: 9 July 2026, Europe/Madrid.
 
 Levio.es is a Decision Simulation Engine.
 
@@ -30,17 +30,21 @@ Levio is not an Answer Engine.
 
 Levio is not a Generic AI Assistant.
 
-The active checkpoint is post-Block B Closure for Real User Account Runtime.
+The official roadmap is the 15-Stage roadmap recorded in
+`LEVIO_PROJECT_PROGRESS.md` and governed by `LEVIO_PROJECT_CONSTITUTION.md`.
 Stage 15.5 - Scale Blocker Resolution Framework is complete. Stage 14 Public
 Launch is closed as a completed launch-readiness block. Stage 15 remains a
 bounded documentation and scale-readiness planning stage, with aggregate Stage
 15.4 verdict NOT READY. Stage 15.5 classifies all PARTIALLY VERIFIED and NOT
 VERIFIED prerequisites, groups them by engineering direction, defines
 objective closure conditions, required evidence, verification criteria,
-blocker dependencies, and required resolution order. The later `Saved Decision
-Simulations Runtime Foundation` commit adds an internal product runtime
-foundation for saved Decision Simulations. The canonical V1 comparison target
-now lives in `LEVIO_IMPLEMENTATION_PLAN.md`.
+blocker dependencies, and required resolution order.
+
+The current V1 implementation focus is Stage 7 - User Data Controls. Blocks
+A/B/C are internal V1 implementation substeps only; they are not roadmap
+Stages, not a replacement project-management system, and not permission to
+expand the roadmap. The canonical V1 comparison target lives in
+`LEVIO_IMPLEMENTATION_PLAN.md`.
 
 `LEVIO_IMPLEMENTATION_PLAN.md` defines Levio V1 Complete as a production-ready
 Decision Simulation Engine with real accounts, persistent/reopenable
@@ -51,7 +55,7 @@ It does not open Production Release, Commercial Launch, Scale Execution, Real
 AI execution, billing, analytics, tracking, or a new roadmap branch.
 
 Block A - Decision Simulation Persistence Implementation is complete for its
-approved persistence scope. Block B - Real User Account Runtime Closure is also
+approved persistence scope. Block B - Real User Account Runtime Closure is
 complete for its approved account-runtime scope. Production evidence confirms
 real Supabase project validation, production email delivery, callback success,
 Supabase user creation, dashboard access after email confirmation, logout, and
@@ -61,6 +65,23 @@ showed Supabase `over_email_send_rate_limit` with HTTP 429, which is an
 external provider rate limit and not a Block B blocker. The closure quality
 gates `npm run quality:block-b-email-flow` and
 `npm run quality:block-b-auth-action-boundary` passed.
+
+Stage 7 User Data Controls internal implementation has started through Block C.
+C1 account data export surface is complete in commit
+`904b4f5a835d09d621e2371b6c8f301c50e24069`: authenticated dashboard export
+JSON for owner-scoped saved simulations, with no client owner injection, no
+route-level Supabase/env access, and no deletion/retention mixing. C2 deletion
+planning surface is complete in commit `f42ea5f`: authenticated deletion
+planning JSON for owner-scoped saved simulations, with no deletion execution,
+hard delete, database writes, retention jobs, or account deletion
+orchestration.
+
+Current project progress is **84% overall**. Levio V1 Complete readiness is
+**47% estimated**. The next implementation remains within Stage 7 User Data
+Controls: the next minimal approved substep after C2 inside the existing
+export/delete/retention scope. It must be determined from
+`LEVIO_IMPLEMENTATION_PLAN.md` before code and must not create a new Stage,
+new Block, new roadmap branch, or runtime architecture change.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as foundation-only preflight, runtime
@@ -1444,6 +1465,10 @@ Allowed at current closure:
   Builder -> `runSimulationPipeline` -> `SimulationResponseV2Draft` -> Public
   Adapter while preserving the `simulate-api-v1-mock` envelope;
 - canonical owner model based on `levio_principals.principal_id`;
+- authenticated dashboard account data export JSON for owner-scoped saved
+  simulations;
+- authenticated dashboard deletion planning JSON for owner-scoped saved
+  simulations, planning-only and read-only;
 - fail-closed behavior;
 - deterministic validation functions;
 - no Real AI, provider, auth, billing, persistence, subscription, or UI
@@ -1452,14 +1477,13 @@ Allowed at current closure:
 Not allowed or not present:
 
 - public User Data Controls API;
-- Export UI;
-- Deletion UI;
-- dashboard data-control workflows;
-- real export package generation;
-- storage/download links;
+- export package generation beyond the approved C1 saved-simulation JSON
+  download surface;
+- storage/download links beyond direct dashboard JSON downloads;
 - deletion writes;
 - hard delete;
 - account deletion orchestration;
+- retention jobs;
 - production Supabase read provider for User Data Controls;
 - OpenAI SDK;
 - real AI provider SDK;

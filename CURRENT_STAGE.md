@@ -22,18 +22,21 @@ prevails unless it has been explicitly amended.
 
 ## Active Checkpoint
 
-Post-Stage 15.5 V1 Implementation Plan Baseline.
+Post-Stage 15.5 / Stage 7 User Data Controls C2 Baseline.
 
-Status: Stage 15.5 is complete as documentation-only Scale blocker resolution
-framework work. Stage 15 remains a bounded scale-readiness planning stage, and
-Stage 15.4 aggregate verdict remains NOT READY. The later `Saved Decision
-Simulations Runtime Foundation` commit adds an internal server/runtime
-foundation for saving, loading, and listing saved Decision Simulations through
-approved Auth/Persistence boundaries. `LEVIO_IMPLEMENTATION_PLAN.md` is now the
-canonical V1 implementation comparator. It defines Levio V1 Complete and maps
-the current project state against Blocks A-F. Block A - Decision Simulation
-Persistence Implementation is now complete for its approved persistence scope
-after closure validation.
+Status: the official roadmap remains the 15-Stage roadmap recorded in
+`LEVIO_PROJECT_PROGRESS.md`. Stage 15.5 is complete as documentation-only Scale
+blocker resolution framework work. Stage 15 remains a bounded scale-readiness
+planning stage, and Stage 15.4 aggregate verdict remains NOT READY.
+`LEVIO_IMPLEMENTATION_PLAN.md` is the canonical V1 implementation comparator
+within the higher-level roadmap governance. It defines Levio V1 Complete and
+maps the current project state against internal Blocks A-F. Blocks A/B/C are
+internal V1 implementation substeps only; they are not roadmap Stages and not
+the project-management system.
+
+Current V1 implementation focus is Stage 7 - User Data Controls. Block A -
+Decision Simulation Persistence Implementation is complete for its approved
+persistence scope after closure validation.
 Block A1 Decision Simulation Domain Model is complete as architecture-only work
 under `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`. Block A2
 Persistence Runtime Mapping is complete as internal runtime mapping over
@@ -129,11 +132,23 @@ sign-in reaches Supabase. The temporary Supabase diagnostic patch was removed.
 The final observed `over_email_send_rate_limit` / HTTP 429 response is a
 Supabase provider rate limit and not a Block B blocker. The closure-relevant
 quality gates `npm run quality:block-b-email-flow` and
-`npm run quality:block-b-auth-action-boundary` pass. Export/delete integration
-remains Block C User Data Management work, and broader production readiness
-remains Block E work.
+`npm run quality:block-b-auth-action-boundary` pass. Broader production
+readiness remains Block E work.
 Separately approved history/revision lifecycle events remain deferred until
 explicitly scoped.
+
+Block C - User Data Management is in progress inside Stage 7 User Data
+Controls. C1 account data export surface is complete in commit
+`904b4f5a835d09d621e2371b6c8f301c50e24069`: authenticated dashboard export
+JSON over owner-scoped saved simulations, with no client owner injection, no
+direct Supabase/env route access, and no deletion/retention mixing. C2 deletion
+planning surface is complete in commit `f42ea5f`: authenticated dashboard
+deletion planning JSON over owner-scoped saved simulations, with no deletion
+execution, hard delete, database writes, retention jobs, or account deletion
+orchestration. Current project progress is **84% overall** and Levio V1
+Complete readiness is **47% estimated**. The next implementation remains the
+next minimal approved Stage 7 User Data Controls substep after C2 inside the
+existing export/delete/retention scope.
 
 This checkpoint does not open Scale, increase traffic, open Production Release,
 open Commercial Launch, enable Real AI provider execution, add billing,
@@ -1779,6 +1794,11 @@ rollback.
 
 ## Next Allowed Roadmap Step
 
+The official roadmap remains the 15-Stage roadmap. Stage 15 is the current
+roadmap/planning Stage, while the current V1 implementation focus is Stage 7 -
+User Data Controls. Blocks A/B/C are internal V1 implementation substeps only,
+not roadmap Stages.
+
 Stage 15.5 - Scale Blocker Resolution Framework is complete.
 
 Stage 14 is closed. Stage 15 is the next official roadmap stage after Stage
@@ -1796,6 +1816,11 @@ closing blockers.
 Stage 15.5 does not resolve blockers. Any later blocker remediation, Scale
 execution, Production Release, Commercial Launch, implementation work, audit,
 roadmap change, or public-contract change requires separate explicit approval.
+
+The next implementation, if approved, remains the next minimal Stage 7 User
+Data Controls substep after C2 within the existing export/delete/retention
+scope. This does not create a new Stage, new Block, roadmap branch, or runtime
+architecture change.
 
 Scale execution, Production Release, Commercial Launch, Real AI execution,
 production auth/account/persistence, subscription/billing/commercial runtime,

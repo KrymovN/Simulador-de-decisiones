@@ -22,21 +22,24 @@ prevails unless it has been explicitly amended.
 
 ## Confirmed Project Position
 
-Date: 6 July 2026, Europe/Madrid.
+Date: 9 July 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
-The current confirmed state is post-Stage 15.5 V1 implementation planning.
-Stage 15.5 - Scale Blocker Resolution Framework is complete. Stage 14 Public
-Launch is closed as a completed launch-readiness block. Stage 15 remains a
-bounded documentation and scale-readiness planning stage, and Stage 15.4
-aggregate verdict remains NOT READY. The later `Saved Decision Simulations
-Runtime Foundation` commit adds an internal server/runtime foundation for
-saving, loading, and listing saved Decision Simulations through approved
-Auth/Persistence boundaries. `LEVIO_IMPLEMENTATION_PLAN.md` is now the
-canonical V1 implementation comparator. Block A - Decision Simulation
-Persistence Implementation is now complete for its approved persistence scope
-after closure validation.
+The current confirmed state is post-Stage 15.5 and post-Stage 7 User Data
+Controls C2. The official roadmap remains the 15-Stage roadmap recorded in
+`LEVIO_PROJECT_PROGRESS.md`. Stage 15.5 - Scale Blocker Resolution Framework
+is complete. Stage 14 Public Launch is closed as a completed launch-readiness
+block. Stage 15 remains a bounded documentation and scale-readiness planning
+stage, and Stage 15.4 aggregate verdict remains NOT READY.
+`LEVIO_IMPLEMENTATION_PLAN.md` is the canonical V1 implementation comparator
+inside the higher-level roadmap governance. Blocks A/B/C are internal V1
+implementation substeps only; they are not roadmap Stages and not a replacement
+project-management system.
+
+Current V1 implementation focus is Stage 7 - User Data Controls. Block A -
+Decision Simulation Persistence Implementation is complete for its approved
+persistence scope after closure validation.
 Block A1 Decision Simulation Domain Model is complete as architecture-only work
 under `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`. Block A2
 Persistence Runtime Mapping is complete: `simulation_records` are mapped into
@@ -137,6 +140,21 @@ provider rate limit and not a Block B blocker. The closure-relevant gates
 `npm run quality:block-b-email-flow` and
 `npm run quality:block-b-auth-action-boundary` pass. Separately approved
 history/revision lifecycle events remain deferred until explicitly scoped.
+
+Block C - User Data Management is in progress inside Stage 7 User Data
+Controls. C1 account data export surface is complete in commit
+`904b4f5a835d09d621e2371b6c8f301c50e24069`: authenticated dashboard export
+JSON over owner-scoped saved simulations, with no client owner injection, no
+direct Supabase/env route access, and no deletion/retention mixing. C2 deletion
+planning surface is complete in commit `f42ea5f`: authenticated dashboard
+deletion planning JSON over owner-scoped saved simulations, with no deletion
+execution, hard delete, database writes, retention jobs, or account deletion
+orchestration.
+
+Current project progress is **84% overall**. Levio V1 Complete readiness is
+**47% estimated**. The next implementation remains the next minimal approved
+Stage 7 User Data Controls substep after C2 inside the existing export/delete/
+retention scope.
 
 This state does not resolve Scale blockers, execute Scale, increase traffic,
 open Production Release, open Commercial Launch, connect Real AI, enable
@@ -1412,6 +1430,11 @@ observability, and rollback planning.
 
 ## Next Roadmap Step
 
+The official roadmap remains the 15-Stage roadmap. Stage 15 is the current
+roadmap/planning Stage, while the current V1 implementation focus is Stage 7 -
+User Data Controls. Blocks A/B/C are internal V1 implementation substeps only,
+not roadmap Stages.
+
 Stage 15.5 - Scale Blocker Resolution Framework is complete.
 
 Stage 14 is closed. Stage 15 is the next official roadmap stage after Stage
@@ -1434,6 +1457,11 @@ criteria, dependencies, and required resolution order. Stage 15.5 does not
 resolve blockers. Any later blocker remediation, Scale execution, Production
 Release, Commercial Launch, implementation work, audit, roadmap change, or
 public-contract change requires separate explicit approval.
+
+The next implementation, if approved, remains the next minimal Stage 7 User
+Data Controls substep after C2 within the existing export/delete/retention
+scope. This does not create a new Stage, new Block, roadmap branch, or runtime
+architecture change.
 
 Levio must remain a Decision Simulation Engine and must not create AI Chat,
 Answer Engine, Generic Assistant, direct AI-to-user behavior, model calls,
