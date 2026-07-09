@@ -39,6 +39,16 @@ The current V1 implementation focus is Stage 7 - User Data Controls. Current
 project progress is **84% overall** and Levio V1 Complete readiness is **47%
 estimated**.
 
+The approved high-level path to **LEVIO V1 COMPLETE** is:
+Decision Simulation Persistence -> Real User Account Runtime -> User Data
+Management -> Production AI Integration -> Product Validation & Production
+Readiness -> Commercial Production -> Production Release -> Commercial Launch
+-> Scale Execution -> LEVIO V1 COMPLETE. This path is a V1 completion map
+aligned to the official 15-Stage roadmap; it is not a new roadmap, does not
+replace the 15-Stage roadmap, does not create new Stages or Blocks, and does
+not authorize Production Release, Commercial Launch, Scale Execution, Real AI
+execution, billing, analytics, tracking, or public-contract changes by itself.
+
 ## 1. Final Implementation Target
 
 Final target:
@@ -65,6 +75,10 @@ The final implementation target is the complete product state above: real
 runtime, real account ownership, persistent decision simulation objects, user
 data controls, internal Real AI execution, validation, operations, and optional
 commercial production capability.
+
+The A-F implementation blocks below are the engineering sequence for reaching
+that target, followed only after separate approval by Production Release,
+Commercial Launch, Scale Execution, and then LEVIO V1 COMPLETE.
 
 ## 2. Immutable Product Architecture
 
@@ -373,25 +387,20 @@ Block F: Foundation Complete / Deferred, **15% estimated**, remaining work:
 
 ## 6. Next Action Rule
 
-At the start of every future implementation block, compare:
+At the start of every future implementation cycle:
 
-- `CURRENT_STAGE.md`;
-- `LEVIO_CURRENT_STATE.md`;
-- `LEVIO_PROJECT_PROGRESS.md`;
-- `LEVIO_IMPLEMENTATION_PLAN.md`.
+1. Determine the current implementation from `LEVIO_IMPLEMENTATION_PLAN.md`.
+2. Verify it against the current project state in `CURRENT_STAGE.md`,
+   `LEVIO_CURRENT_STATE.md`, and `LEVIO_PROJECT_PROGRESS.md`, under the
+   authority of `LEVIO_PROJECT_CONSTITUTION.md` and `PROJECT_CONTEXT.md`.
+3. Implement only the next minimal roadmap-aligned implementation.
+4. Update only the necessary project-control documents.
+5. Repeat this cycle until LEVIO V1 COMPLETE.
 
-Then identify:
-
-- current block;
-- completed work;
-- remaining work;
-- blockers;
-- next implementation step;
-- whether the step is product implementation, runtime implementation, QA,
-  documentation, or commercial readiness.
-
-The comparison must preserve the immutable architecture and must not convert
-Levio into AI Chat, an Answer Engine, or a generic assistant.
+The comparison must preserve the immutable architecture, preserve the official
+15-Stage roadmap, avoid project-control reorganization unless an objective
+contradiction is found, and must not convert Levio into AI Chat, an Answer
+Engine, or a generic assistant.
 
 ## 7. Current Next Correct Implementation Step
 
@@ -496,8 +505,11 @@ Confirmed closure boundaries:
 - Dedicated B2/B3/B4/B5/B6/B7 quality gates now cover auth action redirects, email
   callback/recovery states, protected dashboard routes, session lifecycle,
   logout cleanup, dashboard account state, and account-owned saved-simulation
-  persistence plus dashboard saved-simulation surface validation. A full Block
-  B closure gate for real-provider evidence is still missing.
+  persistence plus dashboard saved-simulation surface validation. Block B
+  Closure evidence is accepted for the approved real-account runtime scope:
+  real Supabase project validation, production email delivery, callback
+  success, Supabase user creation, dashboard access after email confirmation,
+  logout, and repeat sign-in reaching Supabase are confirmed.
 
 Recommended Block B implementation sequence:
 
@@ -573,7 +585,8 @@ Recommended Block B implementation sequence:
    quality:block-b-account-owned-simulation-persistence`.
 
 7. **B7 Block B Quality Gate and Closure Evidence**
-   Status: complete for the account-owned dashboard simulation surface slice.
+   Status: complete / closure accepted for the approved real-account runtime
+   scope.
    Dashboard simulations routes remain dynamic server surfaces over the
    saved-simulation product boundary. The history surface lists only
    owner-scoped active saved simulations, detail/reopen maps missing,
@@ -582,12 +595,12 @@ Recommended Block B implementation sequence:
    runtime boundary. The dedicated gate is `npm run
    quality:block-b-dashboard-simulation-surface`.
 
-   Add only the necessary auth/account quality checks for the real account
-   lifecycle: unauthenticated protected-route denial, authenticated access,
+   The necessary auth/account checks for the approved real account lifecycle
+   are complete: unauthenticated protected-route denial, authenticated access,
    callback errors, recovery policy, logout/session invalidation, principal
-   provisioning, client owner spoof rejection, and saved-simulation ownership
-   integration. Block B can close only after these checks and real-provider
-   configuration evidence pass.
+   provisioning, client owner spoof rejection, saved-simulation ownership
+   integration, and real-provider configuration/evidence. No further Block B
+   implementation or closure work remains for the approved scope.
 
 ## 8. Levio V1 Complete Criteria
 

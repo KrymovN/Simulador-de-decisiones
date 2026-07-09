@@ -40,6 +40,13 @@ project-management system.
 Current V1 implementation focus is Stage 7 - User Data Controls. Block A -
 Decision Simulation Persistence Implementation is complete for its approved
 persistence scope after closure validation.
+The approved high-level path to LEVIO V1 COMPLETE is Decision Simulation
+Persistence -> Real User Account Runtime -> User Data Management -> Production
+AI Integration -> Product Validation & Production Readiness -> Commercial
+Production -> Production Release -> Commercial Launch -> Scale Execution ->
+LEVIO V1 COMPLETE. This is a V1 completion map aligned to the official
+15-Stage roadmap; it is not a new roadmap, new Stage/Block structure, or
+execution authorization.
 Block A1 Decision Simulation Domain Model is complete as architecture-only work
 under `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`. Block A2
 Persistence Runtime Mapping is complete: `simulation_records` are mapped into
@@ -1434,6 +1441,13 @@ The official roadmap remains the 15-Stage roadmap. Stage 15 is the current
 roadmap/planning Stage, while the current V1 implementation focus is Stage 7 -
 User Data Controls. Blocks A/B/C are internal V1 implementation substeps only,
 not roadmap Stages.
+
+The V1 completion map remains: Decision Simulation Persistence -> Real User
+Account Runtime -> User Data Management -> Production AI Integration ->
+Product Validation & Production Readiness -> Commercial Production ->
+Production Release -> Commercial Launch -> Scale Execution -> LEVIO V1
+COMPLETE. This map does not replace the official roadmap and does not approve
+any execution gate.
 
 Stage 15.5 - Scale Blocker Resolution Framework is complete.
 

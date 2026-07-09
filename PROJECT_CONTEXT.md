@@ -54,6 +54,14 @@ security, legal, privacy, support, rollback, monitoring, and scale readiness.
 It does not open Production Release, Commercial Launch, Scale Execution, Real
 AI execution, billing, analytics, tracking, or a new roadmap branch.
 
+The approved high-level path to **LEVIO V1 COMPLETE** is:
+Decision Simulation Persistence -> Real User Account Runtime -> User Data
+Management -> Production AI Integration -> Product Validation & Production
+Readiness -> Commercial Production -> Production Release -> Commercial Launch
+-> Scale Execution -> LEVIO V1 COMPLETE. This path is not a new roadmap, does
+not replace the 15-Stage roadmap, does not create new Stages or Blocks, and
+does not authorize any execution gate by itself.
+
 Block A - Decision Simulation Persistence Implementation is complete for its
 approved persistence scope. Block B - Real User Account Runtime Closure is
 complete for its approved account-runtime scope. Production evidence confirms

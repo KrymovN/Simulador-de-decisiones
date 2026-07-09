@@ -35,6 +35,13 @@ Canonical V1 implementation comparison is now defined in
 Levio V1 Complete criteria, implementation Blocks A-F, current block mapping,
 and the conservative V1 completion estimate.
 
+The approved high-level path to LEVIO V1 COMPLETE is Decision Simulation
+Persistence -> Real User Account Runtime -> User Data Management -> Production
+AI Integration -> Product Validation & Production Readiness -> Commercial
+Production -> Production Release -> Commercial Launch -> Scale Execution ->
+LEVIO V1 COMPLETE. This path is not a new roadmap and does not replace the
+15-Stage Source Plan below.
+
 ## Source Plan
 
 Базовый план взят из `Levio.es.rtf`:
@@ -73,6 +80,11 @@ V1 Complete Readiness    ████░░░░░░ 47% estimated
 - Target runtime architecture зафиксирована и остается immutable.
 - Official roadmap: 15 Stages, from Stage 1 Idea / Positioning through Stage
   15 Scale.
+- V1 completion map: Decision Simulation Persistence -> Real User Account
+  Runtime -> User Data Management -> Production AI Integration -> Product
+  Validation & Production Readiness -> Commercial Production -> Production
+  Release -> Commercial Launch -> Scale Execution -> LEVIO V1 COMPLETE. This
+  is not a new roadmap and does not authorize any execution gate.
 - Current roadmap/planning Stage: Stage 15 - Scale. Stage 15.5 is complete as
   documentation-only blocker resolution framework work, and Stage 15.4
   aggregate verdict remains NOT READY.
