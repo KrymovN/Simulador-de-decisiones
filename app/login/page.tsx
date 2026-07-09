@@ -74,9 +74,7 @@ export default function LoginPage() {
       });
 
       if (signInError) {
-        setError(
-          `Supabase diagnostic: code=${signInError.code ?? "unknown"} status=${signInError.status ?? "unknown"} message=${signInError.message || "unknown"}`,
-        );
+        setError("No se pudo iniciar la sesión. Inténtalo de nuevo.");
         return;
       }
     } catch {
