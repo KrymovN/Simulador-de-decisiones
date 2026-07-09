@@ -240,8 +240,8 @@ module, planning document, or readiness checklist as production completion.
 
 | Block | Current status | Evidence | Remaining work |
 | --- | --- | --- | --- |
-| A. Decision Simulation Persistence Implementation | Completed | Stage 4.2 persistence runtime foundation is closed. `lib/persistence-runtime` exists with owner contracts, Supabase provider, runtime wiring, simulation record save, history append, and draft save/update services. The recent `Saved Decision Simulations Runtime Foundation` commit adds an internal `lib/saved-decision-simulations` runtime boundary for save/load/list over owner-scoped simulation records. `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md` defines the final Decision Simulation product domain model for A1. A2 Persistence Runtime Mapping is complete: internal runtime maps saved `simulation_records` into canonical Decision Simulation domain objects and supports owner-scoped save/list/load/reopen/archive through existing server-only Auth/Persistence boundaries. A3 Saved Decision Simulation History / Product Surface Integration is implemented through `/dashboard/simulations`, `/dashboard/simulations/[id]`, and the server-only saved simulations product-surface boundary. The bounded completed-simulation save-from-UI flow is implemented on the HomeSimulator completed result surface through the same server-only runtime boundary, with owner identity resolved from Auth -> `levio_principals`. Block A Closure Validation is accepted through `npm run quality:block-a-decision-simulation-persistence-closure`, 79/79 PASS. | No remaining Block A implementation work for the approved persistence scope. Export/delete integration belongs to Block C. Real account runtime configuration and production account lifecycle validation belong to Block B/E. Separately approved history/revision lifecycle events remain deferred until explicitly scoped. |
-| B. Real User Account Runtime | Foundation Complete / B7 Complete | Stage 4.1 auth runtime hardening exists. Supabase Auth boundary, browser auth boundary, server session validation, auth callback, protected dashboard layout, dashboard-only redirects, fail-closed protected access, magic-link login/register initiation, and client logout cleanup are implemented at foundation level. Block A already consumes authenticated session state through the approved saved-simulation product surface and resolves durable owners through `levio_principals`. B1 Supabase Auth Configuration Lock is complete in `docs/stages/stage-04-runtime-architecture/stage-04-01-auth-runtime/LEVIO_BLOCK_B1_SUPABASE_AUTH_CONFIGURATION_LOCK.md`. B2 Auth Action Boundary Completion is implemented: login/register now use a server-only auth action and `buildAuthRedirectUrl()` to construct `{origin}/auth/callback?next=...` from approved auth config instead of uncontrolled `window.location.origin`; post-auth destinations remain dashboard-only; password recovery remains controlled inactive; logout keeps Supabase sign-out plus legacy mock marker cleanup. `npm run quality:block-b-auth-action-boundary` covers the B2 boundary. B3 Email Confirmation and Recovery Flow Validation is implemented at runtime/source-validation level: auth callback failures normalize to controlled invalid, expired, cancelled, missing-code, exchange-failed, or provider-error states; login/register expose a controlled email-pending state after approved OTP initiation; password recovery remains explicitly inactive with no recovery email; and `npm run quality:block-b-email-flow` covers the B3 boundary. B4 Session Lifecycle and Protected Route Validation is implemented at runtime/source-validation level: server session validation uses `getSession()` plus `getUser()`, maps missing/invalid/expired/revoked sessions to controlled states, keeps dashboard descendants under the force-dynamic layout guard, treats middleware as unnecessary for the current route shape, bounds browser refresh to Supabase `onAuthStateChange`, and makes logout idempotent while clearing Supabase plus legacy mock state. `npm run quality:block-b-session-lifecycle` covers the B4 boundary. B5 Real Account State in Dashboard is implemented: dashboard layout remains the single authenticated-account boundary, maps the normalized session into dashboard account state, provides it through `DashboardAccountProvider`, and dashboard shell/profile/security consume that common runtime without direct Supabase calls or provider/internal identifiers. `npm run quality:block-b-dashboard-account-state` covers the B5 boundary. B6 Account-Owned Simulation Persistence Boundary is implemented: the server-only persistence provider can resolve, provision, and sync `levio_principals` for authenticated Supabase users before saved-simulation preflight; saved simulation save/list/load/reopen/archive continue to use canonical `levio_principals.principal_id` ownership without exposing provider ids or Supabase clients to dashboard UI. `npm run quality:block-b-account-owned-simulation-persistence` covers the B6 boundary. B7 Account-Owned Dashboard Simulation Surface Validation is implemented: `/dashboard/simulations` and `/dashboard/simulations/[id]` remain dynamic server surfaces over the saved-simulation product boundary, authenticated users list/open only owner-scoped active records, archived/cross-owner/invalid records map to controlled states, and archive uses a server action over the same account-owned runtime without exposing owner/provider internals to UI. `npm run quality:block-b-dashboard-simulation-surface` covers the B7 boundary. | Real Supabase project execution/validation, production email delivery evidence, and full Block B closure evidence are not complete. |
+| A. Decision Simulation Persistence Implementation | Completed | Stage 4.2 persistence runtime foundation is closed. `lib/persistence-runtime` exists with owner contracts, Supabase provider, runtime wiring, simulation record save, history append, and draft save/update services. The recent `Saved Decision Simulations Runtime Foundation` commit adds an internal `lib/saved-decision-simulations` runtime boundary for save/load/list over owner-scoped simulation records. `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md` defines the final Decision Simulation product domain model for A1. A2 Persistence Runtime Mapping is complete: internal runtime maps saved `simulation_records` into canonical Decision Simulation domain objects and supports owner-scoped save/list/load/reopen/archive through existing server-only Auth/Persistence boundaries. A3 Saved Decision Simulation History / Product Surface Integration is implemented through `/dashboard/simulations`, `/dashboard/simulations/[id]`, and the server-only saved simulations product-surface boundary. The bounded completed-simulation save-from-UI flow is implemented on the HomeSimulator completed result surface through the same server-only runtime boundary, with owner identity resolved from Auth -> `levio_principals`. Block A Closure Validation is accepted through `npm run quality:block-a-decision-simulation-persistence-closure`, 79/79 PASS. | No remaining Block A implementation work for the approved persistence scope. Export/delete integration belongs to Block C. Block B real-account runtime is closed for its approved scope. Separately approved history/revision lifecycle events remain deferred until explicitly scoped. |
+| B. Real User Account Runtime | Completed / Closure Accepted | Stage 4.1 auth runtime hardening exists. Supabase Auth boundary, browser auth boundary, server session validation, auth callback, protected dashboard layout, dashboard-only redirects, fail-closed protected access, magic-link login/register initiation, and client logout cleanup are implemented at foundation level. Block A already consumes authenticated session state through the approved saved-simulation product surface and resolves durable owners through `levio_principals`. B1 Supabase Auth Configuration Lock is complete in `docs/stages/stage-04-runtime-architecture/stage-04-01-auth-runtime/LEVIO_BLOCK_B1_SUPABASE_AUTH_CONFIGURATION_LOCK.md`. B2 Auth Action Boundary Completion is implemented and covered by `npm run quality:block-b-auth-action-boundary`. B3 Email Confirmation and Recovery Flow Validation is implemented and covered by `npm run quality:block-b-email-flow`. B4 Session Lifecycle and Protected Route Validation, B5 Real Account State in Dashboard, B6 Account-Owned Simulation Persistence Boundary, and B7 Account-Owned Dashboard Simulation Surface Validation are implemented and covered by their dedicated quality gates. Block B Closure evidence confirms real Supabase project validation, production email delivery, callback success, Supabase user creation, dashboard access after email confirmation, logout, and repeat sign-in reaching Supabase. The temporary Supabase diagnostic patch was removed. The final observed `over_email_send_rate_limit` / HTTP 429 response is a Supabase provider rate limit and not a Block B blocker. | No remaining Block B implementation or closure work for the approved real-account runtime scope. Export/delete integration belongs to Block C. Broader production readiness, operations, observability, security/privacy review, and release readiness belong to Block E/F. |
 | C. User Data Management | Foundation Complete | Stage 4.3 User Data Controls foundation is closed. Export, deletion, retention, consent, server workflow, runtime boundary, and persistence read adapter modules exist as internal foundations. | User-facing export/delete flows are not product-executable. Stored decision artifact controls are not integrated with account-bound product flows. Privacy/data-control legal blockers remain open for production. |
 | D. Production AI Integration | Deferred | Stage 5.1, 5.2, 5.3, and 5.4 foundation work is closed. AI provider abstraction, Prompt Context foundation, quality/cost/safety validation, controlled integration preflight, boundary composition, and dry-run foundation exist. | Real provider SDK/env/key execution, model calls, Prompt Context -> AI Provider runtime path, Decision Engine post-provider validation, cost controls, error controls, and user-safe AI output path remain deferred. |
 | E. Product Validation & Production Readiness | In Progress | Stage 10 Product Quality Hardening is closed with deterministic preview gates for public simulator, public home, DecisionContext Builder, simulation pipeline runner, public adapter, observability, security, contract regression, HomeSimulator integration, trust readiness, and rendered public surface. Stage 15.4 aggregate verdict is NOT READY. | Full production user-flow QA, current pre-release gate reruns, observability/error tracking, infrastructure readiness, support readiness, incident/rollback decision authority, security/privacy review, and performance validation remain incomplete. |
@@ -262,7 +262,7 @@ Block A: Completed, **100% for approved persistence scope**, closed work:
 - Save-from-UI for completed Decision Simulations;
 - Block A Closure Validation.
 
-Block B: Foundation Complete, **70% estimated**, completed B1-B7 work:
+Block B: Completed / Closure Accepted, **100% for approved real-account runtime scope**, closed work:
 
 - Supabase Auth configuration contract locked for Site URL, callback URL,
   redirect allowlist, env boundaries, email delivery expectations, current-code
@@ -304,12 +304,19 @@ Block B: Foundation Complete, **70% estimated**, completed B1-B7 work:
   ids, or raw database/provider errors; `npm run
   quality:block-b-dashboard-simulation-surface` added.
 
-Block B remaining work:
+Block B closure evidence:
 
-- validate real remote Supabase project settings and email delivery evidence
-  against an approved environment;
-- prove full Block B behavior in production-like runtime after account state
-  and principal provisioning are connected.
+- real remote Supabase project settings and email delivery evidence are
+  validated against the approved production environment;
+- production-like runtime evidence confirms Magic Link delivery, callback
+  success, Supabase user creation, dashboard access after email confirmation,
+  logout, and repeat sign-in reaching Supabase;
+- the temporary Supabase diagnostic patch was removed after provider evidence
+  capture;
+- Supabase `over_email_send_rate_limit` / HTTP 429 is classified as an external
+  provider limit, not a Block B blocker;
+- `npm run quality:block-b-email-flow` and
+  `npm run quality:block-b-auth-action-boundary` pass.
 
 Block C: Foundation Complete, **25% estimated**, remaining work:
 
@@ -401,13 +408,11 @@ Current evidence:
 
 Next correct implementation step:
 
-No further Block A implementation task is currently required. The next
-implementation block is Block B - Real User Account Runtime, but this document
-does not start runtime implementation by itself. The first Block B action is
-the audit/decomposition recorded below. Future work requires separate approval
-and should remain bounded to the relevant block: Block B for real account
-runtime completion, Block C for export/delete over saved simulation records,
-and Block E for broader production readiness validation. Separately approved
+No further Block A or Block B implementation task is currently required for
+their approved scopes. Future work requires separate approval and should remain
+bounded to the relevant block: Block C for export/delete over saved simulation
+records, Block E for broader production readiness validation, and Block F for
+commercial production readiness if later approved. Separately approved
 history/revision lifecycle events remain deferred until explicitly scoped.
 
 Any next step must continue using the approved server-only boundaries and must
@@ -428,10 +433,13 @@ It must not open:
 
 Audit verdict:
 
-**Block B is not implementation-complete.** It is foundation-complete and ready
-for bounded implementation planning. Existing auth work is sufficient as a
-server-side session and protected-dashboard foundation, but it does not yet
-complete the real account lifecycle required by Levio V1 Complete.
+**Block B Closure is complete for the approved real-account runtime scope.**
+Production evidence confirms the real account lifecycle required for Block B:
+real Supabase project validation, production email delivery, callback success,
+Supabase user creation, dashboard access after email confirmation, logout, and
+repeat sign-in reaching Supabase. The final observed
+`over_email_send_rate_limit` / HTTP 429 response is a Supabase provider rate
+limit and not a Block B blocker.
 
 Confirmed existing foundation:
 
@@ -450,15 +458,14 @@ Confirmed existing foundation:
   reject client owner input, resolve owners through `levio_principals`, and do
   not trust Supabase `auth.users.id` as the canonical owner.
 
-Confirmed gaps:
+Confirmed closure boundaries:
 
-- No repository evidence proves real Supabase project settings, production and
-  preview redirect allowlists, email delivery, email templates, or email
-  confirmation behavior.
-- Password reset/recovery is intentionally not active on `/forgot-password`.
-- Session refresh, expiration, revocation, recovery, and logout behavior are
-  validated at source/runtime-boundary level, but not against a real remote
-  Supabase project.
+- Real Supabase project settings, production redirect behavior, email delivery,
+  and email confirmation behavior are validated by production evidence for the
+  approved Block B scope.
+- Password reset/recovery remains intentionally inactive on `/forgot-password`.
+- Session restoration through callback, authenticated dashboard access, logout,
+  and repeat sign-in are validated by production-like runtime evidence.
 - No middleware file exists. B4 accepts this as sufficient for the current
   route shape because every protected dashboard page is a descendant of the
   force-dynamic dashboard layout guard. Middleware should be reconsidered only

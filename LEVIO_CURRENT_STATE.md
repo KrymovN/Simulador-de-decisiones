@@ -62,8 +62,9 @@ nested owner injection, server-only save action, Supabase provider
 owner/status filters, RLS/static schema constraints, dashboard history/detail,
 empty/error/auth states, archived-record exclusion, and controlled save errors.
 
-Block B - Real User Account Runtime is the next bounded implementation block
-after Block A. B1 Supabase Auth Configuration Lock is complete as
+Block B - Real User Account Runtime is closed for the approved Block B scope
+after production closure validation. B1 Supabase Auth Configuration Lock is
+complete as
 documentation/configuration-contract work under
 `docs/stages/stage-04-runtime-architecture/stage-04-01-auth-runtime/LEVIO_BLOCK_B1_SUPABASE_AUTH_CONFIGURATION_LOCK.md`.
 B1 defines the required Supabase Auth Site URL, callback URL, redirect
@@ -98,8 +99,7 @@ is idempotent and clears Supabase plus legacy mock state; and `npm run
 quality:block-b-session-lifecycle` covers the B4 boundary. Middleware is not
 required for the current protected route shape because every dashboard route is
 under the guarded dashboard layout. Dashboard account state, broader
-production user-flow QA, and production release readiness remain Block B/E
-work. B5 Real Account State in
+production release readiness remains Block E work. B5 Real Account State in
 Dashboard is implemented: the guarded dashboard layout is the single boundary
 that obtains the authenticated account, converts the normalized session into a
 dashboard-scoped account state, and provides it through
@@ -126,9 +126,17 @@ only through a server action over the same account-owned runtime; dashboard
 simulation UI receives no Supabase clients, raw sessions, provider references,
 owner ids, principal ids, or raw database/provider errors; and `npm run
 quality:block-b-dashboard-simulation-surface` covers the B7 boundary. Broader
-production user-flow QA and production release readiness remain Block B/E
-work. Separately approved history/revision lifecycle events remain deferred
-until explicitly scoped.
+production release readiness remains Block E work. Block B Closure is
+complete: real Supabase project validation, production email delivery evidence,
+and production-like runtime evidence are confirmed through Magic Link delivery,
+callback success, Supabase user creation, dashboard access after email
+confirmation, logout, and repeat sign-in reaching Supabase. The temporary
+Supabase diagnostic patch was removed after evidence capture. The final
+observed `over_email_send_rate_limit` / HTTP 429 response is a Supabase
+provider rate limit and not a Block B blocker. The closure-relevant gates
+`npm run quality:block-b-email-flow` and
+`npm run quality:block-b-auth-action-boundary` pass. Separately approved
+history/revision lifecycle events remain deferred until explicitly scoped.
 
 This state does not resolve Scale blockers, execute Scale, increase traffic,
 open Production Release, open Commercial Launch, connect Real AI, enable

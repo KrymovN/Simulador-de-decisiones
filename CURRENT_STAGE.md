@@ -55,8 +55,9 @@ Supabase service-boundary filters, RLS/static schema constraints, product
 surface states, save-from-UI, owner spoofing, nested owner injection, archived
 record exclusion, and controlled auth/error states.
 
-Block B - Real User Account Runtime is now the next bounded implementation
-block after Block A. B1 Supabase Auth Configuration Lock is complete as
+Block B - Real User Account Runtime is now closed for the approved Block B
+scope after production closure validation. B1 Supabase Auth Configuration Lock
+is complete as
 documentation/configuration-contract work under
 `docs/stages/stage-04-runtime-architecture/stage-04-01-auth-runtime/LEVIO_BLOCK_B1_SUPABASE_AUTH_CONFIGURATION_LOCK.md`.
 It locks the required Supabase Auth Site URL, callback URL, redirect allowlist,
@@ -120,9 +121,17 @@ Dashboard simulation UI still does not receive Supabase clients, raw sessions,
 provider references, owner ids, principal ids, or raw database/provider
 errors. The dedicated B7 gate is
 `npm run quality:block-b-dashboard-simulation-surface`.
-Export/delete integration remains Block C User Data Management work. Real
-remote Supabase project execution/email delivery evidence and broader
-production user-flow QA remain Block B/E work.
+Block B Closure is complete. Real Supabase project validation, production
+email delivery evidence, and production-like runtime evidence are confirmed:
+Magic Link delivery works, callback succeeds, Supabase creates the user,
+dashboard access works after email confirmation, logout works, and repeat
+sign-in reaches Supabase. The temporary Supabase diagnostic patch was removed.
+The final observed `over_email_send_rate_limit` / HTTP 429 response is a
+Supabase provider rate limit and not a Block B blocker. The closure-relevant
+quality gates `npm run quality:block-b-email-flow` and
+`npm run quality:block-b-auth-action-boundary` pass. Export/delete integration
+remains Block C User Data Management work, and broader production readiness
+remains Block E work.
 Separately approved history/revision lifecycle events remain deferred until
 explicitly scoped.
 

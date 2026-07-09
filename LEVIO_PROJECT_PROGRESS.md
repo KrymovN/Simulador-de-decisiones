@@ -23,7 +23,7 @@ prevails unless it has been explicitly amended.
 
 ## Last Updated
 
-6 июля 2026
+9 июля 2026
 
 ## Purpose
 
@@ -73,8 +73,8 @@ V1 Complete Readiness    ████░░░░░░ 45% estimated
 - Target runtime architecture зафиксирована и остается immutable.
 - `LEVIO_IMPLEMENTATION_PLAN.md` создан как canonical V1 implementation
   comparator.
-- Most recent implementation block: Block A - Decision Simulation Persistence
-  Implementation. Status: Completed for the approved persistence scope.
+- Most recent implementation block: Block B - Real User Account Runtime.
+  Status: Completed / Closure Accepted for the approved account-runtime scope.
 - Block A1 Decision Simulation Domain Model завершён:
   `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`.
 - Block A2 Persistence Runtime Mapping завершён: internal runtime maps
@@ -94,11 +94,12 @@ V1 Complete Readiness    ████░░░░░░ 45% estimated
   `npm run quality:block-a-decision-simulation-persistence-closure`, 79/79
   PASS.
 - Remaining Block A implementation work: none for the approved persistence
-  scope. Export/delete integration remains Block C work; real account runtime
-  configuration and production user-flow/readiness validation remain Block B/E
-  work; separately approved history/revision lifecycle events remain deferred.
-- Current Block B status: Real User Account Runtime is Foundation Complete /
-  B7 Complete. B1 Supabase Auth Configuration Lock is complete as
+  scope. Export/delete integration remains Block C work; Block B real account
+  runtime is closed for its approved scope; broader production readiness
+  validation remains Block E work; separately approved history/revision
+  lifecycle events remain deferred.
+- Current Block B status: Real User Account Runtime is Completed / Closure
+  Accepted. B1 Supabase Auth Configuration Lock is complete as
   documentation/configuration-contract work in
   `docs/stages/stage-04-runtime-architecture/stage-04-01-auth-runtime/LEVIO_BLOCK_B1_SUPABASE_AUTH_CONFIGURATION_LOCK.md`.
 - B1 locked the required Supabase Auth Site URL, callback URL, redirect
@@ -150,9 +151,15 @@ V1 Complete Readiness    ████░░░░░░ 45% estimated
   dashboard simulation UI receives no Supabase clients, raw sessions, provider
   references, owner ids, principal ids, or raw database/provider errors; and
   `npm run quality:block-b-dashboard-simulation-surface` is added.
-- Remaining Block B work: real remote Supabase project/email delivery evidence,
-  production-like user-flow validation, and full Block B quality/closure
-  evidence.
+- Block B Closure completed: real remote Supabase project validation,
+  production email delivery evidence, production-like runtime evidence,
+  callback success, Supabase user creation, dashboard access after email
+  confirmation, logout, and repeat sign-in reaching Supabase are confirmed.
+  The temporary Supabase diagnostic patch was removed after evidence capture.
+  Supabase `over_email_send_rate_limit` / HTTP 429 is an external provider
+  limitation and not a Block B blocker. Closure-relevant gates passed:
+  `npm run quality:block-b-email-flow` and
+  `npm run quality:block-b-auth-action-boundary`.
 - Recent product implementation foundation:
   `Saved Decision Simulations Runtime Foundation`, internal server/runtime
   boundary for save/load/list of saved Decision Simulations through approved

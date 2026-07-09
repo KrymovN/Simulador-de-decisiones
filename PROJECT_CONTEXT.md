@@ -30,18 +30,17 @@ Levio is not an Answer Engine.
 
 Levio is not a Generic AI Assistant.
 
-The active checkpoint is post-Stage 15.5 implementation planning and Block A
-Decision Simulation Persistence Implementation. Stage 15.5 - Scale Blocker
-Resolution Framework is complete. Stage 14 Public Launch is closed as a
-completed launch-readiness block. Stage 15 remains a bounded documentation and
-scale-readiness planning stage, with aggregate Stage 15.4 verdict NOT READY.
-Stage 15.5 classifies all PARTIALLY VERIFIED and NOT VERIFIED prerequisites,
-groups them by engineering direction, defines objective closure conditions,
-required evidence, verification criteria, blocker dependencies, and required
-resolution order. The later `Saved Decision Simulations Runtime Foundation`
-commit adds an internal product runtime foundation for saved Decision
-Simulations. The canonical V1 comparison target now lives in
-`LEVIO_IMPLEMENTATION_PLAN.md`.
+The active checkpoint is post-Block B Closure for Real User Account Runtime.
+Stage 15.5 - Scale Blocker Resolution Framework is complete. Stage 14 Public
+Launch is closed as a completed launch-readiness block. Stage 15 remains a
+bounded documentation and scale-readiness planning stage, with aggregate Stage
+15.4 verdict NOT READY. Stage 15.5 classifies all PARTIALLY VERIFIED and NOT
+VERIFIED prerequisites, groups them by engineering direction, defines
+objective closure conditions, required evidence, verification criteria,
+blocker dependencies, and required resolution order. The later `Saved Decision
+Simulations Runtime Foundation` commit adds an internal product runtime
+foundation for saved Decision Simulations. The canonical V1 comparison target
+now lives in `LEVIO_IMPLEMENTATION_PLAN.md`.
 
 `LEVIO_IMPLEMENTATION_PLAN.md` defines Levio V1 Complete as a production-ready
 Decision Simulation Engine with real accounts, persistent/reopenable
@@ -51,16 +50,17 @@ security, legal, privacy, support, rollback, monitoring, and scale readiness.
 It does not open Production Release, Commercial Launch, Scale Execution, Real
 AI execution, billing, analytics, tracking, or a new roadmap branch.
 
-Block A1 Decision Simulation Domain Model is complete as architecture-only work
-under `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`. It defines
-the final Decision Simulation product object, lifecycle, field categories,
-ownership model, constraints, cross-block relationships, and future persistence
-requirements. Block A2 Persistence Runtime Mapping is started. The first A2
-runtime subblock maps saved `simulation_records` into the canonical Decision
-Simulation domain aggregate, adds owner-scoped save/list/load/reopen/archive
-runtime capabilities through the existing server-only Auth/Persistence
-boundaries, rejects client-supplied owner fields, and uses the existing
-Supabase schema without adding a migration.
+Block A - Decision Simulation Persistence Implementation is complete for its
+approved persistence scope. Block B - Real User Account Runtime Closure is also
+complete for its approved account-runtime scope. Production evidence confirms
+real Supabase project validation, production email delivery, callback success,
+Supabase user creation, dashboard access after email confirmation, logout, and
+repeat sign-in reaching Supabase. The temporary Supabase diagnostic patch was
+removed after provider evidence was captured. The final provider evidence
+showed Supabase `over_email_send_rate_limit` with HTTP 429, which is an
+external provider rate limit and not a Block B blocker. The closure quality
+gates `npm run quality:block-b-email-flow` and
+`npm run quality:block-b-auth-action-boundary` passed.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as foundation-only preflight, runtime
