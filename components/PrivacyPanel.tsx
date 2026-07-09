@@ -11,8 +11,10 @@ const privacyRights = [
 
 const privacyActions = [
   {
-    title: "Preparar exportación futura",
-    copy: "Definir un futuro archivo con perfil, simulaciones, decisiones preparadas y consentimiento preparado.",
+    title: "Exportar datos de la cuenta",
+    copy: "Descargar un archivo JSON con el resumen de cuenta y simulaciones guardadas disponibles.",
+    href: "/dashboard/privacy/export",
+    label: "Descargar JSON",
   },
   {
     title: "Solicitud futura de eliminación",
@@ -50,7 +52,13 @@ export default function PrivacyPanel() {
           <article className="dashboard-card section-frame" key={action.title}>
             <h3>{action.title}</h3>
             <p>{action.copy}</p>
-            <MockFeedbackButton label="Solicitar" feedback="Solicitud registrada en modo demo." />
+            {"href" in action ? (
+              <a className="button-link" href={action.href}>
+                {action.label}
+              </a>
+            ) : (
+              <MockFeedbackButton label="Solicitar" feedback="Solicitud registrada en modo demo." />
+            )}
           </article>
         ))}
       </section>

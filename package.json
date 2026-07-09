@@ -16,6 +16,7 @@
     "quality:deterministic-runtime-contract-regression": "node scripts/deterministic-runtime-contract-regression-quality.mjs",
     "quality:saved-simulation-ui-save-flow": "node scripts/saved-simulation-ui-save-flow-quality.mjs",
     "quality:block-a-decision-simulation-persistence-closure": "node scripts/block-a-decision-simulation-persistence-closure-quality.mjs",
+    "quality:block-c-user-data-export-surface": "node scripts/block-c-user-data-export-surface-quality.mjs",
     "quality:block-b-auth-action-boundary": "node scripts/block-b-auth-action-boundary-quality.mjs",
     "quality:block-b-email-flow": "node scripts/block-b-email-flow-quality.mjs",
     "quality:block-b-session-lifecycle": "node scripts/block-b-session-lifecycle-quality.mjs",
