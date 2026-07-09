@@ -76,12 +76,13 @@ assertCheck(
 );
 
 assertCheck(
-  "block-c-c1-privacy-panel-exposes-export-only",
+  "block-c-c1-privacy-panel-exposes-export-without-deletion-execution",
   privacyPanel.includes("/dashboard/privacy/export") &&
     privacyPanel.includes("Descargar JSON") &&
-    privacyPanel.includes("Solicitud futura de eliminación") &&
+    privacyPanel.includes("/dashboard/privacy/deletion") &&
+    privacyPanel.includes("Descargar plan") &&
     privacyPanel.includes("MockFeedbackButton"),
-  "Privacy panel must expose the export download while leaving future deletion controls unchanged.",
+  "Privacy panel must expose the export download while keeping deletion execution out of C1.",
 );
 
 assertCheck(

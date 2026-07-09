@@ -17,8 +17,10 @@ const privacyActions = [
     label: "Descargar JSON",
   },
   {
-    title: "Solicitud futura de eliminación",
-    copy: "Preparar la supresión del acceso y datos asociados cuando exista backend productivo.",
+    title: "Solicitud de eliminación preparada",
+    copy: "Descargar un plan JSON con simulaciones guardadas elegibles sin ejecutar la eliminación.",
+    href: "/dashboard/privacy/deletion",
+    label: "Descargar plan",
   },
   {
     title: "Borrado futuro de historial",
