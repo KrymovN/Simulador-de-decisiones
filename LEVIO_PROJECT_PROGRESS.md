@@ -70,7 +70,7 @@ Foundation Readiness     ██████████ 100%
 Runtime Completion       ███████░░░ 65%
 Commercial Readiness     ███░░░░░░░ 25%
 Overall Project Progress ████████░░ 84%
-V1 Complete Readiness    ████░░░░░░ 47% estimated
+V1 Complete Readiness    ████░░░░░░ 48% estimated
 ```
 
 ## Current Position
@@ -93,8 +93,8 @@ V1 Complete Readiness    ████░░░░░░ 47% estimated
   comparator.
 - Blocks A/B/C are internal V1 implementation substeps only; they are not
   roadmap Stages and not the project-management system.
-- Most recent internal implementation substep: Block C / C2 - deletion
-  planning surface, commit `f42ea5f`.
+- Most recent Stage 7 implementation substep: retention planning/status
+  surface for authenticated dashboard users.
 - Block A1 Decision Simulation Domain Model завершён:
   `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`.
 - Block A2 Persistence Runtime Mapping завершён: internal runtime maps
@@ -180,8 +180,9 @@ V1 Complete Readiness    ████░░░░░░ 47% estimated
   limitation and not a Block B blocker. Closure-relevant gates passed:
   `npm run quality:block-b-email-flow` and
   `npm run quality:block-b-auth-action-boundary`.
-- Current Block C status: User Data Management is In Progress / C1-C2
-  Completed inside Stage 7 User Data Controls. C1 account data export surface
+- Current Block C status: User Data Management is In Progress; export,
+  deletion planning, and retention planning surfaces are completed inside
+  Stage 7 User Data Controls. C1 account data export surface
   is complete in commit `904b4f5a835d09d621e2371b6c8f301c50e24069`;
   authenticated dashboard users can export owner-scoped saved simulations as
   JSON without client owner injection, direct route-level Supabase/env access,
@@ -189,11 +190,15 @@ V1 Complete Readiness    ████░░░░░░ 47% estimated
   commit `f42ea5f`; authenticated dashboard users can download a read-only
   deletion planning JSON for owner-scoped saved simulations without deletion
   execution, hard delete, database writes, retention jobs, or account deletion
-  orchestration.
+  orchestration. The Stage 7 retention planning/status surface is implemented
+  for authenticated dashboard users as a read-only JSON download over
+  owner-scoped saved simulations, using preflight-only retention evaluation
+  without retention enforcement, retention jobs, deletion execution, hard
+  delete, database writes, or account deletion orchestration.
 - Next implementation: the next minimal approved Stage 7 User Data Controls
-  substep after C2 within the existing export/delete/retention scope. This
-  does not create a new Stage, new Block, roadmap branch, or runtime
-  architecture change.
+  substep after the retention planning/status surface within the existing
+  export/delete/retention scope. This does not create a new Stage, new Block,
+  roadmap branch, or runtime architecture change.
 - Recent product implementation foundation:
   `Saved Decision Simulations Runtime Foundation`, internal server/runtime
   boundary for save/load/list of saved Decision Simulations through approved
@@ -1466,8 +1471,8 @@ blocker-resolution framework only. The current V1 implementation focus is
 Stage 7 - User Data Controls. Blocks A/B/C are internal V1 implementation
 substeps only and must not be used as the primary roadmap-management system.
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after C2 within the existing export/delete/retention
-scope.
+Data Controls substep after the retention planning/status surface within the
+existing export/delete/retention scope.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.

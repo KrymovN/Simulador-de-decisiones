@@ -23,6 +23,12 @@ const privacyActions = [
     label: "Descargar plan",
   },
   {
+    title: "Estado de retención preparado",
+    copy: "Descargar un plan JSON con el estado de retención de simulaciones guardadas sin iniciar trabajos automáticos.",
+    href: "/dashboard/privacy/retention",
+    label: "Descargar estado",
+  },
+  {
     title: "Borrado futuro de historial",
     copy: "Preparar el borrado de simulaciones cuando exista historial productivo.",
   },

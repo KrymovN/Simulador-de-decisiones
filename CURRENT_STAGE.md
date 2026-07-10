@@ -22,7 +22,7 @@ prevails unless it has been explicitly amended.
 
 ## Active Checkpoint
 
-Post-Stage 15.5 / Stage 7 User Data Controls C2 Baseline.
+Post-Stage 15.5 / Stage 7 User Data Controls Retention Planning Surface Baseline.
 
 Status: the official roadmap remains the 15-Stage roadmap recorded in
 `LEVIO_PROJECT_PROGRESS.md`. Stage 15.5 is complete as documentation-only Scale
@@ -152,10 +152,15 @@ direct Supabase/env route access, and no deletion/retention mixing. C2 deletion
 planning surface is complete in commit `f42ea5f`: authenticated dashboard
 deletion planning JSON over owner-scoped saved simulations, with no deletion
 execution, hard delete, database writes, retention jobs, or account deletion
-orchestration. Current project progress is **84% overall** and Levio V1
-Complete readiness is **47% estimated**. The next implementation remains the
-next minimal approved Stage 7 User Data Controls substep after C2 inside the
-existing export/delete/retention scope.
+orchestration. The Stage 7 retention planning/status surface is implemented
+for authenticated dashboard users as a JSON download over owner-scoped saved
+simulations, using preflight-only retention evaluation with no retention
+enforcement, retention jobs, deletion execution, hard delete, database writes,
+or account deletion orchestration. Current project progress is **84% overall**
+and Levio V1 Complete readiness is **48% estimated**. The next implementation
+remains the next minimal approved Stage 7 User Data Controls substep after the
+retention planning/status surface inside the existing export/delete/retention
+scope.
 
 This checkpoint does not open Scale, increase traffic, open Production Release,
 open Commercial Launch, enable Real AI provider execution, add billing,
@@ -1832,9 +1837,9 @@ execution, Production Release, Commercial Launch, implementation work, audit,
 roadmap change, or public-contract change requires separate explicit approval.
 
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after C2 within the existing export/delete/retention
-scope. This does not create a new Stage, new Block, roadmap branch, or runtime
-architecture change.
+Data Controls substep after the retention planning/status surface within the
+existing export/delete/retention scope. This does not create a new Stage, new
+Block, roadmap branch, or runtime architecture change.
 
 Scale execution, Production Release, Commercial Launch, Real AI execution,
 production auth/account/persistence, subscription/billing/commercial runtime,
