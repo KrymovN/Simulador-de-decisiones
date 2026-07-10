@@ -23,12 +23,17 @@ const deletionSurface = readProjectFile(
   "account-data-deletion-surface.ts",
 );
 const deletionRoute = readProjectFile("app", "dashboard", "privacy", "deletion", "route.ts");
+const persistenceProvider = readProjectFile(
+  "lib",
+  "persistence-runtime",
+  "supabase-provider.ts",
+);
 const privacyPanel = readProjectFile("components", "PrivacyPanel.tsx");
 const packageJson = readProjectFile("package.json");
 
 assertCheck(
   "block-c-c2-deletion-surface-versioned",
-  deletionSurface.includes("block-c-c2-account-data-deletion-surface.1") &&
+  deletionSurface.includes("stage-7-account-data-deletion-surface.2") &&
     deletionSurface.includes("levio-account-data-deletion-plan-json"),
   "Account data deletion surface must expose a stable Block C C2 deletion plan version and JSON format.",
 );
@@ -52,16 +57,42 @@ assertCheck(
 
 assertCheck(
   "block-c-c2-deletion-stays-within-substep",
-  deletionSurface.includes('simulationDrafts: "not_included_in_c2"') &&
-    deletionSurface.includes('simulationHistory: "not_included_in_c2"') &&
+  deletionSurface.includes('simulationHistory: "not_included_in_c2"') &&
     deletionSurface.includes('accountDeletion: "not_included_in_c2"'),
-  "C2 deletion planning must not include drafts, history expansion, or account deletion.",
+  "Stage 7 deletion planning must not include history expansion or account deletion.",
+);
+
+assertCheck(
+  "stage-7-deletion-plan-includes-owner-scoped-eligible-drafts",
+  deletionSurface.includes(
+    'simulationDrafts: "owner_scoped_eligible_simulation_drafts"',
+  ) &&
+    deletionSurface.includes("readServerAuthSession") &&
+    deletionSurface.includes('operation: "list_simulation_drafts"') &&
+    deletionSurface.includes("row.owner_principal_id !== preflight.principalId") &&
+    deletionSurface.includes("simulationDraftDeletionPlan") &&
+    deletionSurface.includes('execution: "not_executed"') &&
+    deletionSurface.includes("listSimulationDraftsForDeletion") &&
+    persistenceProvider.includes("async listSimulationDraftsForDeletion(input)") &&
+    persistenceProvider.includes('.eq("owner_principal_id", input.ownerPrincipalId)') &&
+    persistenceProvider.includes('.eq("owner_principal_type", "registered_user")') &&
+    persistenceProvider.includes('.eq("deletion_state", "active")'),
+  "Deletion planning must include active drafts for the server-resolved owner without depending on export eligibility or executing deletion.",
+);
+
+assertCheck(
+  "stage-7-deletion-plan-keeps-export-and-deletion-eligibility-separate",
+  deletionSurface.includes("listSimulationDraftsForDeletion") &&
+    !deletionSurface.includes("row.export_eligible") &&
+    persistenceProvider.includes("async listSimulationDraftsForDeletion(input)") &&
+    persistenceProvider.includes("async listSimulationDrafts(input)"),
+  "Draft deletion planning must use a distinct provider read and must not collapse export eligibility into deletion eligibility.",
 );
 
 assertCheck(
   "block-c-c2-deletion-has-no-client-owner-input",
-  !deletionSurface.includes("ownerPrincipalId") &&
-    !deletionSurface.includes("clientOwner") &&
+  !deletionSurface.includes("clientOwner") &&
+    !deletionSurface.includes("ownerPrincipalId: row.owner_principal_id") &&
     !deletionRoute.includes("ownerPrincipalId") &&
     !deletionRoute.includes("clientOwner"),
   "C2 deletion planning must not accept owner identifiers from client-controlled input.",

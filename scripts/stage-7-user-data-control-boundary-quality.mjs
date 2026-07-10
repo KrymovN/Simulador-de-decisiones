@@ -120,6 +120,18 @@ assertCheck(
 );
 
 assertCheck(
+  "stage-7-deletion-draft-plan-remains-read-only-and-owner-scoped",
+  surfaces[1].surface.includes('operation: "list_simulation_drafts"') &&
+    surfaces[1].surface.includes("listSimulationDraftsForDeletion") &&
+    !surfaces[1].surface.includes("row.export_eligible") &&
+    surfaces[1].surface.includes("row.owner_principal_id !== preflight.principalId") &&
+    surfaces[1].surface.includes('execution: "not_executed"') &&
+    !surfaces[1].surface.includes("deleteSimulationDraft(") &&
+    !surfaces[1].surface.includes('operation: "delete_simulation_draft"'),
+  "Draft deletion planning must use owner-scoped read preflight without enabling draft deletion.",
+);
+
+assertCheck(
   "stage-7-user-data-control-boundary-gate-registered",
   packageJson.includes('"quality:stage-7-user-data-control-boundary"'),
   "Package scripts must register the Stage 7 cross-surface boundary gate.",

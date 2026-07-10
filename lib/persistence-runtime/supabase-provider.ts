@@ -385,6 +385,10 @@ export type SupabaseSimulationDraftReadProvider = PersistenceProviderAdapter & {
     ownerPrincipalId: string;
     limit: number;
   }): Promise<SimulationDraftRow[]>;
+  listSimulationDraftsForDeletion(input: {
+    ownerPrincipalId: string;
+    limit: number;
+  }): Promise<SimulationDraftRow[]>;
 };
 
 export type SupabaseSimulationHistoryEntryReadProvider = PersistenceProviderAdapter & {
@@ -1107,6 +1111,30 @@ export function createSupabasePersistenceProviderAdapter(input: {
         .eq("owner_principal_id", input.ownerPrincipalId)
         .eq("owner_principal_type", "registered_user")
         .eq("export_eligible", true)
+        .eq("deletion_state", "active")
+        .order("created_at", { ascending: false })
+        .limit(input.limit);
+
+      if (
+        response.error ||
+        !Array.isArray(response.data) ||
+        !response.data.every(isSimulationDraftRow)
+      ) {
+        return [];
+      }
+
+      return response.data;
+    },
+    async listSimulationDraftsForDeletion(input) {
+      if (!isServerRuntime()) {
+        return [];
+      }
+
+      const response = await draftReadClient
+        .from("simulation_drafts")
+        .select("*")
+        .eq("owner_principal_id", input.ownerPrincipalId)
+        .eq("owner_principal_type", "registered_user")
         .eq("deletion_state", "active")
         .order("created_at", { ascending: false })
         .limit(input.limit);

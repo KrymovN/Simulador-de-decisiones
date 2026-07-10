@@ -106,10 +106,15 @@ simulation history through canonical principal preflight. Parent relationships
 and portable lifecycle content are preserved without exposing owner/provider
 authority, claim/export-job references, legal-hold internals, or mutations.
 
+The Stage 7 deletion planning surface now also includes eligible owner-scoped
+simulation drafts through canonical principal preflight. It exposes planning
+metadata only and keeps deletion execution, database writes, hard delete,
+history planning, and account deletion orchestration closed.
+
 Current project progress is **84% overall**. Levio V1 Complete readiness is
-**51% estimated**. The next implementation remains within Stage 7 User Data
+**52% estimated**. The next implementation remains within Stage 7 User Data
 Controls: the next minimal approved substep after owner-scoped simulation
-history inclusion in account export inside the existing
+draft inclusion in deletion planning inside the existing
 export/delete/retention scope. It must be
 determined from
 `LEVIO_IMPLEMENTATION_PLAN.md` before code and must not create a new Stage,
