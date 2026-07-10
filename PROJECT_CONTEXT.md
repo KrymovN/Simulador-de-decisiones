@@ -88,10 +88,18 @@ owner-scoped saved simulations, using preflight-only retention evaluation with
 no retention enforcement, retention jobs, deletion execution, hard delete,
 database writes, or account deletion orchestration.
 
+The Stage 7 cross-surface user data control boundary validation is implemented
+as `npm run quality:stage-7-user-data-control-boundary`. It verifies that the
+export, deletion planning, and retention status surfaces remain below the
+authenticated dashboard guard, resolve ownership only through server runtime,
+reject client owner authority, fail closed, and do not open destructive account
+lifecycle operations.
+
 Current project progress is **84% overall**. Levio V1 Complete readiness is
-**48% estimated**. The next implementation remains within Stage 7 User Data
-Controls: the next minimal approved substep after the retention planning/status
-surface inside the existing export/delete/retention scope. It must be
+**49% estimated**. The next implementation remains within Stage 7 User Data
+Controls: the next minimal approved substep after cross-surface ownership and
+account-lifecycle boundary validation inside the existing
+export/delete/retention scope. It must be
 determined from
 `LEVIO_IMPLEMENTATION_PLAN.md` before code and must not create a new Stage,
 new Block, new roadmap branch, or runtime architecture change.
