@@ -33,7 +33,7 @@ const packageJson = readProjectFile("package.json");
 
 assertCheck(
   "block-c-c1-export-surface-versioned",
-  exportSurface.includes("stage-7-account-data-export-surface.2") &&
+  exportSurface.includes("stage-7-account-data-export-surface.3") &&
     exportSurface.includes("levio-account-data-export-json"),
   "Account data export surface must expose the current Stage 7 export version and JSON format.",
 );
@@ -61,9 +61,28 @@ assertCheck(
     persistenceProvider.includes('.eq("owner_principal_type", "registered_user")') &&
     persistenceProvider.includes('.eq("export_eligible", true)') &&
     persistenceProvider.includes('.eq("deletion_state", "active")') &&
-    exportSurface.includes('simulationHistory: "not_included_in_c1"') &&
     exportSurface.includes('deletion: "not_executed"'),
-  "Stage 7 export must include only eligible owner-scoped drafts and must not open history or deletion execution.",
+  "Stage 7 export must include only eligible owner-scoped drafts and must not open deletion execution.",
+);
+
+assertCheck(
+  "stage-7-export-includes-owner-scoped-user-visible-history",
+  exportSurface.includes(
+    'simulationHistory: "owner_scoped_eligible_user_visible_history"',
+  ) &&
+    exportSurface.includes('operation: "list_simulation_history"') &&
+    exportSurface.includes("listSimulationHistoryEntries") &&
+    exportSurface.includes("row.owner_principal_id !== preflight.principalId") &&
+    exportSurface.includes("row.user_visible !== true") &&
+    exportSurface.includes("eventPayload: row.event_payload") &&
+    persistenceProvider.includes("async listSimulationHistoryEntries(input)") &&
+    persistenceProvider.includes('.from("simulation_history_entries")') &&
+    persistenceProvider.includes('.eq("owner_principal_id", input.ownerPrincipalId)') &&
+    persistenceProvider.includes('.eq("owner_principal_type", "registered_user")') &&
+    persistenceProvider.includes('.eq("user_visible", true)') &&
+    persistenceProvider.includes('.eq("export_eligible", true)') &&
+    persistenceProvider.includes('.eq("deletion_state", "active")'),
+  "Stage 7 export must include only eligible, user-visible history for the resolved owner.",
 );
 
 assertCheck(
@@ -81,6 +100,16 @@ assertCheck(
     !exportSurface.includes("legalHoldReason:") &&
     exportSurface.includes("exportEligible: true"),
   "Draft export output must remain provider-independent and must not expose owner authority or legal-hold internals.",
+);
+
+assertCheck(
+  "stage-7-export-history-output-excludes-owner-and-provider-authority",
+  !exportSurface.includes("ownerPrincipalId: row.owner_principal_id") &&
+    !exportSurface.includes("claimTransactionReference:") &&
+    !exportSurface.includes("exportReference:") &&
+    !exportSurface.includes("legalHoldReason:") &&
+    exportSurface.includes("simulationId: row.record_id"),
+  "History export output must preserve the parent relationship without exposing owner, provider, claim, export-job, or legal-hold internals.",
 );
 
 assertCheck(

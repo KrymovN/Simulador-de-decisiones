@@ -327,6 +327,21 @@ export type SupabaseSimulationDraftReadClient = {
   };
 };
 
+export type SupabaseSimulationHistoryEntryReadQuery = {
+  eq(column: string, value: string | boolean): SupabaseSimulationHistoryEntryReadQuery;
+  order(
+    column: string,
+    options: { ascending: boolean },
+  ): SupabaseSimulationHistoryEntryReadQuery;
+  limit(count: number): Promise<SupabaseQueryResponse>;
+};
+
+export type SupabaseSimulationHistoryEntryReadClient = {
+  from(table: "simulation_history_entries"): {
+    select(columns: string): SupabaseSimulationHistoryEntryReadQuery;
+  };
+};
+
 export type SupabaseSimulationRecordSaveProvider = PersistenceProviderAdapter & {
   saveSimulationRecord(payload: SupabaseSimulationRecordInsertPayload): Promise<SimulationRecordRow | null>;
 };
@@ -372,11 +387,19 @@ export type SupabaseSimulationDraftReadProvider = PersistenceProviderAdapter & {
   }): Promise<SimulationDraftRow[]>;
 };
 
+export type SupabaseSimulationHistoryEntryReadProvider = PersistenceProviderAdapter & {
+  listSimulationHistoryEntries(input: {
+    ownerPrincipalId: string;
+    limit: number;
+  }): Promise<SimulationHistoryEntryRow[]>;
+};
+
 export type SupabasePersistenceRuntimeProvider =
   SupabaseSimulationRecordSaveProvider &
     SupabaseSimulationRecordReadProvider &
     SupabaseSimulationRecordArchiveProvider &
     SupabaseSimulationHistoryEntrySaveProvider &
+    SupabaseSimulationHistoryEntryReadProvider &
     SupabaseSimulationDraftSaveProvider &
     SupabaseSimulationDraftReadProvider;
 
@@ -704,6 +727,7 @@ export function createSupabasePersistenceProviderAdapter(input: {
   recordReadClient?: SupabaseSimulationRecordReadClient;
   recordArchiveClient?: SupabaseSimulationRecordArchiveClient;
   historyMutationClient?: SupabaseSimulationHistoryEntryMutationClient;
+  historyReadClient?: SupabaseSimulationHistoryEntryReadClient;
   draftMutationClient?: SupabaseSimulationDraftMutationClient;
   draftReadClient?: SupabaseSimulationDraftReadClient;
 }): SupabasePersistenceRuntimeProvider {
@@ -723,6 +747,9 @@ export function createSupabasePersistenceProviderAdapter(input: {
   const historyMutationClient =
     input.historyMutationClient ??
     (client as unknown as SupabaseSimulationHistoryEntryMutationClient);
+  const historyReadClient =
+    input.historyReadClient ??
+    (client as unknown as SupabaseSimulationHistoryEntryReadClient);
   const draftMutationClient =
     input.draftMutationClient ??
     (client as unknown as SupabaseSimulationDraftMutationClient);
@@ -1001,6 +1028,32 @@ export function createSupabasePersistenceProviderAdapter(input: {
 
       if (response.error || !isSimulationHistoryEntryRow(response.data)) {
         return null;
+      }
+
+      return response.data;
+    },
+    async listSimulationHistoryEntries(input) {
+      if (!isServerRuntime()) {
+        return [];
+      }
+
+      const response = await historyReadClient
+        .from("simulation_history_entries")
+        .select("*")
+        .eq("owner_principal_id", input.ownerPrincipalId)
+        .eq("owner_principal_type", "registered_user")
+        .eq("user_visible", true)
+        .eq("export_eligible", true)
+        .eq("deletion_state", "active")
+        .order("event_timestamp", { ascending: false })
+        .limit(input.limit);
+
+      if (
+        response.error ||
+        !Array.isArray(response.data) ||
+        !response.data.every(isSimulationHistoryEntryRow)
+      ) {
+        return [];
       }
 
       return response.data;

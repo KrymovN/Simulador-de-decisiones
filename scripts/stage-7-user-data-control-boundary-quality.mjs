@@ -110,6 +110,16 @@ assertCheck(
 );
 
 assertCheck(
+  "stage-7-export-history-remains-read-only-and-owner-scoped",
+  surfaces[0].surface.includes('operation: "list_simulation_history"') &&
+    surfaces[0].surface.includes("listSimulationHistoryEntries") &&
+    surfaces[0].surface.includes("row.owner_principal_id !== preflight.principalId") &&
+    !surfaces[0].surface.includes("saveSimulationHistoryEntry(") &&
+    !surfaces[0].surface.includes("append_simulation_history_entry"),
+  "Simulation history export must use owner-scoped read preflight without enabling history mutations.",
+);
+
+assertCheck(
   "stage-7-user-data-control-boundary-gate-registered",
   packageJson.includes('"quality:stage-7-user-data-control-boundary"'),
   "Package scripts must register the Stage 7 cross-surface boundary gate.",
