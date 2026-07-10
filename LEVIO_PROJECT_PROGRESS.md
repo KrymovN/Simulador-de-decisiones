@@ -70,7 +70,7 @@ Foundation Readiness     ██████████ 100%
 Runtime Completion       ███████░░░ 65%
 Commercial Readiness     ███░░░░░░░ 25%
 Overall Project Progress ████████░░ 84%
-V1 Complete Readiness    █████░░░░░ 55% estimated
+V1 Complete Readiness    █████░░░░░ 56% estimated
 ```
 
 ## Current Position
@@ -93,8 +93,8 @@ V1 Complete Readiness    █████░░░░░ 55% estimated
   comparator.
 - Blocks A/B/C are internal V1 implementation substeps only; they are not
   roadmap Stages and not the project-management system.
-- Most recent Stage 7 implementation substep: owner-scoped active simulation
-  history inclusion in retention status.
+- Most recent Stage 7 implementation substep: aggregate read-only lifecycle
+  coverage validation across export, deletion planning, and retention status.
 - Block A1 Decision Simulation Domain Model завершён:
   `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`.
 - Block A2 Persistence Runtime Mapping завершён: internal runtime maps
@@ -220,8 +220,13 @@ V1 Complete Readiness    █████░░░░░ 55% estimated
   through canonical principal preflight and parent-simulation lifecycle
   evaluation, without retention enforcement, jobs, database writes, deletion
   execution, hard delete, or account orchestration.
+- Aggregate read-only lifecycle coverage for saved simulations, drafts, and
+  history across account export, deletion planning, and retention status is
+  validated through
+  `npm run quality:stage-7-user-data-read-only-lifecycle-coverage`, with
+  destructive execution and retention jobs remaining closed.
 - Next implementation: the next minimal approved Stage 7 User Data Controls
-  substep after history retention-status inclusion within the existing export/delete/retention
+  substep after aggregate read-only lifecycle coverage validation within the existing export/delete/retention
   scope. This does not create a new Stage, new Block,
   roadmap branch, or runtime architecture change.
 - Recent product implementation foundation:
@@ -1496,8 +1501,8 @@ blocker-resolution framework only. The current V1 implementation focus is
 Stage 7 - User Data Controls. Blocks A/B/C are internal V1 implementation
 substeps only and must not be used as the primary roadmap-management system.
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after owner-scoped simulation history inclusion in retention
-status within the existing export/delete/retention scope.
+Data Controls substep after aggregate read-only lifecycle coverage validation
+within the existing export/delete/retention scope.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.

@@ -36,7 +36,7 @@ The official roadmap remains the 15-Stage roadmap recorded in
 implementation comparison blocks only; they are not roadmap Stages, not a new
 project-management structure, and not authorization to expand the roadmap.
 The current V1 implementation focus is Stage 7 - User Data Controls. Current
-project progress is **84% overall** and Levio V1 Complete readiness is **55%
+project progress is **84% overall** and Levio V1 Complete readiness is **56%
 estimated**.
 
 The approved high-level path to **LEVIO V1 COMPLETE** is:
@@ -274,7 +274,7 @@ module, planning document, or readiness checklist as production completion.
 Percentages below are estimated, conservative, and evidence-based. They measure
 Levio V1 Complete, not documentation volume and not roadmap-stage count.
 
-Overall Levio V1 Completion: **55% estimated**
+Overall Levio V1 Completion: **56% estimated**
 
 Block A: Completed, **100% for approved persistence scope**, closed work:
 
@@ -343,7 +343,7 @@ Block B closure evidence:
 Block C: In Progress / export, deletion planning, retention planning, and
 cross-surface boundary validation, draft export inclusion, and user-visible
 history export inclusion, draft/history deletion-plan inclusion, and draft
-retention-status inclusion completed, **80%
+retention-status inclusion plus aggregate read-only lifecycle coverage validation completed, **85%
 estimated**, closed work:
 
 - C1 account data export surface for authenticated dashboard users, exporting
@@ -384,11 +384,14 @@ estimated**, closed work:
   entries, evaluated through canonical principal preflight and approved parent
   simulation lifecycle context without retention enforcement, jobs, database
   writes, deletion execution, or hard delete.
+- Stage 7 aggregate read-only lifecycle coverage validation for saved
+  simulations, drafts, and history across export, deletion planning, and
+  retention status, without destructive execution or retention jobs.
 
 Remaining work:
 
 - implement only the next approved Stage 7 User Data Controls substep after
-  owner-scoped simulation history inclusion in retention status;
+  aggregate read-only lifecycle coverage validation;
 - execute deletion only if separately approved within the roadmap scope;
 - enforce retention and deletion lifecycle behavior;
 - close privacy/data-control blockers;
@@ -447,8 +450,8 @@ documentation-only scale-readiness planning. Stage 15.5 is complete and Stage
 
 Current V1 implementation focus: **Stage 7 - User Data Controls**.
 
-Most recent Stage 7 implementation substep: **owner-scoped active simulation
-history inclusion in retention status**.
+Most recent Stage 7 implementation substep: **aggregate read-only lifecycle
+coverage validation across export, deletion planning, and retention status**.
 
 Current evidence:
 
@@ -490,7 +493,7 @@ Next correct implementation step:
 No further Block A or Block B implementation task is currently required for
 their approved scopes. The next implementation, if any, must remain inside
 Stage 7 User Data Controls and must be the next minimal approved substep after
-owner-scoped simulation history inclusion in retention status within the existing
+aggregate read-only lifecycle coverage validation within the existing
 export/delete/retention scope. This document does not create a new C
 substep name, new Stage,
 new Block, new roadmap branch, or automatic authorization for deletion writes,

@@ -164,7 +164,7 @@ simulation drafts through canonical principal preflight, without exposing
 owner/provider authority or opening deletion behavior. Eligible user-visible
 owner-scoped simulation history is also included through canonical principal
 preflight without internal authority or mutation behavior. Levio V1 Complete
-readiness is **55% estimated**. The deletion planning surface now also includes
+readiness is **56% estimated**. The deletion planning surface now also includes
 eligible owner-scoped simulation drafts through canonical principal preflight,
 without deletion execution or database writes. It now also includes owner-scoped
 active simulation history through canonical principal preflight and a
@@ -173,9 +173,11 @@ simulation drafts through canonical principal preflight and short-lifecycle
 preflight evaluation, without enforcement or writes. Retention status now also
 includes owner-scoped active simulation history through canonical principal
 preflight and parent-simulation lifecycle evaluation, without enforcement or
-writes. The next implementation
-remains the next minimal approved Stage 7 User Data Controls substep after
-history retention-status inclusion inside the existing export/delete/retention
+writes. The aggregate Stage 7 read-only lifecycle coverage validation is implemented
+through `npm run quality:stage-7-user-data-read-only-lifecycle-coverage` for
+saved simulations, drafts, and history across export, deletion planning, and
+retention status. The next implementation remains the next minimal approved
+Stage 7 User Data Controls substep after that validation inside the existing export/delete/retention
 scope.
 
 This checkpoint does not open Scale, increase traffic, open Production Release,
@@ -1853,8 +1855,8 @@ execution, Production Release, Commercial Launch, implementation work, audit,
 roadmap change, or public-contract change requires separate explicit approval.
 
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after owner-scoped simulation history inclusion in retention
-status within the existing export/delete/retention scope. This
+Data Controls substep after aggregate read-only lifecycle coverage validation
+within the existing export/delete/retention scope. This
 does not create a new Stage, new
 Block, roadmap branch, or runtime architecture change.
 

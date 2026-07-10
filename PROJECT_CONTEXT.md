@@ -132,11 +132,16 @@ policy and fails closed when parent lifecycle context cannot be proven, while
 retention enforcement, jobs, database writes, deletion execution, hard delete,
 and account deletion orchestration remain closed.
 
+The Stage 7 read-only lifecycle coverage gate is implemented as
+`npm run quality:stage-7-user-data-read-only-lifecycle-coverage`. It validates
+the complete saved simulations / drafts / history matrix across account export,
+deletion planning, and retention status, while proving that destructive
+execution and retention jobs remain closed.
+
 Current project progress is **84% overall**. Levio V1 Complete readiness is
-**55% estimated**. The next implementation remains within Stage 7 User Data
-Controls: the next minimal approved substep after owner-scoped simulation
-history inclusion in retention status inside the existing
-export/delete/retention scope. It must be
+**56% estimated**. The next implementation remains within Stage 7 User Data
+Controls: the next minimal approved substep after aggregate read-only lifecycle
+coverage validation inside the existing export/delete/retention scope. It must be
 determined from
 `LEVIO_IMPLEMENTATION_PLAN.md` before code and must not create a new Stage,
 new Block, new roadmap branch, or runtime architecture change.
