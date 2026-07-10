@@ -95,10 +95,16 @@ authenticated dashboard guard, resolve ownership only through server runtime,
 reject client owner authority, fail closed, and do not open destructive account
 lifecycle operations.
 
+The Stage 7 account export now includes eligible owner-scoped simulation drafts
+through the existing authenticated persistence boundary. Draft reads require
+canonical Levio principal preflight, reject mixed-owner results, preserve
+portable draft content and lifecycle metadata, and do not expose owner/provider
+authority, legal-hold internals, simulation history, or deletion execution.
+
 Current project progress is **84% overall**. Levio V1 Complete readiness is
-**49% estimated**. The next implementation remains within Stage 7 User Data
-Controls: the next minimal approved substep after cross-surface ownership and
-account-lifecycle boundary validation inside the existing
+**50% estimated**. The next implementation remains within Stage 7 User Data
+Controls: the next minimal approved substep after owner-scoped simulation draft
+inclusion in account export inside the existing
 export/delete/retention scope. It must be
 determined from
 `LEVIO_IMPLEMENTATION_PLAN.md` before code and must not create a new Stage,

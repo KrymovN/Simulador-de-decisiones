@@ -159,10 +159,12 @@ enforcement, retention jobs, deletion execution, hard delete, database writes,
 or account deletion orchestration. Cross-surface ownership and account-lifecycle
 boundary validation is implemented through
 `npm run quality:stage-7-user-data-control-boundary`. Current project progress
-is **84% overall** and Levio V1 Complete readiness is **49% estimated**. The
-next implementation remains the next minimal approved Stage 7 User Data
-Controls substep after that boundary validation inside the existing
-export/delete/retention scope.
+is **84% overall**. Account export now also includes eligible owner-scoped
+simulation drafts through canonical principal preflight, without exposing
+owner/provider authority or opening history/deletion behavior. Levio V1
+Complete readiness is **50% estimated**. The next implementation remains the
+next minimal approved Stage 7 User Data Controls substep after draft export
+inclusion inside the existing export/delete/retention scope.
 
 This checkpoint does not open Scale, increase traffic, open Production Release,
 open Commercial Launch, enable Real AI provider execution, add billing,
@@ -1839,8 +1841,8 @@ execution, Production Release, Commercial Launch, implementation work, audit,
 roadmap change, or public-contract change requires separate explicit approval.
 
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after cross-surface ownership and account-lifecycle
-boundary validation within the existing export/delete/retention scope. This
+Data Controls substep after owner-scoped simulation draft inclusion in account
+export within the existing export/delete/retention scope. This
 does not create a new Stage, new
 Block, roadmap branch, or runtime architecture change.
 

@@ -23,14 +23,19 @@ const exportSurface = readProjectFile(
   "account-data-export-surface.ts",
 );
 const exportRoute = readProjectFile("app", "dashboard", "privacy", "export", "route.ts");
+const persistenceProvider = readProjectFile(
+  "lib",
+  "persistence-runtime",
+  "supabase-provider.ts",
+);
 const privacyPanel = readProjectFile("components", "PrivacyPanel.tsx");
 const packageJson = readProjectFile("package.json");
 
 assertCheck(
   "block-c-c1-export-surface-versioned",
-  exportSurface.includes("block-c-c1-account-data-export-surface.1") &&
+  exportSurface.includes("stage-7-account-data-export-surface.2") &&
     exportSurface.includes("levio-account-data-export-json"),
-  "Account data export surface must expose a stable Block C C1 export version and JSON format.",
+  "Account data export surface must expose the current Stage 7 export version and JSON format.",
 );
 
 assertCheck(
@@ -41,20 +46,41 @@ assertCheck(
 );
 
 assertCheck(
-  "block-c-c1-export-stays-within-first-substep",
-  exportSurface.includes('simulationDrafts: "not_included_in_c1"') &&
+  "stage-7-export-includes-owner-scoped-eligible-drafts",
+  exportSurface.includes(
+    'simulationDrafts: "owner_scoped_eligible_simulation_drafts"',
+  ) &&
+    exportSurface.includes("readServerAuthSession") &&
+    exportSurface.includes('operation: "list_simulation_drafts"') &&
+    exportSurface.includes("row.owner_principal_id !== preflight.principalId") &&
+    exportSurface.includes("draftPayload: row.draft_payload") &&
+    exportSurface.includes("draftText: row.draft_text_snapshot") &&
+    persistenceProvider.includes("async listSimulationDrafts(input)") &&
+    persistenceProvider.includes('.from("simulation_drafts")') &&
+    persistenceProvider.includes('.eq("owner_principal_id", input.ownerPrincipalId)') &&
+    persistenceProvider.includes('.eq("owner_principal_type", "registered_user")') &&
+    persistenceProvider.includes('.eq("export_eligible", true)') &&
+    persistenceProvider.includes('.eq("deletion_state", "active")') &&
     exportSurface.includes('simulationHistory: "not_included_in_c1"') &&
     exportSurface.includes('deletion: "not_executed"'),
-  "C1 export must not implement drafts, history expansion, or deletion execution.",
+  "Stage 7 export must include only eligible owner-scoped drafts and must not open history or deletion execution.",
 );
 
 assertCheck(
   "block-c-c1-export-has-no-client-owner-input",
-  !exportSurface.includes("ownerPrincipalId") &&
-    !exportSurface.includes("clientOwner") &&
+  !exportSurface.includes("clientOwner") &&
     !exportRoute.includes("ownerPrincipalId") &&
     !exportRoute.includes("clientOwner"),
-  "C1 export must not accept owner identifiers from client-controlled input.",
+  "Stage 7 export must not accept owner identifiers from client-controlled input.",
+);
+
+assertCheck(
+  "stage-7-export-draft-output-excludes-owner-and-provider-authority",
+  !exportSurface.includes("ownerPrincipalId: row.owner_principal_id") &&
+    !exportSurface.includes("providerReference:") &&
+    !exportSurface.includes("legalHoldReason:") &&
+    exportSurface.includes("exportEligible: true"),
+  "Draft export output must remain provider-independent and must not expose owner authority or legal-hold internals.",
 );
 
 assertCheck(

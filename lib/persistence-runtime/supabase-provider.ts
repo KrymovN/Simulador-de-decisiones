@@ -310,6 +310,23 @@ export type SupabaseSimulationDraftMutationClient = {
   };
 };
 
+export type SupabaseSimulationDraftReadQuery = {
+  eq(column: string, value: string | boolean): SupabaseSimulationDraftReadQuery;
+  order(
+    column: string,
+    options: {
+      ascending: boolean;
+    },
+  ): SupabaseSimulationDraftReadQuery;
+  limit(count: number): Promise<SupabaseQueryResponse>;
+};
+
+export type SupabaseSimulationDraftReadClient = {
+  from(table: "simulation_drafts"): {
+    select(columns: string): SupabaseSimulationDraftReadQuery;
+  };
+};
+
 export type SupabaseSimulationRecordSaveProvider = PersistenceProviderAdapter & {
   saveSimulationRecord(payload: SupabaseSimulationRecordInsertPayload): Promise<SimulationRecordRow | null>;
 };
@@ -348,12 +365,20 @@ export type SupabaseSimulationDraftSaveProvider = PersistenceProviderAdapter & {
   }): Promise<SimulationDraftRow | null>;
 };
 
+export type SupabaseSimulationDraftReadProvider = PersistenceProviderAdapter & {
+  listSimulationDrafts(input: {
+    ownerPrincipalId: string;
+    limit: number;
+  }): Promise<SimulationDraftRow[]>;
+};
+
 export type SupabasePersistenceRuntimeProvider =
   SupabaseSimulationRecordSaveProvider &
     SupabaseSimulationRecordReadProvider &
     SupabaseSimulationRecordArchiveProvider &
     SupabaseSimulationHistoryEntrySaveProvider &
-    SupabaseSimulationDraftSaveProvider;
+    SupabaseSimulationDraftSaveProvider &
+    SupabaseSimulationDraftReadProvider;
 
 export type SupabasePersistenceConnectivityValidationResult = {
   status: "passed" | "blocked";
@@ -680,6 +705,7 @@ export function createSupabasePersistenceProviderAdapter(input: {
   recordArchiveClient?: SupabaseSimulationRecordArchiveClient;
   historyMutationClient?: SupabaseSimulationHistoryEntryMutationClient;
   draftMutationClient?: SupabaseSimulationDraftMutationClient;
+  draftReadClient?: SupabaseSimulationDraftReadClient;
 }): SupabasePersistenceRuntimeProvider {
   const client = input.client ?? createSupabasePersistenceProviderClient(input.config);
   const principalProvisioningClient =
@@ -700,6 +726,9 @@ export function createSupabasePersistenceProviderAdapter(input: {
   const draftMutationClient =
     input.draftMutationClient ??
     (client as unknown as SupabaseSimulationDraftMutationClient);
+  const draftReadClient =
+    input.draftReadClient ??
+    (client as unknown as SupabaseSimulationDraftReadClient);
 
   async function resolvePrincipal(input: {
     providerReference: string;
@@ -1010,6 +1039,31 @@ export function createSupabasePersistenceProviderAdapter(input: {
 
       if (response.error || !isSimulationDraftRow(response.data)) {
         return null;
+      }
+
+      return response.data;
+    },
+    async listSimulationDrafts(input) {
+      if (!isServerRuntime()) {
+        return [];
+      }
+
+      const response = await draftReadClient
+        .from("simulation_drafts")
+        .select("*")
+        .eq("owner_principal_id", input.ownerPrincipalId)
+        .eq("owner_principal_type", "registered_user")
+        .eq("export_eligible", true)
+        .eq("deletion_state", "active")
+        .order("created_at", { ascending: false })
+        .limit(input.limit);
+
+      if (
+        response.error ||
+        !Array.isArray(response.data) ||
+        !response.data.every(isSimulationDraftRow)
+      ) {
+        return [];
       }
 
       return response.data;

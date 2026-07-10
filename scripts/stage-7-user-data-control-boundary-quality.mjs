@@ -58,7 +58,8 @@ for (const { control, surface, route } of surfaces) {
       !route.includes("principalId") &&
       !route.includes("providerReference") &&
       !route.includes("searchParams") &&
-      !surface.includes("clientOwner"),
+      !surface.includes("clientOwner") &&
+      !surface.includes("client_owner"),
     `${control} must not accept client-controlled owner authority.`,
   );
 

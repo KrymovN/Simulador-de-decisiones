@@ -1,7 +1,16 @@
+import { readServerAuthSession } from "../auth/session";
+import type { LevioSessionContext } from "../auth/types";
+import {
+  initializePersistenceRuntimeWiring,
+  type SimulationDraftRow,
+  type SupabaseSimulationDraftReadProvider,
+} from "../persistence-runtime";
 import { readSavedSimulationsHistorySurface } from "../saved-decision-simulations/product-surface";
 
 export const ACCOUNT_DATA_EXPORT_SURFACE_VERSION =
-  "block-c-c1-account-data-export-surface.1" as const;
+  "stage-7-account-data-export-surface.2" as const;
+
+const MAX_EXPORTED_DRAFTS = 1000;
 
 type AccountDataExportSavedSimulation = {
   id: string;
@@ -16,6 +25,28 @@ type AccountDataExportSavedSimulation = {
   sourceLabel: string;
 };
 
+type AccountDataExportSimulationDraft = {
+  id: string;
+  status: SimulationDraftRow["draft_status"];
+  draftPayload: SimulationDraftRow["draft_payload"];
+  draftText: string | null;
+  clarificationAnswers: SimulationDraftRow["clarification_answers_snapshot"];
+  structuredContext: SimulationDraftRow["structured_context_snapshot"];
+  language: string;
+  autosaveEnabled: boolean;
+  originatingSurface: string | null;
+  convertedRecordId: string | null;
+  createdAt: string;
+  updatedAt: string;
+  lastAutosavedAt: string | null;
+  expiresAt: string;
+  discardedAt: string | null;
+  deletionState: SimulationDraftRow["deletion_state"];
+  retentionRule: string;
+  exportEligible: true;
+  schemaVersion: number;
+};
+
 export type AccountDataExportDocument = {
   exportVersion: typeof ACCOUNT_DATA_EXPORT_SURFACE_VERSION;
   format: "levio-account-data-export-json";
@@ -23,7 +54,7 @@ export type AccountDataExportDocument = {
   scope: {
     account: "authenticated_session_summary";
     savedSimulations: "owner_scoped_saved_simulation_history";
-    simulationDrafts: "not_included_in_c1";
+    simulationDrafts: "owner_scoped_eligible_simulation_drafts";
     simulationHistory: "not_included_in_c1";
     deletion: "not_executed";
   };
@@ -32,6 +63,7 @@ export type AccountDataExportDocument = {
     sessionStatus: "active";
   };
   savedSimulations: AccountDataExportSavedSimulation[];
+  simulationDrafts: AccountDataExportSimulationDraft[];
   excluded: Array<{
     category: string;
     reason: string;
@@ -56,6 +88,7 @@ export type AccountDataExportSurfaceResult =
 function createDocument(
   generatedAt: string,
   savedSimulations: AccountDataExportSavedSimulation[],
+  simulationDrafts: AccountDataExportSimulationDraft[],
 ): AccountDataExportDocument {
   return {
     exportVersion: ACCOUNT_DATA_EXPORT_SURFACE_VERSION,
@@ -64,7 +97,7 @@ function createDocument(
     scope: {
       account: "authenticated_session_summary",
       savedSimulations: "owner_scoped_saved_simulation_history",
-      simulationDrafts: "not_included_in_c1",
+      simulationDrafts: "owner_scoped_eligible_simulation_drafts",
       simulationHistory: "not_included_in_c1",
       deletion: "not_executed",
     },
@@ -73,26 +106,115 @@ function createDocument(
       sessionStatus: "active",
     },
     savedSimulations,
+    simulationDrafts,
     excluded: [
       {
-        category: "simulationDrafts",
-        reason: "Block C C1 exports saved simulation history only.",
-      },
-      {
         category: "simulationHistory",
-        reason: "Block C C1 exports saved simulation history only.",
+        reason: "Simulation history expansion remains outside this Stage 7 substep.",
       },
       {
         category: "deletion",
-        reason: "Deletion execution is outside Block C C1.",
+        reason: "Deletion execution is outside this Stage 7 export substep.",
       },
     ],
   };
 }
 
+function supportsSimulationDraftReadProvider(
+  value: unknown,
+): value is SupabaseSimulationDraftReadProvider {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "listSimulationDrafts" in value &&
+    typeof value.listSimulationDrafts === "function"
+  );
+}
+
+function mapDraft(row: SimulationDraftRow): AccountDataExportSimulationDraft {
+  return {
+    id: row.draft_id,
+    status: row.draft_status,
+    draftPayload: row.draft_payload,
+    draftText: row.draft_text_snapshot,
+    clarificationAnswers: row.clarification_answers_snapshot,
+    structuredContext: row.structured_context_snapshot,
+    language: row.language,
+    autosaveEnabled: row.autosave_enabled,
+    originatingSurface: row.originating_surface,
+    convertedRecordId: row.converted_record_id,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    lastAutosavedAt: row.last_autosaved_at,
+    expiresAt: row.expires_at,
+    discardedAt: row.discarded_at,
+    deletionState: row.deletion_state,
+    retentionRule: row.retention_rule,
+    exportEligible: true,
+    schemaVersion: row.schema_version,
+  };
+}
+
+async function readOwnerScopedSimulationDrafts(
+  authContext: LevioSessionContext,
+): Promise<
+  | { status: "ready"; drafts: AccountDataExportSimulationDraft[] }
+  | { status: "read_failed" }
+> {
+  const runtime = initializePersistenceRuntimeWiring();
+
+  if (
+    runtime.status !== "ready" ||
+    !supportsSimulationDraftReadProvider(runtime.providerAdapter)
+  ) {
+    return { status: "read_failed" };
+  }
+
+  const preflight = await runtime.preflight({
+    operation: "list_simulation_drafts",
+    authContext,
+  });
+
+  if (preflight.status === "blocked") {
+    return { status: "read_failed" };
+  }
+
+  const rows = await runtime.providerAdapter.listSimulationDrafts({
+    ownerPrincipalId: preflight.principalId,
+    limit: MAX_EXPORTED_DRAFTS,
+  });
+
+  if (
+    rows.some(
+      (row) =>
+        row.owner_principal_id !== preflight.principalId ||
+        row.owner_principal_type !== "registered_user" ||
+        row.export_eligible !== true ||
+        row.deletion_state !== "active",
+    )
+  ) {
+    return { status: "read_failed" };
+  }
+
+  return { status: "ready", drafts: rows.map(mapDraft) };
+}
+
 export async function readAccountDataExportSurface(): Promise<AccountDataExportSurfaceResult> {
   const generatedAt = new Date().toISOString();
-  const history = await readSavedSimulationsHistorySurface();
+  const authContext = await readServerAuthSession();
+
+  if (authContext.identityState !== "authenticated") {
+    return {
+      status: "blocked",
+      reason: "auth_required",
+      message: "Inicia sesión para exportar los datos de esta cuenta.",
+    };
+  }
+
+  const [history, drafts] = await Promise.all([
+    readSavedSimulationsHistorySurface({ authContext }),
+    readOwnerScopedSimulationDrafts(authContext),
+  ]);
 
   if (history.status === "auth_required") {
     return {
@@ -110,9 +232,20 @@ export async function readAccountDataExportSurface(): Promise<AccountDataExportS
     };
   }
 
-  const document = createDocument(generatedAt, history.simulations);
+  if (drafts.status === "read_failed") {
+    return {
+      status: "blocked",
+      reason: "read_failed",
+      message: "No se pudo preparar la exportación de datos de forma controlada.",
+    };
+  }
 
-  if (document.savedSimulations.length === 0) {
+  const document = createDocument(generatedAt, history.simulations, drafts.drafts);
+
+  if (
+    document.savedSimulations.length === 0 &&
+    document.simulationDrafts.length === 0
+  ) {
     return {
       status: "empty",
       document,
