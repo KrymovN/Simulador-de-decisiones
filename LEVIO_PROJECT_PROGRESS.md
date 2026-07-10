@@ -70,7 +70,7 @@ Foundation Readiness     ██████████ 100%
 Runtime Completion       ███████░░░ 65%
 Commercial Readiness     ███░░░░░░░ 25%
 Overall Project Progress ████████░░ 84%
-V1 Complete Readiness    █████░░░░░ 52% estimated
+V1 Complete Readiness    █████░░░░░ 53% estimated
 ```
 
 ## Current Position
@@ -93,8 +93,8 @@ V1 Complete Readiness    █████░░░░░ 52% estimated
   comparator.
 - Blocks A/B/C are internal V1 implementation substeps only; they are not
   roadmap Stages and not the project-management system.
-- Most recent Stage 7 implementation substep: eligible owner-scoped simulation
-  draft inclusion in deletion planning.
+- Most recent Stage 7 implementation substep: owner-scoped active simulation
+  history inclusion in deletion planning.
 - Block A1 Decision Simulation Domain Model завершён:
   `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`.
 - Block A2 Persistence Runtime Mapping завершён: internal runtime maps
@@ -206,8 +206,12 @@ V1 Complete Readiness    █████░░░░░ 52% estimated
 - Deletion planning now includes eligible owner-scoped simulation drafts
   through canonical principal preflight, with planning metadata only and no
   deletion execution, database writes, hard delete, or account orchestration.
+- Deletion planning now includes owner-scoped active simulation history entries
+  through canonical principal preflight and a deletion-specific provider read,
+  without deletion execution, database writes, hard delete, or account
+  orchestration.
 - Next implementation: the next minimal approved Stage 7 User Data Controls
-  substep after draft deletion-plan inclusion within the existing export/delete/retention
+  substep after history deletion-plan inclusion within the existing export/delete/retention
   scope. This does not create a new Stage, new Block,
   roadmap branch, or runtime architecture change.
 - Recent product implementation foundation:
@@ -1466,7 +1470,7 @@ Stage 15.1, Stage 15.2, Stage 15.3, Stage 15.4 и Stage 15.5 завершены.
 ### 15. Scale
 
 Статус: Stage 15.5 Scale Blocker Resolution Framework complete.
-Прогресс: █████░░░░░ 52%.
+Прогресс: █████░░░░░ 53%.
 Следующий шаг: Scale readiness verdict remains NOT READY. Любое устранение
 blockers, Scale execution, Production Release, Commercial Launch,
 implementation work, audit, roadmap change или public-contract change требует
@@ -1482,7 +1486,7 @@ blocker-resolution framework only. The current V1 implementation focus is
 Stage 7 - User Data Controls. Blocks A/B/C are internal V1 implementation
 substeps only and must not be used as the primary roadmap-management system.
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after owner-scoped simulation draft inclusion in deletion
+Data Controls substep after owner-scoped simulation history inclusion in deletion
 planning within the existing export/delete/retention scope.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI

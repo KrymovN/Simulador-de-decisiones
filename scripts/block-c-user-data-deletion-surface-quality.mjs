@@ -33,7 +33,7 @@ const packageJson = readProjectFile("package.json");
 
 assertCheck(
   "block-c-c2-deletion-surface-versioned",
-  deletionSurface.includes("stage-7-account-data-deletion-surface.2") &&
+  deletionSurface.includes("stage-7-account-data-deletion-surface.3") &&
     deletionSurface.includes("levio-account-data-deletion-plan-json"),
   "Account data deletion surface must expose a stable Block C C2 deletion plan version and JSON format.",
 );
@@ -57,9 +57,10 @@ assertCheck(
 
 assertCheck(
   "block-c-c2-deletion-stays-within-substep",
-  deletionSurface.includes('simulationHistory: "not_included_in_c2"') &&
-    deletionSurface.includes('accountDeletion: "not_included_in_c2"'),
-  "Stage 7 deletion planning must not include history expansion or account deletion.",
+  deletionSurface.includes(
+    'simulationHistory: "owner_scoped_simulation_history_entries"',
+  ) && deletionSurface.includes('accountDeletion: "not_included_in_c2"'),
+  "Stage 7 deletion planning must describe history planning without opening account deletion.",
 );
 
 assertCheck(
@@ -87,6 +88,34 @@ assertCheck(
     persistenceProvider.includes("async listSimulationDraftsForDeletion(input)") &&
     persistenceProvider.includes("async listSimulationDrafts(input)"),
   "Draft deletion planning must use a distinct provider read and must not collapse export eligibility into deletion eligibility.",
+);
+
+assertCheck(
+  "stage-7-deletion-plan-includes-owner-scoped-history",
+  deletionSurface.includes('operation: "list_simulation_history"') &&
+    deletionSurface.includes("listSimulationHistoryEntriesForDeletion") &&
+    deletionSurface.includes("row.owner_principal_id !== preflight.principalId") &&
+    deletionSurface.includes("simulationHistoryDeletionPlan") &&
+    deletionSurface.includes('execution: "not_executed"') &&
+    persistenceProvider.includes(
+      "async listSimulationHistoryEntriesForDeletion(input)",
+    ) &&
+    persistenceProvider.includes('.eq("owner_principal_id", input.ownerPrincipalId)') &&
+    persistenceProvider.includes('.eq("owner_principal_type", "registered_user")') &&
+    persistenceProvider.includes('.eq("deletion_state", "active")'),
+  "Deletion planning must include active simulation history entries for the server-resolved owner without executing deletion.",
+);
+
+assertCheck(
+  "stage-7-history-deletion-plan-separates-export-eligibility",
+  deletionSurface.includes("listSimulationHistoryEntriesForDeletion") &&
+    persistenceProvider.includes("async listSimulationHistoryEntries(input)") &&
+    persistenceProvider.includes(
+      "async listSimulationHistoryEntriesForDeletion(input)",
+    ) &&
+    !deletionSurface.includes("row.export_eligible") &&
+    !deletionSurface.includes("row.user_visible"),
+  "History deletion planning must use a distinct provider read and must not collapse export visibility into deletion eligibility.",
 );
 
 assertCheck(

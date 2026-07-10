@@ -132,6 +132,19 @@ assertCheck(
 );
 
 assertCheck(
+  "stage-7-deletion-history-plan-remains-read-only-and-owner-scoped",
+  surfaces[1].surface.includes('operation: "list_simulation_history"') &&
+    surfaces[1].surface.includes("listSimulationHistoryEntriesForDeletion") &&
+    !surfaces[1].surface.includes("row.export_eligible") &&
+    !surfaces[1].surface.includes("row.user_visible") &&
+    surfaces[1].surface.includes("row.owner_principal_id !== preflight.principalId") &&
+    surfaces[1].surface.includes('execution: "not_executed"') &&
+    !surfaces[1].surface.includes("deleteSimulationHistoryEntry(") &&
+    !surfaces[1].surface.includes('operation: "delete_simulation_history_entry"'),
+  "History deletion planning must use owner-scoped read preflight without enabling history deletion.",
+);
+
+assertCheck(
   "stage-7-user-data-control-boundary-gate-registered",
   packageJson.includes('"quality:stage-7-user-data-control-boundary"'),
   "Package scripts must register the Stage 7 cross-surface boundary gate.",

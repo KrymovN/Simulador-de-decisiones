@@ -3,14 +3,17 @@ import type { LevioSessionContext } from "../auth/types";
 import {
   initializePersistenceRuntimeWiring,
   type SimulationDraftRow,
+  type SimulationHistoryEntryRow,
   type SupabaseSimulationDraftReadProvider,
+  type SupabaseSimulationHistoryEntryReadProvider,
 } from "../persistence-runtime";
 import { readSavedSimulationsHistorySurface } from "../saved-decision-simulations/product-surface";
 
 export const ACCOUNT_DATA_DELETION_SURFACE_VERSION =
-  "stage-7-account-data-deletion-surface.2" as const;
+  "stage-7-account-data-deletion-surface.3" as const;
 
 const MAX_PLANNED_DRAFTS = 1000;
+const MAX_PLANNED_HISTORY_ENTRIES = 1000;
 
 type AccountDataDeletionSavedSimulationPlan = {
   id: string;
@@ -33,6 +36,18 @@ type AccountDataDeletionSimulationDraftPlan = {
   reason: string;
 };
 
+type AccountDataDeletionSimulationHistoryPlan = {
+  id: string;
+  simulationId: string;
+  eventType: SimulationHistoryEntryRow["event_type"];
+  eventTimestamp: string;
+  deletionState: "active";
+  retentionRule: string;
+  plannedAction: "eligible_for_deletion_request";
+  execution: "not_executed";
+  reason: string;
+};
+
 export type AccountDataDeletionPlanDocument = {
   deletionPlanVersion: typeof ACCOUNT_DATA_DELETION_SURFACE_VERSION;
   format: "levio-account-data-deletion-plan-json";
@@ -41,7 +56,7 @@ export type AccountDataDeletionPlanDocument = {
     account: "authenticated_session_summary";
     savedSimulations: "owner_scoped_saved_simulation_history";
     simulationDrafts: "owner_scoped_eligible_simulation_drafts";
-    simulationHistory: "not_included_in_c2";
+    simulationHistory: "owner_scoped_simulation_history_entries";
     accountDeletion: "not_included_in_c2";
     deletion: "planning_only_no_execution";
   };
@@ -51,6 +66,7 @@ export type AccountDataDeletionPlanDocument = {
   };
   savedSimulationDeletionPlan: AccountDataDeletionSavedSimulationPlan[];
   simulationDraftDeletionPlan: AccountDataDeletionSimulationDraftPlan[];
+  simulationHistoryDeletionPlan: AccountDataDeletionSimulationHistoryPlan[];
   safety: {
     deletionExecution: "not_executed";
     hardDelete: "not_executed";
@@ -83,6 +99,7 @@ function createDocument(
   generatedAt: string,
   savedSimulationDeletionPlan: AccountDataDeletionSavedSimulationPlan[],
   simulationDraftDeletionPlan: AccountDataDeletionSimulationDraftPlan[],
+  simulationHistoryDeletionPlan: AccountDataDeletionSimulationHistoryPlan[],
 ): AccountDataDeletionPlanDocument {
   return {
     deletionPlanVersion: ACCOUNT_DATA_DELETION_SURFACE_VERSION,
@@ -92,7 +109,7 @@ function createDocument(
       account: "authenticated_session_summary",
       savedSimulations: "owner_scoped_saved_simulation_history",
       simulationDrafts: "owner_scoped_eligible_simulation_drafts",
-      simulationHistory: "not_included_in_c2",
+      simulationHistory: "owner_scoped_simulation_history_entries",
       accountDeletion: "not_included_in_c2",
       deletion: "planning_only_no_execution",
     },
@@ -102,6 +119,7 @@ function createDocument(
     },
     savedSimulationDeletionPlan,
     simulationDraftDeletionPlan,
+    simulationHistoryDeletionPlan,
     safety: {
       deletionExecution: "not_executed",
       hardDelete: "not_executed",
@@ -110,10 +128,6 @@ function createDocument(
       accountDeletion: "not_included",
     },
     excluded: [
-      {
-        category: "simulationHistory",
-        reason: "Block C C2 prepares saved simulation deletion planning only.",
-      },
       {
         category: "accountDeletion",
         reason: "Account deletion is outside Block C C2.",
@@ -124,6 +138,17 @@ function createDocument(
       },
     ],
   };
+}
+
+function supportsSimulationHistoryReadProvider(
+  value: unknown,
+): value is SupabaseSimulationHistoryEntryReadProvider {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "listSimulationHistoryEntriesForDeletion" in value &&
+    typeof value.listSimulationHistoryEntriesForDeletion === "function"
+  );
 }
 
 function supportsSimulationDraftReadProvider(
@@ -147,6 +172,23 @@ function mapDraft(row: SimulationDraftRow): AccountDataDeletionSimulationDraftPl
     plannedAction: "eligible_for_deletion_request",
     execution: "not_executed",
     reason: "Stage 7 identifies an eligible owner-scoped draft without executing deletion.",
+  };
+}
+
+function mapHistoryEntry(
+  row: SimulationHistoryEntryRow,
+): AccountDataDeletionSimulationHistoryPlan {
+  return {
+    id: row.history_entry_id,
+    simulationId: row.record_id,
+    eventType: row.event_type,
+    eventTimestamp: row.event_timestamp,
+    deletionState: "active",
+    retentionRule: row.retention_rule,
+    plannedAction: "eligible_for_deletion_request",
+    execution: "not_executed",
+    reason:
+      "Stage 7 identifies an owner-scoped simulation history entry without executing deletion.",
   };
 }
 
@@ -193,6 +235,50 @@ async function readOwnerScopedSimulationDrafts(
   return { status: "ready", drafts: rows.map(mapDraft) };
 }
 
+async function readOwnerScopedSimulationHistory(
+  authContext: LevioSessionContext,
+): Promise<
+  | { status: "ready"; history: AccountDataDeletionSimulationHistoryPlan[] }
+  | { status: "read_failed" }
+> {
+  const runtime = initializePersistenceRuntimeWiring();
+
+  if (
+    runtime.status !== "ready" ||
+    !supportsSimulationHistoryReadProvider(runtime.providerAdapter)
+  ) {
+    return { status: "read_failed" };
+  }
+
+  const preflight = await runtime.preflight({
+    operation: "list_simulation_history",
+    authContext,
+  });
+
+  if (preflight.status === "blocked") {
+    return { status: "read_failed" };
+  }
+
+  const rows =
+    await runtime.providerAdapter.listSimulationHistoryEntriesForDeletion({
+      ownerPrincipalId: preflight.principalId,
+      limit: MAX_PLANNED_HISTORY_ENTRIES,
+    });
+
+  if (
+    rows.some(
+      (row) =>
+        row.owner_principal_id !== preflight.principalId ||
+        row.owner_principal_type !== "registered_user" ||
+        row.deletion_state !== "active",
+    )
+  ) {
+    return { status: "read_failed" };
+  }
+
+  return { status: "ready", history: rows.map(mapHistoryEntry) };
+}
+
 export async function readAccountDataDeletionSurface(): Promise<AccountDataDeletionSurfaceResult> {
   const generatedAt = new Date().toISOString();
   const authContext = await readServerAuthSession();
@@ -205,9 +291,10 @@ export async function readAccountDataDeletionSurface(): Promise<AccountDataDelet
     };
   }
 
-  const [history, drafts] = await Promise.all([
+  const [history, drafts, simulationHistory] = await Promise.all([
     readSavedSimulationsHistorySurface({ authContext }),
     readOwnerScopedSimulationDrafts(authContext),
+    readOwnerScopedSimulationHistory(authContext),
   ]);
 
   if (history.status === "auth_required") {
@@ -226,7 +313,7 @@ export async function readAccountDataDeletionSurface(): Promise<AccountDataDelet
     };
   }
 
-  if (drafts.status === "read_failed") {
+  if (drafts.status === "read_failed" || simulationHistory.status === "read_failed") {
     return {
       status: "blocked",
       reason: "read_failed",
@@ -247,11 +334,13 @@ export async function readAccountDataDeletionSurface(): Promise<AccountDataDelet
     generatedAt,
     savedSimulationDeletionPlan,
     drafts.drafts,
+    simulationHistory.history,
   );
 
   if (
     document.savedSimulationDeletionPlan.length === 0 &&
-    document.simulationDraftDeletionPlan.length === 0
+    document.simulationDraftDeletionPlan.length === 0 &&
+    document.simulationHistoryDeletionPlan.length === 0
   ) {
     return {
       status: "empty",

@@ -164,11 +164,13 @@ simulation drafts through canonical principal preflight, without exposing
 owner/provider authority or opening deletion behavior. Eligible user-visible
 owner-scoped simulation history is also included through canonical principal
 preflight without internal authority or mutation behavior. Levio V1 Complete
-readiness is **52% estimated**. The deletion planning surface now also includes
+readiness is **53% estimated**. The deletion planning surface now also includes
 eligible owner-scoped simulation drafts through canonical principal preflight,
-without deletion execution or database writes. The next implementation remains
-the next minimal approved Stage 7 User Data Controls substep after draft
-deletion-plan inclusion inside the existing export/delete/retention scope.
+without deletion execution or database writes. It now also includes owner-scoped
+active simulation history through canonical principal preflight and a
+deletion-specific read. The next implementation remains the next minimal
+approved Stage 7 User Data Controls substep after history deletion-plan
+inclusion inside the existing export/delete/retention scope.
 
 This checkpoint does not open Scale, increase traffic, open Production Release,
 open Commercial Launch, enable Real AI provider execution, add billing,
@@ -1845,7 +1847,7 @@ execution, Production Release, Commercial Launch, implementation work, audit,
 roadmap change, or public-contract change requires separate explicit approval.
 
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after owner-scoped simulation draft inclusion in deletion
+Data Controls substep after owner-scoped simulation history inclusion in deletion
 planning within the existing export/delete/retention scope. This
 does not create a new Stage, new
 Block, roadmap branch, or runtime architecture change.
