@@ -84,7 +84,8 @@ planning JSON for owner-scoped saved simulations, with no deletion execution,
 hard delete, database writes, retention jobs, or account deletion
 orchestration. The next minimal Stage 7 retention planning/status surface is
 implemented for authenticated dashboard users as a JSON download over
-owner-scoped saved simulations and active simulation drafts, using
+owner-scoped saved simulations, active simulation drafts, and active simulation
+history entries, using
 preflight-only retention evaluation with
 no retention enforcement, retention jobs, deletion execution, hard delete,
 database writes, or account deletion orchestration.
@@ -124,10 +125,17 @@ retention is evaluated with the approved short-lifecycle policy and `expires_at`
 metadata, while retention enforcement, jobs, database writes, deletion
 execution, hard delete, and account deletion orchestration remain closed.
 
+The Stage 7 retention planning/status surface now also includes owner-scoped
+active simulation history entries through canonical principal preflight.
+History retention is evaluated against the approved parent-simulation lifecycle
+policy and fails closed when parent lifecycle context cannot be proven, while
+retention enforcement, jobs, database writes, deletion execution, hard delete,
+and account deletion orchestration remain closed.
+
 Current project progress is **84% overall**. Levio V1 Complete readiness is
-**54% estimated**. The next implementation remains within Stage 7 User Data
+**55% estimated**. The next implementation remains within Stage 7 User Data
 Controls: the next minimal approved substep after owner-scoped simulation
-draft inclusion in retention status inside the existing
+history inclusion in retention status inside the existing
 export/delete/retention scope. It must be
 determined from
 `LEVIO_IMPLEMENTATION_PLAN.md` before code and must not create a new Stage,

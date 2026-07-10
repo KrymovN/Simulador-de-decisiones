@@ -28,7 +28,7 @@ const packageJson = readProjectFile("package.json");
 
 assertCheck(
   "stage-7-retention-surface-versioned",
-  retentionSurface.includes("stage-7-account-data-retention-surface.2") &&
+  retentionSurface.includes("stage-7-account-data-retention-surface.3") &&
     retentionSurface.includes("levio-account-data-retention-plan-json"),
   "Stage 7 retention surface must expose a stable version and JSON plan format.",
 );
@@ -63,7 +63,7 @@ assertCheck(
 );
 
 assertCheck(
-  "stage-7-retention-includes-owner-scoped-drafts-only",
+  "stage-7-retention-includes-owner-scoped-drafts-and-history",
   retentionSurface.includes(
     'simulationDrafts: "owner_scoped_simulation_drafts"',
   ) &&
@@ -72,10 +72,14 @@ assertCheck(
     retentionSurface.includes("row.owner_principal_id !== preflight.principalId") &&
     !retentionSurface.includes("row.export_eligible !== true") &&
     retentionSurface.includes(
-      'simulationHistory: "not_included_in_stage_7_retention_surface"',
+      'simulationHistory: "owner_scoped_simulation_history_entries"',
     ) &&
+    retentionSurface.includes('operation: "list_simulation_history"') &&
+    retentionSurface.includes("listSimulationHistoryEntriesForRetention") &&
+    retentionSurface.includes("parentRecord: parent ? toParentSnapshot(parent) : undefined") &&
+    retentionSurface.includes('resourceCategory: "simulation_history_entry"') &&
     retentionSurface.includes('accountDeletion: "not_included"'),
-  "Retention surface must include owner-scoped drafts without adding history or account deletion orchestration.",
+  "Retention surface must include owner-scoped drafts and history without adding account deletion orchestration.",
 );
 
 assertCheck(

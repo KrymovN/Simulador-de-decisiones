@@ -27,7 +27,7 @@ Date: 10 July 2026, Europe/Madrid.
 Levio.es remains a Decision Simulation Engine.
 
 The current confirmed state is post-Stage 15.5 and post-Stage 7 User Data
-Controls owner-scoped simulation draft retention-status inclusion. The
+Controls owner-scoped simulation history retention-status inclusion. The
 official roadmap remains the
 15-Stage roadmap recorded in
 `LEVIO_PROJECT_PROGRESS.md`. Stage 15.5 - Scale Blocker Resolution Framework
@@ -161,16 +161,17 @@ execution, hard delete, database writes, retention jobs, or account deletion
 orchestration.
 
 Current project progress is **84% overall**. Levio V1 Complete readiness is
-**54% estimated**. The Stage 7 retention planning/status surface is
+**55% estimated**. The Stage 7 retention planning/status surface is
 implemented for authenticated dashboard users as a JSON download over
-owner-scoped saved simulations and active simulation drafts, using
+owner-scoped saved simulations, active simulation drafts, and active simulation
+history entries, using
 preflight-only retention evaluation with
 no retention enforcement, retention jobs, deletion execution, hard delete,
 database writes, or account deletion orchestration. Cross-surface ownership and
 account-lifecycle boundary validation is implemented through
 `npm run quality:stage-7-user-data-control-boundary`. The next implementation
 remains the next minimal approved Stage 7 User Data Controls substep after
-owner-scoped active simulation draft inclusion in retention status inside
+owner-scoped active simulation history inclusion in retention status inside
 the existing export/delete/retention scope. Draft and history
 reads use canonical principal preflight and do not expose owner/provider
 authority or open destructive lifecycle behavior.
@@ -1485,7 +1486,7 @@ Release, Commercial Launch, implementation work, audit, roadmap change, or
 public-contract change requires separate explicit approval.
 
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after owner-scoped simulation draft inclusion in retention
+Data Controls substep after owner-scoped simulation history inclusion in retention
 status within the existing export/delete/retention scope. This
 does not create a new Stage, new
 Block, roadmap branch, or runtime architecture change.

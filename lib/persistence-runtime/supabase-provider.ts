@@ -404,6 +404,10 @@ export type SupabaseSimulationHistoryEntryReadProvider = PersistenceProviderAdap
     ownerPrincipalId: string;
     limit: number;
   }): Promise<SimulationHistoryEntryRow[]>;
+  listSimulationHistoryEntriesForRetention(input: {
+    ownerPrincipalId: string;
+    limit: number;
+  }): Promise<SimulationHistoryEntryRow[]>;
 };
 
 export type SupabasePersistenceRuntimeProvider =
@@ -1071,6 +1075,30 @@ export function createSupabasePersistenceProviderAdapter(input: {
       return response.data;
     },
     async listSimulationHistoryEntriesForDeletion(input) {
+      if (!isServerRuntime()) {
+        return [];
+      }
+
+      const response = await historyReadClient
+        .from("simulation_history_entries")
+        .select("*")
+        .eq("owner_principal_id", input.ownerPrincipalId)
+        .eq("owner_principal_type", "registered_user")
+        .eq("deletion_state", "active")
+        .order("event_timestamp", { ascending: false })
+        .limit(input.limit);
+
+      if (
+        response.error ||
+        !Array.isArray(response.data) ||
+        !response.data.every(isSimulationHistoryEntryRow)
+      ) {
+        return [];
+      }
+
+      return response.data;
+    },
+    async listSimulationHistoryEntriesForRetention(input) {
       if (!isServerRuntime()) {
         return [];
       }
