@@ -12,25 +12,21 @@ const privacyRights = [
 const privacyActions = [
   {
     title: "Exportar datos de la cuenta",
-    copy: "Descargar un archivo JSON con el resumen de cuenta y simulaciones guardadas disponibles.",
+    copy: "Descargar un archivo JSON con el resumen de cuenta, simulaciones guardadas, borradores e historial elegibles.",
     href: "/dashboard/privacy/export",
     label: "Descargar JSON",
   },
   {
     title: "Solicitud de eliminación preparada",
-    copy: "Descargar un plan JSON con simulaciones guardadas elegibles sin ejecutar la eliminación.",
+    copy: "Descargar un plan JSON de simulaciones guardadas, borradores e historial sin ejecutar la eliminación.",
     href: "/dashboard/privacy/deletion",
     label: "Descargar plan",
   },
   {
     title: "Estado de retención preparado",
-    copy: "Descargar un plan JSON con el estado de retención de simulaciones guardadas sin iniciar trabajos automáticos.",
+    copy: "Descargar el estado de retención de simulaciones guardadas, borradores e historial sin iniciar trabajos automáticos.",
     href: "/dashboard/privacy/retention",
     label: "Descargar estado",
-  },
-  {
-    title: "Borrado futuro de historial",
-    copy: "Preparar el borrado de simulaciones cuando exista historial productivo.",
   },
   {
     title: "Gestión futura del consentimiento",

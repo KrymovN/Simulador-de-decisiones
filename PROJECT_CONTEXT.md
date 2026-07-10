@@ -138,10 +138,16 @@ the complete saved simulations / drafts / history matrix across account export,
 deletion planning, and retention status, while proving that destructive
 execution and retention jobs remain closed.
 
+The authenticated dashboard privacy surface is aligned with the completed
+read-only lifecycle scope. Its export, deletion-planning, and retention-status
+actions now describe saved simulations, drafts, and history accurately, and
+the obsolete future-history-deletion mock action has been removed. The bounded
+surface is validated through `npm run quality:stage-7-user-data-privacy-surface`.
+
 Current project progress is **84% overall**. Levio V1 Complete readiness is
-**56% estimated**. The next implementation remains within Stage 7 User Data
-Controls: the next minimal approved substep after aggregate read-only lifecycle
-coverage validation inside the existing export/delete/retention scope. It must be
+**57% estimated**. The next implementation remains within Stage 7 User Data
+Controls: the next minimal approved substep after dashboard privacy-surface
+alignment inside the existing export/delete/retention scope. It must be
 determined from
 `LEVIO_IMPLEMENTATION_PLAN.md` before code and must not create a new Stage,
 new Block, new roadmap branch, or runtime architecture change.

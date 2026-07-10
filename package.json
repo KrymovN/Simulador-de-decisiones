@@ -21,6 +21,7 @@
     "quality:stage-7-user-data-retention-surface": "node scripts/stage-7-user-data-retention-surface-quality.mjs",
     "quality:stage-7-user-data-control-boundary": "node scripts/stage-7-user-data-control-boundary-quality.mjs",
     "quality:stage-7-user-data-read-only-lifecycle-coverage": "node scripts/stage-7-user-data-read-only-lifecycle-coverage-quality.mjs",
+    "quality:stage-7-user-data-privacy-surface": "node scripts/stage-7-user-data-privacy-surface-quality.mjs",
     "quality:block-b-auth-action-boundary": "node scripts/block-b-auth-action-boundary-quality.mjs",
     "quality:block-b-email-flow": "node scripts/block-b-email-flow-quality.mjs",
     "quality:block-b-session-lifecycle": "node scripts/block-b-session-lifecycle-quality.mjs",
