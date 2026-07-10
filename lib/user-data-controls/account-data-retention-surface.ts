@@ -1,4 +1,10 @@
 import { readServerAuthSession } from "../auth/session";
+import type { LevioSessionContext } from "../auth/types";
+import {
+  initializePersistenceRuntimeWiring,
+  type SimulationDraftRow,
+  type SupabaseSimulationDraftReadProvider,
+} from "../persistence-runtime";
 import type { DecisionSimulationDomainModel } from "../saved-decision-simulations/contracts";
 import { listDecisionSimulations } from "../saved-decision-simulations/runtime";
 import type {
@@ -13,12 +19,30 @@ import {
 } from "./retention-runtime";
 
 export const ACCOUNT_DATA_RETENTION_SURFACE_VERSION =
-  "stage-7-account-data-retention-surface.1" as const;
+  "stage-7-account-data-retention-surface.2" as const;
+
+const MAX_RETENTION_DRAFTS = 1000;
 
 type AccountDataRetentionSavedSimulationPlan = {
   id: string;
   href: string;
   title: string;
+  lifecycleState: RetentionLifecycleState;
+  deletionState: RetentionResourceSnapshot["deletionState"];
+  retentionRule: string;
+  evaluationStatus: RetentionRuntimeEvaluationResult["status"];
+  retentionDecision: RetentionDecision | "not_evaluated";
+  lifecycleAction: "none" | "deletion_planning" | "restriction_review";
+  execution: "preflight_only" | "none";
+  retentionJob: "not_started";
+  databaseWrites: "not_executed";
+  reason: string;
+};
+
+type AccountDataRetentionSimulationDraftPlan = {
+  id: string;
+  status: SimulationDraftRow["draft_status"];
+  expiresAt: string;
   lifecycleState: RetentionLifecycleState;
   deletionState: RetentionResourceSnapshot["deletionState"];
   retentionRule: string;
@@ -38,7 +62,7 @@ export type AccountDataRetentionPlanDocument = {
   scope: {
     account: "authenticated_session_summary";
     savedSimulations: "owner_scoped_saved_simulation_history";
-    simulationDrafts: "not_included_in_stage_7_retention_surface";
+    simulationDrafts: "owner_scoped_simulation_drafts";
     simulationHistory: "not_included_in_stage_7_retention_surface";
     deletion: "not_executed";
     retention: "planning_status_only_no_enforcement";
@@ -53,6 +77,7 @@ export type AccountDataRetentionPlanDocument = {
     writesEnabled: false;
   };
   savedSimulationRetentionPlan: AccountDataRetentionSavedSimulationPlan[];
+  simulationDraftRetentionPlan: AccountDataRetentionSimulationDraftPlan[];
   safety: {
     retentionEnforcement: "not_started";
     retentionJobs: "not_started";
@@ -170,9 +195,137 @@ function toPlanItem(
   };
 }
 
+function supportsSimulationDraftRetentionReadProvider(
+  value: unknown,
+): value is SupabaseSimulationDraftReadProvider {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "listSimulationDraftsForRetention" in value &&
+    typeof value.listSimulationDraftsForRetention === "function"
+  );
+}
+
+function toDraftResourceSnapshot(row: SimulationDraftRow): RetentionResourceSnapshot {
+  return {
+    resourceId: row.draft_id,
+    resourceCategory: "simulation_draft",
+    ownerPrincipalId: row.owner_principal_id,
+    ownerPrincipalType: row.owner_principal_type,
+    lifecycleState: row.draft_status,
+    deletionState: row.deletion_state,
+    retentionRule: row.retention_rule,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    archivedAt: null,
+    deletedAt: row.deleted_at,
+    expiresAt: row.expires_at,
+    legalHoldReason: row.legal_hold_reason,
+    exportEligible: row.export_eligible,
+  };
+}
+
+function toDraftPlanItem(
+  row: SimulationDraftRow,
+  evaluation: RetentionRuntimeEvaluationResult,
+): AccountDataRetentionSimulationDraftPlan {
+  const base = {
+    id: row.draft_id,
+    status: row.draft_status,
+    expiresAt: row.expires_at,
+    lifecycleState: row.draft_status,
+    deletionState: row.deletion_state,
+    retentionRule: row.retention_rule,
+    retentionJob: "not_started" as const,
+    databaseWrites: "not_executed" as const,
+  };
+
+  if (evaluation.status === "blocked") {
+    return {
+      ...base,
+      evaluationStatus: "blocked",
+      retentionDecision: "not_evaluated",
+      lifecycleAction: "none",
+      execution: "none",
+      reason: evaluation.message,
+    };
+  }
+
+  return {
+    ...base,
+    retentionRule: evaluation.retentionRule,
+    evaluationStatus: "allowed",
+    retentionDecision: evaluation.decision,
+    lifecycleAction: evaluation.lifecycleAction,
+    execution: evaluation.execution,
+    reason:
+      evaluation.decision === "retain_until_expiration"
+        ? "Owner-scoped simulation draft is retained until its configured expiration."
+        : "Owner-scoped simulation draft requires retention planning review only.",
+  };
+}
+
+async function readOwnerScopedSimulationDrafts(
+  authContext: LevioSessionContext,
+  generatedAt: string,
+  runtime: ReturnType<typeof createRetentionRuntimeFoundation>,
+): Promise<
+  | { status: "ready"; drafts: AccountDataRetentionSimulationDraftPlan[] }
+  | { status: "read_failed" }
+> {
+  const persistenceRuntime = initializePersistenceRuntimeWiring();
+
+  if (
+    persistenceRuntime.status !== "ready" ||
+    !supportsSimulationDraftRetentionReadProvider(persistenceRuntime.providerAdapter)
+  ) {
+    return { status: "read_failed" };
+  }
+
+  const preflight = await persistenceRuntime.preflight({
+    operation: "list_simulation_drafts",
+    authContext,
+  });
+
+  if (preflight.status === "blocked") {
+    return { status: "read_failed" };
+  }
+
+  const rows = await persistenceRuntime.providerAdapter.listSimulationDraftsForRetention({
+    ownerPrincipalId: preflight.principalId,
+    limit: MAX_RETENTION_DRAFTS,
+  });
+
+  if (
+    rows.some(
+      (row) =>
+        row.owner_principal_id !== preflight.principalId ||
+        row.owner_principal_type !== "registered_user" ||
+        row.deletion_state !== "active",
+    )
+  ) {
+    return { status: "read_failed" };
+  }
+
+  return {
+    status: "ready",
+    drafts: rows.map((row) =>
+      toDraftPlanItem(
+        row,
+        runtime.evaluate({
+          authContext,
+          resource: toDraftResourceSnapshot(row),
+          now: generatedAt,
+        }),
+      ),
+    ),
+  };
+}
+
 function createDocument(
   generatedAt: string,
   savedSimulationRetentionPlan: AccountDataRetentionSavedSimulationPlan[],
+  simulationDraftRetentionPlan: AccountDataRetentionSimulationDraftPlan[],
 ): AccountDataRetentionPlanDocument {
   return {
     retentionPlanVersion: ACCOUNT_DATA_RETENTION_SURFACE_VERSION,
@@ -181,7 +334,7 @@ function createDocument(
     scope: {
       account: "authenticated_session_summary",
       savedSimulations: "owner_scoped_saved_simulation_history",
-      simulationDrafts: "not_included_in_stage_7_retention_surface",
+      simulationDrafts: "owner_scoped_simulation_drafts",
       simulationHistory: "not_included_in_stage_7_retention_surface",
       deletion: "not_executed",
       retention: "planning_status_only_no_enforcement",
@@ -196,6 +349,7 @@ function createDocument(
       writesEnabled: false,
     },
     savedSimulationRetentionPlan,
+    simulationDraftRetentionPlan,
     safety: {
       retentionEnforcement: "not_started",
       retentionJobs: "not_started",
@@ -206,14 +360,9 @@ function createDocument(
     },
     excluded: [
       {
-        category: "simulationDrafts",
-        reason:
-          "Stage 7 retention surface reports saved simulation retention status only.",
-      },
-      {
         category: "simulationHistory",
         reason:
-          "Stage 7 retention surface reports saved simulation retention status only.",
+          "Stage 7 retention surface does not yet report simulation history retention status.",
       },
       {
         category: "retentionEnforcement",
@@ -259,6 +408,19 @@ export async function readAccountDataRetentionSurface(): Promise<AccountDataRete
     enabled: true,
     policies: DEFAULT_RETENTION_RUNTIME_POLICIES,
   });
+  const simulationDrafts = await readOwnerScopedSimulationDrafts(
+    authContext,
+    generatedAt,
+    runtime,
+  );
+
+  if (simulationDrafts.status === "read_failed") {
+    return {
+      status: "blocked",
+      reason: "read_failed",
+      message: "No se pudo preparar el estado de retención de forma controlada.",
+    };
+  }
   const savedSimulationRetentionPlan = savedSimulations.simulations.map((simulation) =>
     toPlanItem(
       simulation,
@@ -269,9 +431,16 @@ export async function readAccountDataRetentionSurface(): Promise<AccountDataRete
       }),
     ),
   );
-  const document = createDocument(generatedAt, savedSimulationRetentionPlan);
+  const document = createDocument(
+    generatedAt,
+    savedSimulationRetentionPlan,
+    simulationDrafts.drafts,
+  );
 
-  if (document.savedSimulationRetentionPlan.length === 0) {
+  if (
+    document.savedSimulationRetentionPlan.length === 0 &&
+    document.simulationDraftRetentionPlan.length === 0
+  ) {
     return {
       status: "empty",
       document,

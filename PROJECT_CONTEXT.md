@@ -20,7 +20,7 @@ prevails unless it has been explicitly amended.
 
 ## Current Confirmed State
 
-Date: 9 July 2026, Europe/Madrid.
+Date: 10 July 2026, Europe/Madrid.
 
 Levio.es is a Decision Simulation Engine.
 
@@ -84,7 +84,8 @@ planning JSON for owner-scoped saved simulations, with no deletion execution,
 hard delete, database writes, retention jobs, or account deletion
 orchestration. The next minimal Stage 7 retention planning/status surface is
 implemented for authenticated dashboard users as a JSON download over
-owner-scoped saved simulations, using preflight-only retention evaluation with
+owner-scoped saved simulations and active simulation drafts, using
+preflight-only retention evaluation with
 no retention enforcement, retention jobs, deletion execution, hard delete,
 database writes, or account deletion orchestration.
 
@@ -117,10 +118,16 @@ deletion-specific provider read, exposes lifecycle planning metadata only,
 rejects mixed-owner results, and keeps deletion execution, database writes,
 hard delete, and account deletion orchestration closed.
 
+The Stage 7 retention planning/status surface now also includes owner-scoped
+active simulation drafts through canonical principal preflight. Draft
+retention is evaluated with the approved short-lifecycle policy and `expires_at`
+metadata, while retention enforcement, jobs, database writes, deletion
+execution, hard delete, and account deletion orchestration remain closed.
+
 Current project progress is **84% overall**. Levio V1 Complete readiness is
-**53% estimated**. The next implementation remains within Stage 7 User Data
+**54% estimated**. The next implementation remains within Stage 7 User Data
 Controls: the next minimal approved substep after owner-scoped simulation
-history inclusion in deletion planning inside the existing
+draft inclusion in retention status inside the existing
 export/delete/retention scope. It must be
 determined from
 `LEVIO_IMPLEMENTATION_PLAN.md` before code and must not create a new Stage,

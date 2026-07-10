@@ -145,6 +145,18 @@ assertCheck(
 );
 
 assertCheck(
+  "stage-7-retention-draft-status-remains-read-only-and-owner-scoped",
+  surfaces[2].surface.includes('operation: "list_simulation_drafts"') &&
+    surfaces[2].surface.includes("listSimulationDraftsForRetention") &&
+    surfaces[2].surface.includes("row.owner_principal_id !== preflight.principalId") &&
+    surfaces[2].surface.includes('retentionJobs: "not_started"') &&
+    surfaces[2].surface.includes('databaseWrites: "not_executed"') &&
+    !surfaces[2].surface.includes("deleteSimulationDraft(") &&
+    !surfaces[2].surface.includes('operation: "delete_simulation_draft"'),
+  "Draft retention status must use owner-scoped read preflight without enabling retention jobs or deletion.",
+);
+
+assertCheck(
   "stage-7-user-data-control-boundary-gate-registered",
   packageJson.includes('"quality:stage-7-user-data-control-boundary"'),
   "Package scripts must register the Stage 7 cross-surface boundary gate.",
