@@ -22,7 +22,7 @@ prevails unless it has been explicitly amended.
 
 ## Active Checkpoint
 
-Post-Stage 15.5 / Stage 7 Owner-Scoped Synchronous Saved-Simulation Deletion Execution.
+Post-Stage 15.5 / Stage 7 Owner-Scoped Synchronous Simulation-Draft Deletion Execution.
 
 Status: the official roadmap remains the 15-Stage roadmap recorded in
 `LEVIO_PROJECT_PROGRESS.md`. Stage 15.5 is complete as documentation-only Scale
@@ -196,6 +196,13 @@ fields without physical row delete, cascade,
 draft/history mutation, retention enforcement, or account lifecycle behavior.
 The dedicated gate is
 `npm run quality:stage-7-saved-simulation-deletion-execution`.
+Owner-scoped synchronous deletion execution is now also implemented for one
+active simulation draft. It clears only draft content/autosave state and uses
+the draft's existing terminal lifecycle fields through canonical-principal
+validation. No draft detail/edit UI exists, so no new UI or route was created.
+Saved simulations, history, account lifecycle, consent, and retention are not
+mutated. The dedicated gate is
+`npm run quality:stage-7-simulation-draft-deletion-execution`.
 
 This checkpoint does not open Scale, increase traffic, open Production Release,
 open Commercial Launch, enable Real AI provider execution, add billing,
@@ -1872,7 +1879,7 @@ execution, Production Release, Commercial Launch, implementation work, audit,
 roadmap change, or public-contract change requires separate explicit approval.
 
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after owner-scoped synchronous saved-simulation deletion
+Data Controls substep after owner-scoped synchronous simulation-draft deletion
 execution. This
 does not create a new Stage, new
 Block, roadmap branch, or runtime architecture change.

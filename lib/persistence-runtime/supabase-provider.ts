@@ -175,6 +175,19 @@ export type SupabaseSimulationDraftUpdatePayload = {
   expires_at?: string;
 };
 
+export type SupabaseSimulationDraftDeletePayload = {
+  draft_status: "deleted";
+  deletion_state: "deleted";
+  draft_payload: Record<string, never>;
+  draft_text_snapshot: null;
+  clarification_answers_snapshot: null;
+  structured_context_snapshot: null;
+  autosave_enabled: false;
+  deleted_at: string;
+  export_eligible: false;
+  updated_at: string;
+};
+
 export type SupabaseSimulationRecordArchivePayload = {
   record_status: "archived";
   archived_at: string;
@@ -259,6 +272,7 @@ export type SupabaseSimulationDraftMutation = {
   eq(column: string, value: string): SupabaseSimulationDraftMutation;
   select(columns: string): {
     single(): Promise<SupabaseQueryResponse>;
+    maybeSingle(): Promise<SupabaseQueryResponse>;
   };
 };
 
@@ -326,7 +340,9 @@ export type SupabaseSimulationHistoryEntryMutationClient = {
 export type SupabaseSimulationDraftMutationClient = {
   from(table: "simulation_drafts"): {
     insert(payload: SupabaseSimulationDraftInsertPayload): SupabaseSimulationDraftMutation;
-    update(payload: SupabaseSimulationDraftUpdatePayload): SupabaseSimulationDraftMutation;
+    update(
+      payload: SupabaseSimulationDraftUpdatePayload | SupabaseSimulationDraftDeletePayload,
+    ): SupabaseSimulationDraftMutation;
   };
 };
 
@@ -413,6 +429,19 @@ export type SupabaseSimulationDraftSaveProvider = PersistenceProviderAdapter & {
   }): Promise<SimulationDraftRow | null>;
 };
 
+export type SupabaseSimulationDraftDeleteResult =
+  | { status: "deleted"; draft: SimulationDraftRow }
+  | { status: "not_found" }
+  | { status: "failed" };
+
+export type SupabaseSimulationDraftDeleteProvider = PersistenceProviderAdapter & {
+  deleteSimulationDraft(input: {
+    draftId: string;
+    ownerPrincipalId: string;
+    deletedAt: string;
+  }): Promise<SupabaseSimulationDraftDeleteResult>;
+};
+
 export type SupabaseSimulationDraftReadProvider = PersistenceProviderAdapter & {
   listSimulationDrafts(input: {
     ownerPrincipalId: string;
@@ -451,6 +480,7 @@ export type SupabasePersistenceRuntimeProvider =
     SupabaseSimulationHistoryEntrySaveProvider &
     SupabaseSimulationHistoryEntryReadProvider &
     SupabaseSimulationDraftSaveProvider &
+    SupabaseSimulationDraftDeleteProvider &
     SupabaseSimulationDraftReadProvider;
 
 export type SupabasePersistenceConnectivityValidationResult = {
@@ -1238,6 +1268,47 @@ export function createSupabasePersistenceProviderAdapter(input: {
       }
 
       return response.data;
+    },
+    async deleteSimulationDraft(input) {
+      if (!isServerRuntime()) {
+        return { status: "failed" };
+      }
+
+      const response = await draftMutationClient
+        .from("simulation_drafts")
+        .update({
+          draft_status: "deleted",
+          deletion_state: "deleted",
+          draft_payload: {},
+          draft_text_snapshot: null,
+          clarification_answers_snapshot: null,
+          structured_context_snapshot: null,
+          autosave_enabled: false,
+          deleted_at: input.deletedAt,
+          export_eligible: false,
+          updated_at: input.deletedAt,
+        })
+        .eq("draft_id", input.draftId)
+        .eq("owner_principal_id", input.ownerPrincipalId)
+        .eq("owner_principal_type", "registered_user")
+        .eq("draft_status", "active")
+        .eq("deletion_state", "active")
+        .select("*")
+        .maybeSingle();
+
+      if (response.error) {
+        return { status: "failed" };
+      }
+
+      if (response.data === null) {
+        return { status: "not_found" };
+      }
+
+      if (!isSimulationDraftRow(response.data)) {
+        return { status: "failed" };
+      }
+
+      return { status: "deleted", draft: response.data };
     },
     async listSimulationDrafts(input) {
       if (!isServerRuntime()) {

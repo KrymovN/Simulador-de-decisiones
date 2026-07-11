@@ -24,6 +24,7 @@
     "quality:stage-7-user-data-privacy-surface": "node scripts/stage-7-user-data-privacy-surface-quality.mjs",
     "quality:stage-7-user-data-consent-status-surface": "node scripts/stage-7-user-data-consent-status-surface-quality.mjs",
     "quality:stage-7-saved-simulation-deletion-execution": "node scripts/stage-7-saved-simulation-deletion-execution-quality.mjs",
+    "quality:stage-7-simulation-draft-deletion-execution": "node scripts/stage-7-simulation-draft-deletion-execution-quality.mjs",
     "quality:block-b-auth-action-boundary": "node scripts/block-b-auth-action-boundary-quality.mjs",
     "quality:block-b-email-flow": "node scripts/block-b-email-flow-quality.mjs",
     "quality:block-b-session-lifecycle": "node scripts/block-b-session-lifecycle-quality.mjs",

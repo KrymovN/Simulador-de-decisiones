@@ -93,8 +93,8 @@ V1 Complete Readiness    ██████░░░░ 58% estimated
   comparator.
 - Blocks A/B/C are internal V1 implementation substeps only; they are not
   roadmap Stages and not the project-management system.
-- Most recent Stage 7 implementation substep: owner-scoped synchronous saved-
-  simulation deletion execution through the existing terminal lifecycle state.
+- Most recent Stage 7 implementation substep: owner-scoped synchronous
+  simulation-draft deletion execution through the existing draft lifecycle.
 - Block A1 Decision Simulation Domain Model завершён:
   `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`.
 - Block A2 Persistence Runtime Mapping завершён: internal runtime maps
@@ -244,8 +244,14 @@ V1 Complete Readiness    ██████░░░░ 58% estimated
   lifecycle fields without physical row delete,
   cascade, drafts/history mutation, retention jobs, or account deletion and is
   covered by `npm run quality:stage-7-saved-simulation-deletion-execution`.
+- Owner-scoped synchronous deletion execution is implemented for one active
+  simulation draft through server-side canonical-principal validation. It
+  clears only draft payload/snapshots and autosave state, applies existing
+  terminal draft/deletion fields, creates no new UI/route, and does not mutate
+  saved simulations, history, accounts, consent, or retention. It is covered
+  by `npm run quality:stage-7-simulation-draft-deletion-execution`.
 - Next implementation: the next minimal approved Stage 7 User Data Controls
-  substep after owner-scoped synchronous saved-simulation deletion execution.
+  substep after owner-scoped synchronous simulation-draft deletion execution.
   This does not
   create a new Stage, new Block,
   roadmap branch, or runtime architecture change.
@@ -1521,7 +1527,7 @@ blocker-resolution framework only. The current V1 implementation focus is
 Stage 7 - User Data Controls. Blocks A/B/C are internal V1 implementation
 substeps only and must not be used as the primary roadmap-management system.
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after owner-scoped synchronous saved-simulation deletion
+Data Controls substep after owner-scoped synchronous simulation-draft deletion
 execution.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI

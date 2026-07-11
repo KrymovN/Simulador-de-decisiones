@@ -168,10 +168,19 @@ dashboard detail surface exposes this narrowly scoped action and states its
 limits. The dedicated gate is
 `npm run quality:stage-7-saved-simulation-deletion-execution`.
 
+Owner-scoped synchronous deletion execution is now also implemented for one
+active simulation draft at a time through the existing server-only canonical-
+principal persistence boundary. Draft content and autosave state are cleared,
+the existing terminal draft/deletion fields are applied, and only a minimal
+lifecycle shell remains. No draft UI was added because no draft detail/edit
+surface exists. Saved simulations, history, account lifecycle, consent, and
+retention remain unchanged. The dedicated gate is
+`npm run quality:stage-7-simulation-draft-deletion-execution`.
+
 Current project progress is **84% overall**. Levio V1 Complete readiness is
 **58% estimated**. The next implementation remains within Stage 7 User Data
 Controls: the next minimal approved substep after owner-scoped synchronous
-saved-simulation deletion execution. It must be determined from
+simulation-draft deletion execution. It must be determined from
 `LEVIO_IMPLEMENTATION_PLAN.md` before code and must not create a new Stage,
 new Block, new roadmap branch, or runtime architecture change.
 

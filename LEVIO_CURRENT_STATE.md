@@ -206,6 +206,15 @@ without physical row delete or cascade. Drafts,
 history, consent, retention, and account lifecycle remain unchanged. The
 dedicated gate is `npm run quality:stage-7-saved-simulation-deletion-execution`.
 
+Owner-scoped synchronous deletion execution is now also implemented for one
+active simulation draft. Authentication and canonical-principal resolution
+remain server-side; draft payload/snapshots and autosave state are cleared and
+the existing terminal draft/deletion lifecycle fields are applied. No draft UI
+or route was created because no draft detail/edit surface exists. Saved
+simulations, history, account lifecycle, consent, and retention remain
+unchanged. The dedicated gate is
+`npm run quality:stage-7-simulation-draft-deletion-execution`.
+
 This state does not resolve Scale blockers, execute Scale, increase traffic,
 open Production Release, open Commercial Launch, connect Real AI, enable
 billing, add analytics, tracking, compliance claims, roadmap changes, or a new
@@ -1516,7 +1525,7 @@ Release, Commercial Launch, implementation work, audit, roadmap change, or
 public-contract change requires separate explicit approval.
 
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after owner-scoped synchronous saved-simulation deletion
+Data Controls substep after owner-scoped synchronous simulation-draft deletion
 execution. This
 does not create a new Stage, new
 Block, roadmap branch, or runtime architecture change.
