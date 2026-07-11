@@ -161,7 +161,7 @@ execution, hard delete, database writes, retention jobs, or account deletion
 orchestration.
 
 Current project progress is **84% overall**. Levio V1 Complete readiness is
-**57% estimated**. The Stage 7 retention planning/status surface is
+**58% estimated**. The Stage 7 retention planning/status surface is
 implemented for authenticated dashboard users as a JSON download over
 owner-scoped saved simulations, active simulation drafts, and active simulation
 history entries, using
@@ -174,8 +174,7 @@ lifecycle coverage for saved simulations, drafts, and history across export,
 deletion planning, and retention status is validated through
 `npm run quality:stage-7-user-data-read-only-lifecycle-coverage`. The next
 implementation remains the next minimal approved Stage 7 User Data Controls
-substep after dashboard privacy-surface alignment inside
-the existing export/delete/retention scope. Draft and history
+substep after the read-only consent policy/status surface. Draft and history
 reads use canonical principal preflight and do not expose owner/provider
 authority or open destructive lifecycle behavior.
 
@@ -185,6 +184,13 @@ history. The obsolete future-history-deletion mock action is removed, and the
 bounded surface is covered by
 `npm run quality:stage-7-user-data-privacy-surface` without opening destructive
 execution.
+
+The authenticated dashboard privacy surface now also provides a read-only
+consent policy/status JSON download. It uses authenticated
+canonical-principal preflight and the approved policy catalog, but does not
+create a consent ledger, capture or withdraw consent, write to the database,
+or open memory, analytics reuse, or AI-training reuse. The boundary is covered
+by `npm run quality:stage-7-user-data-consent-status-surface`.
 
 This state does not resolve Scale blockers, execute Scale, increase traffic,
 open Production Release, open Commercial Launch, connect Real AI, enable
@@ -1496,8 +1502,7 @@ Release, Commercial Launch, implementation work, audit, roadmap change, or
 public-contract change requires separate explicit approval.
 
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after dashboard privacy-surface alignment
-within the existing export/delete/retention scope. This
+Data Controls substep after the read-only consent policy/status surface. This
 does not create a new Stage, new
 Block, roadmap branch, or runtime architecture change.
 

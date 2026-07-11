@@ -36,7 +36,7 @@ The official roadmap remains the 15-Stage roadmap recorded in
 implementation comparison blocks only; they are not roadmap Stages, not a new
 project-management structure, and not authorization to expand the roadmap.
 The current V1 implementation focus is Stage 7 - User Data Controls. Current
-project progress is **84% overall** and Levio V1 Complete readiness is **57%
+project progress is **84% overall** and Levio V1 Complete readiness is **58%
 estimated**.
 
 The approved high-level path to **LEVIO V1 COMPLETE** is:
@@ -274,7 +274,7 @@ module, planning document, or readiness checklist as production completion.
 Percentages below are estimated, conservative, and evidence-based. They measure
 Levio V1 Complete, not documentation volume and not roadmap-stage count.
 
-Overall Levio V1 Completion: **57% estimated**
+Overall Levio V1 Completion: **58% estimated**
 
 Block A: Completed, **100% for approved persistence scope**, closed work:
 
@@ -344,7 +344,8 @@ Block C: In Progress / export, deletion planning, retention planning, and
 cross-surface boundary validation, draft export inclusion, and user-visible
 history export inclusion, draft/history deletion-plan inclusion, and draft
 retention-status inclusion, aggregate read-only lifecycle coverage validation,
-and dashboard privacy-surface alignment completed, **88%
+dashboard privacy-surface alignment, and read-only consent policy/status
+surface completed, **90%
 estimated**, closed work:
 
 - C1 account data export surface for authenticated dashboard users, exporting
@@ -392,11 +393,15 @@ estimated**, closed work:
   lifecycle scope, with accurate saved-simulation, draft, and history copy,
   removal of the obsolete history-deletion mock action, and no destructive
   execution behavior.
+- Stage 7 read-only consent policy/status JSON for authenticated dashboard
+  users, based on the approved policy catalog and canonical-principal
+  preflight, without a consent ledger, capture, withdrawal, writes, memory,
+  analytics reuse, or AI-training reuse.
 
 Remaining work:
 
 - implement only the next approved Stage 7 User Data Controls substep after
-  dashboard privacy-surface alignment;
+  the read-only consent policy/status surface;
 - execute deletion only if separately approved within the roadmap scope;
 - enforce retention and deletion lifecycle behavior;
 - close privacy/data-control blockers;
@@ -455,8 +460,8 @@ documentation-only scale-readiness planning. Stage 15.5 is complete and Stage
 
 Current V1 implementation focus: **Stage 7 - User Data Controls**.
 
-Most recent Stage 7 implementation substep: **dashboard privacy-surface
-alignment with the completed read-only lifecycle scope**.
+Most recent Stage 7 implementation substep: **authenticated read-only consent
+policy/status surface**.
 
 Current evidence:
 
@@ -498,8 +503,7 @@ Next correct implementation step:
 No further Block A or Block B implementation task is currently required for
 their approved scopes. The next implementation, if any, must remain inside
 Stage 7 User Data Controls and must be the next minimal approved substep after
-dashboard privacy-surface alignment within the existing
-export/delete/retention scope. This document does not create a new C
+the read-only consent policy/status surface. This document does not create a new C
 substep name, new Stage,
 new Block, new roadmap branch, or automatic authorization for deletion writes,
 hard delete, retention enforcement, retention jobs, or account deletion

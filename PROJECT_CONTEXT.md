@@ -144,11 +144,17 @@ actions now describe saved simulations, drafts, and history accurately, and
 the obsolete future-history-deletion mock action has been removed. The bounded
 surface is validated through `npm run quality:stage-7-user-data-privacy-surface`.
 
+The authenticated dashboard privacy surface now also exposes a read-only
+consent policy/status JSON download. It reports the approved consent policy
+catalog after authenticated canonical-principal preflight, without inventing a
+consent ledger or opening consent capture, withdrawal, database writes, memory,
+analytics reuse, or AI-training reuse. The bounded surface is validated through
+`npm run quality:stage-7-user-data-consent-status-surface`.
+
 Current project progress is **84% overall**. Levio V1 Complete readiness is
-**57% estimated**. The next implementation remains within Stage 7 User Data
-Controls: the next minimal approved substep after dashboard privacy-surface
-alignment inside the existing export/delete/retention scope. It must be
-determined from
+**58% estimated**. The next implementation remains within Stage 7 User Data
+Controls: the next minimal approved substep after the read-only consent
+policy/status surface. It must be determined from
 `LEVIO_IMPLEMENTATION_PLAN.md` before code and must not create a new Stage,
 new Block, new roadmap branch, or runtime architecture change.
 

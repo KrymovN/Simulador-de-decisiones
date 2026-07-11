@@ -22,7 +22,7 @@ prevails unless it has been explicitly amended.
 
 ## Active Checkpoint
 
-Post-Stage 15.5 / Stage 7 User Data Controls Draft Retention Status Inclusion.
+Post-Stage 15.5 / Stage 7 User Data Controls Read-Only Consent Status Surface.
 
 Status: the official roadmap remains the 15-Stage roadmap recorded in
 `LEVIO_PROJECT_PROGRESS.md`. Stage 15.5 is complete as documentation-only Scale
@@ -164,7 +164,7 @@ simulation drafts through canonical principal preflight, without exposing
 owner/provider authority or opening deletion behavior. Eligible user-visible
 owner-scoped simulation history is also included through canonical principal
 preflight without internal authority or mutation behavior. Levio V1 Complete
-readiness is **57% estimated**. The deletion planning surface now also includes
+readiness is **58% estimated**. The deletion planning surface now also includes
 eligible owner-scoped simulation drafts through canonical principal preflight,
 without deletion execution or database writes. It now also includes owner-scoped
 active simulation history through canonical principal preflight and a
@@ -180,8 +180,12 @@ retention status. The dashboard privacy surface now describes the complete
 read-only saved simulations / drafts / history scope accurately, removes the
 obsolete future-history-deletion mock action, and is validated through
 `npm run quality:stage-7-user-data-privacy-surface`. The next implementation
-remains the next minimal approved Stage 7 User Data Controls substep after that
-alignment inside the existing export/delete/retention scope.
+remains the next minimal approved Stage 7 User Data Controls substep after the
+authenticated read-only consent policy/status surface. That surface reports
+the approved policy catalog after canonical-principal preflight without a
+consent ledger, capture, withdrawal, database writes, memory, analytics reuse,
+or AI-training reuse, and is validated through
+`npm run quality:stage-7-user-data-consent-status-surface`.
 
 This checkpoint does not open Scale, increase traffic, open Production Release,
 open Commercial Launch, enable Real AI provider execution, add billing,
@@ -1858,8 +1862,7 @@ execution, Production Release, Commercial Launch, implementation work, audit,
 roadmap change, or public-contract change requires separate explicit approval.
 
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after dashboard privacy-surface alignment
-within the existing export/delete/retention scope. This
+Data Controls substep after the read-only consent policy/status surface. This
 does not create a new Stage, new
 Block, roadmap branch, or runtime architecture change.
 

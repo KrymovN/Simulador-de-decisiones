@@ -23,7 +23,7 @@ prevails unless it has been explicitly amended.
 
 ## Last Updated
 
-9 июля 2026
+11 июля 2026
 
 ## Purpose
 
@@ -70,7 +70,7 @@ Foundation Readiness     ██████████ 100%
 Runtime Completion       ███████░░░ 65%
 Commercial Readiness     ███░░░░░░░ 25%
 Overall Project Progress ████████░░ 84%
-V1 Complete Readiness    █████░░░░░ 57% estimated
+V1 Complete Readiness    ██████░░░░ 58% estimated
 ```
 
 ## Current Position
@@ -93,8 +93,8 @@ V1 Complete Readiness    █████░░░░░ 57% estimated
   comparator.
 - Blocks A/B/C are internal V1 implementation substeps only; they are not
   roadmap Stages and not the project-management system.
-- Most recent Stage 7 implementation substep: dashboard privacy-surface
-  alignment with the completed read-only lifecycle scope.
+- Most recent Stage 7 implementation substep: authenticated read-only consent
+  policy/status surface with no consent ledger, capture, withdrawal, or writes.
 - Block A1 Decision Simulation Domain Model завершён:
   `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`.
 - Block A2 Persistence Runtime Mapping завершён: internal runtime maps
@@ -229,9 +229,14 @@ V1 Complete Readiness    █████░░░░░ 57% estimated
   history across export, deletion planning, and retention status; the obsolete
   future-history-deletion mock action is removed and the bounded surface is
   validated through `npm run quality:stage-7-user-data-privacy-surface`.
+- Authenticated dashboard users can download a read-only consent policy/status
+  JSON based on the approved policy catalog and canonical-principal preflight;
+  no consent ledger, capture, withdrawal, database writes, memory, analytics
+  reuse, or AI-training reuse is opened. The boundary is validated through
+  `npm run quality:stage-7-user-data-consent-status-surface`.
 - Next implementation: the next minimal approved Stage 7 User Data Controls
-  substep after dashboard privacy-surface alignment within the existing export/delete/retention
-  scope. This does not create a new Stage, new Block,
+  substep after the read-only consent policy/status surface. This does not
+  create a new Stage, new Block,
   roadmap branch, or runtime architecture change.
 - Recent product implementation foundation:
   `Saved Decision Simulations Runtime Foundation`, internal server/runtime
@@ -1505,8 +1510,7 @@ blocker-resolution framework only. The current V1 implementation focus is
 Stage 7 - User Data Controls. Blocks A/B/C are internal V1 implementation
 substeps only and must not be used as the primary roadmap-management system.
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after dashboard privacy-surface alignment
-within the existing export/delete/retention scope.
+Data Controls substep after the read-only consent policy/status surface.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.

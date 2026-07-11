@@ -29,8 +29,10 @@ const privacyActions = [
     label: "Descargar estado",
   },
   {
-    title: "Gestión futura del consentimiento",
-    copy: "Preparar cómo se retiraría el análisis personalizado y cualquier contexto futuro asociado.",
+    title: "Estado del consentimiento",
+    copy: "Descargar el estado de las políticas de consentimiento sin registrar, modificar ni retirar consentimiento.",
+    href: "/dashboard/privacy/consent",
+    label: "Descargar estado",
   },
   {
     title: "Preparar pausa de memoria futura",
