@@ -22,7 +22,7 @@ prevails unless it has been explicitly amended.
 
 ## Confirmed Project Position
 
-Date: 10 July 2026, Europe/Madrid.
+Date: 11 July 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
@@ -172,9 +172,8 @@ account-lifecycle boundary validation is implemented through
 `npm run quality:stage-7-user-data-control-boundary`. Aggregate read-only
 lifecycle coverage for saved simulations, drafts, and history across export,
 deletion planning, and retention status is validated through
-`npm run quality:stage-7-user-data-read-only-lifecycle-coverage`. The next
-implementation remains the next minimal approved Stage 7 User Data Controls
-substep after the read-only consent policy/status surface. Draft and history
+`npm run quality:stage-7-user-data-read-only-lifecycle-coverage`. The read-only
+consent policy/status surface was the preceding implementation. Draft and history
 reads use canonical principal preflight and do not expose owner/provider
 authority or open destructive lifecycle behavior.
 
@@ -191,6 +190,12 @@ canonical-principal preflight and the approved policy catalog, but does not
 create a consent ledger, capture or withdraw consent, write to the database,
 or open memory, analytics reuse, or AI-training reuse. The boundary is covered
 by `npm run quality:stage-7-user-data-consent-status-surface`.
+
+The Stage 7 cross-surface boundary gate now includes the consent status surface
+alongside export, deletion planning, and retention status. It validates the
+authenticated dashboard guard, canonical principal preflight, client owner
+rejection, fail-closed behavior, and the policy-only no-ledger/no-write consent
+boundary.
 
 This state does not resolve Scale blockers, execute Scale, increase traffic,
 open Production Release, open Commercial Launch, connect Real AI, enable
@@ -1502,7 +1507,7 @@ Release, Commercial Launch, implementation work, audit, roadmap change, or
 public-contract change requires separate explicit approval.
 
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after the read-only consent policy/status surface. This
+Data Controls substep after cross-surface consent boundary validation. This
 does not create a new Stage, new
 Block, roadmap branch, or runtime architecture change.
 

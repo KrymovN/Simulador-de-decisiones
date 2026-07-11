@@ -22,7 +22,7 @@ prevails unless it has been explicitly amended.
 
 ## Active Checkpoint
 
-Post-Stage 15.5 / Stage 7 User Data Controls Read-Only Consent Status Surface.
+Post-Stage 15.5 / Stage 7 User Data Controls Cross-Surface Consent Boundary Validation.
 
 Status: the official roadmap remains the 15-Stage roadmap recorded in
 `LEVIO_PROJECT_PROGRESS.md`. Stage 15.5 is complete as documentation-only Scale
@@ -179,20 +179,23 @@ saved simulations, drafts, and history across export, deletion planning, and
 retention status. The dashboard privacy surface now describes the complete
 read-only saved simulations / drafts / history scope accurately, removes the
 obsolete future-history-deletion mock action, and is validated through
-`npm run quality:stage-7-user-data-privacy-surface`. The next implementation
-remains the next minimal approved Stage 7 User Data Controls substep after the
-authenticated read-only consent policy/status surface. That surface reports
+`npm run quality:stage-7-user-data-privacy-surface`. The preceding implementation
+was the authenticated read-only consent policy/status surface. That surface reports
 the approved policy catalog after canonical-principal preflight without a
 consent ledger, capture, withdrawal, database writes, memory, analytics reuse,
 or AI-training reuse, and is validated through
 `npm run quality:stage-7-user-data-consent-status-surface`.
+The existing `npm run quality:stage-7-user-data-control-boundary` gate now also
+covers the consent status surface, proving authenticated dashboard containment,
+canonical owner validation, client owner rejection, fail-closed behavior, and
+the no-ledger/no-write boundary across all four current Stage 7 controls.
 
 This checkpoint does not open Scale, increase traffic, open Production Release,
 open Commercial Launch, enable Real AI provider execution, add billing,
 analytics, tracking, logging, compliance claims, roadmap changes, or a new
 public contract.
 
-Date: 10 July 2026, Europe/Madrid.
+Date: 11 July 2026, Europe/Madrid.
 
 Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
 Complete. Stage 5.2 remains closed as Prompt / Context Layer Foundation
@@ -1862,7 +1865,7 @@ execution, Production Release, Commercial Launch, implementation work, audit,
 roadmap change, or public-contract change requires separate explicit approval.
 
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after the read-only consent policy/status surface. This
+Data Controls substep after cross-surface consent boundary validation. This
 does not create a new Stage, new
 Block, roadmap branch, or runtime architecture change.
 

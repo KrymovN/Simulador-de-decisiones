@@ -1,6 +1,6 @@
 # LEVIO IMPLEMENTATION PLAN
 
-Date: 10 July 2026, Europe/Madrid.
+Date: 11 July 2026, Europe/Madrid.
 
 Status: Canonical V1 implementation comparison document.
 
@@ -397,11 +397,15 @@ estimated**, closed work:
   users, based on the approved policy catalog and canonical-principal
   preflight, without a consent ledger, capture, withdrawal, writes, memory,
   analytics reuse, or AI-training reuse.
+- Stage 7 cross-surface consent boundary validation, extending the existing
+  export/deletion-planning/retention boundary gate to prove authenticated
+  dashboard containment, canonical owner validation, client owner rejection,
+  fail-closed behavior, and no consent ledger or writes.
 
 Remaining work:
 
 - implement only the next approved Stage 7 User Data Controls substep after
-  the read-only consent policy/status surface;
+  cross-surface consent boundary validation;
 - execute deletion only if separately approved within the roadmap scope;
 - enforce retention and deletion lifecycle behavior;
 - close privacy/data-control blockers;
@@ -460,8 +464,8 @@ documentation-only scale-readiness planning. Stage 15.5 is complete and Stage
 
 Current V1 implementation focus: **Stage 7 - User Data Controls**.
 
-Most recent Stage 7 implementation substep: **authenticated read-only consent
-policy/status surface**.
+Most recent Stage 7 implementation substep: **cross-surface consent boundary
+validation**.
 
 Current evidence:
 
@@ -503,7 +507,7 @@ Next correct implementation step:
 No further Block A or Block B implementation task is currently required for
 their approved scopes. The next implementation, if any, must remain inside
 Stage 7 User Data Controls and must be the next minimal approved substep after
-the read-only consent policy/status surface. This document does not create a new C
+cross-surface consent boundary validation. This document does not create a new C
 substep name, new Stage,
 new Block, new roadmap branch, or automatic authorization for deletion writes,
 hard delete, retention enforcement, retention jobs, or account deletion

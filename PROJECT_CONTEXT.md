@@ -20,7 +20,7 @@ prevails unless it has been explicitly amended.
 
 ## Current Confirmed State
 
-Date: 10 July 2026, Europe/Madrid.
+Date: 11 July 2026, Europe/Madrid.
 
 Levio.es is a Decision Simulation Engine.
 
@@ -151,10 +151,16 @@ consent ledger or opening consent capture, withdrawal, database writes, memory,
 analytics reuse, or AI-training reuse. The bounded surface is validated through
 `npm run quality:stage-7-user-data-consent-status-surface`.
 
+The Stage 7 cross-surface user data control boundary validation now includes
+the consent status surface alongside export, deletion planning, and retention
+status. It verifies authenticated dashboard containment, server-only canonical
+owner validation, client owner rejection, fail-closed behavior, and the
+policy-only no-ledger/no-write consent boundary.
+
 Current project progress is **84% overall**. Levio V1 Complete readiness is
 **58% estimated**. The next implementation remains within Stage 7 User Data
-Controls: the next minimal approved substep after the read-only consent
-policy/status surface. It must be determined from
+Controls: the next minimal approved substep after cross-surface consent
+boundary validation. It must be determined from
 `LEVIO_IMPLEMENTATION_PLAN.md` before code and must not create a new Stage,
 new Block, new roadmap branch, or runtime architecture change.
 

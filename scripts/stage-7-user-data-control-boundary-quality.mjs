@@ -7,12 +7,34 @@ function readProjectFile(...segments) {
   return readFileSync(join(rootDir, ...segments), "utf8");
 }
 
-const surfaces = ["export", "deletion", "retention"].map((control) => ({
+const surfaces = [
+  {
+    control: "export",
+    surfaceName: "account-data-export-surface.ts",
+    readerName: "readAccountDataExportSurface",
+  },
+  {
+    control: "deletion",
+    surfaceName: "account-data-deletion-surface.ts",
+    readerName: "readAccountDataDeletionSurface",
+  },
+  {
+    control: "retention",
+    surfaceName: "account-data-retention-surface.ts",
+    readerName: "readAccountDataRetentionSurface",
+  },
+  {
+    control: "consent",
+    surfaceName: "account-consent-status-surface.ts",
+    readerName: "readAccountConsentStatusSurface",
+  },
+].map(({ control, surfaceName, readerName }) => ({
   control,
+  readerName,
   surface: readProjectFile(
     "lib",
     "user-data-controls",
-    `account-data-${control}-surface.ts`,
+    surfaceName,
   ),
   route: readProjectFile(
     "app",
@@ -42,7 +64,7 @@ function assertCheck(caseId, condition, issue) {
   checks.push({ caseId, passed: Boolean(condition), issue });
 }
 
-for (const { control, surface, route } of surfaces) {
+for (const { control, readerName, surface, route } of surfaces) {
   assertCheck(
     `stage-7-${control}-route-remains-protected-dashboard-only`,
     route.includes('export const dynamic = "force-dynamic"') &&
@@ -65,7 +87,7 @@ for (const { control, surface, route } of surfaces) {
 
   assertCheck(
     `stage-7-${control}-route-delegates-without-provider-access`,
-    route.includes(`readAccountData${control[0].toUpperCase()}${control.slice(1)}Surface`) &&
+    route.includes(readerName) &&
       !route.includes("process.env") &&
       !route.includes("createClient") &&
       !route.includes("createSupabase"),
@@ -103,10 +125,22 @@ assertCheck(
 
 assertCheck(
   "stage-7-control-set-stays-owner-scoped",
-  surfaces.every(({ surface }) =>
+  surfaces.slice(0, 3).every(({ surface }) =>
     surface.includes("owner_scoped_saved_simulation_history"),
   ),
   "Export, deletion planning, and retention status must describe the same owner-scoped saved-simulation boundary.",
+);
+
+assertCheck(
+  "stage-7-consent-status-remains-policy-only-and-owner-validated",
+  surfaces[3].surface.includes("readServerAuthSession") &&
+    surfaces[3].surface.includes("persistenceRuntime.preflight") &&
+    surfaces[3].surface.includes('consent: "policy_status_only_no_ledger"') &&
+    surfaces[3].surface.includes('consentLedger: "not_implemented"') &&
+    surfaces[3].surface.includes('consentCapture: "not_executed"') &&
+    surfaces[3].surface.includes('consentWithdrawal: "not_executed"') &&
+    surfaces[3].surface.includes('databaseWrites: "not_executed"'),
+  "Consent status must validate the canonical account owner and remain policy-only without ledger or writes.",
 );
 
 assertCheck(
