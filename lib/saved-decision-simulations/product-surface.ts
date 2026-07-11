@@ -4,11 +4,13 @@ import type { SimulationResponse } from "../simulationEngine";
 import type {
   PersistenceRuntimeWiring,
   SupabaseSimulationRecordArchiveProvider,
+  SupabaseSimulationRecordDeleteProvider,
   SupabaseSimulationRecordReadProvider,
   SupabaseSimulationRecordSaveProvider,
 } from "../persistence-runtime";
 import {
   archiveDecisionSimulation,
+  deleteDecisionSimulation,
   listDecisionSimulations,
   reopenDecisionSimulation,
   saveDecisionSimulation,
@@ -81,6 +83,14 @@ export type ArchiveSavedSimulationSurfaceInput = {
   recordId: string;
   runtime?: PersistenceRuntimeWiring;
   archiveProvider?: SupabaseSimulationRecordArchiveProvider;
+  config?: SavedDecisionSimulationsRuntimeConfig;
+};
+
+export type DeleteSavedSimulationSurfaceInput = {
+  authContext?: LevioAuthRuntimeContext | null;
+  recordId: string;
+  runtime?: PersistenceRuntimeWiring;
+  deleteProvider?: SupabaseSimulationRecordDeleteProvider;
   config?: SavedDecisionSimulationsRuntimeConfig;
 };
 
@@ -167,6 +177,26 @@ export type ArchiveSavedSimulationSurfaceResult =
     }
   | {
       status: "archived";
+      version: typeof SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION;
+      historyHref: string;
+      message: string;
+    }
+  | {
+      status: "error";
+      version: typeof SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION;
+      reason: SavedDecisionSimulationsBlockedReason;
+      message: string;
+    };
+
+export type DeleteSavedSimulationSurfaceResult =
+  | {
+      status: "auth_required";
+      version: typeof SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION;
+      message: string;
+      loginHref: string;
+    }
+  | {
+      status: "deleted" | "already_absent";
       version: typeof SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION;
       historyHref: string;
       message: string;
@@ -478,6 +508,48 @@ export async function archiveSavedSimulationSurface(
     version: SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION,
     historyHref: "/dashboard/simulations",
     message: "Simulación archivada fuera del historial activo.",
+  };
+}
+
+export async function deleteSavedSimulationSurface(
+  input: DeleteSavedSimulationSurfaceInput,
+): Promise<DeleteSavedSimulationSurfaceResult> {
+  const authContext = await authContextFromInput(input.authContext);
+
+  if (authContext.identityState !== "authenticated") {
+    return {
+      status: "auth_required",
+      version: SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION,
+      message: "Inicia sesión para eliminar esta simulación guardada.",
+      loginHref: "/login?next=/dashboard/simulations",
+    };
+  }
+
+  const result = await deleteDecisionSimulation({
+    authContext,
+    recordId: input.recordId,
+    runtime: input.runtime,
+    deleteProvider: input.deleteProvider,
+    config: input.config,
+  });
+
+  if (result.status === "blocked") {
+    return {
+      status: "error",
+      version: SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION,
+      reason: result.reason,
+      message: "No se pudo eliminar la simulación de forma controlada.",
+    };
+  }
+
+  return {
+    status: result.status,
+    version: SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION,
+    historyHref: "/dashboard/simulations",
+    message:
+      result.status === "deleted"
+        ? "Simulación eliminada de tu historial activo."
+        : "La simulación ya no estaba disponible en tu historial activo.",
   };
 }
 

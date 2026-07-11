@@ -181,6 +181,23 @@ export type SupabaseSimulationRecordArchivePayload = {
   updated_at: string;
 };
 
+export type SupabaseSimulationRecordDeletePayload = {
+  record_status: "deleted";
+  deletion_state: "deleted";
+  title: null;
+  user_note: null;
+  user_input_snapshot: Record<string, never>;
+  deterministic_output_snapshot: Record<string, never>;
+  metadata: Record<string, never>;
+  safety_flags: Record<string, never>;
+  clarification_snapshot: null;
+  decision_model_snapshot: null;
+  confidence_summary: null;
+  deleted_at: string;
+  export_eligible: false;
+  updated_at: string;
+};
+
 export type SupabasePrincipalProvisionPayload = {
   principal_type: "registered_user";
   principal_status: "active";
@@ -249,6 +266,7 @@ export type SupabaseSimulationRecordArchiveMutation = {
   eq(column: string, value: string): SupabaseSimulationRecordArchiveMutation;
   select(columns: string): {
     single(): Promise<SupabaseQueryResponse>;
+    maybeSingle(): Promise<SupabaseQueryResponse>;
   };
 };
 
@@ -273,7 +291,9 @@ export type SupabaseSimulationRecordMutationClient = {
 
 export type SupabaseSimulationRecordArchiveClient = {
   from(table: "simulation_records"): {
-    update(payload: SupabaseSimulationRecordArchivePayload): SupabaseSimulationRecordArchiveMutation;
+    update(
+      payload: SupabaseSimulationRecordArchivePayload | SupabaseSimulationRecordDeletePayload,
+    ): SupabaseSimulationRecordArchiveMutation;
   };
 };
 
@@ -365,6 +385,19 @@ export type SupabaseSimulationRecordArchiveProvider = PersistenceProviderAdapter
   }): Promise<SimulationRecordRow | null>;
 };
 
+export type SupabaseSimulationRecordDeleteResult =
+  | { status: "deleted"; record: SimulationRecordRow }
+  | { status: "not_found" }
+  | { status: "failed" };
+
+export type SupabaseSimulationRecordDeleteProvider = PersistenceProviderAdapter & {
+  deleteSimulationRecord(input: {
+    recordId: string;
+    ownerPrincipalId: string;
+    deletedAt: string;
+  }): Promise<SupabaseSimulationRecordDeleteResult>;
+};
+
 export type SupabaseSimulationHistoryEntrySaveProvider = PersistenceProviderAdapter & {
   saveSimulationHistoryEntry(
     payload: SupabaseSimulationHistoryEntryInsertPayload,
@@ -414,6 +447,7 @@ export type SupabasePersistenceRuntimeProvider =
   SupabaseSimulationRecordSaveProvider &
     SupabaseSimulationRecordReadProvider &
     SupabaseSimulationRecordArchiveProvider &
+    SupabaseSimulationRecordDeleteProvider &
     SupabaseSimulationHistoryEntrySaveProvider &
     SupabaseSimulationHistoryEntryReadProvider &
     SupabaseSimulationDraftSaveProvider &
@@ -1028,6 +1062,51 @@ export function createSupabasePersistenceProviderAdapter(input: {
       }
 
       return response.data;
+    },
+    async deleteSimulationRecord(input) {
+      if (!isServerRuntime()) {
+        return { status: "failed" };
+      }
+
+      const response = await recordArchiveClient
+        .from("simulation_records")
+        .update({
+          record_status: "deleted",
+          deletion_state: "deleted",
+          title: null,
+          user_note: null,
+          user_input_snapshot: {},
+          deterministic_output_snapshot: {},
+          metadata: {},
+          safety_flags: {},
+          clarification_snapshot: null,
+          decision_model_snapshot: null,
+          confidence_summary: null,
+          deleted_at: input.deletedAt,
+          export_eligible: false,
+          updated_at: input.deletedAt,
+        })
+        .eq("record_id", input.recordId)
+        .eq("owner_principal_id", input.ownerPrincipalId)
+        .eq("owner_principal_type", "registered_user")
+        .eq("record_status", "active")
+        .eq("deletion_state", "active")
+        .select("*")
+        .maybeSingle();
+
+      if (response.error) {
+        return { status: "failed" };
+      }
+
+      if (response.data === null) {
+        return { status: "not_found" };
+      }
+
+      if (!isSimulationRecordRow(response.data)) {
+        return { status: "failed" };
+      }
+
+      return { status: "deleted", record: response.data };
     },
     async saveSimulationHistoryEntry(
       payload: SupabaseSimulationHistoryEntryInsertPayload,

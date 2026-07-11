@@ -3,7 +3,10 @@ import type {
   SavedSimulationDetailSurfaceResult,
   SavedSimulationsHistorySurfaceResult,
 } from "../lib/saved-decision-simulations/product-surface";
-import { archiveSavedSimulationFromDashboard } from "../lib/saved-decision-simulations/ui-save-action";
+import {
+  archiveSavedSimulationFromDashboard,
+  deleteSavedSimulationFromDashboard,
+} from "../lib/saved-decision-simulations/ui-save-action";
 
 type SavedSimulationsHistorySurfaceProps = {
   state: SavedSimulationsHistorySurfaceResult;
@@ -232,8 +235,8 @@ export function SavedSimulationDetailSurface({
         <span>Estado de privacidad</span>
         <strong>Datos de la cuenta autenticada</strong>
         <p>
-          Esta vista usa el runtime interno de simulaciones guardadas. Los registros archivados no aparecen en el
-          historial activo.
+          Esta vista usa el runtime interno de simulaciones guardadas. Eliminar afecta solo a esta simulación
+          guardada: no elimina borradores, historial técnico ni la cuenta.
         </p>
         <Link className="dashboard-action" href="/dashboard/simulations">
           Volver al historial
@@ -242,6 +245,12 @@ export function SavedSimulationDetailSurface({
           <input name="recordId" type="hidden" value={simulation.id} />
           <button className="ghost-button" type="submit">
             Archivar simulación
+          </button>
+        </form>
+        <form action={deleteSavedSimulationFromDashboard}>
+          <input name="recordId" type="hidden" value={simulation.id} />
+          <button className="ghost-button" type="submit">
+            Eliminar simulación guardada
           </button>
         </form>
       </section>

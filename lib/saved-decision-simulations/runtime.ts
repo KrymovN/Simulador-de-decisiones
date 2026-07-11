@@ -6,6 +6,7 @@ import {
   type SimulationRecordStatus,
   type SimulationRecordRow,
   type SupabaseSimulationRecordArchiveProvider,
+  type SupabaseSimulationRecordDeleteProvider,
   type SupabaseSimulationRecordReadProvider,
 } from "../persistence-runtime";
 import {
@@ -16,6 +17,8 @@ import {
   type DecisionSimulationPersistenceMapping,
   type SavedDecisionSimulationArchiveInput,
   type SavedDecisionSimulationArchiveResult,
+  type SavedDecisionSimulationDeleteInput,
+  type SavedDecisionSimulationDeleteResult,
   type SavedDecisionSimulationListInput,
   type SavedDecisionSimulationListResult,
   type SavedDecisionSimulationLoadInput,
@@ -220,6 +223,12 @@ function supportsSimulationRecordArchiveProvider(
   return isRecord(value) && typeof value.archiveSimulationRecord === "function";
 }
 
+function supportsSimulationRecordDeleteProvider(
+  value: unknown,
+): value is SupabaseSimulationRecordDeleteProvider {
+  return isRecord(value) && typeof value.deleteSimulationRecord === "function";
+}
+
 function jsonObjectFromUnknown(value: unknown): Record<string, unknown> | null {
   if (isRecord(value)) {
     return value;
@@ -331,6 +340,17 @@ function archivedRecordIsOwnerScoped(record: SimulationRecordRow, principalId: s
     record.record_status === "archived" &&
     record.archived_at !== null &&
     record.deletion_state === "active"
+  );
+}
+
+function deletedRecordIsOwnerScoped(record: SimulationRecordRow, principalId: string): boolean {
+  return (
+    record.owner_principal_id === principalId &&
+    record.owner_principal_type === "registered_user" &&
+    record.record_status === "deleted" &&
+    record.deletion_state === "deleted" &&
+    record.deleted_at !== null &&
+    record.export_eligible === false
   );
 }
 
@@ -784,6 +804,104 @@ export async function archiveDecisionSimulation(
       lifecycleState: "archived",
       ownerVerifiedAt: archivedAt,
     }),
+    principalId: preflight.principalId,
+    evidence: evidence(),
+  };
+}
+
+export async function deleteDecisionSimulation(
+  input: SavedDecisionSimulationDeleteInput,
+): Promise<SavedDecisionSimulationDeleteResult> {
+  const config = resolveConfig(input.config);
+
+  if (hasClientOwnerInput(input)) {
+    return blocked(
+      "client_owner_input_rejected",
+      "Saved decision simulations do not accept client-supplied owner fields.",
+    );
+  }
+
+  if (!config.enabled) {
+    return blocked(
+      "runtime_disabled",
+      "Saved decision simulations runtime is disabled by controlled rollout configuration.",
+    );
+  }
+
+  const recordId = normalizeRecordId(input.recordId);
+
+  if (!recordId) {
+    return blocked("record_id_invalid", "Saved decision simulation record id is invalid.");
+  }
+
+  const runtime = runtimeFromInput(input.runtime);
+  const deleteProvider =
+    input.deleteProvider ?? (runtime.status === "ready" ? runtime.providerAdapter : undefined);
+
+  if (!supportsSimulationRecordDeleteProvider(deleteProvider)) {
+    return blocked(
+      "provider_delete_not_supported",
+      "Configured persistence provider does not support saved decision simulation deletion.",
+    );
+  }
+
+  if (input.authContext?.identityState !== "authenticated") {
+    return blocked(
+      "auth_context_not_authenticated",
+      "Saved decision simulations require an authenticated registered-user context.",
+    );
+  }
+
+  if (runtime.status !== "ready") {
+    return blocked(
+      "persistence_runtime_not_ready",
+      "Persistence runtime wiring is not ready for saved decision simulations.",
+    );
+  }
+
+  const preflight = await runtime.preflight({
+    operation: "resolve_principal",
+    authContext: input.authContext,
+  });
+
+  if (preflight.status === "blocked") {
+    return blocked("principal_preflight_blocked", preflight.message);
+  }
+
+  const deletedAt = input.deletedAt ?? new Date().toISOString();
+  const deletion = await deleteProvider.deleteSimulationRecord({
+    recordId,
+    ownerPrincipalId: preflight.principalId,
+    deletedAt,
+  });
+
+  if (deletion.status === "failed") {
+    return blocked(
+      "record_delete_failed",
+      "Saved decision simulation deletion failed inside the persistence boundary.",
+    );
+  }
+
+  if (deletion.status === "not_found") {
+    return {
+      status: "already_absent",
+      version: SAVED_DECISION_SIMULATIONS_RUNTIME_VERSION,
+      principalId: preflight.principalId,
+      evidence: evidence(),
+    };
+  }
+
+  if (!deletedRecordIsOwnerScoped(deletion.record, preflight.principalId)) {
+    return blocked(
+      "record_delete_failed",
+      "Saved decision simulation deletion result did not remain inside the owner scope.",
+    );
+  }
+
+  return {
+    status: "deleted",
+    version: SAVED_DECISION_SIMULATIONS_RUNTIME_VERSION,
+    record: deletion.record,
     principalId: preflight.principalId,
     evidence: evidence(),
   };

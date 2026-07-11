@@ -197,6 +197,15 @@ authenticated dashboard guard, canonical principal preflight, client owner
 rejection, fail-closed behavior, and the policy-only no-ledger/no-write consent
 boundary.
 
+Owner-scoped synchronous deletion execution is implemented for a single active
+saved simulation through the existing server-only saved-simulation and
+persistence boundaries. The canonical principal is resolved from auth; the
+saved-simulation content is cleared, and the record transitions to the existing
+terminal deleted lifecycle state and leaves active reads/export eligibility
+without physical row delete or cascade. Drafts,
+history, consent, retention, and account lifecycle remain unchanged. The
+dedicated gate is `npm run quality:stage-7-saved-simulation-deletion-execution`.
+
 This state does not resolve Scale blockers, execute Scale, increase traffic,
 open Production Release, open Commercial Launch, connect Real AI, enable
 billing, add analytics, tracking, compliance claims, roadmap changes, or a new
@@ -1507,7 +1516,8 @@ Release, Commercial Launch, implementation work, audit, roadmap change, or
 public-contract change requires separate explicit approval.
 
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after cross-surface consent boundary validation. This
+Data Controls substep after owner-scoped synchronous saved-simulation deletion
+execution. This
 does not create a new Stage, new
 Block, roadmap branch, or runtime architecture change.
 

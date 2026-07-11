@@ -93,8 +93,8 @@ V1 Complete Readiness    ██████░░░░ 58% estimated
   comparator.
 - Blocks A/B/C are internal V1 implementation substeps only; they are not
   roadmap Stages and not the project-management system.
-- Most recent Stage 7 implementation substep: cross-surface consent boundary
-  validation with no consent ledger, capture, withdrawal, or writes.
+- Most recent Stage 7 implementation substep: owner-scoped synchronous saved-
+  simulation deletion execution through the existing terminal lifecycle state.
 - Block A1 Decision Simulation Domain Model завершён:
   `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`.
 - Block A2 Persistence Runtime Mapping завершён: internal runtime maps
@@ -238,8 +238,15 @@ V1 Complete Readiness    ██████░░░░ 58% estimated
   status alongside export, deletion planning, and retention status. It proves
   authenticated dashboard containment, canonical owner validation, client
   owner rejection, fail-closed behavior, and no consent ledger or writes.
+- Owner-scoped synchronous deletion execution is implemented for one active
+  saved simulation through server-side canonical-principal validation. It uses
+  clears saved-simulation content and uses the existing terminal deleted
+  lifecycle fields without physical row delete,
+  cascade, drafts/history mutation, retention jobs, or account deletion and is
+  covered by `npm run quality:stage-7-saved-simulation-deletion-execution`.
 - Next implementation: the next minimal approved Stage 7 User Data Controls
-  substep after cross-surface consent boundary validation. This does not
+  substep after owner-scoped synchronous saved-simulation deletion execution.
+  This does not
   create a new Stage, new Block,
   roadmap branch, or runtime architecture change.
 - Recent product implementation foundation:
@@ -1514,7 +1521,8 @@ blocker-resolution framework only. The current V1 implementation focus is
 Stage 7 - User Data Controls. Blocks A/B/C are internal V1 implementation
 substeps only and must not be used as the primary roadmap-management system.
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after cross-surface consent boundary validation.
+Data Controls substep after owner-scoped synchronous saved-simulation deletion
+execution.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.

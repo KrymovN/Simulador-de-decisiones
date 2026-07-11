@@ -6,6 +6,7 @@ import type {
   SimulationRecordRow,
   SimulationRecordStatus,
   SupabaseSimulationRecordArchiveProvider,
+  SupabaseSimulationRecordDeleteProvider,
   SupabaseSimulationRecordReadProvider,
   SupabaseSimulationRecordSaveProvider,
 } from "../persistence-runtime";
@@ -64,12 +65,14 @@ export type SavedDecisionSimulationsBlockedReason =
   | "persistence_runtime_not_ready"
   | "provider_read_not_supported"
   | "provider_archive_not_supported"
+  | "provider_delete_not_supported"
   | "principal_preflight_blocked"
   | "client_owner_input_rejected"
   | "record_id_invalid"
   | "record_not_found"
   | "record_owner_scope_failed"
   | "record_archive_failed"
+  | "record_delete_failed"
   | "record_save_blocked";
 
 export type DecisionSimulationLifecycleState =
@@ -203,6 +206,15 @@ export type SavedDecisionSimulationArchiveInput = {
   config?: SavedDecisionSimulationsRuntimeConfig;
 };
 
+export type SavedDecisionSimulationDeleteInput = {
+  authContext: LevioAuthRuntimeContext | null | undefined;
+  recordId: string;
+  deletedAt?: string;
+  runtime?: PersistenceRuntimeWiring;
+  deleteProvider?: SupabaseSimulationRecordDeleteProvider;
+  config?: SavedDecisionSimulationsRuntimeConfig;
+};
+
 export type SavedDecisionSimulationSaveResult =
   | {
       status: "saved";
@@ -253,6 +265,22 @@ export type SavedDecisionSimulationArchiveResult =
       version: SavedDecisionSimulationsRuntimeVersion;
       record: SimulationRecordRow;
       simulation: DecisionSimulationDomainModel;
+      principalId: string;
+      evidence: SavedDecisionSimulationsRuntimeEvidence;
+    }
+  | SavedDecisionSimulationsBlockedResult;
+
+export type SavedDecisionSimulationDeleteResult =
+  | {
+      status: "deleted";
+      version: SavedDecisionSimulationsRuntimeVersion;
+      record: SimulationRecordRow;
+      principalId: string;
+      evidence: SavedDecisionSimulationsRuntimeEvidence;
+    }
+  | {
+      status: "already_absent";
+      version: SavedDecisionSimulationsRuntimeVersion;
       principalId: string;
       evidence: SavedDecisionSimulationsRuntimeEvidence;
     }

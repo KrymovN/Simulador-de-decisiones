@@ -157,10 +157,21 @@ status. It verifies authenticated dashboard containment, server-only canonical
 owner validation, client owner rejection, fail-closed behavior, and the
 policy-only no-ledger/no-write consent boundary.
 
+Owner-scoped synchronous deletion execution is now implemented for one active
+saved simulation at a time. The existing server-only Auth -> canonical
+principal -> persistence path applies the schema-supported terminal lifecycle
+transition (`record_status=deleted`, `deletion_state=deleted`, `deleted_at`,
+`export_eligible=false`) and clears the saved-simulation content snapshots,
+leaving only a minimal FK-safe lifecycle shell without physical row delete, schema change, cascade,
+draft/history mutation, retention job, or account lifecycle behavior. The
+dashboard detail surface exposes this narrowly scoped action and states its
+limits. The dedicated gate is
+`npm run quality:stage-7-saved-simulation-deletion-execution`.
+
 Current project progress is **84% overall**. Levio V1 Complete readiness is
 **58% estimated**. The next implementation remains within Stage 7 User Data
-Controls: the next minimal approved substep after cross-surface consent
-boundary validation. It must be determined from
+Controls: the next minimal approved substep after owner-scoped synchronous
+saved-simulation deletion execution. It must be determined from
 `LEVIO_IMPLEMENTATION_PLAN.md` before code and must not create a new Stage,
 new Block, new roadmap branch, or runtime architecture change.
 

@@ -22,7 +22,7 @@ prevails unless it has been explicitly amended.
 
 ## Active Checkpoint
 
-Post-Stage 15.5 / Stage 7 User Data Controls Cross-Surface Consent Boundary Validation.
+Post-Stage 15.5 / Stage 7 Owner-Scoped Synchronous Saved-Simulation Deletion Execution.
 
 Status: the official roadmap remains the 15-Stage roadmap recorded in
 `LEVIO_PROJECT_PROGRESS.md`. Stage 15.5 is complete as documentation-only Scale
@@ -189,6 +189,13 @@ The existing `npm run quality:stage-7-user-data-control-boundary` gate now also
 covers the consent status surface, proving authenticated dashboard containment,
 canonical owner validation, client owner rejection, fail-closed behavior, and
 the no-ledger/no-write boundary across all four current Stage 7 controls.
+Owner-scoped synchronous deletion execution is implemented only for a specific
+active saved simulation. It resolves the canonical principal server-side and
+clears the saved-simulation content and uses the existing terminal lifecycle
+fields without physical row delete, cascade,
+draft/history mutation, retention enforcement, or account lifecycle behavior.
+The dedicated gate is
+`npm run quality:stage-7-saved-simulation-deletion-execution`.
 
 This checkpoint does not open Scale, increase traffic, open Production Release,
 open Commercial Launch, enable Real AI provider execution, add billing,
@@ -1865,7 +1872,8 @@ execution, Production Release, Commercial Launch, implementation work, audit,
 roadmap change, or public-contract change requires separate explicit approval.
 
 The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after cross-surface consent boundary validation. This
+Data Controls substep after owner-scoped synchronous saved-simulation deletion
+execution. This
 does not create a new Stage, new
 Block, roadmap branch, or runtime architecture change.
 
