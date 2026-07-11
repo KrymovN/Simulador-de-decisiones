@@ -220,11 +220,21 @@ simulation history entry from Levio V1. Simulation history is dependent
 lifecycle data of its parent saved simulation, and any later deletion,
 anonymisation, or content scrubbing must be parent-driven. User-visible content
 must be classified separately from system lifecycle, provenance, legal-hold,
-retention-exception, and minimal opaque operational-proof metadata. This does
-not approve history cleanup runtime; implementation remains blocked pending
-legal/privacy approval of lawful basis, retention classification, exception
-handling, scrubbed payload, permitted opaque proof, post-transition export
-eligibility, and pre-production/production applicability.
+retention-exception, and minimal opaque operational-proof metadata.
+
+Owner/product/internal legal policy now fixes the Stage 7 engineering
+semantics. Draft expiry is 30 calendar days without a confirmed change, reset
+by each confirmed change, with a warning 7 calendar days before deletion.
+Enforcement must be owner-scoped, idempotent, fail-closed, content-clearing,
+non-exportable, and excluded from normal product runtime after deletion.
+Saved-simulation deletion keeps the current lifecycle; history cleanup remains
+parent-driven; account deletion requires explicit confirmation, immediate
+access termination, lifecycle processing, no recovery, and later new
+registration. Documented legal exceptions are restricted and may retain only
+minimal non-reconstructive opaque proof. External legal review is not a Stage 7
+development blocker; final production notice, ROPA, provider/DPA,
+backup-rotation, special-hold, and optional compliance-review evidence remain
+production-readiness work.
 
 This state does not resolve Scale blockers, execute Scale, increase traffic,
 open Production Release, open Commercial Launch, connect Real AI, enable
@@ -1537,8 +1547,12 @@ public-contract change requires separate explicit approval.
 
 The next implementation, if approved, remains the next minimal Stage 7 User
 Data Controls substep after owner-scoped synchronous simulation-draft deletion
-execution. Independent simulation-history-entry deletion is excluded, and
-parent-driven history cleanup is not approved for runtime implementation. This
+execution: the synchronous expired simulation draft retention enforcement
+foundation, using existing `expires_at` and lifecycle/deletion primitives with
+the approved 30-day period and 7-day warning, without a background scheduler.
+Its concrete synchronous trigger must be selected in the next separate cycle.
+Independent history-entry deletion remains excluded; account deletion and
+parent-driven history cleanup are not opened. This
 does not create a new Stage, new
 Block, roadmap branch, or runtime architecture change.
 

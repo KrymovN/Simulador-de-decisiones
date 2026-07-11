@@ -184,19 +184,36 @@ simulation, so any later history deletion, anonymisation, or content scrubbing
 may occur only through the parent-driven saved-simulation deletion lifecycle.
 User-visible content must remain classified separately from system lifecycle,
 provenance, legal-hold, retention-exception, and minimal opaque operational-
-proof metadata. This decision does not approve runtime implementation.
-Parent-driven history cleanup remains blocked pending legal/privacy approval of
-lawful basis, retention classification, legal-hold and retention-exception
-behavior, scrubbed payload, permitted opaque proof, post-transition export
-eligibility, and applicability to pre-production and production data.
+proof metadata.
+
+The owner/product/internal legal policy now approves the Stage 7 retention,
+deletion, and account-lifecycle semantics for continued implementation. Drafts
+expire after 30 calendar days without a confirmed change, measured from the
+last confirmed change; a confirmed change restarts that period, and a warning
+is required 7 calendar days before deletion. Expired draft content must be
+cleared through an idempotent, fail-closed lifecycle transition, leaving only a
+minimal content-free shell. Saved-simulation deletion keeps the existing
+owner-scoped synchronous semantics. History content may be cleared only through
+the parent saved-simulation lifecycle, while system/provenance/legal metadata
+is separately classified and may retain only non-reconstructive opaque proof.
+Account deletion requires explicit confirmation, immediate access termination,
+owner-scoped lifecycle processing, no recovery, and new registration for later
+use. Documented legal exceptions use restricted/blocked processing and never
+apply automatically. External legal review is not a Stage 7 development
+blocker, but final production notices, records of processing, provider/DPA and
+backup-rotation evidence, special legal holds, and optional independent
+compliance review remain production-readiness work.
 
 Current project progress is **84% overall**. Levio V1 Complete readiness is
 **58% estimated**. The next implementation remains within Stage 7 User Data
-Controls: the next minimal approved substep after owner-scoped synchronous
-simulation-draft deletion execution. Independent simulation-history-entry
-deletion is not such a substep, and parent-driven history cleanup is not
-approved for runtime implementation. Any next implementation must be determined from
-`LEVIO_IMPLEMENTATION_PLAN.md` before code and must not create a new Stage,
+Controls. The next approved implementation candidate is the synchronous expired
+simulation draft retention enforcement foundation, using existing `expires_at`,
+lifecycle, and owner-scoped deletion primitives without a background scheduler.
+Its concrete synchronous trigger must be determined in a separate minimal
+implementation cycle from repository evidence. Account deletion and
+parent-driven history cleanup are not opened by this candidate. Any next
+implementation must be determined from `LEVIO_IMPLEMENTATION_PLAN.md` before
+code and must not create a new Stage,
 new Block, new roadmap branch, or runtime architecture change.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains

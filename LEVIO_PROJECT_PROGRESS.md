@@ -255,15 +255,26 @@ V1 Complete Readiness    ██████░░░░ 58% estimated
   parent saved simulation, so any later deletion, anonymisation, or content
   scrubbing must be parent-driven. User-visible content remains distinct from
   system lifecycle, provenance, legal-hold, retention-exception, and minimal
-  opaque operational-proof metadata. Parent-driven history cleanup runtime is
-  not approved and remains blocked pending legal/privacy approval of lawful
-  basis, retention classification, exception handling, scrubbed payload,
-  permitted opaque proof, export eligibility, and pre-production/production
-  applicability.
-- Next implementation: the next minimal approved Stage 7 User Data Controls
-  substep after owner-scoped synchronous simulation-draft deletion execution.
-  Independent simulation-history-entry deletion is excluded, and parent-driven
-  history cleanup is not approved for runtime implementation. This does not
+  opaque operational-proof metadata.
+- Owner/product/internal legal policy approves the Stage 7 engineering
+  semantics: drafts expire after 30 calendar days without a confirmed change,
+  confirmed changes restart that period, and users receive a warning 7 days
+  before deletion. Enforcement must be owner-scoped, idempotent, fail-closed,
+  clear user content, disable export and normal processing, and retain at most
+  minimal non-reconstructive opaque proof. Saved-simulation deletion keeps its
+  existing semantics; history cleanup remains parent-driven; account deletion
+  requires explicit confirmation, immediate access termination, lifecycle
+  processing, no recovery, and later new registration. Documented legal
+  exceptions remain restricted and never apply automatically. External legal
+  review no longer blocks Stage 7 development; final production notice, ROPA,
+  provider/DPA, backup-rotation, special-hold, and optional compliance-review
+  evidence remain production-readiness work.
+- Next implementation candidate: synchronous expired simulation draft retention
+  enforcement foundation using existing `expires_at`, lifecycle, and deletion
+  primitives with no background scheduler. Its concrete synchronous trigger is
+  reserved for the next separate implementation cycle. Independent history-
+  entry deletion remains excluded; account deletion and parent-driven history
+  cleanup are not opened. This does not
   create a new Stage, new Block,
   roadmap branch, or runtime architecture change.
 - Recent product implementation foundation:
@@ -1539,9 +1550,11 @@ Stage 7 - User Data Controls. Blocks A/B/C are internal V1 implementation
 substeps only and must not be used as the primary roadmap-management system.
 The next implementation, if approved, remains the next minimal Stage 7 User
 Data Controls substep after owner-scoped synchronous simulation-draft deletion
-execution. Independent simulation-history-entry deletion is excluded from Levio
-V1 scope, and parent-driven history cleanup remains blocked pending the required
-legal/privacy approvals.
+execution: synchronous expired simulation draft retention enforcement foundation
+under the approved 30-day unchanged-draft and 7-day warning policy, with no
+background scheduler. Its concrete trigger remains for the next separate cycle.
+Independent history-entry deletion remains excluded; account deletion and
+parent-driven history cleanup are not opened by this candidate.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.
