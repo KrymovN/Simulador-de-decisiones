@@ -204,6 +204,17 @@ Saved simulations, history, account lifecycle, consent, and retention are not
 mutated. The dedicated gate is
 `npm run quality:stage-7-simulation-draft-deletion-execution`.
 
+Owner/product scope now excludes independent deletion of an arbitrary
+simulation history entry from Levio V1. Simulation history is dependent
+lifecycle data of its parent saved simulation; any later deletion,
+anonymisation, or content scrubbing must be parent-driven. User-visible content
+must be classified separately from system lifecycle, provenance, legal-hold,
+retention-exception, and minimal opaque operational-proof metadata. No history
+cleanup runtime is approved. It remains blocked pending legal/privacy approval
+of lawful basis, retention classification, exception handling, scrubbed
+payload, permitted opaque proof, post-transition export eligibility, and
+pre-production/production applicability.
+
 This checkpoint does not open Scale, increase traffic, open Production Release,
 open Commercial Launch, enable Real AI provider execution, add billing,
 analytics, tracking, logging, compliance claims, roadmap changes, or a new
@@ -1880,7 +1891,8 @@ roadmap change, or public-contract change requires separate explicit approval.
 
 The next implementation, if approved, remains the next minimal Stage 7 User
 Data Controls substep after owner-scoped synchronous simulation-draft deletion
-execution. This
+execution. Independent simulation-history-entry deletion is excluded, and
+parent-driven history cleanup is not approved for runtime implementation. This
 does not create a new Stage, new
 Block, roadmap branch, or runtime architecture change.
 

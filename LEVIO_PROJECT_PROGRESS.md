@@ -250,9 +250,20 @@ V1 Complete Readiness    ██████░░░░ 58% estimated
   terminal draft/deletion fields, creates no new UI/route, and does not mutate
   saved simulations, history, accounts, consent, or retention. It is covered
   by `npm run quality:stage-7-simulation-draft-deletion-execution`.
+- Owner/product scope excludes independent deletion of an arbitrary simulation
+  history entry from Levio V1. History is dependent lifecycle data of its
+  parent saved simulation, so any later deletion, anonymisation, or content
+  scrubbing must be parent-driven. User-visible content remains distinct from
+  system lifecycle, provenance, legal-hold, retention-exception, and minimal
+  opaque operational-proof metadata. Parent-driven history cleanup runtime is
+  not approved and remains blocked pending legal/privacy approval of lawful
+  basis, retention classification, exception handling, scrubbed payload,
+  permitted opaque proof, export eligibility, and pre-production/production
+  applicability.
 - Next implementation: the next minimal approved Stage 7 User Data Controls
   substep after owner-scoped synchronous simulation-draft deletion execution.
-  This does not
+  Independent simulation-history-entry deletion is excluded, and parent-driven
+  history cleanup is not approved for runtime implementation. This does not
   create a new Stage, new Block,
   roadmap branch, or runtime architecture change.
 - Recent product implementation foundation:
@@ -1528,7 +1539,9 @@ Stage 7 - User Data Controls. Blocks A/B/C are internal V1 implementation
 substeps only and must not be used as the primary roadmap-management system.
 The next implementation, if approved, remains the next minimal Stage 7 User
 Data Controls substep after owner-scoped synchronous simulation-draft deletion
-execution.
+execution. Independent simulation-history-entry deletion is excluded from Levio
+V1 scope, and parent-driven history cleanup remains blocked pending the required
+legal/privacy approvals.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.
