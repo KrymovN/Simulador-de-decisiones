@@ -1,5 +1,17 @@
 # LEVIO IMPLEMENTATION PLAN
 
+## Current Stage 7 Approved Addition — 12 July 2026
+
+The authenticated owner-scoped single-draft resume/edit surface is complete at
+`/dashboard/drafts/[id]`. It uses the existing server-only canonical-principal
+and draft persistence/retention boundaries. Warning and expiration are
+server-time states; expired drafts reuse retention deletion semantics;
+restricted/legal-hold drafts are blocked; unchanged content does not renew;
+and a successfully persisted `draft_text_snapshot` change renews the expiry by
+30 calendar days. This does not open draft management, bulk/background
+retention, account deletion, history cleanup, or a new architecture. Stage 7
+remains In Progress and V1 readiness remains 58%.
+
 Date: 12 July 2026, Europe/Madrid.
 
 Status: Canonical V1 implementation comparison document.

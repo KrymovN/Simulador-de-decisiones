@@ -1,5 +1,15 @@
 # CURRENT STAGE
 
+## Stage 7 Single-Draft Resume/Edit Update — 12 July 2026
+
+The approved `/dashboard/drafts/[id]` surface now resumes and edits exactly one
+authenticated owner-scoped draft. Canonical ownership is server-derived;
+missing/cross-owner, expired, restricted/legal-hold, and persistence failures
+are controlled. The seven-day warning and expiration date are visible.
+Unchanged text does not renew; a successfully saved `draft_text_snapshot`
+change renews the server-owned expiry for 30 days. Stage 7 remains In Progress
+and V1 readiness remains 58%.
+
 ## Constitutional Authority
 
 `LEVIO_PROJECT_CONSTITUTION.md` is the highest-level canonical authority for

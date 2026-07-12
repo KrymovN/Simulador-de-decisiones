@@ -1,5 +1,15 @@
 # LEVIO PROJECT PROGRESS TRACKER
 
+## Stage 7 Progress Update — Single-Draft Resume/Edit Surface
+
+The authenticated owner-scoped single-draft resume/edit surface is complete
+for its approved scope at `/dashboard/drafts/[id]`. Canonical ownership and
+time are server-derived; expired drafts reuse existing retention semantics;
+restricted/legal-hold drafts are blocked; unchanged content does not renew;
+and a saved `draft_text_snapshot` change renews expiry by 30 days. The dedicated
+gate is `quality:stage-7-single-draft-resume-edit-surface`. Stage 7 remains In
+Progress, overall project progress remains 84%, and V1 readiness remains 58%.
+
 ## Constitutional Authority
 
 `LEVIO_PROJECT_CONSTITUTION.md` is the highest-level canonical authority for

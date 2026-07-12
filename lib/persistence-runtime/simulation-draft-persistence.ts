@@ -78,6 +78,7 @@ export type SimulationDraftUpdateInput = {
   autosaveEnabled?: boolean;
   markSaved?: boolean;
   lastAutosavedAt?: string | null;
+  serverConfirmedChangeAt?: string;
   runtime?: PersistenceRuntimeWiring;
   saveProvider?: SupabaseSimulationDraftSaveProvider;
   config?: SimulationDraftPersistenceConfig;
@@ -536,6 +537,7 @@ export async function updateSimulationDraft(
     autosaveEnabled: input.autosaveEnabled,
     markSaved: input.markSaved,
     lastAutosavedAt: input.lastAutosavedAt,
+    serverConfirmedChangeAt: input.serverConfirmedChangeAt,
   });
 
   if (!payload) {
@@ -549,6 +551,8 @@ export async function updateSimulationDraft(
     draftId: input.draft.draft_id,
     ownerPrincipalId: preflight.principalId,
     payload,
+    expectedExpiresAt: currentDraft.draft.expires_at,
+    serverConfirmedChangeAt: input.serverConfirmedChangeAt,
   });
 
   if (!draft) {

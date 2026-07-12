@@ -1,5 +1,15 @@
 # LEVIO CURRENT STATE
 
+## Current Stage 7 Runtime Addition — 12 July 2026
+
+`/dashboard/drafts/[id]` is the bounded authenticated resume/edit surface for
+one owner-scoped draft. It exposes active, warning-window, expired,
+deleted-or-absent, restricted, and persistence-error states without disclosing
+cross-owner existence. Only a real persisted `draft_text_snapshot` change
+renews expiration by 30 days. No keepalive, list/bulk management, scheduler,
+email, schema/migration, hard delete/cascade, or cross-entity side effect is
+present. Stage 7 remains In Progress; V1 readiness remains 58%.
+
 ## Constitutional Authority
 
 `LEVIO_PROJECT_CONSTITUTION.md` is the highest-level canonical authority for

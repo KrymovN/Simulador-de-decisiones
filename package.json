@@ -26,6 +26,7 @@
     "quality:stage-7-saved-simulation-deletion-execution": "node scripts/stage-7-saved-simulation-deletion-execution-quality.mjs",
     "quality:stage-7-simulation-draft-deletion-execution": "node scripts/stage-7-simulation-draft-deletion-execution-quality.mjs",
     "quality:stage-7-expired-simulation-draft-retention-enforcement": "node scripts/stage-7-expired-simulation-draft-retention-enforcement-quality.mjs",
+    "quality:stage-7-single-draft-resume-edit-surface": "node scripts/stage-7-single-draft-resume-edit-surface-quality.mjs",
     "quality:block-b-auth-action-boundary": "node scripts/block-b-auth-action-boundary-quality.mjs",
     "quality:block-b-email-flow": "node scripts/block-b-email-flow-quality.mjs",
     "quality:block-b-session-lifecycle": "node scripts/block-b-session-lifecycle-quality.mjs",

@@ -45,6 +45,7 @@ type AccountDataRetentionSavedSimulationPlan = {
 
 type AccountDataRetentionSimulationDraftPlan = {
   id: string;
+  resumeHref: string;
   status: SimulationDraftRow["draft_status"];
   expiresAt: string;
   lifecycleState: RetentionLifecycleState;
@@ -278,6 +279,7 @@ function toDraftPlanItem(
 ): AccountDataRetentionSimulationDraftPlan {
   const base = {
     id: row.draft_id,
+    resumeHref: `/dashboard/drafts/${encodeURIComponent(row.draft_id)}`,
     status: row.draft_status,
     expiresAt: row.expires_at,
     lifecycleState: row.draft_status,

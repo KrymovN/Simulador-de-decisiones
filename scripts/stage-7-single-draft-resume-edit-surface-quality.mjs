@@ -1,0 +1,40 @@
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const root = dirname(dirname(fileURLToPath(import.meta.url)));
+const read = (...parts) => readFileSync(join(root, ...parts), "utf8");
+const surface = read("lib", "user-data-controls", "simulation-draft-resume-surface.ts");
+const action = read("lib", "user-data-controls", "simulation-draft-resume-action.ts");
+const page = read("app", "dashboard", "drafts", "[id]", "page.tsx");
+const component = read("components", "SimulationDraftResumeSurface.tsx");
+const persistence = read("lib", "persistence-runtime", "simulation-draft-persistence.ts");
+const provider = read("lib", "persistence-runtime", "supabase-provider.ts");
+const retentionRoute = read("app", "dashboard", "privacy", "retention", "route.ts");
+const retentionSurface = read("lib", "user-data-controls", "account-data-retention-surface.ts");
+
+const checks = [];
+const check = (id, condition) => checks.push({ id, passed: Boolean(condition) });
+check("protected-dashboard-dynamic-route", page.includes('dynamic = "force-dynamic"') && page.includes("params.id"));
+check("malformed-id-before-persistence", surface.includes('if (!UUID_PATTERN.test(draftId)) return unavailable("invalid_id"') && surface.indexOf('if (!UUID_PATTERN.test(draftId))') < surface.indexOf("const authContext ="));
+check("server-auth-and-canonical-principal", surface.includes("readServerAuthSession") && surface.includes('operation: "read_simulation_draft"') && !page.includes("ownerPrincipalId"));
+check("owner-scoped-single-read", surface.includes("readSimulationDraft({ draftId, ownerPrincipalId: preflight.principalId })"));
+check("safe-cross-owner-absence", surface.includes('unavailable("deleted_or_absent"') && surface.includes("draft.owner_principal_id !== preflight.principalId"));
+check("restricted-and-legal-hold-blocked", surface.includes("retained_legal_exception") && surface.includes("legal_hold_reason"));
+check("server-time-retention-evaluation", surface.includes("evaluateSimulationDraftRetentionState") && surface.includes("serverNow ?? Date.now()"));
+check("expired-reuses-retention-semantics", surface.includes("enforceExpiredSimulationDraftRetention"));
+check("warning-and-expiration-visible", component.includes("warning_window") && component.includes("Fecha de eliminación") && component.includes("expiresAt"));
+check("minimal-retention-navigation-integration", retentionSurface.includes("resumeHref: `/dashboard/drafts/${encodeURIComponent(row.draft_id)}`"));
+check("edit-real-content-field-only", component.includes('name="draftText"') && action.includes('formData.get("draftText")') && !action.includes("expiresAt"));
+check("unchanged-does-not-write-or-renew", surface.includes('status: "unchanged"') && surface.indexOf('status: "unchanged"') < surface.indexOf("updateSimulationDraft({"));
+check("content-change-renews-through-existing-persistence", surface.includes("updateSimulationDraft({") && persistence.includes("hasConfirmedContentChange") && persistence.includes("payload.expires_at = expiresAt"));
+check("atomic-active-owner-expiry-guards", provider.includes('.eq("draft_status", "active")') && provider.includes('.eq("deletion_state", "active")') && provider.includes('.eq("expires_at", input.expectedExpiresAt') && provider.includes('.gt("expires_at", input.serverConfirmedChangeAt'));
+check("no-client-owner-or-expiry-authority", !action.includes("ownerPrincipal") && !action.includes("expires_at") && !component.includes('name="expires'));
+check("one-draft-no-bulk", !surface.includes("listSimulationDrafts") && !surface.includes("draftIds") && !action.includes("draftIds"));
+check("get-retention-remains-read-only", retentionRoute.includes("export async function GET()") && retentionRoute.includes("readAccountDataRetentionSurface"));
+check("no-cross-entity-or-job-side-effects", !surface.includes("SimulationRecord") && !surface.includes("History") && !surface.includes("Account") && !surface.includes("scheduler") && !surface.includes("hardDelete"));
+check("controlled-save-results", component.includes('saveStatus === "saved"') && component.includes('saveStatus === "unchanged"') && component.includes("No se pudieron guardar"));
+
+for (const item of checks) console[item.passed ? "log" : "error"](`${item.passed ? "PASS" : "FAIL"} ${item.id}`);
+console.log(`${checks.filter((item) => item.passed).length}/${checks.length} checks passed.`);
+if (checks.some((item) => !item.passed)) process.exitCode = 1;

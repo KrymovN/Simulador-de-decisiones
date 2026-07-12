@@ -287,6 +287,7 @@ export type SupabaseSimulationHistoryEntryMutation = {
 
 export type SupabaseSimulationDraftMutation = {
   eq(column: string, value: string): SupabaseSimulationDraftMutation;
+  gt(column: string, value: string): SupabaseSimulationDraftMutation;
   lte(column: string, value: string): SupabaseSimulationDraftMutation;
   is(column: string, value: null): SupabaseSimulationDraftMutation;
   select(columns: string): {
@@ -450,6 +451,8 @@ export type SupabaseSimulationDraftSaveProvider = PersistenceProviderAdapter & {
     draftId: string;
     ownerPrincipalId: string;
     payload: SupabaseSimulationDraftUpdatePayload;
+    expectedExpiresAt?: string;
+    serverConfirmedChangeAt?: string;
   }): Promise<SimulationDraftRow | null>;
 };
 
@@ -1312,6 +1315,8 @@ export function createSupabasePersistenceProviderAdapter(input: {
         .eq("draft_status", "active")
         .eq("deletion_state", "active")
         .is("legal_hold_reason", null)
+        .eq("expires_at", input.expectedExpiresAt ?? input.payload.expires_at ?? "")
+        .gt("expires_at", input.serverConfirmedChangeAt ?? new Date().toISOString())
         .select("*")
         .single();
 

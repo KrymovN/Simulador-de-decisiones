@@ -1,5 +1,18 @@
 # PROJECT CONTEXT
 
+## Stage 7 Single-Draft Resume/Edit Update — 12 July 2026
+
+The authenticated owner-scoped single-draft resume/edit surface is implemented
+at `/dashboard/drafts/[id]`. It loads one draft through the server-derived
+canonical principal, safely normalizes missing and cross-owner records, blocks
+restricted/legal-hold states, displays server-time warning and expiration, and
+reuses the existing retention transition for expired drafts. Unchanged text
+does not write or renew; a persisted `draft_text_snapshot` change renews
+`expires_at` by 30 calendar days through existing persistence semantics with
+atomic owner/lifecycle/expiry guards. No keepalive, list/bulk action, scheduler,
+email, schema, cross-entity mutation, or new editor architecture was added.
+Stage 7 remains In Progress and V1 readiness remains 58%.
+
 ## Constitutional Authority
 
 `LEVIO_PROJECT_CONSTITUTION.md` is the highest-level canonical authority for
