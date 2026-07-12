@@ -1,9 +1,8 @@
--- Levio Stage 4.2D-3
--- Migration 007: rollback and emergency notes.
---
--- This file is a rollback companion. It must not be executed as part of
--- Stage 4.2D-3.
---
+# NON-EXECUTABLE ROLLBACK / REVIEW NOTES
+
+Levio Stage 4.2D-3 artifact 007. This rollback companion is documentation and
+must never be executed as a forward migration.
+
 -- Data-loss warning:
 --   The destructive table-drop sequence below is safe only before production
 --   user data exists. After real user data exists, rollback must preserve

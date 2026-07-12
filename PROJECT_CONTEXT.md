@@ -1,5 +1,29 @@
 # PROJECT CONTEXT
 
+## Stage 7 Dev Migration / Runtime Evidence — 12 July 2026
+
+The approved non-production Supabase environment is `levio-dev` (non-secret
+Project Reference `whbabqpildzfwzcksudg`). Read-only schema comparison proved
+that manually executed migrations 001-006 matched their remote tables,
+columns, constraints, indexes, functions/triggers, RLS, and policies while the
+remote tracking table was empty. Official tracking-only reconciliation marked
+001-006 applied without re-executing SQL. Artifact 007 is now explicitly
+non-executable rollback/review documentation. The official dry-run proposed
+only migration 008, which was then applied successfully; remote history is
+001-006 and 008.
+
+Remote metadata confirms the RPC owner is `postgres`, `SECURITY DEFINER` is
+enabled, `search_path` is fixed to `pg_catalog, public`, `PUBLIC` has no
+execute, and only `service_role` has execute. Synthetic provider-path runtime
+evidence confirmed parent/history terminal cleanup, same-owner unrelated data
+isolation, cross-owner safe absence and preservation, idempotency, browser RPC
+denial, and terminal cleanup of all active fixture history. Restricted and
+legal-hold fixtures were not created because no approved transition boundary
+exists; their guards were verified from the remote function definition.
+Forced mid-transaction fault injection was unavailable. This is dev evidence,
+not production deployment. Stage 7 remains In Progress pending a separate
+closure assessment; V1 readiness remains 58%.
+
 ## Stage 7 Atomic Parent-Driven History Cleanup — 12 July 2026
 
 Deletion of one authenticated owner-scoped saved simulation now uses the

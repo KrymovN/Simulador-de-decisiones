@@ -1,5 +1,17 @@
 # LEVIO CURRENT STATE
 
+## Current Stage 7 Dev Evidence — 12 July 2026
+
+`levio-dev` (`whbabqpildzfwzcksudg`) now tracks migrations 001-006 and 008;
+007 is retained only as non-executable rollback/review documentation. Migration
+008 is deployed only to this approved dev environment. Remote ACL/security
+metadata and synthetic calls through the existing persistence provider confirm
+atomic parent/history cleanup, owner isolation, safe cross-owner absence,
+unrelated preservation, idempotency, browser-role denial, and fixture cleanup.
+Restricted/legal-hold runtime fixtures and forced fault injection were not
+available and are not claimed. Stage 7 remains In Progress; V1 readiness is
+58%.
+
 ## Current Stage 7 Runtime Addition — Atomic Parent History Cleanup
 
 Saved-simulation deletion now delegates exclusively to a bounded transactional

@@ -1,5 +1,17 @@
 # CURRENT STAGE
 
+## Stage 7 Dev Migration and Runtime Verification — 12 July 2026
+
+Migration history for approved non-production `levio-dev` was reconciled for
+verified migrations 001-006, rollback/review artifact 007 is non-executable,
+and migration 008 was the sole dry-run/application candidate. Remote function
+security and real synthetic provider-path ownership/isolation/idempotency
+scenarios passed. All active synthetic history content was terminally cleared.
+No restricted/legal-hold fixture mutation boundary or forced fault-injection
+harness exists, so those runtime scenarios remain explicitly unclaimed while
+remote guards are verified. Stage 7 remains In Progress until a separately
+approved closure assessment; V1 readiness remains 58%.
+
 ## Stage 7 Atomic Parent-Driven History Cleanup — 12 July 2026
 
 One owner-scoped saved-simulation deletion now uses a bounded transactional RPC
