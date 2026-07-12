@@ -22,7 +22,7 @@ prevails unless it has been explicitly amended.
 
 ## Confirmed Project Position
 
-Date: 11 July 2026, Europe/Madrid.
+Date: 12 July 2026, Europe/Madrid.
 
 Levio.es remains a Decision Simulation Engine.
 
@@ -235,6 +235,22 @@ minimal non-reconstructive opaque proof. External legal review is not a Stage 7
 development blocker; final production notice, ROPA, provider/DPA,
 backup-rotation, special-hold, and optional compliance-review evidence remain
 production-readiness work.
+
+The explicit authenticated per-draft synchronous retention enforcement action
+is implemented through `POST /dashboard/privacy/retention`. The request is
+strictly limited to one `draftId`; authentication, canonical principal, and
+time authority are server-owned. A one-row owner-scoped read distinguishes
+safe absence from persistence failure, while a pure evaluator returns
+`not_due`, `warning_window`, `expired`, or `deleted_or_absent`. Draft creation
+uses a 30-calendar-day server-owned expiry, and only a confirmed persisted
+change to payload, text, clarification, or structured-context content renews
+the period. Warning begins exactly 7 calendar days before expiry. Restricted,
+retained-legal-exception, and legal-hold drafts do not mutate. The expired
+transition repeats owner/type/active/policy/expiry/legal-hold guards atomically
+and reuses the direct-deletion terminal payload. GET remains read-only, and no
+UI, list/bulk mutation, scheduler/job, email, schema/migration, account
+deletion, or history cleanup is included. The dedicated gate is
+`npm run quality:stage-7-expired-simulation-draft-retention-enforcement`.
 
 This state does not resolve Scale blockers, execute Scale, increase traffic,
 open Production Release, open Commercial Launch, connect Real AI, enable
@@ -1545,16 +1561,13 @@ resolve blockers. Any later blocker remediation, Scale execution, Production
 Release, Commercial Launch, implementation work, audit, roadmap change, or
 public-contract change requires separate explicit approval.
 
-The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after owner-scoped synchronous simulation-draft deletion
-execution: the synchronous expired simulation draft retention enforcement
-foundation, using existing `expires_at` and lifecycle/deletion primitives with
-the approved 30-day period and 7-day warning, without a background scheduler.
-Its concrete synchronous trigger must be selected in the next separate cycle.
-Independent history-entry deletion remains excluded; account deletion and
-parent-driven history cleanup are not opened. This
-does not create a new Stage, new
-Block, roadmap branch, or runtime architecture change.
+The explicit authenticated per-draft synchronous retention enforcement
+foundation is complete. No next implementation is selected by this cycle.
+Independent history-entry deletion remains excluded; user-facing warning
+delivery, bulk/background retention, account deletion, and parent-driven
+history cleanup remain unopened. Any later implementation must be separately
+approved from repository evidence and must not create a new Stage, Block,
+roadmap branch, or runtime architecture change.
 
 Levio must remain a Decision Simulation Engine and must not create AI Chat,
 Answer Engine, Generic Assistant, direct AI-to-user behavior, model calls,

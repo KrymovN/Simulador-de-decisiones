@@ -22,7 +22,7 @@ import {
 } from "./retention-runtime";
 
 export const ACCOUNT_DATA_RETENTION_SURFACE_VERSION =
-  "stage-7-account-data-retention-surface.3" as const;
+  "stage-7-account-data-retention-surface.4" as const;
 
 const MAX_RETENTION_DRAFTS = 1000;
 const MAX_RETENTION_HISTORY_ENTRIES = 1000;
@@ -86,7 +86,7 @@ export type AccountDataRetentionPlanDocument = {
     simulationDrafts: "owner_scoped_simulation_drafts";
     simulationHistory: "owner_scoped_simulation_history_entries";
     deletion: "not_executed";
-    retention: "planning_status_only_no_enforcement";
+    retention: "get_planning_status_only_no_enforcement";
   };
   account: {
     identityState: "authenticated";
@@ -101,7 +101,7 @@ export type AccountDataRetentionPlanDocument = {
   simulationDraftRetentionPlan: AccountDataRetentionSimulationDraftPlan[];
   simulationHistoryRetentionPlan: AccountDataRetentionSimulationHistoryPlan[];
   safety: {
-    retentionEnforcement: "not_started";
+    retentionEnforcement: "not_executed_by_get";
     retentionJobs: "not_started";
     deletionExecution: "not_executed";
     hardDelete: "not_executed";
@@ -514,7 +514,7 @@ function createDocument(
       simulationDrafts: "owner_scoped_simulation_drafts",
       simulationHistory: "owner_scoped_simulation_history_entries",
       deletion: "not_executed",
-      retention: "planning_status_only_no_enforcement",
+      retention: "get_planning_status_only_no_enforcement",
     },
     account: {
       identityState: "authenticated",
@@ -529,7 +529,7 @@ function createDocument(
     simulationDraftRetentionPlan,
     simulationHistoryRetentionPlan,
     safety: {
-      retentionEnforcement: "not_started",
+      retentionEnforcement: "not_executed_by_get",
       retentionJobs: "not_started",
       deletionExecution: "not_executed",
       hardDelete: "not_executed",
@@ -540,7 +540,7 @@ function createDocument(
       {
         category: "retentionEnforcement",
         reason:
-          "Retention enforcement and retention jobs are outside this Stage 7 substep.",
+          "GET executes no retention enforcement; the separate explicit POST is limited to one authenticated owner-scoped draft and starts no jobs.",
       },
       {
         category: "deletionExecution",

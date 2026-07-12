@@ -20,6 +20,7 @@ export type SimulationDraftPersistenceBlockedReason =
   | "provider_draft_save_not_supported"
   | "principal_preflight_blocked"
   | "draft_payload_invalid"
+  | "draft_read_failed"
   | "draft_save_failed"
   | "draft_update_failed";
 
@@ -61,7 +62,6 @@ export type SimulationDraftSaveInput = {
   language?: string;
   autosaveEnabled?: boolean;
   originatingSurface?: string;
-  expiresAt?: string;
   runtime?: PersistenceRuntimeWiring;
   saveProvider?: SupabaseSimulationDraftSaveProvider;
   config?: SimulationDraftPersistenceConfig;
@@ -78,7 +78,6 @@ export type SimulationDraftUpdateInput = {
   autosaveEnabled?: boolean;
   markSaved?: boolean;
   lastAutosavedAt?: string | null;
-  expiresAt?: string;
   runtime?: PersistenceRuntimeWiring;
   saveProvider?: SupabaseSimulationDraftSaveProvider;
   config?: SimulationDraftPersistenceConfig;
@@ -155,8 +154,88 @@ function normalizeText(value: string | null | undefined): string | null {
   return trimmed || null;
 }
 
-function defaultExpiresAt(): string {
-  return new Date(Date.now() + 1000 * 60 * 60 * 24 * 7).toISOString();
+export const SIMULATION_DRAFT_RETENTION_DAYS = 30;
+
+type SimulationDraftContentSnapshot = Pick<
+  SimulationDraftRow,
+  | "draft_payload"
+  | "draft_text_snapshot"
+  | "clarification_answers_snapshot"
+  | "structured_context_snapshot"
+>;
+
+export function calculateSimulationDraftExpiresAt(confirmedChangeAt: string): string | null {
+  const confirmedChange = new Date(confirmedChangeAt);
+
+  if (!Number.isFinite(confirmedChange.getTime())) {
+    return null;
+  }
+
+  confirmedChange.setUTCDate(
+    confirmedChange.getUTCDate() + SIMULATION_DRAFT_RETENTION_DAYS,
+  );
+
+  return confirmedChange.toISOString();
+}
+
+function jsonValuesEqual(left: unknown, right: unknown): boolean {
+  if (Object.is(left, right)) {
+    return true;
+  }
+
+  if (Array.isArray(left) || Array.isArray(right)) {
+    return (
+      Array.isArray(left) &&
+      Array.isArray(right) &&
+      left.length === right.length &&
+      left.every((value, index) => jsonValuesEqual(value, right[index]))
+    );
+  }
+
+  if (isRecord(left) || isRecord(right)) {
+    if (!isRecord(left) || !isRecord(right)) {
+      return false;
+    }
+
+    const leftKeys = Object.keys(left).sort();
+    const rightKeys = Object.keys(right).sort();
+
+    return (
+      leftKeys.length === rightKeys.length &&
+      leftKeys.every(
+        (key, index) =>
+          key === rightKeys[index] && jsonValuesEqual(left[key], right[key]),
+      )
+    );
+  }
+
+  return false;
+}
+
+function hasConfirmedContentChange(input: {
+  currentDraft: SimulationDraftContentSnapshot;
+  draftPayload?: Record<string, unknown>;
+  draftText?: string | null;
+  clarificationAnswers?: Record<string, unknown> | null;
+  structuredContext?: Record<string, unknown> | null;
+}): boolean {
+  return (
+    (input.draftPayload !== undefined &&
+      !jsonValuesEqual(input.draftPayload, input.currentDraft.draft_payload)) ||
+    (input.draftText !== undefined &&
+      normalizeText(input.draftText) !==
+        normalizeText(input.currentDraft.draft_text_snapshot)) ||
+    (input.clarificationAnswers !== undefined &&
+      !jsonValuesEqual(
+        input.clarificationAnswers,
+        input.currentDraft.clarification_answers_snapshot,
+      )) ||
+    (input.structuredContext !== undefined &&
+      !jsonValuesEqual(
+        input.structuredContext,
+        input.currentDraft.structured_context_snapshot,
+      ))
+  );
 }
 
 function supportsSimulationDraftSaveProvider(
@@ -164,6 +243,7 @@ function supportsSimulationDraftSaveProvider(
 ): value is SupabaseSimulationDraftSaveProvider {
   return (
     isRecord(value) &&
+    typeof value.readSimulationDraft === "function" &&
     typeof value.saveSimulationDraft === "function" &&
     typeof value.updateSimulationDraft === "function"
   );
@@ -190,9 +270,17 @@ export function buildSimulationDraftInsertPayload(input: {
   language?: string;
   autosaveEnabled?: boolean;
   originatingSurface?: string;
-  expiresAt?: string;
+  serverConfirmedChangeAt?: string;
 }): SupabaseSimulationDraftInsertPayload | null {
   if (!input.ownerPrincipalId || !isRecord(input.draftPayload)) {
+    return null;
+  }
+
+  const expiresAt = calculateSimulationDraftExpiresAt(
+    input.serverConfirmedChangeAt ?? new Date().toISOString(),
+  );
+
+  if (!expiresAt) {
     return null;
   }
 
@@ -207,7 +295,7 @@ export function buildSimulationDraftInsertPayload(input: {
     language: input.language ?? "es",
     autosave_enabled: input.autosaveEnabled ?? false,
     originating_surface: normalizeText(input.originatingSurface),
-    expires_at: input.expiresAt ?? defaultExpiresAt(),
+    expires_at: expiresAt,
     deletion_state: "active",
     retention_rule: "draft_short_lifecycle",
     export_eligible: true,
@@ -216,6 +304,7 @@ export function buildSimulationDraftInsertPayload(input: {
 }
 
 export function buildSimulationDraftUpdatePayload(input: {
+  currentDraft: SimulationDraftContentSnapshot;
   draftPayload?: Record<string, unknown>;
   draftText?: string | null;
   clarificationAnswers?: Record<string, unknown> | null;
@@ -224,7 +313,7 @@ export function buildSimulationDraftUpdatePayload(input: {
   autosaveEnabled?: boolean;
   markSaved?: boolean;
   lastAutosavedAt?: string | null;
-  expiresAt?: string;
+  serverConfirmedChangeAt?: string;
 }): SupabaseSimulationDraftUpdatePayload | null {
   const payload: SupabaseSimulationDraftUpdatePayload = {};
 
@@ -264,8 +353,16 @@ export function buildSimulationDraftUpdatePayload(input: {
     payload.last_autosaved_at = input.lastAutosavedAt;
   }
 
-  if (input.expiresAt) {
-    payload.expires_at = input.expiresAt;
+  if (hasConfirmedContentChange(input)) {
+    const expiresAt = calculateSimulationDraftExpiresAt(
+      input.serverConfirmedChangeAt ?? new Date().toISOString(),
+    );
+
+    if (!expiresAt) {
+      return null;
+    }
+
+    payload.expires_at = expiresAt;
   }
 
   return Object.keys(payload).length > 0 ? payload : null;
@@ -348,7 +445,6 @@ export async function saveSimulationDraft(
     language: input.language,
     autosaveEnabled: input.autosaveEnabled,
     originatingSurface: input.originatingSurface,
-    expiresAt: input.expiresAt,
   });
 
   if (!payload) {
@@ -411,7 +507,27 @@ export async function updateSimulationDraft(
     );
   }
 
+  const currentDraft = await resolved.saveProvider.readSimulationDraft({
+    draftId: input.draft.draft_id,
+    ownerPrincipalId: preflight.principalId,
+  });
+
+  if (
+    currentDraft.status !== "found" ||
+    currentDraft.draft.owner_principal_id !== preflight.principalId ||
+    currentDraft.draft.owner_principal_type !== "registered_user" ||
+    currentDraft.draft.draft_status !== "active" ||
+    currentDraft.draft.deletion_state !== "active" ||
+    currentDraft.draft.legal_hold_reason !== null
+  ) {
+    return blocked(
+      "draft_read_failed",
+      "Simulation draft could not be read in an active owner-scoped lifecycle.",
+    );
+  }
+
   const payload = buildSimulationDraftUpdatePayload({
+    currentDraft: currentDraft.draft,
     draftPayload: input.draftPayload,
     draftText: input.draftText,
     clarificationAnswers: input.clarificationAnswers,
@@ -420,7 +536,6 @@ export async function updateSimulationDraft(
     autosaveEnabled: input.autosaveEnabled,
     markSaved: input.markSaved,
     lastAutosavedAt: input.lastAutosavedAt,
-    expiresAt: input.expiresAt,
   });
 
   if (!payload) {

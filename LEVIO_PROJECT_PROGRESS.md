@@ -23,7 +23,7 @@ prevails unless it has been explicitly amended.
 
 ## Last Updated
 
-11 июля 2026
+12 июля 2026
 
 ## Purpose
 
@@ -93,8 +93,9 @@ V1 Complete Readiness    ██████░░░░ 58% estimated
   comparator.
 - Blocks A/B/C are internal V1 implementation substeps only; they are not
   roadmap Stages and not the project-management system.
-- Most recent Stage 7 implementation substep: owner-scoped synchronous
-  simulation-draft deletion execution through the existing draft lifecycle.
+- Most recent Stage 7 implementation substep: explicit authenticated
+  per-draft synchronous retention enforcement through
+  `POST /dashboard/privacy/retention`.
 - Block A1 Decision Simulation Domain Model завершён:
   `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`.
 - Block A2 Persistence Runtime Mapping завершён: internal runtime maps
@@ -269,14 +270,14 @@ V1 Complete Readiness    ██████░░░░ 58% estimated
   review no longer blocks Stage 7 development; final production notice, ROPA,
   provider/DPA, backup-rotation, special-hold, and optional compliance-review
   evidence remain production-readiness work.
-- Next implementation candidate: synchronous expired simulation draft retention
-  enforcement foundation using existing `expires_at`, lifecycle, and deletion
-  primitives with no background scheduler. Its concrete synchronous trigger is
-  reserved for the next separate implementation cycle. Independent history-
-  entry deletion remains excluded; account deletion and parent-driven history
-  cleanup are not opened. This does not
-  create a new Stage, new Block,
-  roadmap branch, or runtime architecture change.
+- Explicit per-draft synchronous retention enforcement is implemented: one
+  strict `draftId` request, server-derived owner/time, 30-day server-owned
+  expiry renewed only by confirmed content changes, 7-day warning evaluation,
+  no mutation before expiry, fail-closed restriction/legal-hold handling, and
+  one atomically guarded terminal transition for an expired active draft.
+  GET remains read-only; no UI, bulk/list mutation, scheduler/job, schema,
+  account deletion, or history cleanup was added. The dedicated gate is
+  `npm run quality:stage-7-expired-simulation-draft-retention-enforcement`.
 - Recent product implementation foundation:
   `Saved Decision Simulations Runtime Foundation`, internal server/runtime
   boundary for save/load/list of saved Decision Simulations through approved
@@ -1548,13 +1549,11 @@ Stage 15 - Scale, with Stage 15.4 NOT READY and Stage 15.5 complete as a
 blocker-resolution framework only. The current V1 implementation focus is
 Stage 7 - User Data Controls. Blocks A/B/C are internal V1 implementation
 substeps only and must not be used as the primary roadmap-management system.
-The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after owner-scoped synchronous simulation-draft deletion
-execution: synchronous expired simulation draft retention enforcement foundation
-under the approved 30-day unchanged-draft and 7-day warning policy, with no
-background scheduler. Its concrete trigger remains for the next separate cycle.
-Independent history-entry deletion remains excluded; account deletion and
-parent-driven history cleanup are not opened by this candidate.
+The explicit authenticated per-draft synchronous retention enforcement
+foundation is complete. No next implementation substep is opened by this
+cycle. Independent history-entry deletion remains excluded; user-facing
+warning delivery, bulk/background retention, account deletion, and
+parent-driven history cleanup remain unopened and require separate approval.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.

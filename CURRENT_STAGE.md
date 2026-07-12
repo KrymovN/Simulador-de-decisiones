@@ -22,7 +22,7 @@ prevails unless it has been explicitly amended.
 
 ## Active Checkpoint
 
-Post-Stage 15.5 / Stage 7 Owner-Scoped Synchronous Simulation-Draft Deletion Execution.
+Post-Stage 15.5 / Stage 7 Explicit Per-Draft Synchronous Retention Enforcement.
 
 Status: the official roadmap remains the 15-Stage roadmap recorded in
 `LEVIO_PROJECT_PROGRESS.md`. Stage 15.5 is complete as documentation-only Scale
@@ -225,12 +225,27 @@ longer blocks Stage 7 development, while final production notice, ROPA,
 provider/DPA, backup-rotation, special-hold, and optional compliance-review
 evidence remain production-readiness work.
 
+The explicit authenticated per-draft synchronous retention enforcement action
+is now implemented at `POST /dashboard/privacy/retention`. It accepts only one
+`draftId`, resolves the canonical owner and server time internally, reads one
+owner-scoped registered-user draft, and distinguishes `not_due`,
+`warning_window`, `expired`, and `deleted_or_absent`. Draft creation now uses a
+server-owned 30-calendar-day expiry, and only successfully persisted changes
+to payload, text, clarification, or structured-context content renew that
+period; timestamp/flag/metadata-only autosave does not. Expired active drafts
+without restriction or legal hold use a separate atomically guarded provider
+transition and the shared terminal content-clearing payload. The existing GET
+retention plan remains read-only. No UI, list/bulk mutation, background job,
+scheduler, email, schema, migration, account deletion, or history cleanup was
+added. The dedicated gate is
+`npm run quality:stage-7-expired-simulation-draft-retention-enforcement`.
+
 This checkpoint does not open Scale, increase traffic, open Production Release,
 open Commercial Launch, enable Real AI provider execution, add billing,
 analytics, tracking, logging, compliance claims, roadmap changes, or a new
 public contract.
 
-Date: 11 July 2026, Europe/Madrid.
+Date: 12 July 2026, Europe/Madrid.
 
 Stage 5.3 remains closed as AI Quality / Cost / Safety Validation Foundation
 Complete. Stage 5.2 remains closed as Prompt / Context Layer Foundation
@@ -1899,16 +1914,13 @@ Stage 15.5 does not resolve blockers. Any later blocker remediation, Scale
 execution, Production Release, Commercial Launch, implementation work, audit,
 roadmap change, or public-contract change requires separate explicit approval.
 
-The next implementation, if approved, remains the next minimal Stage 7 User
-Data Controls substep after owner-scoped synchronous simulation-draft deletion
-execution: the synchronous expired simulation draft retention enforcement
-foundation, using existing `expires_at` and lifecycle/deletion primitives with
-the approved 30-day period and 7-day warning, without a background scheduler.
-Its concrete synchronous trigger must be selected in the next separate cycle.
-Independent history-entry deletion remains excluded; account deletion and
-parent-driven history cleanup are not opened. This
-does not create a new Stage, new
-Block, roadmap branch, or runtime architecture change.
+The explicit authenticated per-draft synchronous retention enforcement
+foundation is complete. No next Stage 7 implementation substep is opened by
+this cycle. Independent history-entry deletion remains excluded; user-facing
+warning delivery, bulk/background retention, account deletion, and
+parent-driven history cleanup remain unopened. Any later implementation needs
+its own minimal repository-evidence selection and approval and must not create
+a new Stage, Block, roadmap branch, or runtime architecture change.
 
 Scale execution, Production Release, Commercial Launch, Real AI execution,
 production auth/account/persistence, subscription/billing/commercial runtime,

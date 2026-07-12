@@ -101,8 +101,24 @@ const draftReference = {
   owner_principal_type: "registered_user" as const,
 };
 
+type DraftProviderCalls = {
+  resolve: number;
+  read: number;
+  save: number;
+  update: number;
+  inserts: SupabaseSimulationDraftInsertPayload[];
+  updates: SupabaseSimulationDraftUpdatePayload[];
+};
+
 function issueUnless(condition: boolean, message: string): string[] {
   return condition ? [] : [message];
+}
+
+function isApproximatelyThirtyDaysFromNow(value: string | undefined): boolean {
+  if (!value) return false;
+  const difference = Date.parse(value) - Date.now();
+  const day = 24 * 60 * 60 * 1000;
+  return difference >= 29.99 * day && difference <= 30.01 * day;
 }
 
 function draftFromPayload(payload: SupabaseSimulationDraftInsertPayload): SimulationDraftRow {
@@ -161,19 +177,21 @@ function updatedDraftFromPayload(payload: SupabaseSimulationDraftUpdatePayload):
   };
 }
 
-function createDraftProvider(calls: {
-  resolve: number;
-  save: number;
-  update: number;
-  inserts: SupabaseSimulationDraftInsertPayload[];
-  updates: SupabaseSimulationDraftUpdatePayload[];
-}): SupabaseSimulationDraftSaveProvider {
+function currentDraft(): SimulationDraftRow {
+  return updatedDraftFromPayload({});
+}
+
+function createDraftProvider(calls: DraftProviderCalls): SupabaseSimulationDraftSaveProvider {
   return {
     providerId: "supabase",
     executionBoundary: "server_only",
     async resolvePrincipalByProviderReference() {
       calls.resolve += 1;
       return resolvedPrincipal;
+    },
+    async readSimulationDraft() {
+      calls.read += 1;
+      return { status: "found", draft: currentDraft() };
     },
     async saveSimulationDraft(payload) {
       calls.save += 1;
@@ -218,7 +236,7 @@ function cases(): ValidationCase[] {
       title: "Draft persistence is disabled by default",
       expectedBehavior: "Controlled rollout blocks draft saves until explicitly enabled.",
       run: async () => {
-        const calls = { resolve: 0, save: 0, update: 0, inserts: [] as SupabaseSimulationDraftInsertPayload[], updates: [] as SupabaseSimulationDraftUpdatePayload[] };
+        const calls = { resolve: 0, read: 0, save: 0, update: 0, inserts: [] as SupabaseSimulationDraftInsertPayload[], updates: [] as SupabaseSimulationDraftUpdatePayload[] };
         const provider = createDraftProvider(calls);
         const runtime = initializePersistenceRuntimeWiring({ providerAdapter: provider });
         const result = await saveSimulationDraft({
@@ -244,7 +262,7 @@ function cases(): ValidationCase[] {
       title: "Signed-out context blocks draft save",
       expectedBehavior: "Do not resolve or save drafts without an authenticated context.",
       run: async () => {
-        const calls = { resolve: 0, save: 0, update: 0, inserts: [] as SupabaseSimulationDraftInsertPayload[], updates: [] as SupabaseSimulationDraftUpdatePayload[] };
+        const calls = { resolve: 0, read: 0, save: 0, update: 0, inserts: [] as SupabaseSimulationDraftInsertPayload[], updates: [] as SupabaseSimulationDraftUpdatePayload[] };
         const provider = createDraftProvider(calls);
         const runtime = initializePersistenceRuntimeWiring({ providerAdapter: provider });
         const result = await saveSimulationDraft({
@@ -303,7 +321,7 @@ function cases(): ValidationCase[] {
           language: "es",
           autosaveEnabled: true,
           originatingSurface: "validation",
-          expiresAt: "2026-06-25T00:00:00.000Z",
+          serverConfirmedChangeAt: "2026-06-18T00:00:00.000Z",
         });
 
         return [
@@ -316,7 +334,8 @@ function cases(): ValidationCase[] {
           ...issueUnless(
             payload?.draft_status === "active" &&
               payload.autosave_enabled === true &&
-              payload.retention_rule === "draft_short_lifecycle",
+              payload.retention_rule === "draft_short_lifecycle" &&
+              payload.expires_at === "2026-07-18T00:00:00.000Z",
             "Expected active short-lifecycle draft payload.",
           ),
         ];
@@ -327,7 +346,7 @@ function cases(): ValidationCase[] {
       title: "Update payload requires fields",
       expectedBehavior: "Do not update a draft when no approved fields are present.",
       run: () => {
-        const payload = buildSimulationDraftUpdatePayload({});
+        const payload = buildSimulationDraftUpdatePayload({ currentDraft: currentDraft() });
         return issueUnless(payload === null, "Expected empty update payload to be rejected.");
       },
     },
@@ -336,7 +355,7 @@ function cases(): ValidationCase[] {
       title: "Draft save succeeds",
       expectedBehavior: "Resolve principal and insert exactly one simulation_drafts row.",
       run: async () => {
-        const calls = { resolve: 0, save: 0, update: 0, inserts: [] as SupabaseSimulationDraftInsertPayload[], updates: [] as SupabaseSimulationDraftUpdatePayload[] };
+        const calls = { resolve: 0, read: 0, save: 0, update: 0, inserts: [] as SupabaseSimulationDraftInsertPayload[], updates: [] as SupabaseSimulationDraftUpdatePayload[] };
         const provider = createDraftProvider(calls);
         const runtime = initializePersistenceRuntimeWiring({ providerAdapter: provider });
         const result = await saveSimulationDraft({
@@ -364,7 +383,7 @@ function cases(): ValidationCase[] {
       title: "Draft update succeeds",
       expectedBehavior: "Resolve owner and update exactly one existing simulation_drafts row.",
       run: async () => {
-        const calls = { resolve: 0, save: 0, update: 0, inserts: [] as SupabaseSimulationDraftInsertPayload[], updates: [] as SupabaseSimulationDraftUpdatePayload[] };
+        const calls = { resolve: 0, read: 0, save: 0, update: 0, inserts: [] as SupabaseSimulationDraftInsertPayload[], updates: [] as SupabaseSimulationDraftUpdatePayload[] };
         const provider = createDraftProvider(calls);
         const runtime = initializePersistenceRuntimeWiring({ providerAdapter: provider });
         const result = await updateSimulationDraft({
@@ -381,11 +400,80 @@ function cases(): ValidationCase[] {
         return [
           ...issueUnless(result.status === "saved", "Expected draft update to be saved."),
           ...issueUnless(calls.resolve === 1, "Expected one provider principal resolution."),
-          ...issueUnless(calls.update === 1 && calls.save === 0, "Expected one draft update only."),
+          ...issueUnless(calls.read === 1 && calls.update === 1 && calls.save === 0, "Expected one draft read and update only."),
           ...issueUnless(
             calls.updates[0]?.draft_text_snapshot === "updated validation draft",
             "Expected update payload text snapshot.",
           ),
+          ...issueUnless(
+            isApproximatelyThirtyDaysFromNow(calls.updates[0]?.expires_at),
+            "Confirmed content-changing autosave must renew expiry by 30 calendar days.",
+          ),
+        ];
+      },
+    },
+    {
+      id: "content_change_renews_exactly_thirty_days",
+      title: "Confirmed content change renews exact policy period",
+      expectedBehavior: "Server-owned expiry is confirmedChangeAt plus 30 calendar days.",
+      run: () => {
+        const payload = buildSimulationDraftUpdatePayload({
+          currentDraft: currentDraft(),
+          draftPayload: { text: "changed content" },
+          serverConfirmedChangeAt: "2026-01-31T12:00:00.000Z",
+        });
+
+        return issueUnless(
+          payload?.expires_at === "2026-03-02T12:00:00.000Z",
+          "Expected UTC calendar-day renewal across a month boundary.",
+        );
+      },
+    },
+    {
+      id: "timestamp_only_autosave_does_not_renew",
+      title: "Timestamp-only autosave does not renew retention",
+      expectedBehavior: "last_autosaved_at alone must not change expires_at.",
+      run: async () => {
+        const calls = { resolve: 0, read: 0, save: 0, update: 0, inserts: [] as SupabaseSimulationDraftInsertPayload[], updates: [] as SupabaseSimulationDraftUpdatePayload[] };
+        const provider = createDraftProvider(calls);
+        const runtime = initializePersistenceRuntimeWiring({ providerAdapter: provider });
+        const result = await updateSimulationDraft({
+          authContext: authenticatedContext,
+          draft: draftReference,
+          lastAutosavedAt: "2026-06-18T00:02:00.000Z",
+          runtime,
+          saveProvider: provider,
+          config: enabledConfig,
+        });
+
+        return [
+          ...issueUnless(result.status === "saved", "Expected timestamp-only autosave to persist."),
+          ...issueUnless(calls.updates[0]?.last_autosaved_at === "2026-06-18T00:02:00.000Z", "Expected autosave timestamp update."),
+          ...issueUnless(calls.updates[0]?.expires_at === undefined, "Timestamp-only autosave must not renew expiration."),
+        ];
+      },
+    },
+    {
+      id: "unchanged_content_autosave_does_not_renew",
+      title: "Unchanged content autosave does not renew retention",
+      expectedBehavior: "Structurally unchanged content plus autosave metadata must not change expires_at.",
+      run: async () => {
+        const calls = { resolve: 0, read: 0, save: 0, update: 0, inserts: [] as SupabaseSimulationDraftInsertPayload[], updates: [] as SupabaseSimulationDraftUpdatePayload[] };
+        const provider = createDraftProvider(calls);
+        const runtime = initializePersistenceRuntimeWiring({ providerAdapter: provider });
+        const result = await updateSimulationDraft({
+          authContext: authenticatedContext,
+          draft: draftReference,
+          draftPayload: { text: "existing draft" },
+          lastAutosavedAt: "2026-06-18T00:03:00.000Z",
+          runtime,
+          saveProvider: provider,
+          config: enabledConfig,
+        });
+
+        return [
+          ...issueUnless(result.status === "saved", "Expected unchanged autosave metadata to persist."),
+          ...issueUnless(calls.updates[0]?.expires_at === undefined, "Unchanged draft content must not renew expiration."),
         ];
       },
     },
@@ -394,7 +482,7 @@ function cases(): ValidationCase[] {
       title: "Owner mismatch blocks update",
       expectedBehavior: "Do not update a draft whose owner does not match the resolved principal.",
       run: async () => {
-        const calls = { resolve: 0, save: 0, update: 0, inserts: [] as SupabaseSimulationDraftInsertPayload[], updates: [] as SupabaseSimulationDraftUpdatePayload[] };
+        const calls = { resolve: 0, read: 0, save: 0, update: 0, inserts: [] as SupabaseSimulationDraftInsertPayload[], updates: [] as SupabaseSimulationDraftUpdatePayload[] };
         const provider = createDraftProvider(calls);
         const runtime = initializePersistenceRuntimeWiring({ providerAdapter: provider });
         const result = await updateSimulationDraft({

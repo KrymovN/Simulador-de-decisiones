@@ -25,10 +25,14 @@ const retentionSurface = readProjectFile(
 const retentionRoute = readProjectFile("app", "dashboard", "privacy", "retention", "route.ts");
 const privacyPanel = readProjectFile("components", "PrivacyPanel.tsx");
 const packageJson = readProjectFile("package.json");
+const getRoute = retentionRoute.slice(
+  retentionRoute.indexOf("export async function GET"),
+  retentionRoute.indexOf("const MAX_RETENTION_REQUEST_LENGTH"),
+);
 
 assertCheck(
   "stage-7-retention-surface-versioned",
-  retentionSurface.includes("stage-7-account-data-retention-surface.3") &&
+  retentionSurface.includes("stage-7-account-data-retention-surface.4") &&
     retentionSurface.includes("levio-account-data-retention-plan-json"),
   "Stage 7 retention surface must expose a stable version and JSON plan format.",
 );
@@ -53,8 +57,8 @@ assertCheck(
 
 assertCheck(
   "stage-7-retention-is-planning-status-only",
-  retentionSurface.includes('retention: "planning_status_only_no_enforcement"') &&
-    retentionSurface.includes('retentionEnforcement: "not_started"') &&
+  retentionSurface.includes('retention: "get_planning_status_only_no_enforcement"') &&
+    retentionSurface.includes('retentionEnforcement: "not_executed_by_get"') &&
     retentionSurface.includes('retentionJobs: "not_started"') &&
     retentionSurface.includes('deletionExecution: "not_executed"') &&
     retentionSurface.includes('hardDelete: "not_executed"') &&
@@ -86,10 +90,11 @@ assertCheck(
   "stage-7-retention-route-has-no-client-owner-input",
   !retentionRoute.includes("ownerPrincipalId") &&
     !retentionRoute.includes("clientOwner") &&
+    !retentionRoute.includes("providerReference") &&
     !retentionRoute.includes("searchParams") &&
-    !retentionRoute.includes("request:") &&
-    !retentionRoute.includes("Request"),
-  "Retention route must not accept owner identifiers or client-controlled owner input.",
+    getRoute.includes("export async function GET()") &&
+    !getRoute.includes("Request"),
+  "Retention GET must remain input-free and the route must not accept client owner authority.",
 );
 
 assertCheck(

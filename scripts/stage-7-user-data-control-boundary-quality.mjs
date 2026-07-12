@@ -103,16 +103,31 @@ for (const { control, readerName, surface, route } of surfaces) {
 
   assertCheck(
     `stage-7-${control}-does-not-open-destructive-account-lifecycle`,
-    !route.includes("DELETE") &&
-      !route.includes("POST") &&
+      !route.includes("DELETE") &&
+      (control === "retention"
+        ? route.includes("export async function POST(request: Request)") &&
+          route.includes("enforceExpiredSimulationDraftRetention")
+        : !route.includes("POST")) &&
       !route.includes("PATCH") &&
       !route.includes("PUT") &&
       !surface.includes("deleteAccount(") &&
       !surface.includes("hardDelete(") &&
       !surface.includes("retentionJob.run"),
-    `${control} must remain read-only and must not open account deletion or retention execution.`,
+    `${control} must preserve its approved method boundary without opening account deletion or retention jobs.`,
   );
 }
+
+assertCheck(
+  "stage-7-retention-post-is-explicit-single-draft-only",
+  surfaces[2].route.includes("parseSimulationDraftRetentionRequest") &&
+    surfaces[2].route.includes("draftId: requestInput.draftId") &&
+    !surfaces[2].route.includes("draftIds") &&
+    !surfaces[2].route.includes("ownerPrincipalId") &&
+    !surfaces[2].route.includes("providerReference") &&
+    !surfaces[2].route.includes("retentionJob") &&
+    !surfaces[2].route.includes("scheduler"),
+  "Only the approved authenticated one-draft retention POST may mutate; no bulk owner input or jobs are allowed.",
+);
 
 assertCheck(
   "stage-7-owner-resolution-remains-server-side-and-canonical",

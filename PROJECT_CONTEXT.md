@@ -20,7 +20,7 @@ prevails unless it has been explicitly amended.
 
 ## Current Confirmed State
 
-Date: 11 July 2026, Europe/Madrid.
+Date: 12 July 2026, Europe/Madrid.
 
 Levio.es is a Decision Simulation Engine.
 
@@ -204,14 +204,29 @@ blocker, but final production notices, records of processing, provider/DPA and
 backup-rotation evidence, special legal holds, and optional independent
 compliance review remain production-readiness work.
 
+The synchronous expired simulation draft retention enforcement foundation is
+now implemented through the explicit authenticated
+`POST /dashboard/privacy/retention` action, limited to one `draftId` per
+request. Draft creation now receives a server-owned 30-calendar-day expiry,
+and only a successfully persisted change to draft payload, text,
+clarification, or structured-context content renews that period; timestamp,
+flag, and metadata-only autosave updates do not. A pure server-time evaluator
+distinguishes `not_due`, `warning_window`, `expired`, and
+`deleted_or_absent`, with the warning boundary starting exactly 7 calendar
+days before expiry. The action reads one canonical-owner draft, returns without
+mutation before expiry, fails closed for restricted/legal-hold states, and
+uses a separate atomically guarded retention transition for expired active
+drafts while reusing the existing terminal content-clearing payload. The
+existing GET retention plan remains strictly read-only. No UI, bulk/list
+mutation, scheduler, job, email, schema, migration, account deletion, or
+history cleanup was added. The dedicated gate is
+`npm run quality:stage-7-expired-simulation-draft-retention-enforcement`.
+
 Current project progress is **84% overall**. Levio V1 Complete readiness is
-**58% estimated**. The next implementation remains within Stage 7 User Data
-Controls. The next approved implementation candidate is the synchronous expired
-simulation draft retention enforcement foundation, using existing `expires_at`,
-lifecycle, and owner-scoped deletion primitives without a background scheduler.
-Its concrete synchronous trigger must be determined in a separate minimal
-implementation cycle from repository evidence. Account deletion and
-parent-driven history cleanup are not opened by this candidate. Any next
+**58% estimated**. The current implementation remains within Stage 7 User Data
+Controls. The explicit per-draft synchronous retention foundation is complete;
+broader user-facing warning delivery, automatic/background retention,
+account deletion, and parent-driven history cleanup remain unopened. Any next
 implementation must be determined from `LEVIO_IMPLEMENTATION_PLAN.md` before
 code and must not create a new Stage,
 new Block, new roadmap branch, or runtime architecture change.
