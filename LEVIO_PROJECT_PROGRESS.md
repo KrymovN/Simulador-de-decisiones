@@ -1,5 +1,18 @@
 # LEVIO PROJECT PROGRESS TRACKER
 
+## Stage 7 Progress Update — Atomic Parent-Driven History Cleanup
+
+A single versioned migration adds one least-privilege transactional RPC for
+owner+parent-scoped user-visible history content cleanup during deletion of one
+saved simulation. The existing server action and runtime remain the only
+product entry path. Parent locking, active lifecycle, owner, restriction, legal
+hold, history owner+record predicates, terminal content clearing, rollback,
+controlled absence, and idempotency are covered by the dedicated gate.
+Independent history deletion, account deletion, and background retention remain
+unopened. Client data isolation remains mandatory across all user-data
+surfaces. Stage 7 remains In Progress, overall progress remains 84%, and V1
+readiness remains 58% pending a separate closure assessment.
+
 ## Stage 7 Progress Update — Single-Draft Resume/Edit Surface
 
 The authenticated owner-scoped single-draft resume/edit surface is complete
@@ -103,9 +116,8 @@ V1 Complete Readiness    ██████░░░░ 58% estimated
   comparator.
 - Blocks A/B/C are internal V1 implementation substeps only; they are not
   roadmap Stages and not the project-management system.
-- Most recent Stage 7 implementation substep: explicit authenticated
-  per-draft synchronous retention enforcement through
-  `POST /dashboard/privacy/retention`.
+- Most recent Stage 7 implementation substep: atomic owner-scoped parent-driven
+  history content cleanup on single saved-simulation deletion.
 - Block A1 Decision Simulation Domain Model завершён:
   `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md`.
 - Block A2 Persistence Runtime Mapping завершён: internal runtime maps
@@ -1559,11 +1571,10 @@ Stage 15 - Scale, with Stage 15.4 NOT READY and Stage 15.5 complete as a
 blocker-resolution framework only. The current V1 implementation focus is
 Stage 7 - User Data Controls. Blocks A/B/C are internal V1 implementation
 substeps only and must not be used as the primary roadmap-management system.
-The explicit authenticated per-draft synchronous retention enforcement
-foundation is complete. No next implementation substep is opened by this
-cycle. Independent history-entry deletion remains excluded; user-facing
-warning delivery, bulk/background retention, account deletion, and
-parent-driven history cleanup remain unopened and require separate approval.
+The explicit draft retention/warning flow and atomic parent-driven history
+cleanup on single saved-simulation deletion are complete. Independent history-
+entry deletion remains excluded; bulk/background retention and account
+deletion remain unopened and require separate approval.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.

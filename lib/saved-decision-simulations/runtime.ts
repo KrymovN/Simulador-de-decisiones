@@ -882,6 +882,13 @@ export async function deleteDecisionSimulation(
     );
   }
 
+  if (deletion.status === "restricted") {
+    return blocked(
+      "record_delete_restricted",
+      "Saved decision simulation deletion is blocked by its protected lifecycle.",
+    );
+  }
+
   if (deletion.status === "not_found") {
     return {
       status: "already_absent",

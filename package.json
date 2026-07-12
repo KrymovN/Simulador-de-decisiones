@@ -24,6 +24,7 @@
     "quality:stage-7-user-data-privacy-surface": "node scripts/stage-7-user-data-privacy-surface-quality.mjs",
     "quality:stage-7-user-data-consent-status-surface": "node scripts/stage-7-user-data-consent-status-surface-quality.mjs",
     "quality:stage-7-saved-simulation-deletion-execution": "node scripts/stage-7-saved-simulation-deletion-execution-quality.mjs",
+    "quality:stage-7-atomic-parent-history-cleanup": "node scripts/stage-7-atomic-parent-history-cleanup-quality.mjs",
     "quality:stage-7-simulation-draft-deletion-execution": "node scripts/stage-7-simulation-draft-deletion-execution-quality.mjs",
     "quality:stage-7-expired-simulation-draft-retention-enforcement": "node scripts/stage-7-expired-simulation-draft-retention-enforcement-quality.mjs",
     "quality:stage-7-single-draft-resume-edit-surface": "node scripts/stage-7-single-draft-resume-edit-surface-quality.mjs",

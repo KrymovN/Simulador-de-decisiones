@@ -1,5 +1,18 @@
 # CURRENT STAGE
 
+## Stage 7 Atomic Parent-Driven History Cleanup — 12 July 2026
+
+One owner-scoped saved-simulation deletion now uses a bounded transactional RPC
+to clear only its active user-visible history content before applying the
+parent terminal lifecycle. Canonical owner resolution remains server-only;
+parent/history predicates include owner and record, protected lifecycle and
+legal hold block the whole operation, and SQL/provider errors fail closed with
+transaction rollback. No independent history deletion, account deletion,
+background retention, UI/API route, physical delete, or cascade was opened.
+Client isolation is mandatory across every user-data surface and UI is never a
+security boundary. Stage 7 remains In Progress pending separate closure
+assessment; V1 readiness remains 58%.
+
 ## Stage 7 Single-Draft Resume/Edit Update — 12 July 2026
 
 The approved `/dashboard/drafts/[id]` surface now resumes and edits exactly one
@@ -1924,11 +1937,10 @@ Stage 15.5 does not resolve blockers. Any later blocker remediation, Scale
 execution, Production Release, Commercial Launch, implementation work, audit,
 roadmap change, or public-contract change requires separate explicit approval.
 
-The explicit authenticated per-draft synchronous retention enforcement
-foundation is complete. No next Stage 7 implementation substep is opened by
-this cycle. Independent history-entry deletion remains excluded; user-facing
-warning delivery, bulk/background retention, account deletion, and
-parent-driven history cleanup remain unopened. Any later implementation needs
+The explicit draft retention/warning flow and atomic parent-driven history
+cleanup on single saved-simulation deletion are complete. Independent
+history-entry deletion remains excluded; bulk/background retention and account
+deletion remain unopened. Any later implementation needs
 its own minimal repository-evidence selection and approval and must not create
 a new Stage, Block, roadmap branch, or runtime architecture change.
 

@@ -1,5 +1,25 @@
 # LEVIO IMPLEMENTATION PLAN
 
+## Stage 7 Atomic Parent-Driven History Cleanup — 12 July 2026
+
+The Block C deletion execution path for one saved simulation now atomically
+clears its owner+parent-scoped active user-visible history content and applies
+the saved-simulation terminal lifecycle through one server-only PostgreSQL RPC.
+The canonical owner remains server-derived; the database function is callable
+only by `service_role`, uses a fixed search path, locks the parent, blocks
+restriction/legal hold, and has no two-update fallback. Independent history
+entry deletion remains excluded. Account deletion and background retention are
+still deferred. Stage 7 remains In Progress until a separate closure
+assessment; V1 readiness remains 58%.
+
+All current and future user-data surfaces must preserve client isolation:
+server-validated owner derivation, simultaneous object+owner scoping,
+fail-closed ownership, safe missing/cross-owner normalization, no UI or client
+identifier authority, and dedicated owner-isolation regression coverage.
+Internal personal-data access is denied by default and remains purpose-bound,
+least-privilege, controlled, and where possible auditable. This does not claim
+or add zero-knowledge encryption.
+
 ## Current Stage 7 Approved Addition — 12 July 2026
 
 The authenticated owner-scoped single-draft resume/edit surface is complete at
@@ -276,7 +296,7 @@ module, planning document, or readiness checklist as production completion.
 | --- | --- | --- | --- |
 | A. Decision Simulation Persistence Implementation | Completed | Stage 4.2 persistence runtime foundation is closed. `lib/persistence-runtime` exists with owner contracts, Supabase provider, runtime wiring, simulation record save, history append, and draft save/update services. The recent `Saved Decision Simulations Runtime Foundation` commit adds an internal `lib/saved-decision-simulations` runtime boundary for save/load/list over owner-scoped simulation records. `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md` defines the final Decision Simulation product domain model for A1. A2 Persistence Runtime Mapping is complete: internal runtime maps saved `simulation_records` into canonical Decision Simulation domain objects and supports owner-scoped save/list/load/reopen/archive through existing server-only Auth/Persistence boundaries. A3 Saved Decision Simulation History / Product Surface Integration is implemented through `/dashboard/simulations`, `/dashboard/simulations/[id]`, and the server-only saved simulations product-surface boundary. The bounded completed-simulation save-from-UI flow is implemented on the HomeSimulator completed result surface through the same server-only runtime boundary, with owner identity resolved from Auth -> `levio_principals`. Block A Closure Validation is accepted through `npm run quality:block-a-decision-simulation-persistence-closure`, 79/79 PASS. | No remaining Block A implementation work for the approved persistence scope. Export/delete integration belongs to Block C. Block B real-account runtime is closed for its approved scope. Separately approved history/revision lifecycle events remain deferred until explicitly scoped. |
 | B. Real User Account Runtime | Completed / Closure Accepted | Stage 4.1 auth runtime hardening exists. Supabase Auth boundary, browser auth boundary, server session validation, auth callback, protected dashboard layout, dashboard-only redirects, fail-closed protected access, magic-link login/register initiation, and client logout cleanup are implemented at foundation level. Block A already consumes authenticated session state through the approved saved-simulation product surface and resolves durable owners through `levio_principals`. B1 Supabase Auth Configuration Lock is complete in `docs/stages/stage-04-runtime-architecture/stage-04-01-auth-runtime/LEVIO_BLOCK_B1_SUPABASE_AUTH_CONFIGURATION_LOCK.md`. B2 Auth Action Boundary Completion is implemented and covered by `npm run quality:block-b-auth-action-boundary`. B3 Email Confirmation and Recovery Flow Validation is implemented and covered by `npm run quality:block-b-email-flow`. B4 Session Lifecycle and Protected Route Validation, B5 Real Account State in Dashboard, B6 Account-Owned Simulation Persistence Boundary, and B7 Account-Owned Dashboard Simulation Surface Validation are implemented and covered by their dedicated quality gates. Block B Closure evidence confirms real Supabase project validation, production email delivery, callback success, Supabase user creation, dashboard access after email confirmation, logout, and repeat sign-in reaching Supabase. The temporary Supabase diagnostic patch was removed. The final observed `over_email_send_rate_limit` / HTTP 429 response is a Supabase provider rate limit and not a Block B blocker. | No remaining Block B implementation or closure work for the approved real-account runtime scope. Export/delete integration belongs to Block C. Broader production readiness, operations, observability, security/privacy review, and release readiness belong to Block E/F. |
-| C. User Data Management | In Progress / read-only lifecycle matrix completed; owner-scoped synchronous deletion completed for saved simulations and drafts; explicit per-draft synchronous retention foundation completed | Stage 4.3 User Data Controls foundation is closed. Export, deletion planning, retention status, consent status, and cross-surface validation are implemented for saved simulations, drafts, and history as documented below. Owner-scoped synchronous deletion execution is implemented separately for one active saved simulation or one active draft through server-only canonical-principal persistence boundaries. Each clears only its own content and applies existing terminal lifecycle fields without physical row delete, cascade, schema change, history mutation, retention jobs, or account lifecycle behavior. The explicit authenticated `POST /dashboard/privacy/retention` now evaluates one owner-scoped draft by server time and applies the separately guarded expired-draft lifecycle transition only after expiration; GET remains read-only, 30-day expiry is server-owned and renewed only by confirmed content changes, and the 7-day warning state is computed without jobs or UI. Independent deletion of an arbitrary simulation history entry is outside Levio V1 scope; any later history cleanup is parent-driven through the saved-simulation deletion lifecycle. | User-facing warning delivery, broader automatic/background retention enforcement, parent-driven history cleanup, account deletion runtime, remaining privacy/data-control work, and production readiness remain open. External legal review is not a blocker for current Stage 7 development; final production notices, records of processing, provider/DPA and backup-rotation evidence, special legal holds, and optional independent compliance review remain production-readiness work. |
+| C. User Data Management | In Progress / lifecycle surfaces, single saved-simulation and draft deletion, explicit draft retention/warning, and atomic parent-driven history cleanup completed | Stage 4.3 User Data Controls foundation is closed. Export, deletion planning, retention status, consent status, and cross-surface validation cover saved simulations, drafts, and history. Owner-scoped deletion clears one saved simulation plus its matching active user-visible history atomically through a server-only transactional RPC, or clears one draft through its existing lifecycle boundary. Explicit draft retention and the authenticated resume/edit warning destination are implemented. Independent deletion of an arbitrary history entry remains outside Levio V1. | A separate Stage 7 closure assessment remains required. Automatic/background retention and account deletion runtime remain bounded deferrals. External legal review is not a current development blocker; final production notices, processing records, provider/DPA and backup-rotation evidence remain production-readiness work. |
 | D. Production AI Integration | Deferred | Stage 5.1, 5.2, 5.3, and 5.4 foundation work is closed. AI provider abstraction, Prompt Context foundation, quality/cost/safety validation, controlled integration preflight, boundary composition, and dry-run foundation exist. | Real provider SDK/env/key execution, model calls, Prompt Context -> AI Provider runtime path, Decision Engine post-provider validation, cost controls, error controls, and user-safe AI output path remain deferred. |
 | E. Product Validation & Production Readiness | In Progress | Stage 10 Product Quality Hardening is closed with deterministic preview gates for public simulator, public home, DecisionContext Builder, simulation pipeline runner, public adapter, observability, security, contract regression, HomeSimulator integration, trust readiness, and rendered public surface. Stage 15.4 aggregate verdict is NOT READY. | Full production user-flow QA, current pre-release gate reruns, observability/error tracking, infrastructure readiness, support readiness, incident/rollback decision authority, security/privacy review, and performance validation remain incomplete. |
 | F. Commercial Production | Foundation Complete / Deferred | Stage 4.4 subscription runtime foundation is closed. Stage 11 legal/trust layer, Stage 12 market readiness, Stage 13 closed beta planning, Stage 14 public launch readiness, and Stage 15 scale readiness planning are documented. | Billing provider, checkout, customer portal, webhooks, pricing/tax/legal approval, final legal documents, monitoring/logging/support, Production Release, Commercial Launch, and Scale Execution remain unopened or blocked. |
@@ -453,9 +473,8 @@ Remaining work:
   a documented legal-exception marker where actually required; never retain
   decision, draft, clarification, scenario, outcome, structured, prompt, or
   response content as operational proof;
-- keep parent-driven history cleanup and account deletion as separate later
-  implementation scopes even though their owner/product/internal legal
-  semantics are now approved;
+- keep account deletion as a separate later implementation scope; parent-driven
+  history cleanup is implemented only inside one saved-simulation deletion;
 - keep documented legal exceptions restricted from ordinary product processing
   and never apply a legal hold automatically;
 - execute deletion only if separately approved within the roadmap scope;
@@ -542,8 +561,8 @@ documentation-only scale-readiness planning. Stage 15.5 is complete and Stage
 
 Current V1 implementation focus: **Stage 7 - User Data Controls**.
 
-Most recent Stage 7 implementation substep: **explicit authenticated per-draft
-synchronous retention enforcement action**.
+Most recent Stage 7 implementation substep: **atomic owner-scoped parent-driven
+history content cleanup on single saved-simulation deletion**.
 
 Current evidence:
 
@@ -593,9 +612,9 @@ their approved scopes. The explicit authenticated per-draft synchronous
 retention enforcement foundation is complete inside Stage 7 User Data
 Controls. No next implementation substep is opened by that completion. Any
 later work must be separately selected from current repository evidence and
-must not infer permission for user-facing warning delivery, bulk/background
-retention, independent history-entry deletion, account deletion,
-parent-driven history cleanup, hard delete, schema change, or a new roadmap
+must not infer permission for bulk/background retention, independent
+history-entry deletion, account deletion, hard delete, further schema change,
+or a new roadmap
 branch.
 
 Any next step must continue using the approved server-only boundaries and must

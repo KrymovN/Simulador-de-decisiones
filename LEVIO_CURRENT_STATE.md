@@ -1,5 +1,16 @@
 # LEVIO CURRENT STATE
 
+## Current Stage 7 Runtime Addition — Atomic Parent History Cleanup
+
+Saved-simulation deletion now delegates exclusively to a bounded transactional
+PostgreSQL RPC that locks one canonical-owner parent, blocks restriction/legal
+hold, terminally clears matching owner+parent active user-visible history, and
+then applies the parent content-clearing lifecycle. Missing/cross-owner and
+repeat calls share safe absence; unexpected failure rolls back. Client owner
+fields remain non-authoritative and UI remains outside the security boundary.
+Independent history deletion, account deletion, and background retention are
+not implemented. Stage 7 remains In Progress; V1 readiness remains 58%.
+
 ## Current Stage 7 Runtime Addition — 12 July 2026
 
 `/dashboard/drafts/[id]` is the bounded authenticated resume/edit surface for
@@ -1571,11 +1582,10 @@ resolve blockers. Any later blocker remediation, Scale execution, Production
 Release, Commercial Launch, implementation work, audit, roadmap change, or
 public-contract change requires separate explicit approval.
 
-The explicit authenticated per-draft synchronous retention enforcement
-foundation is complete. No next implementation is selected by this cycle.
-Independent history-entry deletion remains excluded; user-facing warning
-delivery, bulk/background retention, account deletion, and parent-driven
-history cleanup remain unopened. Any later implementation must be separately
+The explicit draft retention/warning flow and atomic parent-driven history
+cleanup on single saved-simulation deletion are complete. Independent history-
+entry deletion remains excluded; bulk/background retention and account
+deletion remain unopened. Any later implementation must be separately
 approved from repository evidence and must not create a new Stage, Block,
 roadmap branch, or runtime architecture change.
 

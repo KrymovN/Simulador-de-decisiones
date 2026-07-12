@@ -1,5 +1,29 @@
 # PROJECT CONTEXT
 
+## Stage 7 Atomic Parent-Driven History Cleanup — 12 July 2026
+
+Deletion of one authenticated owner-scoped saved simulation now uses the
+single transactional PostgreSQL RPC
+`public.levio_delete_saved_simulation_with_history(uuid, uuid)`. The existing
+server-only canonical-principal preflight supplies the owner; no browser owner
+field is accepted. The function locks the owner+record-scoped parent, blocks
+restricted/legal-hold parent or protected history, clears only active
+user-visible history content for the same owner and parent, then applies the
+existing content-clearing terminal parent lifecycle in the same database
+transaction. Missing, cross-owner, and repeated requests share controlled
+absence; unexpected SQL/provider failures roll back and fail closed.
+
+Client data isolation is a permanent cross-surface invariant: UI is not an
+authorization boundary; every user-data read or mutation must derive the owner
+from a server-validated session, be both object- and owner-scoped, reject
+client owner authority, normalize cross-owner absence safely, and receive
+owner-isolation regression coverage. Internal personal-data access remains
+denied by default and limited to necessary, least-privilege, controlled, and
+where possible auditable server operations. No zero-knowledge claim is made.
+Independent history-entry deletion, account deletion, and background retention
+remain unopened. Stage 7 remains In Progress pending a separate closure
+assessment; V1 readiness remains 58%.
+
 ## Stage 7 Single-Draft Resume/Edit Update — 12 July 2026
 
 The authenticated owner-scoped single-draft resume/edit surface is implemented
@@ -238,8 +262,9 @@ history cleanup was added. The dedicated gate is
 Current project progress is **84% overall**. Levio V1 Complete readiness is
 **58% estimated**. The current implementation remains within Stage 7 User Data
 Controls. The explicit per-draft synchronous retention foundation is complete;
-broader user-facing warning delivery, automatic/background retention,
-account deletion, and parent-driven history cleanup remain unopened. Any next
+automatic/background retention and account deletion remain unopened. The
+user-facing warning destination and parent-driven history cleanup on one saved
+simulation deletion are implemented. Any next
 implementation must be determined from `LEVIO_IMPLEMENTATION_PLAN.md` before
 code and must not create a new Stage,
 new Block, new roadmap branch, or runtime architecture change.

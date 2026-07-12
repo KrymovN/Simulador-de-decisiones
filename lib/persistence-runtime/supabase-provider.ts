@@ -425,6 +425,7 @@ export type SupabaseSimulationRecordArchiveProvider = PersistenceProviderAdapter
 export type SupabaseSimulationRecordDeleteResult =
   | { status: "deleted"; record: SimulationRecordRow }
   | { status: "not_found" }
+  | { status: "restricted" }
   | { status: "failed" };
 
 export type SupabaseSimulationRecordDeleteProvider = PersistenceProviderAdapter & {
@@ -433,6 +434,13 @@ export type SupabaseSimulationRecordDeleteProvider = PersistenceProviderAdapter 
     ownerPrincipalId: string;
     deletedAt: string;
   }): Promise<SupabaseSimulationRecordDeleteResult>;
+};
+
+export type SupabaseSavedSimulationDeletionRpcClient = {
+  rpc(
+    functionName: "levio_delete_saved_simulation_with_history",
+    args: { p_record_id: string; p_owner_principal_id: string },
+  ): Promise<SupabaseQueryResponse>;
 };
 
 export type SupabaseSimulationHistoryEntrySaveProvider = PersistenceProviderAdapter & {
@@ -857,6 +865,7 @@ export function createSupabasePersistenceProviderAdapter(input: {
   mutationClient?: SupabaseSimulationRecordMutationClient;
   recordReadClient?: SupabaseSimulationRecordReadClient;
   recordArchiveClient?: SupabaseSimulationRecordArchiveClient;
+  savedSimulationDeletionRpcClient?: SupabaseSavedSimulationDeletionRpcClient;
   historyMutationClient?: SupabaseSimulationHistoryEntryMutationClient;
   historyReadClient?: SupabaseSimulationHistoryEntryReadClient;
   draftMutationClient?: SupabaseSimulationDraftMutationClient;
@@ -875,6 +884,9 @@ export function createSupabasePersistenceProviderAdapter(input: {
   const recordArchiveClient =
     input.recordArchiveClient ??
     (client as unknown as SupabaseSimulationRecordArchiveClient);
+  const savedSimulationDeletionRpcClient =
+    input.savedSimulationDeletionRpcClient ??
+    (client as unknown as SupabaseSavedSimulationDeletionRpcClient);
   const historyMutationClient =
     input.historyMutationClient ??
     (client as unknown as SupabaseSimulationHistoryEntryMutationClient);
@@ -1149,45 +1161,38 @@ export function createSupabasePersistenceProviderAdapter(input: {
         return { status: "failed" };
       }
 
-      const response = await recordArchiveClient
-        .from("simulation_records")
-        .update({
-          record_status: "deleted",
-          deletion_state: "deleted",
-          title: null,
-          user_note: null,
-          user_input_snapshot: {},
-          deterministic_output_snapshot: {},
-          metadata: {},
-          safety_flags: {},
-          clarification_snapshot: null,
-          decision_model_snapshot: null,
-          confidence_summary: null,
-          deleted_at: input.deletedAt,
-          export_eligible: false,
-          updated_at: input.deletedAt,
-        })
-        .eq("record_id", input.recordId)
-        .eq("owner_principal_id", input.ownerPrincipalId)
-        .eq("owner_principal_type", "registered_user")
-        .eq("record_status", "active")
-        .eq("deletion_state", "active")
-        .select("*")
-        .maybeSingle();
+      const response = await savedSimulationDeletionRpcClient.rpc(
+        "levio_delete_saved_simulation_with_history",
+        {
+          p_record_id: input.recordId,
+          p_owner_principal_id: input.ownerPrincipalId,
+        },
+      );
 
       if (response.error) {
         return { status: "failed" };
       }
 
-      if (response.data === null) {
-        return { status: "not_found" };
-      }
-
-      if (!isSimulationRecordRow(response.data)) {
+      if (!isJsonObject(response.data) || typeof response.data.outcome !== "string") {
         return { status: "failed" };
       }
 
-      return { status: "deleted", record: response.data };
+      if (response.data.outcome === "already_absent") {
+        return { status: "not_found" };
+      }
+
+      if (response.data.outcome === "restricted") {
+        return { status: "restricted" };
+      }
+
+      if (
+        response.data.outcome !== "deleted" ||
+        !isSimulationRecordRow(response.data.record)
+      ) {
+        return { status: "failed" };
+      }
+
+      return { status: "deleted", record: response.data.record };
     },
     async saveSimulationHistoryEntry(
       payload: SupabaseSimulationHistoryEntryInsertPayload,

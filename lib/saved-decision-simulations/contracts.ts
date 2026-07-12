@@ -73,6 +73,7 @@ export type SavedDecisionSimulationsBlockedReason =
   | "record_owner_scope_failed"
   | "record_archive_failed"
   | "record_delete_failed"
+  | "record_delete_restricted"
   | "record_save_blocked";
 
 export type DecisionSimulationLifecycleState =

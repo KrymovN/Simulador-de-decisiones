@@ -9,6 +9,7 @@ const action = read("lib", "saved-decision-simulations", "ui-save-action.ts");
 const component = read("components", "SavedSimulationsHistorySurface.tsx");
 const recordsSchema = read("supabase", "migrations", "002_create_simulation_records.sql");
 const relationsSchema = read("supabase", "migrations", "005_indexes_and_constraints.sql");
+const atomicMigration = read("supabase", "migrations", "008_atomic_saved_simulation_history_cleanup.sql");
 const packageJson = read("package.json");
 const checks = [];
 
@@ -35,23 +36,22 @@ check(
 check(
   "stage-7-saved-simulation-delete-is-owner-scoped-and-active-only",
   provider.includes('async deleteSimulationRecord(input)') &&
-    provider.includes('.eq("record_id", input.recordId)') &&
-    provider.includes('.eq("owner_principal_id", input.ownerPrincipalId)') &&
-    provider.includes('.eq("owner_principal_type", "registered_user")') &&
-    provider.includes('.eq("record_status", "active")') &&
-    provider.includes('.eq("deletion_state", "active")'),
-  "Provider update must target only the active saved simulation owned by the canonical principal.",
+    provider.includes('"levio_delete_saved_simulation_with_history"') &&
+    provider.includes("p_record_id: input.recordId") &&
+    provider.includes("p_owner_principal_id: input.ownerPrincipalId") &&
+    atomicMigration.includes("r.record_id = p_record_id") &&
+    atomicMigration.includes("r.owner_principal_id = p_owner_principal_id"),
+  "Provider RPC must target only the saved simulation owned by the canonical principal.",
 );
 check(
   "stage-7-saved-simulation-delete-uses-approved-lifecycle-transition",
-  provider.includes('record_status: "deleted"') &&
-    provider.includes('deletion_state: "deleted"') &&
-    provider.includes("user_input_snapshot: {}") &&
-    provider.includes("deterministic_output_snapshot: {}") &&
-    provider.includes("clarification_snapshot: null") &&
-    provider.includes("decision_model_snapshot: null") &&
-    provider.includes("deleted_at: input.deletedAt") &&
-    provider.includes("export_eligible: false") &&
+  atomicMigration.includes("record_status = 'deleted'") &&
+    atomicMigration.includes("deletion_state = 'deleted'") &&
+    atomicMigration.includes("user_input_snapshot = '{}'::jsonb") &&
+    atomicMigration.includes("deterministic_output_snapshot = '{}'::jsonb") &&
+    atomicMigration.includes("clarification_snapshot = null") &&
+    atomicMigration.includes("decision_model_snapshot = null") &&
+    atomicMigration.includes("export_eligible = false") &&
     recordsSchema.includes("'deleted'") &&
     recordsSchema.includes("deleted_at timestamptz"),
   "Deletion must erase saved-simulation content and use existing terminal lifecycle fields without a schema change.",
@@ -82,7 +82,7 @@ check(
     !provider.includes('.from("simulation_history_entries").delete') &&
     !provider.includes('.from("levio_principals").delete') &&
     component.includes("no elimina borradores, historial técnico ni la cuenta"),
-  "The execution surface must not delete drafts, history, principals, or imply account deletion.",
+  "The execution surface must not physically delete drafts, history, principals, or imply account deletion.",
 );
 check(
   "stage-7-saved-simulation-delete-has-no-hard-delete-or-cascade",
