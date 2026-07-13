@@ -1,5 +1,28 @@
 # LEVIO IMPLEMENTATION PLAN
 
+## Stage 9 Offline Synthetic Risk Evaluation Harness — 13 July 2026
+
+The approved bounded Stage 9 substep is implemented as a provider-neutral,
+deterministic offline evaluation harness for `candidate_risk_signals_v1`.
+Strict case/result contracts, 32 repository-owned synthetic fixtures, separate
+schema/grounding/safety/semantic gates, normalized-result validation,
+informational signals, and an aggregate fail-closed report are executable
+through `quality:stage-9-synthetic-risk-evaluation`. Three bounded Spanish
+contexts map canonical specification-only seeds EVAL-001, EVAL-013, and
+EVAL-017; adapter-specific fixtures cover deterministic negative and boundary
+branches without altering the canonical 24-case source catalog or thresholds.
+
+The harness executes without credentials, environment configuration, provider
+SDK transport, generation, or network access. Its 32/32 expected outcomes and
+28/28 required categories establish only evaluation-infrastructure and local
+contract-enforcement evidence. They do not establish provider/model quality,
+live Responses API compatibility, public/product AI readiness, or production
+readiness. `/api/simulate` remains deterministic and `mockOnly=true`; Prompt
+Context, Decision Engine, UI, auth, persistence, and user-data bridges remain
+closed. Stage 9 remains In Progress, readiness remains 58% estimated, and no
+next Stage 9 substep is opened. A separate owner/product decision after review
+of this evidence is the single blocker to any further Stage 9 implementation.
+
 ## Stage 9 Bounded Provider Adapter — 13 July 2026
 
 Stage 9 is **In Progress** only for one approved bounded implementation

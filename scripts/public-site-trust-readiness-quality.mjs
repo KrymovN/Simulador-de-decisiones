@@ -218,7 +218,12 @@ function runDashboardPlaceholderSourceChecks(sources) {
   sourceIncludes(sources.dashboardSecurity, "Contraseña de ejemplo", "Security password form is example-only");
   sourceIncludes(sources.securityPanel, "Sesión actual validada", "Security panel uses real account session state");
   sourceIncludes(sources.securityPanel, "gestión avanzada siguen preparados", "Security panel keeps advanced controls deferred");
-  sourceIncludes(sources.privacyPanel, "cuando exista backend productivo", "Privacy panel defers data deletion backend");
+  assertCheck(
+    "Privacy panel exposes bounded deletion planning without account deletion",
+    sources.privacyPanel.includes("/dashboard/privacy/deletion") &&
+      sources.privacyPanel.includes("sin ejecutar la eliminación"),
+    "Missing the canonical Stage 7 deletion-plan boundary.",
+  );
   sourceIncludes(sources.personalArea, "futura persistencia aprobada", "Personal area data defers persistence");
 }
 

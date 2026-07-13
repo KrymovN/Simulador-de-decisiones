@@ -268,6 +268,9 @@ const forbiddenValuePatterns: RegExp[] = [
 const forbiddenOutputPatterns: RegExp[] = [
   /\b(?:recomiendo|deber[ií]as|debes|elige|escoge|selecciona|la mejor opci[oó]n|opci[oó]n [oó]ptima|conviene elegir)\b/i,
   /\b(?:you should|must choose|choose|select|best option|optimal option|I recommend)\b/i,
+  /\b(?:como (?:asistente|ia)|soy (?:un )?asistente|puedo ayudarte|as an ai|i can help)\b/i,
+  /\b(?:garantizo|resultado garantizado|sin ninguna duda|will definitely|guaranteed result)\b/i,
+  /\b(?:ignora|modifica|cambia) (?:la |el )?(?:pol[ií]tica|autorizaci[oó]n|consentimiento|policy|authorization|consent)\b/i,
   /\b(?:OpenAI|response[_ ]?id|request[_ ]?id|system prompt|developer message|chain of thought|razonamiento interno)\b/i,
   /\b(?:owner|principal|session|auth token|access token|account id|user id|billing)\b/i,
 ];
@@ -386,28 +389,84 @@ function outputTextIsSafe(value: CandidateRisk): boolean {
     !containsForbiddenValue(text);
 }
 
+function meaningfulCandidateText(value: string): boolean {
+  const normalized = value.trim().toLocaleLowerCase("es-ES");
+  if (["n/a", "na", "none", "null", "sin datos", "riesgo", "...", "-"].includes(normalized)) {
+    return false;
+  }
+  return (normalized.match(/[\p{L}\p{N}]+/gu) ?? []).length >= 3;
+}
+
+export type CandidateRiskMaterialInspection = {
+  schemaValid: boolean;
+  groundingValid: boolean;
+  safetyValid: boolean;
+  semanticValid: boolean;
+  failureCategories: Array<
+    | "provider_schema_invalid"
+    | "grounding_invalid"
+    | "safety_invalid"
+    | "provider_semantic_validation_failed"
+  >;
+};
+
+export function inspectCandidateRiskMaterial(
+  output: unknown,
+  input: SyntheticCandidateRiskInput,
+): CandidateRiskMaterialInspection {
+  if (!candidateRiskMaterialHasValidSchema(output)) {
+    return {
+      schemaValid: false,
+      groundingValid: false,
+      safetyValid: false,
+      semanticValid: false,
+      failureCategories: ["provider_schema_invalid"],
+    };
+  }
+
+  const material = output as CandidateRiskMaterial;
+  const optionRefs = new Set(input.options.map((_, index) => `option_${index + 1}`));
+  const factRefs = new Set(input.known_facts.map((_, index) => `fact_${index + 1}`));
+  const duplicateKeys = new Set<string>();
+  let groundingValid = true;
+  let safetyValid = true;
+  let semanticValid = true;
+
+  for (const candidate of material.risks) {
+    if (
+      !candidate.affected_option_refs.every((ref) => optionRefs.has(ref)) ||
+      !candidate.basis_fact_refs.every((ref) => factRefs.has(ref))
+    ) {
+      groundingValid = false;
+    }
+    if (!outputTextIsSafe(candidate)) safetyValid = false;
+    if (
+      !meaningfulCandidateText(candidate.statement) ||
+      !meaningfulCandidateText(candidate.mechanism) ||
+      !meaningfulCandidateText(candidate.uncertainty_note) ||
+      candidate.trigger_conditions.some((condition) => !meaningfulCandidateText(condition))
+    ) {
+      semanticValid = false;
+    }
+    const duplicateKey = `${candidate.category}:${candidate.statement.trim().toLocaleLowerCase("es-ES")}`;
+    if (duplicateKeys.has(duplicateKey)) semanticValid = false;
+    duplicateKeys.add(duplicateKey);
+  }
+
+  const failureCategories: CandidateRiskMaterialInspection["failureCategories"] = [];
+  if (!groundingValid) failureCategories.push("grounding_invalid");
+  if (!safetyValid) failureCategories.push("safety_invalid");
+  if (!semanticValid) failureCategories.push("provider_semantic_validation_failed");
+  return { schemaValid: true, groundingValid, safetyValid, semanticValid, failureCategories };
+}
+
 export function validateCandidateRiskMaterial(
   output: unknown,
   input: SyntheticCandidateRiskInput,
 ): output is CandidateRiskMaterial {
-  if (!isRecord(output) || !exactKeys(output, ["capability", "risks", "generation_status"])) return false;
-  if (output.capability !== CANDIDATE_RISK_SIGNALS_CAPABILITY || output.generation_status !== "completed") return false;
-  if (!Array.isArray(output.risks) || output.risks.length < 3 || output.risks.length > 5) return false;
-  const optionRefs = new Set(input.options.map((_, index) => `option_${index + 1}`));
-  const factRefs = new Set(input.known_facts.map((_, index) => `fact_${index + 1}`));
-  const duplicateKeys = new Set<string>();
-  for (const candidate of output.risks) {
-    if (!isRecord(candidate) || !exactKeys(candidate, RISK_KEYS)) return false;
-    if (!RISK_CATEGORIES.includes(candidate.category as never) || !SEVERITIES.includes(candidate.severity_hint as never) || !LIKELIHOODS.includes(candidate.likelihood_hint as never)) return false;
-    if (!boundedString(candidate.statement, 320) || !boundedString(candidate.mechanism, 500) || !boundedString(candidate.uncertainty_note, 300)) return false;
-    if (!boundedStrings(candidate.affected_option_refs, 1, 5, 20) || !uniqueStrings(candidate.affected_option_refs) || !candidate.affected_option_refs.every((ref) => optionRefs.has(ref))) return false;
-    if (!boundedStrings(candidate.basis_fact_refs, 0, 12, 20) || !uniqueStrings(candidate.basis_fact_refs) || !candidate.basis_fact_refs.every((ref) => factRefs.has(ref))) return false;
-    if (!boundedStrings(candidate.trigger_conditions, 1, 5, 200) || !outputTextIsSafe(candidate as CandidateRisk)) return false;
-    const duplicateKey = `${candidate.category}:${candidate.statement.trim().toLocaleLowerCase("es-ES")}`;
-    if (duplicateKeys.has(duplicateKey)) return false;
-    duplicateKeys.add(duplicateKey);
-  }
-  return true;
+  const inspection = inspectCandidateRiskMaterial(output, input);
+  return inspection.schemaValid && inspection.groundingValid &&
+    inspection.safetyValid && inspection.semanticValid;
 }
 
 export function candidateRiskMaterialHasValidSchema(output: unknown): boolean {

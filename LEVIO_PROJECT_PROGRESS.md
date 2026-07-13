@@ -1,5 +1,27 @@
 # LEVIO PROJECT PROGRESS TRACKER
 
+## Stage 9 Progress Update — Offline Synthetic Risk Evaluation Harness
+
+The approved provider-neutral deterministic evaluation harness for
+`candidate_risk_signals_v1` is implemented. It reuses bounded mappings from
+canonical seed cases EVAL-001, EVAL-013, and EVAL-017 and adds only the
+adapter-specific fixtures needed to exercise strict schema, grounding,
+safety/product-role, semantic-integrity, normalized-result, and boundary
+behavior. The source 24-case specification catalog is unchanged and is not
+represented as executable provider evidence.
+
+`quality:stage-9-synthetic-risk-evaluation` passes 14/14: 32 total fixtures,
+6 valid/expected accepts, 26 invalid/expected rejects, zero false accepts,
+zero false rejects, zero category mismatches, 28/28 required categories,
+deterministic repeatability, and zero network calls. Existing Stage 9 and
+repository regression gates, TypeScript, lint, and build pass without
+credentials or live provider execution. Provider/model quality and live API
+compatibility remain unverified. No public/product AI, Prompt Context, Decision
+Engine, UI, auth, persistence, or user-data scope was opened; `/api/simulate`
+remains deterministic and `mockOnly=true`. Stage 9 remains In Progress,
+readiness remains 58% estimated, and a separate owner/product continuation
+decision is the single blocker before any next Stage 9 substep.
+
 ## Stage 9 Progress Update — Bounded Synthetic Risk Adapter
 
 Stage 9 - Real AI Integration is **In Progress** only for one approved bounded

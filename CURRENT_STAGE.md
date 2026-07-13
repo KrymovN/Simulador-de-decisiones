@@ -1,5 +1,25 @@
 # CURRENT STAGE
 
+## Stage 9 Offline Synthetic Evaluation In Progress — 13 July 2026
+
+The approved executable deterministic synthetic evaluation harness for
+`candidate_risk_signals_v1` is complete inside the still-In-Progress Stage 9.
+It maps EVAL-001, EVAL-013, and EVAL-017 into bounded Spanish risk contexts and
+adds only adapter-specific synthetic fixtures required for deterministic
+contract, grounding, safety/product-role, semantic-integrity, normalized-error,
+and boundary coverage. The dedicated offline gate reports 32 cases, 28/28
+required categories, zero false accepts, zero false rejects, zero category
+mismatches, deterministic repeatability, and zero network requests.
+
+This is not provider-backed evidence: no OpenAI call, token-count request,
+credential, environment provider flag, or live transport was used. Provider
+and model quality and the live API contract remain unverified. Public/product
+AI execution, Prompt Context and Decision Engine bridges, UI, auth,
+persistence, and user-data processing remain absent; `/api/simulate` remains
+deterministic with `mockOnly=true`. Stage 9 is not complete, readiness remains
+58% estimated, and no next substep is open. The single continuation blocker is
+a separate owner/product decision based on the bounded evidence.
+
 ## Stage 9 Bounded Provider Adapter In Progress — 13 July 2026
 
 Stage 9 - Real AI Integration is opened only for the approved bounded

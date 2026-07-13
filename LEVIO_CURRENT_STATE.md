@@ -1,5 +1,26 @@
 # LEVIO CURRENT STATE
 
+## Current Stage 9 Offline Evaluation Harness — 13 July 2026
+
+`lib/ai-quality` now contains an executable provider-neutral offline evaluation
+harness for the existing `candidate_risk_signals_v1` adapter contract. Its
+strict unknown-field-rejecting case boundary, normalized result boundary,
+hard-gate results, deterministic informational signals, and aggregate report
+run over 32 repository-owned synthetic fixtures. Provenance maps three relevant
+canonical specification cases (EVAL-001, EVAL-013, EVAL-017); the remaining
+fixtures are bounded adapter-specific validation and safety branches. The
+canonical 24-case catalog and its quality thresholds are unchanged.
+
+The dedicated gate passes 14/14 with 32 cases, 6 expected accepts, 26 expected
+rejects, 28/28 fixture-category coverage, no false disposition or category
+mismatch, repeat-equivalent reports, and no network request. Standard gates
+require no OpenAI credentials. This evidence validates the harness and local
+contract enforcement only; it does not validate `gpt-5.6-terra`, live OpenAI
+Responses API behavior, or production/public AI. `/api/simulate` remains
+deterministic and `mockOnly=true`, and no product runtime bridge was added.
+Stage 9 remains In Progress and readiness remains 58% estimated. No next
+substep is open pending one separate owner/product continuation decision.
+
 ## Current Stage 9 Bounded Provider Adapter — 13 July 2026
 
 Stage 9 is **In Progress** only at the bounded server-only provider-adapter

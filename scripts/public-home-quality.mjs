@@ -178,7 +178,6 @@ function runPerformanceSafetyChecks(pageSource, simulatorSource, packageSource) 
   };
   const dependencyNames = Object.keys(dependencies);
   const forbiddenDependencies = [
-    "openai",
     "ai",
     "@anthropic-ai/sdk",
     "langchain",
@@ -195,6 +194,12 @@ function runPerformanceSafetyChecks(pageSource, simulatorSource, packageSource) 
       `${dependency} must not be introduced for this gate.`,
     );
   }
+
+  assertCheck(
+    "Provider SDK remains isolated from the public home surface",
+    !pageSource.toLowerCase().includes("openai") && !simulatorSource.toLowerCase().includes("openai"),
+    "The server-only Stage 9 provider dependency must not enter public home code.",
+  );
 
   sourceExcludes(pageSource, "fetch(", "Home page does not add client/server data fetch");
   sourceExcludes(pageSource, "process.env", "Home page does not read environment configuration");
