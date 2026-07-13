@@ -212,7 +212,8 @@ function runDashboardPlaceholderSourceChecks(sources) {
   sourceIncludes(sources.dashboardMemory, "capa futura de contexto estratégico", "Memory page positions memory as future only");
   sourceIncludes(sources.dashboardMemory, "cuando exista backend y trazabilidad real", "Memory cleanup defers real backend");
   sourceIncludes(sources.dashboardProfileAccountState, "Datos preparados de acceso", "Profile avoids account data promise");
-  sourceIncludes(sources.dashboardProfileAccountState, "Campo de contraseña futura", "Profile password field is future-only");
+  sourceExcludes(sources.dashboardProfileAccountState, "Campo de contraseña futura", "Profile does not collect an unused future password");
+  sourceIncludes(sources.dashboardProfileAccountState, "modo de solo lectura", "Profile editing is honestly unavailable");
   sourceIncludes(sources.dashboardPrivacy, "etapas productivas", "Privacy dashboard defers production controls");
   sourceIncludes(sources.dashboardSecurity, "cuando exista auth productivo", "Security dashboard defers production auth");
   sourceIncludes(sources.dashboardSecurity, "Contraseña de ejemplo", "Security password form is example-only");

@@ -1,5 +1,24 @@
 # LEVIO CURRENT STATE
 
+## Current Cross-Cutting Interaction State — 13 July 2026
+
+Audited product controls now resolve to a working route/action or present a
+native unavailable/read-only state with a persistent explanation. The former
+generic mock-success component has been removed; prepared decision and
+dashboard demo records no longer masquerade as reopenable persisted records;
+profile, security, privacy, and memory placeholders do not accept or claim to
+persist changes; and unknown routes render a branded recovery surface. The
+simulator result list also uses stable composite keys and remains compatible
+with the existing deterministic public contract.
+
+Static inventory, the 39/39 dedicated gate, all registered regressions,
+TypeScript, lint, build, and browser validation pass. Responsive public pages
+were checked at mobile/tablet/desktop widths without horizontal overflow.
+Dashboard internals requiring an authenticated account remain
+`NOT_VERIFIABLE` in local browser runtime because auth configuration is absent,
+while the server guard and redirect are verified. No live AI request or product
+AI execution was added; Stage 9 and the 58% readiness estimate are unchanged.
+
 ## Current Stage 9 Offline Evaluation Harness — 13 July 2026
 
 `lib/ai-quality` now contains an executable provider-neutral offline evaluation

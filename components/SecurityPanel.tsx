@@ -1,6 +1,6 @@
 "use client";
 
-import MockFeedbackButton from "./MockFeedbackButton";
+import UnavailableAction from "./UnavailableAction";
 import { useDashboardAccount } from "./dashboard/DashboardAccountProvider";
 
 export default function SecurityPanel() {
@@ -41,7 +41,10 @@ export default function SecurityPanel() {
             </div>
           ))}
         </div>
-        <MockFeedbackButton label="Preparar gestión de sesiones" feedback="Gestión de sesiones preparada en demo." />
+        <UnavailableAction
+          label="Gestión no disponible"
+          explanation="La gestión avanzada de sesiones todavía no está activa en esta versión."
+        />
       </section>
     </div>
   );

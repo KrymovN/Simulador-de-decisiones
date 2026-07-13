@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import DashboardShell from "../../components/DashboardShell";
 import MockAuthGate from "../../components/MockAuthGate";
+import UnavailableAction from "../../components/UnavailableAction";
 import { mockSimulations } from "../../lib/mockSimulations";
 import { memorySettings, savedDecisions } from "../../lib/personalArea";
 
@@ -84,9 +85,11 @@ export default function DashboardPage() {
             >
               <span></span>
             </div>
-            <Link className="button-link" href={`/dashboard/simulations/${featuredSimulation.id}`}>
-              Abrir simulación
-            </Link>
+            <UnavailableAction
+              className="button-link"
+              label="Ejemplo no reabrible"
+              explanation="Esta tarjeta es demostrativa y no corresponde a una simulación guardada."
+            />
           </article>
         </section>
 
@@ -108,7 +111,10 @@ export default function DashboardPage() {
                 <div key={simulation.id}>
                   <strong>{simulation.decision}</strong>
                   <span>{simulation.result}</span>
-                  <Link href={`/dashboard/simulations/${simulation.id}`}>Ver mapa estratégico</Link>
+                  <UnavailableAction
+                    label="Mapa demo no reabrible"
+                    explanation="Este ejemplo no corresponde a una simulación guardada de la cuenta."
+                  />
                 </div>
               ))}
             </div>

@@ -40,7 +40,8 @@
     "quality:public-home": "node scripts/public-home-quality.mjs",
     "quality:public-home-simulator-api-integration": "node scripts/public-home-simulator-api-integration-quality.mjs",
     "quality:public-site-trust-readiness": "node scripts/public-site-trust-readiness-quality.mjs",
-    "quality:rendered-public-surface-regression": "node scripts/rendered-public-surface-regression-quality.mjs"
+    "quality:rendered-public-surface-regression": "node scripts/rendered-public-surface-regression-quality.mjs",
+    "quality:public-interaction-hardening": "node scripts/public-interaction-hardening-quality.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",

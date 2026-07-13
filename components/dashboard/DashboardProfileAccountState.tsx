@@ -1,6 +1,6 @@
 "use client";
 
-import MockFeedbackButton from "../MockFeedbackButton";
+import UnavailableAction from "../UnavailableAction";
 import { useDashboardAccount } from "./DashboardAccountProvider";
 
 type DashboardProfileAccountStateProps = {
@@ -56,10 +56,10 @@ export default function DashboardProfileAccountState({
       <section className="profile-layout">
         <article className="dashboard-card section-frame">
           <h2>Datos preparados de acceso</h2>
-          <form className="profile-form">
+          <div className="profile-form">
             <label>
               Nombre visible
-              <input defaultValue={account.displayName} type="text" />
+              <input defaultValue={account.displayName} disabled type="text" />
             </label>
             <label>
               Correo electrónico
@@ -67,7 +67,7 @@ export default function DashboardProfileAccountState({
             </label>
             <label>
               Idioma preferido
-              <select defaultValue="Español">
+              <select defaultValue="Español" disabled>
                 {futureLanguages.map((language) => (
                   <option key={language}>{language}</option>
                 ))}
@@ -75,18 +75,17 @@ export default function DashboardProfileAccountState({
             </label>
             <label>
               País / región
-              <input defaultValue="Pendiente de perfil real" type="text" />
+              <input defaultValue="Pendiente de perfil real" disabled type="text" />
             </label>
             <label>
               Zona horaria
-              <input defaultValue="Pendiente de perfil real" type="text" />
+              <input defaultValue="Pendiente de perfil real" disabled type="text" />
             </label>
-            <label>
-              Campo de contraseña futura
-              <input placeholder="Contraseña futura" type="password" />
-            </label>
-            <MockFeedbackButton label="Preparar cambios" feedback="Cambios de perfil preparados en modo demo." />
-          </form>
+            <UnavailableAction
+              label="Edición no disponible"
+              explanation="El perfil se muestra en modo de solo lectura y no admite cambios en esta versión."
+            />
+          </div>
         </article>
 
         <aside className="profile-side">

@@ -1153,6 +1153,28 @@ button:disabled {
   gap: 8px;
 }
 
+.unavailable-action {
+  display: grid;
+  gap: 8px;
+  align-items: start;
+}
+
+.unavailable-action > button:disabled {
+  cursor: not-allowed;
+  filter: saturate(0.55);
+  opacity: 0.64;
+}
+
+.unavailable-action > small {
+  color: rgba(230, 216, 185, 0.72);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.profile-form :disabled {
+  cursor: not-allowed;
+}
+
 .inline-feedback {
   display: block;
   font-size: 0.82rem;

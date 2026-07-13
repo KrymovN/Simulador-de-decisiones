@@ -1,5 +1,5 @@
 import DashboardShell from "../../../components/DashboardShell";
-import MockFeedbackButton from "../../../components/MockFeedbackButton";
+import UnavailableAction from "../../../components/UnavailableAction";
 import MockAuthGate from "../../../components/MockAuthGate";
 import { memoryScopes, memorySettings, rememberedPatterns } from "../../../lib/personalArea";
 
@@ -53,7 +53,7 @@ export default function MemoryPage() {
             <div className="memory-scope-list">
               {memoryScopes.map((scope) => (
                 <label className="memory-scope" key={scope.label}>
-                  <input checked={scope.active} readOnly type="checkbox" />
+                  <input checked={scope.active} disabled type="checkbox" />
                   <span>
                     <strong>{scope.label}</strong>
                     <small>{scope.state}</small>
@@ -84,13 +84,9 @@ export default function MemoryPage() {
             <article className="dashboard-card section-frame" key={action.title}>
               <h3>{action.title}</h3>
               <p>{action.copy}</p>
-              <MockFeedbackButton
-                label={action.title === "Preparar limpieza futura" ? "Preparar limpieza" : "Preparar acción"}
-                feedback={
-                  action.title === "Preparar limpieza futura"
-                    ? "Limpieza de memoria preparada en modo demo."
-                    : "Preferencia de memoria actualizada en demo."
-                }
+              <UnavailableAction
+                label="Acción no disponible"
+                explanation="La memoria todavía no está activa; esta acción no modifica ningún dato en esta versión."
               />
             </article>
           ))}

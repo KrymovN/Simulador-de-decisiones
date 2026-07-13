@@ -1,5 +1,24 @@
 # LEVIO PROJECT PROGRESS TRACKER
 
+## Cross-Cutting Progress Update — Interaction Hardening
+
+The bounded public/prepared-account interaction checkpoint is complete. A new
+deterministic 39-check gate inventories dead-link patterns, literal route and
+home-anchor targets, unavailable-control semantics and explanations,
+demo-versus-persisted route separation, 404 recovery, simulator key stability,
+public contract isolation, and absence of client-reachable OpenAI transport.
+Twelve misleading non-persisting success controls were removed and demo record
+links that could lead to account detail `not_found` states were replaced by
+honest unavailable states.
+
+All 35 registered `quality:*` scripts pass after aligning four legacy source
+assertions with the stricter disabled/read-only contract; no security,
+ownership, deletion, or retention assertion was removed. TypeScript, lint,
+build, diff checks, and public browser validation pass. The work changes no
+V1 readiness percentage and opens no Stage 9, AI, auth, persistence, or User
+Data Controls runtime. The next point is an owner visual/runtime review before
+any decision about live OpenAI API verification.
+
 ## Stage 9 Progress Update — Offline Synthetic Risk Evaluation Harness
 
 The approved provider-neutral deterministic evaluation harness for

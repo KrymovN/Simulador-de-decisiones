@@ -1,5 +1,24 @@
 # LEVIO IMPLEMENTATION PLAN
 
+## Cross-Cutting Interaction Hardening Checkpoint — 13 July 2026
+
+A bounded product-surface checkpoint is complete before any live OpenAI API
+work. Public navigation, simulator actions, auth/legal routes, protected route
+behavior, prepared dashboard CTAs, icon controls, unavailable controls, and
+the unknown-route recovery path were inventoried against source and browser
+runtime evidence. Misleading non-persisting feedback was replaced by native
+disabled/read-only controls with persistent explanations, demo-only decisions
+no longer target persisted detail routes, and duplicate simulator render keys
+were corrected without changing the public response contract.
+
+This checkpoint is cross-cutting maintenance, not a new V1 block or Stage 9
+substep. Its deterministic gate passes 39/39 and the complete registered
+quality catalog, TypeScript, lint, build, and browser checks pass. The public
+simulator remains deterministic and `mockOnly=true`; OpenAI transport, Prompt
+Context and Decision Engine bridges, auth, persistence, and User Data Controls
+remain unchanged. Stage 9 stays In Progress, readiness stays 58% estimated,
+and the next action is a separate owner visual/runtime review.
+
 ## Stage 9 Offline Synthetic Risk Evaluation Harness — 13 July 2026
 
 The approved bounded Stage 9 substep is implemented as a provider-neutral,

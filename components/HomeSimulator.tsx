@@ -590,7 +590,7 @@ export default function HomeSimulator() {
 
           <div className="home-scenario-grid">
             {result.simulation.scenarios.map((scenario) => (
-              <article className={`home-scenario-card tone-${scenario.riskLevel === "Alto" ? "risk" : scenario.riskLevel === "Medio" ? "amber" : "opportunity"}`} key={scenario.title}>
+              <article className={`home-scenario-card tone-${scenario.riskLevel === "Alto" ? "risk" : scenario.riskLevel === "Medio" ? "amber" : "opportunity"}`} key={`${scenario.label}-${scenario.title}`}>
                 <span>{scenario.label}</span>
                 <h3>{scenario.title}</h3>
                 <dl>

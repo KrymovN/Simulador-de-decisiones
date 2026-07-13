@@ -1,8 +1,7 @@
 import type { CSSProperties } from "react";
-import Link from "next/link";
 import DashboardShell from "../../../components/DashboardShell";
-import MockFeedbackButton from "../../../components/MockFeedbackButton";
 import MockAuthGate from "../../../components/MockAuthGate";
+import UnavailableAction from "../../../components/UnavailableAction";
 import { savedDecisions } from "../../../lib/personalArea";
 
 const decisionStats = [
@@ -91,13 +90,10 @@ export default function DecisionsPage() {
               </div>
 
               <div className="decision-action-row">
-                <Link className="button-link" href={`/dashboard/simulations/${decision.linkedSimulationId}`}>
-                  Abrir mapa
-                </Link>
-                <MockFeedbackButton
-                  className="ghost-button"
-                  label="Preparar decisión"
-                  feedback="Decisión preparada para revisión demo."
+                <UnavailableAction
+                  className="button-link"
+                  label="Mapa demo no reabrible"
+                  explanation="Este ejemplo no corresponde a una simulación guardada de la cuenta."
                 />
               </div>
             </article>

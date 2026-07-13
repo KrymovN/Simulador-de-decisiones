@@ -1,5 +1,5 @@
 import DashboardShell from "../../../components/DashboardShell";
-import MockFeedbackButton from "../../../components/MockFeedbackButton";
+import UnavailableAction from "../../../components/UnavailableAction";
 import MockAuthGate from "../../../components/MockAuthGate";
 import SecurityPanel from "../../../components/SecurityPanel";
 
@@ -14,23 +14,29 @@ export default function SecurityPage() {
         <section className="dashboard-two-column">
           <article className="dashboard-card section-frame">
             <h2>Preparar cambio de contraseña</h2>
-            <form className="profile-form">
+            <div className="profile-form">
               <label>
                 Contraseña de ejemplo
-                <input placeholder="••••••••" type="password" />
+                <input disabled placeholder="No disponible" type="password" />
               </label>
               <label>
                 Contraseña futura
-                <input placeholder="••••••••" type="password" />
+                <input disabled placeholder="No disponible" type="password" />
               </label>
-              <MockFeedbackButton label="Preparar contraseña" feedback="Cambio de seguridad preparado en demo." />
-            </form>
+              <UnavailableAction
+                label="Cambio no disponible"
+                explanation="El cambio de contraseña no está activo en esta versión."
+              />
+            </div>
           </article>
 
           <article className="dashboard-card section-frame">
             <h2>Autenticación en dos pasos</h2>
             <p>Preparado para activar verificación adicional cuando exista auth provider productivo.</p>
-            <MockFeedbackButton label="Preparar 2FA" feedback="Preferencia 2FA preparada para futura autenticación real." />
+            <UnavailableAction
+              label="2FA no disponible"
+              explanation="La autenticación en dos pasos todavía no está activa en esta versión."
+            />
           </article>
         </section>
         <SecurityPanel />

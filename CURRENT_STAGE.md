@@ -1,5 +1,24 @@
 # CURRENT STAGE
 
+## Cross-Cutting Public Interaction Hardening Complete — 13 July 2026
+
+The bounded visual/functional hardening checkpoint is complete without opening
+a Stage 9 runtime substep. Public routes and prepared dashboard controls were
+audited for real actions, valid targets, honest unavailable states, keyboard
+semantics, responsive behavior, and recoverability. Demo-only decision cards
+no longer enter persisted detail routes; non-persisting success controls were
+removed; future account controls are explicitly disabled/read-only with
+explanations; and a custom 404 provides working home and simulator recovery.
+
+`quality:public-interaction-hardening` passes 39/39, all registered quality
+gates pass, and browser checks cover the public runtime plus the protected
+dashboard redirect. Authenticated internals remain statically verified where
+local auth configuration is unavailable. Stage 9 remains In Progress at the
+existing adapter/evaluation boundary, readiness remains 58% estimated, and no
+OpenAI API, Prompt Context bridge, Decision Engine integration, auth,
+persistence, or User Data Controls change was introduced. The next checkpoint
+is owner visual/runtime review, not automatic implementation.
+
 ## Stage 9 Offline Synthetic Evaluation In Progress — 13 July 2026
 
 The approved executable deterministic synthetic evaluation harness for

@@ -1,5 +1,25 @@
 # PROJECT CONTEXT
 
+## Cross-Cutting Visual and Functional Interaction Hardening — 13 July 2026
+
+The public and prepared account surfaces have completed a bounded interaction
+hardening checkpoint independent of Stage 9. Every audited CTA, link, form
+control, and icon control now has a real route/action, a native unavailable
+state with a persistent explanation, or a documented runtime-verification
+boundary. Demo decision identifiers no longer link into persisted account
+detail routes, twelve non-persisting success-feedback actions were removed,
+future profile/security/memory controls are explicitly read-only or disabled,
+and the custom not-found surface provides home and simulator recovery routes.
+
+The dedicated `quality:public-interaction-hardening` gate passes 39/39. Browser
+evidence covers the public simulator, auth feedback, legal pages, protected
+dashboard redirect, 404 recovery, keyboard validation, and responsive public
+surfaces. Authenticated dashboard internals remain statically verified where
+local auth configuration is unavailable. `/api/simulate` remains deterministic
+and `mockOnly=true`; no OpenAI request, Stage 9 bridge, UI AI execution, auth,
+persistence, or User Data Controls scope was opened. Stage 9 remains In
+Progress and the 58% estimated readiness is unchanged.
+
 ## Stage 9 Bounded Provider Adapter — 13 July 2026
 
 Stage 9 - Real AI Integration is **In Progress** only for the approved bounded

@@ -109,9 +109,11 @@ assertCheck(
     dashboardProfileAccountState.includes("useDashboardAccount") &&
     dashboardProfileAccountState.includes("account.displayName") &&
     dashboardProfileAccountState.includes("account.email") &&
-    dashboardProfileAccountState.includes("Campo de contraseña futura") &&
-    dashboardProfileAccountState.includes("Pendiente de perfil real"),
-  "Expected profile account-facing fields to use dashboard account runtime and keep future-only profile fields prepared.",
+    !dashboardProfileAccountState.includes("Campo de contraseña futura") &&
+    dashboardProfileAccountState.includes("Pendiente de perfil real") &&
+    dashboardProfileAccountState.includes("Edición no disponible") &&
+    dashboardProfileAccountState.includes("modo de solo lectura"),
+  "Expected profile account-facing fields to use dashboard account runtime while keeping unavailable profile editing honest and read-only.",
 );
 
 assertCheck(

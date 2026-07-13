@@ -120,7 +120,9 @@ assertCheck(
   privacyPanel.includes("/dashboard/privacy/retention") &&
     privacyPanel.includes("Descargar estado") &&
     privacyPanel.includes("sin iniciar trabajos automáticos") &&
-    privacyPanel.includes("MockFeedbackButton"),
+    privacyPanel.includes("UnavailableAction") &&
+    privacyPanel.includes("Pausa no disponible") &&
+    privacyPanel.includes("no se ha registrado ninguna solicitud"),
   "Privacy panel must expose retention status without turning future privacy controls into enforcement flows.",
 );
 

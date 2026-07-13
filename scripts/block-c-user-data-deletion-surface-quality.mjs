@@ -150,7 +150,9 @@ assertCheck(
   privacyPanel.includes("/dashboard/privacy/deletion") &&
     privacyPanel.includes("Descargar plan") &&
     privacyPanel.includes("sin ejecutar la eliminación") &&
-    privacyPanel.includes("MockFeedbackButton"),
+    privacyPanel.includes("UnavailableAction") &&
+    privacyPanel.includes("Pausa no disponible") &&
+    privacyPanel.includes("no se ha registrado ninguna solicitud"),
   "Privacy panel must expose deletion planning without turning future privacy controls into execution flows.",
 );
 

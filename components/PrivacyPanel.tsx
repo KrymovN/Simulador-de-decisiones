@@ -1,4 +1,4 @@
-import MockFeedbackButton from "./MockFeedbackButton";
+import UnavailableAction from "./UnavailableAction";
 
 const privacyRights = [
   "Derecho de acceso",
@@ -37,6 +37,7 @@ const privacyActions = [
   {
     title: "Preparar pausa de memoria futura",
     copy: "Pausar el contexto futuro de simulaciones para que no use patrones históricos del usuario.",
+    unavailable: "La memoria todavía no está activa en esta versión; no se ha registrado ninguna solicitud.",
   },
 ];
 
@@ -63,7 +64,7 @@ export default function PrivacyPanel() {
                 {action.label}
               </a>
             ) : (
-              <MockFeedbackButton label="Solicitar" feedback="Solicitud registrada en modo demo." />
+              <UnavailableAction label="Pausa no disponible" explanation={action.unavailable} />
             )}
           </article>
         ))}
