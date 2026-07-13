@@ -1,5 +1,24 @@
 # LEVIO CURRENT STATE
 
+## Current Stage 9 Bounded Provider Adapter — 13 July 2026
+
+Stage 9 is **In Progress** only at the bounded server-only provider-adapter
+boundary. `lib/ai-provider` now contains an OpenAI Responses API adapter for
+repository-owned `synthetic_non_personal` Candidate Risk Signals fixtures,
+capability `candidate_risk_signals_v1`, and exact model `gpt-5.6-terra`.
+Execution is disabled by default; requires every approved server environment
+signal plus explicit manual development invocation; performs exact input-token
+counting before at most one generation; applies the 3000/1200/4200 token
+envelope, $0.03 cost ceiling, 5s/30s/35s deadlines, zero retries, strict schema,
+and local semantic validation; and exposes only controlled normalized results
+or errors.
+
+All automated tests use mocked transport, and no live provider call has been
+made. Public/product AI execution, Prompt Context and Decision Engine bridges,
+UI/API changes, auth, persistence, user data, durable logs, fallback, and
+production configuration remain absent. Stage 7 remains Closed, Stage 9 is not
+complete, and no next Stage 9 substep is open. Percentages remain unchanged.
+
 ## Current Stage 7 Closure — 13 July 2026
 
 Stage 7 - User Data Controls is **Closed** for the approved Levio V1 scope.

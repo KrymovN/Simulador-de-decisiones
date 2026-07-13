@@ -1,5 +1,27 @@
 # PROJECT CONTEXT
 
+## Stage 9 Bounded Provider Adapter — 13 July 2026
+
+Stage 9 - Real AI Integration is **In Progress** only for the approved bounded
+server-only OpenAI synthetic Candidate Risk Signals adapter boundary. The
+implemented capability is `candidate_risk_signals_v1` over repository-owned
+`synthetic_non_personal` fixtures, using the Responses API, exact model
+`gpt-5.6-terra`, low reasoning effort, strict Structured Outputs, exact input
+token counting, hard token/cost/time limits, zero retries, `store: false`, no
+tools, and controlled result/error normalization. Provider output remains
+untrusted candidate material and is rejected locally when schema or semantic
+validation fails.
+
+The adapter is disabled by default and live-capable only through an explicit
+server-only manual development invocation with all approved environment
+signals. Automated evidence uses mocked transport and performs no live provider
+request. No Prompt Context bridge, Decision Engine integration, API route,
+public/product AI execution, UI, auth, persistence, user-data processing,
+logging persistence, fallback, production configuration, or production legal
+approval is opened. Stage 7 remains Closed. Stage 9 is not complete, the next
+Stage 9 substep is not opened, and any continuation requires analysis of this
+implementation evidence. Readiness percentages remain unchanged.
+
 ## Stage 7 Closure — 13 July 2026
 
 Stage 7 - User Data Controls is **Closed** for the approved Levio V1 scope.

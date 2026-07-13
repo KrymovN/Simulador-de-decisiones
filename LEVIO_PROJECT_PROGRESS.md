@@ -1,5 +1,25 @@
 # LEVIO PROJECT PROGRESS TRACKER
 
+## Stage 9 Progress Update — Bounded Synthetic Risk Adapter
+
+Stage 9 - Real AI Integration is **In Progress** only for one approved bounded
+substep. A server-only OpenAI Responses API adapter boundary now supports exact
+model `gpt-5.6-terra` for synthetic capability
+`candidate_risk_signals_v1`. It is disabled by default, accepts only strict
+repository-owned non-personal synthetic fixtures, counts exact provider input
+tokens before generation, enforces hard token/cost/time budgets and zero
+retries, requests strict structured output with no tools or state, and rejects
+schema-valid but semantically invalid candidate material. Provider errors are
+normalized without raw request, response, identifiers, secrets, or logs.
+
+Dedicated mocked-transport QA covers the bounded adapter and existing AI
+Provider, Prompt Context, AI Quality, and AI Integration foundations. No live
+provider call, public/product integration, Prompt Context bridge, Decision
+Engine runtime integration, UI/API change, auth/persistence/user-data change,
+or production configuration was added. Stage 7 remains Closed. Stage 9 is not
+complete, the next substep remains unopened pending implementation-evidence
+analysis, and readiness percentages remain unchanged.
+
 ## Stage 7 Closure Update — 13 July 2026
 
 Stage 7 - User Data Controls is **Closed** for the approved Levio V1 scope.
