@@ -1,5 +1,31 @@
 # LEVIO PROJECT PROGRESS TRACKER
 
+## Stage 7 Closure Update — 13 July 2026
+
+Stage 7 - User Data Controls is **Closed** for the approved Levio V1 scope.
+Authenticated users can export relevant saved simulations, simulation drafts,
+and user-visible history; invoke approved owner-scoped deletion for saved
+simulations and drafts; see retention status; and execute the approved explicit
+per-draft retention action. Saved-simulation deletion atomically clears active
+user-visible child history. The four mandatory exit criteria are satisfied.
+
+Full account deletion runtime and bulk/background retention enforcement remain
+bounded later-scope deferrals. Independent history-entry deletion remains
+excluded from Levio V1. Server-derived canonical ownership, object+owner
+scoping, safe cross-owner absence, restricted/legal-hold guards, default-denied
+least-privilege internal access, and the prohibition on unsupported zero-
+knowledge claims remain mandatory. `levio-dev` migration/RPC evidence is
+development-only. Missing synthetic restricted/legal-hold fixtures and forced
+fault injection are recorded evidence limits and do not block bounded closure.
+
+Earlier dated pre-closure root status lines are superseded by this decision.
+Block C is 100% complete for the approved Stage 7 scope. Overall project
+progress remains 84%, and Levio V1
+Complete readiness remains 58% estimated because no production/runtime scope
+was added. The next canonical V1 direction is Production AI Integration /
+official Stage 9 Real AI Integration, identified without implementation
+approval.
+
 ## Stage 7 Progress Update — User-Triggered Draft Deletion
 
 The existing authenticated `/dashboard/drafts/[id]` surface now exposes a
@@ -11,8 +37,8 @@ safely, delegates expired drafts to existing retention semantics, and uses the
 shared terminal content-clearing lifecycle for eligible active drafts. Success
 returns to the existing privacy destination without internal identifiers;
 unexpected failures remain fail-closed. The specialized gate passes 25/25.
-Stage 7 remains In Progress, overall progress remains 84%, and V1 readiness
-remains 58% pending a separate bounded closure assessment.
+At that implementation checkpoint, closure had not yet been assessed. The
+later closure update above now governs status.
 
 ## Stage 7 Progress Update — Dev RPC Runtime Evidence
 
@@ -24,8 +50,8 @@ success, same-owner unrelated preservation, cross-owner isolation, safe
 absence, idempotency, browser denial, and terminal fixture cleanup. Restricted/
 legal-hold fixture transitions and forced fault injection were unavailable, so
 only deployed guards/transaction structure are evidenced for those cases.
-Stage 7 remains In Progress, overall progress remains 84%, and V1 readiness
-remains 58% pending separate closure assessment.
+At that evidence checkpoint, closure had not yet been assessed. The later
+closure update above now governs status.
 
 ## Stage 7 Progress Update — Atomic Parent-Driven History Cleanup
 
@@ -37,8 +63,8 @@ hold, history owner+record predicates, terminal content clearing, rollback,
 controlled absence, and idempotency are covered by the dedicated gate.
 Independent history deletion, account deletion, and background retention remain
 unopened. Client data isolation remains mandatory across all user-data
-surfaces. Stage 7 remains In Progress, overall progress remains 84%, and V1
-readiness remains 58% pending a separate closure assessment.
+surfaces. At that implementation checkpoint, closure had not yet been assessed.
+The later closure update above now governs status.
 
 ## Stage 7 Progress Update — Single-Draft Resume/Edit Surface
 
@@ -47,8 +73,9 @@ for its approved scope at `/dashboard/drafts/[id]`. Canonical ownership and
 time are server-derived; expired drafts reuse existing retention semantics;
 restricted/legal-hold drafts are blocked; unchanged content does not renew;
 and a saved `draft_text_snapshot` change renews expiry by 30 days. The dedicated
-gate is `quality:stage-7-single-draft-resume-edit-surface`. Stage 7 remains In
-Progress, overall project progress remains 84%, and V1 readiness remains 58%.
+gate is `quality:stage-7-single-draft-resume-edit-surface`. At that
+implementation checkpoint, closure had not yet been assessed; the later closure
+update above now governs status.
 
 ## Constitutional Authority
 
@@ -138,7 +165,7 @@ V1 Complete Readiness    ██████░░░░ 58% estimated
 - Current roadmap/planning Stage: Stage 15 - Scale. Stage 15.5 is complete as
   documentation-only blocker resolution framework work, and Stage 15.4
   aggregate verdict remains NOT READY.
-- Current V1 implementation focus: Stage 7 - User Data Controls.
+- Most recently closed V1 implementation scope: Stage 7 - User Data Controls.
 - `LEVIO_IMPLEMENTATION_PLAN.md` создан как canonical V1 implementation
   comparator.
 - Blocks A/B/C are internal V1 implementation substeps only; they are not
@@ -230,9 +257,9 @@ V1 Complete Readiness    ██████░░░░ 58% estimated
   limitation and not a Block B blocker. Closure-relevant gates passed:
   `npm run quality:block-b-email-flow` and
   `npm run quality:block-b-auth-action-boundary`.
-- Current Block C status: User Data Management is In Progress; export,
-  deletion planning, and retention planning surfaces are completed inside
-  Stage 7 User Data Controls. C1 account data export surface
+- Current Block C status: User Data Management is Completed / Stage 7 Closure
+  Accepted; export, deletion planning, and retention planning surfaces are
+  completed inside Stage 7 User Data Controls. C1 account data export surface
   is complete in commit `904b4f5a835d09d621e2371b6c8f301c50e24069`;
   authenticated dashboard users can export owner-scoped saved simulations as
   JSON without client owner injection, direct route-level Supabase/env access,
@@ -894,17 +921,17 @@ V1 Complete Readiness    ██████░░░░ 58% estimated
 
 ### 7. User Data Controls
 
-Статус: Stage 7 In Progress; owner-scoped user-data product controls реализованы
-для утверждённого V1 scope, production readiness не заявлена.
-Прогресс: █████████░ 90% estimated для Block C до отдельного closure assessment.
+Статус: Stage 7 Closed для утверждённого V1 scope; production readiness не
+заявлена.
+Прогресс: ██████████ 100% для утверждённого Stage 7 / Block C scope.
 Последнее изменение: authenticated export, deletion planning, retention status,
 consent status, saved-simulation deletion с parent-history cleanup, direct draft
 deletion, draft retention/warning и single-draft resume/edit/delete surfaces
 реализованы через server-only canonical-owner boundaries.
-Bounded deferrals: account deletion и bulk/background retention не открыты;
-independent history-entry deletion исключён из Levio V1.
-Следующий шаг: отдельный bounded Stage 7 closure assessment; не закрывать Stage
-автоматически и не начинать новый implementation scope.
+Bounded deferrals: account deletion и bulk/background retention остаются
+later-scope; independent history-entry deletion исключён из Levio V1.
+Следующее canonical направление: Production AI Integration / официальный Stage
+9 Real AI Integration; implementation автоматически не начинать.
 
 ### 8. Subscription Runtime
 
@@ -1604,14 +1631,15 @@ Stage 15.5 - Scale Blocker Resolution Framework Complete.
 
 The official roadmap contains 15 Stages. The current roadmap/planning Stage is
 Stage 15 - Scale, with Stage 15.4 NOT READY and Stage 15.5 complete as a
-blocker-resolution framework only. The current V1 implementation focus is
-Stage 7 - User Data Controls. Blocks A/B/C are internal V1 implementation
+blocker-resolution framework only. Stage 7 - User Data Controls is closed for
+the approved V1 scope. Blocks A/B/C are internal V1 implementation
 substeps only and must not be used as the primary roadmap-management system.
 The explicit draft retention/warning flow, explicitly confirmed direct draft
 deletion, and atomic parent-driven history cleanup on single saved-simulation
 deletion are complete. Independent history-entry deletion remains excluded;
-bulk/background retention and account deletion remain unopened. The next
-bounded action is a separate Stage 7 closure assessment.
+bulk/background retention and account deletion remain bounded later-scope
+deferrals. The next canonical V1 direction is Production AI Integration /
+official Stage 9 Real AI Integration, without automatic implementation.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.

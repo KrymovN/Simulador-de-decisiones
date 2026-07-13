@@ -1,5 +1,31 @@
 # LEVIO CURRENT STATE
 
+## Current Stage 7 Closure — 13 July 2026
+
+Stage 7 - User Data Controls is **Closed** for the approved Levio V1 scope.
+All mandatory exit criteria are met across saved simulations, simulation
+drafts, and user-visible history: authenticated export; approved user-triggered
+deletion; visible retention status and approved retention action; and closed
+Stage 7 privacy/data-control blockers. Saved-simulation deletion atomically
+clears active child-history content, while direct draft deletion and expired-
+draft enforcement use the existing terminal content-clearing lifecycle.
+
+Server-validated session identity is the only owner authority. Client owner
+fields are non-authoritative; persistence is object+owner scoped; cross-owner
+access is safely excluded; restriction/legal-hold guards fail closed; internal
+access is denied by default and least-privilege; and no zero-knowledge claim is
+made. Full account deletion runtime and bulk/background retention remain
+bounded later-scope deferrals. Independent history-entry deletion remains
+outside Levio V1. `levio-dev` evidence is not production deployment evidence;
+unavailable synthetic restricted/legal-hold fixtures and forced fault injection
+remain recorded evidence limits rather than closure blockers.
+
+This current state supersedes earlier dated In Progress / pending closure lines
+in root documents. Overall progress remains 84% and V1 Complete readiness
+remains 58% estimated. The next canonical V1 direction is Production AI
+Integration / official Stage 9 Real AI Integration, without automatic
+implementation approval.
+
 ## Current Stage 7 User-Triggered Draft Deletion — 13 July 2026
 
 The authenticated `/dashboard/drafts/[id]` surface now exposes a separate,
@@ -10,8 +36,8 @@ legal-hold drafts, safely normalizes missing/cross-owner/repeated requests,
 delegates expired drafts to existing retention semantics, and clears eligible
 active draft content through the shared terminal lifecycle payload. The success
 destination is the existing privacy surface and reveals no internal identifier;
-unexpected failures remain fail-closed. Stage 7 remains In Progress pending a
-separate bounded closure assessment; V1 readiness remains 58%.
+unexpected failures remain fail-closed. At that implementation checkpoint,
+closure had not yet been assessed; the later closure decision above governs.
 
 ## Current Stage 7 Dev Evidence — 12 July 2026
 
@@ -22,8 +48,8 @@ metadata and synthetic calls through the existing persistence provider confirm
 atomic parent/history cleanup, owner isolation, safe cross-owner absence,
 unrelated preservation, idempotency, browser-role denial, and fixture cleanup.
 Restricted/legal-hold runtime fixtures and forced fault injection were not
-available and are not claimed. Stage 7 remains In Progress; V1 readiness is
-58%.
+available and are not claimed. At that evidence checkpoint, closure had not
+yet been assessed; the later closure decision above governs.
 
 ## Current Stage 7 Runtime Addition — Atomic Parent History Cleanup
 
@@ -34,7 +60,8 @@ then applies the parent content-clearing lifecycle. Missing/cross-owner and
 repeat calls share safe absence; unexpected failure rolls back. Client owner
 fields remain non-authoritative and UI remains outside the security boundary.
 Independent history deletion, account deletion, and background retention are
-not implemented. Stage 7 remains In Progress; V1 readiness remains 58%.
+not implemented. At that implementation checkpoint, closure had not yet been
+assessed; the later closure decision above governs.
 
 ## Current Stage 7 Runtime Addition — 12 July 2026
 
@@ -44,7 +71,8 @@ deleted-or-absent, restricted, and persistence-error states without disclosing
 cross-owner existence. Only a real persisted `draft_text_snapshot` change
 renews expiration by 30 days. No keepalive, list/bulk management, scheduler,
 email, schema/migration, hard delete/cascade, or cross-entity side effect is
-present. Stage 7 remains In Progress; V1 readiness remains 58%.
+present. At that implementation checkpoint, closure had not yet been assessed;
+the later closure decision above governs.
 
 ## Constitutional Authority
 
@@ -73,7 +101,7 @@ Date: 12 July 2026, Europe/Madrid.
 Levio.es remains a Decision Simulation Engine.
 
 The current confirmed state is post-Stage 15.5 and post-Stage 7 User Data
-Controls aggregate read-only lifecycle coverage validation. The
+Controls closure for the approved V1 scope. The
 official roadmap remains the
 15-Stage roadmap recorded in
 `LEVIO_PROJECT_PROGRESS.md`. Stage 15.5 - Scale Blocker Resolution Framework
@@ -85,9 +113,9 @@ inside the higher-level roadmap governance. Blocks A/B/C are internal V1
 implementation substeps only; they are not roadmap Stages and not a replacement
 project-management system.
 
-Current V1 implementation focus is Stage 7 - User Data Controls. Block A -
-Decision Simulation Persistence Implementation is complete for its approved
-persistence scope after closure validation.
+The most recently closed V1 implementation scope is Stage 7 - User Data
+Controls. Block A - Decision Simulation Persistence Implementation is complete
+for its approved persistence scope after closure validation.
 The approved high-level path to LEVIO V1 COMPLETE is Decision Simulation
 Persistence -> Real User Account Runtime -> User Data Management -> Production
 AI Integration -> Product Validation & Production Readiness -> Commercial
@@ -196,8 +224,8 @@ provider rate limit and not a Block B blocker. The closure-relevant gates
 `npm run quality:block-b-auth-action-boundary` pass. Separately approved
 history/revision lifecycle events remain deferred until explicitly scoped.
 
-Block C - User Data Management is in progress inside Stage 7 User Data
-Controls. C1 account data export surface is complete in commit
+Block C - User Data Management is completed and Stage 7 closure is accepted
+for the approved V1 scope. C1 account data export surface is complete in commit
 `904b4f5a835d09d621e2371b6c8f301c50e24069`: authenticated dashboard export
 JSON over owner-scoped saved simulations, with no client owner injection, no
 direct Supabase/env route access, and no deletion/retention mixing. C2 deletion
@@ -1573,8 +1601,8 @@ observability, and rollback planning.
 ## Next Roadmap Step
 
 The official roadmap remains the 15-Stage roadmap. Stage 15 is the current
-roadmap/planning Stage, while the current V1 implementation focus is Stage 7 -
-User Data Controls. Blocks A/B/C are internal V1 implementation substeps only,
+roadmap/planning Stage, while Stage 7 - User Data Controls is closed for its
+approved V1 scope. Blocks A/B/C are internal V1 implementation substeps only,
 not roadmap Stages.
 
 The V1 completion map remains: Decision Simulation Persistence -> Real User
@@ -1610,9 +1638,11 @@ public-contract change requires separate explicit approval.
 The explicit draft retention/warning flow, explicitly confirmed direct draft
 deletion, and atomic parent-driven history cleanup on single saved-simulation
 deletion are complete. Independent history-entry deletion remains excluded;
-bulk/background retention and account deletion remain unopened. The next
-bounded action is a separate Stage 7 closure assessment and must not create a
-new Stage, Block, roadmap branch, or runtime architecture change.
+bulk/background retention and account deletion remain bounded later-scope
+deferrals. The next canonical V1 direction is Production AI Integration /
+official Stage 9 Real AI Integration. It is identified only and must not create
+a new Stage, Block, roadmap branch, or runtime architecture change without
+separate explicit approval.
 
 Levio must remain a Decision Simulation Engine and must not create AI Chat,
 Answer Engine, Generic Assistant, direct AI-to-user behavior, model calls,
