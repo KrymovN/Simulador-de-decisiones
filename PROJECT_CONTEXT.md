@@ -1,5 +1,23 @@
 # PROJECT CONTEXT
 
+## Stage 7 User-Triggered Draft Deletion — 13 July 2026
+
+The authenticated single-draft surface `/dashboard/drafts/[id]` now exposes a
+separate irreversible deletion form with explicit user confirmation. Its
+server action accepts only the draft identifier and confirmation marker, then
+delegates to the existing `deleteOwnedSimulationDraft()` runtime; canonical
+owner authority is derived only from the server-validated session. The runtime
+performs an owner+object-scoped read, blocks restricted/legal-hold drafts,
+normalizes missing/cross-owner/repeated requests as safe absence, routes expired
+drafts through the existing retention transition, and applies the shared
+terminal content-clearing payload only to an active, non-protected,
+non-expired owner-scoped draft. Success redirects to the existing privacy
+destination with no internal identifier disclosure; failures remain
+fail-closed. No list/bulk/account/history deletion, job, schema, migration, hard
+delete, cascade, consent write, billing, or AI scope was opened. Stage 7 remains
+In Progress pending a separate bounded closure assessment; V1 readiness remains
+58%.
+
 ## Stage 7 Dev Migration / Runtime Evidence — 12 July 2026
 
 The approved non-production Supabase environment is `levio-dev` (non-secret
@@ -233,9 +251,10 @@ Owner-scoped synchronous deletion execution is now also implemented for one
 active simulation draft at a time through the existing server-only canonical-
 principal persistence boundary. Draft content and autosave state are cleared,
 the existing terminal draft/deletion fields are applied, and only a minimal
-lifecycle shell remains. No draft UI was added because no draft detail/edit
-surface exists. Saved simulations, history, account lifecycle, consent, and
-retention remain unchanged. The dedicated gate is
+lifecycle shell remains. The existing draft detail/edit surface now exposes a
+separate explicitly confirmed user-triggered action over this runtime. Saved
+simulations, history, account lifecycle, consent, and background retention
+remain unchanged. The dedicated runtime gate is
 `npm run quality:stage-7-simulation-draft-deletion-execution`.
 
 The owner/product decision for simulation history deletion is now locked:
@@ -287,11 +306,11 @@ Current project progress is **84% overall**. Levio V1 Complete readiness is
 **58% estimated**. The current implementation remains within Stage 7 User Data
 Controls. The explicit per-draft synchronous retention foundation is complete;
 automatic/background retention and account deletion remain unopened. The
-user-facing warning destination and parent-driven history cleanup on one saved
-simulation deletion are implemented. Any next
-implementation must be determined from `LEVIO_IMPLEMENTATION_PLAN.md` before
-code and must not create a new Stage,
-new Block, new roadmap branch, or runtime architecture change.
+user-facing warning destination, explicitly confirmed direct draft deletion,
+and parent-driven history cleanup on one saved-simulation deletion are
+implemented. The next bounded action is a separate Stage 7 closure assessment;
+it must not be inferred as automatic closure or permission for a new Stage,
+Block, roadmap branch, or runtime architecture change.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as foundation-only preflight, runtime
@@ -1676,25 +1695,29 @@ Allowed at current closure:
   Adapter while preserving the `simulate-api-v1-mock` envelope;
 - canonical owner model based on `levio_principals.principal_id`;
 - authenticated dashboard account data export JSON for owner-scoped saved
-  simulations;
+  simulations, eligible drafts, and eligible user-visible history;
 - authenticated dashboard deletion planning JSON for owner-scoped saved
-  simulations, planning-only and read-only;
+  simulations, drafts, and history, planning-only and read-only;
+- owner-scoped terminal deletion writes for one explicitly selected saved
+  simulation with its active user-visible dependent history, or one explicitly
+  selected draft;
+- owner-scoped synchronous retention enforcement for one expired draft;
+- authenticated single-draft resume/edit/delete surface;
 - fail-closed behavior;
 - deterministic validation functions;
-- no Real AI, provider, auth, billing, persistence, subscription, or UI
-  behavior change.
+- no Real AI, billing, subscription, analytics, or tracking behavior change.
 
 Not allowed or not present:
 
 - public User Data Controls API;
-- export package generation beyond the approved C1 saved-simulation JSON
+- export package generation beyond the approved owner-scoped account JSON
   download surface;
 - storage/download links beyond direct dashboard JSON downloads;
-- deletion writes;
+- deletion writes beyond the approved one-saved-simulation parent lifecycle and
+  one-draft lifecycle actions;
 - hard delete;
 - account deletion orchestration;
 - retention jobs;
-- production Supabase read provider for User Data Controls;
 - OpenAI SDK;
 - real AI provider SDK;
 - environment variable reads for AI;

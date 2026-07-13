@@ -1,5 +1,18 @@
 # LEVIO CURRENT STATE
 
+## Current Stage 7 User-Triggered Draft Deletion — 13 July 2026
+
+The authenticated `/dashboard/drafts/[id]` surface now exposes a separate,
+explicitly confirmed irreversible deletion action over the existing
+`deleteOwnedSimulationDraft()` runtime. Owner authority remains server-derived;
+the runtime reads and mutates by draft+canonical owner, preserves restricted or
+legal-hold drafts, safely normalizes missing/cross-owner/repeated requests,
+delegates expired drafts to existing retention semantics, and clears eligible
+active draft content through the shared terminal lifecycle payload. The success
+destination is the existing privacy surface and reveals no internal identifier;
+unexpected failures remain fail-closed. Stage 7 remains In Progress pending a
+separate bounded closure assessment; V1 readiness remains 58%.
+
 ## Current Stage 7 Dev Evidence — 12 July 2026
 
 `levio-dev` (`whbabqpildzfwzcksudg`) now tracks migrations 001-006 and 008;
@@ -242,10 +255,10 @@ dedicated gate is `npm run quality:stage-7-saved-simulation-deletion-execution`.
 Owner-scoped synchronous deletion execution is now also implemented for one
 active simulation draft. Authentication and canonical-principal resolution
 remain server-side; draft payload/snapshots and autosave state are cleared and
-the existing terminal draft/deletion lifecycle fields are applied. No draft UI
-or route was created because no draft detail/edit surface exists. Saved
-simulations, history, account lifecycle, consent, and retention remain
-unchanged. The dedicated gate is
+the existing terminal draft/deletion lifecycle fields are applied. The existing
+draft detail/edit surface now exposes a separate explicitly confirmed action;
+saved simulations, history, account lifecycle, consent, and background
+retention remain unchanged. The dedicated runtime gate is
 `npm run quality:stage-7-simulation-draft-deletion-execution`.
 
 The owner/product decision excludes independent deletion of an arbitrary
@@ -1594,12 +1607,12 @@ resolve blockers. Any later blocker remediation, Scale execution, Production
 Release, Commercial Launch, implementation work, audit, roadmap change, or
 public-contract change requires separate explicit approval.
 
-The explicit draft retention/warning flow and atomic parent-driven history
-cleanup on single saved-simulation deletion are complete. Independent history-
-entry deletion remains excluded; bulk/background retention and account
-deletion remain unopened. Any later implementation must be separately
-approved from repository evidence and must not create a new Stage, Block,
-roadmap branch, or runtime architecture change.
+The explicit draft retention/warning flow, explicitly confirmed direct draft
+deletion, and atomic parent-driven history cleanup on single saved-simulation
+deletion are complete. Independent history-entry deletion remains excluded;
+bulk/background retention and account deletion remain unopened. The next
+bounded action is a separate Stage 7 closure assessment and must not create a
+new Stage, Block, roadmap branch, or runtime architecture change.
 
 Levio must remain a Decision Simulation Engine and must not create AI Chat,
 Answer Engine, Generic Assistant, direct AI-to-user behavior, model calls,

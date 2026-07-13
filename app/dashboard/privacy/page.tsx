@@ -2,7 +2,7 @@ import DashboardShell from "../../../components/DashboardShell";
 import MockAuthGate from "../../../components/MockAuthGate";
 import PrivacyPanel from "../../../components/PrivacyPanel";
 
-export default function PrivacyPage() {
+export default function PrivacyPage({ searchParams }: { searchParams: { draftDeletion?: string } }) {
   return (
     <MockAuthGate>
       <DashboardShell
@@ -10,6 +10,12 @@ export default function PrivacyPage() {
         eyebrow="levio.es / Centro de privacidad"
         title="Privacidad y controles preparados."
       >
+        {searchParams.draftDeletion === "completed" && (
+          <section className="dashboard-card section-frame" role="status">
+            <h2>El borrador ya no está disponible.</h2>
+            <p>Su contenido activo se ha eliminado o ya no estaba disponible. No se ha modificado ninguna otra simulación ni la cuenta.</p>
+          </section>
+        )}
         <section className="dashboard-grid">
           <article className="dashboard-card section-frame">
             <span>Datos personales</span>

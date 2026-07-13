@@ -1371,6 +1371,8 @@ export function createSupabasePersistenceProviderAdapter(input: {
         .eq("owner_principal_type", "registered_user")
         .eq("draft_status", "active")
         .eq("deletion_state", "active")
+        .is("legal_hold_reason", null)
+        .gt("expires_at", input.deletedAt)
         .select("*")
         .maybeSingle();
 

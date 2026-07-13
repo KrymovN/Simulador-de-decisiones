@@ -1,5 +1,20 @@
 # CURRENT STAGE
 
+## Stage 7 User-Triggered Draft Deletion — 13 July 2026
+
+`/dashboard/drafts/[id]` now provides a separate irreversible delete form with
+required user confirmation. The server action delegates to the existing
+owner-scoped draft deletion runtime and accepts no browser owner authority.
+Canonical owner+draft scope, safe missing/cross-owner absence, restriction and
+legal-hold preservation, idempotency, expired-draft retention delegation,
+terminal content clearing, export exclusion, safe redirect, and fail-closed
+errors are covered by the dedicated gate
+`npm run quality:stage-7-user-triggered-draft-deletion-surface`. No bulk,
+account, independent-history, background-retention, schema, migration, hard
+delete, cascade, consent, billing, or AI scope was added. Stage 7 remains In
+Progress pending a separate bounded closure assessment; V1 readiness remains
+58%.
+
 ## Stage 7 Dev Migration and Runtime Verification — 12 July 2026
 
 Migration history for approved non-production `levio-dev` was reconciled for
@@ -57,7 +72,7 @@ prevails unless it has been explicitly amended.
 
 ## Active Checkpoint
 
-Post-Stage 15.5 / Stage 7 Explicit Per-Draft Synchronous Retention Enforcement.
+Post-Stage 15.5 / Stage 7 User-Triggered Single-Draft Deletion.
 
 Status: the official roadmap remains the 15-Stage roadmap recorded in
 `LEVIO_PROJECT_PROGRESS.md`. Stage 15.5 is complete as documentation-only Scale
@@ -234,9 +249,10 @@ The dedicated gate is
 Owner-scoped synchronous deletion execution is now also implemented for one
 active simulation draft. It clears only draft content/autosave state and uses
 the draft's existing terminal lifecycle fields through canonical-principal
-validation. No draft detail/edit UI exists, so no new UI or route was created.
-Saved simulations, history, account lifecycle, consent, and retention are not
-mutated. The dedicated gate is
+validation. The existing draft detail/edit surface exposes a separate
+explicitly confirmed server action over this runtime. Saved simulations,
+history, account lifecycle, consent, and background retention are not mutated.
+The dedicated runtime gate is
 `npm run quality:stage-7-simulation-draft-deletion-execution`.
 
 Owner/product scope now excludes independent deletion of an arbitrary
@@ -1949,12 +1965,12 @@ Stage 15.5 does not resolve blockers. Any later blocker remediation, Scale
 execution, Production Release, Commercial Launch, implementation work, audit,
 roadmap change, or public-contract change requires separate explicit approval.
 
-The explicit draft retention/warning flow and atomic parent-driven history
-cleanup on single saved-simulation deletion are complete. Independent
-history-entry deletion remains excluded; bulk/background retention and account
-deletion remain unopened. Any later implementation needs
-its own minimal repository-evidence selection and approval and must not create
-a new Stage, Block, roadmap branch, or runtime architecture change.
+The explicit draft retention/warning flow, explicitly confirmed direct draft
+deletion, and atomic parent-driven history cleanup on single saved-simulation
+deletion are complete. Independent history-entry deletion remains excluded;
+bulk/background retention and account deletion remain unopened. The next
+bounded action is a separate Stage 7 closure assessment and must not create a
+new Stage, Block, roadmap branch, or runtime architecture change.
 
 Scale execution, Production Release, Commercial Launch, Real AI execution,
 production auth/account/persistence, subscription/billing/commercial runtime,

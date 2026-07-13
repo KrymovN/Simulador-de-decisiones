@@ -1,5 +1,19 @@
 # LEVIO PROJECT PROGRESS TRACKER
 
+## Stage 7 Progress Update — User-Triggered Draft Deletion
+
+The existing authenticated `/dashboard/drafts/[id]` surface now exposes a
+separate irreversible delete form with required confirmation. Its server action
+delegates to `deleteOwnedSimulationDraft()` and accepts no client owner
+authority. The runtime validates the canonical owner and one draft, preserves
+restricted/legal-hold drafts, normalizes missing/cross-owner/repeated requests
+safely, delegates expired drafts to existing retention semantics, and uses the
+shared terminal content-clearing lifecycle for eligible active drafts. Success
+returns to the existing privacy destination without internal identifiers;
+unexpected failures remain fail-closed. The specialized gate passes 25/25.
+Stage 7 remains In Progress, overall progress remains 84%, and V1 readiness
+remains 58% pending a separate bounded closure assessment.
+
 ## Stage 7 Progress Update — Dev RPC Runtime Evidence
 
 Approved non-production `levio-dev` migration history was safely reconciled
@@ -283,9 +297,12 @@ V1 Complete Readiness    ██████░░░░ 58% estimated
 - Owner-scoped synchronous deletion execution is implemented for one active
   simulation draft through server-side canonical-principal validation. It
   clears only draft payload/snapshots and autosave state, applies existing
-  terminal draft/deletion fields, creates no new UI/route, and does not mutate
-  saved simulations, history, accounts, consent, or retention. It is covered
-  by `npm run quality:stage-7-simulation-draft-deletion-execution`.
+  terminal draft/deletion fields, and is now exposed through a separate
+  explicitly confirmed action on the existing single-draft detail/edit
+  surface. It does not mutate saved simulations, history, accounts, consent,
+  or background retention. Runtime and surface coverage are provided by
+  `quality:stage-7-simulation-draft-deletion-execution` and
+  `quality:stage-7-user-triggered-draft-deletion-surface`.
 - Owner/product scope excludes independent deletion of an arbitrary simulation
   history entry from Levio V1. History is dependent lifecycle data of its
   parent saved simulation, so any later deletion, anonymisation, or content
@@ -877,11 +894,17 @@ V1 Complete Readiness    ██████░░░░ 58% estimated
 
 ### 7. User Data Controls
 
-Статус: Foundation/runtime-boundary complete, production-ready нет.
-Прогресс: ██████░░░░ 60%.
-Последнее изменение: Stage 4.3 consolidation выполнен. Retained foundation: contracts, consent, retention, export planning, deletion planning, runtime boundary, QA catalogs, server workflow, persistence read adapter. Removed overreach: API routes, route foundation, route hardening, production read provider, Stage 4.3P-4.3Z micro-stage docs.
-Блокер: Product/API exposure, legal/privacy copy, production QA, real export generation, deletion writes и rollback rehearsal требуют отдельного будущего этапа.
-Следующий шаг: Не продолжать Stage 4.3 micro-stages. Переходить к следующему нормальному roadmap-шагу.
+Статус: Stage 7 In Progress; owner-scoped user-data product controls реализованы
+для утверждённого V1 scope, production readiness не заявлена.
+Прогресс: █████████░ 90% estimated для Block C до отдельного closure assessment.
+Последнее изменение: authenticated export, deletion planning, retention status,
+consent status, saved-simulation deletion с parent-history cleanup, direct draft
+deletion, draft retention/warning и single-draft resume/edit/delete surfaces
+реализованы через server-only canonical-owner boundaries.
+Bounded deferrals: account deletion и bulk/background retention не открыты;
+independent history-entry deletion исключён из Levio V1.
+Следующий шаг: отдельный bounded Stage 7 closure assessment; не закрывать Stage
+автоматически и не начинать новый implementation scope.
 
 ### 8. Subscription Runtime
 
@@ -1584,10 +1607,11 @@ Stage 15 - Scale, with Stage 15.4 NOT READY and Stage 15.5 complete as a
 blocker-resolution framework only. The current V1 implementation focus is
 Stage 7 - User Data Controls. Blocks A/B/C are internal V1 implementation
 substeps only and must not be used as the primary roadmap-management system.
-The explicit draft retention/warning flow and atomic parent-driven history
-cleanup on single saved-simulation deletion are complete. Independent history-
-entry deletion remains excluded; bulk/background retention and account
-deletion remain unopened and require separate approval.
+The explicit draft retention/warning flow, explicitly confirmed direct draft
+deletion, and atomic parent-driven history cleanup on single saved-simulation
+deletion are complete. Independent history-entry deletion remains excluded;
+bulk/background retention and account deletion remain unopened. The next
+bounded action is a separate Stage 7 closure assessment.
 
 Stage 5.4 AI Integration Foundation is closed as foundation-only / Real AI
 Runtime Deferred. Stage 10 Product Quality Hardening is closed.
