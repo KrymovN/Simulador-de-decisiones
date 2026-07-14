@@ -1,5 +1,28 @@
 # LEVIO CURRENT STATE
 
+## Current Mobile Homepage Motion State — 14 July 2026
+
+Phone and tablet homepage motion now uses one progressive-enhancement
+controller over approved narrative groups. At widths through 1024px it applies
+viewport-specific observer margins, shorter transform distances and bounded
+stagger/duration values; each section reveals once and remains readable after
+reverse, fast scroll, visibility changes, and Back/Forward restoration. A
+no-JavaScript page remains readable, and `prefers-reduced-motion: reduce`
+remains a separate immediate final-state contract rather than a mobile
+fallback.
+
+This corrects the former `max-width: 860px` rules that forced process and
+criteria cards directly to static final state and the later criteria override
+that disabled its card animation. In-app Chromium runtime confirms normal
+intermediate sequences and final state at 390x844, responsive behavior without
+horizontal overflow at 768x1024 and 1024x768, and preserved desktop view
+timelines at 1280x800 and 1440x900. WebKit, coarse-pointer, and reduced-motion
+runtime emulation were unavailable, so actual-device acceptance remains
+`Owner actual-device review: Safari iPhone and Chrome Xiaomi tablet`. No
+OpenAI call, simulator contract, auth, dashboard, persistence, database, or
+Stage 9 runtime change was introduced; Stage 9 and the 58% readiness estimate
+are unchanged.
+
 ## Current Homepage Navigation and Simulator State — 14 July 2026
 
 The public signed-out homepage now has one canonical five-item navigation,

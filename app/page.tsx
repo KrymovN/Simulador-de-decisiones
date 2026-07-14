@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { CSSProperties } from "react";
 import HomeSimulator from "../components/HomeSimulator";
 import HomepageAnchorLink from "../components/HomepageAnchorLink";
+import HomepageMotionController from "../components/HomepageMotionController";
 import HomepageNavigation from "../components/HomepageNavigation";
 import LevioMark from "../components/LevioMark";
 
@@ -168,6 +169,7 @@ function MotionLetters({ text }: { text: string }) {
 export default function Home() {
   return (
     <main className="site-shell">
+      <HomepageMotionController />
       <header className="site-header section-frame reference-header">
         <Link className="brand-lockup" href="/" aria-label="levio.es">
           <LevioMark size="lg" />
@@ -245,10 +247,15 @@ export default function Home() {
           </ul>
         </div>
 
-        <div className="hero-feature-strip" aria-label="Capacidades principales">
+        <div
+          className="hero-feature-strip"
+          data-home-motion-group="hero-features"
+          aria-label="Capacidades principales"
+        >
           {heroFeatures.map((feature, index) => (
             <article
               className="hero-feature-card"
+              data-home-motion-item
               key={feature.title}
               style={{ "--card-index": index } as CSSProperties}
             >
@@ -263,12 +270,13 @@ export default function Home() {
       </section>
 
       <section className="reference-decision-system" aria-labelledby="decision-system-title">
-        <div className="reference-section-heading">
-          <p className="eyebrow motion-heading-line" aria-label="Sistema de simulación de decisiones">
+        <div className="reference-section-heading" data-home-motion-group="decision-heading">
+          <p className="eyebrow motion-heading-line" data-home-motion-item aria-label="Sistema de simulación de decisiones">
             <MotionLetters text="Sistema de simulación de decisiones" />
           </p>
           <h2
             className="motion-heading-line"
+            data-home-motion-item
             id="decision-system-title"
             aria-label="Pensado para decisiones con consecuencias reales."
           >
@@ -277,10 +285,11 @@ export default function Home() {
           <span aria-hidden="true"></span>
         </div>
 
-        <div className="reference-system-grid decision-intelligence-grid">
+        <div className="reference-system-grid decision-intelligence-grid" data-home-motion-group="decision-cards">
           {decisionIntelligence.map((item, index) => (
             <article
               className="reference-system-card decision-intelligence-card"
+              data-home-motion-item
               key={item.title}
               style={{ "--card-index": index } as CSSProperties}
             >
@@ -291,14 +300,22 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="reference-section-heading compact-heading future-branches-heading">
-          <p className="eyebrow">Tres ramas del futuro</p>
+        <div
+          className="reference-section-heading compact-heading future-branches-heading"
+          data-home-motion-group="future-heading"
+        >
+          <p className="eyebrow" data-home-motion-item>Tres ramas del futuro</p>
         </div>
 
-        <div className="reference-system-grid future-branches-grid" aria-label="Tres ramas del futuro">
+        <div
+          className="reference-system-grid future-branches-grid"
+          data-home-motion-group="future-branches"
+          aria-label="Tres ramas del futuro"
+        >
           {futureBranches.map((branch, index) => (
             <article
               className="reference-system-card future-branch-card"
+              data-home-motion-item
               key={branch.label}
               style={{ "--card-index": index } as CSSProperties}
             >
@@ -310,8 +327,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="reference-process" id="como-funciona" aria-labelledby="process-title">
-        <div className="reference-section-heading">
+      <section
+        className="reference-process"
+        data-home-motion-group="process"
+        id="como-funciona"
+        aria-labelledby="process-title"
+      >
+        <div className="reference-section-heading" data-home-motion-item>
           <p className="eyebrow motion-heading-line" aria-label="Proceso de simulación">
             <MotionLetters text="Proceso de simulación" />
           </p>
@@ -325,6 +347,7 @@ export default function Home() {
           {processSteps.map((step, index) => (
             <article
               className="reference-process-card"
+              data-home-motion-item
               key={step.title}
               style={{ "--card-index": index } as CSSProperties}
             >
@@ -335,8 +358,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="reference-capabilities" id="criterios" aria-labelledby="capabilities-title">
-        <div className="reference-section-heading compact-heading criteria-heading">
+      <section
+        className="reference-capabilities"
+        data-home-motion-group="criteria"
+        id="criterios"
+        aria-labelledby="capabilities-title"
+      >
+        <div className="reference-section-heading compact-heading criteria-heading" data-home-motion-item>
           <p className="eyebrow" id="capabilities-title">Criterios que hacen comparables las opciones</p>
         </div>
 
@@ -344,6 +372,7 @@ export default function Home() {
           {lowerCapabilities.map((capability, index) => (
             <article
               className="reference-capability-card"
+              data-home-motion-item
               key={capability.title}
               style={{ "--card-index": index } as CSSProperties}
             >
@@ -354,8 +383,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="reference-workspace" id="simulador" aria-labelledby="workspace-title">
-        <div className="reference-workspace-heading">
+      <section
+        className="reference-workspace"
+        data-home-motion-group="simulator"
+        id="simulador"
+        aria-labelledby="workspace-title"
+      >
+        <div className="reference-workspace-heading" data-home-motion-item>
           <p className="eyebrow">Área de trabajo levio.es</p>
           <h2 className="desktop-motion-heading" id="workspace-title" aria-label="Simula una decisión cuando estés listo.">
             <MotionLetters text="Simula una decisión cuando estés listo." />
@@ -366,8 +400,12 @@ export default function Home() {
         <HomeSimulator />
       </section>
 
-      <section className="reference-cta-banner" aria-labelledby="reference-cta-title">
-        <div className="reference-cta-copy">
+      <section
+        className="reference-cta-banner"
+        data-home-motion-group="final-cta"
+        aria-labelledby="reference-cta-title"
+      >
+        <div className="reference-cta-copy" data-home-motion-item>
           <h2 className="desktop-motion-heading" id="reference-cta-title" aria-label="Empieza con una decisión real.">
             <MotionLetters text="Empieza con una decisión real." />
           </h2>
@@ -375,7 +413,7 @@ export default function Home() {
             <MotionLetters text="Levio.es te ayuda a explorar escenarios, riesgos y consecuencias antes de que actúes." />
           </p>
         </div>
-        <HomepageAnchorLink href="#simulador">
+        <HomepageAnchorLink data-home-motion-item href="#simulador">
           Comenzar ahora
           <span aria-hidden="true">→</span>
         </HomepageAnchorLink>

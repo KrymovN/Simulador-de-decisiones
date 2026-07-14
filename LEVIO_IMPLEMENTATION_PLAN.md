@@ -1,5 +1,26 @@
 # LEVIO IMPLEMENTATION PLAN
 
+## Mobile Homepage Motion Parity Checkpoint — 14 July 2026
+
+The bounded mobile visual/runtime remediation is complete before live OpenAI
+verification. The approved homepage narrative groups share one responsive
+IntersectionObserver lifecycle through 1024px, with phone/tablet-specific
+trigger margins, transform distance, duration and visible sequential stagger.
+Every group reaches a one-time final state under normal, fast, reverse, history
+and visibility-restoration paths; reduced motion skips movement and renders
+the readable final state immediately.
+
+This checkpoint repairs the narrow-width static fallback and global criteria
+animation override without changing homepage copy, navigation information
+architecture, simulator behavior, or desktop motion. In-app Chromium evidence
+covers 390x844, both tablet orientations, and two desktop widths. Repository
+tooling did not provide WebKit, coarse-pointer, or reduced-motion emulation, so
+actual Safari iPhone and Xiaomi Chrome acceptance is not claimed. This is not
+Stage 9 progress: Stage 9 remains In Progress, readiness stays 58% estimated,
+`/api/simulate` stays deterministic and `mockOnly=true`, and OpenAI requests
+remain zero. The next point is exactly `Owner actual-device review: Safari
+iPhone and Chrome Xiaomi tablet`.
+
 ## Homepage Navigation and Simulator Presentation Checkpoint — 14 July 2026
 
 A single bounded visual-functional homepage substep is complete before live

@@ -1,5 +1,29 @@
 # CURRENT STAGE
 
+## Mobile Homepage Motion Parity Hardening Complete — 14 July 2026
+
+The bounded owner-directed mobile motion remediation is complete without
+opening a Stage 9 substep. The repository cause was the mobile CSS fallback:
+at `max-width: 860px` process and capability cards were forced directly to
+opaque, untransformed final state, the mobile view-timeline ranges did not
+produce a meaningful stagger, and the final owner criteria override disabled
+criteria-card animation globally. Mobile width and touch were therefore
+effectively conflated with static presentation even when reduced motion was
+not requested.
+
+Homepage narrative groups now share one client IntersectionObserver lifecycle
+with bounded phone/tablet configuration, sequential transform/opacity reveal,
+one-time final state, fast-scroll finalization, Back/Forward and visibility
+restoration, and a separate immediately readable reduced-motion branch. The
+public simulator layout and contract are unchanged. In-app Chromium evidence
+covers 390x844 normal motion, 768x1024 and 1024x768 responsive layout, desktop
+1280x800 and 1440x900 regression, slow/fast/reverse scroll, intermediate/final
+states, history restoration, and zero horizontal overflow. The tooling did
+not provide WebKit, coarse-pointer, or reduced-motion emulation, so no Safari
+iPhone or Xiaomi Chrome claim is made. Stage 9 remains In Progress, readiness
+remains 58% estimated, OpenAI requests remain zero, and the next point is
+exactly `Owner actual-device review: Safari iPhone and Chrome Xiaomi tablet`.
+
 ## Homepage Visual-Functional Refinement Complete — 14 July 2026
 
 The bounded owner-directed homepage checkpoint is complete without opening a

@@ -484,7 +484,12 @@ export default function HomeSimulator() {
   }
 
   return (
-    <section className="decision-console" aria-label="Simulador inicial de decisión" ref={consoleRef}>
+    <section
+      className="decision-console"
+      data-home-motion-item
+      aria-label="Simulador inicial de decisión"
+      ref={consoleRef}
+    >
       <form onSubmit={handleSubmit}>
         <label htmlFor="decision-input">Describe la situación que quieres simular</label>
         <div className="input-row simulator-composition">

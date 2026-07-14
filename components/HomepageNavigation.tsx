@@ -38,7 +38,14 @@ export default function HomepageNavigation() {
     }
 
     function restoreHistoryAnchor() {
-      const target = document.querySelector<HTMLElement>(window.location.hash);
+      const historyAnchor = window.location.hash;
+
+      if (!historyAnchor) {
+        updateActiveSection();
+        return;
+      }
+
+      const target = document.querySelector<HTMLElement>(historyAnchor);
 
       if (!target) {
         updateActiveSection();

@@ -1,5 +1,28 @@
 # LEVIO PROJECT PROGRESS TRACKER
 
+## Cross-Cutting Progress Update — Mobile Homepage Motion Parity — 14 July 2026
+
+The bounded mobile motion parity checkpoint is implemented. Repository audit
+showed that narrow-width CSS forced process and criteria content into opaque,
+untransformed static state, while shared mobile animation ranges erased the
+intended sequence. A single grouped IntersectionObserver controller now owns
+phone/tablet normal motion, deterministic finalization and restoration; CSS
+uses only transform and opacity, with reduced motion kept as a separate
+immediate readable state.
+
+The dedicated semantic gate covers the six process cards, four criteria cards,
+simulator entrance, responsive configuration, observer cleanup, final state,
+reduced-motion separation, transport isolation, `mockOnly=true`, and zero AI
+network surface. In-app Chromium runtime covers 390x844, 768x1024, 1024x768,
+1280x800, and 1440x900, including slow/fast/reverse scroll, staggered
+intermediate values, final values, Back/Forward restoration, stable simulator
+dimensions, sticky navigation, and zero horizontal overflow. WebKit and true
+touch/reduced-motion emulation were unavailable; owner actual-device evidence
+is still required. This work changes no readiness percentage and opens no
+Stage 9, OpenAI, simulator, auth, persistence, or database scope. The next
+point is exactly `Owner actual-device review: Safari iPhone and Chrome Xiaomi
+tablet`.
+
 ## Cross-Cutting Progress Update — Homepage Refinement — 14 July 2026
 
 The bounded desktop-homepage navigation, scroll-animation, criteria, and
