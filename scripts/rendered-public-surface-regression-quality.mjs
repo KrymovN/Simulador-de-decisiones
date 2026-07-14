@@ -229,8 +229,8 @@ function runRenderedSurfaceSourceChecks(sources) {
   sourceIncludes(sources.home, '<HomeSimulator />', "Home keeps HomeSimulator mounted");
   sourceIncludes(sources.home, 'className="reference-cta-banner"', "Home keeps final CTA rendered");
   sourceIncludes(sources.homeSimulator, 'id="decision-input"', "HomeSimulator keeps stable textarea anchor");
-  sourceIncludes(sources.homeSimulator, "Simulación de decisiones disponible 24/7", "HomeSimulator keeps 24/7 decision simulation line");
-  sourceIncludes(sources.homeSimulator, "sin conexión todavía a IA real", "HomeSimulator keeps Real AI deferred copy");
+  sourceIncludes(sources.homeSimulator, "Vista previa determinista", "HomeSimulator keeps the concise deterministic preview line");
+  sourceIncludes(sources.homeSimulator, "IA real aún no conectada", "HomeSimulator keeps Real AI deferred copy");
   sourceIncludes(sources.dashboardLayout, "requireAuthenticatedDashboardSession", "Dashboard routes remain protected before placeholders render publicly");
   sourceIncludes(sources.dashboardHome, "Vista preparada", "Dashboard placeholder source remains prepared");
   sourceIncludes(sources.dashboardSecurity, "cuando exista auth productivo", "Dashboard security placeholder source remains prepared");

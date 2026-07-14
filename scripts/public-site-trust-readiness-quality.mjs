@@ -156,9 +156,9 @@ function runPositioningSourceChecks(sources) {
   sourceIncludes(sources.home, "trade-offs", "Home keeps tradeoffs positioning");
   sourceIncludes(sources.home, "Preview público con respuestas de ejemplo", "Home keeps demonstrative public state");
   sourceIncludes(sources.home, "la conexión con IA real todavía no está activada", "Home keeps Real AI deferred copy");
-  sourceIncludes(sources.homeSimulator, "Simulación de decisiones disponible 24/7", "HomeSimulator keeps 24/7 decision simulation line");
-  sourceIncludes(sources.homeSimulator, "modo demostrativo", "HomeSimulator keeps demo status");
-  sourceIncludes(sources.homeSimulator, "sin conexión todavía a IA real", "HomeSimulator avoids Real AI promise");
+  sourceIncludes(sources.homeSimulator, "Vista previa determinista", "HomeSimulator keeps deterministic preview status");
+  sourceIncludes(sources.homeSimulator, "IA real aún no conectada", "HomeSimulator avoids Real AI promise");
+  sourceIncludes(sources.homeSimulator, "MAX_SIMULATION_INPUT_LENGTH", "HomeSimulator keeps the bounded public input disclosure");
   sourceIncludes(sources.homeSimulator, "Simulación demostrativa; la conexión con IA real aún no está activada.", "Result copy keeps Real AI deferred truth boundary");
   sourceIncludes(sources.homeSimulator, "sin presentarse como predicción lista para producción", "HomeSimulator avoids production-readiness promise");
 }
@@ -307,7 +307,7 @@ async function runRuntimePublicPageChecks(baseUrl) {
       path: "/",
       includes: [
         "Preview público con respuestas de ejemplo",
-        "Simulación de decisiones disponible 24/7",
+        "Vista previa determinista",
         "conexión con IA real",
         "No una respuesta. Una simulación de futuros posibles.",
       ],

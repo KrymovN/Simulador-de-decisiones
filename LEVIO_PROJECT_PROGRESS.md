@@ -1,5 +1,24 @@
 # LEVIO PROJECT PROGRESS TRACKER
 
+## Cross-Cutting Progress Update — Homepage Refinement — 14 July 2026
+
+The bounded desktop-homepage navigation, scroll-animation, criteria, and
+simulator-presentation refinement is complete. Navigation now has five canonical
+destinations; semantic anchors, active state, sticky-safe landings and history
+restoration are verified; process cards reveal within context; criteria are
+visually stronger; and the deterministic simulator retains its existing
+contract inside a simplified accessible circular-control composition.
+
+`quality:homepage-owner-visual-remediation` passes 44/44. All 36 registered
+quality commands, TypeScript, lint, build, and diff checks pass. In-app Chromium
+checks at 1280/768/390 show no horizontal overflow or console errors and confirm
+login routing plus deterministic simulator validation/completion. Safari is
+explicitly unverified; the next point is `Owner Safari homepage review`.
+Passwordless login/registration UX work remains deferred. This cross-cutting
+work changes no project/V1 percentage, opens no OpenAI API integration, and
+leaves Stage 9 In Progress with readiness at 58% estimated and the public
+simulator deterministic with `mockOnly=true`.
+
 ## Cross-Cutting Progress Update — Interaction Hardening
 
 The bounded public/prepared-account interaction checkpoint is complete. A new

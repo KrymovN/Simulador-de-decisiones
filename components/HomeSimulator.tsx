@@ -487,7 +487,7 @@ export default function HomeSimulator() {
     <section className="decision-console" aria-label="Simulador inicial de decisión" ref={consoleRef}>
       <form onSubmit={handleSubmit}>
         <label htmlFor="decision-input">Describe la situación que quieres simular</label>
-        <div className="input-row">
+        <div className="input-row simulator-composition">
           <div className="decision-input-shell">
             <textarea
               id="decision-input"
@@ -502,23 +502,31 @@ export default function HomeSimulator() {
               placeholder={defaultInput}
               value={input}
             />
+          </div>
+          <div className="simulator-action-cluster">
             <button
-              aria-label={isListening ? "Detener dictado por voz" : "Iniciar dictado por voz"}
+              aria-label={isListening ? "Detener dictado por voz" : "Dictar situación"}
               aria-pressed={isListening}
               className={`voice-input-button ${isListening ? "is-listening" : ""}`}
               onClick={handleVoiceToggle}
+              title={isListening ? "Detener dictado" : "Dictar situación"}
               type="button"
             >
               <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
                 <path d="M12 15.25a4 4 0 0 0 4-4V6a4 4 0 1 0-8 0v5.25a4 4 0 0 0 4 4Z" />
                 <path d="M5.75 10.75v.5a6.25 6.25 0 0 0 12.5 0v-.5M12 17.5V21M9.25 21h5.5" />
               </svg>
-              <span>{isListening ? "Detener" : "Dictar"}</span>
+            </button>
+            <button
+              aria-label="Simular decisión"
+              className="primary-simulation-control"
+              disabled={isRunning}
+              type="submit"
+            >
+              <span>{isRunning ? "Simulando" : "Simular"}</span>
+              <small>{isRunning ? "escenarios" : "decisión"}</small>
             </button>
           </div>
-          <button disabled={isRunning} type="submit">
-            {isRunning ? "Simulando escenarios..." : "Simular decisión"}
-          </button>
         </div>
       </form>
 
@@ -529,7 +537,7 @@ export default function HomeSimulator() {
       >
         <span></span>
         <p>
-          {message || `Preview público: Simulación de decisiones disponible 24/7 en modo demostrativo, con respuestas de ejemplo y sin conexión todavía a IA real. Límite: ${MAX_SIMULATION_INPUT_LENGTH} caracteres.`}
+          {message || `Vista previa determinista · IA real aún no conectada · Máx. ${MAX_SIMULATION_INPUT_LENGTH} caracteres`}
         </p>
       </div>
 

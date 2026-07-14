@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { CSSProperties } from "react";
 import HomeSimulator from "../components/HomeSimulator";
 import HomepageAnchorLink from "../components/HomepageAnchorLink";
+import HomepageNavigation from "../components/HomepageNavigation";
 import LevioMark from "../components/LevioMark";
 
 const processSteps = [
@@ -30,15 +31,6 @@ const processSteps = [
     title: "Organiza criterios de decisión",
     copy: "Convierte el mapa en criterios claros para comparar opciones antes de actuar.",
   },
-];
-
-const navItems = [
-  { label: "Inicio", href: "#hero-title", active: true },
-  { label: "Simulador", href: "#decision-input" },
-  { label: "Escenarios", href: "#escenarios" },
-  { label: "Riesgos", href: "#motor" },
-  { label: "Ventajas", href: "#producto" },
-  { label: "Espacio local", href: "/dashboard" },
 ];
 
 const heroFeatures = [
@@ -130,9 +122,9 @@ const footerColumns = [
   {
     title: "Producto",
     links: [
-      { label: "Simulador", href: "#decision-input" },
-      { label: "Escenarios", href: "#escenarios" },
-      { label: "Riesgos", href: "#motor" },
+      { label: "Cómo funciona", href: "#como-funciona" },
+      { label: "Criterios", href: "#criterios" },
+      { label: "Simulador", href: "#simulador" },
     ],
   },
   {
@@ -181,29 +173,10 @@ export default function Home() {
           <LevioMark size="lg" />
           <span className="brand-name">levio.es</span>
         </Link>
-        <nav className="site-nav reference-nav" aria-label="Acceso principal">
-          {navItems.map((item) => (
-            item.href.startsWith("#") ? (
-              <HomepageAnchorLink
-                className={item.active ? "nav-active" : undefined}
-                href={item.href as `#${string}`}
-                key={item.label}
-              >
-                {item.label}
-              </HomepageAnchorLink>
-            ) : (
-              <Link className={item.active ? "nav-active" : undefined} href={item.href} key={item.label}>
-                {item.label}
-              </Link>
-            )
-          ))}
-          <Link className="nav-cta" href="/login">
-            Iniciar sesión
-          </Link>
-        </nav>
+        <HomepageNavigation />
       </header>
 
-      <section className="hero-section section-frame home-hero reference-hero" aria-labelledby="hero-title">
+      <section className="hero-section section-frame home-hero reference-hero" id="inicio" aria-labelledby="hero-title">
         <div className="hero-approved-background" aria-hidden="true">
           <Image
             className="hero-approved-background-image"
@@ -257,10 +230,10 @@ export default function Home() {
           </div>
 
           <div className="hero-actions home-hero-actions" aria-label="Accesos principales">
-            <HomepageAnchorLink className="button-link" href="#decision-input">
+            <HomepageAnchorLink className="button-link" href="#simulador">
               Comenzar simulación
             </HomepageAnchorLink>
-            <HomepageAnchorLink className="button-link secondary-button" href="#producto">
+            <HomepageAnchorLink className="button-link secondary-button" href="#como-funciona">
               Ver cómo funciona
             </HomepageAnchorLink>
           </div>
@@ -337,7 +310,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="reference-process" id="motor" aria-labelledby="process-title">
+      <section className="reference-process" id="como-funciona" aria-labelledby="process-title">
         <div className="reference-section-heading">
           <p className="eyebrow motion-heading-line" aria-label="Proceso de simulación">
             <MotionLetters text="Proceso de simulación" />
@@ -362,7 +335,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="reference-capabilities" id="producto" aria-labelledby="capabilities-title">
+      <section className="reference-capabilities" id="criterios" aria-labelledby="capabilities-title">
         <div className="reference-section-heading compact-heading criteria-heading">
           <p className="eyebrow" id="capabilities-title">Criterios que hacen comparables las opciones</p>
         </div>
@@ -381,7 +354,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="reference-workspace" id="escenarios" aria-labelledby="workspace-title">
+      <section className="reference-workspace" id="simulador" aria-labelledby="workspace-title">
         <div className="reference-workspace-heading">
           <p className="eyebrow">Área de trabajo levio.es</p>
           <h2 className="desktop-motion-heading" id="workspace-title" aria-label="Simula una decisión cuando estés listo.">
@@ -402,7 +375,7 @@ export default function Home() {
             <MotionLetters text="Levio.es te ayuda a explorar escenarios, riesgos y consecuencias antes de que actúes." />
           </p>
         </div>
-        <HomepageAnchorLink href="#decision-input">
+        <HomepageAnchorLink href="#simulador">
           Comenzar ahora
           <span aria-hidden="true">→</span>
         </HomepageAnchorLink>

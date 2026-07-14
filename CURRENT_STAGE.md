@@ -1,5 +1,24 @@
 # CURRENT STAGE
 
+## Homepage Visual-Functional Refinement Complete — 14 July 2026
+
+The bounded owner-directed homepage checkpoint is complete without opening a
+new Stage 9 substep. The signed-out header has five working destinations;
+semantic anchors and Back/Forward restoration land below the desktop sticky
+header; process and criteria presentation is readable at the intended scroll
+moment; and the deterministic simulator uses one integrated surface with
+accessible circular voice/submit controls and concise preview disclosure.
+
+The dedicated gate passes 44/44, all 36 registered quality gates pass, and
+TypeScript, lint, build, diff, console, route/action, deterministic simulator,
+and 1280/768/390 responsive browser checks pass. Safari evidence is absent, so
+the only next checkpoint is `Owner Safari homepage review`. The passwordless
+login/registration UX rewrite remains a separate deferred candidate. Stage 9
+remains In Progress at the existing adapter/evaluation boundary, readiness
+remains 58% estimated, and `/api/simulate` remains deterministic with
+`mockOnly=true`. No live OpenAI, auth, dashboard, persistence, or User Data
+Controls change was introduced.
+
 ## Cross-Cutting Public Interaction Hardening Complete — 13 July 2026
 
 The bounded visual/functional hardening checkpoint is complete without opening

@@ -1,5 +1,26 @@
 # LEVIO CURRENT STATE
 
+## Current Homepage Navigation and Simulator State — 14 July 2026
+
+The public signed-out homepage now has one canonical five-item navigation,
+working semantic section anchors, active-section semantics, sticky-safe desktop
+landings, and deterministic history restoration. The six-step process completes
+its reveal while context remains visible; reduced motion is final-state; the
+criteria title/cards have stronger hierarchy and separation; and the simulator
+is an integrated one-panel composition with a 62px voice action, 132px primary
+action, clear accessible names, running disabled-state, and shortened truthful
+preview copy. Its input limit, `/api/simulate` request, validation, and
+deterministic completion behavior are unchanged.
+
+The new 44/44 gate and all 36 registered quality commands pass together with
+TypeScript, lint, build, and diff checks. In-app Chromium runtime evidence
+passes at 1280/768/390 with zero horizontal overflow and no console warnings or
+errors. Safari has not been verified and `Owner Safari homepage review` is the
+next required evidence. The passwordless login/registration redesign remains
+deferred. Stage 9 remains In Progress, readiness remains 58% estimated,
+`/api/simulate` remains `mockOnly=true`, and no OpenAI request or product AI,
+auth, dashboard, persistence, or user-data runtime was added.
+
 ## Current Cross-Cutting Interaction State — 13 July 2026
 
 Audited product controls now resolve to a working route/action or present a

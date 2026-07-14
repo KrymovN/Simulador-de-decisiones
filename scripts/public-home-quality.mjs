@@ -7,6 +7,7 @@ const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
 const nextBin = join(rootDir, "node_modules", "next", "dist", "bin", "next");
 const buildIdPath = join(rootDir, ".next", "BUILD_ID");
 const pagePath = join(rootDir, "app", "page.tsx");
+const navigationPath = join(rootDir, "components", "HomepageNavigation.tsx");
 const simulatorPath = join(rootDir, "components", "HomeSimulator.tsx");
 const cssPath = join(rootDir, "app", "globals.css");
 const packagePath = join(rootDir, "package.json");
@@ -139,19 +140,20 @@ function runMobileResponsiveChecks(pageSource, simulatorSource, css) {
   sourceIncludes(css, "prefers-reduced-motion: reduce", "Reduced-motion mode is supported");
 
   sourceIncludes(pageSource, 'id="hero-title"', "Hero title anchor remains present");
-  sourceIncludes(pageSource, 'href="#decision-input"', "Primary simulator CTA points to simulator input");
-  sourceIncludes(pageSource, 'id="escenarios"', "Public simulator workspace section remains present");
-  sourceIncludes(pageSource, 'id="motor"', "Process section remains present");
-  sourceIncludes(pageSource, 'id="producto"', "Product/capabilities section remains present");
+  sourceIncludes(pageSource, 'href="#simulador"', "Primary simulator CTA points to the canonical simulator section");
+  sourceIncludes(pageSource, 'id="simulador"', "Public simulator workspace section remains present");
+  sourceIncludes(pageSource, 'id="como-funciona"', "Process section remains present");
+  sourceIncludes(pageSource, 'id="criterios"', "Product/capabilities section remains present");
   sourceIncludes(pageSource, "<HomeSimulator />", "Home keeps public simulator mounted");
   sourceIncludes(simulatorSource, 'id="decision-input"', "Simulator textarea id remains stable");
   sourceIncludes(simulatorSource, "maxLength={MAX_SIMULATION_INPUT_LENGTH}", "Simulator input length remains bounded");
 }
 
-function runAccessibilityChecks(pageSource, simulatorSource) {
+function runAccessibilityChecks(pageSource, navigationSource, simulatorSource) {
   sourceIncludes(pageSource, 'aria-labelledby="hero-title"', "Hero section is labelled");
   sourceIncludes(pageSource, 'aria-label="Accesos principales"', "Hero CTA group has accessible label");
-  sourceIncludes(pageSource, 'aria-label="Acceso principal"', "Primary nav has accessible label");
+  sourceIncludes(pageSource, "<HomepageNavigation />", "Homepage mounts the canonical navigation");
+  sourceIncludes(navigationSource, 'aria-label="Acceso principal"', "Primary nav has accessible label");
   sourceIncludes(pageSource, 'aria-label="Señales del producto"', "Trust signal list has accessible label");
   sourceIncludes(pageSource, 'aria-labelledby="workspace-title"', "Workspace section is labelled");
 
@@ -162,7 +164,7 @@ function runAccessibilityChecks(pageSource, simulatorSource) {
   sourceIncludes(simulatorSource, 'Simular decisión', "Submit button has clear text");
   sourceIncludes(simulatorSource, 'aria-live={errorState ? "assertive" : "polite"}', "Status region announces state changes");
   sourceIncludes(simulatorSource, 'role={errorState ? "alert" : "status"}', "Error/success states are not visual-only");
-  sourceIncludes(simulatorSource, 'aria-label={isListening ? "Detener dictado por voz" : "Iniciar dictado por voz"}', "Voice action has clear aria label");
+  sourceIncludes(simulatorSource, 'aria-label={isListening ? "Detener dictado por voz" : "Dictar situación"}', "Voice action has clear aria label");
   sourceIncludes(simulatorSource, "aria-pressed={isListening}", "Voice toggle exposes pressed state");
   sourceIncludes(simulatorSource, 'aria-label="Etapas de simulación del motor"', "Thinking stages have accessible label");
   sourceIncludes(simulatorSource, 'aria-label="Acciones posteriores a la simulación"', "Post-result actions have accessible label");
@@ -228,9 +230,9 @@ async function runRuntimeHtmlChecks(baseUrl) {
 
     htmlIncludes(html, 'id="hero-title"', "Runtime HTML includes hero title");
     htmlIncludes(html, 'id="decision-input"', "Runtime HTML includes simulator textarea");
-    htmlIncludes(html, 'id="escenarios"', "Runtime HTML includes simulator workspace");
-    htmlIncludes(html, 'id="motor"', "Runtime HTML includes process section");
-    htmlIncludes(html, 'id="producto"', "Runtime HTML includes product section");
+    htmlIncludes(html, 'id="simulador"', "Runtime HTML includes simulator workspace");
+    htmlIncludes(html, 'id="como-funciona"', "Runtime HTML includes process section");
+    htmlIncludes(html, 'id="criterios"', "Runtime HTML includes product section");
     htmlIncludes(html, "Comenzar simulación", "Runtime HTML includes primary CTA");
     htmlIncludes(html, "Ver cómo funciona", "Runtime HTML includes secondary CTA");
     htmlIncludes(html, "Simular decisión", "Runtime HTML includes simulator submit action");
@@ -265,12 +267,13 @@ function printSummary() {
 
 try {
   const pageSource = read(pagePath);
+  const navigationSource = read(navigationPath);
   const simulatorSource = read(simulatorPath);
   const css = read(cssPath);
   const packageSource = read(packagePath);
 
   runMobileResponsiveChecks(pageSource, simulatorSource, css);
-  runAccessibilityChecks(pageSource, simulatorSource);
+  runAccessibilityChecks(pageSource, navigationSource, simulatorSource);
   runPerformanceSafetyChecks(pageSource, simulatorSource, packageSource);
   await withServer(runRuntimeHtmlChecks);
 } catch (error) {

@@ -41,7 +41,7 @@ export default function HomepageAnchorLink({
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     target.scrollIntoView({
       behavior: reducedMotion ? "auto" : "smooth",
-      block: href === "#decision-input" ? "center" : "start",
+      block: "start",
     });
   }
 

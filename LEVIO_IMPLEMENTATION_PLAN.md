@@ -1,5 +1,25 @@
 # LEVIO IMPLEMENTATION PLAN
 
+## Homepage Navigation and Simulator Presentation Checkpoint — 14 July 2026
+
+A single bounded visual-functional homepage substep is complete before live
+OpenAI API verification. The public signed-out navigation is reduced to five
+canonical destinations with semantic anchors, active state, sticky-safe
+landing, and correct Back/Forward restoration. Process reveals finish earlier,
+criteria receive clearer hierarchy and contrast, and the simulator keeps its
+existing deterministic submission contract inside a simpler one-panel layout
+with accessible circular controls and shorter truthful status copy.
+
+This checkpoint is not a Stage 9 substep and changes no V1 percentage. The
+dedicated 44-check gate, all 36 registered quality gates, TypeScript, lint,
+build, diff checks, and in-app browser checks at 1280/768/390 pass. Safari was
+not verified and remains the owner acceptance boundary. A future
+`Passwordless Login and Registration UX Rewrite` remains deferred and was not
+mixed into this work. `/api/simulate` remains `mockOnly=true`; OpenAI transport,
+Prompt Context and Decision Engine bridges, auth, dashboard, persistence, and
+User Data Controls remain unchanged. The next point is exactly `Owner Safari
+homepage review`.
+
 ## Cross-Cutting Interaction Hardening Checkpoint — 13 July 2026
 
 A bounded product-surface checkpoint is complete before any live OpenAI API

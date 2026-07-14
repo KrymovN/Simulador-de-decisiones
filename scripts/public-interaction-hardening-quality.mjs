@@ -46,6 +46,7 @@ const sourceFiles = uiRoots.flatMap(collectSourceFiles);
 const sources = new Map(sourceFiles.map((path) => [relative(rootDir, path), read(path)]));
 const allUiSource = Array.from(sources.values()).join("\n");
 const home = sources.get("app/page.tsx") ?? "";
+const navigation = sources.get("components/HomepageNavigation.tsx") ?? "";
 const simulator = sources.get("components/HomeSimulator.tsx") ?? "";
 const unavailable = sources.get("components/UnavailableAction.tsx") ?? "";
 const dashboardHome = sources.get("app/dashboard/page.tsx") ?? "";
@@ -119,7 +120,7 @@ sourceIncludes(notFound, 'href="/"', "404 links back to home");
 sourceIncludes(notFound, 'href="/#decision-input"', "404 links to simulator");
 
 sourceIncludes(simulator, 'key={`${scenario.label}-${scenario.title}`}', "Scenario rendering uses stable unique composite keys");
-sourceIncludes(simulator, 'aria-label={isListening ? "Detener dictado por voz" : "Iniciar dictado por voz"}', "Voice icon control has an accessible name");
+sourceIncludes(simulator, 'aria-label={isListening ? "Detener dictado por voz" : "Dictar situación"}', "Voice icon control has an accessible name");
 sourceIncludes(simulator, 'fetch("/api/simulate"', "Simulator keeps its approved public endpoint");
 sourceIncludes(simulateRoute, 'const SIMULATE_API_CONTRACT_VERSION = "simulate-api-v1-mock"', "Simulator contract remains mock-compatible");
 sourceIncludes(simulateRoute, "mockOnly: true", "Simulator remains mockOnly");
@@ -127,7 +128,7 @@ sourceIncludes(simulateRoute, "mockOnly: true", "Simulator remains mockOnly");
 sourceIncludes(home, 'href: "/privacy-policy"', "Public footer keeps privacy link");
 sourceIncludes(home, 'href: "/terms"', "Public footer keeps terms link");
 sourceIncludes(home, 'href: "mailto:hola@levio.es"', "Public footer keeps contact link");
-sourceIncludes(home, 'href="/login"', "Public auth CTA keeps login target");
+sourceIncludes(navigation, 'href="/login"', "Public auth CTA keeps login target");
 sourceIncludes(home, 'href: "/dashboard"', "Public workspace CTA keeps protected dashboard target");
 
 const literalHrefs = Array.from(allUiSource.matchAll(/href\s*=\s*["']([^"']+)["']/g), (match) => match[1]);

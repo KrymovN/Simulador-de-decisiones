@@ -1,5 +1,29 @@
 # PROJECT CONTEXT
 
+## Desktop Homepage Navigation and Simulator Refinement — 14 July 2026
+
+The owner-directed homepage refinement checkpoint is complete as bounded
+cross-cutting product maintenance, independent of Stage 9. The signed-out
+header now exposes exactly `Inicio`, `Cómo funciona`, `Criterios`, `Simulador`,
+and `Iniciar sesión`; duplicate and low-value entries were removed. Semantic
+section anchors, sticky-header-safe alignment, active-section state, and
+deterministic Back/Forward restoration are implemented. All six process cards
+now reveal while their heading remains in context, reduced-motion users receive
+the final state, criteria hierarchy and card separation are stronger, and the
+simulator is one integrated composition with accessible circular voice and
+primary actions plus a concise truthful deterministic-preview disclosure.
+
+The dedicated gate passes 44/44 and all 36 registered `quality:*` commands,
+TypeScript, lint, build, and diff checks pass. In-app Chromium evidence covers
+navigation, history, login routing, simulator validation/completion, console
+health, and overflow-free 1280/768/390 layouts. Safari compatibility is not
+claimed: `Owner Safari homepage review` is the required next checkpoint.
+Passwordless login and registration copy/flow redesign is deferred as a
+separate candidate substep. `/api/simulate` remains deterministic and
+`mockOnly=true`; no OpenAI call, Stage 9 bridge, auth, dashboard, persistence,
+or User Data Controls scope was opened. Stage 9 remains In Progress and the 58%
+estimated V1 readiness is unchanged.
+
 ## Cross-Cutting Visual and Functional Interaction Hardening — 13 July 2026
 
 The public and prepared account surfaces have completed a bounded interaction
