@@ -8,35 +8,43 @@ const MAX_ENHANCED_WIDTH = 1024;
 
 type MotionConfig = {
   distance: string;
-  duration: string;
+  narrativeDuration: string;
+  narrativeStagger: string;
   rootMargin: string;
-  stagger: string;
+  standardDuration: string;
+  standardStagger: string;
 };
 
 function getMotionConfig(width: number): MotionConfig {
   if (width <= 480) {
     return {
-      distance: "18px",
-      duration: "520ms",
-      rootMargin: "0px 0px -16% 0px",
-      stagger: "90ms",
+      distance: "36px",
+      narrativeDuration: "820ms",
+      narrativeStagger: "145ms",
+      rootMargin: "0px 0px -30% 0px",
+      standardDuration: "680ms",
+      standardStagger: "115ms",
     };
   }
 
   if (width <= 860) {
     return {
-      distance: "22px",
-      duration: "560ms",
-      rootMargin: "0px 0px -18% 0px",
-      stagger: "105ms",
+      distance: "34px",
+      narrativeDuration: "760ms",
+      narrativeStagger: "130ms",
+      rootMargin: "0px 0px -26% 0px",
+      standardDuration: "650ms",
+      standardStagger: "110ms",
     };
   }
 
   return {
-    distance: "24px",
-    duration: "600ms",
-    rootMargin: "0px 0px -20% 0px",
-    stagger: "115ms",
+    distance: "30px",
+    narrativeDuration: "720ms",
+    narrativeStagger: "120ms",
+    rootMargin: "0px 0px -22% 0px",
+    standardDuration: "620ms",
+    standardStagger: "105ms",
   };
 }
 
@@ -51,28 +59,68 @@ export default function HomepageMotionController() {
     const groups = Array.from(shell.querySelectorAll<HTMLElement>(GROUP_SELECTOR));
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const revealedGroups = new WeakSet<HTMLElement>();
+    const settleTimers = new Map<HTMLElement, number>();
     let observer: IntersectionObserver | null = null;
     let resizeFrame = 0;
     let scrollFrame = 0;
 
-    function revealGroup(group: HTMLElement) {
-      group.dataset.homeMotionState = "visible";
+    function settleGroup(group: HTMLElement) {
+      const timer = settleTimers.get(group);
+      if (timer) {
+        window.clearTimeout(timer);
+        settleTimers.delete(group);
+      }
+      group.dataset.homeMotionState = "settled";
       revealedGroups.add(group);
       observer?.unobserve(group);
     }
 
-    function prepareGroup(group: HTMLElement) {
+    function revealGroup(group: HTMLElement, immediate = false) {
+      if (immediate) {
+        settleGroup(group);
+        return;
+      }
+
+      group.dataset.homeMotionState = "visible";
+      revealedGroups.add(group);
+      observer?.unobserve(group);
+
       const items = Array.from(group.querySelectorAll<HTMLElement>(ITEM_SELECTOR));
+      const duration = Number.parseFloat(group.style.getPropertyValue("--home-motion-group-duration")) || 680;
+      const stagger = Number.parseFloat(group.style.getPropertyValue("--home-motion-group-stagger")) || 115;
+      const totalDuration = duration + Math.max(0, items.length - 1) * stagger + 100;
+      const timer = window.setTimeout(() => settleGroup(group), totalDuration);
+      settleTimers.set(group, timer);
+    }
+
+    function prepareGroup(group: HTMLElement, config: MotionConfig) {
+      const items = Array.from(group.querySelectorAll<HTMLElement>(ITEM_SELECTOR));
+      const narrative = group.dataset.homeMotionProfile === "narrative";
+
+      group.style.setProperty(
+        "--home-motion-group-duration",
+        narrative ? config.narrativeDuration : config.standardDuration,
+      );
+      group.style.setProperty(
+        "--home-motion-group-stagger",
+        narrative ? config.narrativeStagger : config.standardStagger,
+      );
 
       items.forEach((item, index) => {
+        const direction = item.dataset.homeMotionDirection ?? "rise";
         item.style.setProperty("--home-motion-order", String(index));
+        item.style.setProperty(
+          "--home-motion-x",
+          direction === "left" ? `-${config.distance}` : direction === "right" ? config.distance : "0px",
+        );
+        item.style.setProperty("--home-motion-y", direction === "rise" ? config.distance : "8px");
       });
 
       const rect = group.getBoundingClientRect();
-      const alreadyReached = rect.top <= window.innerHeight * 0.9;
+      const restoredPastGroup = window.scrollY > 0 && rect.top <= window.innerHeight * 0.62;
 
-      if (revealedGroups.has(group) || alreadyReached) {
-        revealGroup(group);
+      if (revealedGroups.has(group) || restoredPastGroup) {
+        settleGroup(group);
       } else {
         group.dataset.homeMotionState = "pending";
       }
@@ -89,7 +137,7 @@ export default function HomepageMotionController() {
 
       if (reducedMotion.matches) {
         shell.classList.add("home-motion-reduced");
-        groups.forEach(revealGroup);
+        groups.forEach((group) => settleGroup(group));
         return;
       }
 
@@ -101,21 +149,21 @@ export default function HomepageMotionController() {
       }
 
       if (!("IntersectionObserver" in window)) {
-        groups.forEach(revealGroup);
+        groups.forEach((group) => settleGroup(group));
         return;
       }
 
       const config = getMotionConfig(window.innerWidth);
       shell.style.setProperty("--home-motion-distance", config.distance);
-      shell.style.setProperty("--home-motion-duration", config.duration);
-      shell.style.setProperty("--home-motion-stagger", config.stagger);
-      groups.forEach(prepareGroup);
+      groups.forEach((group) => prepareGroup(group, config));
       shell.classList.add("home-motion-enhanced");
 
       observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            if (entry.isIntersecting || entry.boundingClientRect.top < 0) {
+            if (entry.boundingClientRect.top < 0) {
+              revealGroup(entry.target as HTMLElement, true);
+            } else if (entry.isIntersecting) {
               revealGroup(entry.target as HTMLElement);
             }
           });
@@ -142,7 +190,7 @@ export default function HomepageMotionController() {
             group.dataset.homeMotionState === "pending" &&
             group.getBoundingClientRect().bottom < 0
           ) {
-            revealGroup(group);
+            revealGroup(group, true);
           }
         });
       });
@@ -156,8 +204,8 @@ export default function HomepageMotionController() {
     function restoreVisibleState() {
       requestAnimationFrame(() => {
         groups.forEach((group) => {
-          if (group.getBoundingClientRect().top <= window.innerHeight * 0.9) {
-            revealGroup(group);
+          if (group.getBoundingClientRect().top <= window.innerHeight * 0.62) {
+            revealGroup(group, true);
           }
         });
       });
@@ -180,6 +228,8 @@ export default function HomepageMotionController() {
       clearObserver();
       cancelAnimationFrame(resizeFrame);
       cancelAnimationFrame(scrollFrame);
+      settleTimers.forEach((timer) => window.clearTimeout(timer));
+      settleTimers.clear();
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("scroll", finalizeSkippedGroups);
       window.removeEventListener("pageshow", restoreVisibleState);
@@ -187,8 +237,10 @@ export default function HomepageMotionController() {
       reducedMotion.removeEventListener("change", configureMotion);
       shell.classList.remove("home-motion-enhanced", "home-motion-reduced");
       shell.style.removeProperty("--home-motion-distance");
-      shell.style.removeProperty("--home-motion-duration");
-      shell.style.removeProperty("--home-motion-stagger");
+      groups.forEach((group) => {
+        group.style.removeProperty("--home-motion-group-duration");
+        group.style.removeProperty("--home-motion-group-stagger");
+      });
     };
   }, []);
 

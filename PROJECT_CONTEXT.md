@@ -1,5 +1,28 @@
 # PROJECT CONTEXT
 
+## Safari iPhone Homepage Motion and Visual Emphasis Refinement — 14 July 2026
+
+The owner-directed homepage refinement is complete as bounded cross-cutting
+product maintenance before live OpenAI verification. At phone and tablet
+widths, the decision heading and first four cards, three future branches,
+criteria, and simulator now use four coherent narrative groups with later
+viewport entry, readable left/right/rise direction, longer bounded sequencing,
+one-time settled state, fast-scroll finalization, and restoration handling.
+Nested letter timelines no longer compete with the grouped mobile narrative;
+reduced motion still renders the immediate final state.
+
+Gold separation is stronger across decision, future, process, criteria, and
+simulator surfaces. The former oversized circular submit control is now a
+compact accessible pill, with a smaller separate voice control; simulator
+behavior and copy are unchanged. The dedicated 37/37 gate and the complete 38-
+command quality catalog pass with TypeScript, lint, build, and diff checks.
+In-app Chromium evidence covers staged 390x844 entry, fast/reverse scroll, and
+overflow-free 430x932, 768x1024, and 1280x800 layouts. This is not Safari
+evidence. `/api/simulate` remains deterministic and `mockOnly=true`, OpenAI
+requests remain zero, Stage 9 remains In Progress, and the 58% readiness
+estimate is unchanged. The next point is exactly `Owner actual-device Safari
+iPhone homepage review`.
+
 ## Desktop Homepage Navigation and Simulator Refinement — 14 July 2026
 
 The owner-directed homepage refinement checkpoint is complete as bounded

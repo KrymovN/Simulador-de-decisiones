@@ -58,7 +58,7 @@ includes(css, ".reference-process-card:nth-child(6)", "All six process cards hav
 includes(css, "entry 8% cover 26%", "Final process card completes in the early viewport range");
 includes(css, "@media (prefers-reduced-motion: reduce)", "Reduced-motion boundary remains present");
 includes(css, "animation: none !important", "Reduced motion shows process cards without reveal animation");
-includes(css, "border-color: rgba(255, 211, 106, 0.48)", "Process and criteria cards have stronger gold separation");
+includes(css, "border-color: rgba(255, 211, 106, 0.62)", "Process and criteria cards have stronger gold separation");
 includes(css, "font-size: clamp(1.22rem, 1.75vw, 1.64rem)", "Criteria title has section-level hierarchy");
 
 includes(simulator, 'className="input-row simulator-composition"', "Simulator uses one integrated composition");
@@ -67,6 +67,7 @@ includes(simulator, 'aria-label={isListening ? "Detener dictado por voz" : "Dict
 excludes(simulator, '<span>{isListening ? "Detener" : "Dictar"}</span>', "Persistent DICTAR label is removed");
 includes(simulator, 'aria-label="Simular decisión"', "Primary simulator control has an accessible name");
 includes(simulator, 'className="primary-simulation-control"', "Primary simulator control has dedicated semantic styling");
+includes(css, "border-radius: 999px", "Primary simulator control uses the approved compact pill silhouette");
 includes(simulator, "Vista previa determinista · IA real aún no conectada", "Short deterministic preview disclosure remains");
 includes(simulator, "MAX_SIMULATION_INPUT_LENGTH", "Simulator preserves the approved input limit");
 includes(simulator, 'fetch("/api/simulate"', "Simulator preserves the public API endpoint");

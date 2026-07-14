@@ -487,6 +487,7 @@ export default function HomeSimulator() {
     <section
       className="decision-console"
       data-home-motion-item
+      data-home-motion-direction="rise"
       aria-label="Simulador inicial de decisión"
       ref={consoleRef}
     >

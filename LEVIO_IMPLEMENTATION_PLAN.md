@@ -1,5 +1,23 @@
 # LEVIO IMPLEMENTATION PLAN
 
+## Safari iPhone Homepage Refinement Checkpoint — 14 July 2026
+
+The bounded visual checkpoint before live OpenAI verification is complete.
+Decision intelligence, future branches, criteria, and simulator are now four
+coherent phone/tablet narrative groups with later entry, explicit viewer-left,
+viewer-right, and rise directions, readable bounded timing, deterministic
+settling, fast-scroll completion, and history/visibility restoration. Reduced
+motion remains an immediate final-state branch. Richer gold separation and a
+compact pill-shaped simulator action improve visual hierarchy without changing
+navigation, public simulator behavior, or product contracts.
+
+The dedicated 37-check gate, all 38 quality scripts, TypeScript, lint, build,
+and diff checks pass. In-app Chromium provides the responsive and motion
+evidence; it is not a Safari claim. Stage 9 remains In Progress at its existing
+adapter/evaluation boundary, readiness remains 58% estimated, `/api/simulate`
+remains deterministic and `mockOnly=true`, and OpenAI requests remain zero.
+The next point is exactly `Owner actual-device Safari iPhone homepage review`.
+
 ## Mobile Homepage Motion Parity Checkpoint — 14 July 2026
 
 The bounded mobile visual/runtime remediation is complete before live OpenAI

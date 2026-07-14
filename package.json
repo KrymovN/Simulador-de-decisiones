@@ -43,7 +43,8 @@
     "quality:rendered-public-surface-regression": "node scripts/rendered-public-surface-regression-quality.mjs",
     "quality:public-interaction-hardening": "node scripts/public-interaction-hardening-quality.mjs",
     "quality:homepage-owner-visual-remediation": "node scripts/homepage-owner-visual-remediation-quality.mjs",
-    "quality:mobile-homepage-motion-parity": "node scripts/mobile-homepage-motion-parity-quality.mjs"
+    "quality:mobile-homepage-motion-parity": "node scripts/mobile-homepage-motion-parity-quality.mjs",
+    "quality:homepage-safari-iphone-refinement": "node scripts/homepage-safari-iphone-refinement-quality.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",

@@ -1,5 +1,26 @@
 # CURRENT STAGE
 
+## Safari iPhone Homepage Refinement Complete — 14 July 2026
+
+The bounded homepage motion-readability and visual-emphasis refinement is
+complete without opening another Stage 9 substep. Four owner-reviewed mobile
+narratives now enter later and visibly sequence their heading, cards, criteria,
+and simulator elements from explicit left/right/rise directions before
+releasing to a stable settled state. Fast scroll, reverse scroll, restoration,
+and reduced motion remain fail-safe and readable. Gold hierarchy is stronger,
+the simulator panel is clearer, and its primary action is a compact pill rather
+than an oversized circle; control semantics and deterministic behavior did not
+change.
+
+The dedicated gate passes 37/37, all 38 registered quality commands pass, and
+TypeScript, lint, build, and diff checks pass. In-app Chromium verifies staged
+390x844 motion and overflow-free 430x932, 768x1024, and 1280x800 layouts. It
+does not establish WebKit/Safari acceptance. Stage 9 stays In Progress,
+readiness stays 58% estimated, `/api/simulate` stays `mockOnly=true`, and no
+OpenAI request, AI bridge, auth, dashboard, persistence, or database change was
+introduced. The next point is exactly `Owner actual-device Safari iPhone
+homepage review`.
+
 ## Mobile Homepage Motion Parity Hardening Complete — 14 July 2026
 
 The bounded owner-directed mobile motion remediation is complete without

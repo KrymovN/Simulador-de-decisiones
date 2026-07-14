@@ -1,5 +1,26 @@
 # LEVIO PROJECT PROGRESS TRACKER
 
+## Cross-Cutting Progress Update — Safari iPhone Homepage Refinement — 14 July 2026
+
+The bounded owner-directed homepage motion and emphasis refinement is
+implemented. The former phone trigger could finalize sections around 90% of
+viewport height before meaningful exposure, all entrances shared a subtle
+vertical direction, and adjacent headings/cards used disconnected groups.
+Those zones now use four narrative compositions, a 62% restoration boundary,
+30% phone observer inset, 820ms/145ms narrative timing, explicit directional
+offsets, and a bounded visible-to-settled lifecycle. Gold card/simulator
+contrast is stronger and the giant circular simulator action is replaced by a
+compact pill without changing its action or accessible name.
+
+`quality:homepage-safari-iphone-refinement` passes 37/37 and all 38 registered
+quality commands, TypeScript, lint, build, and diff checks pass. In-app
+Chromium confirms distinct pending/intermediate/final values at 390x844,
+fast/reverse finalization, and zero horizontal overflow at 390x844, 430x932,
+768x1024, and 1280x800. WebKit/Safari remains unverified. This maintenance
+changes no readiness percentage and opens no OpenAI, Stage 9 bridge, simulator
+contract, auth, persistence, or database scope. The next point is exactly
+`Owner actual-device Safari iPhone homepage review`.
+
 ## Cross-Cutting Progress Update — Mobile Homepage Motion Parity — 14 July 2026
 
 The bounded mobile motion parity checkpoint is implemented. Repository audit

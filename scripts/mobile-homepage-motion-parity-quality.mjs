@@ -53,7 +53,7 @@ includes(controller, "if (width <= 860)", "Tablet portrait has bounded configura
 includes(controller, "MAX_ENHANCED_WIDTH = 1024", "Tablet landscape remains inside enhanced motion");
 includes(controller, "rootMargin: config.rootMargin", "Observer trigger adapts by viewport");
 includes(controller, "revealedGroups", "One-time reveal state prevents irritating replay");
-includes(controller, 'group.dataset.homeMotionState = "visible"', "Every observed group has a deterministic final state");
+includes(controller, 'group.dataset.homeMotionState = "settled"', "Every observed group has a deterministic final state");
 excludes(controller, "navigator.userAgent", "Motion does not use user-agent sniffing");
 check(
   "Touch and coarse pointer do not disable normal motion",
@@ -78,11 +78,12 @@ check(
 
 includes(parityCss, "@media (max-width: 1024px)", "Responsive parity CSS covers phone and tablet");
 includes(parityCss, '[data-home-motion-state="pending"]', "Normal motion has a visible intermediate pending state");
-includes(parityCss, "opacity: 0.08 !important", "Pending opacity progression remains noticeable");
+includes(parityCss, "opacity: 0.14 !important", "Pending opacity progression remains noticeable");
 includes(parityCss, "translate3d", "Motion uses compositor-friendly transforms");
 includes(parityCss, '[data-home-motion-state="visible"]', "Normal motion has an explicit final state");
+includes(parityCss, '[data-home-motion-state="settled"]', "Normal motion releases to an explicit settled state");
 includes(parityCss, "opacity: 1 !important", "Final state is readable");
-includes(parityCss, "--home-motion-order", "Items retain a sequential stagger");
+includes(parityCss, "--home-motion-group-stagger", "Items retain a sequential stagger");
 includes(parityCss, "@media (prefers-reduced-motion: reduce)", "Reduced motion is a separate CSS contract");
 includes(parityCss, "transition: none !important", "Reduced motion removes staggered movement");
 check(

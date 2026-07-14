@@ -1,5 +1,24 @@
 # LEVIO CURRENT STATE
 
+## Current Safari iPhone Homepage Refinement State — 14 July 2026
+
+The homepage now has a dedicated phone/tablet narrative reveal contract for
+the decision-intelligence, future-branch, criteria, and simulator zones. Each
+zone uses one grouped observer target, explicit left/right/rise item direction,
+later viewport entry, longer bounded duration/stagger, and an explicit settled
+state that removes animation work after completion. Pending content remains
+readable, nested per-letter timelines cannot conflict with the group reveal,
+and fast/reverse/restoration/reduced-motion paths end in the same final state.
+
+Decision, future, process, and criteria cards use a stronger gold edge and text
+hierarchy. The simulator uses a richer framed panel, a 176px phone / 188px
+desktop pill submit action, and a smaller independently named microphone
+control. No simulator behavior, input limit, API contract, or product copy was
+changed. Deterministic repository checks pass, while browser evidence is from
+in-app Chromium rather than Safari. No OpenAI request or Stage 9 runtime work
+was performed; readiness remains 58% estimated. Required next evidence is
+exactly `Owner actual-device Safari iPhone homepage review`.
+
 ## Current Mobile Homepage Motion State — 14 July 2026
 
 Phone and tablet homepage motion now uses one progressive-enhancement
