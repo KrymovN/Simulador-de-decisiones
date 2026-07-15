@@ -1,5 +1,24 @@
 # PROJECT CONTEXT
 
+## Bounded Public Homepage One-Time Assembly Refinement — 15 July 2026
+
+The owner follow-up restores restrained motion inside the approved minimal
+homepage without restoring cosmic graphics, icons, glow, excess gold, or
+narrative clutter. One homepage-only controller owns monotonic assembly for
+the hero, three approved preview signals, opposing section headings, the six
+right-to-left process cards, four text capability cards, and the three-cluster
+final CTA headline. Completed content is unobserved and never returned to its
+initial state; reduced motion and restoration expose the stable final layout.
+
+The scoped visual layer also refines the simulator label/counter, textarea,
+voice control, and monochrome submit control. The `HomeSimulator` API,
+validation, accessibility, fail-close, and save behavior are unchanged. Footer
+positioning uses `Sistema de simulación de decisiones para explorar escenarios,
+riesgos y consecuencias antes de actuar.` No live provider, product AI bridge,
+auth, dashboard, Supabase, privacy, retention, export/deletion, Decision Engine,
+or Stage 9 scope was opened; the next evidence remains owner actual-device
+Safari iPhone homepage review.
+
 ## Bounded Public Homepage Visual Simplification — 15 July 2026
 
 The owner-provided final visual reference is implemented as a homepage-only

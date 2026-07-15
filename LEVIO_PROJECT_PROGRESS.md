@@ -1,5 +1,24 @@
 # LEVIO PROJECT PROGRESS TRACKER
 
+## Cross-Cutting Progress Update — Homepage One-Time Assembly — 15 July 2026
+
+The bounded homepage refinement is implemented. Hero and preview respond once
+to the first downward scroll; process/capability headings converge from
+opposite sides; process cards visibly stage from rightmost `06` to leftmost
+`01`; capability cards remain text-only; and the final CTA headline assembles
+from three restrained clusters. The completion registry, observer cleanup,
+fast-scroll geometry, background-safe batching, and reduced-motion branch all
+resolve to the same stable final state without reverse disassembly.
+
+The simulator field composition now has a quieter counter, softer textarea,
+circular microphone, and monochrome pill submit action. Its functional
+contracts remain unchanged. Footer copy uses `Sistema de simulación de
+decisiones para explorar escenarios, riesgos y consecuencias antes de actuar.`
+Repository gates and Chromium checks pass, including staged 1440×900 behavior,
+reverse scroll, reduced motion, and viewport-width containment. This is
+cross-cutting maintenance only: Stage 9/readiness remain unchanged, OpenAI
+requests remain zero, and actual-device Safari iPhone review is still next.
+
 ## Cross-Cutting Progress Update — Bounded Homepage Visual Simplification — 15 July 2026
 
 The public-home simplification substep is complete without a new Stage. The

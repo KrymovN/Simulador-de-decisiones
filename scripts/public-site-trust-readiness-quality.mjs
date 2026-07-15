@@ -150,7 +150,7 @@ async function withServer(run) {
 }
 
 function runPositioningSourceChecks(sources) {
-  sourceIncludes(sources.home, "Un motor de simulación de decisiones, no un asistente de IA.", "Home keeps Decision Simulation Engine positioning");
+  sourceIncludes(sources.home, "Un sistema de simulación de decisiones, no un asistente de IA.", "Home keeps Decision Simulation Engine positioning");
   sourceIncludes(sources.home, "No una respuesta. Una simulación de futuros posibles.", "Home rejects answer-engine positioning");
   sourceIncludes(sources.home, "escenarios, riesgos y consecuencias", "Home keeps scenarios/risks/consequences line");
   sourceIncludes(sources.home, "trade-offs", "Home keeps tradeoffs positioning");

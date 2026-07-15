@@ -1,5 +1,25 @@
 # LEVIO CURRENT STATE
 
+## Current Homepage One-Time Assembly State — 15 July 2026
+
+The signed-out homepage preserves the scoped minimal visual system while using
+one bounded `HomepageAssemblyController` for first-scroll and viewport entry.
+Each group moves through `pending` to `assembled` to `settled`, is registered
+as completed, and is unobserved; scroll up has no transition back to pending.
+Fast-scroll geometry finalizes skipped groups, a 16ms timer batches visible
+scroll work without depending on background animation frames, and reduced
+motion renders the stable final state immediately. No-JavaScript content stays
+visible because staging rules require the progressive-enhancement root class.
+
+Hero, preview, opposing headings, right-to-left process sequencing, moderate
+capability entry, and the three-cluster final headline are active. Simulator
+controls are visually softer but behavior is unchanged. Gold remains limited
+to the Levio lockup and primary CTA; footer copy now uses the approved strict
+`Sistema de simulación de decisiones…` wording without `motor`. Deterministic
+repository and Chromium runtime evidence passes with no horizontal overflow.
+No OpenAI, auth, dashboard, persistence, privacy, retention, export/deletion,
+Decision Engine, or Stage 9 contract changed.
+
 ## Current Bounded Homepage Visual Simplification State — 15 July 2026
 
 The public homepage now follows a scoped minimal black/white/gray visual system

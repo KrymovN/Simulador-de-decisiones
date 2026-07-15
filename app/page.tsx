@@ -1,6 +1,7 @@
 import Link from "next/link";
 import HomeSimulator from "../components/HomeSimulator";
 import HomepageAnchorLink from "../components/HomepageAnchorLink";
+import HomepageAssemblyController from "../components/HomepageAssemblyController";
 import HomepageNavigation from "../components/HomepageNavigation";
 import LevioMark from "../components/LevioMark";
 
@@ -51,9 +52,15 @@ const capabilities = [
 ];
 
 const trustSignals = [
-  "Preview público con respuestas de ejemplo",
-  "Escenarios comparables",
-  "Riesgo y consecuencia",
+  { copy: "Preview público con respuestas de ejemplo", direction: "left" },
+  { copy: "Escenarios comparables", direction: "rise" },
+  { copy: "Riesgo y consecuencia", direction: "right" },
+];
+
+const finalHeadlineClusters = [
+  { copy: "Empieza", direction: "left" },
+  { copy: "con una", direction: "rise" },
+  { copy: "decisión real.", direction: "right" },
 ];
 
 const footerColumns = [
@@ -85,6 +92,8 @@ const footerColumns = [
 export default function Home() {
   return (
     <main className="site-shell minimal-home">
+      <HomepageAssemblyController />
+
       <header className="minimal-home__header reference-header">
         <Link className="brand-lockup" href="/" aria-label="levio.es">
           <LevioMark size="lg" />
@@ -96,10 +105,15 @@ export default function Home() {
       <section className="minimal-home__hero" id="inicio" aria-labelledby="hero-title">
         <div className="minimal-home__hero-copy">
           <div>
-            <h1 id="hero-title">
-              Decide antes
-              <span>de actuar.</span>
-            </h1>
+            <div
+              data-home-assembly-group="hero-title"
+              data-home-assembly-trigger="first-scroll"
+            >
+              <h1 id="hero-title" data-home-assembly-item>
+                Decide antes
+                <span>de actuar.</span>
+              </h1>
+            </div>
             <p className="minimal-home__hero-description">
               Explora escenarios, riesgos y consecuencias en un preview demostrativo antes de tomar una decisión.
             </p>
@@ -114,11 +128,21 @@ export default function Home() {
             </HomepageAnchorLink>
           </div>
 
-          <div className="minimal-home__preview-note">
+          <div
+            className="minimal-home__preview-note"
+            data-home-assembly-group="preview-signals"
+            data-home-assembly-trigger="first-scroll"
+          >
             <strong>Preview público</strong>
             <ul aria-label="Señales del producto">
               {trustSignals.map((signal) => (
-                <li key={signal}>{signal}</li>
+                <li
+                  data-home-assembly-direction={signal.direction}
+                  data-home-assembly-item
+                  key={signal.copy}
+                >
+                  {signal.copy}
+                </li>
               ))}
             </ul>
             <p>La conexión con IA real todavía no está activada.</p>
@@ -131,14 +155,24 @@ export default function Home() {
       </section>
 
       <section className="minimal-home__section" id="como-funciona" aria-labelledby="process-title">
-        <div className="minimal-home__section-heading">
-          <h2 id="process-title">Cómo piensa Levio</h2>
-          <p>Un motor de simulación de decisiones, no un asistente de IA. No una respuesta. Una simulación de futuros posibles.</p>
+        <div className="minimal-home__section-heading" data-home-assembly-group="process-heading">
+          <h2 id="process-title" data-home-assembly-direction="left" data-home-assembly-item>
+            Cómo piensa Levio
+          </h2>
+          <p data-home-assembly-direction="rise" data-home-assembly-item>
+            Un sistema de simulación de decisiones, no un asistente de IA. No una respuesta. Una simulación de futuros posibles.
+          </p>
         </div>
 
-        <div className="minimal-home__process-grid">
+        <div className="minimal-home__process-grid" data-home-assembly-group="process-cards">
           {processSteps.map((step, index) => (
-            <article className="minimal-home__process-card" key={step.title}>
+            <article
+              className="minimal-home__process-card"
+              data-home-assembly-direction="right"
+              data-home-assembly-item
+              data-home-assembly-order={processSteps.length - index - 1}
+              key={step.title}
+            >
               <span className="minimal-home__step-number">{String(index + 1).padStart(2, "0")}</span>
               <h3>{step.title}</h3>
               <p>{step.copy}</p>
@@ -148,13 +182,20 @@ export default function Home() {
       </section>
 
       <section className="minimal-home__section minimal-home__capabilities" id="criterios" aria-labelledby="capabilities-title">
-        <div className="minimal-home__section-heading">
-          <h2 id="capabilities-title">Qué obtienes con Levio</h2>
+        <div className="minimal-home__section-heading" data-home-assembly-group="capabilities-heading">
+          <h2 id="capabilities-title" data-home-assembly-direction="right" data-home-assembly-item>
+            Qué obtienes con Levio
+          </h2>
         </div>
 
-        <div className="minimal-home__capability-grid">
-          {capabilities.map((capability) => (
-            <article className="minimal-home__capability-card" key={capability.title}>
+        <div className="minimal-home__capability-grid" data-home-assembly-group="capability-cards">
+          {capabilities.map((capability, index) => (
+            <article
+              className="minimal-home__capability-card"
+              data-home-assembly-direction={index % 2 === 0 ? "left-soft" : "right-soft"}
+              data-home-assembly-item
+              key={capability.title}
+            >
               <h3>{capability.title}</h3>
               <p>{capability.copy}</p>
             </article>
@@ -162,12 +203,30 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="minimal-home__final-cta" aria-labelledby="final-cta-title">
+      <section
+        className="minimal-home__final-cta"
+        aria-labelledby="final-cta-title"
+        data-home-assembly-group="final-cta"
+      >
         <div>
-          <h2 id="final-cta-title">Empieza con una decisión real.</h2>
-          <p>Explora escenarios, riesgos y consecuencias antes de actuar.</p>
+          <h2 id="final-cta-title" aria-label="Empieza con una decisión real.">
+            {finalHeadlineClusters.map((cluster) => (
+              <span
+                aria-hidden="true"
+                className="minimal-home__cta-cluster"
+                data-home-assembly-direction={cluster.direction}
+                data-home-assembly-item
+                key={cluster.copy}
+              >
+                {cluster.copy}
+              </span>
+            ))}
+          </h2>
+          <p data-home-assembly-direction="rise" data-home-assembly-item>
+            Explora escenarios, riesgos y consecuencias antes de actuar.
+          </p>
         </div>
-        <div className="minimal-home__final-actions">
+        <div className="minimal-home__final-actions" data-home-assembly-direction="right-soft" data-home-assembly-item>
           <HomepageAnchorLink className="minimal-home__primary-cta" href="#simulador">
             Comenzar simulación
           </HomepageAnchorLink>
@@ -183,7 +242,7 @@ export default function Home() {
             <LevioMark size="md" />
             <span className="brand-name">levio.es</span>
           </Link>
-          <p>Motor de simulación para decisiones con consecuencias reales.</p>
+          <p>Sistema de simulación de decisiones para explorar escenarios, riesgos y consecuencias antes de actuar.</p>
           <small>© 2026 Levio.es. Todos los derechos reservados.</small>
         </div>
 

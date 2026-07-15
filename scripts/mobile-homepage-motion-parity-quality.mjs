@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -6,6 +6,7 @@ const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
 const read = (...segments) => readFileSync(join(rootDir, ...segments), "utf8");
 const home = read("app", "page.tsx");
 const css = read("app", "styles", "homepage.css");
+const assembly = read("components", "HomepageAssemblyController.tsx");
 const navigation = read("components", "HomepageNavigation.tsx");
 const simulator = read("components", "HomeSimulator.tsx");
 const simulateRoute = read("app", "api", "simulate", "route.ts");
@@ -24,24 +25,16 @@ function excludes(source, value, name) {
   check(name, !source.includes(value), `Forbidden invariant remains: ${value}`);
 }
 
-check(
-  "Legacy grouped motion controller stays removed",
-  !existsSync(join(rootDir, "components", "HomepageMotionController.tsx")),
-  "The decorative grouped motion controller was restored.",
-);
-excludes(home, "HomepageMotionController", "Homepage has no controller mount");
-excludes(home, "data-home-motion", "Homepage has no staged card-motion attributes");
+includes(home, "HomepageAssemblyController", "Homepage mounts the bounded assembly controller");
+includes(home, "data-home-assembly-group", "Homepage declares bounded assembly groups");
 excludes(home, "MotionLetters", "Homepage has no per-letter motion markup");
-includes(css, "@keyframes minimalHomeReveal", "Homepage keeps one short reveal");
-check(
-  "Homepage has exactly one scoped keyframe sequence",
-  (css.match(/@keyframes\s+/g) ?? []).length === 1,
-  "Expected exactly one bounded homepage reveal.",
-);
+excludes(css, "@keyframes", "Homepage assembly uses interruptible transitions instead of keyframes");
 excludes(css, "infinite", "Homepage has no infinite decorative motion");
 excludes(css, "animation-timeline", "Homepage has no scroll-linked decorative timeline");
 includes(css, "opacity: 0;", "Reveal uses opacity");
-includes(css, "transform: translateY(10px);", "Reveal uses a short translate");
+includes(css, "transform: translate3d", "Reveal uses GPU-friendly bounded translation");
+includes(assembly, "completedGroups", "One-time completion registry prevents replay");
+includes(assembly, "observer?.unobserve(group)", "Completed groups stop being observed");
 includes(css, "@media (prefers-reduced-motion: reduce)", "Reduced motion remains explicit");
 includes(css, "animation: none !important", "Reduced motion renders the immediate final state");
 includes(css, "transition-duration: 0.01ms !important", "Reduced motion collapses transitions");

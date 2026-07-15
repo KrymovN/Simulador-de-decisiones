@@ -1,5 +1,29 @@
 # CURRENT STAGE
 
+## Bounded Homepage One-Time Assembly Refinement Complete — 15 July 2026
+
+The owner-directed homepage motion/copy follow-up is complete as a bounded
+maintenance substep; it opens no new Stage and changes no Stage 9 boundary.
+The minimal black/white/gold homepage now assembles once through restrained
+transform/opacity groups: the hero title lifts on the first downward scroll,
+three truthful preview signals separate, the two section headings enter from
+opposite sides, process cards stage from `06` back to `01`, capability cards
+enter softly, and the final CTA headline converges in three readable clusters.
+Completed groups are removed from observation and retained in a one-time
+registry, so reverse scroll cannot return them to `pending`; reduced motion
+settles every group immediately.
+
+The simulator keeps its 1200-character, accessibility, public-envelope,
+`safeRender`, `mockOnly`, `apiReady`, fail-close, and save-flow contracts while
+receiving a clearer field header, circular voice control, and monochrome pill
+submit action. Footer positioning now uses `Sistema de simulación de
+decisiones para explorar escenarios, riesgos y consecuencias antes de actuar.`
+The dedicated gate, aligned homepage/mobile/Safari regressions, public runtime
+and trust gates, TypeScript, lint, build, diff, and Chromium runtime checks
+pass. Stage 9 remains In Progress, readiness remains 58% estimated, OpenAI
+requests remain zero, and the next checkpoint remains owner actual-device
+Safari iPhone homepage review.
+
 ## Bounded Homepage Visual Simplification Complete — 15 July 2026
 
 The owner-directed public-home visual simplification is complete as a bounded

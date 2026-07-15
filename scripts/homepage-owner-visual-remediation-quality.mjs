@@ -88,7 +88,7 @@ includes(css, ".minimal-home .reference-nav .nav-cta", "Login remains a bordered
 includes(home, "Decide antes", "Canonical hero heading remains");
 includes(home, "Comenzar simulación", "The approved primary CTA remains");
 includes(home, "Preview público con respuestas de ejemplo", "Truthful preview signal remains");
-includes(home, "Un motor de simulación de decisiones, no un asistente de IA.", "Approved product positioning remains");
+includes(home, "Un sistema de simulación de decisiones, no un asistente de IA.", "Approved product positioning remains");
 excludes(home, "usuarios", "Homepage does not invent user statistics");
 excludes(home, "simulaciones realizadas", "Homepage does not invent simulation counts");
 
@@ -167,7 +167,7 @@ excludes(css, "100vw", "Homepage avoids Safari scrollbar-width overflow traps");
 includes(css, "@media (prefers-reduced-motion: reduce)", "Reduced-motion boundary is explicit");
 includes(css, "animation: none !important", "Reduced motion removes reveal animations");
 includes(css, "transition-duration: 0.01ms !important", "Reduced motion collapses transitions");
-includes(css, "@keyframes minimalHomeReveal", "Only a short product-grade reveal remains");
+includes(css, "--home-assembly-duration: 620ms", "Bounded product-grade assembly timing remains");
 
 check(
   "Public client surface has no OpenAI transport",

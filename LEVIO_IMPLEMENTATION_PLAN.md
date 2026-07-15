@@ -1,5 +1,22 @@
 # LEVIO IMPLEMENTATION PLAN
 
+## Bounded Homepage One-Time Assembly Refinement Checkpoint — 15 July 2026
+
+The homepage-only follow-up is complete without creating a Stage or expanding
+the roadmap. A progressive-enhancement controller and scoped CSS transitions
+restore the approved motion hierarchy while retaining the minimal redesign.
+Completion is monotonic: groups are recorded, unobserved, and settled once;
+normal reverse scroll cannot disassemble them, restored/fast-scrolled groups
+fail safe to a readable final state, and reduced motion skips transitions.
+
+The three existing preview claims, six process steps, four text-only
+capabilities, real navigation, final CTA, and real `HomeSimulator` remain.
+Only simulator presentation and the canonical footer wording changed; public
+runtime, provider isolation, auth/dashboard, persistence, privacy, and Stage 9
+contracts did not. Dedicated, regression, TypeScript, lint, build, diff, and
+Chromium checks pass. The canonical next point remains owner actual-device
+Safari iPhone homepage review; readiness stays 58% estimated.
+
 ## Bounded Homepage Visual Simplification Checkpoint — 15 July 2026
 
 The approved homepage-only simplification checkpoint is complete without
