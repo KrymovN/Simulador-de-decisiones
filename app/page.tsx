@@ -1,9 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
-import type { CSSProperties } from "react";
 import HomeSimulator from "../components/HomeSimulator";
 import HomepageAnchorLink from "../components/HomepageAnchorLink";
-import HomepageMotionController from "../components/HomepageMotionController";
 import HomepageNavigation from "../components/HomepageNavigation";
 import LevioMark from "../components/LevioMark";
 
@@ -22,7 +19,7 @@ const processSteps = [
   },
   {
     title: "Simula escenarios",
-    copy: "En el preview público, genera rutas demostrativas con consecuencias, riesgos y trade-offs.",
+    copy: "Levio organiza alternativas y muestra rutas demostrativas con consecuencias, riesgos y trade-offs.",
   },
   {
     title: "Evalúa riesgos",
@@ -34,26 +31,7 @@ const processSteps = [
   },
 ];
 
-const heroFeatures = [
-  {
-    title: "Mapa de decisión",
-    copy: "Contexto, objetivos, presión emocional y señales que pueden cambiar cada ruta.",
-  },
-  {
-    title: "Escenarios múltiples",
-    copy: "Compara rutas posibles antes de comprometer tiempo, dinero o reputación.",
-  },
-  {
-    title: "Evaluación de riesgos",
-    copy: "Distingue riesgos visibles, riesgos ocultos y consecuencias aplazadas.",
-  },
-  {
-    title: "Criterios estratégicos",
-    copy: "Convierte la simulación en opciones comparables, límites y próximos pasos.",
-  },
-];
-
-const lowerCapabilities = [
+const capabilities = [
   {
     title: "Contexto de decisión",
     copy: "Ordena intereses, restricciones, personas afectadas y momento de decisión.",
@@ -76,47 +54,6 @@ const trustSignals = [
   "Preview público con respuestas de ejemplo",
   "Escenarios comparables",
   "Riesgo y consecuencia",
-];
-
-const decisionIntelligence = [
-  {
-    label: "Escenarios",
-    title: "No una respuesta. Una simulación de futuros posibles.",
-    copy: "Levio organiza alternativas y muestra rutas demostrativas para pensar antes de actuar, esperar o cambiar de estrategia.",
-  },
-  {
-    label: "Consecuencias",
-    title: "Efectos inmediatos y efectos que llegan después.",
-    copy: "Cada decisión puede abrir beneficios rápidos y costes diferidos. El sistema ayuda a ver ambos antes de decidir.",
-  },
-  {
-    label: "Riesgo",
-    title: "Señales débiles antes de que se conviertan en problemas.",
-    copy: "Identifica incertidumbre, dependencia de terceros, presión emocional y puntos donde una decisión puede volverse frágil.",
-  },
-  {
-    label: "Criterio",
-    title: "Criterios para decidir sin piloto automático.",
-    copy: "El mapa está pensado para ayudarte a pensar con más claridad, no para empujarte a una respuesta automática.",
-  },
-];
-
-const futureBranches = [
-  {
-    label: "Escenario favorable",
-    title: "Una trayectoria con mayor margen.",
-    copy: "Muestra una posible trayectoria donde la oportunidad crece, junto a las condiciones que tendrían que cumplirse.",
-  },
-  {
-    label: "Escenario probable",
-    title: "La ruta que parece más plausible.",
-    copy: "Ordena consecuencias esperables, trade-offs prácticos y señales que podrían confirmar o debilitar el camino.",
-  },
-  {
-    label: "Escenario adverso",
-    title: "La opción bajo presión.",
-    copy: "Expone riesgos, costes diferidos y puntos de ruptura para que la decisión no dependa solo del mejor caso.",
-  },
 ];
 
 const footerColumns = [
@@ -145,32 +82,10 @@ const footerColumns = [
   },
 ];
 
-function MotionLetters({ text }: { text: string }) {
-  return (
-    <span className="motion-letters" aria-hidden="true">
-      {text.split(" ").map((word, wordIndex) => (
-        <span className="motion-word" key={`${word}-${wordIndex}`}>
-          {Array.from(word).map((character, characterIndex) => (
-            <span
-              className={(wordIndex + characterIndex) % 2 === 0 ? "motion-letter motion-letter-left" : "motion-letter motion-letter-right"}
-              key={`${character}-${characterIndex}`}
-              style={{ "--motion-index": characterIndex } as CSSProperties}
-            >
-              {character}
-            </span>
-          ))}
-          {wordIndex < text.split(" ").length - 1 ? "\u00a0" : null}
-        </span>
-      ))}
-    </span>
-  );
-}
-
 export default function Home() {
   return (
-    <main className="site-shell">
-      <HomepageMotionController />
-      <header className="site-header section-frame reference-header">
+    <main className="site-shell minimal-home">
+      <header className="minimal-home__header reference-header">
         <Link className="brand-lockup" href="/" aria-label="levio.es">
           <LevioMark size="lg" />
           <span className="brand-name">levio.es</span>
@@ -178,194 +93,53 @@ export default function Home() {
         <HomepageNavigation />
       </header>
 
-      <section className="hero-section section-frame home-hero reference-hero" id="inicio" aria-labelledby="hero-title">
-        <div className="hero-approved-background" aria-hidden="true">
-          <Image
-            className="hero-approved-background-image"
-            src="/hero-approved-network-bg.png"
-            alt=""
-            fill
-            priority
-            quality={100}
-            sizes="100vw"
-            unoptimized
-          />
-        </div>
-        <div className="hero-approved-pulse-layer" aria-hidden="true">
-          <svg focusable="false" viewBox="0 0 160 160">
-            <defs>
-              <radialGradient id="hero-approved-core-gradient" cx="50%" cy="48%" r="58%">
-                <stop offset="0%" stopColor="#fff1bd" />
-                <stop offset="36%" stopColor="#d8a84a" stopOpacity="0.92" />
-                <stop offset="70%" stopColor="#ffb23e" stopOpacity="0.42" />
-                <stop offset="100%" stopColor="#8a5a24" stopOpacity="0" />
-              </radialGradient>
-              <radialGradient id="hero-approved-breath-gradient" cx="50%" cy="50%" r="62%">
-                <stop offset="0%" stopColor="#fff1bd" stopOpacity="0.32" />
-                <stop offset="42%" stopColor="#d8a84a" stopOpacity="0.22" />
-                <stop offset="100%" stopColor="#8a5a24" stopOpacity="0" />
-              </radialGradient>
-            </defs>
-            <circle className="hero-approved-wave-ring hero-approved-wave-primary" cx="80" cy="80" r="31" />
-            <circle className="hero-approved-wave-ring hero-approved-wave-secondary" cx="80" cy="80" r="48" />
-            <ellipse className="hero-approved-distortion-ring hero-approved-distortion-a" cx="80" cy="80" rx="43" ry="22" />
-            <ellipse className="hero-approved-distortion-ring hero-approved-distortion-b" cx="80" cy="80" rx="24" ry="40" />
-            <circle className="hero-approved-core-breath" cx="80" cy="80" fill="url(#hero-approved-breath-gradient)" r="38" />
-            <g className="hero-approved-core-pulse">
-              <circle cx="80" cy="80" fill="url(#hero-approved-core-gradient)" r="20" />
-              <circle className="hero-approved-core-ring" cx="80" cy="80" r="13" />
-              <circle className="hero-approved-core-center" cx="80" cy="80" r="5.2" />
-              <circle className="hero-approved-inner-spark" cx="80" cy="80" r="2.4" />
-            </g>
-          </svg>
-        </div>
-
-        <div className="hero-copy home-hero-copy">
-          <div className="hero-intro">
-            <h1 className="hero-motion-title" id="hero-title">
+      <section className="minimal-home__hero" id="inicio" aria-labelledby="hero-title">
+        <div className="minimal-home__hero-copy">
+          <div>
+            <h1 id="hero-title">
               Decide antes
               <span>de actuar.</span>
             </h1>
-            <p className="hero-subtitle">
+            <p className="minimal-home__hero-description">
               Explora escenarios, riesgos y consecuencias en un preview demostrativo antes de tomar una decisión.
             </p>
           </div>
 
-          <div className="hero-actions home-hero-actions" aria-label="Accesos principales">
-            <HomepageAnchorLink className="button-link" href="#simulador">
+          <div className="minimal-home__hero-actions" aria-label="Accesos principales">
+            <HomepageAnchorLink className="minimal-home__primary-cta" href="#simulador">
               Comenzar simulación
             </HomepageAnchorLink>
-            <HomepageAnchorLink className="button-link secondary-button" href="#como-funciona">
-              Ver cómo funciona
+            <HomepageAnchorLink className="minimal-home__text-link" href="#como-funciona">
+              Cómo funciona <span aria-hidden="true">→</span>
             </HomepageAnchorLink>
           </div>
 
-          <ul className="hero-proof-list" aria-label="Señales del producto">
-            {trustSignals.map((signal) => (
-              <li key={signal}>{signal}</li>
-            ))}
-          </ul>
-        </div>
-
-        <div
-          className="hero-feature-strip"
-          data-home-motion-group="hero-features"
-          data-home-motion-profile="standard"
-          aria-label="Capacidades principales"
-        >
-          {heroFeatures.map((feature, index) => (
-            <article
-              className="hero-feature-card"
-              data-home-motion-item
-              data-home-motion-direction="left"
-              key={feature.title}
-              style={{ "--card-index": index } as CSSProperties}
-            >
-              <div>
-                <h3>{feature.title}</h3>
-                <p>{feature.copy}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-
-      </section>
-
-      <section className="reference-decision-system" aria-labelledby="decision-system-title">
-        <div
-          className="decision-intelligence-composition"
-          data-home-motion-group="decision-intelligence"
-          data-home-motion-profile="narrative"
-        >
-        <div className="reference-section-heading">
-          <p className="eyebrow motion-heading-line" data-home-motion-item data-home-motion-direction="left" aria-label="Sistema de simulación de decisiones">
-            <MotionLetters text="Sistema de simulación de decisiones" />
-          </p>
-          <h2
-            className="motion-heading-line"
-            data-home-motion-item
-            data-home-motion-direction="right"
-            id="decision-system-title"
-            aria-label="Pensado para decisiones con consecuencias reales."
-          >
-            <MotionLetters text="Pensado para decisiones con consecuencias reales." />
-          </h2>
-          <span aria-hidden="true"></span>
-        </div>
-
-        <div className="reference-system-grid decision-intelligence-grid">
-          {decisionIntelligence.map((item, index) => (
-            <article
-              className="reference-system-card decision-intelligence-card"
-              data-home-motion-item
-              data-home-motion-direction="left"
-              key={item.title}
-              style={{ "--card-index": index } as CSSProperties}
-            >
-              <strong>{item.label}</strong>
-              <h3>{item.title}</h3>
-              <p>{item.copy}</p>
-            </article>
-          ))}
-        </div>
-        </div>
-
-        <div
-          className="future-branches-composition"
-          data-home-motion-group="future-branches"
-          data-home-motion-profile="narrative"
-        >
-          <div className="reference-section-heading compact-heading future-branches-heading">
-            <p className="eyebrow" data-home-motion-item data-home-motion-direction="rise">Tres ramas del futuro</p>
+          <div className="minimal-home__preview-note">
+            <strong>Preview público</strong>
+            <ul aria-label="Señales del producto">
+              {trustSignals.map((signal) => (
+                <li key={signal}>{signal}</li>
+              ))}
+            </ul>
+            <p>La conexión con IA real todavía no está activada.</p>
           </div>
-
-        <div
-          className="reference-system-grid future-branches-grid"
-          aria-label="Tres ramas del futuro"
-        >
-          {futureBranches.map((branch, index) => (
-            <article
-              className="reference-system-card future-branch-card"
-              data-home-motion-item
-              data-home-motion-direction="left"
-              key={branch.label}
-              style={{ "--card-index": index } as CSSProperties}
-            >
-              <strong>{branch.label}</strong>
-              <h3>{branch.title}</h3>
-              <p>{branch.copy}</p>
-            </article>
-          ))}
         </div>
+
+        <div className="minimal-home__simulator" id="simulador">
+          <HomeSimulator />
         </div>
       </section>
 
-      <section
-        className="reference-process"
-        data-home-motion-group="process"
-        data-home-motion-profile="standard"
-        id="como-funciona"
-        aria-labelledby="process-title"
-      >
-        <div className="reference-section-heading" data-home-motion-item data-home-motion-direction="rise">
-          <p className="eyebrow motion-heading-line" aria-label="Proceso de simulación">
-            <MotionLetters text="Proceso de simulación" />
-          </p>
-          <h2 className="motion-heading-line" id="process-title" aria-label="Cómo piensa Levio">
-            <MotionLetters text="Cómo piensa Levio" />
-          </h2>
-          <span aria-hidden="true"></span>
+      <section className="minimal-home__section" id="como-funciona" aria-labelledby="process-title">
+        <div className="minimal-home__section-heading">
+          <h2 id="process-title">Cómo piensa Levio</h2>
+          <p>Un motor de simulación de decisiones, no un asistente de IA. No una respuesta. Una simulación de futuros posibles.</p>
         </div>
 
-        <div className="reference-process-grid">
+        <div className="minimal-home__process-grid">
           {processSteps.map((step, index) => (
-            <article
-              className="reference-process-card"
-              data-home-motion-item
-              data-home-motion-direction="left"
-              key={step.title}
-              style={{ "--card-index": index } as CSSProperties}
-            >
+            <article className="minimal-home__process-card" key={step.title}>
+              <span className="minimal-home__step-number">{String(index + 1).padStart(2, "0")}</span>
               <h3>{step.title}</h3>
               <p>{step.copy}</p>
             </article>
@@ -373,26 +147,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section
-        className="reference-capabilities"
-        data-home-motion-group="criteria"
-        data-home-motion-profile="narrative"
-        id="criterios"
-        aria-labelledby="capabilities-title"
-      >
-        <div className="reference-section-heading compact-heading criteria-heading" data-home-motion-item data-home-motion-direction="rise">
-          <p className="eyebrow" id="capabilities-title">Criterios que hacen comparables las opciones</p>
+      <section className="minimal-home__section minimal-home__capabilities" id="criterios" aria-labelledby="capabilities-title">
+        <div className="minimal-home__section-heading">
+          <h2 id="capabilities-title">Qué obtienes con Levio</h2>
         </div>
 
-        <div className="reference-capability-grid">
-          {lowerCapabilities.map((capability, index) => (
-            <article
-              className="reference-capability-card"
-              data-home-motion-item
-              data-home-motion-direction="left"
-              key={capability.title}
-              style={{ "--card-index": index } as CSSProperties}
-            >
+        <div className="minimal-home__capability-grid">
+          {capabilities.map((capability) => (
+            <article className="minimal-home__capability-card" key={capability.title}>
               <h3>{capability.title}</h3>
               <p>{capability.copy}</p>
             </article>
@@ -400,46 +162,23 @@ export default function Home() {
         </div>
       </section>
 
-      <section
-        className="reference-workspace"
-        data-home-motion-group="simulator"
-        data-home-motion-profile="narrative"
-        id="simulador"
-        aria-labelledby="workspace-title"
-      >
-        <div className="reference-workspace-heading">
-          <p className="eyebrow" data-home-motion-item data-home-motion-direction="left">Área de trabajo levio.es</p>
-          <h2 className="desktop-motion-heading" data-home-motion-item data-home-motion-direction="right" id="workspace-title" aria-label="Simula una decisión cuando estés listo.">
-            <MotionLetters text="Simula una decisión cuando estés listo." />
-          </h2>
-          <p data-home-motion-item data-home-motion-direction="rise">El motor de escenarios es el punto de partida para comparar opciones, riesgos y consecuencias.</p>
-          <p data-home-motion-item data-home-motion-direction="rise">Modo preview: la simulación pública es demostrativa y la conexión con IA real todavía no está activada.</p>
+      <section className="minimal-home__final-cta" aria-labelledby="final-cta-title">
+        <div>
+          <h2 id="final-cta-title">Empieza con una decisión real.</h2>
+          <p>Explora escenarios, riesgos y consecuencias antes de actuar.</p>
         </div>
-        <HomeSimulator />
+        <div className="minimal-home__final-actions">
+          <HomepageAnchorLink className="minimal-home__primary-cta" href="#simulador">
+            Comenzar simulación
+          </HomepageAnchorLink>
+          <HomepageAnchorLink className="minimal-home__text-link" href="#como-funciona">
+            Ver cómo funciona <span aria-hidden="true">→</span>
+          </HomepageAnchorLink>
+        </div>
       </section>
 
-      <section
-        className="reference-cta-banner"
-        data-home-motion-group="final-cta"
-        data-home-motion-profile="standard"
-        aria-labelledby="reference-cta-title"
-      >
-        <div className="reference-cta-copy" data-home-motion-item data-home-motion-direction="left">
-          <h2 className="desktop-motion-heading" id="reference-cta-title" aria-label="Empieza con una decisión real.">
-            <MotionLetters text="Empieza con una decisión real." />
-          </h2>
-          <p aria-label="Levio.es te ayuda a explorar escenarios, riesgos y consecuencias antes de que actúes.">
-            <MotionLetters text="Levio.es te ayuda a explorar escenarios, riesgos y consecuencias antes de que actúes." />
-          </p>
-        </div>
-        <HomepageAnchorLink data-home-motion-item data-home-motion-direction="right" href="#simulador">
-          Comenzar ahora
-          <span aria-hidden="true">→</span>
-        </HomepageAnchorLink>
-      </section>
-
-      <footer className="reference-footer">
-        <div className="reference-footer-brand">
+      <footer className="minimal-home__footer">
+        <div className="minimal-home__footer-brand">
           <Link className="brand-lockup" href="/" aria-label="levio.es">
             <LevioMark size="md" />
             <span className="brand-name">levio.es</span>
@@ -449,15 +188,19 @@ export default function Home() {
         </div>
 
         {footerColumns.map((column) => (
-          <div className="reference-footer-column" key={column.title}>
+          <div className="minimal-home__footer-column" key={column.title}>
             <strong>{column.title}</strong>
-            {column.links.map((link) => (
+            {column.links.map((link) =>
               link.href.startsWith("#") ? (
-                <HomepageAnchorLink href={link.href as `#${string}`} key={link.label}>{link.label}</HomepageAnchorLink>
+                <HomepageAnchorLink href={link.href as `#${string}`} key={link.label}>
+                  {link.label}
+                </HomepageAnchorLink>
               ) : (
-                <Link href={link.href} key={link.label}>{link.label}</Link>
-              )
-            ))}
+                <Link href={link.href} key={link.label}>
+                  {link.label}
+                </Link>
+              ),
+            )}
           </div>
         ))}
       </footer>

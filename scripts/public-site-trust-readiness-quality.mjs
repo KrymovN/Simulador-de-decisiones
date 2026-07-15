@@ -150,12 +150,12 @@ async function withServer(run) {
 }
 
 function runPositioningSourceChecks(sources) {
-  sourceIncludes(sources.home, "Sistema de simulación de decisiones", "Home keeps Decision Simulation Engine positioning");
+  sourceIncludes(sources.home, "Un motor de simulación de decisiones, no un asistente de IA.", "Home keeps Decision Simulation Engine positioning");
   sourceIncludes(sources.home, "No una respuesta. Una simulación de futuros posibles.", "Home rejects answer-engine positioning");
   sourceIncludes(sources.home, "escenarios, riesgos y consecuencias", "Home keeps scenarios/risks/consequences line");
   sourceIncludes(sources.home, "trade-offs", "Home keeps tradeoffs positioning");
   sourceIncludes(sources.home, "Preview público con respuestas de ejemplo", "Home keeps demonstrative public state");
-  sourceIncludes(sources.home, "la conexión con IA real todavía no está activada", "Home keeps Real AI deferred copy");
+  sourceIncludes(sources.home, "La conexión con IA real todavía no está activada", "Home keeps Real AI deferred copy");
   sourceIncludes(sources.homeSimulator, "Vista previa determinista", "HomeSimulator keeps deterministic preview status");
   sourceIncludes(sources.homeSimulator, "IA real aún no conectada", "HomeSimulator avoids Real AI promise");
   sourceIncludes(sources.homeSimulator, "MAX_SIMULATION_INPUT_LENGTH", "HomeSimulator keeps the bounded public input disclosure");

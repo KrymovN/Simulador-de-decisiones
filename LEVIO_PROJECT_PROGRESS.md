@@ -1,5 +1,25 @@
 # LEVIO PROJECT PROGRESS TRACKER
 
+## Cross-Cutting Progress Update — Bounded Homepage Visual Simplification — 15 July 2026
+
+The public-home simplification substep is complete without a new Stage. The
+cosmic 1.7 MB hero raster, pulse/orbit SVG, extra narrative blocks, per-letter
+motion, and grouped mobile motion controller were removed. The replacement is
+a scoped minimal homepage system with a copy-plus-real-simulator desktop hero,
+single-column mobile flow, text-only process/capability cards, monochrome
+simulator controls, and a restrained CTA/footer. Gold is restricted to the
+brand lockup and primary `Comenzar simulación` action.
+
+The 74-check dedicated gate, aligned mobile 35-check and Safari/iPhone 36-check
+regressions, public Home/Simulator/API/trust/rendered/interaction gates,
+TypeScript, lint, build, diff, and Chromium responsive checks pass. Browser
+evidence covers 1440x900 and 390x844 with zero horizontal overflow and no
+console errors; it is not Safari evidence. `HomeSimulator`, `/api/simulate`,
+auth, dashboard, persistence, privacy, export/deletion/retention, and Decision
+Engine runtime contracts remain unchanged. Stage 9 remains In Progress,
+readiness remains 58% estimated, OpenAI requests remain zero, and the next
+implementation-ready checkpoint is owner actual-device Safari iPhone review.
+
 ## Cross-Cutting Progress Update — Safari iPhone Homepage Refinement — 14 July 2026
 
 The bounded owner-directed homepage motion and emphasis refinement is

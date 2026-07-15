@@ -1,5 +1,26 @@
 # LEVIO CURRENT STATE
 
+## Current Bounded Homepage Visual Simplification State — 15 July 2026
+
+The public homepage now follows a scoped minimal black/white/gray visual system
+with gold available only to the Levio lockup and the primary simulator CTA.
+The hero is a desktop copy-plus-real-simulator grid and a mobile single-column
+flow. The cosmic raster/SVG layers, extra narrative sections, per-letter
+animation, scroll-linked staging, and the homepage motion controller are gone.
+Process and capability sections are text-only neutral cards, the simulator is
+a monochrome product surface, and the final CTA/footer retain only approved
+claims and real destinations.
+
+`HomeSimulator` behavior is unchanged: its bounded input, accessible names,
+public `/api/simulate` request, envelope checks, `safeRender`, `mockOnly`,
+`apiReady`, deterministic fail-close handling, and account save boundary are
+preserved. The dedicated gate passes 74/74; the aligned mobile and
+Safari/iPhone regressions pass 35/35 and 36/36. Public regression, lint, build,
+TypeScript, diff, and in-app Chromium checks pass with zero horizontal overflow
+at 1440x900 and 390x844. Actual Safari is not claimed. Stage 9 stays In
+Progress, readiness stays 58% estimated, and the next evidence remains owner
+actual-device Safari iPhone review.
+
 ## Current Safari iPhone Homepage Refinement State — 14 July 2026
 
 The homepage now has a dedicated phone/tablet narrative reveal contract for

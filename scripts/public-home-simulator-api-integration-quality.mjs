@@ -285,11 +285,11 @@ function runHomePositioningChecks() {
   const combinedSource = `${pageSource}\n${simulatorSource}`;
 
   sourceIncludes(pageSource, "<HomeSimulator />", "Public Home keeps HomeSimulator mounted");
-  sourceIncludes(pageSource, "Sistema de simulación de decisiones", "Public Home keeps Decision Simulation Engine positioning");
+  sourceIncludes(pageSource, "Un motor de simulación de decisiones, no un asistente de IA.", "Public Home keeps Decision Simulation Engine positioning");
   sourceIncludes(pageSource, "No una respuesta. Una simulación de futuros posibles.", "Public Home rejects answer-engine positioning");
   sourceIncludes(pageSource, "Motor de simulación para decisiones con consecuencias reales.", "Public Home footer keeps simulation-engine positioning");
   sourceIncludes(pageSource, "Preview público con respuestas de ejemplo", "Public Home keeps demonstrative public state");
-  sourceIncludes(pageSource, "la conexión con IA real todavía no está activada", "Public Home keeps Real AI deferred truth boundary");
+  sourceIncludes(pageSource, "La conexión con IA real todavía no está activada", "Public Home keeps Real AI deferred truth boundary");
   sourceIncludes(simulatorSource, "Vista previa determinista · IA real aún no conectada", "HomeSimulator keeps the concise deterministic preview disclosure");
 
   sourceExcludes(combinedSource, "AI Chat", "Public Home does not position Levio as AI Chat");

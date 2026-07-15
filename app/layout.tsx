@@ -3,6 +3,7 @@ import './styles/auth.css';
 import './styles/simulator.css';
 import './globals.css';
 import './styles/motion.css';
+import './styles/homepage.css';
 import type { Metadata } from 'next';
 import type { Viewport } from 'next';
 import { AuthRuntimeProvider } from '../components/auth/AuthRuntimeProvider';

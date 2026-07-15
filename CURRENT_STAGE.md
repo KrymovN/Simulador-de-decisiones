@@ -1,5 +1,28 @@
 # CURRENT STAGE
 
+## Bounded Homepage Visual Simplification Complete — 15 July 2026
+
+The owner-directed public-home visual simplification is complete as a bounded
+cross-cutting maintenance substep; it does not open a new Stage or a new Stage
+9 substep. The previous cosmic hero raster, inline pulse/orbit SVG, extra
+narrative compositions, per-letter motion, and grouped motion controller are
+removed. The signed-out homepage now uses one scoped near-black visual system,
+a two-column desktop hero with the real `HomeSimulator`, a single-column phone
+flow, six canonical text-only process cards, four text-only capability cards,
+a restrained final CTA, and the existing real header/footer destinations.
+
+Gold is restricted to the Levio ring/name and the repeated primary
+`Comenzar simulación` action. Navigation state, cards, criteria pills,
+simulator controls, secondary actions, and separators are monochrome. The
+simulator retains its 1200-character limit, accessible names, public-envelope
+validation, `safeRender`, `mockOnly`, `apiReady`, deterministic fail-close
+behavior, and save flow. Dedicated simplification, mobile, Safari/iPhone,
+public-home, simulator/API, trust, rendered-surface, interaction, lint, build,
+TypeScript, and diff checks pass. In-app Chromium confirms zero horizontal
+overflow at 1440x900 and 390x844; this is not actual Safari evidence. Stage 9
+and the 58% readiness estimate remain unchanged, OpenAI requests remain zero,
+and the next checkpoint is `Owner actual-device Safari iPhone homepage review`.
+
 ## Safari iPhone Homepage Refinement Complete — 14 July 2026
 
 The bounded homepage motion-readability and visual-emphasis refinement is

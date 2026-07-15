@@ -20,6 +20,7 @@ const sourcePaths = {
   dashboardSecurity: join(rootDir, "app", "dashboard", "security", "page.tsx"),
   dashboardShell: join(rootDir, "components", "DashboardShell.tsx"),
   css: join(rootDir, "app", "globals.css"),
+  homeCss: join(rootDir, "app", "styles", "homepage.css"),
   packageJson: join(rootDir, "package.json"),
   simulateRoute: join(rootDir, "app", "api", "simulate", "route.ts"),
 };
@@ -30,13 +31,13 @@ const publicPages = [
     path: "/",
     status: 200,
     includes: [
-      'class="site-shell"',
+      'class="site-shell minimal-home"',
       'id="hero-title"',
       "Decide antes",
       "Comenzar simulación",
       'id="decision-input"',
       "Preview público",
-      "Comenzar ahora",
+      "Empieza con una decisión real.",
     ],
   },
   {
@@ -227,7 +228,7 @@ function htmlIncludes(html, text, name) {
 
 function runRenderedSurfaceSourceChecks(sources) {
   sourceIncludes(sources.home, '<HomeSimulator />', "Home keeps HomeSimulator mounted");
-  sourceIncludes(sources.home, 'className="reference-cta-banner"', "Home keeps final CTA rendered");
+  sourceIncludes(sources.home, 'className="minimal-home__final-cta"', "Home keeps final CTA rendered");
   sourceIncludes(sources.homeSimulator, 'id="decision-input"', "HomeSimulator keeps stable textarea anchor");
   sourceIncludes(sources.homeSimulator, "Vista previa determinista", "HomeSimulator keeps the concise deterministic preview line");
   sourceIncludes(sources.homeSimulator, "IA real aún no conectada", "HomeSimulator keeps Real AI deferred copy");
@@ -243,20 +244,20 @@ function runRenderedSurfaceSourceChecks(sources) {
 
 function runResponsiveGuardrailChecks(sources) {
   sourceIncludes(sources.css, "overflow-x: hidden", "Global CSS blocks body-level horizontal overflow");
-  sourceIncludes(sources.css, "width: min(1180px, calc(100% - 36px))", "Home shell uses viewport-safe width");
+  sourceIncludes(sources.homeCss, "width: min(1180px, calc(100% - 48px))", "Home shell uses viewport-safe width");
   sourceIncludes(sources.css, "width: min(1240px, calc(100% - 48px))", "Auth shell uses viewport-safe width");
   sourceIncludes(sources.css, "@media (max-width: 860px)", "Tablet/mobile breakpoint remains present");
   sourceIncludes(sources.css, "@media (max-width: 560px)", "Small mobile breakpoint remains present");
-  sourceIncludes(sources.css, ".reference-workspace .decision-console .input-row", "Simulator input row has responsive CSS");
-  sourceIncludes(sources.css, ".reference-workspace .decision-input-shell textarea", "Simulator textarea voice-button spacing is guarded");
-  sourceIncludes(sources.css, ".reference-workspace .decision-console .input-row .voice-input-button", "Voice button has stable rendered placement");
+  sourceIncludes(sources.homeCss, ".minimal-home .decision-console .simulator-composition", "Simulator input row has responsive CSS");
+  sourceIncludes(sources.homeCss, ".minimal-home .decision-input-shell textarea", "Simulator textarea spacing is guarded");
+  sourceIncludes(sources.homeCss, ".minimal-home .decision-console .voice-input-button", "Voice button has stable rendered placement");
   sourceMatches(
-    sources.css,
-    /@media\s+\(max-width:\s*560px\)[\s\S]*?\.reference-workspace\s+\.decision-console\s+textarea[\s\S]*?min-height:\s*168px;/,
+    sources.homeCss,
+    /@media\s+\(max-width:\s*560px\)[\s\S]*?\.minimal-home\s+\.decision-input-shell\s+textarea[\s\S]*?min-height:\s*168px;/,
     "Mobile HomeSimulator textarea has enough rendered height for placeholder and voice control",
   );
-  sourceIncludes(sources.css, "text-wrap: balance", "CTA and hero headings keep wrap guardrails");
-  sourceIncludes(sources.css, "text-wrap: pretty", "Long public copy keeps readable wrap guardrails");
+  sourceIncludes(sources.homeCss, "text-wrap: balance", "CTA and hero headings keep wrap guardrails");
+  sourceIncludes(sources.homeCss, "text-wrap: pretty", "Long public copy keeps readable wrap guardrails");
 }
 
 function runNoPrematurePromiseChecks(sources) {

@@ -486,13 +486,14 @@ export default function HomeSimulator() {
   return (
     <section
       className="decision-console"
-      data-home-motion-item
-      data-home-motion-direction="rise"
       aria-label="Simulador inicial de decisión"
       ref={consoleRef}
     >
       <form onSubmit={handleSubmit}>
-        <label htmlFor="decision-input">Describe la situación que quieres simular</label>
+        <div className="simulator-field-heading">
+          <label htmlFor="decision-input">Describe la situación que quieres simular</label>
+          <span aria-live="polite">{input.length} / {MAX_SIMULATION_INPUT_LENGTH}</span>
+        </div>
         <div className="input-row simulator-composition">
           <div className="decision-input-shell">
             <textarea
@@ -509,30 +510,38 @@ export default function HomeSimulator() {
               value={input}
             />
           </div>
-          <div className="simulator-action-cluster">
-            <button
-              aria-label={isListening ? "Detener dictado por voz" : "Dictar situación"}
-              aria-pressed={isListening}
-              className={`voice-input-button ${isListening ? "is-listening" : ""}`}
-              onClick={handleVoiceToggle}
-              title={isListening ? "Detener dictado" : "Dictar situación"}
-              type="button"
-            >
-              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
-                <path d="M12 15.25a4 4 0 0 0 4-4V6a4 4 0 1 0-8 0v5.25a4 4 0 0 0 4 4Z" />
-                <path d="M5.75 10.75v.5a6.25 6.25 0 0 0 12.5 0v-.5M12 17.5V21M9.25 21h5.5" />
-              </svg>
-            </button>
-            <button
-              aria-label="Simular decisión"
-              className="primary-simulation-control"
-              disabled={isRunning}
-              type="submit"
-            >
-              <span>{isRunning ? "Simulando" : "Simular"}</span>
-              <small>{isRunning ? "escenarios" : "decisión"}</small>
-            </button>
-          </div>
+        </div>
+        <div className="simulator-criteria">
+          <strong>Criterios principales</strong>
+          <ul aria-label="Criterios principales">
+            <li>Resultado</li>
+            <li>Riesgo</li>
+            <li>Tiempo</li>
+            <li>Recursos</li>
+          </ul>
+        </div>
+        <div className="simulator-action-cluster">
+          <button
+            aria-label={isListening ? "Detener dictado por voz" : "Dictar situación"}
+            aria-pressed={isListening}
+            className={`voice-input-button ${isListening ? "is-listening" : ""}`}
+            onClick={handleVoiceToggle}
+            title={isListening ? "Detener dictado" : "Dictar situación"}
+            type="button"
+          >
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+              <path d="M12 15.25a4 4 0 0 0 4-4V6a4 4 0 1 0-8 0v5.25a4 4 0 0 0 4 4Z" />
+              <path d="M5.75 10.75v.5a6.25 6.25 0 0 0 12.5 0v-.5M12 17.5V21M9.25 21h5.5" />
+            </svg>
+          </button>
+          <button
+            aria-label="Simular decisión"
+            className="primary-simulation-control"
+            disabled={isRunning}
+            type="submit"
+          >
+            <span>{isRunning ? "Simulando escenarios" : "Simular escenarios"}</span>
+          </button>
         </div>
       </form>
 

@@ -1,5 +1,25 @@
 # LEVIO IMPLEMENTATION PLAN
 
+## Bounded Homepage Visual Simplification Checkpoint — 15 July 2026
+
+The approved homepage-only simplification checkpoint is complete without
+creating a Stage or expanding the roadmap. A separate scoped homepage
+stylesheet centralizes the near-black palette, neutral surfaces/borders,
+spacing, radii, and short motion tokens. The public composition now matches the
+approved minimal reference direction while retaining repository truth: real
+navigation routes, six process steps, four capability cards, preview wording,
+and one real `HomeSimulator` mounted in the hero.
+
+The prior cosmic image/pulse layers, surplus narrative compositions,
+per-letter motion, and grouped controller are deleted. Gold is limited to the
+Levio lockup and primary `Comenzar simulación` action; all other UI is
+monochrome. Simulator/API/auth/dashboard/persistence/privacy/Decision Engine
+contracts are unchanged, `/api/simulate` remains deterministic with
+`mockOnly=true`, and no live provider execution is opened. Repository gates,
+lint, build, TypeScript, diff checks, and Chromium responsive evidence pass.
+The canonical next point remains `Owner actual-device Safari iPhone homepage
+review`; Stage 9 and the 58% readiness estimate do not change.
+
 ## Safari iPhone Homepage Refinement Checkpoint — 14 July 2026
 
 The bounded visual checkpoint before live OpenAI verification is complete.

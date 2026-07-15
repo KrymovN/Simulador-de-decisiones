@@ -1,5 +1,25 @@
 # PROJECT CONTEXT
 
+## Bounded Public Homepage Visual Simplification — 15 July 2026
+
+The owner-provided final visual reference is implemented as a homepage-only
+maintenance checkpoint. The signed-out surface is now a quiet near-black
+product layout: gold Levio lockup, one gold primary CTA, neutral navigation,
+copy-plus-real-simulator hero, six text process cards, four text capability
+cards, a minimal final CTA, and a route-preserving footer. The cosmic hero
+raster and pulse SVG, extra narrative compositions, per-letter timelines, and
+the separate homepage motion controller were removed rather than replaced.
+
+The visual layer is isolated in `app/styles/homepage.css`, so auth/dashboard
+surfaces are not redesigned. `HomeSimulator` keeps the existing deterministic
+API, bounded validation, accessible actions, `safeRender`, `mockOnly`,
+`apiReady`, fail-close, and save contracts; only its presentation and
+text-only criteria summary changed. Dedicated and existing public homepage
+regressions, lint, build, TypeScript, diff, and Chromium 1440/390 checks pass
+with no horizontal overflow or console errors. Safari remains an owner
+actual-device checkpoint. No OpenAI request or live provider bridge was opened,
+and Stage 9/readiness remain unchanged.
+
 ## Safari iPhone Homepage Motion and Visual Emphasis Refinement — 14 July 2026
 
 The owner-directed homepage refinement is complete as bounded cross-cutting

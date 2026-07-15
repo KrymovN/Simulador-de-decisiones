@@ -9,7 +9,7 @@ const buildIdPath = join(rootDir, ".next", "BUILD_ID");
 const pagePath = join(rootDir, "app", "page.tsx");
 const navigationPath = join(rootDir, "components", "HomepageNavigation.tsx");
 const simulatorPath = join(rootDir, "components", "HomeSimulator.tsx");
-const cssPath = join(rootDir, "app", "globals.css");
+const cssPath = join(rootDir, "app", "styles", "homepage.css");
 const packagePath = join(rootDir, "package.json");
 
 const checks = [];
@@ -126,16 +126,16 @@ function htmlIncludes(html, text, name) {
 }
 
 function runMobileResponsiveChecks(pageSource, simulatorSource, css) {
-  sourceIncludes(css, "overflow-x: hidden", "Global CSS blocks obvious horizontal overflow");
-  sourceIncludes(css, "width: min(1180px, calc(100% - 36px))", "Base site shell uses viewport-safe width");
+  sourceIncludes(css, "overflow: clip", "Scoped homepage CSS blocks obvious horizontal overflow");
+  sourceIncludes(css, "width: min(1180px, calc(100% - 48px))", "Base homepage frame uses viewport-safe width");
   sourceIncludes(css, "@media (max-width: 860px)", "Mobile/tablet breakpoint exists");
-  sourceIncludes(css, "@media (max-width: 480px)", "Small mobile breakpoint exists");
-  sourceIncludes(css, ".reference-hero .hero-motion-title", "Hero mobile motion target is styled");
-  sourceIncludes(css, ".reference-workspace .decision-console", "Public simulator shell is styled");
-  sourceIncludes(css, ".reference-workspace .decision-console .input-row", "Simulator input row has responsive styling");
-  sourceIncludes(css, "#decision-input", "Decision input has dedicated CSS guardrails");
-  sourceIncludes(css, ".reference-workspace .decision-input-shell textarea", "Textarea mobile spacing is guarded");
-  sourceIncludes(css, ".reference-workspace .decision-console .input-row .voice-input-button", "Voice button has stable touch styling");
+  sourceIncludes(css, "@media (max-width: 560px)", "Small mobile breakpoint exists");
+  sourceIncludes(css, ".minimal-home__hero h1", "Hero mobile typography is styled");
+  sourceIncludes(css, ".minimal-home .decision-console", "Public simulator shell is styled");
+  sourceIncludes(css, ".minimal-home .decision-console .simulator-composition", "Simulator input row has responsive styling");
+  sourceIncludes(css, ".minimal-home .decision-input-shell textarea", "Decision input has dedicated CSS guardrails");
+  sourceIncludes(css, "min-height: 168px", "Textarea mobile spacing is guarded");
+  sourceIncludes(css, ".minimal-home .decision-console .voice-input-button", "Voice button has stable touch styling");
   sourceIncludes(css, "min-height: 44px", "Mobile navigation keeps accessible touch target height");
   sourceIncludes(css, "prefers-reduced-motion: reduce", "Reduced-motion mode is supported");
 
@@ -155,7 +155,7 @@ function runAccessibilityChecks(pageSource, navigationSource, simulatorSource) {
   sourceIncludes(pageSource, "<HomepageNavigation />", "Homepage mounts the canonical navigation");
   sourceIncludes(navigationSource, 'aria-label="Acceso principal"', "Primary nav has accessible label");
   sourceIncludes(pageSource, 'aria-label="Señales del producto"', "Trust signal list has accessible label");
-  sourceIncludes(pageSource, 'aria-labelledby="workspace-title"', "Workspace section is labelled");
+  sourceIncludes(pageSource, 'className="minimal-home__simulator" id="simulador"', "Hero exposes the canonical simulator target");
 
   sourceIncludes(simulatorSource, 'aria-label="Simulador inicial de decisión"', "Simulator section has accessible label");
   sourceIncludes(simulatorSource, '<label htmlFor="decision-input">', "Textarea has explicit label");
