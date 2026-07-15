@@ -128,7 +128,7 @@ sourceIncludes(simulateRoute, "mockOnly: true", "Simulator remains mockOnly");
 sourceIncludes(home, 'href: "/privacy-policy"', "Public footer keeps privacy link");
 sourceIncludes(home, 'href: "/terms"', "Public footer keeps terms link");
 sourceIncludes(home, 'href: "mailto:hola@levio.es"', "Public footer keeps contact link");
-sourceIncludes(navigation, 'href="/login"', "Public auth CTA keeps login target");
+sourceIncludes(home, 'href="/login"', "Public auth CTA keeps login target");
 sourceIncludes(home, 'href: "/dashboard"', "Public workspace CTA keeps protected dashboard target");
 
 const literalHrefs = Array.from(allUiSource.matchAll(/href\s*=\s*["']([^"']+)["']/g), (match) => match[1]);

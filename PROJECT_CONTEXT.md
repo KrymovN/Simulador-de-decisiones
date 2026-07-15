@@ -1,5 +1,31 @@
 # PROJECT CONTEXT
 
+## Bounded Safari/iPhone Homepage Motion Correction — 15 July 2026
+
+This owner-reported follow-up corrects the existing minimal homepage without
+reopening its visual direction or restoring removed graphics. The previous
+checkpoint was not owner accepted. One homepage controller now observes only
+four narrative section containers; item motion is CSS-indexed, rAF-batched,
+monotonic, unobserved after completion, and immediately settled for reduced
+motion.
+
+The correction makes the first-scroll hero lift persistent, keeps preview
+signals as three approved whole rows with a separate IA disclosure, encodes
+desktop `06` → `01` and mobile `01` → `06` process sequencing, adapts
+capability order to desktop/mobile reading direction, reserves mobile row one
+for brand plus login, scopes hover movement to fine pointers, and leaves final
+CTA actions stationary. `HomeSimulator`, footer wording, route destinations,
+restricted gold hierarchy, deterministic public API behavior, and all product
+boundaries remain unchanged.
+
+Repository and in-app Chromium checks pass at the required desktop/phone
+viewports with no overflow, console warning/error, or reverse-scroll reset.
+Chromium is not Safari acceptance; owner actual-device Safari iPhone homepage
+review remains required. No live provider, OpenAI request, AI bridge, auth,
+dashboard, Supabase, privacy, retention, export/deletion, Decision Engine, or
+new Stage scope was opened. Stage 9 remains In Progress and readiness remains
+58% estimated.
+
 ## Bounded Public Homepage One-Time Assembly Refinement — 15 July 2026
 
 The owner follow-up restores restrained motion inside the approved minimal

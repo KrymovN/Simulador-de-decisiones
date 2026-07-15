@@ -1,5 +1,24 @@
 # LEVIO IMPLEMENTATION PLAN
 
+## Bounded Safari/iPhone Homepage Motion Correction Checkpoint — 15 July 2026
+
+The owner-reported homepage correction is implemented without creating a new
+Stage or expanding Stage 9. It replaces fragmented motion assumptions with
+four section-level observer targets, rAF scroll batching, deterministic CSS
+indexes, monotonic settlement, and immediate reduced-motion final state. The
+hero lift is persistent; preview phrases use three strict rows; desktop process
+order is `06` → `01` while mobile order is `01` → `06`; capability sequencing
+adapts the same way; header login stays visible above a contained mobile nav;
+hover movement is fine-pointer only; and final CTA actions remain stable.
+
+The previous checkpoint was not owner accepted. Dedicated, owner, mobile,
+Safari-static, public Home/Simulator/API/trust/rendered/interaction, TypeScript,
+lint, build, diff, and in-app Chromium checks pass. Chromium evidence covers
+1440×900, 390×844, and 320×700 plus header widths 375 and 430; it is not actual
+Safari acceptance. Stage 9 remains In Progress, readiness remains 58%
+estimated, OpenAI requests remain zero, and the canonical next point remains
+owner actual-device Safari iPhone homepage review.
+
 ## Bounded Homepage One-Time Assembly Refinement Checkpoint — 15 July 2026
 
 The homepage-only follow-up is complete without creating a Stage or expanding

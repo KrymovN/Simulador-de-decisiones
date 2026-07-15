@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import HomepageAnchorLink from "./HomepageAnchorLink";
 
@@ -85,9 +84,6 @@ export default function HomepageNavigation() {
           {item.label}
         </HomepageAnchorLink>
       ))}
-      <Link className="nav-cta" href="/login">
-        Iniciar sesión
-      </Link>
     </nav>
   );
 }

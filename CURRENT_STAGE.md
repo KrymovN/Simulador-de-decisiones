@@ -1,5 +1,33 @@
 # CURRENT STAGE
 
+## Bounded Safari/iPhone Homepage Motion Correction Complete — 15 July 2026
+
+The owner-reported Safari/iPhone follow-up is complete as a bounded correction
+to the existing homepage checkpoint. The previous checkpoint was not owner
+accepted. No new Stage or Stage 9 substep is opened: Stage 9 remains In
+Progress and readiness remains 58% estimated.
+
+The root cause was fragmented activation and responsive presentation: motion
+was distributed across item-level assumptions, hero movement was too easy to
+miss, preview phrases lacked a strict row contract, and the narrow header did
+not reserve an immediate row-one position for login. The homepage now uses one
+IntersectionObserver per narrative section, requestAnimationFrame batching,
+monotonic `pending` → `assembled` → `settled` state, deterministic CSS indexes,
+and observer cleanup after completion. Hero lift is persistent, preview copy is
+three whole non-overlapping rows, desktop process order is `06` → `01`, mobile
+reading order is `01` → `06`, capability order follows the same responsive
+logic, pointer hover is restricted to fine pointers, and final CTA actions stay
+static while its three copy clusters assemble.
+
+Dedicated and aligned homepage/mobile/Safari regressions, public
+Home/Simulator/API/trust/rendered/interaction gates, TypeScript, lint, build,
+diff, and in-app Chromium checks pass. Runtime evidence covers 1440×900,
+390×844, and 320×700, plus header containment at 375 and 430 pixels, with zero
+document/header overflow, visible login, deterministic order, zero console
+warnings/errors, and no reverse-scroll disassembly. This is not WebKit/Safari
+acceptance. OpenAI requests remain zero and the next checkpoint remains owner
+actual-device Safari iPhone homepage review.
+
 ## Bounded Homepage One-Time Assembly Refinement Complete — 15 July 2026
 
 The owner-directed homepage motion/copy follow-up is complete as a bounded

@@ -1,24 +1,34 @@
 # LEVIO CURRENT STATE
 
-## Current Homepage One-Time Assembly State — 15 July 2026
+## Current Safari/iPhone Homepage Motion Correction State — 15 July 2026
 
-The signed-out homepage preserves the scoped minimal visual system while using
-one bounded `HomepageAssemblyController` for first-scroll and viewport entry.
-Each group moves through `pending` to `assembled` to `settled`, is registered
-as completed, and is unobserved; scroll up has no transition back to pending.
-Fast-scroll geometry finalizes skipped groups, a 16ms timer batches visible
-scroll work without depending on background animation frames, and reduced
-motion renders the stable final state immediately. No-JavaScript content stays
-visible because staging rules require the progressive-enhancement root class.
+The signed-out homepage preserves the scoped minimal visual system while one
+bounded `HomepageAssemblyController` owns four narrative section containers:
+hero, process, capabilities, and final CTA. Each container has one
+IntersectionObserver target and moves monotonically through `pending`,
+`assembled`, and `settled`; CSS indexes define item timing, completed sections
+are unobserved, and reverse scroll cannot stage them again. Scroll work is
+requestAnimationFrame-batched, fast-scroll geometry finalizes skipped groups,
+and reduced motion renders the final state immediately. No-JavaScript content
+remains readable through progressive enhancement.
 
-Hero, preview, opposing headings, right-to-left process sequencing, moderate
-capability entry, and the three-cluster final headline are active. Simulator
-controls are visually softer but behavior is unchanged. Gold remains limited
-to the Levio lockup and primary CTA; footer copy now uses the approved strict
-`Sistema de simulación de decisiones…` wording without `motor`. Deterministic
-repository and Chromium runtime evidence passes with no horizontal overflow.
-No OpenAI, auth, dashboard, persistence, privacy, retention, export/deletion,
-Decision Engine, or Stage 9 contract changed.
+The hero keeps a visible `-72px` desktop / `-38px` phone lift after the first
+downward scroll. The preview contains one static label, exactly three approved
+whole-phrase rows, and a separate static IA disclosure. Process cards preserve
+DOM order `01`–`06`, animate `06` → `01` on desktop and read/animate `01` → `06`
+on mobile; capability cards enter right-to-left on desktop and top-to-bottom on
+mobile. The phone header reserves row one for brand plus immediately visible
+login and places navigation in a contained grid. Hover motion is fine-pointer
+only, touch active feedback is transient, and final CTA actions do not move.
+
+The previous homepage checkpoint was not owner accepted. Repository gates and
+in-app Chromium runtime evidence now pass at 1440×900, 390×844, and 320×700,
+with additional header containment at 375 and 430 pixels, zero overflow, zero
+console warnings/errors, and stable reverse-scroll state. Chromium is not
+Safari evidence. No OpenAI, auth, dashboard, persistence, privacy, retention,
+export/deletion, Decision Engine, or Stage 9 contract changed; Stage 9 remains
+In Progress, readiness remains 58% estimated, and owner actual-device Safari
+iPhone homepage review remains required.
 
 ## Current Bounded Homepage Visual Simplification State — 15 July 2026
 

@@ -17,9 +17,9 @@
   --home-space: clamp(64px, 8vw, 112px);
   --home-motion-duration: 180ms;
   --home-motion-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
-  --home-assembly-duration: 620ms;
-  --home-assembly-stagger: 82ms;
-  --home-assembly-ease: cubic-bezier(0.22, 0.72, 0.18, 1);
+  --home-assembly-duration: 920ms;
+  --home-assembly-stagger: 130ms;
+  --home-assembly-ease: cubic-bezier(0.22, 1, 0.36, 1);
   position: relative;
   isolation: isolate;
   width: 100%;
@@ -81,7 +81,7 @@
   z-index: 20;
   min-height: 96px;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 32px;
   align-items: center;
   padding: 20px 0;
@@ -148,7 +148,7 @@
 }
 
 .minimal-home .reference-nav a,
-.minimal-home .reference-nav .nav-cta {
+.minimal-home .minimal-home__header-login {
   position: relative;
   min-width: 0;
   min-height: 42px;
@@ -182,8 +182,8 @@
 
 .minimal-home .reference-nav a::before,
 .minimal-home .reference-nav a::after,
-.minimal-home .reference-nav .nav-cta::before,
-.minimal-home .reference-nav .nav-cta::after {
+.minimal-home .minimal-home__header-login::before,
+.minimal-home .minimal-home__header-login::after {
   content: none !important;
   background: none !important;
 }
@@ -199,14 +199,13 @@
   background: var(--home-muted-strong) !important;
 }
 
-.minimal-home .reference-nav .nav-cta {
-  margin-left: 10px;
+.minimal-home .minimal-home__header-login {
   padding-inline: 18px;
   border-color: var(--home-line-strong);
   color: var(--home-text);
 }
 
-.minimal-home .reference-nav .nav-cta:hover {
+.minimal-home .minimal-home__header-login:hover {
   border-color: #686868;
   background: var(--home-surface-raised);
 }
@@ -237,7 +236,7 @@
   line-height: 0.98;
 }
 
-.minimal-home__hero [data-home-assembly-group="hero-title"] {
+.minimal-home__hero-title-wrap {
   min-height: 1px;
 }
 
@@ -315,6 +314,11 @@
   gap: 10px;
 }
 
+.minimal-home__preview-block {
+  display: grid;
+  gap: 9px;
+}
+
 .minimal-home__preview-note strong {
   position: relative;
   padding-left: 20px;
@@ -336,9 +340,8 @@
 }
 
 .minimal-home__preview-note ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 16px;
+  display: grid;
+  gap: 6px;
   margin: 0;
   padding: 0 0 0 20px;
   list-style: none;
@@ -346,11 +349,14 @@
 
 .minimal-home__preview-note li {
   position: relative;
+  width: fit-content;
+  max-width: 100%;
   color: var(--home-muted);
   font-size: 0.78rem;
+  line-height: 1.4;
 }
 
-.minimal-home__preview-note p {
+.minimal-home__preview-status {
   margin: 0;
   padding-left: 20px;
   color: #737373;
@@ -359,10 +365,7 @@
 }
 
 .minimal-home__preview-note li + li::before {
-  content: "·";
-  position: absolute;
-  left: -10px;
-  color: #5f5f5f;
+  content: none;
 }
 
 .minimal-home__simulator {
@@ -785,9 +788,7 @@
   border-radius: var(--home-radius-sm);
   background: var(--home-surface);
   box-shadow: none;
-  transition:
-    border-color var(--home-motion-duration) var(--home-motion-ease),
-    background-color var(--home-motion-duration) var(--home-motion-ease);
+  transform: none;
 }
 
 .minimal-home__process-card {
@@ -822,12 +823,6 @@
   color: var(--home-muted);
   font-size: 0.86rem;
   line-height: 1.65;
-}
-
-.minimal-home__process-card:hover,
-.minimal-home__capability-card:hover {
-  border-color: var(--home-line-strong);
-  background: var(--home-surface-raised);
 }
 
 .minimal-home__capabilities {
@@ -940,19 +935,23 @@
 
 .minimal-home.home-assembly-enabled [data-home-assembly-item] {
   --home-assembly-from-x: 0px;
-  --home-assembly-from-y: 16px;
+  --home-assembly-from-y: 22px;
   --home-assembly-to-x: 0px;
   --home-assembly-to-y: 0px;
-  will-change: auto;
+  --motion-index: 0;
+  --motion-phase-delay: 0ms;
+  --motion-duration: var(--home-assembly-duration);
+  --motion-stagger: var(--home-assembly-stagger);
+  --motion-delay: var(--motion-phase-delay);
 }
 
 .minimal-home.home-assembly-enabled [data-home-assembly-direction="left"] {
-  --home-assembly-from-x: -42px;
+  --home-assembly-from-x: -56px;
   --home-assembly-from-y: 0px;
 }
 
 .minimal-home.home-assembly-enabled [data-home-assembly-direction="right"] {
-  --home-assembly-from-x: 42px;
+  --home-assembly-from-x: 56px;
   --home-assembly-from-y: 0px;
 }
 
@@ -971,74 +970,185 @@
 }
 
 .minimal-home.home-assembly-enabled [data-home-assembly-state="pending"] [data-home-assembly-item] {
-  opacity: 0;
+  opacity: 0.12;
   transform: translate3d(var(--home-assembly-from-x), var(--home-assembly-from-y), 0);
+  will-change: opacity, transform;
 }
 
 .minimal-home.home-assembly-enabled [data-home-assembly-state="assembled"] [data-home-assembly-item] {
   opacity: 1;
   transform: translate3d(var(--home-assembly-to-x), var(--home-assembly-to-y), 0);
   transition:
-    opacity var(--home-assembly-duration) var(--home-assembly-ease),
-    transform var(--home-assembly-duration) var(--home-assembly-ease);
-  transition-delay: calc(var(--home-assembly-order, 0) * var(--home-assembly-stagger));
+    opacity var(--motion-duration) var(--home-assembly-ease),
+    transform var(--motion-duration) var(--home-assembly-ease);
+  transition-delay: var(--motion-delay);
   will-change: opacity, transform;
 }
 
 .minimal-home.home-assembly-enabled [data-home-assembly-state="settled"] [data-home-assembly-item] {
   opacity: 1;
   transform: translate3d(var(--home-assembly-to-x), var(--home-assembly-to-y), 0);
+  transition: none;
+  will-change: auto;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-group="hero-title"] [data-home-assembly-item] {
+.minimal-home.home-assembly-enabled [data-home-assembly-group="hero"] #hero-title {
   --home-assembly-from-y: 0px;
-  --home-assembly-to-y: -18px;
+  --home-assembly-to-y: -72px;
+  --motion-duration: 1020ms;
   opacity: 1;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-group="preview-signals"] [data-home-assembly-item] {
+.minimal-home.home-assembly-enabled [data-home-preview-phrases] [data-home-assembly-item] {
   --home-assembly-from-x: 0px;
   --home-assembly-from-y: 0px;
-  opacity: 0.74;
+  --motion-duration: 940ms;
+  --motion-stagger: 120ms;
+  opacity: 0.76;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-group="preview-signals"] [data-home-assembly-direction="left"] {
-  --home-assembly-to-x: -12px;
+.minimal-home.home-assembly-enabled [data-home-preview-phrases] [data-home-assembly-direction="left"] {
+  --home-assembly-to-x: -18px;
+  --motion-index: 0;
+  --motion-delay: 0ms;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-group="preview-signals"] [data-home-assembly-direction="rise"] {
-  --home-assembly-to-y: -7px;
+.minimal-home.home-assembly-enabled [data-home-preview-phrases] [data-home-assembly-direction="rise"] {
+  --home-assembly-to-y: -8px;
+  --motion-index: 1;
+  --motion-delay: 120ms;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-group="preview-signals"] [data-home-assembly-direction="right"] {
-  --home-assembly-to-x: 12px;
+.minimal-home.home-assembly-enabled [data-home-preview-phrases] [data-home-assembly-direction="right"] {
+  --home-assembly-to-x: 18px;
+  --motion-index: 2;
+  --motion-delay: 240ms;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-group="preview-signals"][data-home-assembly-state="assembled"] [data-home-assembly-item],
-.minimal-home.home-assembly-enabled [data-home-assembly-group="preview-signals"][data-home-assembly-state="settled"] [data-home-assembly-item] {
+.minimal-home.home-assembly-enabled [data-home-assembly-group="hero"][data-home-assembly-state="assembled"] [data-home-preview-phrases] [data-home-assembly-item],
+.minimal-home.home-assembly-enabled [data-home-assembly-group="hero"][data-home-assembly-state="settled"] [data-home-preview-phrases] [data-home-assembly-item] {
   opacity: 1;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-group="process-cards"] [data-home-assembly-item] {
-  --home-assembly-from-x: 54px;
+.minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"] .minimal-home__section-heading h2,
+.minimal-home.home-assembly-enabled [data-home-assembly-group="capabilities-section"] .minimal-home__section-heading h2 {
+  --motion-duration: 980ms;
+}
+
+.minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"] .minimal-home__section-heading p {
+  --motion-index: 1;
+  --motion-delay: 130ms;
+  --motion-duration: 940ms;
+}
+
+.minimal-home.home-assembly-enabled .minimal-home__process-card {
+  --home-assembly-from-x: 64px;
   --home-assembly-from-y: 0px;
+  --motion-phase-delay: 220ms;
+  --motion-duration: 860ms;
+  --motion-stagger: 130ms;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] {
-  transition:
-    opacity var(--home-assembly-duration) var(--home-assembly-ease),
-    transform var(--home-assembly-duration) var(--home-assembly-ease);
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(1) { --motion-index: 5; --motion-delay: 870ms; }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(2) { --motion-index: 4; --motion-delay: 740ms; }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(3) { --motion-index: 3; --motion-delay: 610ms; }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(4) { --motion-index: 2; --motion-delay: 480ms; }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(5) { --motion-index: 1; --motion-delay: 350ms; }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(6) { --motion-index: 0; --motion-delay: 220ms; }
+
+.minimal-home.home-assembly-enabled .minimal-home__capability-card {
+  --home-assembly-from-x: 56px;
+  --home-assembly-from-y: 0px;
+  --motion-phase-delay: 180ms;
+  --motion-duration: 900ms;
+  --motion-stagger: 140ms;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"][data-home-assembly-state="pending"] {
-  opacity: 0.34;
-  transform: translateY(20px);
+.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(1) { --motion-index: 3; --motion-delay: 600ms; }
+.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(2) { --motion-index: 2; --motion-delay: 460ms; }
+.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(3) { --motion-index: 1; --motion-delay: 320ms; }
+.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(4) { --motion-index: 0; --motion-delay: 180ms; }
+
+.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] .minimal-home__cta-cluster {
+  --motion-duration: 960ms;
+  --motion-stagger: 120ms;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"][data-home-assembly-state="assembled"],
-.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"][data-home-assembly-state="settled"] {
-  opacity: 1;
-  transform: translateY(0);
+.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] .minimal-home__cta-cluster:nth-child(1) {
+  --home-assembly-from-x: -28px;
+  --home-assembly-from-y: 12px;
+  --motion-index: 0;
+  --motion-delay: 0ms;
+}
+
+.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] .minimal-home__cta-cluster:nth-child(2) {
+  --home-assembly-from-y: 16px;
+  --motion-index: 1;
+  --motion-delay: 120ms;
+}
+
+.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] .minimal-home__cta-cluster:nth-child(3) {
+  --home-assembly-from-x: 28px;
+  --home-assembly-from-y: 12px;
+  --motion-index: 2;
+  --motion-delay: 240ms;
+}
+
+.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] > div > p {
+  --motion-index: 2;
+  --motion-delay: 240ms;
+  --motion-duration: 900ms;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .minimal-home__process-card,
+  .minimal-home__capability-card {
+    transition:
+      border-color 300ms var(--home-assembly-ease),
+      background-color 300ms var(--home-assembly-ease),
+      box-shadow 300ms var(--home-assembly-ease),
+      transform 300ms var(--home-assembly-ease);
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-state="settled"] .minimal-home__process-card:hover,
+  .minimal-home.home-assembly-enabled [data-home-assembly-state="settled"] .minimal-home__capability-card:hover,
+  .minimal-home:not(.home-assembly-enabled) .minimal-home__process-card:hover,
+  .minimal-home:not(.home-assembly-enabled) .minimal-home__capability-card:hover {
+    border-color: #3a3a3a;
+    background: #0d0d0d;
+    box-shadow: 0 12px 28px rgb(0 0 0 / 16%);
+    transform: translateY(-2px);
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .minimal-home__process-card,
+  .minimal-home__capability-card {
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      border-color 140ms var(--home-motion-ease),
+      background-color 140ms var(--home-motion-ease),
+      transform 140ms var(--home-motion-ease);
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-state="settled"] .minimal-home__process-card:hover,
+  .minimal-home.home-assembly-enabled [data-home-assembly-state="settled"] .minimal-home__capability-card:hover,
+  .minimal-home:not(.home-assembly-enabled) .minimal-home__process-card:hover,
+  .minimal-home:not(.home-assembly-enabled) .minimal-home__capability-card:hover {
+    border-color: var(--home-line);
+    background: var(--home-surface);
+    box-shadow: none;
+    transform: none;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-state="settled"] .minimal-home__process-card:active,
+  .minimal-home.home-assembly-enabled [data-home-assembly-state="settled"] .minimal-home__capability-card:active,
+  .minimal-home:not(.home-assembly-enabled) .minimal-home__process-card:active,
+  .minimal-home:not(.home-assembly-enabled) .minimal-home__capability-card:active {
+    border-color: #343434;
+    background: #0c0c0c;
+    transform: translateY(1px);
+  }
 }
 
 @media (max-width: 1080px) {
@@ -1072,39 +1182,42 @@
   .minimal-home__header {
     position: relative;
     min-height: 0;
-    grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 20px 0 0;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px 16px;
+    padding: max(16px, env(safe-area-inset-top)) 0 0;
     background: var(--home-bg);
   }
 
   .minimal-home .reference-nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
     width: 100%;
-    justify-content: flex-start;
-    overflow-x: auto;
-    overscroll-behavior-inline: contain;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .minimal-home .reference-nav::-webkit-scrollbar {
-    display: none;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+    overflow: visible;
   }
 
   .minimal-home .reference-nav a,
-  .minimal-home .reference-nav a:nth-child(n),
-  .minimal-home .reference-nav .nav-cta {
-    width: auto !important;
+  .minimal-home .reference-nav a:nth-child(n) {
+    width: 100% !important;
+    min-width: 0;
     min-height: 44px;
     display: inline-flex;
-    flex: 0 0 auto;
-    padding: 0 12px;
+    padding: 0 8px;
     font-size: 0.78rem;
-    white-space: nowrap;
+    line-height: 1.2;
+    text-align: center;
+    white-space: normal;
   }
 
-  .minimal-home .reference-nav .nav-cta {
-    margin-left: 4px;
+  .minimal-home .minimal-home__header-login {
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 40px;
+    padding-inline: 14px;
+    font-size: 0.8rem;
   }
 
   .minimal-home__hero {
@@ -1162,6 +1275,15 @@
   .minimal-home .levio-mark-lg {
     width: 34px;
     height: 34px;
+  }
+
+  .minimal-home .reference-nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .minimal-home .minimal-home__header-login {
+    padding-inline: 12px;
+    font-size: 0.76rem;
   }
 
   .minimal-home__hero {
@@ -1234,6 +1356,57 @@
 
   .minimal-home__capability-card {
     text-align: left;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-group="hero"] #hero-title {
+    --home-assembly-to-y: -38px;
+    --motion-duration: 980ms;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-preview-phrases] [data-home-assembly-direction="left"] {
+    --home-assembly-to-x: -6px;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-preview-phrases] [data-home-assembly-direction="rise"] {
+    --home-assembly-to-y: -4px;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-preview-phrases] [data-home-assembly-direction="right"] {
+    --home-assembly-to-x: 6px;
+  }
+
+  .minimal-home.home-assembly-enabled .minimal-home__process-card {
+    --home-assembly-from-x: 32px;
+    --motion-duration: 860ms;
+    --motion-stagger: 130ms;
+  }
+
+  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(1) { --motion-index: 0; --motion-delay: 220ms; }
+  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(2) { --motion-index: 1; --motion-delay: 350ms; }
+  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(3) { --motion-index: 2; --motion-delay: 480ms; }
+  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(4) { --motion-index: 3; --motion-delay: 610ms; }
+  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(5) { --motion-index: 4; --motion-delay: 740ms; }
+  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(6) { --motion-index: 5; --motion-delay: 870ms; }
+
+  .minimal-home.home-assembly-enabled .minimal-home__capability-card {
+    --home-assembly-from-x: 30px;
+    --motion-duration: 880ms;
+    --motion-stagger: 135ms;
+  }
+
+  .minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(1) { --motion-index: 0; --motion-delay: 180ms; }
+  .minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(2) { --motion-index: 1; --motion-delay: 315ms; }
+  .minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(3) { --motion-index: 2; --motion-delay: 450ms; }
+  .minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(4) { --motion-index: 3; --motion-delay: 585ms; }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] .minimal-home__cta-cluster:nth-child(1) {
+    --home-assembly-from-x: -18px;
+    --home-assembly-from-y: 10px;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] .minimal-home__cta-cluster:nth-child(3) {
+    --home-assembly-from-x: 18px;
+    --home-assembly-from-y: 10px;
   }
 
   .minimal-home__final-cta {

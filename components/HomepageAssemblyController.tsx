@@ -3,10 +3,8 @@
 import { useEffect } from "react";
 
 const GROUP_SELECTOR = "[data-home-assembly-group]";
-const ITEM_SELECTOR = "[data-home-assembly-item]";
 const FIRST_SCROLL_SELECTOR = '[data-home-assembly-trigger="first-scroll"]';
-const ASSEMBLY_DURATION_MS = 620;
-const ASSEMBLY_STAGGER_MS = 82;
+const DEFAULT_SETTLE_MS = 1600;
 
 type AssemblyState = "pending" | "assembled" | "settled";
 
@@ -24,22 +22,20 @@ export default function HomepageAssemblyController() {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const completedGroups = new WeakSet<HTMLElement>();
     const settleTimers = new Map<HTMLElement, number>();
+    const assemblyFrames = new Map<HTMLElement, number>();
     let observer: IntersectionObserver | null = null;
-    let scrollTimer = 0;
+    let scrollFrame = 0;
     let previousScrollY = window.scrollY;
 
     shell.classList.add("home-assembly-enabled");
 
-    groups.forEach((group) => {
-      group.querySelectorAll<HTMLElement>(ITEM_SELECTOR).forEach((item, index) => {
-        item.style.setProperty("--home-assembly-order", item.dataset.homeAssemblyOrder ?? String(index));
-      });
-    });
-
     const settle = (group: HTMLElement) => {
       const timer = settleTimers.get(group);
       if (timer) window.clearTimeout(timer);
+      const frame = assemblyFrames.get(group);
+      if (frame) window.cancelAnimationFrame(frame);
       settleTimers.delete(group);
+      assemblyFrames.delete(group);
       completedGroups.add(group);
       observer?.unobserve(group);
       setAssemblyState(group, "settled");
@@ -54,26 +50,18 @@ export default function HomepageAssemblyController() {
 
       completedGroups.add(group);
       observer?.unobserve(group);
-      setAssemblyState(group, "assembled");
-
-      const itemCount = group.querySelectorAll(ITEM_SELECTOR).length;
-      const settleAfter = ASSEMBLY_DURATION_MS + Math.max(0, itemCount - 1) * ASSEMBLY_STAGGER_MS + 100;
-      settleTimers.set(group, window.setTimeout(() => settle(group), settleAfter));
-    };
-
-    const advanceReachedGroups = (settleVisibleGroups = false) => {
-      const revealLine = window.innerHeight * 0.82;
-      groups.forEach((group) => {
-        if (completedGroups.has(group)) return;
-        const rect = group.getBoundingClientRect();
-        if (rect.bottom < 0) {
+      const frame = window.requestAnimationFrame(() => {
+        assemblyFrames.delete(group);
+        if (reducedMotion.matches) {
           settle(group);
           return;
         }
-        if (group.matches(FIRST_SCROLL_SELECTOR) || rect.top > revealLine) return;
-        if (settleVisibleGroups) settle(group);
-        else assemble(group);
+        setAssemblyState(group, "assembled");
+        const requestedSettleMs = Number(group.dataset.homeAssemblySettleMs);
+        const settleAfter = Number.isFinite(requestedSettleMs) ? requestedSettleMs : DEFAULT_SETTLE_MS;
+        settleTimers.set(group, window.setTimeout(() => settle(group), settleAfter));
       });
+      assemblyFrames.set(group, frame);
     };
 
     if (reducedMotion.matches) {
@@ -87,7 +75,10 @@ export default function HomepageAssemblyController() {
 
     if (window.scrollY > 16) {
       firstScrollGroups.forEach((group) => settle(group));
-      advanceReachedGroups(true);
+      const revealLine = window.innerHeight * 0.82;
+      groups.forEach((group) => {
+        if (!group.matches(FIRST_SCROLL_SELECTOR) && group.getBoundingClientRect().top <= revealLine) settle(group);
+      });
     }
 
     if ("IntersectionObserver" in window) {
@@ -109,16 +100,18 @@ export default function HomepageAssemblyController() {
     }
 
     const handleScroll = () => {
-      if (scrollTimer) return;
-      scrollTimer = window.setTimeout(() => {
-        scrollTimer = 0;
+      if (scrollFrame) return;
+      scrollFrame = window.requestAnimationFrame(() => {
+        scrollFrame = 0;
         const currentScrollY = window.scrollY;
         if (currentScrollY > previousScrollY && currentScrollY > 16) {
           firstScrollGroups.forEach((group) => assemble(group));
         }
-        advanceReachedGroups();
+        groups.forEach((group) => {
+          if (!completedGroups.has(group) && group.getBoundingClientRect().bottom < 0) settle(group);
+        });
         previousScrollY = currentScrollY;
-      }, 16);
+      });
     };
 
     const handleReducedMotionChange = () => {
@@ -131,10 +124,12 @@ export default function HomepageAssemblyController() {
     reducedMotion.addEventListener("change", handleReducedMotionChange);
 
     return () => {
-      if (scrollTimer) window.clearTimeout(scrollTimer);
+      if (scrollFrame) window.cancelAnimationFrame(scrollFrame);
       observer?.disconnect();
       settleTimers.forEach((timer) => window.clearTimeout(timer));
+      assemblyFrames.forEach((frame) => window.cancelAnimationFrame(frame));
       settleTimers.clear();
+      assemblyFrames.clear();
       window.removeEventListener("scroll", handleScroll);
       reducedMotion.removeEventListener("change", handleReducedMotionChange);
       shell.classList.remove("home-assembly-enabled");

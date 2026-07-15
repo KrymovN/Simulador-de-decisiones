@@ -1,5 +1,29 @@
 # LEVIO PROJECT PROGRESS TRACKER
 
+## Cross-Cutting Progress Update — Safari/iPhone Homepage Motion Correction — 15 July 2026
+
+The bounded owner-reported correction is implemented. Repository analysis
+traced the defects to fragmented activation, insufficiently explicit hero and
+preview contracts, responsive ordering that was not encoded in CSS indexes,
+and a mobile header that did not reserve brand/login as the first row. Four
+section containers now own assembly, one observer target each, with rAF scroll
+batching, deterministic delays, observer cleanup, and irreversible settlement.
+
+Hero lift remains at its final offset; preview signals are three whole rows;
+process cards animate `06` → `01` on desktop and `01` → `06` on mobile;
+capabilities animate right-to-left or top-to-bottom respectively; mobile login
+is immediately visible with contained navigation; pointer-specific states no
+longer leave touch hover behind; and final CTA actions remain fixed. The
+previous checkpoint was not owner accepted.
+
+All requested repository gates, TypeScript, lint, build, and diff checks pass.
+In-app Chromium confirms zero document/header overflow, visible login,
+deterministic sequencing, zero console warnings/errors, and retained settled
+state after reverse scroll at 1440×900, 390×844, and 320×700; header containment
+also passes at 375 and 430 pixels. This is not real Safari evidence. Stage 9 and
+the 58% readiness estimate remain unchanged, OpenAI requests remain zero, and
+owner actual-device Safari iPhone homepage review is still next.
+
 ## Cross-Cutting Progress Update — Homepage One-Time Assembly — 15 July 2026
 
 The bounded homepage refinement is implemented. Hero and preview respond once

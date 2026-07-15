@@ -37,8 +37,8 @@ excludes(css, "animation-timeline", "Homepage avoids scroll-timeline compatibili
 includes(css, "@media (max-width: 860px)", "Tablet breakpoint exists");
 includes(css, "@media (max-width: 560px)", "iPhone breakpoint exists");
 includes(css, "width: min(100% - 28px, 520px)", "iPhone frame keeps symmetric safe gutters");
-includes(css, "-webkit-overflow-scrolling: touch", "Nav keeps WebKit momentum scrolling");
-includes(css, "overscroll-behavior-inline: contain", "Horizontal nav scroll stays contained");
+excludes(css, "overflow-x: auto", "Nav removes horizontal WebKit scrolling");
+includes(css, "grid-template-columns: repeat(2, minmax(0, 1fr))", "Narrow navigation stays contained in a two-column grid");
 includes(css, "width: auto !important", "Old full-width nav behavior cannot reappear");
 includes(css, "min-height: 44px", "Navigation keeps a 44px touch target");
 includes(css, "min-height: 168px", "Textarea stays readable on iPhone");

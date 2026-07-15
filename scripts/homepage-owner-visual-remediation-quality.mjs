@@ -80,10 +80,10 @@ includes(navigation, '{ label: "Inicio", href: "#inicio" }', "Header keeps canon
 includes(navigation, '{ label: "Cómo funciona", href: "#como-funciona" }', "Header keeps Cómo funciona route");
 includes(navigation, '{ label: "Criterios", href: "#criterios" }', "Header keeps Criterios route");
 includes(navigation, '{ label: "Simulador", href: "#simulador" }', "Header keeps Simulador route");
-includes(navigation, 'href="/login"', "Header keeps the real login route");
+includes(home, 'className="minimal-home__header-login" href="/login"', "Header keeps the real login route");
 includes(css, ".minimal-home .reference-nav .nav-active::after", "Active navigation has a scoped neutral underline");
 includes(css, "background: var(--home-muted-strong) !important;", "Active navigation underline is neutral");
-includes(css, ".minimal-home .reference-nav .nav-cta", "Login remains a bordered monochrome action");
+includes(css, ".minimal-home .minimal-home__header-login", "Login remains a bordered monochrome action");
 
 includes(home, "Decide antes", "Canonical hero heading remains");
 includes(home, "Comenzar simulación", "The approved primary CTA remains");
@@ -160,14 +160,14 @@ includes(css, "background: var(--home-surface-raised);", "Simulator action stays
 includes(css, "grid-template-columns: minmax(0, 0.82fr) minmax(460px, 1.18fr)", "Desktop hero uses a bounded copy/product grid");
 includes(css, "@media (max-width: 860px)", "Tablet/mobile layout breakpoint exists");
 includes(css, "grid-template-columns: 1fr;", "Mobile hero resolves to a single-column flow");
-includes(css, "-webkit-overflow-scrolling: touch", "Scrollable mobile navigation is Safari-safe");
+includes(css, "grid-template-columns: repeat(2, minmax(0, 1fr))", "Mobile navigation is Safari-safe without horizontal scrolling");
 includes(css, "min-height: 168px", "Phone textarea keeps a readable Safari-safe height");
 includes(css, "overflow: clip", "Homepage contains decorative/layout overflow without 100vw dependence");
 excludes(css, "100vw", "Homepage avoids Safari scrollbar-width overflow traps");
 includes(css, "@media (prefers-reduced-motion: reduce)", "Reduced-motion boundary is explicit");
 includes(css, "animation: none !important", "Reduced motion removes reveal animations");
 includes(css, "transition-duration: 0.01ms !important", "Reduced motion collapses transitions");
-includes(css, "--home-assembly-duration: 620ms", "Bounded product-grade assembly timing remains");
+includes(css, "--home-assembly-duration: 920ms", "Bounded product-grade assembly timing remains");
 
 check(
   "Public client surface has no OpenAI transport",

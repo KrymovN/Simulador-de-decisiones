@@ -100,15 +100,22 @@ export default function Home() {
           <span className="brand-name">levio.es</span>
         </Link>
         <HomepageNavigation />
+        <Link className="minimal-home__header-login" href="/login">
+          Iniciar sesión
+        </Link>
       </header>
 
-      <section className="minimal-home__hero" id="inicio" aria-labelledby="hero-title">
+      <section
+        className="minimal-home__hero"
+        id="inicio"
+        aria-labelledby="hero-title"
+        data-home-assembly-group="hero"
+        data-home-assembly-settle-ms="1200"
+        data-home-assembly-trigger="first-scroll"
+      >
         <div className="minimal-home__hero-copy">
           <div>
-            <div
-              data-home-assembly-group="hero-title"
-              data-home-assembly-trigger="first-scroll"
-            >
+            <div className="minimal-home__hero-title-wrap">
               <h1 id="hero-title" data-home-assembly-item>
                 Decide antes
                 <span>de actuar.</span>
@@ -128,24 +135,22 @@ export default function Home() {
             </HomepageAnchorLink>
           </div>
 
-          <div
-            className="minimal-home__preview-note"
-            data-home-assembly-group="preview-signals"
-            data-home-assembly-trigger="first-scroll"
-          >
-            <strong>Preview público</strong>
-            <ul aria-label="Señales del producto">
-              {trustSignals.map((signal) => (
-                <li
-                  data-home-assembly-direction={signal.direction}
-                  data-home-assembly-item
-                  key={signal.copy}
-                >
-                  {signal.copy}
-                </li>
-              ))}
-            </ul>
-            <p>La conexión con IA real todavía no está activada.</p>
+          <div className="minimal-home__preview-block">
+            <div className="minimal-home__preview-note">
+              <strong>Preview público</strong>
+              <ul aria-label="Señales del producto" data-home-preview-phrases>
+                {trustSignals.map((signal) => (
+                  <li
+                    data-home-assembly-direction={signal.direction}
+                    data-home-assembly-item
+                    key={signal.copy}
+                  >
+                    {signal.copy}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <p className="minimal-home__preview-status">La conexión con IA real todavía no está activada.</p>
           </div>
         </div>
 
@@ -154,23 +159,28 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="minimal-home__section" id="como-funciona" aria-labelledby="process-title">
-        <div className="minimal-home__section-heading" data-home-assembly-group="process-heading">
+      <section
+        className="minimal-home__section"
+        id="como-funciona"
+        aria-labelledby="process-title"
+        data-home-assembly-group="process-section"
+        data-home-assembly-settle-ms="1900"
+      >
+        <div className="minimal-home__section-heading">
           <h2 id="process-title" data-home-assembly-direction="left" data-home-assembly-item>
             Cómo piensa Levio
           </h2>
-          <p data-home-assembly-direction="rise" data-home-assembly-item>
+          <p data-home-assembly-direction="right" data-home-assembly-item>
             Un sistema de simulación de decisiones, no un asistente de IA. No una respuesta. Una simulación de futuros posibles.
           </p>
         </div>
 
-        <div className="minimal-home__process-grid" data-home-assembly-group="process-cards">
+        <div className="minimal-home__process-grid">
           {processSteps.map((step, index) => (
             <article
               className="minimal-home__process-card"
               data-home-assembly-direction="right"
               data-home-assembly-item
-              data-home-assembly-order={processSteps.length - index - 1}
               key={step.title}
             >
               <span className="minimal-home__step-number">{String(index + 1).padStart(2, "0")}</span>
@@ -181,18 +191,24 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="minimal-home__section minimal-home__capabilities" id="criterios" aria-labelledby="capabilities-title">
-        <div className="minimal-home__section-heading" data-home-assembly-group="capabilities-heading">
+      <section
+        className="minimal-home__section minimal-home__capabilities"
+        id="criterios"
+        aria-labelledby="capabilities-title"
+        data-home-assembly-group="capabilities-section"
+        data-home-assembly-settle-ms="1700"
+      >
+        <div className="minimal-home__section-heading">
           <h2 id="capabilities-title" data-home-assembly-direction="right" data-home-assembly-item>
             Qué obtienes con Levio
           </h2>
         </div>
 
-        <div className="minimal-home__capability-grid" data-home-assembly-group="capability-cards">
-          {capabilities.map((capability, index) => (
+        <div className="minimal-home__capability-grid">
+          {capabilities.map((capability) => (
             <article
               className="minimal-home__capability-card"
-              data-home-assembly-direction={index % 2 === 0 ? "left-soft" : "right-soft"}
+              data-home-assembly-direction="right"
               data-home-assembly-item
               key={capability.title}
             >
@@ -207,6 +223,7 @@ export default function Home() {
         className="minimal-home__final-cta"
         aria-labelledby="final-cta-title"
         data-home-assembly-group="final-cta"
+        data-home-assembly-settle-ms="1400"
       >
         <div>
           <h2 id="final-cta-title" aria-label="Empieza con una decisión real.">
@@ -226,7 +243,7 @@ export default function Home() {
             Explora escenarios, riesgos y consecuencias antes de actuar.
           </p>
         </div>
-        <div className="minimal-home__final-actions" data-home-assembly-direction="right-soft" data-home-assembly-item>
+        <div className="minimal-home__final-actions">
           <HomepageAnchorLink className="minimal-home__primary-cta" href="#simulador">
             Comenzar simulación
           </HomepageAnchorLink>
