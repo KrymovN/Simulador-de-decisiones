@@ -230,7 +230,7 @@
 
 .minimal-home__hero h1 {
   max-width: 540px;
-  margin-bottom: 22px;
+  margin-bottom: 30px;
   font-size: clamp(3.4rem, 5.3vw, 5rem);
   font-weight: 680;
   letter-spacing: -0.06em;
@@ -941,24 +941,24 @@
   --motion-delay: var(--motion-phase-delay);
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-state="pending"] [data-home-assembly-item] {
+.minimal-home.home-assembly-enabled [data-home-assembly-group="preview"][data-home-assembly-state="pending"] [data-home-assembly-item] {
   pointer-events: none;
-  opacity: 0.16;
-  transform: translate3d(var(--home-assembly-from-x), var(--home-assembly-from-y), 0);
+  opacity: 0.62;
+  transform: translate3d(28px, 0, 0);
   will-change: opacity, transform;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-state="assembled"] [data-home-assembly-item] {
+.minimal-home.home-assembly-enabled [data-home-assembly-group="preview"][data-home-assembly-state="assembled"] [data-home-assembly-item] {
   opacity: 1;
   transform: none;
   transition:
-    opacity var(--motion-duration) var(--home-assembly-ease),
-    transform var(--motion-duration) var(--home-assembly-ease);
+    opacity 680ms var(--home-assembly-ease),
+    transform 680ms var(--home-assembly-ease);
   transition-delay: var(--motion-delay);
   will-change: opacity, transform;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-state="settled"] [data-home-assembly-item] {
+.minimal-home.home-assembly-enabled [data-home-assembly-group="preview"][data-home-assembly-state="settled"] [data-home-assembly-item] {
   pointer-events: auto;
   opacity: 1;
   transform: none;
@@ -966,28 +966,19 @@
   will-change: auto;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-group="hero"] #hero-title {
-  --home-assembly-from-x: 0px;
-  --home-assembly-from-y: 26px;
-  --motion-duration: 820ms;
-  opacity: 1;
-}
-
 .minimal-home.home-assembly-enabled [data-home-preview-phrases] [data-home-assembly-item] {
-  --home-assembly-from-x: 32px;
-  --home-assembly-from-y: 0px;
-  --motion-duration: 720ms;
-  --motion-stagger: 70ms;
+  --motion-duration: 680ms;
+  --motion-stagger: 80ms;
 }
 
 .minimal-home.home-assembly-enabled [data-home-preview-phrases] li:nth-child(1) {
   --motion-index: 0;
-  --motion-delay: 40ms;
+  --motion-delay: 20ms;
 }
 
 .minimal-home.home-assembly-enabled [data-home-preview-phrases] li:nth-child(2) {
   --motion-index: 1;
-  --motion-delay: 110ms;
+  --motion-delay: 100ms;
 }
 
 .minimal-home.home-assembly-enabled [data-home-preview-phrases] li:nth-child(3) {
@@ -1002,33 +993,84 @@
   --motion-delay: 0ms;
 }
 
+.minimal-home.home-assembly-enabled [data-home-assembly-trigger="section"][data-home-assembly-state="pending"] .minimal-home__section-heading {
+  pointer-events: none;
+  opacity: 0.16;
+  transform: translate3d(var(--home-assembly-distance), 0, 0);
+  will-change: opacity, transform;
+}
+
+.minimal-home.home-assembly-enabled [data-home-assembly-trigger="section"][data-home-assembly-state="assembled"] .minimal-home__section-heading {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--home-assembly-duration) var(--home-assembly-ease),
+    transform var(--home-assembly-duration) var(--home-assembly-ease);
+  will-change: opacity, transform;
+}
+
+.minimal-home.home-assembly-enabled [data-home-assembly-trigger="section"][data-home-assembly-state="settled"] .minimal-home__section-heading {
+  pointer-events: auto;
+  opacity: 1;
+  transform: none;
+  transition: none;
+  will-change: auto;
+}
+
 .minimal-home.home-assembly-enabled .minimal-home__process-card {
   --home-assembly-from-x: var(--home-assembly-distance);
   --home-assembly-from-y: 0px;
-  --motion-phase-delay: 260ms;
+  --motion-phase-delay: 200ms;
   --motion-duration: var(--home-assembly-duration);
   --motion-stagger: var(--home-assembly-stagger);
 }
 
-.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(1) { --motion-index: 0; --motion-delay: 260ms; }
-.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(2) { --motion-index: 1; --motion-delay: 350ms; }
-.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(3) { --motion-index: 2; --motion-delay: 440ms; }
-.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(4) { --motion-index: 3; --motion-delay: 530ms; }
-.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(5) { --motion-index: 4; --motion-delay: 620ms; }
-.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(6) { --motion-index: 5; --motion-delay: 710ms; }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(1) { --motion-index: 0; --motion-delay: 200ms; }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(2) { --motion-index: 1; --motion-delay: 280ms; }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(3) { --motion-index: 2; --motion-delay: 360ms; }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(4) { --motion-index: 3; --motion-delay: 440ms; }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(5) { --motion-index: 4; --motion-delay: 520ms; }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(6) { --motion-index: 5; --motion-delay: 600ms; }
 
 .minimal-home.home-assembly-enabled .minimal-home__capability-card {
   --home-assembly-from-x: var(--home-assembly-distance);
   --home-assembly-from-y: 0px;
-  --motion-phase-delay: 260ms;
+  --motion-phase-delay: 200ms;
   --motion-duration: var(--home-assembly-duration);
   --motion-stagger: var(--home-assembly-stagger);
 }
 
-.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(1) { --motion-index: 0; --motion-delay: 260ms; }
-.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(2) { --motion-index: 1; --motion-delay: 350ms; }
-.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(3) { --motion-index: 2; --motion-delay: 440ms; }
-.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(4) { --motion-index: 3; --motion-delay: 530ms; }
+.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(1) { --motion-index: 0; --motion-delay: 200ms; }
+.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(2) { --motion-index: 1; --motion-delay: 280ms; }
+.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(3) { --motion-index: 2; --motion-delay: 360ms; }
+.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(4) { --motion-index: 3; --motion-delay: 440ms; }
+
+@media (min-width: 561px) {
+  .minimal-home.home-assembly-enabled [data-home-assembly-trigger="section"][data-home-assembly-state="pending"] :is(.minimal-home__process-card, .minimal-home__capability-card) {
+    pointer-events: none;
+    opacity: 0.16;
+    transform: translate3d(var(--home-assembly-distance), 0, 0);
+    will-change: opacity, transform;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-trigger="section"][data-home-assembly-state="assembled"] :is(.minimal-home__process-card, .minimal-home__capability-card) {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity var(--motion-duration) var(--home-assembly-ease),
+      transform var(--motion-duration) var(--home-assembly-ease);
+    transition-delay: var(--motion-delay);
+    will-change: opacity, transform;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-trigger="section"][data-home-assembly-state="settled"] :is(.minimal-home__process-card, .minimal-home__capability-card) {
+    pointer-events: auto;
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+}
 
 .minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] {
   --final-cta-motion-duration: var(--home-assembly-duration);
@@ -1224,40 +1266,14 @@
     gap: 28px;
   }
 
-  .minimal-home.home-assembly-enabled [data-home-assembly-group="hero"] #hero-title {
-    --home-assembly-from-y: 18px;
-    --motion-duration: 680ms;
-  }
-
   .minimal-home.home-assembly-enabled [data-home-preview-phrases] [data-home-assembly-item] {
-    --home-assembly-from-x: 22px;
     --motion-duration: 600ms;
-    --motion-stagger: 50ms;
+    --motion-stagger: 60ms;
   }
 
   .minimal-home.home-assembly-enabled [data-home-preview-phrases] li:nth-child(1) { --motion-delay: 20ms; }
-  .minimal-home.home-assembly-enabled [data-home-preview-phrases] li:nth-child(2) { --motion-delay: 70ms; }
-  .minimal-home.home-assembly-enabled [data-home-preview-phrases] li:nth-child(3) { --motion-delay: 120ms; }
-
-  .minimal-home.home-assembly-enabled .minimal-home__process-card {
-    --motion-phase-delay: 180ms;
-  }
-
-  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(1) { --motion-delay: 180ms; }
-  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(2) { --motion-delay: 240ms; }
-  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(3) { --motion-delay: 300ms; }
-  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(4) { --motion-delay: 360ms; }
-  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(5) { --motion-delay: 420ms; }
-  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(6) { --motion-delay: 480ms; }
-
-  .minimal-home.home-assembly-enabled .minimal-home__capability-card {
-    --motion-phase-delay: 160ms;
-  }
-
-  .minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(1) { --motion-delay: 160ms; }
-  .minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(2) { --motion-delay: 220ms; }
-  .minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(3) { --motion-delay: 280ms; }
-  .minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(4) { --motion-delay: 340ms; }
+  .minimal-home.home-assembly-enabled [data-home-preview-phrases] li:nth-child(2) { --motion-delay: 80ms; }
+  .minimal-home.home-assembly-enabled [data-home-preview-phrases] li:nth-child(3) { --motion-delay: 140ms; }
 
   .minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] {
     --final-cta-motion-duration: 620ms;
@@ -1315,6 +1331,36 @@
 
   .minimal-home__preview-note li + li::before {
     content: none;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-group="preview"][data-home-assembly-state="pending"] [data-home-assembly-item] {
+    opacity: 0.68;
+    transform: translate3d(18px, 0, 0);
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-mobile-card][data-home-assembly-state="pending"] {
+    pointer-events: none;
+    opacity: 0.16;
+    transform: translate3d(24px, 0, 0);
+    will-change: opacity, transform;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-mobile-card][data-home-assembly-state="assembled"] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 600ms var(--home-assembly-ease),
+      transform 600ms var(--home-assembly-ease);
+    transition-delay: 0ms;
+    will-change: opacity, transform;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-mobile-card][data-home-assembly-state="settled"] {
+    pointer-events: auto;
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
   }
 
   .minimal-home .decision-console {

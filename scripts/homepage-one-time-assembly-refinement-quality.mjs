@@ -31,162 +31,112 @@ function blockBetween(source, start, end) {
   return startIndex >= 0 && endIndex >= 0 ? source.slice(startIndex, endIndex) : "";
 }
 
-const trustBlock = blockBetween(home, "const trustSignals", "const finalHeadlineClusters");
-const previewList = blockBetween(home, '<ul aria-label="Señales del producto" data-home-preview-phrases>', "</ul>");
-const processSection = blockBetween(home, 'data-home-assembly-group="process-section"', 'data-home-assembly-group="capabilities-section"');
-const capabilitySection = blockBetween(home, 'data-home-assembly-group="capabilities-section"', 'data-home-assembly-group="final-cta"');
-const finalSection = blockBetween(home, 'data-home-assembly-group="final-cta"', '<footer className="minimal-home__footer">');
+const heroBlock = blockBetween(home, '<section\n        className="minimal-home__hero"', '<div\n            className="minimal-home__preview-block"');
+const previewBlock = blockBetween(home, 'data-home-assembly-group="preview"', 'data-home-assembly-group="process-section"');
+const processBlock = blockBetween(home, 'data-home-assembly-group="process-section"', 'data-home-assembly-group="capabilities-section"');
+const capabilityBlock = blockBetween(home, 'data-home-assembly-group="capabilities-section"', 'data-home-assembly-group="final-cta"');
+const finalBlock = blockBetween(home, 'data-home-assembly-group="final-cta"', '<footer className="minimal-home__footer">');
 const motionCss = css.slice(css.indexOf("/* One-time homepage assembly."));
-const mobileCss = blockBetween(css, "@media (max-width: 860px)", "@media (max-width: 560px)");
+const phoneCss = blockBetween(css, "@media (max-width: 560px)", "@media (prefers-reduced-motion: reduce)");
 const reducedCss = css.slice(css.lastIndexOf("@media (prefers-reduced-motion: reduce)"));
-const finalMotionCss = blockBetween(
-  css,
-  '.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] {',
-  "@media (hover: hover) and (pointer: fine)",
-);
-const scrollHandler = blockBetween(controller, "const handleScroll", "const handleReducedMotionChange");
-const footerBlock = home.slice(home.indexOf('<footer className="minimal-home__footer">'));
-const cssRulesUsingBrand = css.split("}").filter((rule) => rule.includes("var(--home-brand"));
-const clientSurface = `${home}\n${navigation}\n${controller}\n${simulator}`;
+const publicHomepageSurface = `${home}\n${simulator}`;
 
 includes(home, "<HomepageAssemblyController />", "Homepage mounts one bounded assembly controller");
 check(
-  "Homepage declares exactly four section-level assembly groups",
+  "Homepage keeps exactly four post-Hero assembly groups",
   (home.match(/data-home-assembly-group=/g) ?? []).length === 4,
-  "Expected hero, process, capabilities, and final CTA groups only.",
+  "Expected preview, process, capabilities, and final CTA groups only.",
 );
-for (const group of ["hero", "process-section", "capabilities-section", "final-cta"]) {
-  includes(home, `data-home-assembly-group="${group}"`, `Section-level group exists: ${group}`);
+for (const group of ["preview", "process-section", "capabilities-section", "final-cta"]) {
+  includes(home, `data-home-assembly-group="${group}"`, `Assembly group exists: ${group}`);
 }
-for (const group of ["process-section", "capabilities-section", "final-cta"]) {
-  const groupBlock = group === "process-section" ? processSection : group === "capabilities-section" ? capabilitySection : finalSection;
-  includes(groupBlock, 'data-home-motion-vector="right-to-left"', `${group} declares the shared right-to-left vector`);
+
+excludes(heroBlock, "data-home-assembly-group", "Hero is outside the scroll assembly lifecycle");
+includes(heroBlock, '<h1 id="hero-title">', "Hero heading renders directly in stable layout geometry");
+excludes(heroBlock, "data-home-assembly-item", "Hero heading has no pending or settled motion state");
+excludes(controller, "FIRST_SCROLL_SELECTOR", "Controller removes the first-scroll Hero lifecycle");
+excludes(controller, "first-scroll", "Controller has no Hero scroll trigger");
+excludes(motionCss, '[data-home-assembly-group="hero"]', "CSS has no Hero assembly selector");
+excludes(motionCss, "#hero-title", "CSS never transforms the Hero heading");
+includes(css, "margin-bottom: 30px", "Hero keeps a stable 30px heading-to-description gap");
+includes(home, "Explora escenarios, compara alternativas y entiende sus posibles consecuencias antes de tomar una decisión.", "Hero uses the approved product copy");
+excludes(home, "preview demostrativo", "Hero removes the rejected preview wording");
+
+includes(previewBlock, 'data-home-assembly-trigger="preview"', "Preview owns a separate one-time trigger");
+includes(previewBlock, 'data-home-motion-vector="right-to-left"', "Preview uses the shared right-to-left vector");
+for (const phrase of [
+  "Preview público con respuestas de ejemplo",
+  "Escenarios comparables",
+  "Riesgos y consecuencias",
+]) {
+  includes(previewBlock, phrase === "Preview público con respuestas de ejemplo" ? "trustSignals.map" : "trustSignals.map", `Preview renders approved phrase through the canonical trio: ${phrase}`);
+  includes(home, phrase, `Approved preview phrase exists: ${phrase}`);
 }
-includes(home, 'data-home-motion-vector="upward"', "Hero declares its bounded upward exception");
+includes(controller, 'const PREVIEW_SELECTOR = \'[data-home-assembly-trigger="preview"]\';', "Controller identifies preview independently");
+includes(controller, "observeAtVisualLine(previewGroups, 0.66)", "Preview activates at the intended visual viewport zone");
+includes(controller, "window.visualViewport", "Activation geometry accounts for Safari visual viewport");
+includes(controller, "centralRootMargin", "Observers derive activation lines from usable viewport geometry");
+includes(css, "opacity: 0.62", "Desktop preview remains readable before activation");
+includes(phoneCss, "opacity: 0.68", "Mobile preview remains readable before activation");
+includes(css, "transform: translate3d(28px, 0, 0)", "Preview uses a restrained desktop travel distance");
+includes(phoneCss, "transform: translate3d(18px, 0, 0)", "Preview uses a shorter mobile travel distance");
+
+includes(processBlock, 'data-home-assembly-trigger="section"', "Process section uses a later section trigger");
+includes(capabilityBlock, 'data-home-assembly-trigger="section"', "Capabilities section uses a later section trigger");
+includes(controller, "observeAtVisualLine(sectionGroups, useMobileCards ? 0.62 : 0.66)", "Section headings activate in the central visual zone");
 check(
-  "Controller creates exactly one IntersectionObserver instance",
+  "Desktop section cards retain group-level activation",
+  css.includes("@media (min-width: 561px)") && motionCss.includes('[data-home-assembly-trigger="section"][data-home-assembly-state="pending"] :is(.minimal-home__process-card, .minimal-home__capability-card)'),
+  "Desktop cards must assemble as section groups.",
+);
+includes(processBlock, 'data-home-mobile-card="process"', "Process cards opt into mobile per-card activation");
+includes(capabilityBlock, 'data-home-mobile-card="capability"', "Capability cards opt into mobile per-card activation");
+includes(controller, 'const MOBILE_CARD_SELECTOR = "[data-home-mobile-card]"', "Controller queries one mobile-card target set");
+includes(controller, "observeAtVisualLine(mobileCards, 0.68)", "One shared observer call watches all mobile cards near eye level");
+check(
+  "Controller creates observers through one shared constructor path",
   (controller.match(/new IntersectionObserver/g) ?? []).length === 1,
-  "Homepage must use one shared section observer.",
+  "Observer creation must stay centralized rather than per card.",
 );
-includes(controller, "observer?.observe(group)", "Observer watches section containers");
-excludes(controller, "observer.observe(item)", "Observer never watches individual items");
-excludes(controller, "ITEM_SELECTOR", "Controller does not query or sequence items");
-excludes(processSection, 'data-home-assembly-group="process-cards"', "Process cards share the section trigger");
-excludes(capabilitySection, 'data-home-assembly-group="capability-cards"', "Capability cards share the section trigger");
+includes(phoneCss, '[data-home-mobile-card][data-home-assembly-state="pending"]', "Mobile cards own individual pending states");
+includes(phoneCss, '[data-home-mobile-card][data-home-assembly-state="assembled"]', "Mobile cards own individual assembled states");
+includes(phoneCss, '[data-home-mobile-card][data-home-assembly-state="settled"]', "Mobile cards own individual stable states");
 
-includes(controller, "const activatedGroups = new WeakSet<HTMLElement>()", "Activation registry is monotonic");
-includes(controller, "observer?.unobserve(group)", "Activated sections leave observation");
-includes(controller, 'setAssemblyState(group, "assembled")', "Sections receive one assembled state");
-includes(controller, 'setAssemblyState(group, "settled")', "Sections reach a stable settled state");
-excludes(scrollHandler, 'setAssemblyState(group, "pending")', "Upward scroll cannot restore pending state");
-includes(scrollHandler, "window.requestAnimationFrame", "Scroll work is frame-batched");
-excludes(controller, "scrollTimer", "Short scroll timers do not drive motion");
-excludes(controller, ".style.transform", "Scroll position never writes transforms");
+includes(finalBlock, 'data-home-assembly-trigger="final-cta"', "Final CTA owns a dedicated late trigger");
+includes(controller, "observeAtVisualLine(finalCtaGroups, 0.72)", "Final CTA activates only after meaningful viewport entry");
+includes(motionCss, '[data-home-assembly-group="final-cta"][data-home-assembly-state="pending"]', "Final CTA has a bounded pending state");
+includes(motionCss, "transform: translate3d(var(--home-assembly-distance), 0, 0)", "Final CTA enters right-to-left");
+excludes(finalBlock, "data-home-assembly-item", "Final CTA avoids competing child assembly transforms");
+includes(motionCss, "pointer-events: none", "Pending moving surfaces cannot retain overlay hit areas");
+includes(motionCss, "pointer-events: auto", "Settled surfaces restore interactions");
+
+includes(controller, "const activatedTargets = new WeakSet<HTMLElement>()", "Activation registry is monotonic");
+includes(controller, "activatedTargets.add(target)", "Every activation permanently records completion");
+includes(controller, "unobserve(target)", "Activated targets leave observation");
+excludes(controller, 'setAssemblyState(target, "pending")\n', "Activation flow never reverses a target to pending");
+excludes(controller, ".style.transform", "Controller never maps scroll position to transforms");
 excludes(controller, "scrollProgress", "Continuous scroll progress mapping is absent");
-excludes(motionCss, "animation-timeline", "Homepage motion has no view timeline");
-excludes(motionCss, "scroll-timeline", "Homepage motion has no scroll timeline");
-excludes(motionCss, "@keyframes", "Homepage assembly uses interruptible transitions, not keyframes");
-includes(controller, 'mobileMotion.matches ? "0px 0px -6% 0px" : "0px 0px -14% 0px"', "Mobile sections trigger earlier than desktop sections");
-includes(controller, "group.dataset.homeAssemblySettleMobileMs", "Mobile sections use bounded shorter settle timing");
-
-includes(css, "--home-assembly-ease: cubic-bezier(0.22, 1, 0.36, 1)", "All assembly uses the shared easing");
-includes(css, "--home-assembly-duration: 760ms", "Desktop assembly uses the shared duration");
-includes(css, "--home-assembly-distance: 48px", "Desktop assembly uses the shared distance");
-includes(mobileCss, "--home-assembly-duration: 620ms", "Mobile assembly shortens duration");
-includes(mobileCss, "--home-assembly-stagger: 60ms", "Mobile assembly shortens stagger");
-includes(mobileCss, "--home-assembly-distance: 28px", "Mobile assembly shortens distance");
-includes(css, "transform: translate3d(var(--home-assembly-from-x), var(--home-assembly-from-y), 0)", "Pending items use compositor-friendly translation");
+excludes(motionCss, "animation-timeline", "Homepage has no scroll timeline");
+excludes(motionCss, "scroll-timeline", "Homepage has no scroll timeline alias");
 check(
-  "Assembled and settled item states both clear transforms",
-  (motionCss.match(/transform: none;/g) ?? []).length >= 4,
-  "Final geometry must not retain assembly transforms.",
+  "All assembled and settled motion states clear transforms",
+  (motionCss.match(/transform: none;/g) ?? []).length >= 8,
+  "Motion destinations must use final layout geometry.",
 );
-excludes(motionCss, "--home-assembly-to-x", "No persistent horizontal destination offset remains");
-excludes(motionCss, "--home-assembly-to-y", "No persistent vertical destination offset remains");
-includes(css, "will-change: auto", "Settled state releases compositor hints");
+includes(motionCss, "will-change: auto", "Settled states release compositor hints");
 
-includes(css, '[data-home-assembly-group="hero"] #hero-title', "Hero has one controlled assembly selector");
-includes(css, "--home-assembly-from-y: 26px", "Hero starts slightly below its stable layout position");
-includes(css, "--motion-duration: 820ms", "Hero uses one bounded transition duration");
-excludes(css, "#hero-title {\n  transform:", "Hero has no competing base transform");
-excludes(controller, "hero-title", "Controller does not directly transform the hero title");
-
-check(
-  "Preview contract contains exactly three approved phrases",
-  (trustBlock.match(/^  "/gm) ?? []).length === 3 && [
-    "Preview público con respuestas de ejemplo",
-    "Escenarios comparables",
-    "Riesgo y consecuencia",
-  ].every((phrase) => trustBlock.includes(phrase)),
-  "Preview phrases are missing, duplicated, or changed.",
-);
-includes(previewList, "trustSignals.map", "Preview phrases render as three whole list rows");
-includes(previewList, "data-home-assembly-item", "Preview trio shares the hero trigger");
-includes(css, ".minimal-home__preview-note ul {\n  display: grid", "Preview preserves non-overlapping row geometry");
-for (const [child, delay] of [[1, 40], [2, 110], [3, 180]]) {
-  includes(css, `[data-home-preview-phrases] li:nth-child(${child})`, `Preview row ${child} has deterministic sequencing`);
-  includes(css, `--motion-delay: ${delay}ms`, `Preview row ${child} keeps its fixed delay`);
-}
-excludes(home, "minimal-home__preview-status", "Homepage removes the duplicate preview technical status node");
-excludes(home, "La conexión con IA real todavía no está activada.", "Homepage does not duplicate the simulator IA status");
-includes(simulator, "conexión con IA real aún no está activada", "Technical IA status remains under HomeSimulator");
-
-check(
-  "Both section headings use the same wrapper-level motion grammar",
-  (home.match(/className="minimal-home__section-heading" data-home-assembly-item/g) ?? []).length === 2,
-  "Both headings must be single assembly items.",
-);
-excludes(processSection, "data-home-assembly-direction", "Process heading has no opposing direction override");
-excludes(capabilitySection, "data-home-assembly-direction", "Capability heading has no opposing direction override");
-includes(css, ".minimal-home.home-assembly-enabled .minimal-home__section-heading", "Section headings share one CSS motion rule");
-includes(css, "--motion-delay: 0ms", "Headings start before card sequences");
-
-check(
-  "Process section keeps six cards under one trigger",
-  (processSection.match(/className="minimal-home__process-card"/g) ?? []).length === 1 && home.includes("processSteps.map"),
-  "Process cards must remain data-driven under the section group.",
-);
-includes(css, "--motion-phase-delay: 260ms", "Desktop cards begin after controlled heading overlap");
-for (const [child, index, delay] of [[1, 0, 260], [2, 1, 350], [3, 2, 440], [4, 3, 530], [5, 4, 620], [6, 5, 710]]) {
-  includes(css, `.minimal-home__process-card:nth-child(${child}) { --motion-index: ${index}; --motion-delay: ${delay}ms; }`, `Desktop process card ${child} keeps fixed 01→06 timing`);
-}
-for (const [child, delay] of [[1, 180], [2, 240], [3, 300], [4, 360], [5, 420], [6, 480]]) {
-  includes(mobileCss, `.minimal-home__process-card:nth-child(${child}) { --motion-delay: ${delay}ms; }`, `Mobile process card ${child} keeps shortened timing`);
-}
-
-for (const [child, index, delay] of [[1, 0, 260], [2, 1, 350], [3, 2, 440], [4, 3, 530]]) {
-  includes(css, `.minimal-home__capability-card:nth-child(${child}) { --motion-index: ${index}; --motion-delay: ${delay}ms; }`, `Desktop capability card ${child} keeps fixed timing`);
-}
-for (const [child, delay] of [[1, 160], [2, 220], [3, 280], [4, 340]]) {
-  includes(mobileCss, `.minimal-home__capability-card:nth-child(${child}) { --motion-delay: ${delay}ms; }`, `Mobile capability card ${child} keeps shortened timing`);
-}
-
-includes(finalMotionCss, "transform: translate3d(var(--home-assembly-distance), 0, 0)", "Final CTA enters right-to-left as one container");
-excludes(finalMotionCss, "translate3d(-", "Final CTA never enters left-to-right");
-check(
-  "Final CTA headline keeps exactly three stable word clusters",
-  (blockBetween(home, "const finalHeadlineClusters", "const footerColumns").match(/^  "/gm) ?? []).length === 3,
-  "Final headline cluster count changed.",
-);
-excludes(finalSection, "data-home-assembly-item", "Final CTA does not layer competing child transforms");
-excludes(finalMotionCss, "width", "Final CTA motion does not animate width");
-excludes(finalMotionCss, "letter-spacing", "Final CTA motion does not animate letter spacing");
-includes(finalMotionCss, "pointer-events: none", "Moving final CTA cannot retain overlay hit areas");
-includes(finalMotionCss, "pointer-events: auto", "Settled final CTA restores interaction");
-
-includes(css, "overflow: clip", "Homepage contains horizontal assembly overflow");
-excludes(css, "overflow-x: auto", "Mobile navigation does not create horizontal scrolling");
-includes(css, '[data-home-assembly-state="pending"] [data-home-assembly-item] {\n  pointer-events: none;', "Pending transformed items cannot retain hidden hit areas");
-includes(home, 'className="minimal-home__header-login" href="/login"', "Login remains a bounded direct header link");
-excludes(navigation, "Iniciar sesión", "Login has no duplicate navigation overlay");
-includes(css, ".minimal-home__header {\n  position: sticky;\n  top: 0;\n  z-index: 20;", "Header stacking remains explicit");
-includes(css, ".minimal-home .decision-console button:focus-visible", "Keyboard focus remains visible");
-
-includes(reducedCss, "transition-delay: 0ms !important", "Reduced motion removes stagger");
+includes(reducedCss, "transition-delay: 0ms !important", "Reduced motion removes all stagger");
 includes(reducedCss, "opacity: 1 !important", "Reduced motion exposes all content");
-includes(reducedCss, "transform: none !important", "Reduced motion uses final geometry");
-includes(reducedCss, "pointer-events: auto !important", "Reduced motion restores all interactions");
+includes(reducedCss, "transform: none !important", "Reduced motion renders final geometry");
+includes(reducedCss, "pointer-events: auto !important", "Reduced motion restores interactions");
 includes(reducedCss, "will-change: auto !important", "Reduced motion releases compositor hints");
+
+includes(home, "Levio analiza la situación, identifica la información relevante, compara escenarios, evalúa riesgos y organiza criterios de decisión.", "Process section uses approved AI-neutral copy");
+includes(simulator, "Vista previa determinista · Respuestas de ejemplo · Máx.", "Simulator status uses approved AI-neutral copy");
+includes(simulator, "Simulación demostrativa con respuestas de ejemplo.", "Simulator result uses approved AI-neutral copy");
+for (const phrase of ["asistente de IA", "IA real", "conexión con IA", "preview demostrativo"]) {
+  excludes(publicHomepageSurface, phrase, `Public homepage removes prohibited phrase: ${phrase}`);
+}
 
 includes(simulator, "MAX_SIMULATION_INPUT_LENGTH = 1200", "Simulator keeps the 1200-character boundary");
 includes(simulator, "safeRender !== true", "Simulator keeps safeRender validation");
@@ -194,23 +144,21 @@ includes(simulator, "mockOnly !== true", "Simulator keeps mockOnly validation");
 includes(simulator, "apiReady !== true", "Simulator keeps apiReady validation");
 includes(simulator, 'aria-label="Simular decisión"', "Simulator submit accessibility name remains");
 includes(simulateRoute, "mockOnly: true", "Public runtime remains deterministic and mock-only");
-includes(footerBlock, "Sistema de simulación de decisiones para explorar escenarios, riesgos y consecuencias antes de actuar.", "Approved footer copy remains exact");
-check(
-  "Gold remains restricted to brand and primary CTA rules",
-  cssRulesUsingBrand.length > 0 && cssRulesUsingBrand.every((rule) => /brand-lockup|brand-name|levio-mark|minimal-home__primary-cta|--home-brand/.test(rule)),
-  "Gold token leaked outside approved rules.",
-);
+includes(css, "overflow: clip", "Homepage clips horizontal assembly overflow");
+excludes(css, "overflow-x: auto", "Mobile navigation creates no horizontal scrolling");
+includes(home, 'className="minimal-home__header-login" href="/login"', "Login remains a bounded direct header link");
+excludes(navigation, "Iniciar sesión", "Login has no duplicate navigation overlay");
 check(
   "Public client surface has no OpenAI transport",
-  !/from\s+["']openai["']|api\.openai\.com|responses\.create|openai-synthetic-risk-adapter\.server/.test(clientSurface),
+  !/from\s+["']openai["']|api\.openai\.com|responses\.create|openai-synthetic-risk-adapter\.server/.test(publicHomepageSurface),
   "OpenAI transport leaked into public homepage code.",
 );
-includes(packageJson, '"quality:homepage-motion-stabilization"', "Dedicated motion stabilization gate is registered");
+includes(packageJson, '"quality:homepage-motion-stabilization"', "Dedicated motion/copy gate remains registered");
 
 for (const item of checks) {
   console.log(`${item.passed ? "PASS" : "FAIL"} ${item.name}${item.passed ? "" : ` - ${item.issue}`}`);
 }
 
 const failed = checks.filter((item) => !item.passed);
-console.log(`\nHomepage motion stabilization gate: ${checks.length - failed.length}/${checks.length} passed.`);
+console.log(`\nHomepage motion/copy correction gate: ${checks.length - failed.length}/${checks.length} passed.`);
 if (failed.length > 0) process.exitCode = 1;

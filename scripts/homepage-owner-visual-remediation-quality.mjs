@@ -88,7 +88,7 @@ includes(css, ".minimal-home .minimal-home__header-login", "Login remains a bord
 includes(home, "Decide antes", "Canonical hero heading remains");
 includes(home, "Comenzar simulación", "The approved primary CTA remains");
 includes(home, "Preview público con respuestas de ejemplo", "Truthful preview signal remains");
-includes(home, "Un sistema de simulación de decisiones, no un asistente de IA.", "Approved product positioning remains");
+includes(home, "Levio analiza la situación, identifica la información relevante, compara escenarios, evalúa riesgos y organiza criterios de decisión.", "Approved AI-neutral process positioning remains");
 excludes(home, "usuarios", "Homepage does not invent user statistics");
 excludes(home, "simulaciones realizadas", "Homepage does not invent simulation counts");
 

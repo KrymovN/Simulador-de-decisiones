@@ -552,7 +552,7 @@ export default function HomeSimulator() {
       >
         <span></span>
         <p>
-          {message || `Vista previa determinista · La conexión con IA real aún no está activada · Máx. ${MAX_SIMULATION_INPUT_LENGTH} caracteres`}
+          {message || `Vista previa determinista · Respuestas de ejemplo · Máx. ${MAX_SIMULATION_INPUT_LENGTH} caracteres`}
         </p>
       </div>
 
@@ -603,7 +603,7 @@ export default function HomeSimulator() {
 
           <article className="strategic-conclusion">
             <span>Preview controlado</span>
-            <strong>Simulación demostrativa; la conexión con IA real aún no está activada.</strong>
+            <strong>Simulación demostrativa con respuestas de ejemplo.</strong>
             <p>
               Este mapa usa la versión pública {previewState?.contractVersion ?? SIMULATE_API_CONTRACT_VERSION} con respuestas de ejemplo. Sirve para
               explorar escenarios, riesgos y consecuencias sin presentarse como predicción lista para producción.

@@ -150,16 +150,16 @@ async function withServer(run) {
 }
 
 function runPositioningSourceChecks(sources) {
-  sourceIncludes(sources.home, "Un sistema de simulación de decisiones, no un asistente de IA.", "Home keeps Decision Simulation Engine positioning");
-  sourceIncludes(sources.home, "No una respuesta. Una simulación de futuros posibles.", "Home rejects answer-engine positioning");
+  sourceIncludes(sources.home, "Levio analiza la situación, identifica la información relevante, compara escenarios, evalúa riesgos y organiza criterios de decisión.", "Home explains the simulation process without AI positioning");
   sourceIncludes(sources.home, "escenarios, riesgos y consecuencias", "Home keeps scenarios/risks/consequences line");
   sourceIncludes(sources.home, "trade-offs", "Home keeps tradeoffs positioning");
   sourceIncludes(sources.home, "Preview público con respuestas de ejemplo", "Home keeps demonstrative public state");
-  sourceExcludes(sources.home, "La conexión con IA real todavía no está activada", "Home does not duplicate the simulator IA status");
+  sourceExcludes(sources.home, "asistente de IA", "Home avoids unnecessary AI-assistant positioning");
   sourceIncludes(sources.homeSimulator, "Vista previa determinista", "HomeSimulator keeps deterministic preview status");
-  sourceIncludes(sources.homeSimulator, "conexión con IA real aún no está activada", "HomeSimulator avoids Real AI promise");
+  sourceIncludes(sources.homeSimulator, "Vista previa determinista · Respuestas de ejemplo", "HomeSimulator keeps an AI-neutral deterministic preview status");
   sourceIncludes(sources.homeSimulator, "MAX_SIMULATION_INPUT_LENGTH", "HomeSimulator keeps the bounded public input disclosure");
-  sourceIncludes(sources.homeSimulator, "Simulación demostrativa; la conexión con IA real aún no está activada.", "Result copy keeps Real AI deferred truth boundary");
+  sourceIncludes(sources.homeSimulator, "Simulación demostrativa con respuestas de ejemplo.", "Result copy keeps an AI-neutral demonstrative boundary");
+  sourceExcludes(sources.homeSimulator, "conexión con IA real", "HomeSimulator removes unnecessary Real AI reminders");
   sourceIncludes(sources.homeSimulator, "sin presentarse como predicción lista para producción", "HomeSimulator avoids production-readiness promise");
 }
 
@@ -308,8 +308,8 @@ async function runRuntimePublicPageChecks(baseUrl) {
       includes: [
         "Preview público con respuestas de ejemplo",
         "Vista previa determinista",
-        "conexión con IA real",
-        "No una respuesta. Una simulación de futuros posibles.",
+        "Respuestas de ejemplo",
+        "Levio analiza la situación",
       ],
     },
     {

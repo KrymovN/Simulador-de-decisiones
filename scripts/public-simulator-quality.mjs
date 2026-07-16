@@ -425,7 +425,9 @@ function runUiSourceChecks() {
   assertSourceIncludes(source, "No se generó un resultado local de sustitución.", "UI exposes controlled failure without local fallback");
   assertSourceIncludes(source, "setResult(null);", "UI clears result on failure path");
   assertSourceIncludes(source, "Preview controlado", "UI labels successful output as controlled preview");
-  assertSourceIncludes(source, "la conexión con IA real aún no está activada", "UI preserves real-AI deferred truth boundary");
+  assertSourceIncludes(source, "Vista previa determinista · Respuestas de ejemplo", "UI keeps AI-neutral deterministic preview disclosure");
+  assertSourceIncludes(source, "Simulación demostrativa con respuestas de ejemplo.", "UI keeps AI-neutral result disclosure");
+  assertSourceExcludes(source, "conexión con IA real", "UI removes unnecessary Real AI reminders from the public simulator");
   assertSourceIncludes(source, "payload.meta.mockOnly", "UI carries mockOnly API metadata");
   assertSourceIncludes(source, "payload.meta.apiReady", "UI carries apiReady API metadata");
   assertSourceExcludes(source, "buildMockSimulation(", "UI does not call local mock simulation fallback");

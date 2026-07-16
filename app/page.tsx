@@ -54,7 +54,7 @@ const capabilities = [
 const trustSignals = [
   "Preview público con respuestas de ejemplo",
   "Escenarios comparables",
-  "Riesgo y consecuencia",
+  "Riesgos y consecuencias",
 ];
 
 const finalHeadlineClusters = [
@@ -109,22 +109,17 @@ export default function Home() {
         className="minimal-home__hero"
         id="inicio"
         aria-labelledby="hero-title"
-        data-home-assembly-group="hero"
-        data-home-assembly-settle-ms="980"
-        data-home-assembly-settle-mobile-ms="820"
-        data-home-assembly-trigger="first-scroll"
-        data-home-motion-vector="upward"
       >
         <div className="minimal-home__hero-copy">
           <div>
             <div className="minimal-home__hero-title-wrap">
-              <h1 id="hero-title" data-home-assembly-item>
+              <h1 id="hero-title">
                 Decide antes
                 <span>de actuar.</span>
               </h1>
             </div>
             <p className="minimal-home__hero-description">
-              Explora escenarios, riesgos y consecuencias en un preview demostrativo antes de tomar una decisión.
+              Explora escenarios, compara alternativas y entiende sus posibles consecuencias antes de tomar una decisión.
             </p>
           </div>
 
@@ -137,7 +132,14 @@ export default function Home() {
             </HomepageAnchorLink>
           </div>
 
-          <div className="minimal-home__preview-block">
+          <div
+            className="minimal-home__preview-block"
+            data-home-assembly-group="preview"
+            data-home-assembly-settle-ms="820"
+            data-home-assembly-settle-mobile-ms="700"
+            data-home-assembly-trigger="preview"
+            data-home-motion-vector="right-to-left"
+          >
             <div className="minimal-home__preview-note">
               <strong>Preview público</strong>
               <ul aria-label="Señales del producto" data-home-preview-phrases>
@@ -161,14 +163,15 @@ export default function Home() {
         id="como-funciona"
         aria-labelledby="process-title"
         data-home-assembly-group="process-section"
-        data-home-assembly-settle-ms="1550"
-        data-home-assembly-settle-mobile-ms="1180"
+        data-home-assembly-settle-ms="1360"
+        data-home-assembly-settle-mobile-ms="680"
+        data-home-assembly-trigger="section"
         data-home-motion-vector="right-to-left"
       >
         <div className="minimal-home__section-heading" data-home-assembly-item>
           <h2 id="process-title">Cómo piensa Levio</h2>
           <p>
-            Un sistema de simulación de decisiones, no un asistente de IA. No una respuesta. Una simulación de futuros posibles.
+            Levio analiza la situación, identifica la información relevante, compara escenarios, evalúa riesgos y organiza criterios de decisión.
           </p>
         </div>
 
@@ -177,6 +180,8 @@ export default function Home() {
             <article
               className="minimal-home__process-card"
               data-home-assembly-item
+              data-home-mobile-card="process"
+              data-home-assembly-settle-mobile-ms="640"
               key={step.title}
             >
               <span className="minimal-home__step-number">{String(index + 1).padStart(2, "0")}</span>
@@ -192,8 +197,9 @@ export default function Home() {
         id="criterios"
         aria-labelledby="capabilities-title"
         data-home-assembly-group="capabilities-section"
-        data-home-assembly-settle-ms="1380"
-        data-home-assembly-settle-mobile-ms="1050"
+        data-home-assembly-settle-ms="1120"
+        data-home-assembly-settle-mobile-ms="680"
+        data-home-assembly-trigger="section"
         data-home-motion-vector="right-to-left"
       >
         <div className="minimal-home__section-heading" data-home-assembly-item>
@@ -205,6 +211,8 @@ export default function Home() {
             <article
               className="minimal-home__capability-card"
               data-home-assembly-item
+              data-home-mobile-card="capability"
+              data-home-assembly-settle-mobile-ms="640"
               key={capability.title}
             >
               <h3>{capability.title}</h3>
@@ -218,8 +226,9 @@ export default function Home() {
         className="minimal-home__final-cta"
         aria-labelledby="final-cta-title"
         data-home-assembly-group="final-cta"
-        data-home-assembly-settle-ms="860"
-        data-home-assembly-settle-mobile-ms="700"
+        data-home-assembly-settle-ms="820"
+        data-home-assembly-settle-mobile-ms="680"
+        data-home-assembly-trigger="final-cta"
         data-home-motion-vector="right-to-left"
       >
         <div>
