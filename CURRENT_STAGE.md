@@ -1,5 +1,38 @@
 # CURRENT STAGE
 
+## Bounded Homepage Motion Stabilization Complete — 16 July 2026
+
+The owner-recording follow-up is complete as a bounded homepage maintenance
+substep. It opens no new Stage, does not expand Stage 9, and does not change the
+58% readiness estimate. The prior motion correction remains unaccepted until
+the owner repeats the actual-device Safari/iPhone review.
+
+The repository cause was not a second observer system but incompatible CSS
+destinations inside the shared lifecycle: the hero settled at a permanent
+`translateY(-72px)`, preview rows settled at different non-zero offsets,
+headings used opposing directions, process/capability grids used different and
+long stagger profiles, and final CTA clusters moved left, up, and right. Safari
+could therefore expose compositor/layout discontinuity even though the section
+state itself was monotonic.
+
+All four narrative sections still use one shared section-level observer and
+one-time `pending` → `assembled` → `settled` activation. Major content now
+enters right-to-left with one easing, shared desktop/mobile duration and
+distance tokens, fixed readable stagger, and `transform: none` in both visible
+and settled geometry. Hero rises once from a small lower start into its normal
+layout position. Preview is one labelled three-row narrative with no duplicate
+IA status. Final CTA moves as one right-to-left container and disables pointer
+events until settled, preventing moving invisible hit areas. Mobile triggers
+earlier with shorter distance, duration, and stagger; reduced motion exposes
+the immediate stable layout.
+
+Dedicated, homepage, Safari/iPhone, public, interaction, rendered, TypeScript,
+lint, build, diff, and Chromium runtime evidence pass. Chromium checks cover
+1440×900 and 390×844 with zero horizontal overflow, zero console warnings or
+errors, final `transform: none`, valid control hit targets, and no reverse
+disassembly. Chromium is not Safari evidence. OpenAI requests remain zero and
+the next checkpoint remains owner actual-device Safari iPhone homepage review.
+
 ## Bounded Safari/iPhone Homepage Motion Correction Complete — 15 July 2026
 
 The owner-reported Safari/iPhone follow-up is complete as a bounded correction

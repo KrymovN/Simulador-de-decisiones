@@ -167,7 +167,7 @@ excludes(css, "100vw", "Homepage avoids Safari scrollbar-width overflow traps");
 includes(css, "@media (prefers-reduced-motion: reduce)", "Reduced-motion boundary is explicit");
 includes(css, "animation: none !important", "Reduced motion removes reveal animations");
 includes(css, "transition-duration: 0.01ms !important", "Reduced motion collapses transitions");
-includes(css, "--home-assembly-duration: 920ms", "Bounded product-grade assembly timing remains");
+includes(css, "--home-assembly-duration: 760ms", "Bounded product-grade assembly timing remains");
 
 check(
   "Public client surface has no OpenAI transport",

@@ -289,8 +289,8 @@ function runHomePositioningChecks() {
   sourceIncludes(pageSource, "No una respuesta. Una simulación de futuros posibles.", "Public Home rejects answer-engine positioning");
   sourceIncludes(pageSource, "Sistema de simulación de decisiones para explorar escenarios, riesgos y consecuencias antes de actuar.", "Public Home footer keeps simulation-system positioning");
   sourceIncludes(pageSource, "Preview público con respuestas de ejemplo", "Public Home keeps demonstrative public state");
-  sourceIncludes(pageSource, "La conexión con IA real todavía no está activada", "Public Home keeps Real AI deferred truth boundary");
-  sourceIncludes(simulatorSource, "Vista previa determinista · IA real aún no conectada", "HomeSimulator keeps the concise deterministic preview disclosure");
+  sourceExcludes(pageSource, "La conexión con IA real todavía no está activada", "Public Home does not duplicate the simulator IA status");
+  sourceIncludes(simulatorSource, "Vista previa determinista · La conexión con IA real aún no está activada", "HomeSimulator keeps the concise deterministic preview disclosure");
 
   sourceExcludes(combinedSource, "AI Chat", "Public Home does not position Levio as AI Chat");
   sourceExcludes(combinedSource, "Answer Engine", "Public Home does not position Levio as Answer Engine");
@@ -364,7 +364,7 @@ async function runRuntimeHomeChecks(baseUrl) {
 
     assert(response.status === 200, `Expected / to return 200, received ${response.status}.`);
     assert(html.includes('id="decision-input"'), "Runtime HTML must include simulator textarea.");
-    assert(html.includes("Vista previa determinista · IA real aún no conectada"), "Runtime HTML must keep the concise deterministic preview disclosure.");
+    assert(html.includes("Vista previa determinista · La conexión con IA real aún no está activada"), "Runtime HTML must keep the concise deterministic preview disclosure.");
     assert(html.includes("Preview público"), "Runtime HTML must include public preview status.");
     assert(html.includes("conexión con IA real"), "Runtime HTML must keep deferred Real AI copy.");
     assert(!/Application error|Internal Server Error|Unhandled Runtime Error/i.test(html), "Runtime HTML contains fatal error marker.");

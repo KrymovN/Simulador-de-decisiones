@@ -4,7 +4,8 @@ import { useEffect } from "react";
 
 const GROUP_SELECTOR = "[data-home-assembly-group]";
 const FIRST_SCROLL_SELECTOR = '[data-home-assembly-trigger="first-scroll"]';
-const DEFAULT_SETTLE_MS = 1600;
+const DEFAULT_SETTLE_MS = 1400;
+const MOBILE_BREAKPOINT = "(max-width: 860px)";
 
 type AssemblyState = "pending" | "assembled" | "settled";
 
@@ -20,7 +21,8 @@ export default function HomepageAssemblyController() {
     const groups = Array.from(shell.querySelectorAll<HTMLElement>(GROUP_SELECTOR));
     const firstScrollGroups = Array.from(shell.querySelectorAll<HTMLElement>(FIRST_SCROLL_SELECTOR));
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const completedGroups = new WeakSet<HTMLElement>();
+    const mobileMotion = window.matchMedia(MOBILE_BREAKPOINT);
+    const activatedGroups = new WeakSet<HTMLElement>();
     const settleTimers = new Map<HTMLElement, number>();
     const assemblyFrames = new Map<HTMLElement, number>();
     let observer: IntersectionObserver | null = null;
@@ -36,19 +38,19 @@ export default function HomepageAssemblyController() {
       if (frame) window.cancelAnimationFrame(frame);
       settleTimers.delete(group);
       assemblyFrames.delete(group);
-      completedGroups.add(group);
+      activatedGroups.add(group);
       observer?.unobserve(group);
       setAssemblyState(group, "settled");
     };
 
     const assemble = (group: HTMLElement, immediately = false) => {
-      if (completedGroups.has(group)) return;
+      if (activatedGroups.has(group)) return;
       if (immediately || reducedMotion.matches) {
         settle(group);
         return;
       }
 
-      completedGroups.add(group);
+      activatedGroups.add(group);
       observer?.unobserve(group);
       const frame = window.requestAnimationFrame(() => {
         assemblyFrames.delete(group);
@@ -57,7 +59,11 @@ export default function HomepageAssemblyController() {
           return;
         }
         setAssemblyState(group, "assembled");
-        const requestedSettleMs = Number(group.dataset.homeAssemblySettleMs);
+        const requestedSettleMs = Number(
+          mobileMotion.matches
+            ? group.dataset.homeAssemblySettleMobileMs ?? group.dataset.homeAssemblySettleMs
+            : group.dataset.homeAssemblySettleMs,
+        );
         const settleAfter = Number.isFinite(requestedSettleMs) ? requestedSettleMs : DEFAULT_SETTLE_MS;
         settleTimers.set(group, window.setTimeout(() => settle(group), settleAfter));
       });
@@ -89,11 +95,14 @@ export default function HomepageAssemblyController() {
             if (entry.isIntersecting && !group.matches(FIRST_SCROLL_SELECTOR)) assemble(group);
           });
         },
-        { rootMargin: "0px 0px -18% 0px", threshold: 0.08 },
+        {
+          rootMargin: mobileMotion.matches ? "0px 0px -6% 0px" : "0px 0px -14% 0px",
+          threshold: 0.04,
+        },
       );
 
       groups.forEach((group) => {
-        if (!group.matches(FIRST_SCROLL_SELECTOR) && !completedGroups.has(group)) observer?.observe(group);
+        if (!group.matches(FIRST_SCROLL_SELECTOR) && !activatedGroups.has(group)) observer?.observe(group);
       });
     } else {
       groups.filter((group) => !group.matches(FIRST_SCROLL_SELECTOR)).forEach((group) => settle(group));
@@ -108,7 +117,7 @@ export default function HomepageAssemblyController() {
           firstScrollGroups.forEach((group) => assemble(group));
         }
         groups.forEach((group) => {
-          if (!completedGroups.has(group) && group.getBoundingClientRect().bottom < 0) settle(group);
+          if (!activatedGroups.has(group) && group.getBoundingClientRect().bottom < 0) settle(group);
         });
         previousScrollY = currentScrollY;
       });

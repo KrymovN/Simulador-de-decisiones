@@ -17,8 +17,9 @@
   --home-space: clamp(64px, 8vw, 112px);
   --home-motion-duration: 180ms;
   --home-motion-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
-  --home-assembly-duration: 920ms;
-  --home-assembly-stagger: 130ms;
+  --home-assembly-duration: 760ms;
+  --home-assembly-stagger: 90ms;
+  --home-assembly-distance: 48px;
   --home-assembly-ease: cubic-bezier(0.22, 1, 0.36, 1);
   position: relative;
   isolation: isolate;
@@ -342,8 +343,9 @@
 .minimal-home__preview-note ul {
   display: grid;
   gap: 6px;
-  margin: 0;
-  padding: 0 0 0 20px;
+  margin: 0 0 0 20px;
+  padding: 2px 0 2px 14px;
+  border-left: 1px solid var(--home-line);
   list-style: none;
 }
 
@@ -356,12 +358,8 @@
   line-height: 1.4;
 }
 
-.minimal-home__preview-status {
-  margin: 0;
-  padding-left: 20px;
-  color: #737373;
-  font-size: 0.74rem;
-  line-height: 1.45;
+.minimal-home__preview-note li:first-child {
+  color: var(--home-muted-strong);
 }
 
 .minimal-home__preview-note li + li::before {
@@ -934,10 +932,8 @@
 /* One-time homepage assembly. Content remains fully visible without JavaScript. */
 
 .minimal-home.home-assembly-enabled [data-home-assembly-item] {
-  --home-assembly-from-x: 0px;
-  --home-assembly-from-y: 22px;
-  --home-assembly-to-x: 0px;
-  --home-assembly-to-y: 0px;
+  --home-assembly-from-x: var(--home-assembly-distance);
+  --home-assembly-from-y: 0px;
   --motion-index: 0;
   --motion-phase-delay: 0ms;
   --motion-duration: var(--home-assembly-duration);
@@ -945,39 +941,16 @@
   --motion-delay: var(--motion-phase-delay);
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-direction="left"] {
-  --home-assembly-from-x: -56px;
-  --home-assembly-from-y: 0px;
-}
-
-.minimal-home.home-assembly-enabled [data-home-assembly-direction="right"] {
-  --home-assembly-from-x: 56px;
-  --home-assembly-from-y: 0px;
-}
-
-.minimal-home.home-assembly-enabled [data-home-assembly-direction="left-soft"] {
-  --home-assembly-from-x: -20px;
-  --home-assembly-from-y: 8px;
-}
-
-.minimal-home.home-assembly-enabled [data-home-assembly-direction="right-soft"] {
-  --home-assembly-from-x: 20px;
-  --home-assembly-from-y: 8px;
-}
-
-.minimal-home.home-assembly-enabled [data-home-assembly-direction="rise"] {
-  --home-assembly-from-y: 18px;
-}
-
 .minimal-home.home-assembly-enabled [data-home-assembly-state="pending"] [data-home-assembly-item] {
-  opacity: 0.12;
+  pointer-events: none;
+  opacity: 0.16;
   transform: translate3d(var(--home-assembly-from-x), var(--home-assembly-from-y), 0);
   will-change: opacity, transform;
 }
 
 .minimal-home.home-assembly-enabled [data-home-assembly-state="assembled"] [data-home-assembly-item] {
   opacity: 1;
-  transform: translate3d(var(--home-assembly-to-x), var(--home-assembly-to-y), 0);
+  transform: none;
   transition:
     opacity var(--motion-duration) var(--home-assembly-ease),
     transform var(--motion-duration) var(--home-assembly-ease);
@@ -986,123 +959,111 @@
 }
 
 .minimal-home.home-assembly-enabled [data-home-assembly-state="settled"] [data-home-assembly-item] {
+  pointer-events: auto;
   opacity: 1;
-  transform: translate3d(var(--home-assembly-to-x), var(--home-assembly-to-y), 0);
+  transform: none;
   transition: none;
   will-change: auto;
 }
 
 .minimal-home.home-assembly-enabled [data-home-assembly-group="hero"] #hero-title {
-  --home-assembly-from-y: 0px;
-  --home-assembly-to-y: -72px;
-  --motion-duration: 1020ms;
+  --home-assembly-from-x: 0px;
+  --home-assembly-from-y: 26px;
+  --motion-duration: 820ms;
   opacity: 1;
 }
 
 .minimal-home.home-assembly-enabled [data-home-preview-phrases] [data-home-assembly-item] {
-  --home-assembly-from-x: 0px;
+  --home-assembly-from-x: 32px;
   --home-assembly-from-y: 0px;
-  --motion-duration: 940ms;
-  --motion-stagger: 120ms;
-  opacity: 0.76;
+  --motion-duration: 720ms;
+  --motion-stagger: 70ms;
 }
 
-.minimal-home.home-assembly-enabled [data-home-preview-phrases] [data-home-assembly-direction="left"] {
-  --home-assembly-to-x: -18px;
+.minimal-home.home-assembly-enabled [data-home-preview-phrases] li:nth-child(1) {
   --motion-index: 0;
-  --motion-delay: 0ms;
+  --motion-delay: 40ms;
 }
 
-.minimal-home.home-assembly-enabled [data-home-preview-phrases] [data-home-assembly-direction="rise"] {
-  --home-assembly-to-y: -8px;
+.minimal-home.home-assembly-enabled [data-home-preview-phrases] li:nth-child(2) {
   --motion-index: 1;
-  --motion-delay: 120ms;
+  --motion-delay: 110ms;
 }
 
-.minimal-home.home-assembly-enabled [data-home-preview-phrases] [data-home-assembly-direction="right"] {
-  --home-assembly-to-x: 18px;
+.minimal-home.home-assembly-enabled [data-home-preview-phrases] li:nth-child(3) {
   --motion-index: 2;
-  --motion-delay: 240ms;
+  --motion-delay: 180ms;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-group="hero"][data-home-assembly-state="assembled"] [data-home-preview-phrases] [data-home-assembly-item],
-.minimal-home.home-assembly-enabled [data-home-assembly-group="hero"][data-home-assembly-state="settled"] [data-home-preview-phrases] [data-home-assembly-item] {
-  opacity: 1;
-}
-
-.minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"] .minimal-home__section-heading h2,
-.minimal-home.home-assembly-enabled [data-home-assembly-group="capabilities-section"] .minimal-home__section-heading h2 {
-  --motion-duration: 980ms;
-}
-
-.minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"] .minimal-home__section-heading p {
-  --motion-index: 1;
-  --motion-delay: 130ms;
-  --motion-duration: 940ms;
+.minimal-home.home-assembly-enabled .minimal-home__section-heading {
+  --home-assembly-from-x: var(--home-assembly-distance);
+  --home-assembly-from-y: 0px;
+  --motion-duration: var(--home-assembly-duration);
+  --motion-delay: 0ms;
 }
 
 .minimal-home.home-assembly-enabled .minimal-home__process-card {
-  --home-assembly-from-x: 64px;
+  --home-assembly-from-x: var(--home-assembly-distance);
   --home-assembly-from-y: 0px;
-  --motion-phase-delay: 220ms;
-  --motion-duration: 860ms;
-  --motion-stagger: 130ms;
+  --motion-phase-delay: 260ms;
+  --motion-duration: var(--home-assembly-duration);
+  --motion-stagger: var(--home-assembly-stagger);
 }
 
-.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(1) { --motion-index: 5; --motion-delay: 870ms; }
-.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(2) { --motion-index: 4; --motion-delay: 740ms; }
-.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(3) { --motion-index: 3; --motion-delay: 610ms; }
-.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(4) { --motion-index: 2; --motion-delay: 480ms; }
-.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(5) { --motion-index: 1; --motion-delay: 350ms; }
-.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(6) { --motion-index: 0; --motion-delay: 220ms; }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(1) { --motion-index: 0; --motion-delay: 260ms; }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(2) { --motion-index: 1; --motion-delay: 350ms; }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(3) { --motion-index: 2; --motion-delay: 440ms; }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(4) { --motion-index: 3; --motion-delay: 530ms; }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(5) { --motion-index: 4; --motion-delay: 620ms; }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(6) { --motion-index: 5; --motion-delay: 710ms; }
 
 .minimal-home.home-assembly-enabled .minimal-home__capability-card {
-  --home-assembly-from-x: 56px;
+  --home-assembly-from-x: var(--home-assembly-distance);
   --home-assembly-from-y: 0px;
-  --motion-phase-delay: 180ms;
-  --motion-duration: 900ms;
-  --motion-stagger: 140ms;
+  --motion-phase-delay: 260ms;
+  --motion-duration: var(--home-assembly-duration);
+  --motion-stagger: var(--home-assembly-stagger);
 }
 
-.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(1) { --motion-index: 3; --motion-delay: 600ms; }
-.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(2) { --motion-index: 2; --motion-delay: 460ms; }
-.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(3) { --motion-index: 1; --motion-delay: 320ms; }
-.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(4) { --motion-index: 0; --motion-delay: 180ms; }
+.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(1) { --motion-index: 0; --motion-delay: 260ms; }
+.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(2) { --motion-index: 1; --motion-delay: 350ms; }
+.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(3) { --motion-index: 2; --motion-delay: 440ms; }
+.minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(4) { --motion-index: 3; --motion-delay: 530ms; }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] .minimal-home__cta-cluster {
-  --motion-duration: 960ms;
-  --motion-stagger: 120ms;
+.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] {
+  --final-cta-motion-duration: var(--home-assembly-duration);
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] .minimal-home__cta-cluster:nth-child(1) {
-  --home-assembly-from-x: -28px;
-  --home-assembly-from-y: 12px;
-  --motion-index: 0;
-  --motion-delay: 0ms;
+.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"][data-home-assembly-state="pending"] {
+  pointer-events: none;
+  opacity: 0.16;
+  transform: translate3d(var(--home-assembly-distance), 0, 0);
+  will-change: opacity, transform;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] .minimal-home__cta-cluster:nth-child(2) {
-  --home-assembly-from-y: 16px;
-  --motion-index: 1;
-  --motion-delay: 120ms;
+.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"][data-home-assembly-state="assembled"] {
+  pointer-events: none;
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--final-cta-motion-duration) var(--home-assembly-ease),
+    transform var(--final-cta-motion-duration) var(--home-assembly-ease);
+  will-change: opacity, transform;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] .minimal-home__cta-cluster:nth-child(3) {
-  --home-assembly-from-x: 28px;
-  --home-assembly-from-y: 12px;
-  --motion-index: 2;
-  --motion-delay: 240ms;
-}
-
-.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] > div > p {
-  --motion-index: 2;
-  --motion-delay: 240ms;
-  --motion-duration: 900ms;
+.minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"][data-home-assembly-state="settled"] {
+  pointer-events: auto;
+  opacity: 1;
+  transform: none;
+  transition: none;
+  will-change: auto;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .minimal-home__process-card,
-  .minimal-home__capability-card {
+  .minimal-home.home-assembly-enabled [data-home-assembly-state="settled"] .minimal-home__process-card,
+  .minimal-home.home-assembly-enabled [data-home-assembly-state="settled"] .minimal-home__capability-card,
+  .minimal-home:not(.home-assembly-enabled) .minimal-home__process-card,
+  .minimal-home:not(.home-assembly-enabled) .minimal-home__capability-card {
     transition:
       border-color 300ms var(--home-assembly-ease),
       background-color 300ms var(--home-assembly-ease),
@@ -1122,8 +1083,10 @@
 }
 
 @media (hover: none), (pointer: coarse) {
-  .minimal-home__process-card,
-  .minimal-home__capability-card {
+  .minimal-home.home-assembly-enabled [data-home-assembly-state="settled"] .minimal-home__process-card,
+  .minimal-home.home-assembly-enabled [data-home-assembly-state="settled"] .minimal-home__capability-card,
+  .minimal-home:not(.home-assembly-enabled) .minimal-home__process-card,
+  .minimal-home:not(.home-assembly-enabled) .minimal-home__capability-card {
     -webkit-tap-highlight-color: transparent;
     transition:
       border-color 140ms var(--home-motion-ease),
@@ -1169,6 +1132,9 @@
 @media (max-width: 860px) {
   .minimal-home {
     --home-space: 72px;
+    --home-assembly-duration: 620ms;
+    --home-assembly-stagger: 60ms;
+    --home-assembly-distance: 28px;
   }
 
   .minimal-home__header,
@@ -1256,6 +1222,45 @@
   .minimal-home__footer {
     grid-template-columns: 1.6fr repeat(3, minmax(0, 1fr));
     gap: 28px;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-group="hero"] #hero-title {
+    --home-assembly-from-y: 18px;
+    --motion-duration: 680ms;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-preview-phrases] [data-home-assembly-item] {
+    --home-assembly-from-x: 22px;
+    --motion-duration: 600ms;
+    --motion-stagger: 50ms;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-preview-phrases] li:nth-child(1) { --motion-delay: 20ms; }
+  .minimal-home.home-assembly-enabled [data-home-preview-phrases] li:nth-child(2) { --motion-delay: 70ms; }
+  .minimal-home.home-assembly-enabled [data-home-preview-phrases] li:nth-child(3) { --motion-delay: 120ms; }
+
+  .minimal-home.home-assembly-enabled .minimal-home__process-card {
+    --motion-phase-delay: 180ms;
+  }
+
+  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(1) { --motion-delay: 180ms; }
+  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(2) { --motion-delay: 240ms; }
+  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(3) { --motion-delay: 300ms; }
+  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(4) { --motion-delay: 360ms; }
+  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(5) { --motion-delay: 420ms; }
+  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(6) { --motion-delay: 480ms; }
+
+  .minimal-home.home-assembly-enabled .minimal-home__capability-card {
+    --motion-phase-delay: 160ms;
+  }
+
+  .minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(1) { --motion-delay: 160ms; }
+  .minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(2) { --motion-delay: 220ms; }
+  .minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(3) { --motion-delay: 280ms; }
+  .minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(4) { --motion-delay: 340ms; }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] {
+    --final-cta-motion-duration: 620ms;
   }
 }
 
@@ -1358,57 +1363,6 @@
     text-align: left;
   }
 
-  .minimal-home.home-assembly-enabled [data-home-assembly-group="hero"] #hero-title {
-    --home-assembly-to-y: -38px;
-    --motion-duration: 980ms;
-  }
-
-  .minimal-home.home-assembly-enabled [data-home-preview-phrases] [data-home-assembly-direction="left"] {
-    --home-assembly-to-x: -6px;
-  }
-
-  .minimal-home.home-assembly-enabled [data-home-preview-phrases] [data-home-assembly-direction="rise"] {
-    --home-assembly-to-y: -4px;
-  }
-
-  .minimal-home.home-assembly-enabled [data-home-preview-phrases] [data-home-assembly-direction="right"] {
-    --home-assembly-to-x: 6px;
-  }
-
-  .minimal-home.home-assembly-enabled .minimal-home__process-card {
-    --home-assembly-from-x: 32px;
-    --motion-duration: 860ms;
-    --motion-stagger: 130ms;
-  }
-
-  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(1) { --motion-index: 0; --motion-delay: 220ms; }
-  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(2) { --motion-index: 1; --motion-delay: 350ms; }
-  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(3) { --motion-index: 2; --motion-delay: 480ms; }
-  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(4) { --motion-index: 3; --motion-delay: 610ms; }
-  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(5) { --motion-index: 4; --motion-delay: 740ms; }
-  .minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(6) { --motion-index: 5; --motion-delay: 870ms; }
-
-  .minimal-home.home-assembly-enabled .minimal-home__capability-card {
-    --home-assembly-from-x: 30px;
-    --motion-duration: 880ms;
-    --motion-stagger: 135ms;
-  }
-
-  .minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(1) { --motion-index: 0; --motion-delay: 180ms; }
-  .minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(2) { --motion-index: 1; --motion-delay: 315ms; }
-  .minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(3) { --motion-index: 2; --motion-delay: 450ms; }
-  .minimal-home.home-assembly-enabled .minimal-home__capability-card:nth-child(4) { --motion-index: 3; --motion-delay: 585ms; }
-
-  .minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] .minimal-home__cta-cluster:nth-child(1) {
-    --home-assembly-from-x: -18px;
-    --home-assembly-from-y: 10px;
-  }
-
-  .minimal-home.home-assembly-enabled [data-home-assembly-group="final-cta"] .minimal-home__cta-cluster:nth-child(3) {
-    --home-assembly-from-x: 18px;
-    --home-assembly-from-y: 10px;
-  }
-
   .minimal-home__final-cta {
     padding: 28px 22px;
   }
@@ -1438,7 +1392,9 @@
 
   .minimal-home.home-assembly-enabled [data-home-assembly-item],
   .minimal-home.home-assembly-enabled [data-home-assembly-group] {
+    pointer-events: auto !important;
     opacity: 1 !important;
     transform: none !important;
+    will-change: auto !important;
   }
 }

@@ -1,5 +1,30 @@
 # PROJECT CONTEXT
 
+## Bounded Homepage Motion Stabilization — 16 July 2026
+
+This owner-recording follow-up stabilizes only the current minimal public
+homepage. It does not restore cosmic assets, decorative motion, excess gold, or
+continuous parallax. The existing four section-level targets remain, but their
+CSS destinations are normalized: right-to-left section grammar, one easing,
+shared desktop/mobile timing tokens, fixed stagger, one-time activation, and
+normal layout geometry after completion.
+
+Hero now transitions from a small lower offset to `transform: none`, avoiding
+the former permanent translated destination. Preview is one compact label plus
+three ordered narrative rows and no duplicate technical IA line. Process and
+capability cards share group triggers and synchronized timing. Final CTA enters
+from the right as a single container without width, display, or letter-spacing
+animation and blocks pointer events until settled. Reduced motion immediately
+restores opacity, transforms, hit testing, and compositor state.
+
+The black/white/gold system, HomeSimulator behavior, footer, navigation routes,
+and deterministic public API boundary remain unchanged. Repository and in-app
+Chromium evidence pass at the requested desktop/mobile sizes, but Chromium is
+not Safari acceptance. No live provider, OpenAI request, AI bridge, backend,
+auth, persistence, privacy, retention, export/deletion, Decision Engine, or new
+Stage scope was opened. Stage 9 remains In Progress at 58% estimated readiness;
+owner actual-device Safari iPhone homepage review remains required.
+
 ## Bounded Safari/iPhone Homepage Motion Correction — 15 July 2026
 
 This owner-reported follow-up corrects the existing minimal homepage without

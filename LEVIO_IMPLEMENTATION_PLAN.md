@@ -1,5 +1,27 @@
 # LEVIO IMPLEMENTATION PLAN
 
+## Bounded Homepage Motion Stabilization Checkpoint — 16 July 2026
+
+The owner-recording stabilization checkpoint is implemented without opening a
+Stage or roadmap item. Four existing section targets retain one monotonic
+observer lifecycle while CSS now owns one coherent motion grammar: common
+right-to-left vector, easing, duration, relative distance, heading-first phase,
+fixed sequential stagger, final `transform: none`, and immediate reduced-motion
+settlement. Mobile uses the same grammar with earlier entry and shorter values.
+
+Hero uses one lower-to-layout transition instead of a persistent translated
+destination. Preview remains the approved three phrases as a structured
+narrative and no longer duplicates HomeSimulator's technical IA status. Final
+CTA moves as one right-to-left container, preserves fixed text geometry, and
+cannot expose a moving clickable overlay. Simulator and all public product
+contracts are unchanged.
+
+Dedicated, homepage regression, Safari/iPhone static, public Home/Simulator,
+interaction, rendered, TypeScript, lint, build, diff, and in-app Chromium
+evidence pass. Chromium is not WebKit/Safari acceptance. The canonical next
+point remains owner actual-device Safari iPhone homepage review; Stage 9 remains
+In Progress, readiness remains 58% estimated, and OpenAI requests remain zero.
+
 ## Bounded Safari/iPhone Homepage Motion Correction Checkpoint — 15 July 2026
 
 The owner-reported homepage correction is implemented without creating a new

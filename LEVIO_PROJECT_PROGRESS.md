@@ -1,5 +1,29 @@
 # LEVIO PROJECT PROGRESS TRACKER
 
+## Cross-Cutting Progress Update — Homepage Motion Stabilization — 16 July 2026
+
+The bounded owner-recording motion stabilization is implemented. Audit showed
+that section activation was already grouped, but final CSS geometry was not:
+hero and preview retained non-zero transforms, headings and final clusters used
+opposing directions, and grid timings differed enough to look positional. The
+motion layer now ends every reveal at normal layout geometry and uses one
+right-to-left vocabulary for headings, process, capabilities, and full final
+CTA. Hero keeps a small one-time upward exception.
+
+Desktop process delays are fixed at 260–710ms with a common 760ms transition;
+mobile uses 180–480ms with 620ms transitions. Capabilities use the same base
+contract with a moderate shorter sequence. Preview is a labelled three-row
+narrative with the duplicated IA line removed. Pending transformed items do not
+receive pointer events, the moving final CTA remains non-interactive until
+settled, and center hit-testing found no accidental link overlay.
+
+All requested gates and compiler/build checks pass. In-app Chromium at
+1440×900 and 390×844 confirms overflow 0, console warnings/errors 0, final
+transforms `none`, correct link/button hit targets, and settled state after
+reverse scroll. This is not Safari evidence. No Stage 9, readiness, OpenAI,
+simulator, backend, auth, persistence, privacy, or Decision Engine boundary
+changed; owner actual-device Safari iPhone homepage review remains next.
+
 ## Cross-Cutting Progress Update — Safari/iPhone Homepage Motion Correction — 15 July 2026
 
 The bounded owner-reported correction is implemented. Repository analysis

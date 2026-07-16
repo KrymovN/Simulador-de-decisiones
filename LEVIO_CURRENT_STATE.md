@@ -1,5 +1,34 @@
 # LEVIO CURRENT STATE
 
+## Current Homepage Motion Stabilization State — 16 July 2026
+
+The homepage uses one shared IntersectionObserver over exactly four narrative
+section containers and never observes cards or letters. Activation is
+monotonic, rAF-batched, unobserved after activation, and settled once. Main
+section content, process cards, capability cards, and the full final CTA use a
+single right-to-left grammar with `cubic-bezier(0.22, 1, 0.36, 1)`, 760ms / 48px
+desktop tokens and 620ms / 28px mobile tokens. Fixed card delays preserve
+heading context and shorten on mobile. Every completed item releases
+`will-change` and computes to `transform: none`.
+
+Hero now starts 26px lower on desktop / 18px lower on mobile and transitions
+once into its pre-existing layout position; no persistent destination transform
+or scroll-linked transform competes with it. The labelled Preview público block
+contains exactly three ordered rows connected by a neutral guide, while the
+technical IA disclosure exists only under HomeSimulator. Final CTA preserves
+its three fixed word clusters but moves as one container from the right; it
+animates neither width nor letter spacing and cannot receive pointer events
+until settled. Visible control center hit-tests remain owned by their intended
+links/buttons, including mobile login.
+
+Repository and in-app Chromium checks pass at 1440×900 and 390×844 with no
+horizontal overflow, console warning/error, persistent transform, or
+reverse-scroll reset. This does not establish Safari acceptance. Stage 9 stays
+In Progress, readiness stays 58% estimated, OpenAI requests stay zero, and no
+backend, API, auth, persistence, privacy, retention, export/deletion, or
+Decision Engine contract changed. Owner actual-device Safari iPhone homepage
+review remains the required next evidence.
+
 ## Current Safari/iPhone Homepage Motion Correction State — 15 July 2026
 
 The signed-out homepage preserves the scoped minimal visual system while one

@@ -552,7 +552,7 @@ export default function HomeSimulator() {
       >
         <span></span>
         <p>
-          {message || `Vista previa determinista · IA real aún no conectada · Máx. ${MAX_SIMULATION_INPUT_LENGTH} caracteres`}
+          {message || `Vista previa determinista · La conexión con IA real aún no está activada · Máx. ${MAX_SIMULATION_INPUT_LENGTH} caracteres`}
         </p>
       </div>
 

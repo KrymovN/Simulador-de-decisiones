@@ -155,9 +155,9 @@ function runPositioningSourceChecks(sources) {
   sourceIncludes(sources.home, "escenarios, riesgos y consecuencias", "Home keeps scenarios/risks/consequences line");
   sourceIncludes(sources.home, "trade-offs", "Home keeps tradeoffs positioning");
   sourceIncludes(sources.home, "Preview público con respuestas de ejemplo", "Home keeps demonstrative public state");
-  sourceIncludes(sources.home, "La conexión con IA real todavía no está activada", "Home keeps Real AI deferred copy");
+  sourceExcludes(sources.home, "La conexión con IA real todavía no está activada", "Home does not duplicate the simulator IA status");
   sourceIncludes(sources.homeSimulator, "Vista previa determinista", "HomeSimulator keeps deterministic preview status");
-  sourceIncludes(sources.homeSimulator, "IA real aún no conectada", "HomeSimulator avoids Real AI promise");
+  sourceIncludes(sources.homeSimulator, "conexión con IA real aún no está activada", "HomeSimulator avoids Real AI promise");
   sourceIncludes(sources.homeSimulator, "MAX_SIMULATION_INPUT_LENGTH", "HomeSimulator keeps the bounded public input disclosure");
   sourceIncludes(sources.homeSimulator, "Simulación demostrativa; la conexión con IA real aún no está activada.", "Result copy keeps Real AI deferred truth boundary");
   sourceIncludes(sources.homeSimulator, "sin presentarse como predicción lista para producción", "HomeSimulator avoids production-readiness promise");

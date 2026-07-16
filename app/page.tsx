@@ -52,15 +52,15 @@ const capabilities = [
 ];
 
 const trustSignals = [
-  { copy: "Preview público con respuestas de ejemplo", direction: "left" },
-  { copy: "Escenarios comparables", direction: "rise" },
-  { copy: "Riesgo y consecuencia", direction: "right" },
+  "Preview público con respuestas de ejemplo",
+  "Escenarios comparables",
+  "Riesgo y consecuencia",
 ];
 
 const finalHeadlineClusters = [
-  { copy: "Empieza", direction: "left" },
-  { copy: "con una", direction: "rise" },
-  { copy: "decisión real.", direction: "right" },
+  "Empieza",
+  "con una",
+  "decisión real.",
 ];
 
 const footerColumns = [
@@ -110,8 +110,10 @@ export default function Home() {
         id="inicio"
         aria-labelledby="hero-title"
         data-home-assembly-group="hero"
-        data-home-assembly-settle-ms="1200"
+        data-home-assembly-settle-ms="980"
+        data-home-assembly-settle-mobile-ms="820"
         data-home-assembly-trigger="first-scroll"
+        data-home-motion-vector="upward"
       >
         <div className="minimal-home__hero-copy">
           <div>
@@ -140,17 +142,12 @@ export default function Home() {
               <strong>Preview público</strong>
               <ul aria-label="Señales del producto" data-home-preview-phrases>
                 {trustSignals.map((signal) => (
-                  <li
-                    data-home-assembly-direction={signal.direction}
-                    data-home-assembly-item
-                    key={signal.copy}
-                  >
-                    {signal.copy}
+                  <li data-home-assembly-item key={signal}>
+                    {signal}
                   </li>
                 ))}
               </ul>
             </div>
-            <p className="minimal-home__preview-status">La conexión con IA real todavía no está activada.</p>
           </div>
         </div>
 
@@ -164,13 +161,13 @@ export default function Home() {
         id="como-funciona"
         aria-labelledby="process-title"
         data-home-assembly-group="process-section"
-        data-home-assembly-settle-ms="1900"
+        data-home-assembly-settle-ms="1550"
+        data-home-assembly-settle-mobile-ms="1180"
+        data-home-motion-vector="right-to-left"
       >
-        <div className="minimal-home__section-heading">
-          <h2 id="process-title" data-home-assembly-direction="left" data-home-assembly-item>
-            Cómo piensa Levio
-          </h2>
-          <p data-home-assembly-direction="right" data-home-assembly-item>
+        <div className="minimal-home__section-heading" data-home-assembly-item>
+          <h2 id="process-title">Cómo piensa Levio</h2>
+          <p>
             Un sistema de simulación de decisiones, no un asistente de IA. No una respuesta. Una simulación de futuros posibles.
           </p>
         </div>
@@ -179,7 +176,6 @@ export default function Home() {
           {processSteps.map((step, index) => (
             <article
               className="minimal-home__process-card"
-              data-home-assembly-direction="right"
               data-home-assembly-item
               key={step.title}
             >
@@ -196,19 +192,18 @@ export default function Home() {
         id="criterios"
         aria-labelledby="capabilities-title"
         data-home-assembly-group="capabilities-section"
-        data-home-assembly-settle-ms="1700"
+        data-home-assembly-settle-ms="1380"
+        data-home-assembly-settle-mobile-ms="1050"
+        data-home-motion-vector="right-to-left"
       >
-        <div className="minimal-home__section-heading">
-          <h2 id="capabilities-title" data-home-assembly-direction="right" data-home-assembly-item>
-            Qué obtienes con Levio
-          </h2>
+        <div className="minimal-home__section-heading" data-home-assembly-item>
+          <h2 id="capabilities-title">Qué obtienes con Levio</h2>
         </div>
 
         <div className="minimal-home__capability-grid">
           {capabilities.map((capability) => (
             <article
               className="minimal-home__capability-card"
-              data-home-assembly-direction="right"
               data-home-assembly-item
               key={capability.title}
             >
@@ -223,7 +218,9 @@ export default function Home() {
         className="minimal-home__final-cta"
         aria-labelledby="final-cta-title"
         data-home-assembly-group="final-cta"
-        data-home-assembly-settle-ms="1400"
+        data-home-assembly-settle-ms="860"
+        data-home-assembly-settle-mobile-ms="700"
+        data-home-motion-vector="right-to-left"
       >
         <div>
           <h2 id="final-cta-title" aria-label="Empieza con una decisión real.">
@@ -231,15 +228,13 @@ export default function Home() {
               <span
                 aria-hidden="true"
                 className="minimal-home__cta-cluster"
-                data-home-assembly-direction={cluster.direction}
-                data-home-assembly-item
-                key={cluster.copy}
+                key={cluster}
               >
-                {cluster.copy}
+                {cluster}
               </span>
             ))}
           </h2>
-          <p data-home-assembly-direction="rise" data-home-assembly-item>
+          <p>
             Explora escenarios, riesgos y consecuencias antes de actuar.
           </p>
         </div>
