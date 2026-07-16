@@ -2,10 +2,11 @@ import Image from "next/image";
 
 type LevioMarkProps = {
   className?: string;
+  priority?: boolean;
   size?: "sm" | "md" | "lg";
 };
 
-export default function LevioMark({ className = "", size = "md" }: LevioMarkProps) {
+export default function LevioMark({ className = "", priority = false, size = "md" }: LevioMarkProps) {
   return (
     <span className={`levio-mark levio-mark-${size} ${className}`} aria-hidden="true">
       <Image
@@ -15,6 +16,7 @@ export default function LevioMark({ className = "", size = "md" }: LevioMarkProp
         width={64}
         height={64}
         unoptimized
+        priority={priority}
       />
     </span>
   );

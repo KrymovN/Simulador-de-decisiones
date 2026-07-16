@@ -96,7 +96,7 @@ export default function Home() {
 
       <header className="minimal-home__header reference-header">
         <Link className="brand-lockup" href="/" aria-label="levio.es">
-          <LevioMark size="lg" />
+          <LevioMark size="lg" priority />
           <span className="brand-name">levio.es</span>
         </Link>
         <HomepageNavigation />
@@ -135,8 +135,8 @@ export default function Home() {
           <div
             className="minimal-home__preview-block"
             data-home-assembly-group="preview"
-            data-home-assembly-settle-ms="820"
-            data-home-assembly-settle-mobile-ms="700"
+            data-home-assembly-settle-ms="960"
+            data-home-assembly-settle-mobile-ms="900"
             data-home-assembly-trigger="preview"
             data-home-motion-vector="right-to-left"
           >

@@ -9,6 +9,7 @@ const css = read("app", "styles", "homepage.css");
 const controller = read("components", "HomepageAssemblyController.tsx");
 const navigation = read("components", "HomepageNavigation.tsx");
 const simulator = read("components", "HomeSimulator.tsx");
+const mark = read("components", "LevioMark.tsx");
 const simulateRoute = read("app", "api", "simulate", "route.ts");
 const packageJson = read("package.json");
 const checks = [];
@@ -32,11 +33,18 @@ function blockBetween(source, start, end) {
 }
 
 const heroBlock = blockBetween(home, '<section\n        className="minimal-home__hero"', '<div\n            className="minimal-home__preview-block"');
+const headerBlock = blockBetween(home, '<header className="minimal-home__header reference-header">', "</header>");
 const previewBlock = blockBetween(home, 'data-home-assembly-group="preview"', 'data-home-assembly-group="process-section"');
 const processBlock = blockBetween(home, 'data-home-assembly-group="process-section"', 'data-home-assembly-group="capabilities-section"');
 const capabilityBlock = blockBetween(home, 'data-home-assembly-group="capabilities-section"', 'data-home-assembly-group="final-cta"');
 const finalBlock = blockBetween(home, 'data-home-assembly-group="final-cta"', '<footer className="minimal-home__footer">');
+const footerBlock = home.slice(home.indexOf('<footer className="minimal-home__footer">'));
 const motionCss = css.slice(css.indexOf("/* One-time homepage assembly."));
+const previewMotionCss = blockBetween(
+  motionCss,
+  '.minimal-home.home-assembly-enabled [data-home-assembly-group="preview"][data-home-assembly-state="pending"]',
+  ".minimal-home.home-assembly-enabled .minimal-home__section-heading",
+);
 const phoneCss = blockBetween(css, "@media (max-width: 560px)", "@media (prefers-reduced-motion: reduce)");
 const reducedCss = css.slice(css.lastIndexOf("@media (prefers-reduced-motion: reduce)"));
 const publicHomepageSurface = `${home}\n${simulator}`;
@@ -73,13 +81,48 @@ for (const phrase of [
   includes(home, phrase, `Approved preview phrase exists: ${phrase}`);
 }
 includes(controller, 'const PREVIEW_SELECTOR = \'[data-home-assembly-trigger="preview"]\';', "Controller identifies preview independently");
-includes(controller, "observeAtVisualLine(previewGroups, 0.66)", "Preview activates at the intended visual viewport zone");
 includes(controller, "window.visualViewport", "Activation geometry accounts for Safari visual viewport");
-includes(controller, "centralRootMargin", "Observers derive activation lines from usable viewport geometry");
-includes(css, "opacity: 0.62", "Desktop preview remains readable before activation");
-includes(phoneCss, "opacity: 0.68", "Mobile preview remains readable before activation");
-includes(css, "transform: translate3d(28px, 0, 0)", "Preview uses a restrained desktop travel distance");
-includes(phoneCss, "transform: translate3d(18px, 0, 0)", "Preview uses a shorter mobile travel distance");
+includes(controller, "const PREVIEW_ACTIVATION_RATIO = 0.66", "Preview retains its dedicated visual activation line");
+includes(controller, "const PREVIEW_SCROLL_NOISE_TOLERANCE = 2", "Preview defines a bounded scroll noise tolerance");
+includes(controller, "const PREVIEW_MIN_SCROLL_Y = 24", "Preview requires a safe positive scroll position");
+includes(controller, "let previousValidScrollY = Math.max(0, window.scrollY)", "Controller stores the previous non-negative scroll position");
+includes(controller, "const downwardDelta = currentScrollY - previousValidScrollY", "Preview activation derives a genuine scroll delta");
+includes(controller, "currentScrollY < 0", "Negative pull-to-refresh offsets cannot arm preview");
+includes(controller, "Math.abs(downwardDelta) > PREVIEW_SCROLL_NOISE_TOLERANCE", "Noise does not replace the previous valid scroll baseline");
+includes(controller, "currentScrollY >= PREVIEW_MIN_SCROLL_Y", "Preview rejects zero and near-zero scroll offsets");
+includes(controller, "downwardDelta > PREVIEW_SCROLL_NOISE_TOLERANCE", "Preview requires positive downward movement beyond noise");
+includes(controller, "previewDownwardArmed = true", "A genuine downward movement monotonically arms preview");
+includes(controller, "isAtVisualActivationLine(target, PREVIEW_ACTIVATION_RATIO)", "Scroll activation also requires preview to cross its visual line");
+includes(controller, 'window.addEventListener("scroll", handlePreviewScroll, { passive: true })', "Preview uses one passive scroll activation path");
+excludes(controller, "observeAtVisualLine(previewGroups", "Initial IntersectionObserver callbacks cannot activate preview");
+excludes(controller, 'window.visualViewport?.addEventListener("resize"', "Safari visualViewport resize never recreates or activates preview lifecycle");
+includes(controller, "settleRestoredPreview(currentScrollY)", "Restored deep positions use the immediate settle path");
+includes(controller, "target.getBoundingClientRect().bottom <= visualTop", "Preview above a restored viewport cannot remain pending");
+includes(css, "--home-preview-duration: 720ms", "Desktop preview uses a readable bounded duration");
+includes(css, "--home-preview-stagger: 90ms", "Preview uses a calm readable stagger");
+includes(css, "--home-preview-distance: 32px", "Desktop preview travel remains bounded but perceptible");
+includes(css, "--home-preview-ease: cubic-bezier(0.4, 0, 0.2, 1)", "Preview avoids the former front-loaded easing");
+includes(css, "opacity: 0.58", "Desktop preview remains readable before activation");
+includes(phoneCss, "--home-preview-duration: 680ms", "Mobile preview uses a bounded readable duration");
+includes(phoneCss, "--home-preview-distance: 24px", "Mobile preview travel remains viewport-safe");
+includes(phoneCss, "opacity: 0.62", "Mobile preview remains readable before activation");
+includes(previewMotionCss, "transform: translate3d(var(--home-preview-distance), 0, 0)", "Preview retains the shared right-to-left direction");
+includes(previewMotionCss, "opacity var(--home-preview-duration) var(--home-preview-ease)", "Preview opacity uses the dedicated restrained timing");
+includes(previewMotionCss, "transform var(--home-preview-duration) var(--home-preview-ease)", "Preview travel uses the dedicated restrained timing");
+includes(previewMotionCss, "--motion-delay: 0ms", "Preview first phrase starts without arbitrary latency");
+includes(previewMotionCss, "--motion-delay: 90ms", "Preview second phrase owns the intended stagger");
+includes(previewMotionCss, "--motion-delay: 180ms", "Preview third phrase owns the intended stagger");
+excludes(previewMotionCss, "cubic-bezier(0.22, 1, 0.36, 1)", "Preview no longer uses the front-loaded assembly easing");
+includes(previewBlock, 'data-home-assembly-settle-ms="960"', "Desktop settle timer covers the full preview sequence");
+includes(previewBlock, 'data-home-assembly-settle-mobile-ms="900"', "Mobile settle timer covers the full preview sequence");
+
+includes(headerBlock, '<LevioMark size="lg" priority />', "Above-the-fold header mark requests priority loading");
+includes(mark, "priority?: boolean", "Levio mark exposes a bounded priority option");
+includes(mark, "priority={priority}", "Levio mark forwards Next/Image priority semantics");
+includes(mark, 'src="/levio-reference-mark.png"', "Exact approved ring asset remains in use");
+includes(css, ".minimal-home .levio-mark {\n  background: transparent", "Homepage mark has no opaque black first-paint placeholder");
+includes(css, ".minimal-home .levio-mark-lg {\n  width: 38px;\n  height: 38px", "Header mark reserves fixed dimensions against layout shift");
+excludes(footerBlock, '<LevioMark size="md" priority', "Footer mark is not unnecessarily high priority");
 
 includes(processBlock, 'data-home-assembly-trigger="section"', "Process section uses a later section trigger");
 includes(capabilityBlock, 'data-home-assembly-trigger="section"', "Capabilities section uses a later section trigger");
@@ -160,5 +203,5 @@ for (const item of checks) {
 }
 
 const failed = checks.filter((item) => !item.passed);
-console.log(`\nHomepage motion/copy correction gate: ${checks.length - failed.length}/${checks.length} passed.`);
+console.log(`\nHomepage Safari preview/first-paint gate: ${checks.length - failed.length}/${checks.length} passed.`);
 if (failed.length > 0) process.exitCode = 1;

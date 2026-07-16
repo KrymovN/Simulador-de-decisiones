@@ -9,6 +9,9 @@ const FINAL_CTA_SELECTOR = '[data-home-assembly-trigger="final-cta"]';
 const MOBILE_CARD_SELECTOR = "[data-home-mobile-card]";
 const MOBILE_CARD_BREAKPOINT = "(max-width: 560px)";
 const DEFAULT_SETTLE_MS = 1000;
+const PREVIEW_ACTIVATION_RATIO = 0.66;
+const PREVIEW_SCROLL_NOISE_TOLERANCE = 2;
+const PREVIEW_MIN_SCROLL_Y = 24;
 
 type AssemblyState = "pending" | "assembled" | "settled";
 
@@ -31,6 +34,13 @@ function centralRootMargin(activationRatio: number) {
   return `0px 0px -${bottomInset}px 0px`;
 }
 
+function isAtVisualActivationLine(target: HTMLElement, activationRatio: number) {
+  const viewport = visualViewportMetrics();
+  const activationLine = viewport.top + viewport.height * activationRatio;
+  const bounds = target.getBoundingClientRect();
+  return bounds.top <= activationLine && bounds.bottom > viewport.top;
+}
+
 export default function HomepageAssemblyController() {
   useEffect(() => {
     const shell = document.querySelector<HTMLElement>(".minimal-home");
@@ -50,6 +60,9 @@ export default function HomepageAssemblyController() {
     const assemblyFrames = new Map<HTMLElement, number>();
     const observers = new Set<IntersectionObserver>();
     let rebuildFrame = 0;
+    let previewScrollFrame = 0;
+    let previousValidScrollY = Math.max(0, window.scrollY);
+    let previewDownwardArmed = false;
 
     shell.classList.add("home-assembly-enabled");
 
@@ -108,14 +121,19 @@ export default function HomepageAssemblyController() {
       targetObservers.clear();
     };
 
-    const observeAtVisualLine = (targets: HTMLElement[], activationRatio: number) => {
+    const observeAtVisualLine = (
+      targets: HTMLElement[],
+      activationRatio: number,
+      canAssemble: (target: HTMLElement) => boolean = () => true,
+    ) => {
       const pendingTargets = targets.filter((target) => !activatedTargets.has(target));
       if (pendingTargets.length === 0) return;
 
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            if (entry.isIntersecting) assemble(entry.target as HTMLElement);
+            const target = entry.target as HTMLElement;
+            if (entry.isIntersecting && canAssemble(target)) assemble(target);
           });
         },
         {
@@ -128,6 +146,47 @@ export default function HomepageAssemblyController() {
         targetObservers.set(target, observer);
         observer.observe(target);
       });
+    };
+
+    const settleRestoredPreview = (currentScrollY: number) => {
+      if (currentScrollY < PREVIEW_MIN_SCROLL_Y) return;
+      const visualTop = visualViewportMetrics().top;
+      previewGroups.forEach((target) => {
+        if (!activatedTargets.has(target) && target.getBoundingClientRect().bottom <= visualTop) {
+          settle(target);
+        }
+      });
+    };
+
+    const processPreviewScroll = () => {
+      previewScrollFrame = 0;
+      const currentScrollY = window.scrollY;
+      if (!Number.isFinite(currentScrollY) || currentScrollY < 0) return;
+
+      const downwardDelta = currentScrollY - previousValidScrollY;
+      if (Math.abs(downwardDelta) > PREVIEW_SCROLL_NOISE_TOLERANCE) {
+        previousValidScrollY = currentScrollY;
+      }
+      settleRestoredPreview(currentScrollY);
+
+      const genuineDownwardScroll = currentScrollY >= PREVIEW_MIN_SCROLL_Y
+        && downwardDelta > PREVIEW_SCROLL_NOISE_TOLERANCE;
+      if (genuineDownwardScroll) previewDownwardArmed = true;
+      if (!previewDownwardArmed || !genuineDownwardScroll) return;
+
+      previewGroups.forEach((target) => {
+        if (
+          !activatedTargets.has(target)
+          && isAtVisualActivationLine(target, PREVIEW_ACTIVATION_RATIO)
+        ) {
+          assemble(target);
+        }
+      });
+    };
+
+    const handlePreviewScroll = () => {
+      if (previewScrollFrame) return;
+      previewScrollFrame = window.requestAnimationFrame(processPreviewScroll);
     };
 
     const settleTargetsAboveViewport = (targets: HTMLElement[]) => {
@@ -159,7 +218,6 @@ export default function HomepageAssemblyController() {
       settleTargetsAboveViewport(groups);
       if (useMobileCards) settleTargetsAboveViewport(mobileCards);
 
-      observeAtVisualLine(previewGroups, 0.66);
       observeAtVisualLine(sectionGroups, useMobileCards ? 0.62 : 0.66);
       observeAtVisualLine(finalCtaGroups, 0.72);
       if (useMobileCards) observeAtVisualLine(mobileCards, 0.68);
@@ -175,6 +233,7 @@ export default function HomepageAssemblyController() {
 
     groups.forEach((group) => setAssemblyState(group, "pending"));
     configureObservers();
+    window.addEventListener("scroll", handlePreviewScroll, { passive: true });
 
     const handleReducedMotionChange = () => {
       if (reducedMotion.matches) {
@@ -188,10 +247,10 @@ export default function HomepageAssemblyController() {
     reducedMotion.addEventListener("change", handleReducedMotionChange);
     mobileCardsEnabled.addEventListener("change", scheduleObserverRebuild);
     window.addEventListener("resize", scheduleObserverRebuild, { passive: true });
-    window.visualViewport?.addEventListener("resize", scheduleObserverRebuild, { passive: true });
 
     return () => {
       if (rebuildFrame) window.cancelAnimationFrame(rebuildFrame);
+      if (previewScrollFrame) window.cancelAnimationFrame(previewScrollFrame);
       disconnectObservers();
       settleTimers.forEach((timer) => window.clearTimeout(timer));
       assemblyFrames.forEach((frame) => window.cancelAnimationFrame(frame));
@@ -199,8 +258,8 @@ export default function HomepageAssemblyController() {
       assemblyFrames.clear();
       reducedMotion.removeEventListener("change", handleReducedMotionChange);
       mobileCardsEnabled.removeEventListener("change", scheduleObserverRebuild);
+      window.removeEventListener("scroll", handlePreviewScroll);
       window.removeEventListener("resize", scheduleObserverRebuild);
-      window.visualViewport?.removeEventListener("resize", scheduleObserverRebuild);
       shell.classList.remove("home-assembly-enabled");
     };
   }, []);
