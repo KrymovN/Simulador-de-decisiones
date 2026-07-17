@@ -3,7 +3,7 @@ import HomeSimulator from "../components/HomeSimulator";
 import HomepageAnchorLink from "../components/HomepageAnchorLink";
 import HomepageAssemblyController from "../components/HomepageAssemblyController";
 import HomepageNavigation from "../components/HomepageNavigation";
-import LevioMark from "../components/LevioMark";
+import BrandLockup from "../components/BrandLockup";
 
 const processSteps = [
   {
@@ -95,10 +95,7 @@ export default function Home() {
       <HomepageAssemblyController />
 
       <header className="minimal-home__header reference-header">
-        <Link className="brand-lockup" href="/" aria-label="levio.es">
-          <LevioMark size="lg" priority />
-          <span className="brand-name">levio.es</span>
-        </Link>
+        <BrandLockup ariaLabel="levio.es" markSize="lg" nameClassName="brand-name" priority />
         <HomepageNavigation />
         <Link className="minimal-home__header-login" href="/login">
           Iniciar sesión
@@ -259,10 +256,7 @@ export default function Home() {
 
       <footer className="minimal-home__footer">
         <div className="minimal-home__footer-brand">
-          <Link className="brand-lockup" href="/" aria-label="levio.es">
-            <LevioMark size="md" />
-            <span className="brand-name">levio.es</span>
-          </Link>
+          <BrandLockup ariaLabel="levio.es" nameClassName="brand-name" />
           <p>Sistema de simulación de decisiones para explorar escenarios, riesgos y consecuencias antes de actuar.</p>
           <small>© 2026 Levio.es. Todos los derechos reservados.</small>
         </div>

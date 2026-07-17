@@ -4,9 +4,9 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { useAuthRuntime } from "./auth/AuthRuntimeProvider";
+import BrandLockup from "./BrandLockup";
 import { useDashboardAccount } from "./dashboard/DashboardAccountProvider";
 import { clearMockSession } from "./MockAuthGate";
-import LevioMark from "./LevioMark";
 
 const navigationItems = [
   { href: "/dashboard", label: "Resumen" },
@@ -56,10 +56,7 @@ export default function DashboardShell({
   return (
     <main className="dashboard-shell">
       <aside className="dashboard-sidebar section-frame">
-        <Link className="dashboard-brand brand-lockup" href="/">
-          <LevioMark size="sm" />
-          <span>levio.es</span>
-        </Link>
+        <BrandLockup className="dashboard-brand" markSize="sm" />
         <p>Vista preparada del motor de simulación de decisiones.</p>
         <details className="dashboard-nav-menu">
           <summary>

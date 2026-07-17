@@ -2,16 +2,16 @@
 
 .minimal-home {
   overflow-anchor: none;
-  --home-bg: #050505;
-  --home-surface: #090909;
-  --home-surface-raised: #101010;
-  --home-text: #f4f4f4;
-  --home-muted: #999999;
-  --home-muted-strong: #b8b8b8;
-  --home-line: #292929;
-  --home-line-strong: #444444;
-  --home-brand: #e4ad35;
-  --home-brand-highlight: #f0c052;
+  --home-bg: var(--levio-bg);
+  --home-surface: var(--levio-surface);
+  --home-surface-raised: var(--levio-surface-elevated);
+  --home-text: var(--levio-text);
+  --home-muted: var(--levio-text-muted);
+  --home-muted-strong: var(--levio-text-secondary);
+  --home-line: var(--levio-border);
+  --home-line-strong: var(--levio-border-strong);
+  --home-brand: var(--levio-brand);
+  --home-brand-highlight: var(--levio-brand-hover);
   --home-radius-sm: 6px;
   --home-radius-md: 10px;
   --home-radius-lg: 14px;

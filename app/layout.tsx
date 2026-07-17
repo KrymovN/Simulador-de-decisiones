@@ -1,3 +1,4 @@
+import './styles/design-system.css';
 import './styles/dashboard.css';
 import './styles/auth.css';
 import './styles/simulator.css';

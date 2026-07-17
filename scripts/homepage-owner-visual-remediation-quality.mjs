@@ -6,6 +6,7 @@ const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
 const read = (...segments) => readFileSync(join(rootDir, ...segments), "utf8");
 const home = read("app", "page.tsx");
 const css = read("app", "styles", "homepage.css");
+const designSystemCss = read("app", "styles", "design-system.css");
 const layout = read("app", "layout.tsx");
 const navigation = read("components", "HomepageNavigation.tsx");
 const anchorLink = read("components", "HomepageAnchorLink.tsx");
@@ -115,9 +116,12 @@ check(
   "Criteria pills must contain only the four approved text labels.",
 );
 
-includes(css, "--home-bg: #050505", "Palette is centralized on a near-black background token");
-includes(css, "--home-text: #f4f4f4", "Palette is centralized on a white text token");
-includes(css, "--home-line: #292929", "Neutral border token is centralized");
+includes(designSystemCss, "--levio-bg: #050505", "Shared palette owns the near-black background token");
+includes(designSystemCss, "--levio-text: #f4f4f4", "Shared palette owns the white text token");
+includes(designSystemCss, "--levio-border: #292929", "Shared palette owns the neutral border token");
+includes(css, "--home-bg: var(--levio-bg)", "Homepage background aliases the shared token");
+includes(css, "--home-text: var(--levio-text)", "Homepage text aliases the shared token");
+includes(css, "--home-line: var(--levio-border)", "Homepage border aliases the shared token");
 includes(css, "--home-radius-sm: 6px", "Card radius is tokenized");
 includes(css, "--home-motion-duration: 180ms", "Motion duration is tokenized");
 check(
@@ -126,9 +130,10 @@ check(
   "A gold token is used outside the brand mark/name or primary CTA.",
 );
 check(
-  "Gold literals exist only in the palette declaration",
-  (css.match(/#e4ad35|#f0c052/g) ?? []).length === 2,
-  "Gold was hardcoded outside the centralized palette.",
+  "Gold literals exist only in the shared palette declaration",
+  (designSystemCss.match(/#e4ad35|#f0c052/g) ?? []).length === 2 &&
+    (css.match(/#e4ad35|#f0c052/g) ?? []).length === 0,
+  "Gold was hardcoded outside the shared palette.",
 );
 check(
   "Only the primary CTA uses a decorative gradient",

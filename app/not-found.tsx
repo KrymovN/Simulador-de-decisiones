@@ -1,14 +1,11 @@
 import Link from "next/link";
-import LevioMark from "../components/LevioMark";
+import BrandLockup from "../components/BrandLockup";
 
 export default function NotFound() {
   return (
     <main className="auth-shell not-found-shell">
       <section className="auth-visual section-frame">
-        <Link className="auth-brand brand-lockup" href="/" aria-label="levio.es">
-          <LevioMark size="md" />
-          <span>levio.es</span>
-        </Link>
+        <BrandLockup ariaLabel="levio.es" className="auth-brand" />
         <p className="eyebrow brand-mark">levio.es / Ruta no encontrada</p>
         <h1>Esta ruta no existe.</h1>
         <p>El enlace puede estar incompleto o pertenecer a una función que todavía no está disponible.</p>
