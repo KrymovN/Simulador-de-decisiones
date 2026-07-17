@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import AuthShell from "../../components/AuthShell";
+import PublicSecondaryShell from "../../components/PublicSecondaryShell";
 
 export const metadata: Metadata = {
   title: "Política de privacidad provisional",
@@ -9,12 +9,14 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <AuthShell
+    <PublicSecondaryShell
       description="Borrador provisional para que puedas revisar el estado actual de privacidad antes de crear acceso."
       eyebrow="levio.es / Privacidad provisional"
+      showSecurityNotice
       title="Política de privacidad provisional."
+      variant="legal"
     >
-      <div className="legal-draft">
+      <div className="public-secondary__content">
         <p>
           Levio.es está en fase de preparación y prueba. Esta página no es una política legal final ni declara
           preparación completa para producción.
@@ -28,11 +30,11 @@ export default function PrivacyPolicyPage() {
           Antes de procesar datos personales reales en producción, Levio.es deberá completar su documentación legal,
           controles de consentimiento, derechos de datos y políticas operativas.
         </p>
-        <div className="auth-links">
+        <div className="public-secondary__actions">
           <Link href="/register">Volver al acceso preparado</Link>
           <Link href="/">Volver al simulador</Link>
         </div>
       </div>
-    </AuthShell>
+    </PublicSecondaryShell>
   );
 }

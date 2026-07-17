@@ -21,6 +21,7 @@ const sourcePaths = {
   dashboardShell: join(rootDir, "components", "DashboardShell.tsx"),
   css: join(rootDir, "app", "globals.css"),
   homeCss: join(rootDir, "app", "styles", "homepage.css"),
+  publicSecondaryCss: join(rootDir, "app", "styles", "public-secondary.css"),
   packageJson: join(rootDir, "package.json"),
   simulateRoute: join(rootDir, "app", "api", "simulate", "route.ts"),
 };
@@ -79,7 +80,7 @@ const publicPages = [
     path: "/privacy-policy",
     status: 200,
     includes: [
-      'class="auth-shell"',
+      'class="public-secondary public-secondary--legal"',
       "Política de privacidad provisional",
       "política legal final",
       "se almacenan localmente en este navegador",
@@ -90,10 +91,21 @@ const publicPages = [
     path: "/terms",
     status: 200,
     includes: [
-      'class="auth-shell"',
+      'class="public-secondary public-secondary--legal"',
       "Términos de uso provisionales",
       "asesoramiento legal",
       "garantías legales finales",
+    ],
+  },
+  {
+    label: "Not Found",
+    path: "/codex-public-secondary-not-found-smoke",
+    status: 404,
+    includes: [
+      'class="public-secondary public-secondary--system"',
+      "Esta ruta no existe.",
+      "Volver al inicio",
+      "Abrir simulador",
     ],
   },
 ];

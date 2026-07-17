@@ -12,6 +12,7 @@ const home = read("app", "page.tsx");
 const authShell = read("components", "AuthShell.tsx");
 const dashboardShell = read("components", "DashboardShell.tsx");
 const notFound = read("app", "not-found.tsx");
+const publicSecondaryShell = read("components", "PublicSecondaryShell.tsx");
 const auth = read("app", "styles", "auth.css");
 const dashboard = read("app", "styles", "dashboard.css");
 const checks = [];
@@ -85,20 +86,20 @@ check(
 );
 check("AuthShell consumes BrandLockup once", (authShell.match(/<BrandLockup(?:\s|\/|>)/g) ?? []).length === 1);
 check("DashboardShell consumes BrandLockup once", (dashboardShell.match(/<BrandLockup(?:\s|\/|>)/g) ?? []).length === 1);
-check("not-found consumes BrandLockup once", (notFound.match(/<BrandLockup(?:\s|\/|>)/g) ?? []).length === 1);
+check("PublicSecondaryShell consumes BrandLockup once", (publicSecondaryShell.match(/<BrandLockup(?:\s|\/|>)/g) ?? []).length === 1);
 includes(authShell, 'mark={<span className="brand-logo brand-logo-mini" aria-hidden="true"></span>}', "AuthShell preserves its existing mark variant");
 includes(dashboardShell, 'className="dashboard-brand" markSize="sm"', "DashboardShell preserves its existing brand classes and mark size");
-includes(notFound, 'ariaLabel="levio.es" className="auth-brand"', "not-found preserves its existing brand class and accessible name");
+includes(notFound, "<PublicSecondaryShell", "not-found reaches BrandLockup through the approved shared shell");
 const brandUsers = [...collectTsxFiles("app"), ...collectTsxFiles("components")]
   .filter((file) => file !== "components/BrandLockup.tsx" && readFileSync(join(rootDir, file), "utf8").includes("<BrandLockup"))
   .sort();
 check(
   "BrandLockup is limited to the four approved surfaces",
   JSON.stringify(brandUsers) === JSON.stringify([
-    "app/not-found.tsx",
     "app/page.tsx",
     "components/AuthShell.tsx",
     "components/DashboardShell.tsx",
+    "components/PublicSecondaryShell.tsx",
   ]),
   `Actual BrandLockup users: ${brandUsers.join(", ")}`,
 );

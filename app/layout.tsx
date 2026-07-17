@@ -4,6 +4,7 @@ import './styles/auth.css';
 import './styles/simulator.css';
 import './globals.css';
 import './styles/motion.css';
+import './styles/public-secondary.css';
 import './styles/homepage.css';
 import type { Metadata } from 'next';
 import type { Viewport } from 'next';
