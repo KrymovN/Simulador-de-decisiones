@@ -11,8 +11,9 @@ export default function SecurityPage() {
         eyebrow="levio.es / Seguridad"
         title="Seguridad preparada."
       >
+        <div className="workspace-surface workspace-surface--security">
         <section className="dashboard-two-column">
-          <article className="dashboard-card section-frame">
+          <article className="dashboard-card">
             <h2>Preparar cambio de contraseña</h2>
             <div className="profile-form">
               <label>
@@ -30,7 +31,7 @@ export default function SecurityPage() {
             </div>
           </article>
 
-          <article className="dashboard-card section-frame">
+          <article className="dashboard-card">
             <h2>Autenticación en dos pasos</h2>
             <p>Preparado para activar verificación adicional cuando exista auth provider productivo.</p>
             <UnavailableAction
@@ -40,6 +41,7 @@ export default function SecurityPage() {
           </article>
         </section>
         <SecurityPanel />
+        </div>
       </DashboardShell>
     </MockAuthGate>
   );

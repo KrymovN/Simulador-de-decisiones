@@ -30,7 +30,8 @@ export default function DecisionsPage() {
         eyebrow="levio.es / Decisiones"
         title="Decisiones preparadas."
       >
-        <section className="decision-command section-frame">
+        <div className="workspace-surface workspace-surface--decisions">
+        <section className="workspace-command">
           <div>
             <p className="eyebrow">Centro de seguimiento</p>
             <h2>Convierte cada simulación importante en una decisión observada.</h2>
@@ -52,7 +53,7 @@ export default function DecisionsPage() {
 
         <section className="saved-decision-grid" aria-label="Decisiones preparadas">
           {savedDecisions.map((decision) => (
-            <article className="saved-decision-card section-frame" key={decision.id}>
+            <article className="saved-decision-card" key={decision.id}>
               <div className="decision-card-header">
                 <span>{decision.category}</span>
                 <small>{decision.status}</small>
@@ -99,6 +100,7 @@ export default function DecisionsPage() {
             </article>
           ))}
         </section>
+        </div>
       </DashboardShell>
     </MockAuthGate>
   );

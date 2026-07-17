@@ -26,10 +26,8 @@ export default function MemoryPage() {
         eyebrow="levio.es / Memoria futura"
         title="Memoria futura de decisiones."
       >
-        <section className="memory-hero section-frame">
-          <div className="memory-core" aria-hidden="true">
-            <span></span>
-          </div>
+        <div className="workspace-surface workspace-surface--memory">
+        <section className="workspace-memory-overview">
           <div>
             <p className="eyebrow">Personalización preparada</p>
             <h2>{memorySettings.mode}</h2>
@@ -47,7 +45,7 @@ export default function MemoryPage() {
         </section>
 
         <section className="memory-layout">
-          <article className="dashboard-card section-frame">
+          <article className="dashboard-card">
             <p className="eyebrow">Ámbitos de memoria futura</p>
             <h2>Qué podría usar el motor.</h2>
             <div className="memory-scope-list">
@@ -64,7 +62,7 @@ export default function MemoryPage() {
             </div>
           </article>
 
-          <article className="dashboard-card section-frame">
+          <article className="dashboard-card">
             <p className="eyebrow">Transparencia</p>
             <h2>Patrones de ejemplo.</h2>
             <div className="remembered-patterns">
@@ -81,7 +79,7 @@ export default function MemoryPage() {
 
         <section className="memory-actions">
           {memoryActions.map((action) => (
-            <article className="dashboard-card section-frame" key={action.title}>
+            <article className="dashboard-card" key={action.title}>
               <h3>{action.title}</h3>
               <p>{action.copy}</p>
               <UnavailableAction
@@ -91,6 +89,7 @@ export default function MemoryPage() {
             </article>
           ))}
         </section>
+        </div>
       </DashboardShell>
     </MockAuthGate>
   );

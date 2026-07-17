@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import ts from "typescript";
 
 const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
-const baseline = "9a6d6b7590c4e65cf06241462132eb630b254fef";
+const baseline = "47da75c0852cc9720ac827a24961cb9b18dd7ccc";
 const read = (...segments) => readFileSync(join(rootDir, ...segments), "utf8");
 const baselineFile = (path) => execFileSync("git", ["show", `${baseline}:${path}`], {
   cwd: rootDir,
@@ -231,20 +231,16 @@ for (const path of [
   check(`${path} preserves dashboard/auth behaviour byte-for-byte`, read(path) === baselineFile(path));
 }
 
-const nestedDashboardPaths = execFileSync(
-  "git",
-  ["ls-tree", "-r", "--name-only", baseline, "--", "app/dashboard"],
-  { cwd: rootDir, encoding: "utf8" },
-).trim().split("\n").filter((path) => path && path !== "app/dashboard/page.tsx");
-check(
-  "Nested dashboard routes remain byte-identical to baseline",
-  nestedDashboardPaths.every(
-    (path) => existsSync(join(rootDir, path)) && read(path) === baselineFile(path),
-  ),
-);
+for (const path of [
+  "app/dashboard/simulations/page.tsx",
+  "app/dashboard/simulations/[id]/page.tsx",
+  "app/dashboard/drafts/[id]/page.tsx",
+  "app/dashboard/privacy/page.tsx",
+]) {
+  check(`${path} remains outside the completed Batch 4 migration`, read(path) === baselineFile(path));
+}
 
 for (const directory of [
-  "components/dashboard",
   "app/api",
   "supabase",
   "lib/persistence-runtime",
@@ -289,15 +285,17 @@ for (const path of [
 }
 
 const allowedScope = new Set([
-  "app/dashboard/page.tsx",
+  "app/dashboard/decisions/page.tsx",
+  "app/dashboard/memory/page.tsx",
+  "app/dashboard/profile/page.tsx",
+  "app/dashboard/security/page.tsx",
   "app/layout.tsx",
-  "app/styles/dashboard-shell.css",
-  "components/DashboardShell.tsx",
+  "app/styles/workspace-surfaces.css",
+  "components/SecurityPanel.tsx",
+  "components/dashboard/DashboardProfileAccountState.tsx",
   "package.json",
-  "scripts/auth-access-surfaces-quality.mjs",
   "scripts/dashboard-shell-landing-quality.mjs",
-  "scripts/public-secondary-surfaces-quality.mjs",
-  "scripts/shared-visual-system-foundation-quality.mjs",
+  "scripts/workspace-surfaces-quality.mjs",
 ]);
 const tracked = execFileSync("git", ["diff", "--name-only", baseline], {
   cwd: rootDir,
@@ -309,7 +307,7 @@ const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standa
 }).trim().split("\n").filter(Boolean);
 const actualScope = Array.from(new Set([...tracked, ...untracked])).sort();
 check(
-  "Diff stays inside the approved Batch 4 file set",
+  "Completed Batch 4 stays closed while the bounded workspace migration proceeds",
   actualScope.every((path) => allowedScope.has(path)),
   `Unexpected files: ${actualScope.filter((path) => !allowedScope.has(path)).join(", ")}`,
 );

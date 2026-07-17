@@ -20,17 +20,16 @@ export default function SecurityPanel() {
 
   return (
     <div className="security-layout">
-      <section className="dashboard-card section-frame">
+      <section className="dashboard-card">
         <p className="eyebrow">Protección en preparación</p>
         <h2>Seguridad conectada a la sesión validada.</h2>
         <div className="security-score" aria-label="Estado de protección futura">
-          <span></span>
           <strong>{account.accountState}</strong>
           <p>Controles de acceso reales para la sesión actual; 2FA y gestión avanzada siguen preparados.</p>
         </div>
       </section>
 
-      <section className="dashboard-card section-frame">
+      <section className="dashboard-card">
         <h3>Sesión actual</h3>
         <div className="session-list">
           {sessions.map((session) => (

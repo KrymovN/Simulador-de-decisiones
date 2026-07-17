@@ -26,11 +26,8 @@ export default function DashboardProfileAccountState({
 
   return (
     <>
-      <section className="profile-overview section-frame">
+      <section className="workspace-profile-overview">
         <div className="profile-identity">
-          <div className="profile-avatar" aria-hidden="true">
-            <span></span>
-          </div>
           <div>
             <p className="eyebrow">Identidad validada</p>
             <h2>{account.displayName}</h2>
@@ -54,7 +51,7 @@ export default function DashboardProfileAccountState({
       </section>
 
       <section className="profile-layout">
-        <article className="dashboard-card section-frame">
+        <article className="dashboard-card">
           <h2>Datos preparados de acceso</h2>
           <div className="profile-form">
             <label>
@@ -89,7 +86,7 @@ export default function DashboardProfileAccountState({
         </article>
 
         <aside className="profile-side">
-          <section className="dashboard-card section-frame">
+          <section className="dashboard-card">
             <h2>Preparación del perfil</h2>
             <div className="profile-signal-list">
               {accountSignals.map((signal) => (
@@ -102,7 +99,7 @@ export default function DashboardProfileAccountState({
             </div>
           </section>
 
-          <section className="dashboard-card section-frame">
+          <section className="dashboard-card">
             <h2>Actividad reciente</h2>
             <div className="detail-timeline">
               {activityLog.map((event) => (

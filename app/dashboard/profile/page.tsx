@@ -11,11 +11,13 @@ export default function ProfilePage() {
         eyebrow="levio.es / Perfil"
         title="Perfil preparado."
       >
-        <DashboardProfileAccountState
-          accountSignals={accountSignals}
-          activityLog={activityLog}
-          futureLanguages={futureLanguages}
-        />
+        <div className="workspace-surface workspace-surface--profile">
+          <DashboardProfileAccountState
+            accountSignals={accountSignals}
+            activityLog={activityLog}
+            futureLanguages={futureLanguages}
+          />
+        </div>
       </DashboardShell>
     </MockAuthGate>
   );
