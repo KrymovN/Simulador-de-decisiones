@@ -87,7 +87,8 @@ check(
 check("AuthShell consumes BrandLockup once", (authShell.match(/<BrandLockup(?:\s|\/|>)/g) ?? []).length === 1);
 check("DashboardShell consumes BrandLockup once", (dashboardShell.match(/<BrandLockup(?:\s|\/|>)/g) ?? []).length === 1);
 check("PublicSecondaryShell consumes BrandLockup once", (publicSecondaryShell.match(/<BrandLockup(?:\s|\/|>)/g) ?? []).length === 1);
-includes(authShell, 'mark={<span className="brand-logo brand-logo-mini" aria-hidden="true"></span>}', "AuthShell preserves its existing mark variant");
+includes(authShell, 'markSize="sm"', "AuthShell uses the canonical shared mark at the restrained size");
+includes(authShell, 'nameClassName="auth-brand__name"', "AuthShell exposes the canonical name for scoped styling");
 includes(dashboardShell, 'className="dashboard-brand" markSize="sm"', "DashboardShell preserves its existing brand classes and mark size");
 includes(notFound, "<PublicSecondaryShell", "not-found reaches BrandLockup through the approved shared shell");
 const brandUsers = [...collectTsxFiles("app"), ...collectTsxFiles("components")]
@@ -108,10 +109,8 @@ check(
   !existsSync(join(rootDir, "app", "styles", "visual-foundation.css")) &&
     !existsSync(join(rootDir, "components", "LevioBrand.tsx")),
 );
-check(
-  "Auth and dashboard styles remain outside this migration batch",
-  !auth.includes("--levio-") && !dashboard.includes("--levio-"),
-);
+check("Auth styles consume the shared foundation", auth.includes("--levio-"));
+check("Dashboard styles remain outside the completed auth batch", !dashboard.includes("--levio-"));
 
 const failed = checks.filter((item) => !item.condition);
 for (const item of checks) {

@@ -16,27 +16,29 @@ export default function AuthShell({
 }: AuthShellProps) {
   return (
     <main className="auth-shell">
-      <section className="auth-visual section-frame">
-        <BrandLockup
-          className="auth-brand"
-          mark={<span className="brand-logo brand-logo-mini" aria-hidden="true"></span>}
-        />
-        <div className="auth-core" aria-hidden="true">
-          <span className="brand-logo brand-logo-auth"></span>
-        </div>
-        <p className="eyebrow brand-mark">{eyebrow}</p>
-        <h1>{title}</h1>
-        <p>{description}</p>
-        <div className="security-note">
-          <strong>Aviso de seguridad</strong>
-          <span>
-            Esta zona usa una arquitectura temporal de acceso para demostración.
-            La autenticación final debe conectarse a un proveedor seguro antes
-            de procesar datos personales reales.
-          </span>
-        </div>
-      </section>
-      <section className="auth-card section-frame">{children}</section>
+      <div className="auth-shell__inner">
+        <section className="auth-visual">
+          <BrandLockup
+            className="auth-brand"
+            markSize="sm"
+            nameClassName="auth-brand__name"
+          />
+          <div className="auth-visual__copy">
+            <p className="eyebrow brand-mark">{eyebrow}</p>
+            <h1>{title}</h1>
+            <p>{description}</p>
+            <div className="security-note">
+              <strong>Aviso de seguridad</strong>
+              <span>
+                Esta zona usa una arquitectura temporal de acceso para demostración.
+                La autenticación final debe conectarse a un proveedor seguro antes
+                de procesar datos personales reales.
+              </span>
+            </div>
+          </div>
+        </section>
+        <section className="auth-card">{children}</section>
+      </div>
     </main>
   );
 }
