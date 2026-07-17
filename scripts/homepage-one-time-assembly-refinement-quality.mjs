@@ -50,6 +50,11 @@ const processNarrativeCss = blockBetween(
   '.minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"] [data-home-process-narrative]',
   ".minimal-home.home-assembly-enabled .minimal-home__process-card",
 );
+const capabilityHeadingCss = blockBetween(
+  motionCss,
+  '.minimal-home.home-assembly-enabled [data-home-assembly-trigger="section"]:not([data-home-assembly-group="process-section"])[data-home-assembly-state="pending"] .minimal-home__section-heading',
+  '.minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"] [data-home-process-narrative]',
+);
 const tabletCss = blockBetween(css, "@media (max-width: 860px)", "@media (max-width: 560px)");
 const phoneCss = blockBetween(css, "@media (max-width: 560px)", "@media (prefers-reduced-motion: reduce)");
 const phoneProcessNarrativeCss = blockBetween(
@@ -129,7 +134,8 @@ includes(previewMotionCss, "--motion-delay: 240ms", "Preview third phrase owns t
 excludes(previewMotionCss, "cubic-bezier(0.22, 1, 0.36, 1)", "Preview no longer uses the front-loaded assembly easing");
 includes(previewBlock, 'data-home-assembly-settle-ms="1200"', "Desktop settle timer covers the full preview sequence");
 includes(previewBlock, 'data-home-assembly-settle-mobile-ms="1080"', "Mobile settle timer covers the full preview sequence");
-includes(controller, "needsSeparatedPendingPaint ? 2 : 1", "Preview and process narrative receive a painted pending frame before assembly");
+includes(controller, "const needsSeparatedPendingPaint = target.matches(PREVIEW_SELECTOR);", "Process narrative uses the same paint-ready frame sequence as the working capability heading");
+includes(controller, "needsSeparatedPendingPaint ? 2 : 1", "Preview alone retains its dedicated two-frame paint sequence");
 
 includes(headerBlock, '<LevioMark size="lg" priority />', "Above-the-fold header mark requests priority loading");
 includes(mark, "priority?: boolean", "Levio mark exposes a bounded priority option");
@@ -148,36 +154,52 @@ check(
   "Heading and subtitle must be the only narrative items.",
 );
 includes(controller, "const PROCESS_ACTIVATION_RATIO = 0.6", "Desktop process narrative activates in the useful central zone");
-includes(controller, "const PROCESS_ACTIVATION_RATIO_MOBILE = 0.58", "Mobile process narrative activates later at eye level");
-includes(controller, "observeAtVisualLine(capabilityGroups, useMobileCards ? 0.62 : 0.66)", "Capability activation semantics remain unchanged");
+includes(controller, "const MOBILE_SECTION_HEADING_ACTIVATION_RATIO = 0.62", "Mobile process and capability headings share one activation line");
+check(
+  "Both mobile section-heading observers use the shared activation ratio",
+  (controller.match(/useMobileCards \? MOBILE_SECTION_HEADING_ACTIVATION_RATIO/g) ?? []).length === 2,
+  "Process and capability headings must activate in the same useful viewport zone.",
+);
 includes(css, "--home-process-narrative-duration: 980ms", "Desktop process narrative has a readable bounded duration");
 includes(css, "--home-process-narrative-stagger: 130ms", "Desktop subtitle follows the heading with controlled stagger");
 includes(css, "--home-process-narrative-distance: 72px", "Desktop process narrative visibly arrives from the right");
 includes(tabletCss, "--home-process-narrative-duration: 900ms", "Tablet process narrative avoids the former short responsive profile");
 includes(tabletCss, "--home-process-narrative-distance: 56px", "Tablet process narrative retains perceptible travel");
-includes(phoneCss, "--home-process-mobile-spatial-distance: 40px", "Mobile narrative wrapper uses viewport-safe spatial travel");
-includes(phoneCss, "--home-process-mobile-spatial-duration: 1040ms", "Mobile wrapper has a Safari-readable spatial duration");
-includes(phoneCss, "--home-process-mobile-opacity-duration: 820ms", "Mobile text opacity has a bounded independent duration");
-includes(phoneCss, "--home-process-mobile-subtitle-delay: 130ms", "Mobile subtitle follows through a controlled opacity delay");
-includes(phoneCss, "--home-process-mobile-ease: cubic-bezier(0.33, 0, 0.67, 1)", "Mobile narrative uses a symmetric non-front-loaded easing");
-includes(phoneProcessNarrativeCss, "transform: translate3d(var(--home-process-mobile-spatial-distance), 0, 0)", "Only the mobile narrative wrapper owns spatial travel");
-includes(phoneProcessNarrativeCss, "transition: transform var(--home-process-mobile-spatial-duration) var(--home-process-mobile-ease)", "Mobile wrapper owns the single spatial transition");
+includes(css, "--home-section-entry-duration: var(--home-assembly-duration)", "Section headings share the canonical assembly duration token");
+includes(css, "--home-section-entry-distance: var(--home-assembly-distance)", "Section headings share the canonical assembly distance token");
+includes(css, "--home-section-entry-ease: var(--home-assembly-ease)", "Section headings share the canonical assembly easing token");
+includes(css, "--home-section-entry-pending-opacity: 0.16", "Section headings share one pending opacity token");
+for (const token of [
+  "var(--home-section-entry-pending-opacity)",
+  "var(--home-section-entry-distance)",
+  "var(--home-section-entry-duration)",
+  "var(--home-section-entry-ease)",
+]) {
+  includes(capabilityHeadingCss, token, `Working capability heading consumes shared section-entry token: ${token}`);
+  includes(phoneProcessNarrativeCss, token, `Mobile process narrative consumes shared section-entry token: ${token}`);
+}
+excludes(phoneCss, "--home-process-mobile-", "Mobile process removes its drifting special motion profile");
+includes(phoneProcessNarrativeCss, "transform: translate3d(var(--home-section-entry-distance), 0, 0)", "Only the mobile narrative wrapper owns shared spatial travel");
+includes(phoneProcessNarrativeCss, "transform var(--home-section-entry-duration) var(--home-section-entry-ease)", "Mobile wrapper uses the working capability transform contract");
+includes(phoneProcessNarrativeCss, "opacity var(--home-section-entry-duration) var(--home-section-entry-ease)", "Mobile wrapper uses the working capability opacity contract");
 check(
   "Mobile process narrative has exactly one spatial start transform",
   (phoneProcessNarrativeCss.match(/translate3d\(/g) ?? []).length === 1,
   "Heading and subtitle must not own competing spatial translations.",
 );
-includes(phoneProcessNarrativeCss, '[data-home-process-narrative-item] {\n    opacity: 0.24;\n    transform: none;', "Mobile heading uses opacity without a child transform");
-includes(phoneProcessNarrativeCss, '[data-home-process-narrative-item]:is(p) {\n    opacity: 0.16;', "Mobile subtitle owns a readable pending opacity");
-includes(phoneProcessNarrativeCss, "transition: opacity var(--home-process-mobile-opacity-duration) var(--home-process-mobile-ease)", "Mobile child text animates opacity only");
-includes(phoneProcessNarrativeCss, "transition-delay: var(--home-process-mobile-subtitle-delay)", "Mobile subtitle delay is applied without a second spatial layer");
+includes(phoneProcessNarrativeCss, '[data-home-process-narrative-item] {\n    opacity: 1;\n    transform: none;\n    transition: none;', "Mobile heading and subtitle stay in final internal geometry");
+excludes(phoneProcessNarrativeCss, "transition-delay", "Mobile subtitle has no independent delayed transition");
 includes(processNarrativeCss, "opacity: 0.14", "Process narrative does not look settled before activation");
 includes(processNarrativeCss, "transform: translate3d(var(--home-process-narrative-distance), 0, 0)", "Process narrative uses one right-to-left vector");
 includes(processNarrativeCss, "transition-delay: var(--home-process-narrative-delay)", "Heading and subtitle share one controlled transition grammar");
 includes(processNarrativeCss, "transform: none", "Process narrative clears fractional transforms after assembly");
 includes(processNarrativeCss, "will-change: auto", "Settled process narrative releases compositor hints");
 includes(processBlock, 'data-home-assembly-settle-ms="2280"', "Desktop process settle covers narrative then existing cards");
-includes(processBlock, 'data-home-assembly-settle-mobile-ms="1120"', "Mobile process settle covers the single wrapper transition");
+includes(processBlock, 'data-home-assembly-settle-mobile-ms="680"', "Mobile process fallback settle matches the working capability contract");
+includes(capabilityBlock, 'data-home-assembly-settle-mobile-ms="680"', "Working capability heading retains the same mobile settle fallback");
+includes(controller, 'narrative.addEventListener("transitionend", handleNarrativeTransitionEnd)', "Mobile process settles from the wrapper transform transitionend");
+includes(controller, 'event.target === narrative && event.propertyName === "transform"', "Only the primary wrapper transform can complete the narrative");
+includes(controller, "processNarrativeTransitionCleanups", "Transitionend listeners are deterministically released");
 includes(css, "--home-process-cards-phase-delay: calc(var(--home-process-narrative-duration) + 80ms)", "Desktop process cards wait for the narrative group");
 includes(controller, "processNarrativeIsSettled()", "Mobile process cards wait for narrative completion");
 includes(controller, "const PROCESS_MOBILE_HANDOFF_DELAY_MS = 90", "Mobile card queue starts after an explicit narrative handoff");
@@ -270,5 +292,5 @@ for (const item of checks) {
 }
 
 const failed = checks.filter((item) => !item.passed);
-console.log(`\nHomepage mobile narrative/card handoff gate: ${checks.length - failed.length}/${checks.length} passed.`);
+console.log(`\nHomepage mobile section-heading parity gate: ${checks.length - failed.length}/${checks.length} passed.`);
 if (failed.length > 0) process.exitCode = 1;

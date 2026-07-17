@@ -21,6 +21,10 @@
   --home-assembly-stagger: 90ms;
   --home-assembly-distance: 48px;
   --home-assembly-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --home-section-entry-duration: var(--home-assembly-duration);
+  --home-section-entry-distance: var(--home-assembly-distance);
+  --home-section-entry-ease: var(--home-assembly-ease);
+  --home-section-entry-pending-opacity: 0.16;
   --home-preview-duration: 900ms;
   --home-preview-stagger: 120ms;
   --home-preview-distance: 64px;
@@ -1005,8 +1009,8 @@
 
 .minimal-home.home-assembly-enabled [data-home-assembly-trigger="section"]:not([data-home-assembly-group="process-section"])[data-home-assembly-state="pending"] .minimal-home__section-heading {
   pointer-events: none;
-  opacity: 0.16;
-  transform: translate3d(var(--home-assembly-distance), 0, 0);
+  opacity: var(--home-section-entry-pending-opacity);
+  transform: translate3d(var(--home-section-entry-distance), 0, 0);
   will-change: opacity, transform;
 }
 
@@ -1014,8 +1018,8 @@
   opacity: 1;
   transform: none;
   transition:
-    opacity var(--home-assembly-duration) var(--home-assembly-ease),
-    transform var(--home-assembly-duration) var(--home-assembly-ease);
+    opacity var(--home-section-entry-duration) var(--home-section-entry-ease),
+    transform var(--home-section-entry-duration) var(--home-section-entry-ease);
   will-change: opacity, transform;
 }
 
@@ -1332,11 +1336,6 @@
     --home-preview-duration: 820ms;
     --home-preview-stagger: 100ms;
     --home-preview-distance: 44px;
-    --home-process-mobile-spatial-distance: 40px;
-    --home-process-mobile-spatial-duration: 1040ms;
-    --home-process-mobile-opacity-duration: 820ms;
-    --home-process-mobile-subtitle-delay: 130ms;
-    --home-process-mobile-ease: cubic-bezier(0.33, 0, 0.67, 1);
   }
 
   .minimal-home__header,
@@ -1401,44 +1400,35 @@
   }
 
   .minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="pending"] [data-home-process-narrative] {
-    transform: translate3d(var(--home-process-mobile-spatial-distance), 0, 0);
-    will-change: transform;
+    opacity: var(--home-section-entry-pending-opacity);
+    transform: translate3d(var(--home-section-entry-distance), 0, 0);
+    will-change: opacity, transform;
   }
 
   .minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="assembled"] [data-home-process-narrative] {
+    opacity: 1;
     transform: none;
-    transition: transform var(--home-process-mobile-spatial-duration) var(--home-process-mobile-ease);
-    will-change: transform;
+    transition:
+      opacity var(--home-section-entry-duration) var(--home-section-entry-ease),
+      transform var(--home-section-entry-duration) var(--home-section-entry-ease);
+    will-change: opacity, transform;
   }
 
   .minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="settled"] [data-home-process-narrative] {
+    opacity: 1;
     transform: none;
     transition: none;
     will-change: auto;
   }
 
   .minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="pending"] [data-home-process-narrative-item] {
-    opacity: 0.24;
-    transform: none;
-    will-change: opacity;
-  }
-
-  .minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="pending"] [data-home-process-narrative-item]:is(p) {
-    opacity: 0.16;
-  }
-
-  .minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="assembled"] [data-home-process-narrative-item] {
     opacity: 1;
     transform: none;
-    transition: opacity var(--home-process-mobile-opacity-duration) var(--home-process-mobile-ease);
-    transition-delay: 0ms;
-    will-change: opacity;
+    transition: none;
+    will-change: auto;
   }
 
-  .minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="assembled"] [data-home-process-narrative-item]:is(p) {
-    transition-delay: var(--home-process-mobile-subtitle-delay);
-  }
-
+  .minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="assembled"] [data-home-process-narrative-item],
   .minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="settled"] [data-home-process-narrative-item] {
     opacity: 1;
     transform: none;

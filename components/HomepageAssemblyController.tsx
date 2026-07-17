@@ -12,7 +12,7 @@ const MOBILE_CARD_BREAKPOINT = "(max-width: 560px)";
 const DEFAULT_SETTLE_MS = 1000;
 const PREVIEW_ACTIVATION_RATIO = 0.62;
 const PROCESS_ACTIVATION_RATIO = 0.6;
-const PROCESS_ACTIVATION_RATIO_MOBILE = 0.58;
+const MOBILE_SECTION_HEADING_ACTIVATION_RATIO = 0.62;
 const MOBILE_CARD_ACTIVATION_RATIO = 0.68;
 const PROCESS_MOBILE_HANDOFF_DELAY_MS = 90;
 const PROCESS_MOBILE_CARD_LAUNCH_GAP_MS = 210;
@@ -67,6 +67,7 @@ export default function HomepageAssemblyController() {
     const targetObservers = new Map<HTMLElement, IntersectionObserver>();
     const settleTimers = new Map<HTMLElement, number>();
     const assemblyFrames = new Map<HTMLElement, number>();
+    const processNarrativeTransitionCleanups = new Map<HTMLElement, () => void>();
     const queuedProcessCards = new Set<HTMLElement>();
     const processCardOrder = new Map(
       processMobileCards.map((card, index) => [card, index]),
@@ -95,8 +96,10 @@ export default function HomepageAssemblyController() {
       if (timer) window.clearTimeout(timer);
       const frame = assemblyFrames.get(target);
       if (frame) window.cancelAnimationFrame(frame);
+      processNarrativeTransitionCleanups.get(target)?.();
       settleTimers.delete(target);
       assemblyFrames.delete(target);
+      processNarrativeTransitionCleanups.delete(target);
       activatedTargets.add(target);
       settledTargets.add(target);
       unobserve(target);
@@ -127,6 +130,18 @@ export default function HomepageAssemblyController() {
           settle(target);
           return;
         }
+        if (mobileCardsEnabled.matches && target.matches(PROCESS_SECTION_SELECTOR)) {
+          const narrative = target.querySelector<HTMLElement>("[data-home-process-narrative]");
+          if (narrative) {
+            const handleNarrativeTransitionEnd = (event: TransitionEvent) => {
+              if (event.target === narrative && event.propertyName === "transform") settle(target);
+            };
+            narrative.addEventListener("transitionend", handleNarrativeTransitionEnd);
+            processNarrativeTransitionCleanups.set(target, () => {
+              narrative.removeEventListener("transitionend", handleNarrativeTransitionEnd);
+            });
+          }
+        }
         setAssemblyState(target, "assembled");
         settleTimers.set(
           target,
@@ -146,8 +161,7 @@ export default function HomepageAssemblyController() {
         assemblyFrames.set(target, frame);
       };
 
-      const needsSeparatedPendingPaint = target.matches(PREVIEW_SELECTOR)
-        || target.matches(PROCESS_SECTION_SELECTOR);
+      const needsSeparatedPendingPaint = target.matches(PREVIEW_SELECTOR);
       scheduleCommit(needsSeparatedPendingPaint ? 2 : 1);
     };
 
@@ -391,9 +405,12 @@ export default function HomepageAssemblyController() {
 
       observeAtVisualLine(
         processGroups,
-        useMobileCards ? PROCESS_ACTIVATION_RATIO_MOBILE : PROCESS_ACTIVATION_RATIO,
+        useMobileCards ? MOBILE_SECTION_HEADING_ACTIVATION_RATIO : PROCESS_ACTIVATION_RATIO,
       );
-      observeAtVisualLine(capabilityGroups, useMobileCards ? 0.62 : 0.66);
+      observeAtVisualLine(
+        capabilityGroups,
+        useMobileCards ? MOBILE_SECTION_HEADING_ACTIVATION_RATIO : 0.66,
+      );
       observeAtVisualLine(finalCtaGroups, 0.72);
       if (useMobileCards) {
         observeAtVisualLine(
@@ -450,6 +467,8 @@ export default function HomepageAssemblyController() {
       assemblyFrames.forEach((frame) => window.cancelAnimationFrame(frame));
       settleTimers.clear();
       assemblyFrames.clear();
+      processNarrativeTransitionCleanups.forEach((cleanup) => cleanup());
+      processNarrativeTransitionCleanups.clear();
       processCardQueue = [];
       queuedProcessCards.clear();
       reducedMotion.removeEventListener("change", handleReducedMotionChange);
