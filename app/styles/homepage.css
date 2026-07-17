@@ -21,10 +21,15 @@
   --home-assembly-stagger: 90ms;
   --home-assembly-distance: 48px;
   --home-assembly-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --home-preview-duration: 720ms;
-  --home-preview-stagger: 90ms;
-  --home-preview-distance: 32px;
+  --home-preview-duration: 900ms;
+  --home-preview-stagger: 120ms;
+  --home-preview-distance: 64px;
   --home-preview-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --home-process-narrative-duration: 980ms;
+  --home-process-narrative-stagger: 130ms;
+  --home-process-narrative-distance: 72px;
+  --home-process-narrative-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --home-process-cards-phase-delay: calc(var(--home-process-narrative-duration) + 80ms);
   position: relative;
   isolation: isolate;
   width: 100%;
@@ -329,7 +334,7 @@
   position: relative;
   padding-left: 20px;
   color: var(--home-text);
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 560;
 }
 
@@ -347,7 +352,7 @@
 
 .minimal-home__preview-note ul {
   display: grid;
-  gap: 6px;
+  gap: 7px;
   margin: 0 0 0 20px;
   padding: 2px 0 2px 14px;
   border-left: 1px solid var(--home-line);
@@ -359,8 +364,8 @@
   width: fit-content;
   max-width: 100%;
   color: var(--home-muted);
-  font-size: 0.78rem;
-  line-height: 1.4;
+  font-size: 0.86rem;
+  line-height: 1.48;
 }
 
 .minimal-home__preview-note li:first-child {
@@ -948,7 +953,7 @@
 
 .minimal-home.home-assembly-enabled [data-home-assembly-group="preview"][data-home-assembly-state="pending"] [data-home-assembly-item] {
   pointer-events: none;
-  opacity: 0.58;
+  opacity: 0.3;
   transform: translate3d(var(--home-preview-distance), 0, 0);
   will-change: opacity, transform;
 }
@@ -983,12 +988,12 @@
 
 .minimal-home.home-assembly-enabled [data-home-preview-phrases] li:nth-child(2) {
   --motion-index: 1;
-  --motion-delay: 90ms;
+  --motion-delay: 120ms;
 }
 
 .minimal-home.home-assembly-enabled [data-home-preview-phrases] li:nth-child(3) {
   --motion-index: 2;
-  --motion-delay: 180ms;
+  --motion-delay: 240ms;
 }
 
 .minimal-home.home-assembly-enabled .minimal-home__section-heading {
@@ -998,14 +1003,14 @@
   --motion-delay: 0ms;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-trigger="section"][data-home-assembly-state="pending"] .minimal-home__section-heading {
+.minimal-home.home-assembly-enabled [data-home-assembly-trigger="section"]:not([data-home-assembly-group="process-section"])[data-home-assembly-state="pending"] .minimal-home__section-heading {
   pointer-events: none;
   opacity: 0.16;
   transform: translate3d(var(--home-assembly-distance), 0, 0);
   will-change: opacity, transform;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-trigger="section"][data-home-assembly-state="assembled"] .minimal-home__section-heading {
+.minimal-home.home-assembly-enabled [data-home-assembly-trigger="section"]:not([data-home-assembly-group="process-section"])[data-home-assembly-state="assembled"] .minimal-home__section-heading {
   opacity: 1;
   transform: none;
   transition:
@@ -1014,7 +1019,7 @@
   will-change: opacity, transform;
 }
 
-.minimal-home.home-assembly-enabled [data-home-assembly-trigger="section"][data-home-assembly-state="settled"] .minimal-home__section-heading {
+.minimal-home.home-assembly-enabled [data-home-assembly-trigger="section"]:not([data-home-assembly-group="process-section"])[data-home-assembly-state="settled"] .minimal-home__section-heading {
   pointer-events: auto;
   opacity: 1;
   transform: none;
@@ -1022,20 +1027,63 @@
   will-change: auto;
 }
 
+.minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"] [data-home-process-narrative] {
+  pointer-events: none;
+  opacity: 1;
+  transform: none;
+  transition: none;
+  will-change: auto;
+}
+
+.minimal-home.home-assembly-enabled [data-home-process-narrative] h2 {
+  --home-process-narrative-delay: 0ms;
+}
+
+.minimal-home.home-assembly-enabled [data-home-process-narrative] p {
+  --home-process-narrative-delay: var(--home-process-narrative-stagger);
+}
+
+.minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="pending"] [data-home-process-narrative-item] {
+  opacity: 0.14;
+  transform: translate3d(var(--home-process-narrative-distance), 0, 0);
+  will-change: opacity, transform;
+}
+
+.minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="assembled"] [data-home-process-narrative-item] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--home-process-narrative-duration) var(--home-process-narrative-ease),
+    transform var(--home-process-narrative-duration) var(--home-process-narrative-ease);
+  transition-delay: var(--home-process-narrative-delay);
+  will-change: opacity, transform;
+}
+
+.minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="settled"] [data-home-process-narrative-item] {
+  opacity: 1;
+  transform: none;
+  transition: none;
+  will-change: auto;
+}
+
+.minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="settled"] [data-home-process-narrative] {
+  pointer-events: auto;
+}
+
 .minimal-home.home-assembly-enabled .minimal-home__process-card {
   --home-assembly-from-x: var(--home-assembly-distance);
   --home-assembly-from-y: 0px;
-  --motion-phase-delay: 200ms;
+  --motion-phase-delay: var(--home-process-cards-phase-delay);
   --motion-duration: var(--home-assembly-duration);
   --motion-stagger: var(--home-assembly-stagger);
 }
 
-.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(1) { --motion-index: 0; --motion-delay: 200ms; }
-.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(2) { --motion-index: 1; --motion-delay: 280ms; }
-.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(3) { --motion-index: 2; --motion-delay: 360ms; }
-.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(4) { --motion-index: 3; --motion-delay: 440ms; }
-.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(5) { --motion-index: 4; --motion-delay: 520ms; }
-.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(6) { --motion-index: 5; --motion-delay: 600ms; }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(1) { --motion-index: 0; --motion-delay: var(--home-process-cards-phase-delay); }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(2) { --motion-index: 1; --motion-delay: calc(var(--home-process-cards-phase-delay) + 80ms); }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(3) { --motion-index: 2; --motion-delay: calc(var(--home-process-cards-phase-delay) + 160ms); }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(4) { --motion-index: 3; --motion-delay: calc(var(--home-process-cards-phase-delay) + 240ms); }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(5) { --motion-index: 4; --motion-delay: calc(var(--home-process-cards-phase-delay) + 320ms); }
+.minimal-home.home-assembly-enabled .minimal-home__process-card:nth-child(6) { --motion-index: 5; --motion-delay: calc(var(--home-process-cards-phase-delay) + 400ms); }
 
 .minimal-home.home-assembly-enabled .minimal-home__capability-card {
   --home-assembly-from-x: var(--home-assembly-distance);
@@ -1182,6 +1230,9 @@
     --home-assembly-duration: 620ms;
     --home-assembly-stagger: 60ms;
     --home-assembly-distance: 28px;
+    --home-process-narrative-duration: 900ms;
+    --home-process-narrative-stagger: 110ms;
+    --home-process-narrative-distance: 56px;
   }
 
   .minimal-home__header,
@@ -1278,8 +1329,12 @@
 
 @media (max-width: 560px) {
   .minimal-home {
-    --home-preview-duration: 680ms;
-    --home-preview-distance: 24px;
+    --home-preview-duration: 820ms;
+    --home-preview-stagger: 100ms;
+    --home-preview-distance: 44px;
+    --home-process-narrative-duration: 880ms;
+    --home-process-narrative-stagger: 100ms;
+    --home-process-narrative-distance: 48px;
   }
 
   .minimal-home__header,
@@ -1330,12 +1385,16 @@
     gap: 5px;
   }
 
+  .minimal-home__preview-note li {
+    font-size: 0.84rem;
+  }
+
   .minimal-home__preview-note li + li::before {
     content: none;
   }
 
   .minimal-home.home-assembly-enabled [data-home-assembly-group="preview"][data-home-assembly-state="pending"] [data-home-assembly-item] {
-    opacity: 0.62;
+    opacity: 0.34;
     transform: translate3d(var(--home-preview-distance), 0, 0);
   }
 

@@ -45,6 +45,12 @@ const previewMotionCss = blockBetween(
   '.minimal-home.home-assembly-enabled [data-home-assembly-group="preview"][data-home-assembly-state="pending"]',
   ".minimal-home.home-assembly-enabled .minimal-home__section-heading",
 );
+const processNarrativeCss = blockBetween(
+  motionCss,
+  '.minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"] [data-home-process-narrative]',
+  ".minimal-home.home-assembly-enabled .minimal-home__process-card",
+);
+const tabletCss = blockBetween(css, "@media (max-width: 860px)", "@media (max-width: 560px)");
 const phoneCss = blockBetween(css, "@media (max-width: 560px)", "@media (prefers-reduced-motion: reduce)");
 const reducedCss = css.slice(css.lastIndexOf("@media (prefers-reduced-motion: reduce)"));
 const publicHomepageSurface = `${home}\n${simulator}`;
@@ -82,7 +88,7 @@ for (const phrase of [
 }
 includes(controller, 'const PREVIEW_SELECTOR = \'[data-home-assembly-trigger="preview"]\';', "Controller identifies preview independently");
 includes(controller, "window.visualViewport", "Activation geometry accounts for Safari visual viewport");
-includes(controller, "const PREVIEW_ACTIVATION_RATIO = 0.66", "Preview retains its dedicated visual activation line");
+includes(controller, "const PREVIEW_ACTIVATION_RATIO = 0.62", "Preview activates in the useful visual viewport zone");
 includes(controller, "const PREVIEW_SCROLL_NOISE_TOLERANCE = 2", "Preview defines a bounded scroll noise tolerance");
 includes(controller, "const PREVIEW_MIN_SCROLL_Y = 24", "Preview requires a safe positive scroll position");
 includes(controller, "let previousValidScrollY = Math.max(0, window.scrollY)", "Controller stores the previous non-negative scroll position");
@@ -98,23 +104,27 @@ excludes(controller, "observeAtVisualLine(previewGroups", "Initial IntersectionO
 excludes(controller, 'window.visualViewport?.addEventListener("resize"', "Safari visualViewport resize never recreates or activates preview lifecycle");
 includes(controller, "settleRestoredPreview(currentScrollY)", "Restored deep positions use the immediate settle path");
 includes(controller, "target.getBoundingClientRect().bottom <= visualTop", "Preview above a restored viewport cannot remain pending");
-includes(css, "--home-preview-duration: 720ms", "Desktop preview uses a readable bounded duration");
-includes(css, "--home-preview-stagger: 90ms", "Preview uses a calm readable stagger");
-includes(css, "--home-preview-distance: 32px", "Desktop preview travel remains bounded but perceptible");
+includes(css, "--home-preview-duration: 900ms", "Desktop preview uses a readable bounded duration");
+includes(css, "--home-preview-stagger: 120ms", "Preview uses a calm readable stagger");
+includes(css, "--home-preview-distance: 64px", "Desktop preview travel is visibly distinct from settled geometry");
 includes(css, "--home-preview-ease: cubic-bezier(0.4, 0, 0.2, 1)", "Preview avoids the former front-loaded easing");
-includes(css, "opacity: 0.58", "Desktop preview remains readable before activation");
-includes(phoneCss, "--home-preview-duration: 680ms", "Mobile preview uses a bounded readable duration");
-includes(phoneCss, "--home-preview-distance: 24px", "Mobile preview travel remains viewport-safe");
-includes(phoneCss, "opacity: 0.62", "Mobile preview remains readable before activation");
+includes(previewMotionCss, "opacity: 0.3", "Desktop preview is visibly pending before activation");
+includes(phoneCss, "--home-preview-duration: 820ms", "Mobile preview uses a bounded readable duration");
+includes(phoneCss, "--home-preview-stagger: 100ms", "Mobile preview preserves a readable stagger");
+includes(phoneCss, "--home-preview-distance: 44px", "Mobile preview travel remains visible and viewport-safe");
+includes(phoneCss, "opacity: 0.34", "Mobile preview is visibly pending while remaining readable");
+includes(css, "font-size: 0.86rem", "Preview phrases have a stronger desktop content hierarchy");
+includes(phoneCss, "font-size: 0.84rem", "Preview phrases remain balanced on narrow iPhone widths");
 includes(previewMotionCss, "transform: translate3d(var(--home-preview-distance), 0, 0)", "Preview retains the shared right-to-left direction");
 includes(previewMotionCss, "opacity var(--home-preview-duration) var(--home-preview-ease)", "Preview opacity uses the dedicated restrained timing");
 includes(previewMotionCss, "transform var(--home-preview-duration) var(--home-preview-ease)", "Preview travel uses the dedicated restrained timing");
 includes(previewMotionCss, "--motion-delay: 0ms", "Preview first phrase starts without arbitrary latency");
-includes(previewMotionCss, "--motion-delay: 90ms", "Preview second phrase owns the intended stagger");
-includes(previewMotionCss, "--motion-delay: 180ms", "Preview third phrase owns the intended stagger");
+includes(previewMotionCss, "--motion-delay: 120ms", "Preview second phrase owns the intended stagger");
+includes(previewMotionCss, "--motion-delay: 240ms", "Preview third phrase owns the intended stagger");
 excludes(previewMotionCss, "cubic-bezier(0.22, 1, 0.36, 1)", "Preview no longer uses the front-loaded assembly easing");
-includes(previewBlock, 'data-home-assembly-settle-ms="960"', "Desktop settle timer covers the full preview sequence");
-includes(previewBlock, 'data-home-assembly-settle-mobile-ms="900"', "Mobile settle timer covers the full preview sequence");
+includes(previewBlock, 'data-home-assembly-settle-ms="1200"', "Desktop settle timer covers the full preview sequence");
+includes(previewBlock, 'data-home-assembly-settle-mobile-ms="1080"', "Mobile settle timer covers the full preview sequence");
+includes(controller, "needsSeparatedPendingPaint ? 2 : 1", "Preview and process narrative receive a painted pending frame before assembly");
 
 includes(headerBlock, '<LevioMark size="lg" priority />', "Above-the-fold header mark requests priority loading");
 includes(mark, "priority?: boolean", "Levio mark exposes a bounded priority option");
@@ -126,7 +136,33 @@ excludes(footerBlock, '<LevioMark size="md" priority', "Footer mark is not unnec
 
 includes(processBlock, 'data-home-assembly-trigger="section"', "Process section uses a later section trigger");
 includes(capabilityBlock, 'data-home-assembly-trigger="section"', "Capabilities section uses a later section trigger");
-includes(controller, "observeAtVisualLine(sectionGroups, useMobileCards ? 0.62 : 0.66)", "Section headings activate in the central visual zone");
+includes(processBlock, "data-home-process-narrative", "Process heading and subtitle form one narrative group");
+check(
+  "Process narrative owns exactly two staged items",
+  (processBlock.match(/data-home-process-narrative-item/g) ?? []).length === 2,
+  "Heading and subtitle must be the only narrative items.",
+);
+includes(controller, "const PROCESS_ACTIVATION_RATIO = 0.6", "Desktop process narrative activates in the useful central zone");
+includes(controller, "const PROCESS_ACTIVATION_RATIO_MOBILE = 0.58", "Mobile process narrative activates later at eye level");
+includes(controller, "observeAtVisualLine(capabilityGroups, useMobileCards ? 0.62 : 0.66)", "Capability activation semantics remain unchanged");
+includes(css, "--home-process-narrative-duration: 980ms", "Desktop process narrative has a readable bounded duration");
+includes(css, "--home-process-narrative-stagger: 130ms", "Desktop subtitle follows the heading with controlled stagger");
+includes(css, "--home-process-narrative-distance: 72px", "Desktop process narrative visibly arrives from the right");
+includes(tabletCss, "--home-process-narrative-duration: 900ms", "Tablet process narrative avoids the former short responsive profile");
+includes(tabletCss, "--home-process-narrative-distance: 56px", "Tablet process narrative retains perceptible travel");
+includes(phoneCss, "--home-process-narrative-duration: 880ms", "Mobile process narrative has a Safari-readable duration");
+includes(phoneCss, "--home-process-narrative-stagger: 100ms", "Mobile subtitle follows the heading without a jump");
+includes(phoneCss, "--home-process-narrative-distance: 48px", "Mobile process narrative has visible viewport-safe travel");
+includes(processNarrativeCss, "opacity: 0.14", "Process narrative does not look settled before activation");
+includes(processNarrativeCss, "transform: translate3d(var(--home-process-narrative-distance), 0, 0)", "Process narrative uses one right-to-left vector");
+includes(processNarrativeCss, "transition-delay: var(--home-process-narrative-delay)", "Heading and subtitle share one controlled transition grammar");
+includes(processNarrativeCss, "transform: none", "Process narrative clears fractional transforms after assembly");
+includes(processNarrativeCss, "will-change: auto", "Settled process narrative releases compositor hints");
+includes(processBlock, 'data-home-assembly-settle-ms="2280"', "Desktop process settle covers narrative then existing cards");
+includes(processBlock, 'data-home-assembly-settle-mobile-ms="1040"', "Mobile process settle covers the narrative before cards");
+includes(css, "--home-process-cards-phase-delay: calc(var(--home-process-narrative-duration) + 80ms)", "Desktop process cards wait for the narrative group");
+includes(controller, "processNarrativeIsSettled()", "Mobile process cards wait for narrative completion");
+includes(controller, "MOBILE_CARD_ACTIVATION_RATIO, canAssembleMobileCard", "Shared mobile observer preserves individual card activation with narrative coordination");
 check(
   "Desktop section cards retain group-level activation",
   css.includes("@media (min-width: 561px)") && motionCss.includes('[data-home-assembly-trigger="section"][data-home-assembly-state="pending"] :is(.minimal-home__process-card, .minimal-home__capability-card)'),
@@ -135,7 +171,7 @@ check(
 includes(processBlock, 'data-home-mobile-card="process"', "Process cards opt into mobile per-card activation");
 includes(capabilityBlock, 'data-home-mobile-card="capability"', "Capability cards opt into mobile per-card activation");
 includes(controller, 'const MOBILE_CARD_SELECTOR = "[data-home-mobile-card]"', "Controller queries one mobile-card target set");
-includes(controller, "observeAtVisualLine(mobileCards, 0.68)", "One shared observer call watches all mobile cards near eye level");
+includes(controller, "observeAtVisualLine(mobileCards, MOBILE_CARD_ACTIVATION_RATIO, canAssembleMobileCard)", "One shared observer call watches all mobile cards near eye level");
 check(
   "Controller creates observers through one shared constructor path",
   (controller.match(/new IntersectionObserver/g) ?? []).length === 1,

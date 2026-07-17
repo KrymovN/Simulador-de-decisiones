@@ -4,12 +4,16 @@ import { useEffect } from "react";
 
 const GROUP_SELECTOR = "[data-home-assembly-group]";
 const PREVIEW_SELECTOR = '[data-home-assembly-trigger="preview"]';
-const SECTION_SELECTOR = '[data-home-assembly-trigger="section"]';
+const PROCESS_SECTION_SELECTOR = '[data-home-assembly-group="process-section"]';
+const CAPABILITY_SECTION_SELECTOR = '[data-home-assembly-group="capabilities-section"]';
 const FINAL_CTA_SELECTOR = '[data-home-assembly-trigger="final-cta"]';
 const MOBILE_CARD_SELECTOR = "[data-home-mobile-card]";
 const MOBILE_CARD_BREAKPOINT = "(max-width: 560px)";
 const DEFAULT_SETTLE_MS = 1000;
-const PREVIEW_ACTIVATION_RATIO = 0.66;
+const PREVIEW_ACTIVATION_RATIO = 0.62;
+const PROCESS_ACTIVATION_RATIO = 0.6;
+const PROCESS_ACTIVATION_RATIO_MOBILE = 0.58;
+const MOBILE_CARD_ACTIVATION_RATIO = 0.68;
 const PREVIEW_SCROLL_NOISE_TOLERANCE = 2;
 const PREVIEW_MIN_SCROLL_Y = 24;
 
@@ -48,13 +52,16 @@ export default function HomepageAssemblyController() {
 
     const groups = Array.from(shell.querySelectorAll<HTMLElement>(GROUP_SELECTOR));
     const previewGroups = Array.from(shell.querySelectorAll<HTMLElement>(PREVIEW_SELECTOR));
-    const sectionGroups = Array.from(shell.querySelectorAll<HTMLElement>(SECTION_SELECTOR));
+    const processGroups = Array.from(shell.querySelectorAll<HTMLElement>(PROCESS_SECTION_SELECTOR));
+    const capabilityGroups = Array.from(shell.querySelectorAll<HTMLElement>(CAPABILITY_SECTION_SELECTOR));
     const finalCtaGroups = Array.from(shell.querySelectorAll<HTMLElement>(FINAL_CTA_SELECTOR));
     const mobileCards = Array.from(shell.querySelectorAll<HTMLElement>(MOBILE_CARD_SELECTOR));
+    const processMobileCards = mobileCards.filter((card) => card.dataset.homeMobileCard === "process");
     const allTargets = [...groups, ...mobileCards];
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const mobileCardsEnabled = window.matchMedia(MOBILE_CARD_BREAKPOINT);
     const activatedTargets = new WeakSet<HTMLElement>();
+    const settledTargets = new WeakSet<HTMLElement>();
     const targetObservers = new Map<HTMLElement, IntersectionObserver>();
     const settleTimers = new Map<HTMLElement, number>();
     const assemblyFrames = new Map<HTMLElement, number>();
@@ -63,6 +70,7 @@ export default function HomepageAssemblyController() {
     let previewScrollFrame = 0;
     let previousValidScrollY = Math.max(0, window.scrollY);
     let previewDownwardArmed = false;
+    let reevaluateVisibleProcessCards = () => {};
 
     shell.classList.add("home-assembly-enabled");
 
@@ -79,8 +87,10 @@ export default function HomepageAssemblyController() {
       settleTimers.delete(target);
       assemblyFrames.delete(target);
       activatedTargets.add(target);
+      settledTargets.add(target);
       unobserve(target);
       setAssemblyState(target, "settled");
+      if (target.matches(PROCESS_SECTION_SELECTOR)) reevaluateVisibleProcessCards();
     };
 
     const requestedSettleTime = (target: HTMLElement) => {
@@ -100,7 +110,7 @@ export default function HomepageAssemblyController() {
 
       activatedTargets.add(target);
       unobserve(target);
-      const frame = window.requestAnimationFrame(() => {
+      const commitAssembly = () => {
         assemblyFrames.delete(target);
         if (reducedMotion.matches) {
           settle(target);
@@ -111,8 +121,23 @@ export default function HomepageAssemblyController() {
           target,
           window.setTimeout(() => settle(target), requestedSettleTime(target)),
         );
-      });
-      assemblyFrames.set(target, frame);
+      };
+
+      const scheduleCommit = (framesRemaining: number) => {
+        const frame = window.requestAnimationFrame(() => {
+          assemblyFrames.delete(target);
+          if (framesRemaining > 1) {
+            scheduleCommit(framesRemaining - 1);
+            return;
+          }
+          commitAssembly();
+        });
+        assemblyFrames.set(target, frame);
+      };
+
+      const needsSeparatedPendingPaint = target.matches(PREVIEW_SELECTOR)
+        || target.matches(PROCESS_SECTION_SELECTOR);
+      scheduleCommit(needsSeparatedPendingPaint ? 2 : 1);
     };
 
     const disconnectObservers = () => {
@@ -198,6 +223,27 @@ export default function HomepageAssemblyController() {
       });
     };
 
+    const processNarrativeIsSettled = () => processGroups.every(
+      (target) => settledTargets.has(target),
+    );
+
+    const canAssembleMobileCard = (target: HTMLElement) => (
+      target.dataset.homeMobileCard !== "process" || processNarrativeIsSettled()
+    );
+
+    reevaluateVisibleProcessCards = () => {
+      if (!mobileCardsEnabled.matches || !processNarrativeIsSettled()) return;
+      const visualTop = visualViewportMetrics().top;
+      processMobileCards.forEach((card) => {
+        if (activatedTargets.has(card)) return;
+        if (card.getBoundingClientRect().bottom <= visualTop) {
+          settle(card);
+        } else if (isAtVisualActivationLine(card, MOBILE_CARD_ACTIVATION_RATIO)) {
+          assemble(card);
+        }
+      });
+    };
+
     const configureObservers = () => {
       disconnectObservers();
 
@@ -218,9 +264,15 @@ export default function HomepageAssemblyController() {
       settleTargetsAboveViewport(groups);
       if (useMobileCards) settleTargetsAboveViewport(mobileCards);
 
-      observeAtVisualLine(sectionGroups, useMobileCards ? 0.62 : 0.66);
+      observeAtVisualLine(
+        processGroups,
+        useMobileCards ? PROCESS_ACTIVATION_RATIO_MOBILE : PROCESS_ACTIVATION_RATIO,
+      );
+      observeAtVisualLine(capabilityGroups, useMobileCards ? 0.62 : 0.66);
       observeAtVisualLine(finalCtaGroups, 0.72);
-      if (useMobileCards) observeAtVisualLine(mobileCards, 0.68);
+      if (useMobileCards) {
+        observeAtVisualLine(mobileCards, MOBILE_CARD_ACTIVATION_RATIO, canAssembleMobileCard);
+      }
     };
 
     const scheduleObserverRebuild = () => {

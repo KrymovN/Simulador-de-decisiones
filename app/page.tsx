@@ -135,8 +135,8 @@ export default function Home() {
           <div
             className="minimal-home__preview-block"
             data-home-assembly-group="preview"
-            data-home-assembly-settle-ms="960"
-            data-home-assembly-settle-mobile-ms="900"
+            data-home-assembly-settle-ms="1200"
+            data-home-assembly-settle-mobile-ms="1080"
             data-home-assembly-trigger="preview"
             data-home-motion-vector="right-to-left"
           >
@@ -163,14 +163,14 @@ export default function Home() {
         id="como-funciona"
         aria-labelledby="process-title"
         data-home-assembly-group="process-section"
-        data-home-assembly-settle-ms="1360"
-        data-home-assembly-settle-mobile-ms="680"
+        data-home-assembly-settle-ms="2280"
+        data-home-assembly-settle-mobile-ms="1040"
         data-home-assembly-trigger="section"
         data-home-motion-vector="right-to-left"
       >
-        <div className="minimal-home__section-heading" data-home-assembly-item>
-          <h2 id="process-title">Cómo piensa Levio</h2>
-          <p>
+        <div className="minimal-home__section-heading" data-home-process-narrative>
+          <h2 data-home-process-narrative-item id="process-title">Cómo piensa Levio</h2>
+          <p data-home-process-narrative-item>
             Levio analiza la situación, identifica la información relevante, compara escenarios, evalúa riesgos y organiza criterios de decisión.
           </p>
         </div>
