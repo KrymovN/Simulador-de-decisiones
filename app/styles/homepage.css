@@ -1,6 +1,7 @@
 /* Bounded public-home visual system. All declarations stay scoped from auth and dashboard. */
 
 .minimal-home {
+  overflow-anchor: none;
   --home-bg: #050505;
   --home-surface: #090909;
   --home-surface-raised: #101010;
@@ -656,16 +657,27 @@
 .minimal-home .thinking-step {
   grid-template-columns: 34px minmax(0, 1fr);
   padding: 12px;
-  opacity: 0.48;
+  border-color: var(--home-line);
+  background: #0c0c0c;
+  box-shadow: none;
+  opacity: 0.58;
   transform: none;
 }
 
-.minimal-home .thinking-step.is-active,
-.minimal-home .thinking-step.is-current {
+.minimal-home .thinking-step.is-active {
   border-color: var(--home-line-strong);
-  background: #111111;
-  box-shadow: none;
+  background: #121212;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.025);
   opacity: 1;
+  transform: none;
+}
+
+.minimal-home .thinking-step.is-completing,
+.minimal-home .thinking-step.is-completed {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: #0e0e0e;
+  box-shadow: none;
+  opacity: 0.78;
   transform: none;
 }
 
@@ -1540,5 +1552,11 @@
     opacity: 1 !important;
     transform: none !important;
     will-change: auto !important;
+  }
+
+  .minimal-home .simulation-output.is-result-pending,
+  .minimal-home .simulation-output.is-result-visible {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

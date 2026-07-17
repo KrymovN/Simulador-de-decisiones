@@ -4,6 +4,21 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import { saveCompletedSimulationFromUi } from "../lib/saved-decision-simulations/ui-save-action";
 import type { SimulationResponse } from "../lib/simulationEngine";
+import {
+  IDLE_PROCESSING_STATE,
+  PROCESSING_STAGE_TITLES,
+  PROCESSING_TIMING,
+  cancelProcessingRun,
+  createProcessingRunController,
+  emitProcessingTrace,
+  followTargetInsideMobileSafeCorridor,
+  releaseProcessingRun,
+  waitForMobileViewportStability,
+  waitForProcessingDelay,
+  waitForProcessingFrame,
+  type ProcessingRunController,
+  type ProcessingState,
+} from "./home-simulator-processing";
 
 interface SpeechRecognitionResultLike {
   isFinal: boolean;
@@ -52,6 +67,20 @@ type SimulationPreviewState = {
   mockOnly: true;
   apiReady: true;
 };
+
+type SimulationRequestOutcome =
+  | {
+      status: "completed";
+      simulation: SimulationResponse;
+      preview: SimulationPreviewState;
+    }
+  | {
+      status: "failed";
+      title: string;
+      message: string;
+      requestId?: string;
+      retryAfterSeconds?: number;
+    };
 
 type SaveSimulationState = Awaited<ReturnType<typeof saveCompletedSimulationFromUi>>;
 
@@ -104,12 +133,6 @@ class SimulateApiFailure extends Error {
     this.requestId = options?.requestId;
     this.retryAfterSeconds = options?.retryAfterSeconds;
   }
-}
-
-function wait(ms: number) {
-  return new Promise((resolve) => {
-    window.setTimeout(resolve, ms);
-  });
 }
 
 function getSpeechRecognitionConstructor() {
@@ -179,9 +202,45 @@ function isSimulateApiResponse(value: unknown): value is SimulateApiResponse {
     Array.isArray(value.data.thinkingStages);
 }
 
+type ProcessingStepVisualState = "pending" | "active" | "completing" | "completed";
+
+function processingStepVisualState(
+  index: number,
+  processingState: ProcessingState,
+  hasResult: boolean,
+): ProcessingStepVisualState {
+  if (hasResult || processingState.phase === "result-reveal" || processingState.phase === "complete") {
+    return "completed";
+  }
+
+  if (processingState.phase === "step-active" && processingState.stepIndex === index) {
+    return "active";
+  }
+
+  if (processingState.phase === "step-completing" && processingState.stepIndex === index) {
+    return "completing";
+  }
+
+  if (index < processingState.stepIndex) {
+    return "completed";
+  }
+
+  return "pending";
+}
+
+function processingStepAccessibleState(state: ProcessingStepVisualState) {
+  if (state === "active") {
+    return "en curso";
+  }
+  if (state === "completing" || state === "completed") {
+    return "completada";
+  }
+  return "pendiente";
+}
+
 export default function HomeSimulator() {
   const [input, setInput] = useState("");
-  const [activeStage, setActiveStage] = useState(-1);
+  const [processingState, setProcessingState] = useState<ProcessingState>(IDLE_PROCESSING_STATE);
   const [isRunning, setIsRunning] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [result, setResult] = useState<SimulationResponse | null>(null);
@@ -191,9 +250,12 @@ export default function HomeSimulator() {
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState("");
   const consoleRef = useRef<HTMLElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const thinkingPanelRef = useRef<HTMLDivElement>(null);
   const outputRef = useRef<HTMLDivElement>(null);
+  const processingRunRef = useRef<ProcessingRunController | null>(null);
+  const processingRunIdRef = useRef(0);
 
   const stages = useMemo(
     () =>
@@ -222,13 +284,14 @@ export default function HomeSimulator() {
     [result],
   );
 
-  async function requestSimulation(situation: string) {
+  async function requestSimulation(situation: string, signal: AbortSignal) {
     const response = await fetch("/api/simulate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ input: situation, lang: "es" }),
+      signal,
     });
 
     if (!response.ok) {
@@ -262,7 +325,141 @@ export default function HomeSimulator() {
     return payload;
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function runProcessingSequence(
+    controller: ProcessingRunController,
+    simulationPromise: Promise<SimulationRequestOutcome>,
+  ) {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const activeDwell = reducedMotion
+      ? PROCESSING_TIMING.reducedActiveDwell
+      : PROCESSING_TIMING.activeDwell;
+    const completingHandoff = reducedMotion
+      ? PROCESSING_TIMING.reducedCompletingHandoff
+      : PROCESSING_TIMING.completingHandoff;
+    const nextStepGap = reducedMotion
+      ? PROCESSING_TIMING.reducedNextStepGap
+      : PROCESSING_TIMING.nextStepGap;
+
+    if (!(await waitForProcessingFrame(controller)) || !(await waitForProcessingFrame(controller))) {
+      return;
+    }
+    emitProcessingTrace("processing-container-ready");
+
+    if (!(await waitForMobileViewportStability(controller))) {
+      return;
+    }
+
+    const firstStep = thinkingPanelRef.current?.querySelector<HTMLElement>('[data-processing-step="1"]') ?? null;
+    await followTargetInsideMobileSafeCorridor(
+      controller,
+      firstStep,
+      thinkingPanelRef.current,
+      "preparation",
+    );
+
+    if (controller.cancelled) {
+      return;
+    }
+
+    for (let index = 0; index < PROCESSING_STAGE_TITLES.length; index += 1) {
+      if (index > 0) {
+        const nextStep = thinkingPanelRef.current?.querySelector<HTMLElement>(
+          `[data-processing-step="${index + 1}"]`,
+        ) ?? null;
+        await followTargetInsideMobileSafeCorridor(
+          controller,
+          nextStep,
+          thinkingPanelRef.current,
+          "step",
+        );
+
+        if (!(await waitForProcessingDelay(controller, nextStepGap))) {
+          return;
+        }
+      }
+
+      if (!(await waitForProcessingFrame(controller))) {
+        return;
+      }
+
+      setProcessingState({ phase: "step-active", stepIndex: index, resultVisible: false });
+      emitProcessingTrace("step-active-start", { step: index + 1 });
+
+      if (!(await waitForProcessingDelay(controller, activeDwell))) {
+        return;
+      }
+
+      setProcessingState({ phase: "step-completing", stepIndex: index, resultVisible: false });
+      emitProcessingTrace("step-completed-start", { step: index + 1 });
+
+      if (!(await waitForProcessingDelay(controller, completingHandoff))) {
+        return;
+      }
+    }
+
+    if (!(await waitForProcessingDelay(controller, PROCESSING_TIMING.finalResultGap))) {
+      return;
+    }
+
+    const simulationResult = await simulationPromise;
+
+    if (controller.cancelled) {
+      return;
+    }
+
+    if (simulationResult.status === "completed") {
+      setResult(simulationResult.simulation);
+      setPreviewState(simulationResult.preview);
+      setMessage("Simulación demo completada. Escenarios orientativos listos para revisar.");
+      setProcessingState({
+        phase: "result-reveal",
+        stepIndex: PROCESSING_STAGE_TITLES.length - 1,
+        resultVisible: false,
+      });
+      emitProcessingTrace("result-reveal-start");
+
+      if (!(await waitForProcessingFrame(controller)) || !(await waitForProcessingFrame(controller))) {
+        return;
+      }
+
+      const resultHeading = outputRef.current?.querySelector<HTMLElement>(".simulation-output-header") ?? null;
+      await followTargetInsideMobileSafeCorridor(controller, resultHeading, outputRef.current, "result");
+
+      if (controller.cancelled) {
+        return;
+      }
+
+      setProcessingState({
+        phase: "result-reveal",
+        stepIndex: PROCESSING_STAGE_TITLES.length - 1,
+        resultVisible: true,
+      });
+
+      if (!reducedMotion && !(await waitForProcessingDelay(controller, PROCESSING_TIMING.resultReveal))) {
+        return;
+      }
+    } else {
+      setResult(null);
+      setPreviewState(null);
+      setErrorState({
+        title: simulationResult.title,
+        message: simulationResult.message,
+        requestId: simulationResult.requestId,
+        retryAfterSeconds: simulationResult.retryAfterSeconds,
+      });
+      setMessage("Simulación detenida. No se generó un resultado local de sustitución.");
+    }
+
+    setProcessingState({
+      phase: "complete",
+      stepIndex: PROCESSING_STAGE_TITLES.length - 1,
+      resultVisible: true,
+    });
+    setIsRunning(false);
+    emitProcessingTrace("processing-complete");
+  }
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const situation = input.trim();
@@ -287,16 +484,28 @@ export default function HomeSimulator() {
       return;
     }
 
+    if (processingRunRef.current) {
+      return;
+    }
+
     preserveReachedRevealState(consoleRef.current);
+    textareaRef.current?.blur();
     setMessage("");
     setResult(null);
     setPreviewState(null);
     setSaveState(null);
     setErrorState(null);
-    setActiveStage(-1);
+    setProcessingState({ phase: "preparing", stepIndex: -1, resultVisible: false });
     setIsRunning(true);
 
-    const simulationPromise = requestSimulation(situation).then(
+    const controller = createProcessingRunController(++processingRunIdRef.current);
+    processingRunRef.current = controller;
+    emitProcessingTrace("processing-preparing");
+
+    const simulationPromise: Promise<SimulationRequestOutcome> = requestSimulation(
+      situation,
+      controller.abortController.signal,
+    ).then(
       (payload) => ({
         status: "completed" as const,
         simulation: payload.data,
@@ -326,30 +535,12 @@ export default function HomeSimulator() {
       },
     );
 
-    for (let index = 0; index < stages.length; index += 1) {
-      setActiveStage(index);
-      await wait(index === 0 ? 520 : 760);
-    }
-
-    const simulationResult = await simulationPromise;
-
-    if (simulationResult.status === "completed") {
-      setResult(simulationResult.simulation);
-      setPreviewState(simulationResult.preview);
-      setMessage("Simulación demo completada. Escenarios orientativos listos para revisar.");
-    } else {
-      setResult(null);
-      setPreviewState(null);
-      setErrorState({
-        title: simulationResult.title,
-        message: simulationResult.message,
-        requestId: simulationResult.requestId,
-        retryAfterSeconds: simulationResult.retryAfterSeconds,
-      });
-      setMessage("Simulación detenida. No se generó un resultado local de sustitución.");
-    }
-
-    setIsRunning(false);
+    void runProcessingSequence(controller, simulationPromise).finally(() => {
+      if (processingRunRef.current === controller) {
+        processingRunRef.current = null;
+      }
+      releaseProcessingRun(controller);
+    });
   }
 
   function handleTextareaKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
@@ -422,34 +613,10 @@ export default function HomeSimulator() {
   useEffect(() => {
     return () => {
       recognitionRef.current?.abort();
+      cancelProcessingRun(processingRunRef.current);
+      processingRunRef.current = null;
     };
   }, []);
-
-  useEffect(() => {
-    if (!isRunning || activeStage < 0) {
-      return;
-    }
-
-    const currentStage = thinkingPanelRef.current?.querySelector<HTMLElement>(".thinking-step.is-current");
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    currentStage?.scrollIntoView({
-      behavior: reducedMotion ? "auto" : "smooth",
-      block: "center",
-    });
-  }, [activeStage, isRunning]);
-
-  useEffect(() => {
-    if (!result) {
-      return;
-    }
-
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    outputRef.current?.scrollIntoView({
-      behavior: reducedMotion ? "auto" : "smooth",
-      block: "start",
-    });
-  }, [result]);
 
   async function handleSave() {
     if (!result) {
@@ -498,6 +665,7 @@ export default function HomeSimulator() {
           <div className="decision-input-shell">
             <textarea
               id="decision-input"
+              ref={textareaRef}
               onChange={(event) => {
                 setInput(event.target.value);
                 setErrorState(null);
@@ -557,21 +725,44 @@ export default function HomeSimulator() {
       </div>
 
       {(isRunning || result) && (
-        <div className="thinking-panel" aria-label="Etapas de simulación del motor" ref={thinkingPanelRef}>
-          {stages.map((stage, index) => (
-            <article
-              className={`thinking-step ${index <= activeStage || result ? "is-active" : ""} ${
-                index === activeStage && isRunning ? "is-current" : ""
-              }`}
-              key={stage.title}
-            >
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <div>
-                <strong>{stage.title}</strong>
-                <p>{stage.detail}</p>
-              </div>
-            </article>
-          ))}
+        <div
+          className="thinking-panel"
+          aria-label="Etapas de simulación del motor"
+          data-active-step={processingState.phase === "step-active" ? processingState.stepIndex + 1 : 0}
+          data-processing-phase={processingState.phase}
+          ref={thinkingPanelRef}
+          role="list"
+        >
+          <p className="processing-live-status" aria-live="polite" aria-atomic="true">
+            {processingState.phase === "step-active"
+              ? `Etapa ${processingState.stepIndex + 1} de ${PROCESSING_STAGE_TITLES.length}: ${PROCESSING_STAGE_TITLES[processingState.stepIndex]}`
+              : processingState.phase === "result-reveal"
+                ? "Etapas completadas. Preparando el resultado."
+                : ""}
+          </p>
+          {stages.map((stage, index) => {
+            const visualState = processingStepVisualState(index, processingState, Boolean(result));
+
+            return (
+              <article
+                aria-current={visualState === "active" ? "step" : undefined}
+                className={`thinking-step is-${visualState}`}
+                data-processing-step={index + 1}
+                data-step-state={visualState}
+                key={stage.title}
+                role="listitem"
+              >
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <div>
+                  <strong>{stage.title}</strong>
+                  <p>{stage.detail}</p>
+                  <span className="processing-step-accessible-state">
+                    Estado: {processingStepAccessibleState(visualState)}.
+                  </span>
+                </div>
+              </article>
+            );
+          })}
         </div>
       )}
 
@@ -589,7 +780,14 @@ export default function HomeSimulator() {
       )}
 
       {result && (
-        <div className="simulation-output" ref={outputRef}>
+        <div
+          className={`simulation-output ${
+            processingState.phase === "result-reveal" && !processingState.resultVisible
+              ? "is-result-pending"
+              : "is-result-visible"
+          }`}
+          ref={outputRef}
+        >
           <div className="simulation-output-header">
             <div>
               <p className="eyebrow">Mapa de escenarios demo</p>

@@ -45,7 +45,8 @@
     "quality:homepage-owner-visual-remediation": "node scripts/homepage-owner-visual-remediation-quality.mjs",
     "quality:mobile-homepage-motion-parity": "node scripts/mobile-homepage-motion-parity-quality.mjs",
     "quality:homepage-safari-iphone-refinement": "node scripts/homepage-safari-iphone-refinement-quality.mjs",
-    "quality:homepage-motion-stabilization": "node scripts/homepage-one-time-assembly-refinement-quality.mjs"
+    "quality:homepage-motion-stabilization": "node scripts/homepage-one-time-assembly-refinement-quality.mjs",
+    "quality:home-simulator-processing-sequence": "node scripts/home-simulator-processing-sequence-quality.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
