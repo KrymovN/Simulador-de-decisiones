@@ -52,6 +52,11 @@ const processNarrativeCss = blockBetween(
 );
 const tabletCss = blockBetween(css, "@media (max-width: 860px)", "@media (max-width: 560px)");
 const phoneCss = blockBetween(css, "@media (max-width: 560px)", "@media (prefers-reduced-motion: reduce)");
+const phoneProcessNarrativeCss = blockBetween(
+  phoneCss,
+  '.minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="pending"] [data-home-process-narrative]',
+  '.minimal-home.home-assembly-enabled [data-home-mobile-card][data-home-assembly-state="pending"]',
+);
 const reducedCss = css.slice(css.lastIndexOf("@media (prefers-reduced-motion: reduce)"));
 const publicHomepageSurface = `${home}\n${simulator}`;
 
@@ -150,19 +155,43 @@ includes(css, "--home-process-narrative-stagger: 130ms", "Desktop subtitle follo
 includes(css, "--home-process-narrative-distance: 72px", "Desktop process narrative visibly arrives from the right");
 includes(tabletCss, "--home-process-narrative-duration: 900ms", "Tablet process narrative avoids the former short responsive profile");
 includes(tabletCss, "--home-process-narrative-distance: 56px", "Tablet process narrative retains perceptible travel");
-includes(phoneCss, "--home-process-narrative-duration: 880ms", "Mobile process narrative has a Safari-readable duration");
-includes(phoneCss, "--home-process-narrative-stagger: 100ms", "Mobile subtitle follows the heading without a jump");
-includes(phoneCss, "--home-process-narrative-distance: 48px", "Mobile process narrative has visible viewport-safe travel");
+includes(phoneCss, "--home-process-mobile-spatial-distance: 40px", "Mobile narrative wrapper uses viewport-safe spatial travel");
+includes(phoneCss, "--home-process-mobile-spatial-duration: 1040ms", "Mobile wrapper has a Safari-readable spatial duration");
+includes(phoneCss, "--home-process-mobile-opacity-duration: 820ms", "Mobile text opacity has a bounded independent duration");
+includes(phoneCss, "--home-process-mobile-subtitle-delay: 130ms", "Mobile subtitle follows through a controlled opacity delay");
+includes(phoneCss, "--home-process-mobile-ease: cubic-bezier(0.33, 0, 0.67, 1)", "Mobile narrative uses a symmetric non-front-loaded easing");
+includes(phoneProcessNarrativeCss, "transform: translate3d(var(--home-process-mobile-spatial-distance), 0, 0)", "Only the mobile narrative wrapper owns spatial travel");
+includes(phoneProcessNarrativeCss, "transition: transform var(--home-process-mobile-spatial-duration) var(--home-process-mobile-ease)", "Mobile wrapper owns the single spatial transition");
+check(
+  "Mobile process narrative has exactly one spatial start transform",
+  (phoneProcessNarrativeCss.match(/translate3d\(/g) ?? []).length === 1,
+  "Heading and subtitle must not own competing spatial translations.",
+);
+includes(phoneProcessNarrativeCss, '[data-home-process-narrative-item] {\n    opacity: 0.24;\n    transform: none;', "Mobile heading uses opacity without a child transform");
+includes(phoneProcessNarrativeCss, '[data-home-process-narrative-item]:is(p) {\n    opacity: 0.16;', "Mobile subtitle owns a readable pending opacity");
+includes(phoneProcessNarrativeCss, "transition: opacity var(--home-process-mobile-opacity-duration) var(--home-process-mobile-ease)", "Mobile child text animates opacity only");
+includes(phoneProcessNarrativeCss, "transition-delay: var(--home-process-mobile-subtitle-delay)", "Mobile subtitle delay is applied without a second spatial layer");
 includes(processNarrativeCss, "opacity: 0.14", "Process narrative does not look settled before activation");
 includes(processNarrativeCss, "transform: translate3d(var(--home-process-narrative-distance), 0, 0)", "Process narrative uses one right-to-left vector");
 includes(processNarrativeCss, "transition-delay: var(--home-process-narrative-delay)", "Heading and subtitle share one controlled transition grammar");
 includes(processNarrativeCss, "transform: none", "Process narrative clears fractional transforms after assembly");
 includes(processNarrativeCss, "will-change: auto", "Settled process narrative releases compositor hints");
 includes(processBlock, 'data-home-assembly-settle-ms="2280"', "Desktop process settle covers narrative then existing cards");
-includes(processBlock, 'data-home-assembly-settle-mobile-ms="1040"', "Mobile process settle covers the narrative before cards");
+includes(processBlock, 'data-home-assembly-settle-mobile-ms="1120"', "Mobile process settle covers the single wrapper transition");
 includes(css, "--home-process-cards-phase-delay: calc(var(--home-process-narrative-duration) + 80ms)", "Desktop process cards wait for the narrative group");
 includes(controller, "processNarrativeIsSettled()", "Mobile process cards wait for narrative completion");
-includes(controller, "MOBILE_CARD_ACTIVATION_RATIO, canAssembleMobileCard", "Shared mobile observer preserves individual card activation with narrative coordination");
+includes(controller, "const PROCESS_MOBILE_HANDOFF_DELAY_MS = 90", "Mobile card queue starts after an explicit narrative handoff");
+includes(controller, "const PROCESS_MOBILE_CARD_LAUNCH_GAP_MS = 210", "Mobile process cards use a readable sequential launch gap");
+includes(controller, 'target.matches(PROCESS_SECTION_SELECTOR)) scheduleProcessCardHandoff()', "Narrative settle schedules the bounded handoff instead of releasing cards immediately");
+excludes(controller, 'target.matches(PROCESS_SECTION_SELECTOR)) reevaluateVisibleProcessCards()', "Narrative settle never starts multiple eligible cards in the same callback");
+includes(controller, 'target.dataset.homeProcessCardQueue = "handoff"', "Process section exposes the explicit handoff state");
+includes(controller, 'target.dataset.homeProcessCardQueue = "armed"', "Process queue exposes its armed state for runtime evidence");
+includes(controller, "processCardQueue.sort", "Eligible process cards are ordered before launch");
+includes(controller, "processCardOrder.get(left)", "Queue sorting follows canonical DOM order");
+includes(controller, "processCardLaunchTimer = window.setTimeout", "Only one queued process card launches before the next gap");
+includes(controller, "enqueueProcessCards(eligibleProcessCards)", "Fast-scroll batches enter the sequential process queue");
+includes(controller, "|| (processNarrativeIsSettled() && processCardQueueArmed)", "Process cards require both narrative settle and armed handoff");
+includes(controller, "if (processNarrativeIsSettled()) {\n          scheduleProcessCardHandoff();", "Responsive rebuild preserves the narrative-to-card handoff");
 check(
   "Desktop section cards retain group-level activation",
   css.includes("@media (min-width: 561px)") && motionCss.includes('[data-home-assembly-trigger="section"][data-home-assembly-state="pending"] :is(.minimal-home__process-card, .minimal-home__capability-card)'),
@@ -171,7 +200,7 @@ check(
 includes(processBlock, 'data-home-mobile-card="process"', "Process cards opt into mobile per-card activation");
 includes(capabilityBlock, 'data-home-mobile-card="capability"', "Capability cards opt into mobile per-card activation");
 includes(controller, 'const MOBILE_CARD_SELECTOR = "[data-home-mobile-card]"', "Controller queries one mobile-card target set");
-includes(controller, "observeAtVisualLine(mobileCards, MOBILE_CARD_ACTIVATION_RATIO, canAssembleMobileCard)", "One shared observer call watches all mobile cards near eye level");
+includes(controller, "handleEligibleMobileCards,", "One shared mobile observer routes process entries through the queue");
 check(
   "Controller creates observers through one shared constructor path",
   (controller.match(/new IntersectionObserver/g) ?? []).length === 1,
@@ -209,6 +238,8 @@ includes(reducedCss, "opacity: 1 !important", "Reduced motion exposes all conten
 includes(reducedCss, "transform: none !important", "Reduced motion renders final geometry");
 includes(reducedCss, "pointer-events: auto !important", "Reduced motion restores interactions");
 includes(reducedCss, "will-change: auto !important", "Reduced motion releases compositor hints");
+includes(controller, 'target.dataset.homeProcessCardQueue = "settled"', "Reduced motion arms no delayed visual queue");
+includes(controller, "processCardQueue = [];\n        queuedProcessCards.clear();\n        processCardQueueArmed = true;", "Reduced motion clears queued launches before exposing final state");
 
 includes(home, "Levio analiza la situación, identifica la información relevante, compara escenarios, evalúa riesgos y organiza criterios de decisión.", "Process section uses approved AI-neutral copy");
 includes(simulator, "Vista previa determinista · Respuestas de ejemplo · Máx.", "Simulator status uses approved AI-neutral copy");
@@ -239,5 +270,5 @@ for (const item of checks) {
 }
 
 const failed = checks.filter((item) => !item.passed);
-console.log(`\nHomepage Safari preview/first-paint gate: ${checks.length - failed.length}/${checks.length} passed.`);
+console.log(`\nHomepage mobile narrative/card handoff gate: ${checks.length - failed.length}/${checks.length} passed.`);
 if (failed.length > 0) process.exitCode = 1;

@@ -14,6 +14,8 @@ const PREVIEW_ACTIVATION_RATIO = 0.62;
 const PROCESS_ACTIVATION_RATIO = 0.6;
 const PROCESS_ACTIVATION_RATIO_MOBILE = 0.58;
 const MOBILE_CARD_ACTIVATION_RATIO = 0.68;
+const PROCESS_MOBILE_HANDOFF_DELAY_MS = 90;
+const PROCESS_MOBILE_CARD_LAUNCH_GAP_MS = 210;
 const PREVIEW_SCROLL_NOISE_TOLERANCE = 2;
 const PREVIEW_MIN_SCROLL_Y = 24;
 
@@ -65,12 +67,21 @@ export default function HomepageAssemblyController() {
     const targetObservers = new Map<HTMLElement, IntersectionObserver>();
     const settleTimers = new Map<HTMLElement, number>();
     const assemblyFrames = new Map<HTMLElement, number>();
+    const queuedProcessCards = new Set<HTMLElement>();
+    const processCardOrder = new Map(
+      processMobileCards.map((card, index) => [card, index]),
+    );
+    let processCardQueue: HTMLElement[] = [];
+    let processCardQueueArmed = false;
+    let processCardLaunchTimer = 0;
+    let processCardHandoffTimer = 0;
     const observers = new Set<IntersectionObserver>();
     let rebuildFrame = 0;
     let previewScrollFrame = 0;
     let previousValidScrollY = Math.max(0, window.scrollY);
     let previewDownwardArmed = false;
     let reevaluateVisibleProcessCards = () => {};
+    let scheduleProcessCardHandoff = () => {};
 
     shell.classList.add("home-assembly-enabled");
 
@@ -90,7 +101,7 @@ export default function HomepageAssemblyController() {
       settledTargets.add(target);
       unobserve(target);
       setAssemblyState(target, "settled");
-      if (target.matches(PROCESS_SECTION_SELECTOR)) reevaluateVisibleProcessCards();
+      if (target.matches(PROCESS_SECTION_SELECTOR)) scheduleProcessCardHandoff();
     };
 
     const requestedSettleTime = (target: HTMLElement) => {
@@ -150,16 +161,22 @@ export default function HomepageAssemblyController() {
       targets: HTMLElement[],
       activationRatio: number,
       canAssemble: (target: HTMLElement) => boolean = () => true,
+      handleEligibleTargets?: (targets: HTMLElement[]) => void,
     ) => {
       const pendingTargets = targets.filter((target) => !activatedTargets.has(target));
       if (pendingTargets.length === 0) return;
 
       const observer = new IntersectionObserver(
         (entries) => {
-          entries.forEach((entry) => {
-            const target = entry.target as HTMLElement;
-            if (entry.isIntersecting && canAssemble(target)) assemble(target);
-          });
+          const eligibleTargets = entries
+            .filter((entry) => entry.isIntersecting)
+            .map((entry) => entry.target as HTMLElement)
+            .filter(canAssemble);
+          if (handleEligibleTargets) {
+            handleEligibleTargets(eligibleTargets);
+          } else {
+            eligibleTargets.forEach((target) => assemble(target));
+          }
         },
         {
           rootMargin: centralRootMargin(activationRatio),
@@ -228,20 +245,108 @@ export default function HomepageAssemblyController() {
     );
 
     const canAssembleMobileCard = (target: HTMLElement) => (
-      target.dataset.homeMobileCard !== "process" || processNarrativeIsSettled()
+      target.dataset.homeMobileCard !== "process"
+      || (processNarrativeIsSettled() && processCardQueueArmed)
     );
 
-    reevaluateVisibleProcessCards = () => {
-      if (!mobileCardsEnabled.matches || !processNarrativeIsSettled()) return;
+    const orderProcessCardQueue = () => {
+      processCardQueue.sort(
+        (left, right) => (processCardOrder.get(left) ?? 0) - (processCardOrder.get(right) ?? 0),
+      );
+    };
+
+    const drainProcessCardQueue = () => {
+      if (
+        !mobileCardsEnabled.matches
+        || !processCardQueueArmed
+        || processCardLaunchTimer
+      ) return;
+
+      orderProcessCardQueue();
       const visualTop = visualViewportMetrics().top;
+      while (processCardQueue.length > 0) {
+        const card = processCardQueue.shift();
+        if (!card) return;
+        queuedProcessCards.delete(card);
+        if (activatedTargets.has(card)) continue;
+
+        if (card.getBoundingClientRect().bottom <= visualTop) {
+          settle(card);
+          continue;
+        }
+        if (!isAtVisualActivationLine(card, MOBILE_CARD_ACTIVATION_RATIO)) continue;
+
+        assemble(card);
+        processCardLaunchTimer = window.setTimeout(() => {
+          processCardLaunchTimer = 0;
+          drainProcessCardQueue();
+        }, PROCESS_MOBILE_CARD_LAUNCH_GAP_MS);
+        return;
+      }
+    };
+
+    const enqueueProcessCards = (targets: HTMLElement[]) => {
+      targets.forEach((card) => {
+        if (activatedTargets.has(card) || queuedProcessCards.has(card)) return;
+        queuedProcessCards.add(card);
+        processCardQueue.push(card);
+      });
+      orderProcessCardQueue();
+      drainProcessCardQueue();
+    };
+
+    const handleEligibleMobileCards = (targets: HTMLElement[]) => {
+      const eligibleProcessCards: HTMLElement[] = [];
+      targets.forEach((target) => {
+        if (target.dataset.homeMobileCard === "process") {
+          eligibleProcessCards.push(target);
+        } else {
+          assemble(target);
+        }
+      });
+      enqueueProcessCards(eligibleProcessCards);
+    };
+
+    reevaluateVisibleProcessCards = () => {
+      if (
+        !mobileCardsEnabled.matches
+        || !processNarrativeIsSettled()
+        || !processCardQueueArmed
+      ) return;
+      const visualTop = visualViewportMetrics().top;
+      const eligibleProcessCards: HTMLElement[] = [];
       processMobileCards.forEach((card) => {
         if (activatedTargets.has(card)) return;
         if (card.getBoundingClientRect().bottom <= visualTop) {
           settle(card);
         } else if (isAtVisualActivationLine(card, MOBILE_CARD_ACTIVATION_RATIO)) {
-          assemble(card);
+          eligibleProcessCards.push(card);
         }
       });
+      enqueueProcessCards(eligibleProcessCards);
+    };
+
+    scheduleProcessCardHandoff = () => {
+      if (!mobileCardsEnabled.matches || processCardQueueArmed || processCardHandoffTimer) return;
+      if (reducedMotion.matches) {
+        processCardQueueArmed = true;
+        processGroups.forEach((target) => {
+          target.dataset.homeProcessCardQueue = "settled";
+        });
+        return;
+      }
+
+      processGroups.forEach((target) => {
+        target.dataset.homeProcessCardQueue = "handoff";
+      });
+      processCardHandoffTimer = window.setTimeout(() => {
+        processCardHandoffTimer = 0;
+        processCardQueueArmed = true;
+        processGroups.forEach((target) => {
+          target.dataset.homeProcessCardQueue = "armed";
+        });
+        reevaluateVisibleProcessCards();
+      }, PROCESS_MOBILE_HANDOFF_DELAY_MS);
     };
 
     const configureObservers = () => {
@@ -253,6 +358,26 @@ export default function HomepageAssemblyController() {
       }
 
       const useMobileCards = mobileCardsEnabled.matches;
+      if (useMobileCards) {
+        if (processNarrativeIsSettled()) {
+          scheduleProcessCardHandoff();
+        } else {
+          processGroups.forEach((target) => {
+            target.dataset.homeProcessCardQueue = "waiting";
+          });
+        }
+      } else {
+        if (processCardLaunchTimer) window.clearTimeout(processCardLaunchTimer);
+        if (processCardHandoffTimer) window.clearTimeout(processCardHandoffTimer);
+        processCardLaunchTimer = 0;
+        processCardHandoffTimer = 0;
+        processCardQueue = [];
+        queuedProcessCards.clear();
+        processCardQueueArmed = false;
+        processGroups.forEach((target) => {
+          delete target.dataset.homeProcessCardQueue;
+        });
+      }
       mobileCards.forEach((card) => {
         if (useMobileCards) {
           if (!activatedTargets.has(card)) setAssemblyState(card, "pending");
@@ -271,7 +396,12 @@ export default function HomepageAssemblyController() {
       observeAtVisualLine(capabilityGroups, useMobileCards ? 0.62 : 0.66);
       observeAtVisualLine(finalCtaGroups, 0.72);
       if (useMobileCards) {
-        observeAtVisualLine(mobileCards, MOBILE_CARD_ACTIVATION_RATIO, canAssembleMobileCard);
+        observeAtVisualLine(
+          mobileCards,
+          MOBILE_CARD_ACTIVATION_RATIO,
+          canAssembleMobileCard,
+          handleEligibleMobileCards,
+        );
       }
     };
 
@@ -289,6 +419,16 @@ export default function HomepageAssemblyController() {
 
     const handleReducedMotionChange = () => {
       if (reducedMotion.matches) {
+        if (processCardLaunchTimer) window.clearTimeout(processCardLaunchTimer);
+        if (processCardHandoffTimer) window.clearTimeout(processCardHandoffTimer);
+        processCardLaunchTimer = 0;
+        processCardHandoffTimer = 0;
+        processCardQueue = [];
+        queuedProcessCards.clear();
+        processCardQueueArmed = true;
+        processGroups.forEach((target) => {
+          target.dataset.homeProcessCardQueue = "settled";
+        });
         disconnectObservers();
         allTargets.forEach((target) => settle(target));
       } else {
@@ -303,11 +443,15 @@ export default function HomepageAssemblyController() {
     return () => {
       if (rebuildFrame) window.cancelAnimationFrame(rebuildFrame);
       if (previewScrollFrame) window.cancelAnimationFrame(previewScrollFrame);
+      if (processCardLaunchTimer) window.clearTimeout(processCardLaunchTimer);
+      if (processCardHandoffTimer) window.clearTimeout(processCardHandoffTimer);
       disconnectObservers();
       settleTimers.forEach((timer) => window.clearTimeout(timer));
       assemblyFrames.forEach((frame) => window.cancelAnimationFrame(frame));
       settleTimers.clear();
       assemblyFrames.clear();
+      processCardQueue = [];
+      queuedProcessCards.clear();
       reducedMotion.removeEventListener("change", handleReducedMotionChange);
       mobileCardsEnabled.removeEventListener("change", scheduleObserverRebuild);
       window.removeEventListener("scroll", handlePreviewScroll);

@@ -1332,9 +1332,11 @@
     --home-preview-duration: 820ms;
     --home-preview-stagger: 100ms;
     --home-preview-distance: 44px;
-    --home-process-narrative-duration: 880ms;
-    --home-process-narrative-stagger: 100ms;
-    --home-process-narrative-distance: 48px;
+    --home-process-mobile-spatial-distance: 40px;
+    --home-process-mobile-spatial-duration: 1040ms;
+    --home-process-mobile-opacity-duration: 820ms;
+    --home-process-mobile-subtitle-delay: 130ms;
+    --home-process-mobile-ease: cubic-bezier(0.33, 0, 0.67, 1);
   }
 
   .minimal-home__header,
@@ -1396,6 +1398,52 @@
   .minimal-home.home-assembly-enabled [data-home-assembly-group="preview"][data-home-assembly-state="pending"] [data-home-assembly-item] {
     opacity: 0.34;
     transform: translate3d(var(--home-preview-distance), 0, 0);
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="pending"] [data-home-process-narrative] {
+    transform: translate3d(var(--home-process-mobile-spatial-distance), 0, 0);
+    will-change: transform;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="assembled"] [data-home-process-narrative] {
+    transform: none;
+    transition: transform var(--home-process-mobile-spatial-duration) var(--home-process-mobile-ease);
+    will-change: transform;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="settled"] [data-home-process-narrative] {
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="pending"] [data-home-process-narrative-item] {
+    opacity: 0.24;
+    transform: none;
+    will-change: opacity;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="pending"] [data-home-process-narrative-item]:is(p) {
+    opacity: 0.16;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="assembled"] [data-home-process-narrative-item] {
+    opacity: 1;
+    transform: none;
+    transition: opacity var(--home-process-mobile-opacity-duration) var(--home-process-mobile-ease);
+    transition-delay: 0ms;
+    will-change: opacity;
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="assembled"] [data-home-process-narrative-item]:is(p) {
+    transition-delay: var(--home-process-mobile-subtitle-delay);
+  }
+
+  .minimal-home.home-assembly-enabled [data-home-assembly-group="process-section"][data-home-assembly-state="settled"] [data-home-process-narrative-item] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
   }
 
   .minimal-home.home-assembly-enabled [data-home-mobile-card][data-home-assembly-state="pending"] {

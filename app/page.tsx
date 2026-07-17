@@ -164,7 +164,7 @@ export default function Home() {
         aria-labelledby="process-title"
         data-home-assembly-group="process-section"
         data-home-assembly-settle-ms="2280"
-        data-home-assembly-settle-mobile-ms="1040"
+        data-home-assembly-settle-mobile-ms="1120"
         data-home-assembly-trigger="section"
         data-home-motion-vector="right-to-left"
       >
