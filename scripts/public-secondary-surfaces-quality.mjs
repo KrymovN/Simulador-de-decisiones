@@ -193,7 +193,7 @@ for (const path of [
   check(`${path} remains byte-identical to baseline`, readFileSync(join(rootDir, path), "utf8") === baselineFile(path));
 }
 
-for (const directory of ["app/dashboard", "components/auth", "components/dashboard"]) {
+for (const directory of ["components/auth"]) {
   const paths = execFileSync("git", ["ls-tree", "-r", "--name-only", baseline, "--", directory], {
     cwd: rootDir,
     encoding: "utf8",

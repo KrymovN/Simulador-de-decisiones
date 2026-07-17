@@ -50,7 +50,7 @@ export default function DashboardPage() {
       >
         <section className="dashboard-grid">
           {summaryCards.map((card) => (
-            <article className="dashboard-card signal-card section-frame" key={card.label}>
+            <article className="dashboard-card signal-card" key={card.label}>
               <span>{card.label}</span>
               <strong>{card.value}</strong>
               <p>{card.detail}</p>
@@ -58,10 +58,7 @@ export default function DashboardPage() {
           ))}
         </section>
 
-        <section className="dashboard-engine section-frame" aria-labelledby="engine-state-title">
-          <div className="engine-status-core" aria-hidden="true">
-            <span></span>
-          </div>
+        <section className="dashboard-landing-engine" aria-labelledby="engine-state-title">
           <div>
             <p className="eyebrow">Estado del entorno preparado</p>
             <h2 id="engine-state-title">La vista de simulación está preparada para revisar decisiones de ejemplo.</h2>
@@ -95,7 +92,7 @@ export default function DashboardPage() {
 
         <section className="decision-radar" aria-label="Radar de decisiones personales">
           {decisionRadar.map((item) => (
-            <article className="radar-card section-frame" key={item.label}>
+            <article className="radar-card" key={item.label}>
               <span>{item.label}</span>
               <strong>{item.value}</strong>
               <p>{item.copy}</p>
@@ -104,7 +101,7 @@ export default function DashboardPage() {
         </section>
 
         <section className="dashboard-two-column">
-          <article className="dashboard-card section-frame">
+          <article className="dashboard-card">
             <h2>Últimas simulaciones</h2>
             <div className="compact-list">
               {mockSimulations.map((simulation) => (
@@ -123,7 +120,7 @@ export default function DashboardPage() {
             </Link>
           </article>
 
-          <article className="dashboard-card section-frame">
+          <article className="dashboard-card">
             <h2>Consecuencias en vigilancia</h2>
             <div className="mini-timeline">
               {featuredSimulation.timeline.map((item) => (
@@ -141,7 +138,7 @@ export default function DashboardPage() {
         </section>
 
         <section className="dashboard-two-column">
-          <article className="dashboard-card section-frame">
+          <article className="dashboard-card">
             <h2>Decisiones preparadas</h2>
             <div className="compact-list">
               {savedDecisions.slice(0, 3).map((decision) => (
@@ -156,7 +153,7 @@ export default function DashboardPage() {
             </Link>
           </article>
 
-          <article className="dashboard-card section-frame">
+          <article className="dashboard-card">
             <h2>Memoria futura</h2>
             <p>
               {memorySettings.mode}. La memoria podrá pausarse, revisarse o eliminarse cuando exista backend productivo.

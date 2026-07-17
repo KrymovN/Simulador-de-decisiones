@@ -41,6 +41,7 @@
     "quality:shared-visual-system-foundation": "node scripts/shared-visual-system-foundation-quality.mjs",
     "quality:public-secondary-surfaces": "node scripts/public-secondary-surfaces-quality.mjs",
     "quality:auth-access-surfaces": "node scripts/auth-access-surfaces-quality.mjs",
+    "quality:dashboard-shell-landing": "node scripts/dashboard-shell-landing-quality.mjs",
     "quality:public-home-simulator-api-integration": "node scripts/public-home-simulator-api-integration-quality.mjs",
     "quality:public-site-trust-readiness": "node scripts/public-site-trust-readiness-quality.mjs",
     "quality:rendered-public-surface-regression": "node scripts/rendered-public-surface-regression-quality.mjs",

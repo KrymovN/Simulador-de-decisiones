@@ -52,18 +52,34 @@ export default function DashboardShell({
   }
 
   const activeItem = navigationItems.find((item) => isActiveRoute(item.href)) ?? navigationItems[0];
+  const shellClassName =
+    pathname === "/dashboard" ? "dashboard-shell dashboard-shell--landing" : "dashboard-shell";
 
   return (
-    <main className="dashboard-shell">
-      <aside className="dashboard-sidebar section-frame">
-        <BrandLockup className="dashboard-brand" markSize="sm" />
-        <p>Vista preparada del motor de simulación de decisiones.</p>
-        <details className="dashboard-nav-menu">
-          <summary>
-            <span>Vista actual</span>
-            <strong>{activeItem.label}</strong>
-          </summary>
-          <nav aria-label="Navegación compacta del área personal">
+    <main className={shellClassName}>
+      <div className="dashboard-shell__frame">
+        <aside className="dashboard-sidebar">
+          <BrandLockup className="dashboard-brand" markSize="sm" />
+          <p>Vista preparada del motor de simulación de decisiones.</p>
+          <details className="dashboard-nav-menu">
+            <summary>
+              <span>Vista actual</span>
+              <strong>{activeItem.label}</strong>
+            </summary>
+            <nav aria-label="Navegación compacta del área personal">
+              {navigationItems.map((item) => (
+                <Link
+                  aria-current={isActiveRoute(item.href) ? "page" : undefined}
+                  className={isActiveRoute(item.href) ? "active" : ""}
+                  href={item.href}
+                  key={item.href}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </details>
+          <nav aria-label="Navegación del área personal" className="dashboard-sidebar-nav">
             {navigationItems.map((item) => (
               <Link
                 aria-current={isActiveRoute(item.href) ? "page" : undefined}
@@ -75,43 +91,31 @@ export default function DashboardShell({
               </Link>
             ))}
           </nav>
-        </details>
-        <nav aria-label="Navegación del área personal" className="dashboard-sidebar-nav">
-          {navigationItems.map((item) => (
-            <Link
-              aria-current={isActiveRoute(item.href) ? "page" : undefined}
-              className={isActiveRoute(item.href) ? "active" : ""}
-              href={item.href}
-              key={item.href}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-        <div className="dashboard-sidebar-status">
-          <span>Acceso</span>
-          <strong>{account.accountState}</strong>
-          <small>{account.email}</small>
-        </div>
-        <button className="ghost-button" onClick={handleLogout} type="button">
-          Cerrar sesión
-        </button>
-      </aside>
+          <div className="dashboard-sidebar-status">
+            <span>Acceso</span>
+            <strong>{account.accountState}</strong>
+            <small>{account.email}</small>
+          </div>
+          <button className="ghost-button" onClick={handleLogout} type="button">
+            Cerrar sesión
+          </button>
+        </aside>
 
-      <section className="dashboard-main">
-        <header className="dashboard-header section-frame">
-          <div>
-            <p className="eyebrow brand-mark">{eyebrow}</p>
-            <h1>{title}</h1>
-            <p>{description}</p>
-          </div>
-          <div className="privacy-state">
-            <span>Privacidad</span>
-            <strong>Preparada</strong>
-          </div>
-        </header>
-        {children}
-      </section>
+        <section className="dashboard-main">
+          <header className="dashboard-shell__header">
+            <div>
+              <p className="eyebrow brand-mark">{eyebrow}</p>
+              <h1>{title}</h1>
+              <p>{description}</p>
+            </div>
+            <div className="privacy-state">
+              <span>Privacidad</span>
+              <strong>Preparada</strong>
+            </div>
+          </header>
+          {children}
+        </section>
+      </div>
     </main>
   );
 }

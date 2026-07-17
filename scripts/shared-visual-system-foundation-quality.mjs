@@ -15,6 +15,7 @@ const notFound = read("app", "not-found.tsx");
 const publicSecondaryShell = read("components", "PublicSecondaryShell.tsx");
 const auth = read("app", "styles", "auth.css");
 const dashboard = read("app", "styles", "dashboard.css");
+const dashboardShellCss = read("app", "styles", "dashboard-shell.css");
 const checks = [];
 
 function check(name, condition, detail = "") {
@@ -110,7 +111,8 @@ check(
     !existsSync(join(rootDir, "components", "LevioBrand.tsx")),
 );
 check("Auth styles consume the shared foundation", auth.includes("--levio-"));
-check("Dashboard styles remain outside the completed auth batch", !dashboard.includes("--levio-"));
+check("Legacy dashboard styles remain isolated from the shared foundation", !dashboard.includes("--levio-"));
+check("Dashboard shell styles consume the shared foundation", dashboardShellCss.includes("--levio-"));
 
 const failed = checks.filter((item) => !item.condition);
 for (const item of checks) {

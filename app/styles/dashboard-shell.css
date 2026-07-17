@@ -1,0 +1,617 @@
+/* Batch 4: shared dashboard shell and dashboard landing only. */
+
+.dashboard-shell {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0;
+  display: block;
+  padding:
+    max(20px, env(safe-area-inset-top))
+    max(16px, env(safe-area-inset-right))
+    max(28px, env(safe-area-inset-bottom))
+    max(16px, env(safe-area-inset-left));
+  overflow-x: clip;
+  background: var(--levio-bg);
+  color: var(--levio-text);
+  font-family: var(--levio-font-sans);
+}
+
+.dashboard-shell,
+.dashboard-shell *,
+.dashboard-shell *::before,
+.dashboard-shell *::after {
+  box-sizing: border-box;
+}
+
+.dashboard-shell__frame {
+  width: min(var(--levio-content-max), 100%);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 232px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.dashboard-sidebar,
+.dashboard-shell__header {
+  min-width: 0;
+  border: 1px solid var(--levio-border);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-surface);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.dashboard-sidebar::before,
+.dashboard-sidebar::after,
+.dashboard-shell__header::before,
+.dashboard-shell__header::after {
+  display: none;
+  content: none;
+}
+
+.dashboard-sidebar {
+  position: sticky;
+  top: max(20px, env(safe-area-inset-top));
+  min-height: calc(100svh - 48px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 22px;
+}
+
+.dashboard-shell .dashboard-brand {
+  position: static;
+  inset: auto;
+  width: max-content;
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--levio-brand);
+  text-decoration: none;
+  text-shadow: none;
+}
+
+.dashboard-shell .dashboard-brand .levio-mark {
+  width: 28px;
+  height: 28px;
+  flex: none;
+  border: 0;
+  background: transparent;
+}
+
+.dashboard-shell .dashboard-brand .levio-mark-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.dashboard-shell .dashboard-brand > span:last-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--levio-brand);
+  font-size: 1.25rem;
+  font-weight: 720;
+  letter-spacing: -0.04em;
+}
+
+.dashboard-sidebar > p {
+  margin: 0;
+  color: var(--levio-text-muted);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.dashboard-sidebar nav {
+  display: grid;
+  gap: 6px;
+}
+
+.dashboard-sidebar nav a {
+  position: static;
+  min-width: 0;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: var(--levio-radius-sm);
+  background: transparent;
+  color: var(--levio-text-secondary);
+  font-size: 0.9rem;
+  font-weight: 650;
+  text-decoration: none;
+  transition: none;
+}
+
+.dashboard-sidebar nav a::before,
+.dashboard-sidebar nav a::after {
+  display: none;
+  content: none;
+}
+
+.dashboard-sidebar nav a:hover {
+  border-color: var(--levio-border-strong);
+  background: var(--levio-surface-elevated);
+  color: var(--levio-text);
+}
+
+.dashboard-sidebar nav a.active,
+.dashboard-sidebar nav a[aria-current="page"] {
+  border-color: var(--levio-brand);
+  background: var(--levio-surface-elevated);
+  color: var(--levio-text);
+}
+
+.dashboard-nav-menu {
+  display: none;
+}
+
+.dashboard-nav-menu summary {
+  min-height: 48px;
+  display: grid;
+  gap: 3px;
+  padding: 9px 12px;
+  border: 1px solid var(--levio-border-strong);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-surface-elevated);
+  color: var(--levio-text);
+  cursor: pointer;
+  list-style-position: inside;
+}
+
+.dashboard-nav-menu summary span {
+  color: var(--levio-text-muted);
+  font-size: 0.72rem;
+}
+
+.dashboard-nav-menu summary strong {
+  color: var(--levio-text);
+  font-size: 0.9rem;
+}
+
+.dashboard-nav-menu nav {
+  margin-top: 8px;
+}
+
+.dashboard-sidebar-status {
+  min-width: 0;
+  margin-top: auto;
+  display: grid;
+  gap: 5px;
+  padding: 14px;
+  border: 1px solid var(--levio-border);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-surface-elevated);
+  box-shadow: none;
+}
+
+.dashboard-sidebar-status span,
+.dashboard-sidebar-status small {
+  min-width: 0;
+  color: var(--levio-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-sidebar-status strong {
+  color: var(--levio-text);
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-sidebar .ghost-button {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--levio-border-strong);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-surface-elevated);
+  box-shadow: none;
+  color: var(--levio-text-secondary);
+  cursor: pointer;
+}
+
+.dashboard-sidebar .ghost-button:hover {
+  border-color: var(--levio-text-muted);
+  background: var(--levio-surface-elevated);
+  color: var(--levio-text);
+}
+
+.dashboard-sidebar a:focus-visible,
+.dashboard-sidebar summary:focus-visible,
+.dashboard-sidebar button:focus-visible,
+.dashboard-shell__header a:focus-visible,
+.dashboard-shell--landing a:focus-visible,
+.dashboard-shell--landing button:focus-visible {
+  outline: 3px solid var(--levio-focus-ring);
+  outline-offset: 3px;
+}
+
+.dashboard-main {
+  min-width: 0;
+  display: grid;
+  gap: 18px;
+}
+
+.dashboard-shell__header {
+  min-height: 210px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: clamp(26px, 4vw, 44px);
+}
+
+.dashboard-shell__header > div:first-child {
+  min-width: 0;
+}
+
+.dashboard-shell__header .eyebrow {
+  margin: 0;
+  color: var(--levio-text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.dashboard-shell__header h1 {
+  max-width: 15ch;
+  margin: 12px 0 0;
+  color: var(--levio-text);
+  font-size: clamp(2.4rem, 4.8vw, 4.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.dashboard-shell__header p:not(.eyebrow) {
+  max-width: 68ch;
+  margin: 18px 0 0;
+  color: var(--levio-text-secondary);
+  font-size: 0.98rem;
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.dashboard-shell .privacy-state {
+  min-width: 150px;
+  padding: 14px;
+  border: 1px solid var(--levio-border);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-surface-elevated);
+  box-shadow: none;
+}
+
+.dashboard-shell .privacy-state span {
+  display: block;
+  color: var(--levio-text-muted);
+  font-size: 0.78rem;
+}
+
+.dashboard-shell .privacy-state strong {
+  display: block;
+  margin-top: 7px;
+  color: var(--levio-text);
+  font-size: 1rem;
+}
+
+.dashboard-shell--landing .dashboard-grid,
+.dashboard-shell--landing .decision-radar,
+.dashboard-shell--landing .dashboard-two-column {
+  display: grid;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.dashboard-shell--landing .dashboard-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.dashboard-shell--landing .decision-radar {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dashboard-shell--landing .dashboard-two-column {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dashboard-shell--landing .dashboard-card,
+.dashboard-shell--landing .radar-card,
+.dashboard-shell--landing .dashboard-landing-engine {
+  min-width: 0;
+  border: 1px solid var(--levio-border);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-surface);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.dashboard-shell--landing .dashboard-card::before,
+.dashboard-shell--landing .dashboard-card::after,
+.dashboard-shell--landing .radar-card::before,
+.dashboard-shell--landing .radar-card::after,
+.dashboard-shell--landing .dashboard-landing-engine::before,
+.dashboard-shell--landing .dashboard-landing-engine::after {
+  display: none;
+  content: none;
+}
+
+.dashboard-shell--landing .dashboard-card,
+.dashboard-shell--landing .radar-card {
+  height: 100%;
+  padding: 20px;
+}
+
+.dashboard-shell--landing .signal-card {
+  min-height: 148px;
+}
+
+.dashboard-shell--landing .dashboard-card span,
+.dashboard-shell--landing .radar-card span,
+.dashboard-shell--landing .active-simulation-panel span,
+.dashboard-shell--landing .engine-stage span,
+.dashboard-shell--landing .mini-timeline span {
+  display: block;
+  color: var(--levio-text-muted);
+  font-size: 0.8rem;
+}
+
+.dashboard-shell--landing .dashboard-card strong,
+.dashboard-shell--landing .radar-card strong,
+.dashboard-shell--landing .active-simulation-panel strong,
+.dashboard-shell--landing .engine-stage strong,
+.dashboard-shell--landing .mini-timeline strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--levio-text);
+}
+
+.dashboard-shell--landing .signal-card > strong {
+  font-size: 1.7rem;
+}
+
+.dashboard-shell--landing .dashboard-card p,
+.dashboard-shell--landing .radar-card p,
+.dashboard-shell--landing .active-simulation-panel p,
+.dashboard-shell--landing .mini-timeline p {
+  margin: 10px 0 0;
+  color: var(--levio-text-secondary);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-shell--landing .dashboard-card h2 {
+  margin: 0 0 18px;
+  color: var(--levio-text);
+  font-size: clamp(1.35rem, 2.2vw, 1.9rem);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+.dashboard-landing-engine {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+  gap: 24px;
+  align-items: start;
+  padding: clamp(22px, 3.5vw, 36px);
+}
+
+.dashboard-landing-engine .eyebrow {
+  margin: 0;
+  color: var(--levio-text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dashboard-landing-engine h2 {
+  margin: 12px 0 0;
+  color: var(--levio-text);
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.dashboard-shell--landing .engine-stage-list {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.dashboard-shell--landing .engine-stage,
+.dashboard-shell--landing .active-simulation-panel,
+.dashboard-shell--landing .compact-list > div,
+.dashboard-shell--landing .mini-timeline > div,
+.dashboard-shell--landing .memory-status-strip {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--levio-border);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-surface-elevated);
+  box-shadow: none;
+}
+
+.dashboard-shell--landing .active-simulation-panel {
+  padding: 18px;
+}
+
+.dashboard-shell--landing .signal-track {
+  position: relative;
+  height: 8px;
+  margin: 18px 0;
+  overflow: hidden;
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-border);
+  box-shadow: none;
+}
+
+.dashboard-shell--landing .signal-track span {
+  display: block;
+  width: var(--value);
+  height: 100%;
+  border-radius: inherit;
+  background: var(--levio-text-secondary);
+  box-shadow: none;
+}
+
+.dashboard-shell--landing .compact-list,
+.dashboard-shell--landing .mini-timeline {
+  display: grid;
+  gap: 10px;
+}
+
+.dashboard-shell--landing .dashboard-action {
+  min-height: 44px;
+  width: max-content;
+  max-width: 100%;
+  margin-top: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  border: 1px solid var(--levio-border-strong);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-surface-elevated);
+  color: var(--levio-text);
+  font-size: 0.88rem;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.dashboard-shell--landing .dashboard-action[href="/#decision-input"] {
+  border-color: var(--levio-brand);
+  background: var(--levio-brand);
+  color: var(--levio-bg);
+}
+
+.dashboard-shell--landing .dashboard-action:hover {
+  border-color: var(--levio-text-muted);
+}
+
+.dashboard-shell--landing .dashboard-action[href="/#decision-input"]:hover {
+  border-color: var(--levio-brand-hover);
+  background: var(--levio-brand-hover);
+}
+
+.dashboard-shell--landing .unavailable-action {
+  min-width: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.dashboard-shell--landing .unavailable-action button {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--levio-border);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-surface);
+  color: var(--levio-text-muted);
+  box-shadow: none;
+}
+
+.dashboard-shell--landing .unavailable-action button:disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+.dashboard-shell--landing .unavailable-action small {
+  color: var(--levio-text-muted);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-shell--landing .memory-status-strip {
+  margin-top: 18px;
+}
+
+@media (max-width: 900px) {
+  .dashboard-shell__frame {
+    width: min(100%, 700px);
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .dashboard-sidebar {
+    position: relative;
+    top: auto;
+    min-height: auto;
+    gap: 14px;
+  }
+
+  .dashboard-sidebar > p {
+    display: none;
+  }
+
+  .dashboard-sidebar .dashboard-sidebar-nav {
+    display: none;
+  }
+
+  .dashboard-nav-menu {
+    display: block;
+  }
+
+  .dashboard-sidebar-status {
+    margin-top: 0;
+  }
+
+  .dashboard-shell__header {
+    min-height: auto;
+    display: grid;
+    align-items: start;
+    gap: 18px;
+  }
+
+  .dashboard-shell .privacy-state {
+    min-width: 0;
+  }
+
+  .dashboard-shell--landing .dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-shell--landing .decision-radar,
+  .dashboard-shell--landing .dashboard-two-column,
+  .dashboard-landing-engine {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .dashboard-shell {
+    padding-inline:
+      max(9px, env(safe-area-inset-left))
+      max(9px, env(safe-area-inset-right));
+  }
+
+  .dashboard-sidebar,
+  .dashboard-shell__header,
+  .dashboard-shell--landing .dashboard-card,
+  .dashboard-shell--landing .radar-card,
+  .dashboard-landing-engine {
+    padding: 18px;
+  }
+
+  .dashboard-nav-menu nav,
+  .dashboard-shell--landing .dashboard-grid,
+  .dashboard-shell--landing .engine-stage-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dashboard-shell__header h1 {
+    font-size: clamp(2.2rem, 11vw, 3.1rem);
+  }
+
+  .dashboard-shell--landing .dashboard-action {
+    width: 100%;
+  }
+}
