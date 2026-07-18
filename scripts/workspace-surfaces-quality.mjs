@@ -373,6 +373,7 @@ const allowedScope = new Set([
   "components/SimulationsList.tsx",
   "package.json",
   "scripts/dashboard-shell-landing-quality.mjs",
+  "scripts/homepage-one-time-assembly-refinement-quality.mjs",
   "scripts/privacy-data-controls-shared-states-visual-quality.mjs",
   "scripts/saved-simulations-and-drafts-visual-quality.mjs",
   "scripts/visual-migration-closure-quality.mjs",

@@ -105,6 +105,7 @@ check("No new Stage or Batch is introduced", ["LEVIO_IMPLEMENTATION_PLAN.md", "C
 
 const allowed = new Set([
   ...removedFiles, "app/styles/motion.css", "package.json", "scripts/dashboard-shell-landing-quality.mjs",
+  "scripts/homepage-one-time-assembly-refinement-quality.mjs",
   "scripts/workspace-surfaces-quality.mjs", "scripts/saved-simulations-and-drafts-visual-quality.mjs",
   "scripts/privacy-data-controls-shared-states-visual-quality.mjs", "scripts/visual-migration-closure-quality.mjs",
 ]);

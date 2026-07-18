@@ -9,6 +9,7 @@ const css = read("app", "styles", "homepage.css");
 const controller = read("components", "HomepageAssemblyController.tsx");
 const navigation = read("components", "HomepageNavigation.tsx");
 const simulator = read("components", "HomeSimulator.tsx");
+const brandLockup = read("components", "BrandLockup.tsx");
 const mark = read("components", "LevioMark.tsx");
 const simulateRoute = read("app", "api", "simulate", "route.ts");
 const packageJson = read("package.json");
@@ -137,13 +138,24 @@ includes(previewBlock, 'data-home-assembly-settle-mobile-ms="1080"', "Mobile set
 includes(controller, "const needsSeparatedPendingPaint = target.matches(PREVIEW_SELECTOR);", "Process narrative uses the same paint-ready frame sequence as the working capability heading");
 includes(controller, "needsSeparatedPendingPaint ? 2 : 1", "Preview alone retains its dedicated two-frame paint sequence");
 
-includes(headerBlock, '<LevioMark size="lg" priority />', "Above-the-fold header mark requests priority loading");
+check(
+  "Above-the-fold BrandLockup requests and forwards priority loading",
+  home.includes('import BrandLockup from "../components/BrandLockup";') &&
+    !home.includes('import LevioMark from "../components/LevioMark";') &&
+    /<BrandLockup\b(?=[^>]*\bmarkSize="lg")(?=[^>]*\bpriority(?=\s|\/>))[^>]*\/>/.test(headerBlock) &&
+    brandLockup.includes("<LevioMark size={markSize} priority={priority} />"),
+  "Expected the homepage BrandLockup import, a large priority header invocation, and priority forwarding to LevioMark.",
+);
 includes(mark, "priority?: boolean", "Levio mark exposes a bounded priority option");
 includes(mark, "priority={priority}", "Levio mark forwards Next/Image priority semantics");
 includes(mark, 'src="/levio-reference-mark.png"', "Exact approved ring asset remains in use");
 includes(css, ".minimal-home .levio-mark {\n  background: transparent", "Homepage mark has no opaque black first-paint placeholder");
 includes(css, ".minimal-home .levio-mark-lg {\n  width: 38px;\n  height: 38px", "Header mark reserves fixed dimensions against layout shift");
-excludes(footerBlock, '<LevioMark size="md" priority', "Footer mark is not unnecessarily high priority");
+check(
+  "Footer BrandLockup is not unnecessarily high priority",
+  !/<BrandLockup\b[^>]*\bpriority(?=\s|\/>)/.test(footerBlock),
+  "The footer BrandLockup must not request priority loading.",
+);
 
 includes(processBlock, 'data-home-assembly-trigger="section"', "Process section uses a later section trigger");
 includes(capabilityBlock, 'data-home-assembly-trigger="section"', "Capabilities section uses a later section trigger");
