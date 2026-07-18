@@ -179,6 +179,27 @@ The recommendation must include:
 - practical next steps;
 - unresolved uncertainty.
 
+### 4.11 Accept Provider Candidate Material Without Silent Loss
+
+When a future provider boundary supplies candidate decision material, the
+Decision Engine remains the sole product authority. It must validate the rich
+material contract before any scenario, risk, comparison, recommendation,
+refusal, or user-facing uncertainty state can use it.
+
+Each candidate item must receive an explicit disposition: accepted, accepted
+with normalization, merged as a duplicate, rejected with a concrete boundary
+reason, or controlled failure. Accepted and merged items retain source
+traceability; rejected items retain the reason they have no downstream mapping.
+An assumption cannot become a fact, an unknown cannot become a conclusion, a
+risk cannot replace a benefit, and a short-term consequence cannot replace a
+long-term consequence. No unvalidated provider output may enter this pipeline.
+
+The Decision Engine must preserve useful candidate depth while adding at least
+one substantive product transformation: scenario mapping, criterion mapping,
+epistemic classification, dependency or trigger discovery, consequence horizon,
+reversibility, clarification need, uncertainty handling, or traceability.
+Concise rewriting alone does not satisfy this value-add boundary.
+
 ## 5. Decision Types
 
 The initial conceptual taxonomy is:

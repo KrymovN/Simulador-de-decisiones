@@ -83,6 +83,40 @@ An AI provider must not decide:
 
 The provider produces candidates. Levio decides whether they are valid and usable.
 
+### AI capability preservation and decision authority invariant
+
+Levio must not arbitrarily reduce the useful intellectual depth of provider
+material. Provider material remains untrusted and candidate-only, but every
+valid and relevant candidate must retain its essential meaning unless an
+explicit safety, privacy, invalidity, contradiction, duplication, irrelevance,
+unsupported-certainty, or unsupported-authority reason requires normalization,
+merging, or rejection.
+
+The provider is never the recommendation authority. Final scenarios, product
+risk findings, comparisons, recommendation framework, refusals, and uncertainty
+presentation belong to the Decision Engine. Provider material may not change
+user goals, safety/refusal state, ownership, consent, or product authority.
+
+Levio must not silently degrade provider material. Every observed candidate
+item requires a semantic-preservation ledger entry containing its stable source
+identifier, original type, disposition, machine-readable reason, normalized or
+merged target when applicable, downstream mapping status, and traceability
+marker. The hard invariant is `silent_drop_count === 0`. Raw provider prompts,
+raw responses, hidden reasoning, secrets, and personal data are not durable
+product records.
+
+Levio adds value only through a substantive decision transformation, including
+scenario or criterion mapping, fact/assumption/unknown separation, dependency
+or trigger identification, consequence-horizon classification, reversibility,
+clarification need, uncertainty preservation, or traceability. Shortening or
+restyling provider prose alone is not transformation value.
+
+`candidate_risk_signals_v1` remains the implemented narrow synthetic risk
+capability slice. `candidate_decision_material_v1` is a separate internal,
+provider-neutral rich material foundation for future product composition. It is
+not connected to Prompt Context, the Decision Engine runtime, public API,
+Simulator, persistence, or live provider execution.
+
 ## 4. AI Provider Neutrality
 
 Provider neutrality means Levio depends on its own capabilities and contracts, not a provider's native API shape.

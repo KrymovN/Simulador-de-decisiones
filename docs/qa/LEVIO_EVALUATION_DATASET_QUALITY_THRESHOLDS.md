@@ -104,6 +104,36 @@ Evaluation findings should create future automated regression tests wherever a d
 13. Averages must not hide critical failures.
 14. Dataset versions, policy versions, and review outcomes must be traceable.
 
+### Provider-material preservation and value-add evaluation
+
+Offline AI evaluation must compare three distinct layers:
+
+1. provider candidate material;
+2. accepted or normalized candidate material plus its preservation ledger;
+3. fixture-based or future Levio decision composition.
+
+The evaluation model measures semantic coverage, silent loss, traceability
+coverage, fact/assumption/unknown separation, option and scenario mapping,
+criterion mapping, uncertainty preservation, duplicate removal, authority
+violations, unsupported certainty, and meaningful transformation. A rich
+provider response must not be collapsed automatically into risk signals only.
+
+The following are hard failures regardless of aggregate score:
+
+- `silent_drop_count` greater than zero;
+- lost or broken traceability;
+- provider recommendation material accepted as product authority;
+- an assumption converted into a fact or an unknown converted into a conclusion;
+- a rejected item without a machine-readable reason;
+- raw provider output entering public output or persistence;
+- personal-data provider scope being opened;
+- any change to the deterministic public `mockOnly` path.
+
+The bounded Stage 9 foundation uses 24 new zero-network rich-material fixtures
+in addition to the existing 32 synthetic risk fixtures. This 56-fixture combined
+offline count remains an implementation foundation, not completion of the
+canonical minimum 160-case pre-integration dataset and not a readiness claim.
+
 ## 5. Evaluation Dataset Structure
 
 The future dataset should contain:

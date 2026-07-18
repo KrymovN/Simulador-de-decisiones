@@ -170,12 +170,17 @@ for (const path of [
 for (const directory of ["app/dashboard/simulations", "app/dashboard/drafts", "app/dashboard/decisions", "app/dashboard/memory", "app/dashboard/profile", "app/dashboard/security"]) check(`${directory} remains outside Batch 7`, directoryMatches(directory));
 
 const allowed = new Set([
+  "docs/architecture/LEVIO_AI_ABSTRACTION_OBSERVABILITY_COSTS.md",
+  "docs/architecture/LEVIO_DECISION_ENGINE.md", "docs/qa/LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md",
+  "lib/ai-decision-material/acceptance.ts", "lib/ai-decision-material/contracts.ts",
+  "lib/ai-decision-material/evaluation.ts", "lib/ai-decision-material/fixtures.ts",
   "app/styles/motion.css", "components/DecisionSingularity.tsx", "components/DecisionSingularity.module.css",
   "components/DecisionSingularityWebGL.tsx", "components/DecisionSingularityWebGL.module.css",
   "components/DecisionSphereVisual.tsx", "components/DecisionSphereVisual.module.css",
   "components/SimulationDetailClient.tsx", "components/SimulationsList.tsx", "package.json",
   "scripts/dashboard-shell-landing-quality.mjs", "scripts/workspace-surfaces-quality.mjs",
   "scripts/homepage-one-time-assembly-refinement-quality.mjs",
+  "scripts/stage-9-ai-value-preservation-quality.mjs",
   "scripts/saved-simulations-and-drafts-visual-quality.mjs", "scripts/privacy-data-controls-shared-states-visual-quality.mjs",
   "scripts/visual-migration-closure-quality.mjs",
 ]);

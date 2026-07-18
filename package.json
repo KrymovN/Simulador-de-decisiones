@@ -31,6 +31,7 @@
     "quality:stage-7-user-triggered-draft-deletion-surface": "node scripts/stage-7-user-triggered-draft-deletion-surface-quality.mjs",
     "quality:stage-9-openai-synthetic-risk-adapter": "node scripts/stage-9-openai-synthetic-risk-adapter-quality.mjs",
     "quality:stage-9-synthetic-risk-evaluation": "node scripts/stage-9-synthetic-risk-evaluation-quality.mjs",
+    "quality:stage-9-ai-value-preservation": "node scripts/stage-9-ai-value-preservation-quality.mjs",
     "quality:block-b-auth-action-boundary": "node scripts/block-b-auth-action-boundary-quality.mjs",
     "quality:block-b-email-flow": "node scripts/block-b-email-flow-quality.mjs",
     "quality:block-b-session-lifecycle": "node scripts/block-b-session-lifecycle-quality.mjs",
