@@ -44,7 +44,7 @@ const privacyActions = [
 export default function PrivacyPanel() {
   return (
     <div className="privacy-layout">
-      <section className="dashboard-card section-frame">
+      <section className="dashboard-card privacy-controls-card privacy-controls-rights">
         <p className="eyebrow">Derechos del usuario</p>
         <h2>Controles preparados sobre datos personales.</h2>
         <div className="rights-grid">
@@ -56,7 +56,7 @@ export default function PrivacyPanel() {
 
       <section className="privacy-actions">
         {privacyActions.map((action) => (
-          <article className="dashboard-card section-frame" key={action.title}>
+          <article className="dashboard-card privacy-controls-card" key={action.title}>
             <h3>{action.title}</h3>
             <p>{action.copy}</p>
             {"href" in action ? (

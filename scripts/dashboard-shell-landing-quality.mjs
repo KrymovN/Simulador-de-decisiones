@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import ts from "typescript";
 
 const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
-const baseline = "e49f80f0f32cc2528c9c7ea438a650108d3cf839";
+const baseline = "75b56411cb6d7b9e246478736524260c4706284c";
 const read = (...segments) => readFileSync(join(rootDir, ...segments), "utf8");
 const baselineFile = (path) => execFileSync("git", ["show", `${baseline}:${path}`], {
   cwd: rootDir,
@@ -231,12 +231,6 @@ for (const path of [
   check(`${path} preserves dashboard/auth behaviour byte-for-byte`, read(path) === baselineFile(path));
 }
 
-for (const path of [
-  "app/dashboard/privacy/page.tsx",
-]) {
-  check(`${path} remains outside the completed Batch 4 migration`, read(path) === baselineFile(path));
-}
-
 for (const directory of [
   "app/api",
   "supabase",
@@ -282,15 +276,13 @@ for (const path of [
 }
 
 const allowedScope = new Set([
-  "app/dashboard/simulations/page.tsx",
-  "app/dashboard/simulations/[id]/page.tsx",
-  "app/dashboard/drafts/[id]/page.tsx",
+  "app/dashboard/privacy/page.tsx",
   "app/layout.tsx",
-  "app/styles/saved-records-surfaces.css",
-  "components/SavedSimulationsHistorySurface.tsx",
-  "components/SimulationDraftResumeSurface.tsx",
+  "app/styles/privacy-data-controls.css",
+  "components/PrivacyPanel.tsx",
   "package.json",
   "scripts/dashboard-shell-landing-quality.mjs",
+  "scripts/privacy-data-controls-shared-states-visual-quality.mjs",
   "scripts/saved-simulations-and-drafts-visual-quality.mjs",
   "scripts/workspace-surfaces-quality.mjs",
 ]);
@@ -304,7 +296,7 @@ const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standa
 }).trim().split("\n").filter(Boolean);
 const actualScope = Array.from(new Set([...tracked, ...untracked])).sort();
 check(
-  "Completed Batch 4 stays closed while Batch 6 proceeds",
+  "Completed Batch 4 stays closed while Batch 7 proceeds",
   actualScope.every((path) => allowedScope.has(path)),
   `Unexpected files: ${actualScope.filter((path) => !allowedScope.has(path)).join(", ")}`,
 );

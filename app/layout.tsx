@@ -7,6 +7,7 @@ import './styles/auth.css';
 import './styles/dashboard-shell.css';
 import './styles/workspace-surfaces.css';
 import './styles/saved-records-surfaces.css';
+import './styles/privacy-data-controls.css';
 import './styles/public-secondary.css';
 import './styles/homepage.css';
 import type { Metadata } from 'next';

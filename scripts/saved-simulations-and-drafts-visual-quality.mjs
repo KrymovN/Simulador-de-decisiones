@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import ts from "typescript";
 
 const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
-const baseline = "e49f80f0f32cc2528c9c7ea438a650108d3cf839";
+const baseline = "75b56411cb6d7b9e246478736524260c4706284c";
 const read = (path) => readFileSync(join(rootDir, path), "utf8");
 const before = (path) => execFileSync("git", ["show", `${baseline}:${path}`], { cwd: rootDir, encoding: "utf8" });
 const routes = [
@@ -166,22 +166,23 @@ includes(packageJson, '"quality:saved-simulations-and-drafts-visual": "node scri
 
 for (const directory of ["app/api", "supabase", "lib"]) check(`${directory} preserves API, persistence, owner and lifecycle contracts`, directoryMatches(directory));
 for (const path of [
-  "app/dashboard/privacy/page.tsx", "components/PrivacyPanel.tsx", "app/page.tsx", "components/HomeSimulator.tsx",
+  "app/page.tsx", "components/HomeSimulator.tsx",
   "app/styles/dashboard-shell.css", "app/styles/workspace-surfaces.css", "app/styles/auth.css", "app/styles/public-secondary.css",
   "LEVIO_PROJECT_CONSTITUTION.md", "PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", "CURRENT_STAGE.md",
   "LEVIO_CURRENT_STATE.md", "LEVIO_PROJECT_PROGRESS.md",
 ]) check(`${path} remains byte-identical to the approved baseline`, read(path) === before(path));
 
 const allowed = new Set([
-  ...routes, ...components, "app/layout.tsx", "app/styles/saved-records-surfaces.css", "package.json",
+  "app/dashboard/privacy/page.tsx", "components/PrivacyPanel.tsx", "app/layout.tsx",
+  "app/styles/privacy-data-controls.css", "package.json",
   "scripts/dashboard-shell-landing-quality.mjs", "scripts/workspace-surfaces-quality.mjs",
-  "scripts/saved-simulations-and-drafts-visual-quality.mjs",
+  "scripts/saved-simulations-and-drafts-visual-quality.mjs", "scripts/privacy-data-controls-shared-states-visual-quality.mjs",
 ]);
 const tracked = execFileSync("git", ["diff", "--name-only", baseline], { cwd: rootDir, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: rootDir, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const actual = Array.from(new Set([...tracked, ...untracked])).sort();
-check("Diff stays inside the approved Batch 6 file set", actual.every((path) => allowed.has(path)), `Unexpected files: ${actual.filter((path) => !allowed.has(path)).join(", ")}`);
-check("Batch 7 remains closed", directoryMatches("app/dashboard/privacy") && read("components/PrivacyPanel.tsx") === before("components/PrivacyPanel.tsx"));
+check("Completed Batch 6 stays closed during Batch 7", actual.every((path) => allowed.has(path)), `Unexpected files: ${actual.filter((path) => !allowed.has(path)).join(", ")}`);
+check("Batch 8 remains closed", read("app/globals.css") === before("app/globals.css"));
 
 const failed = checks.filter((item) => !item.passed);
 for (const item of checks) {

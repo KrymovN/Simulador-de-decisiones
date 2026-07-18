@@ -1,0 +1,185 @@
+.privacy-controls-surface {
+  min-width: 0;
+  display: grid;
+  gap: 16px;
+  overflow-x: clip;
+  color: var(--levio-text);
+  font-family: var(--levio-font-sans);
+}
+
+.privacy-controls-surface .privacy-controls-card,
+.privacy-controls-surface .privacy-controls-state {
+  min-width: 0;
+  border: 1px solid var(--levio-border);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-surface);
+  color: var(--levio-text-secondary);
+  box-shadow: none;
+}
+
+.privacy-controls-surface .privacy-controls-state {
+  padding: clamp(20px, 4vw, 32px);
+}
+
+.privacy-controls-surface .privacy-controls-state--success {
+  border-color: var(--levio-success);
+}
+
+.privacy-controls-surface .privacy-controls-summary {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.privacy-controls-surface .privacy-controls-summary .privacy-controls-card {
+  min-height: 132px;
+  justify-content: space-between;
+}
+
+.privacy-controls-surface .privacy-controls-card {
+  padding: 22px;
+}
+
+.privacy-controls-surface h2,
+.privacy-controls-surface h3,
+.privacy-controls-surface strong {
+  color: var(--levio-text);
+}
+
+.privacy-controls-surface p,
+.privacy-controls-surface span,
+.privacy-controls-surface small,
+.privacy-controls-surface h2,
+.privacy-controls-surface h3,
+.privacy-controls-surface strong {
+  overflow-wrap: anywhere;
+}
+
+.privacy-controls-surface .privacy-layout {
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 16px;
+}
+
+.privacy-controls-surface .privacy-controls-rights {
+  align-self: start;
+}
+
+.privacy-controls-surface .rights-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.privacy-controls-surface .rights-grid span {
+  min-width: 0;
+  border: 1px solid var(--levio-border);
+  border-radius: var(--levio-radius-sm);
+  padding: 12px;
+  background: var(--levio-surface-elevated);
+  color: var(--levio-text-secondary);
+}
+
+.privacy-controls-surface .privacy-actions {
+  display: grid;
+  gap: 12px;
+}
+
+.privacy-controls-surface .privacy-actions .privacy-controls-card {
+  gap: 10px;
+}
+
+.privacy-controls-surface .privacy-actions .privacy-controls-card:nth-child(2) {
+  border-color: var(--levio-error);
+}
+
+.privacy-controls-surface .privacy-actions .privacy-controls-card:nth-child(3) {
+  border-color: var(--levio-warning);
+}
+
+.privacy-controls-surface .button-link,
+.privacy-controls-surface button {
+  min-height: 44px;
+  border: 1px solid var(--levio-border-strong);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-surface-elevated);
+  color: var(--levio-text);
+  box-shadow: none;
+}
+
+.privacy-controls-surface .button-link {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  padding: 10px 14px;
+  text-decoration: none;
+}
+
+.privacy-controls-surface .privacy-actions .privacy-controls-card:first-child .button-link {
+  border-color: var(--levio-brand);
+  background: var(--levio-brand);
+  color: var(--levio-bg);
+}
+
+.privacy-controls-surface .privacy-actions .privacy-controls-card:first-child .button-link:hover {
+  border-color: var(--levio-brand-hover);
+  background: var(--levio-brand-hover);
+}
+
+.privacy-controls-surface .privacy-actions .privacy-controls-card:nth-child(2) .button-link {
+  border-color: var(--levio-error);
+  color: var(--levio-error);
+}
+
+.privacy-controls-surface .privacy-actions .privacy-controls-card:nth-child(3) .button-link {
+  border-color: var(--levio-warning);
+  color: var(--levio-warning);
+}
+
+.privacy-controls-surface .unavailable-action {
+  display: grid;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.privacy-controls-surface .unavailable-action small {
+  color: var(--levio-text-muted);
+  line-height: 1.55;
+}
+
+.privacy-controls-surface button:disabled {
+  cursor: not-allowed;
+  border-color: var(--levio-border);
+  background: var(--levio-surface-elevated);
+  color: var(--levio-text-muted);
+  opacity: 0.62;
+}
+
+.privacy-controls-surface :is(a, button):focus-visible {
+  outline: 3px solid var(--levio-focus-ring);
+  outline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  .privacy-controls-surface .privacy-controls-summary,
+  .privacy-controls-surface .privacy-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .privacy-controls-surface .rights-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .privacy-controls-surface .privacy-controls-card,
+  .privacy-controls-surface .privacy-controls-state {
+    padding: 18px;
+  }
+
+  .privacy-controls-surface .button-link,
+  .privacy-controls-surface .unavailable-action,
+  .privacy-controls-surface .unavailable-action button {
+    width: 100%;
+  }
+}

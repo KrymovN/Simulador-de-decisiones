@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import ts from "typescript";
 
 const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
-const baseline = "e49f80f0f32cc2528c9c7ea438a650108d3cf839";
+const baseline = "75b56411cb6d7b9e246478736524260c4706284c";
 const read = (...segments) => readFileSync(join(rootDir, ...segments), "utf8");
 const baselineFile = (path) => execFileSync("git", ["show", `${baseline}:${path}`], {
   cwd: rootDir,
@@ -328,13 +328,6 @@ for (const directory of [
 }
 
 for (const path of [
-  "app/dashboard/privacy/page.tsx",
-  "components/PrivacyPanel.tsx",
-]) {
-  check(`${path} remains outside Batch 6`, read(...path.split("/")) === baselineFile(path));
-}
-
-for (const path of [
   "app/page.tsx",
   "components/HomeSimulator.tsx",
   "app/styles/auth.css",
@@ -369,15 +362,13 @@ for (const routeDirectory of [
 }
 
 const allowedScope = new Set([
-  "app/dashboard/simulations/page.tsx",
-  "app/dashboard/simulations/[id]/page.tsx",
-  "app/dashboard/drafts/[id]/page.tsx",
+  "app/dashboard/privacy/page.tsx",
   "app/layout.tsx",
-  "app/styles/saved-records-surfaces.css",
-  "components/SavedSimulationsHistorySurface.tsx",
-  "components/SimulationDraftResumeSurface.tsx",
+  "app/styles/privacy-data-controls.css",
+  "components/PrivacyPanel.tsx",
   "package.json",
   "scripts/dashboard-shell-landing-quality.mjs",
+  "scripts/privacy-data-controls-shared-states-visual-quality.mjs",
   "scripts/saved-simulations-and-drafts-visual-quality.mjs",
   "scripts/workspace-surfaces-quality.mjs",
 ]);
@@ -391,11 +382,11 @@ const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standa
 }).trim().split("\n").filter(Boolean);
 const actualScope = Array.from(new Set([...tracked, ...untracked])).sort();
 check(
-  "Completed workspace migration stays closed during Batch 6",
+  "Completed workspace migration stays closed during Batch 7",
   actualScope.every((path) => allowedScope.has(path)),
   `Unexpected files: ${actualScope.filter((path) => !allowedScope.has(path)).join(", ")}`,
 );
-check("Batch 7 privacy controls remain closed", directoryMatchesBaseline("app/dashboard/privacy"));
+check("Batch 8 legacy cleanup remains closed", read("app/globals.css") === baselineFile("app/globals.css"));
 
 const failed = checks.filter((item) => !item.passed);
 for (const item of checks) {
