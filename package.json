@@ -45,6 +45,7 @@
     "quality:workspace-surfaces": "node scripts/workspace-surfaces-quality.mjs",
     "quality:saved-simulations-and-drafts-visual": "node scripts/saved-simulations-and-drafts-visual-quality.mjs",
     "quality:privacy-data-controls-shared-states-visual": "node scripts/privacy-data-controls-shared-states-visual-quality.mjs",
+    "quality:visual-migration-closure": "node scripts/visual-migration-closure-quality.mjs",
     "quality:public-home-simulator-api-integration": "node scripts/public-home-simulator-api-integration-quality.mjs",
     "quality:public-site-trust-readiness": "node scripts/public-site-trust-readiness-quality.mjs",
     "quality:rendered-public-surface-regression": "node scripts/rendered-public-surface-regression-quality.mjs",

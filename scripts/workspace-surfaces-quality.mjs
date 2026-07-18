@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import ts from "typescript";
 
 const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
-const baseline = "75b56411cb6d7b9e246478736524260c4706284c";
+const baseline = "4d4f58750cf0bbc95f7dbb162d9209c9e2ddc043";
 const read = (...segments) => readFileSync(join(rootDir, ...segments), "utf8");
 const baselineFile = (path) => execFileSync("git", ["show", `${baseline}:${path}`], {
   cwd: rootDir,
@@ -362,14 +362,20 @@ for (const routeDirectory of [
 }
 
 const allowedScope = new Set([
-  "app/dashboard/privacy/page.tsx",
-  "app/layout.tsx",
-  "app/styles/privacy-data-controls.css",
-  "components/PrivacyPanel.tsx",
+  "app/styles/motion.css",
+  "components/DecisionSingularity.tsx",
+  "components/DecisionSingularity.module.css",
+  "components/DecisionSingularityWebGL.tsx",
+  "components/DecisionSingularityWebGL.module.css",
+  "components/DecisionSphereVisual.tsx",
+  "components/DecisionSphereVisual.module.css",
+  "components/SimulationDetailClient.tsx",
+  "components/SimulationsList.tsx",
   "package.json",
   "scripts/dashboard-shell-landing-quality.mjs",
   "scripts/privacy-data-controls-shared-states-visual-quality.mjs",
   "scripts/saved-simulations-and-drafts-visual-quality.mjs",
+  "scripts/visual-migration-closure-quality.mjs",
   "scripts/workspace-surfaces-quality.mjs",
 ]);
 const tracked = execFileSync("git", ["diff", "--name-only", baseline], {
@@ -382,11 +388,11 @@ const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standa
 }).trim().split("\n").filter(Boolean);
 const actualScope = Array.from(new Set([...tracked, ...untracked])).sort();
 check(
-  "Completed workspace migration stays closed during Batch 7",
+  "Completed workspace migration stays closed during final cleanup",
   actualScope.every((path) => allowedScope.has(path)),
   `Unexpected files: ${actualScope.filter((path) => !allowedScope.has(path)).join(", ")}`,
 );
-check("Batch 8 legacy cleanup remains closed", read("app/globals.css") === baselineFile("app/globals.css"));
+check("Final cleanup does not rewrite globals.css", read("app/globals.css") === baselineFile("app/globals.css"));
 
 const failed = checks.filter((item) => !item.passed);
 for (const item of checks) {

@@ -162,18 +162,6 @@
   }
 }
 
-@keyframes pulseExpand {
-  0%,
-  100% {
-    transform: scale(0.9);
-    opacity: 0.22;
-  }
-  50% {
-    transform: scale(1.08);
-    opacity: 0.55;
-  }
-}
-
 @keyframes orbitSpin {
   to {
     rotate: 360deg;

@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import ts from "typescript";
 
 const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
-const baseline = "75b56411cb6d7b9e246478736524260c4706284c";
+const baseline = "4d4f58750cf0bbc95f7dbb162d9209c9e2ddc043";
 const read = (path) => readFileSync(join(rootDir, path), "utf8");
 const before = (path) => execFileSync("git", ["show", `${baseline}:${path}`], { cwd: rootDir, encoding: "utf8" });
 const routes = [
@@ -173,16 +173,19 @@ for (const path of [
 ]) check(`${path} remains byte-identical to the approved baseline`, read(path) === before(path));
 
 const allowed = new Set([
-  "app/dashboard/privacy/page.tsx", "components/PrivacyPanel.tsx", "app/layout.tsx",
-  "app/styles/privacy-data-controls.css", "package.json",
+  "app/styles/motion.css", "components/DecisionSingularity.tsx", "components/DecisionSingularity.module.css",
+  "components/DecisionSingularityWebGL.tsx", "components/DecisionSingularityWebGL.module.css",
+  "components/DecisionSphereVisual.tsx", "components/DecisionSphereVisual.module.css",
+  "components/SimulationDetailClient.tsx", "components/SimulationsList.tsx", "package.json",
   "scripts/dashboard-shell-landing-quality.mjs", "scripts/workspace-surfaces-quality.mjs",
   "scripts/saved-simulations-and-drafts-visual-quality.mjs", "scripts/privacy-data-controls-shared-states-visual-quality.mjs",
+  "scripts/visual-migration-closure-quality.mjs",
 ]);
 const tracked = execFileSync("git", ["diff", "--name-only", baseline], { cwd: rootDir, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: rootDir, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const actual = Array.from(new Set([...tracked, ...untracked])).sort();
-check("Completed Batch 6 stays closed during Batch 7", actual.every((path) => allowed.has(path)), `Unexpected files: ${actual.filter((path) => !allowed.has(path)).join(", ")}`);
-check("Batch 8 remains closed", read("app/globals.css") === before("app/globals.css"));
+check("Completed Batch 6 stays closed during final cleanup", actual.every((path) => allowed.has(path)), `Unexpected files: ${actual.filter((path) => !allowed.has(path)).join(", ")}`);
+check("Final cleanup does not rewrite globals.css", read("app/globals.css") === before("app/globals.css"));
 
 const failed = checks.filter((item) => !item.passed);
 for (const item of checks) {

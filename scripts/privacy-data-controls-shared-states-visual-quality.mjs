@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import ts from "typescript";
 
 const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
-const baseline = "75b56411cb6d7b9e246478736524260c4706284c";
+const baseline = "4d4f58750cf0bbc95f7dbb162d9209c9e2ddc043";
 const read = (path) => readFileSync(join(rootDir, path), "utf8");
 const before = (path) => execFileSync("git", ["show", `${baseline}:${path}`], { cwd: rootDir, encoding: "utf8" });
 const pagePath = "app/dashboard/privacy/page.tsx";
@@ -150,7 +150,7 @@ const designIndex = layout.indexOf("import './styles/design-system.css';");
 const savedIndex = layout.indexOf("import './styles/saved-records-surfaces.css';");
 const privacyIndex = layout.indexOf("import './styles/privacy-data-controls.css';");
 check("Batch 7 stylesheet loads after foundation, legacy and prior dashboard batches", designIndex >= 0 && savedIndex > designIndex && privacyIndex > savedIndex);
-check("Root metadata and non-style layout contracts remain exact", layout.replace("import './styles/privacy-data-controls.css';\n", "") === before("app/layout.tsx"));
+check("Root metadata and layout contracts remain exact", layout === before("app/layout.tsx"));
 includes(packageJson, '"quality:privacy-data-controls-shared-states-visual": "node scripts/privacy-data-controls-shared-states-visual-quality.mjs"', "Dedicated Batch 7 gate is registered");
 
 for (const path of [
@@ -170,15 +170,19 @@ for (const path of [
 for (const directory of ["app/dashboard/simulations", "app/dashboard/drafts", "app/dashboard/decisions", "app/dashboard/memory", "app/dashboard/profile", "app/dashboard/security"]) check(`${directory} remains outside Batch 7`, directoryMatches(directory));
 
 const allowed = new Set([
-  pagePath, panelPath, "app/layout.tsx", "app/styles/privacy-data-controls.css", "package.json",
+  "app/styles/motion.css", "components/DecisionSingularity.tsx", "components/DecisionSingularity.module.css",
+  "components/DecisionSingularityWebGL.tsx", "components/DecisionSingularityWebGL.module.css",
+  "components/DecisionSphereVisual.tsx", "components/DecisionSphereVisual.module.css",
+  "components/SimulationDetailClient.tsx", "components/SimulationsList.tsx", "package.json",
   "scripts/dashboard-shell-landing-quality.mjs", "scripts/workspace-surfaces-quality.mjs",
   "scripts/saved-simulations-and-drafts-visual-quality.mjs", "scripts/privacy-data-controls-shared-states-visual-quality.mjs",
+  "scripts/visual-migration-closure-quality.mjs",
 ]);
 const tracked = execFileSync("git", ["diff", "--name-only", baseline], { cwd: rootDir, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: rootDir, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const actual = Array.from(new Set([...tracked, ...untracked])).sort();
-check("Diff stays inside the approved Batch 7 file set", actual.every((path) => allowed.has(path)), `Unexpected files: ${actual.filter((path) => !allowed.has(path)).join(", ")}`);
-check("Batch 8 remains closed", read("app/globals.css") === before("app/globals.css"));
+check("Completed Batch 7 stays closed during final cleanup", actual.every((path) => allowed.has(path)), `Unexpected files: ${actual.filter((path) => !allowed.has(path)).join(", ")}`);
+check("Final cleanup does not rewrite globals.css", read("app/globals.css") === before("app/globals.css"));
 
 const failed = checks.filter((item) => !item.passed);
 for (const item of checks) {
