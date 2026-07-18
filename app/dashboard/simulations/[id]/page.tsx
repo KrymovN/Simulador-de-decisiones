@@ -21,7 +21,9 @@ export default async function SimulationDetailPage({ params }: SimulationDetailP
       eyebrow="levio.es / Simulación guardada"
       title={title}
     >
-      <SavedSimulationDetailSurface state={state} />
+      <div className="saved-records-surface saved-records-surface--detail">
+        <SavedSimulationDetailSurface state={state} />
+      </div>
     </DashboardShell>
   );
 }

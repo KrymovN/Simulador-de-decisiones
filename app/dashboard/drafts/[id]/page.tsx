@@ -7,6 +7,8 @@ export const dynamic = "force-dynamic";
 export default async function DraftResumePage({ params, searchParams }: { params: { id: string }; searchParams: { save?: string; delete?: string } }) {
   const state = await readSimulationDraftResumeSurface({ draftId: params.id });
   return <DashboardShell eyebrow="levio.es / Borrador" title="Continuar borrador" description="Edita un único borrador de tu cuenta dentro de su ciclo de retención.">
-    <SimulationDraftResumeSurface state={state} saveStatus={searchParams.save} deletionStatus={searchParams.delete} />
+    <div className="saved-records-surface saved-records-surface--draft">
+      <SimulationDraftResumeSurface state={state} saveStatus={searchParams.save} deletionStatus={searchParams.delete} />
+    </div>
   </DashboardShell>;
 }

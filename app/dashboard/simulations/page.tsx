@@ -13,7 +13,9 @@ export default async function SimulationsPage() {
       eyebrow="levio.es / Historial guardado"
       title="Simulaciones guardadas."
     >
-      <SavedSimulationsHistorySurface state={state} />
+      <div className="saved-records-surface saved-records-surface--list">
+        <SavedSimulationsHistorySurface state={state} />
+      </div>
     </DashboardShell>
   );
 }

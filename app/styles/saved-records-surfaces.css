@@ -1,0 +1,242 @@
+.saved-records-surface {
+  min-width: 0;
+  overflow-x: clip;
+  color: var(--levio-text);
+  font-family: var(--levio-font-sans);
+}
+
+.saved-records-surface,
+.saved-records-surface .simulation-list,
+.saved-records-surface .detail-scenario-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.saved-records-surface .saved-records-card,
+.saved-records-surface .saved-records-state {
+  min-width: 0;
+  border: 1px solid var(--levio-border);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-surface);
+  color: var(--levio-text-secondary);
+  box-shadow: none;
+}
+
+.saved-records-surface .saved-records-state {
+  padding: clamp(20px, 4vw, 32px);
+}
+
+.saved-records-surface .saved-records-state[role="alert"],
+.saved-records-surface .saved-records-retention[role="alert"] {
+  border-color: var(--levio-warning);
+}
+
+.saved-records-surface .saved-records-state--error {
+  border-color: var(--levio-error);
+}
+
+.saved-records-surface h2,
+.saved-records-surface strong {
+  color: var(--levio-text);
+}
+
+.saved-records-surface p,
+.saved-records-surface small,
+.saved-records-surface span,
+.saved-records-surface label {
+  overflow-wrap: anywhere;
+}
+
+.saved-records-surface .simulation-row {
+  grid-template-columns: minmax(180px, 0.8fr) minmax(220px, 1fr) minmax(220px, 0.8fr) auto;
+  gap: 18px;
+  padding: 20px;
+}
+
+.saved-records-surface .simulation-signal-grid,
+.saved-records-surface .detail-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.saved-records-surface .simulation-signal,
+.saved-records-surface .detail-metric {
+  min-width: 0;
+  min-height: 76px;
+  border: 1px solid var(--levio-border);
+  border-radius: var(--levio-radius-sm);
+  padding: 12px;
+  background: var(--levio-surface-elevated);
+}
+
+.saved-records-surface .simulation-signal strong,
+.saved-records-surface .detail-metric strong {
+  display: block;
+  margin-top: 8px;
+}
+
+.saved-records-surface .row-actions {
+  flex-wrap: wrap;
+}
+
+.saved-records-surface .row-action-link,
+.saved-records-surface .dashboard-action,
+.saved-records-surface button {
+  min-height: 44px;
+  border-radius: var(--levio-radius-sm);
+}
+
+.saved-records-surface .row-action-link,
+.saved-records-surface .dashboard-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.saved-records-surface .row-action-link,
+.saved-records-surface .saved-records-action--archive button {
+  border: 1px solid var(--levio-border-strong);
+  background: var(--levio-surface-elevated);
+  color: var(--levio-text);
+}
+
+.saved-records-surface .row-action-link:hover,
+.saved-records-surface .saved-records-action--archive button:hover {
+  border-color: var(--levio-text-muted);
+}
+
+.saved-records-surface .saved-records-detail-hero {
+  align-items: start;
+  padding: clamp(24px, 4vw, 40px);
+}
+
+.saved-records-surface .detail-tags span {
+  border: 1px solid var(--levio-border);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-surface-elevated);
+  color: var(--levio-text-secondary);
+}
+
+.saved-records-surface .detail-scenario-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.saved-records-surface .scenario-detail-card,
+.saved-records-surface .dashboard-card.saved-records-card {
+  padding: 22px;
+}
+
+.saved-records-surface .scenario-detail-card {
+  min-height: 240px;
+}
+
+.saved-records-surface .scenario-detail-card p,
+.saved-records-surface .scenario-detail-card small {
+  color: var(--levio-text-secondary);
+}
+
+.saved-records-surface .scenario-score {
+  border-color: var(--levio-border);
+}
+
+.saved-records-surface .saved-records-management,
+.saved-records-surface .saved-records-form {
+  display: grid;
+  gap: 14px;
+}
+
+.saved-records-surface .saved-records-action {
+  margin: 0;
+}
+
+.saved-records-surface .saved-records-action--delete button,
+.saved-records-surface .saved-records-form--delete button {
+  border-color: var(--levio-error);
+  background: var(--levio-surface);
+  color: var(--levio-error);
+}
+
+.saved-records-surface .saved-records-form textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--levio-border-strong);
+  border-radius: var(--levio-radius-sm);
+  padding: 14px;
+  background: var(--levio-surface-elevated);
+  color: var(--levio-text);
+  font: inherit;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.saved-records-surface .saved-records-form--edit .dashboard-action {
+  border-color: var(--levio-brand);
+  background: var(--levio-brand);
+  color: var(--levio-bg);
+}
+
+.saved-records-surface .saved-records-form--edit .dashboard-action:hover {
+  border-color: var(--levio-brand-hover);
+  background: var(--levio-brand-hover);
+}
+
+.saved-records-surface .checkbox-row {
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: start;
+  border: 1px solid var(--levio-border);
+  border-radius: var(--levio-radius-sm);
+  padding: 14px;
+  background: var(--levio-surface-elevated);
+}
+
+.saved-records-surface .checkbox-row input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--levio-brand);
+}
+
+.saved-records-surface :is(a, button, textarea, input):focus-visible {
+  outline: 3px solid var(--levio-focus-ring);
+  outline-offset: 3px;
+}
+
+.saved-records-surface button:disabled,
+.saved-records-surface input:disabled,
+.saved-records-surface textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.56;
+}
+
+@media (max-width: 900px) {
+  .saved-records-surface .simulation-row,
+  .saved-records-surface .simulation-detail-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .saved-records-surface .row-actions {
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 560px) {
+  .saved-records-surface .simulation-signal-grid,
+  .saved-records-surface .detail-metrics,
+  .saved-records-surface .detail-scenario-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .saved-records-surface .simulation-row,
+  .saved-records-surface .saved-records-card,
+  .saved-records-surface .saved-records-state {
+    padding: 18px;
+  }
+
+  .saved-records-surface .row-actions,
+  .saved-records-surface .row-actions > *,
+  .saved-records-surface .saved-records-management > :is(a, form),
+  .saved-records-surface .saved-records-action button {
+    width: 100%;
+  }
+}

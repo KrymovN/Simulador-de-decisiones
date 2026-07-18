@@ -30,7 +30,7 @@ function StateCard({
   alert?: boolean;
 }) {
   return (
-    <section className="dashboard-card section-frame" role={alert ? "alert" : "status"}>
+    <section className="dashboard-card saved-records-state" role={alert ? "alert" : "status"}>
       <h2>{title}</h2>
       <p>{message}</p>
       <Link className="dashboard-action" href={actionHref}>
@@ -80,7 +80,7 @@ export function SavedSimulationsHistorySurface({
   return (
     <section className="simulation-list" aria-label="Historial de simulaciones guardadas">
       {state.simulations.map((simulation) => (
-        <article className="simulation-row section-frame" key={simulation.id}>
+        <article className="simulation-row saved-records-card" key={simulation.id}>
           <div>
             <span>{simulation.createdLabel}</span>
             <strong>{simulation.title}</strong>
@@ -105,7 +105,7 @@ export function SavedSimulationsHistorySurface({
             <Link className="row-action-link" href={simulation.href}>
               Abrir simulación
             </Link>
-            <form action={archiveSavedSimulationFromDashboard}>
+            <form action={archiveSavedSimulationFromDashboard} className="saved-records-action saved-records-action--archive">
               <input name="recordId" type="hidden" value={simulation.id} />
               <button className="ghost-button" type="submit">
                 Archivar
@@ -159,7 +159,7 @@ export function SavedSimulationDetailSurface({
 
   return (
     <>
-      <section className="simulation-detail-hero section-frame">
+      <section className="simulation-detail-hero saved-records-card saved-records-detail-hero">
         <div>
           <p className="eyebrow">Simulación reabierta</p>
           <h2>{simulation.title}</h2>
@@ -191,7 +191,7 @@ export function SavedSimulationDetailSurface({
         </div>
       </section>
 
-      <section className="dashboard-card section-frame">
+      <section className="dashboard-card saved-records-card">
         <p className="eyebrow">Entrada original</p>
         <h2>Decisión guardada.</h2>
         <p>{simulation.userInputSummary}</p>
@@ -200,7 +200,7 @@ export function SavedSimulationDetailSurface({
       {simulation.scenarios.length > 0 ? (
         <section className="detail-scenario-grid" aria-label="Escenarios guardados">
           {simulation.scenarios.map((scenario) => (
-            <article className="scenario-detail-card section-frame" key={scenario.id}>
+            <article className="scenario-detail-card saved-records-card" key={scenario.id}>
               <p>{scenario.label}</p>
               <h2>{scenario.title}</h2>
               <div className="scenario-score">
@@ -211,14 +211,14 @@ export function SavedSimulationDetailSurface({
           ))}
         </section>
       ) : (
-        <section className="dashboard-card section-frame" role="status">
+        <section className="dashboard-card saved-records-state" role="status">
           <h2>Escenarios no disponibles.</h2>
           <p>Esta simulación guardada no contiene escenarios estructurados para mostrar en el historial activo.</p>
         </section>
       )}
 
       {simulation.notices.length > 0 && (
-        <section className="dashboard-card section-frame">
+        <section className="dashboard-card saved-records-card">
           <p className="eyebrow">Avisos del motor</p>
           <h2>Limitaciones guardadas.</h2>
           <div className="compact-list">
@@ -231,7 +231,7 @@ export function SavedSimulationDetailSurface({
         </section>
       )}
 
-      <section className="dashboard-card section-frame">
+      <section className="dashboard-card saved-records-card saved-records-management">
         <span>Estado de privacidad</span>
         <strong>Datos de la cuenta autenticada</strong>
         <p>
@@ -241,13 +241,13 @@ export function SavedSimulationDetailSurface({
         <Link className="dashboard-action" href="/dashboard/simulations">
           Volver al historial
         </Link>
-        <form action={archiveSavedSimulationFromDashboard}>
+        <form action={archiveSavedSimulationFromDashboard} className="saved-records-action saved-records-action--archive">
           <input name="recordId" type="hidden" value={simulation.id} />
           <button className="ghost-button" type="submit">
             Archivar simulación
           </button>
         </form>
-        <form action={deleteSavedSimulationFromDashboard}>
+        <form action={deleteSavedSimulationFromDashboard} className="saved-records-action saved-records-action--delete">
           <input name="recordId" type="hidden" value={simulation.id} />
           <button className="ghost-button" type="submit">
             Eliminar simulación guardada

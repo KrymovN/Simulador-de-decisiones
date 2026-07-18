@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import ts from "typescript";
 
 const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
-const baseline = "47da75c0852cc9720ac827a24961cb9b18dd7ccc";
+const baseline = "e49f80f0f32cc2528c9c7ea438a650108d3cf839";
 const read = (...segments) => readFileSync(join(rootDir, ...segments), "utf8");
 const baselineFile = (path) => execFileSync("git", ["show", `${baseline}:${path}`], {
   cwd: rootDir,
@@ -328,15 +328,10 @@ for (const directory of [
 }
 
 for (const path of [
-  "app/dashboard/simulations/page.tsx",
-  "app/dashboard/simulations/[id]/page.tsx",
-  "app/dashboard/drafts/[id]/page.tsx",
   "app/dashboard/privacy/page.tsx",
-  "components/SavedSimulationsHistorySurface.tsx",
-  "components/SimulationDraftResumeSurface.tsx",
   "components/PrivacyPanel.tsx",
 ]) {
-  check(`${path} remains outside workspace migration`, read(...path.split("/")) === baselineFile(path));
+  check(`${path} remains outside Batch 6`, read(...path.split("/")) === baselineFile(path));
 }
 
 for (const path of [
@@ -374,12 +369,16 @@ for (const routeDirectory of [
 }
 
 const allowedScope = new Set([
-  ...routePaths,
-  ...componentPaths,
+  "app/dashboard/simulations/page.tsx",
+  "app/dashboard/simulations/[id]/page.tsx",
+  "app/dashboard/drafts/[id]/page.tsx",
   "app/layout.tsx",
-  "app/styles/workspace-surfaces.css",
+  "app/styles/saved-records-surfaces.css",
+  "components/SavedSimulationsHistorySurface.tsx",
+  "components/SimulationDraftResumeSurface.tsx",
   "package.json",
   "scripts/dashboard-shell-landing-quality.mjs",
+  "scripts/saved-simulations-and-drafts-visual-quality.mjs",
   "scripts/workspace-surfaces-quality.mjs",
 ]);
 const tracked = execFileSync("git", ["diff", "--name-only", baseline], {
@@ -392,11 +391,11 @@ const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standa
 }).trim().split("\n").filter(Boolean);
 const actualScope = Array.from(new Set([...tracked, ...untracked])).sort();
 check(
-  "Diff stays inside the approved workspace migration file set",
+  "Completed workspace migration stays closed during Batch 6",
   actualScope.every((path) => allowedScope.has(path)),
   `Unexpected files: ${actualScope.filter((path) => !allowedScope.has(path)).join(", ")}`,
 );
-check("Batch 6 remains closed", directoryMatchesBaseline("app/dashboard/simulations"));
+check("Batch 7 privacy controls remain closed", directoryMatchesBaseline("app/dashboard/privacy"));
 
 const failed = checks.filter((item) => !item.passed);
 for (const item of checks) {

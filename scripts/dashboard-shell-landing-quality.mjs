@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import ts from "typescript";
 
 const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
-const baseline = "47da75c0852cc9720ac827a24961cb9b18dd7ccc";
+const baseline = "e49f80f0f32cc2528c9c7ea438a650108d3cf839";
 const read = (...segments) => readFileSync(join(rootDir, ...segments), "utf8");
 const baselineFile = (path) => execFileSync("git", ["show", `${baseline}:${path}`], {
   cwd: rootDir,
@@ -232,9 +232,6 @@ for (const path of [
 }
 
 for (const path of [
-  "app/dashboard/simulations/page.tsx",
-  "app/dashboard/simulations/[id]/page.tsx",
-  "app/dashboard/drafts/[id]/page.tsx",
   "app/dashboard/privacy/page.tsx",
 ]) {
   check(`${path} remains outside the completed Batch 4 migration`, read(path) === baselineFile(path));
@@ -285,16 +282,16 @@ for (const path of [
 }
 
 const allowedScope = new Set([
-  "app/dashboard/decisions/page.tsx",
-  "app/dashboard/memory/page.tsx",
-  "app/dashboard/profile/page.tsx",
-  "app/dashboard/security/page.tsx",
+  "app/dashboard/simulations/page.tsx",
+  "app/dashboard/simulations/[id]/page.tsx",
+  "app/dashboard/drafts/[id]/page.tsx",
   "app/layout.tsx",
-  "app/styles/workspace-surfaces.css",
-  "components/SecurityPanel.tsx",
-  "components/dashboard/DashboardProfileAccountState.tsx",
+  "app/styles/saved-records-surfaces.css",
+  "components/SavedSimulationsHistorySurface.tsx",
+  "components/SimulationDraftResumeSurface.tsx",
   "package.json",
   "scripts/dashboard-shell-landing-quality.mjs",
+  "scripts/saved-simulations-and-drafts-visual-quality.mjs",
   "scripts/workspace-surfaces-quality.mjs",
 ]);
 const tracked = execFileSync("git", ["diff", "--name-only", baseline], {
@@ -307,7 +304,7 @@ const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standa
 }).trim().split("\n").filter(Boolean);
 const actualScope = Array.from(new Set([...tracked, ...untracked])).sort();
 check(
-  "Completed Batch 4 stays closed while the bounded workspace migration proceeds",
+  "Completed Batch 4 stays closed while Batch 6 proceeds",
   actualScope.every((path) => allowedScope.has(path)),
   `Unexpected files: ${actualScope.filter((path) => !allowedScope.has(path)).join(", ")}`,
 );
