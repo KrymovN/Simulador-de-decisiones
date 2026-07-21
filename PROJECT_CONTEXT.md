@@ -1,5 +1,43 @@
 # PROJECT CONTEXT
 
+## Stage 9 Canonical State Reconciliation — 21 July 2026
+
+The factual Stage 9 state after commit
+`6d44a6f0d77c37794d1507a9e5a852c6c8f43663` includes the completed bounded
+AI value preservation foundation. The internal server-only capability
+`candidate_decision_material_v1` defines rich candidate decision material,
+explicit semantic-preservation dispositions, and a preservation ledger that
+requires every observed item to retain a traceable outcome. Its hard invariant
+is zero silent loss.
+
+The dedicated offline gate `npm run quality:stage-9-ai-value-preservation`
+passes 37/37 over 24 repository-owned rich-material fixtures with
+`silent_loss=0` and `network=0`. Together with the existing 32 synthetic risk
+evaluation fixtures, the Stage 9 offline foundation now contains 56 fixtures.
+The canonical minimum of 160 reviewed cases is not reached. Human review is not
+complete. This is not a readiness or production claim.
+
+Stage 9 remains **In Progress**. Live OpenAI execution is not opened;
+`/api/simulate` remains deterministic with `mockOnly=true`; `HomeSimulator`
+remains connected only to that mock-only public deterministic API. No Prompt
+Context -> Provider bridge, Decision Engine runtime integration, structured
+production simulation composition, Simulator/API/UI bridge, persistence bridge,
+authenticated production bridge, provider configuration, secrets, or
+personal-data provider scope exists. The provider remains candidate-only and
+never becomes product authority.
+
+Visual migration remains fully closed with 0 remaining substeps. Stage 15
+remains a bounded documentation and scale-readiness planning stage. No new
+Stage is created.
+
+No next Stage 9 implementation substep is open. A separate owner/product
+decision remains required before implementation begins. The approved planning
+candidate, not In Progress work, is `Stage 9 Offline Evaluation Dataset
+Expansion toward the canonical minimum of 160 reviewed cases.` This section
+supersedes earlier root-state descriptions that identify only the bounded risk
+adapter/evaluation boundary as the latest factual Stage 9 state; their narrower
+scope remains valid historical evidence.
+
 ## Bounded Homepage Motion Stabilization — 16 July 2026
 
 This owner-recording follow-up stabilizes only the current minimal public

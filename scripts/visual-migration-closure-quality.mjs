@@ -89,9 +89,18 @@ for (const path of [
   "app/page.tsx", "components/HomeSimulator.tsx", "components/AuthShell.tsx", "components/DashboardShell.tsx",
   "components/PublicSecondaryShell.tsx", "components/BrandLockup.tsx", "components/PrivacyPanel.tsx",
   "app/globals.css", "app/styles/homepage.css", "app/styles/design-system.css",
-  "LEVIO_PROJECT_CONSTITUTION.md", "PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", "CURRENT_STAGE.md",
-  "LEVIO_CURRENT_STATE.md", "LEVIO_PROJECT_PROGRESS.md",
+  "LEVIO_PROJECT_CONSTITUTION.md",
 ]) check(`${path} remains byte-identical to baseline`, read(path) === before(path));
+
+const canonicalState = [
+  "PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", "CURRENT_STAGE.md",
+  "LEVIO_CURRENT_STATE.md", "LEVIO_PROJECT_PROGRESS.md",
+].map(read).join("\n").replace(/\s+/g, " ");
+check("Stage 9 remains In Progress without completion drift", canonicalState.includes("Stage 9 remains **In Progress**") && !canonicalState.includes("Stage 9 is complete") && !canonicalState.includes("Stage 9 is **Complete**") && !canonicalState.includes("Stage 9 Closed"));
+check("Stage 15 remains documentation and planning only", canonicalState.includes("Stage 15 remains a bounded documentation and scale-readiness planning stage") && !canonicalState.includes("Stage 15 is an implementation Stage"));
+check("Visual migration remains closed with zero remaining substeps", canonicalState.includes("Visual migration remains fully closed with 0 remaining substeps") && !canonicalState.includes("Visual migration is reopened") && !canonicalState.includes("Visual migration has reopened"));
+check("Stage 9 continuation remains planning only", canonicalState.includes("No next Stage 9 implementation substep is open") && canonicalState.includes("planning candidate, not In Progress work") && !canonicalState.includes("Stage 9 Offline Evaluation Dataset Expansion is In Progress") && !canonicalState.includes("Stage 9 Offline Evaluation Dataset Expansion is **In Progress**"));
+check("Dataset and human-review gates remain open", canonicalState.includes("canonical minimum of 160 reviewed cases is not reached") && !canonicalState.includes("canonical minimum of 160 reviewed cases is reached") && !canonicalState.includes("canonical minimum of 160 reviewed cases has been reached") && canonicalState.includes("Human review is not complete") && !canonicalState.includes("Human review is complete") && !canonicalState.includes("Human review has been completed"));
 
 for (const directory of [
   "app/login", "app/register", "app/forgot-password", "app/privacy-policy", "app/terms",
@@ -101,11 +110,13 @@ check("not-found copy and route remain exact", read("app/not-found.tsx") === bef
 
 const packageJson = read("package.json");
 includes(packageJson, '"quality:visual-migration-closure": "node scripts/visual-migration-closure-quality.mjs"', "Final closure gate is registered");
-check("No new Stage or Batch is introduced", ["LEVIO_IMPLEMENTATION_PLAN.md", "CURRENT_STAGE.md", "LEVIO_CURRENT_STATE.md", "LEVIO_PROJECT_PROGRESS.md"].every((path) => read(path) === before(path)));
+check("No new Stage or Batch is introduced", canonicalState.includes("No new Stage is created") && !/\bStage (?:1[6-9]|[2-9]\d)\b/.test(canonicalState));
 
 const allowed = new Set([
   "docs/architecture/LEVIO_AI_ABSTRACTION_OBSERVABILITY_COSTS.md",
   "docs/architecture/LEVIO_DECISION_ENGINE.md", "docs/qa/LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md",
+  "PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", "CURRENT_STAGE.md",
+  "LEVIO_CURRENT_STATE.md", "LEVIO_PROJECT_PROGRESS.md",
   "lib/ai-decision-material/acceptance.ts", "lib/ai-decision-material/contracts.ts",
   "lib/ai-decision-material/evaluation.ts", "lib/ai-decision-material/fixtures.ts",
   ...removedFiles, "app/styles/motion.css", "package.json", "scripts/dashboard-shell-landing-quality.mjs",
@@ -118,6 +129,14 @@ const tracked = execFileSync("git", ["diff", "--name-only", baseline], { cwd: ro
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: rootDir, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const actual = Array.from(new Set([...tracked, ...untracked])).sort();
 check("Final cleanup diff stays inside the approved file set", actual.every((path) => allowed.has(path)), `Unexpected files: ${actual.filter((path) => !allowed.has(path)).join(", ")}`);
+const reconciliationAllowed = new Set([
+  "scripts/stage-9-ai-value-preservation-quality.mjs", "scripts/visual-migration-closure-quality.mjs",
+  "PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", "CURRENT_STAGE.md",
+  "LEVIO_CURRENT_STATE.md", "LEVIO_PROJECT_PROGRESS.md",
+]);
+const reconciliationTracked = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: rootDir, encoding: "utf8" }).trim().split("\n").filter(Boolean);
+const reconciliationDiff = Array.from(new Set([...reconciliationTracked, ...untracked])).sort();
+check("Reconciliation changes no visual application or UI file", reconciliationDiff.every((path) => reconciliationAllowed.has(path)), `Unexpected current reconciliation files: ${reconciliationDiff.filter((path) => !reconciliationAllowed.has(path)).join(", ")}`);
 
 const failed = checks.filter((item) => !item.passed);
 for (const item of checks) {

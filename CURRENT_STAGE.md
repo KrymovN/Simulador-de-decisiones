@@ -1,5 +1,37 @@
 # CURRENT STAGE
 
+## Stage 9 AI Value Preservation Foundation Reconciled — 21 July 2026
+
+Stage 9 remains **In Progress**. The latest completed bounded substep is the
+server-only, offline AI value preservation foundation from commit
+`6d44a6f0d77c37794d1507a9e5a852c6c8f43663`.
+`candidate_decision_material_v1` preserves rich provider-candidate material
+through explicit dispositions, traceability, and a preservation ledger with
+zero silent loss. The dedicated gate
+`npm run quality:stage-9-ai-value-preservation` passes 37/37 across 24 new
+offline rich-material fixtures with `silent_loss=0` and `network=0`.
+
+Combined with the existing 32 synthetic risk fixtures, Stage 9 now has a
+56-fixture offline evaluation foundation. The canonical minimum of 160 reviewed
+cases is not reached. Human review is not complete. This substep does not
+establish provider/model quality, user-facing AI readiness, production
+readiness, or Stage 9 completion.
+
+Live OpenAI execution is not opened. `/api/simulate` remains deterministic with
+`mockOnly=true`; `HomeSimulator` remains a mock-only consumer of that API. Prompt
+Context -> Provider, Decision Engine runtime, structured production simulation
+composition, Simulator/API/UI, persistence, authenticated production, provider
+configuration/secrets, and personal-data integrations remain absent.
+
+Visual migration remains fully closed with 0 remaining substeps. Stage 15
+remains a bounded documentation and scale-readiness planning stage. No new
+Stage is created and the existing readiness estimate is unchanged.
+
+No next Stage 9 implementation substep is open. A separate owner/product
+decision remains required before implementation begins. The approved planning
+candidate, not In Progress work, is `Stage 9 Offline Evaluation Dataset
+Expansion toward the canonical minimum of 160 reviewed cases.`
+
 ## Bounded Homepage Motion Stabilization Complete — 16 July 2026
 
 The owner-recording follow-up is complete as a bounded homepage maintenance

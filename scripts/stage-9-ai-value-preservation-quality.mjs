@@ -43,6 +43,14 @@ const packageJson = read("package.json");
 const aiArchitecture = read("docs", "architecture", "LEVIO_AI_ABSTRACTION_OBSERVABILITY_COSTS.md");
 const decisionEngineDoc = read("docs", "architecture", "LEVIO_DECISION_ENGINE.md");
 const evaluationDoc = read("docs", "qa", "LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md");
+const canonicalStateSources = [
+  "PROJECT_CONTEXT.md",
+  "LEVIO_IMPLEMENTATION_PLAN.md",
+  "CURRENT_STAGE.md",
+  "LEVIO_CURRENT_STATE.md",
+  "LEVIO_PROJECT_PROGRESS.md",
+].map((path) => read(path));
+const canonicalState = canonicalStateSources.join("\n").replace(/\s+/g, " ");
 
 const contracts = require(join(root, "lib", "ai-decision-material", "contracts.ts"));
 const fixtures = require(join(root, "lib", "ai-decision-material", "fixtures.ts"));
@@ -139,13 +147,49 @@ add("no-persistence-or-personal-scope", ![contractsSource, acceptanceSource, eva
 add("raw-provider-material-not-persisted", report.results.every((item) => item.acceptance.raw_provider_material_persisted === false) && contractsSource.includes("raw_provider_material_persisted: false"), "Raw provider prompts and responses must not become durable records.");
 add("quality-gate-registered", packageJson.includes('"quality:stage-9-ai-value-preservation": "node scripts/stage-9-ai-value-preservation-quality.mjs"'), "Dedicated gate must be registered.");
 
-const unchangedCanonical = ["LEVIO_IMPLEMENTATION_PLAN.md", "CURRENT_STAGE.md", "PROJECT_CONTEXT.md", "LEVIO_CURRENT_STATE.md"];
-add("readiness-and-stage-state-unchanged", unchangedCanonical.every((path) => read(path) === before(path)), "Readiness percentages and Stage/Block state documents must remain unchanged.");
+const canonicalReconciliationBoundariesPreserved =
+  canonicalState.includes("Stage 9 remains **In Progress**") &&
+  !canonicalState.includes("Stage 9 is complete") &&
+  !canonicalState.includes("Stage 9 is **Complete**") &&
+  !canonicalState.includes("Stage 9 Closed") &&
+  canonicalState.includes("Live OpenAI execution is not opened") &&
+  !canonicalState.includes("Live OpenAI execution is opened") &&
+  canonicalState.includes("`/api/simulate` remains deterministic with `mockOnly=true`") &&
+  canonicalState.includes("No next Stage 9 implementation substep is open") &&
+  canonicalState.includes("planning candidate, not In Progress work") &&
+  !canonicalState.includes("Stage 9 Offline Evaluation Dataset Expansion is In Progress") &&
+  !canonicalState.includes("Stage 9 Offline Evaluation Dataset Expansion is **In Progress**") &&
+  canonicalState.includes("canonical minimum of 160 reviewed cases is not reached") &&
+  !canonicalState.includes("canonical minimum of 160 reviewed cases is reached") &&
+  !canonicalState.includes("canonical minimum of 160 reviewed cases has been reached") &&
+  canonicalState.includes("Human review is not complete") &&
+  !canonicalState.includes("Human review is complete") &&
+  !canonicalState.includes("Human review has been completed") &&
+  canonicalState.includes("Stage 15 remains a bounded documentation and scale-readiness planning stage") &&
+  !canonicalState.includes("Stage 15 is an implementation Stage") &&
+  canonicalState.includes("Visual migration remains fully closed with 0 remaining substeps") &&
+  !canonicalState.includes("Visual migration is reopened") &&
+  !canonicalState.includes("Visual migration has reopened") &&
+  !/\bStage (?:1[6-9]|[2-9]\d)\b/.test(canonicalState) &&
+  routeSource.includes("mockOnly: true") &&
+  !routeSource.toLowerCase().includes("openai") &&
+  homeSource.includes('fetch("/api/simulate"') &&
+  importedByPublicRuntime().length === 0 &&
+  ![contractsSource, acceptanceSource, evaluationSource, fixturesSource].some((source) =>
+    source.includes('from "openai"') || source.includes("prompt-context") ||
+    source.includes("decision-engine") || source.includes("persistence-runtime") ||
+    source.includes("process.env") || source.includes("fetch("));
+add("canonical-reconciliation-boundaries-preserved", canonicalReconciliationBoundariesPreserved, "Canonical reconciliation must preserve Stage 9, Stage 15, offline/mock-only, no-bridge, dataset, human-review, visual-closure, and planning-only boundaries.");
 
 const allowedDiff = new Set([
   "docs/architecture/LEVIO_AI_ABSTRACTION_OBSERVABILITY_COSTS.md",
   "docs/architecture/LEVIO_DECISION_ENGINE.md",
   "docs/qa/LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md",
+  "PROJECT_CONTEXT.md",
+  "LEVIO_IMPLEMENTATION_PLAN.md",
+  "CURRENT_STAGE.md",
+  "LEVIO_CURRENT_STATE.md",
+  "LEVIO_PROJECT_PROGRESS.md",
   "lib/ai-decision-material/acceptance.ts",
   "lib/ai-decision-material/contracts.ts",
   "lib/ai-decision-material/evaluation.ts",
@@ -162,7 +206,18 @@ const tracked = execFileSync("git", ["diff", "--name-only", baseline], { cwd: ro
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const actualDiff = [...new Set([...tracked, ...untracked])].sort();
 add("git-diff-bounded", actualDiff.every((path) => allowedDiff.has(path)), `Unexpected files: ${actualDiff.filter((path) => !allowedDiff.has(path)).join(", ")}`);
-add("no-production-diff", actualDiff.every((path) => !/^(?:app|components|lib\/decision-engine|lib\/prompt-context|lib\/persistence|supabase)\//.test(path)), "Routes, components, runtime, persistence, and database files must remain unchanged.");
+const reconciliationAllowed = new Set([
+  "scripts/stage-9-ai-value-preservation-quality.mjs",
+  "scripts/visual-migration-closure-quality.mjs",
+  "PROJECT_CONTEXT.md",
+  "LEVIO_IMPLEMENTATION_PLAN.md",
+  "CURRENT_STAGE.md",
+  "LEVIO_CURRENT_STATE.md",
+  "LEVIO_PROJECT_PROGRESS.md",
+]);
+const reconciliationTracked = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
+const reconciliationDiff = [...new Set([...reconciliationTracked, ...untracked])].sort();
+add("no-production-diff", reconciliationDiff.every((path) => reconciliationAllowed.has(path)), `Current reconciliation diff must contain only approved gate and canonical files. Unexpected files: ${reconciliationDiff.filter((path) => !reconciliationAllowed.has(path)).join(", ")}`);
 
 for (const check of checks) {
   console[check.passed ? "log" : "error"](`${check.passed ? "PASS" : "FAIL"} ${check.id}: ${check.detail}`);

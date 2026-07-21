@@ -1,5 +1,38 @@
 # LEVIO CURRENT STATE
 
+## Current Stage 9 AI Value Preservation State — 21 July 2026
+
+The latest completed Stage 9 bounded substep is the offline, server-only AI
+value preservation foundation in commit
+`6d44a6f0d77c37794d1507a9e5a852c6c8f43663`. It adds the provider-neutral
+`candidate_decision_material_v1` rich-material contract, explicit acceptance and
+rejection dispositions, item-level traceability, and a semantic-preservation
+ledger whose hard invariant is `silent_drop_count === 0`.
+
+`npm run quality:stage-9-ai-value-preservation` passes 37/37 over 24
+rich-material fixtures with zero silent loss and zero network requests. The
+existing offline synthetic risk harness remains 32 fixtures, so the combined
+offline foundation is 56 fixtures. The canonical minimum of 160 reviewed cases
+is not reached. Human review is not complete, and pre-integration dataset
+readiness is not claimed.
+
+Stage 9 remains **In Progress**. Live OpenAI execution is not opened;
+`/api/simulate` remains deterministic with `mockOnly=true`; `HomeSimulator`
+remains a mock-only consumer of the public deterministic API. No Prompt Context
+-> Provider bridge, Decision Engine runtime integration, structured production
+simulation composition, Simulator/API/UI bridge, persistence bridge,
+authenticated production bridge, provider configuration/secrets, or
+personal-data provider scope has been opened.
+
+Visual migration remains fully closed with 0 remaining substeps. Stage 15
+remains a bounded documentation and scale-readiness planning stage. No new
+Stage is created.
+
+No next Stage 9 implementation substep is open. A separate owner/product
+decision remains required before implementation. The approved planning
+candidate, not In Progress work, is `Stage 9 Offline Evaluation Dataset
+Expansion toward the canonical minimum of 160 reviewed cases.`
+
 ## Current Homepage Motion Stabilization State — 16 July 2026
 
 The homepage uses one shared IntersectionObserver over exactly four narrative

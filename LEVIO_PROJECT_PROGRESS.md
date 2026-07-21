@@ -1,5 +1,37 @@
 # LEVIO PROJECT PROGRESS TRACKER
 
+## Stage 9 Progress Update — AI Value Preservation Foundation Reconciled — 21 July 2026
+
+Commit `6d44a6f0d77c37794d1507a9e5a852c6c8f43663` completed the bounded offline,
+server-only Stage 9 AI value preservation foundation. The provider-neutral
+`candidate_decision_material_v1` capability adds rich candidate decision
+material, explicit dispositions, item-level traceability, and a preservation
+ledger with zero silent loss. The dedicated
+`quality:stage-9-ai-value-preservation` gate passes 37/37 over 24 rich-material
+fixtures with `silent_loss=0` and `network=0`.
+
+The previous 32 synthetic risk evaluation fixtures remain unchanged. The
+combined offline foundation is therefore 56 fixtures. The canonical minimum of
+160 reviewed cases is not reached. Human review is not complete. Stage 9
+remains **In Progress**; no readiness percentage changes and no production or
+user-facing AI claim is made.
+
+Live OpenAI execution is not opened. `/api/simulate` remains deterministic with
+`mockOnly=true`, and `HomeSimulator` remains a mock-only consumer of the public
+deterministic API. Prompt Context -> Provider, Decision Engine runtime,
+structured production simulation composition, Simulator/API/UI, persistence,
+authenticated production, provider configuration/secrets, and personal-data
+integration remain closed.
+
+Visual migration remains fully closed with 0 remaining substeps. Stage 15
+remains a bounded documentation and scale-readiness planning stage. No new
+Stage or runtime architecture change is introduced.
+
+No next Stage 9 implementation substep is open. A separate owner/product
+decision remains required before implementation. The approved planning
+candidate, not In Progress work, is `Stage 9 Offline Evaluation Dataset
+Expansion toward the canonical minimum of 160 reviewed cases.`
+
 ## Cross-Cutting Progress Update — Homepage Motion Stabilization — 16 July 2026
 
 The bounded owner-recording motion stabilization is implemented. Audit showed
