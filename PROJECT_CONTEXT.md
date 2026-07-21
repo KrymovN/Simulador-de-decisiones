@@ -1,5 +1,42 @@
 # PROJECT CONTEXT
 
+## Stage 9 Independent AI Review Protocol and Batch 1 Complete — 21 July 2026
+
+The owner-approved independent AI review protocol is now the active internal
+Stage 9 QA process. It uses four separate technical roles: blind semantic
+reconstruction, comparative semantic validation, linguistic/adversarial review,
+and evidence-based AI adjudication. This process is not human review, does not
+claim external legal/scientific/regulatory equivalence, and operates only over
+versioned offline fixtures and versioned QA artifacts.
+
+The canonical minimum of 160 case records has been reached and is unchanged.
+
+Batch 1 is complete for 36 of 216 fixtures; 180 fixtures remain. The
+deterministic selection contains 8 synthetic-risk, 8 rich baseline, and 20
+canonical core cases, with all first-wave languages, all seven core domains,
+all four completeness states, four complete equivalence clusters, 16 high-risk,
+17 privacy, and 14 controlled-failure cases.
+
+Adjudication records `AI_PASS=13`, `AI_PASS_WITH_NOTE=11`, `AI_FAIL_MINOR=5`,
+`AI_FAIL_MAJOR=5`, `AI_DISPUTED=2`, and `AI_NOT_REVIEWED=0` for the selected
+batch. Severity is `NONE=13`, `LOW=10`, `MEDIUM=7`, `HIGH=6`, `CRITICAL=0`.
+Eleven cases require reinforced AI review. The issue ledger contains 37
+observations: 23 open, 3 disputed, and 11 recorded notes. Confirmed defects
+include cluster-010 localization/equivalence drift, cluster-024 unsupported
+contradiction and risk grounding, and CORE-036-ZH contradiction grounding; the
+CORE-037-EN safety scope and MATERIAL-013 privacy-review artifact remain
+disputed. Fixtures were not changed.
+
+AI review status remains `In Progress`; Stage 9 remains **In Progress** and
+release readiness is not declared. Live OpenAI execution is not opened;
+`/api/simulate` remains deterministic with `mockOnly=true`; `HomeSimulator`
+remains mock-only, and all runtime boundaries remain closed. Visual migration
+remains fully closed with 0 remaining substeps. Stage 15 remains a bounded
+documentation and scale-readiness planning stage. No new Stage is created.
+
+No next Stage 9 implementation substep is open. `Stage 9 Independent AI Review
+Batch 2 of 6` is the planning candidate, not In Progress work.
+
 ## Stage 9 Human-Review Readiness Package Prepared — 21 July 2026
 
 The deterministic human-review package now projects every one of the 216

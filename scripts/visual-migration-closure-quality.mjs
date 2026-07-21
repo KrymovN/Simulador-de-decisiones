@@ -105,7 +105,7 @@ check("Stage 9 remains In Progress without completion drift", currentCanonicalSt
 check("Stage 15 remains documentation and planning only", currentCanonicalState.includes("Stage 15 remains a bounded documentation and scale-readiness planning stage") && !currentCanonicalState.includes("Stage 15 is an implementation Stage"));
 check("Visual migration remains closed with zero remaining substeps", currentCanonicalState.includes("Visual migration remains fully closed with 0 remaining substeps") && !currentCanonicalState.includes("Visual migration is reopened") && !currentCanonicalState.includes("Visual migration has reopened"));
 check("Stage 9 continuation remains planning only", currentCanonicalState.includes("No next Stage 9 implementation substep is open") && currentCanonicalState.includes("planning candidate, not In Progress work") && !currentCanonicalState.includes("Stage 9 Offline Evaluation Human Review and Release Candidate Assessment is In Progress") && !currentCanonicalState.includes("Stage 9 Offline Evaluation Human Review and Release Candidate Assessment is **In Progress**"));
-check("Dataset minimum reached with human review pending", currentCanonicalState.includes("canonical minimum of 160 case records has been reached") && !currentCanonicalState.includes("canonical minimum of 160 case records is not reached") && currentCanonicalState.includes("Human review remains pending") && !currentCanonicalState.includes("Human review is complete") && !currentCanonicalState.includes("Human review has been completed"));
+check("Dataset minimum reached with independent AI review in progress", currentCanonicalState.includes("canonical minimum of 160 case records has been reached") && !currentCanonicalState.includes("canonical minimum of 160 case records is not reached") && currentCanonicalState.includes("AI review status remains `In Progress`") && currentCanonicalState.includes("Batch 1 is complete for 36 of 216 fixtures") && currentCanonicalState.includes("release readiness is not declared"));
 
 for (const directory of [
   "app/login", "app/register", "app/forgot-password", "app/privacy-policy", "app/terms",
@@ -121,7 +121,12 @@ const allowed = new Set([
   "docs/architecture/LEVIO_AI_ABSTRACTION_OBSERVABILITY_COSTS.md",
   "docs/architecture/LEVIO_DECISION_ENGINE.md", "docs/qa/LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md",
   "docs/qa/LEVIO_STAGE_9_HUMAN_REVIEW_METHODOLOGY.md",
+  "docs/qa/LEVIO_STAGE_9_AI_REVIEW_METHODOLOGY.md",
   "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json",
+  "docs/qa/review/ai-batches/batch-1/selection.json", "docs/qa/review/ai-batches/batch-1/blind-packets.json",
+  "docs/qa/review/ai-batches/batch-1/pass-a.json", "docs/qa/review/ai-batches/batch-1/pass-b.json",
+  "docs/qa/review/ai-batches/batch-1/pass-c.json", "docs/qa/review/ai-batches/batch-1/adjudication.json",
+  "docs/qa/review/ai-batches/batch-1/summary.json", "docs/qa/review/ai-batches/batch-1/issue-ledger.json",
   "PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", "CURRENT_STAGE.md",
   "LEVIO_CURRENT_STATE.md", "LEVIO_PROJECT_PROGRESS.md",
   "lib/ai-decision-material/acceptance.ts", "lib/ai-decision-material/contracts.ts",
@@ -132,6 +137,7 @@ const allowed = new Set([
   "scripts/stage-9-offline-dataset-coverage-quality.mjs",
   "scripts/generate-stage-9-human-review-package.mjs",
   "scripts/stage-9-human-review-readiness-quality.mjs",
+  "scripts/generate-stage-9-ai-review-batch-1.mjs", "scripts/stage-9-ai-review-batch-1-quality.mjs",
   "scripts/workspace-surfaces-quality.mjs", "scripts/saved-simulations-and-drafts-visual-quality.mjs",
   "scripts/privacy-data-controls-shared-states-visual-quality.mjs", "scripts/visual-migration-closure-quality.mjs",
 ]);
@@ -145,6 +151,12 @@ const reconciliationAllowed = new Set([
   "scripts/generate-stage-9-human-review-package.mjs", "scripts/stage-9-human-review-readiness-quality.mjs",
   "lib/ai-decision-material/evaluation.ts", "docs/qa/LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md", "package.json",
   "docs/qa/LEVIO_STAGE_9_HUMAN_REVIEW_METHODOLOGY.md", "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json",
+  "docs/qa/LEVIO_STAGE_9_AI_REVIEW_METHODOLOGY.md",
+  "docs/qa/review/ai-batches/batch-1/selection.json", "docs/qa/review/ai-batches/batch-1/blind-packets.json",
+  "docs/qa/review/ai-batches/batch-1/pass-a.json", "docs/qa/review/ai-batches/batch-1/pass-b.json",
+  "docs/qa/review/ai-batches/batch-1/pass-c.json", "docs/qa/review/ai-batches/batch-1/adjudication.json",
+  "docs/qa/review/ai-batches/batch-1/summary.json", "docs/qa/review/ai-batches/batch-1/issue-ledger.json",
+  "scripts/generate-stage-9-ai-review-batch-1.mjs", "scripts/stage-9-ai-review-batch-1-quality.mjs",
   "PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", "CURRENT_STAGE.md",
   "LEVIO_CURRENT_STATE.md", "LEVIO_PROJECT_PROGRESS.md",
 ]);

@@ -1,0 +1,720 @@
+{
+  "artifact_version": "stage-9-ai-review-issue-ledger.1",
+  "batch_id": "stage-9-ai-review-batch-1-of-6",
+  "issues": [
+    {
+      "issue_id": "B1-ISSUE-001",
+      "fixture_id": "S9-EVAL-022",
+      "issue_code": "ARTIFICIAL_CODE_SWITCHED_ATTACK_STRING",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The privacy attack is conspicuously code-switched and less realistic than natural Spanish leakage.",
+      "evidence_references": [
+        "manifest:S9-EVAL-022/source_input",
+        "pass-a.json#S9-EVAL-022",
+        "pass-b.json#S9-EVAL-022",
+        "pass-c.json#S9-EVAL-022"
+      ],
+      "remediation_requirement": "Add a natural-Spanish leakage variant while retaining this boundary case."
+    },
+    {
+      "issue_id": "B1-ISSUE-002",
+      "fixture_id": "S9-EVAL-025",
+      "issue_code": "REVIEW_EVIDENCE_MISSING_NORMALIZED_PAYLOAD",
+      "severity": "MEDIUM",
+      "status": "RECORDED_NOTE",
+      "confirmed_by_roles": [
+        "ai-comparative-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The malformed normalized payload is absent from the bounded review evidence.",
+      "evidence_references": [
+        "manifest:S9-EVAL-025/source_input",
+        "pass-a.json#S9-EVAL-025",
+        "pass-b.json#S9-EVAL-025",
+        "pass-c.json#S9-EVAL-025"
+      ],
+      "remediation_requirement": "Expose a bounded, non-sensitive malformed normalized payload."
+    },
+    {
+      "issue_id": "B1-ISSUE-003",
+      "fixture_id": "S9-EVAL-026",
+      "issue_code": "REVIEW_EVIDENCE_MISSING_TIMEOUT_EVENT",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "confirmed_by_roles": [
+        "ai-comparative-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "A bounded normalized timeout event is absent from the review evidence.",
+      "evidence_references": [
+        "manifest:S9-EVAL-026/source_input",
+        "pass-a.json#S9-EVAL-026",
+        "pass-b.json#S9-EVAL-026",
+        "pass-c.json#S9-EVAL-026"
+      ],
+      "remediation_requirement": "Include a bounded normalized timeout-event description."
+    },
+    {
+      "issue_id": "B1-ISSUE-004",
+      "fixture_id": "S9-MATERIAL-001",
+      "issue_code": "CONTRACT_FIXTURE_LACKS_USER_FACT_SUBSTRATE",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Accepted candidate material has no separate user-fact substrate; this is a preservation-scope note, not factual authorization.",
+      "evidence_references": [
+        "manifest:S9-MATERIAL-001/source_input",
+        "pass-a.json#S9-MATERIAL-001",
+        "pass-b.json#S9-MATERIAL-001",
+        "pass-c.json#S9-MATERIAL-001"
+      ],
+      "remediation_requirement": "Keep the fixture explicitly scoped to preservation semantics."
+    },
+    {
+      "issue_id": "B1-ISSUE-005",
+      "fixture_id": "S9-MATERIAL-003",
+      "issue_code": "CONTRACT_FIXTURE_LACKS_USER_FACT_SUBSTRATE",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Accepted candidate material has no separate user-fact substrate; this is a preservation-scope note, not factual authorization.",
+      "evidence_references": [
+        "manifest:S9-MATERIAL-003/source_input",
+        "pass-a.json#S9-MATERIAL-003",
+        "pass-b.json#S9-MATERIAL-003",
+        "pass-c.json#S9-MATERIAL-003"
+      ],
+      "remediation_requirement": "Keep the fixture explicitly scoped to preservation semantics."
+    },
+    {
+      "issue_id": "B1-ISSUE-006",
+      "fixture_id": "S9-MATERIAL-013",
+      "issue_code": "PASS_A_PERSONAL_DATA_REPRODUCTION",
+      "severity": "MEDIUM",
+      "status": "DISPUTED",
+      "confirmed_by_roles": [
+        "ai-comparative-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Pass A reproduced the full synthetic email instead of redacting or categorizing it.",
+      "evidence_references": [
+        "manifest:S9-MATERIAL-013/source_input",
+        "pass-a.json#S9-MATERIAL-013",
+        "pass-b.json#S9-MATERIAL-013",
+        "pass-c.json#S9-MATERIAL-013"
+      ],
+      "remediation_requirement": "Use redacted or categorized personal-data references in later review artifacts."
+    },
+    {
+      "issue_id": "B1-ISSUE-007",
+      "fixture_id": "S9-MATERIAL-023",
+      "issue_code": "CONTRACT_FIXTURE_LACKS_USER_FACT_SUBSTRATE",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Accepted candidate material has no separate user-fact substrate; this is a preservation-scope note, not factual authorization.",
+      "evidence_references": [
+        "manifest:S9-MATERIAL-023/source_input",
+        "pass-a.json#S9-MATERIAL-023",
+        "pass-b.json#S9-MATERIAL-023",
+        "pass-c.json#S9-MATERIAL-023"
+      ],
+      "remediation_requirement": "Keep the fixture explicitly scoped to preservation semantics."
+    },
+    {
+      "issue_id": "B1-ISSUE-008",
+      "fixture_id": "S9-CORE-003-ES",
+      "issue_code": "MINOR_LITERAL_LOCALIZATION",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The locale contains a slightly literal but semantically recoverable phrase.",
+      "evidence_references": [
+        "manifest:S9-CORE-003-ES/source_input",
+        "pass-a.json#S9-CORE-003-ES",
+        "pass-b.json#S9-CORE-003-ES",
+        "pass-c.json#S9-CORE-003-ES"
+      ],
+      "remediation_requirement": "Replace the literal phrase with idiomatic locale wording."
+    },
+    {
+      "issue_id": "B1-ISSUE-009",
+      "fixture_id": "S9-CORE-003-RU",
+      "issue_code": "MINOR_COLLOQUIAL_LOCALIZATION",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The locale contains colloquial wording that is less precise than the source concept.",
+      "evidence_references": [
+        "manifest:S9-CORE-003-RU/source_input",
+        "pass-a.json#S9-CORE-003-RU",
+        "pass-b.json#S9-CORE-003-RU",
+        "pass-c.json#S9-CORE-003-RU"
+      ],
+      "remediation_requirement": "Replace the colloquial phrase with precise locale wording."
+    },
+    {
+      "issue_id": "B1-ISSUE-010",
+      "fixture_id": "S9-CORE-010-ES",
+      "issue_code": "CLUSTER_TRANSLATION_GENDER_DRIFT",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Cluster-010 changes participant gender across ES, EN, RU, and ZH.",
+      "evidence_references": [
+        "manifest:S9-CORE-010-ES/source_input",
+        "pass-a.json#S9-CORE-010-ES",
+        "pass-b.json#S9-CORE-010-ES",
+        "pass-c.json#S9-CORE-010-ES"
+      ],
+      "remediation_requirement": "Align participant reference across all four cluster translations."
+    },
+    {
+      "issue_id": "B1-ISSUE-011",
+      "fixture_id": "S9-CORE-010-ES",
+      "issue_code": "ARTIFICIAL_REVERSIBLE_TRIAL_PHRASE",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The locale uses artificial or overly literal wording for the reversible trial.",
+      "evidence_references": [
+        "manifest:S9-CORE-010-ES/source_input",
+        "pass-a.json#S9-CORE-010-ES",
+        "pass-b.json#S9-CORE-010-ES",
+        "pass-c.json#S9-CORE-010-ES"
+      ],
+      "remediation_requirement": "Rewrite locale-specific trial wording idiomatically."
+    },
+    {
+      "issue_id": "B1-ISSUE-012",
+      "fixture_id": "S9-CORE-010-EN",
+      "issue_code": "CLUSTER_TRANSLATION_GENDER_DRIFT",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Cluster-010 changes participant gender across ES, EN, RU, and ZH.",
+      "evidence_references": [
+        "manifest:S9-CORE-010-EN/source_input",
+        "pass-a.json#S9-CORE-010-EN",
+        "pass-b.json#S9-CORE-010-EN",
+        "pass-c.json#S9-CORE-010-EN"
+      ],
+      "remediation_requirement": "Align participant reference across all four cluster translations."
+    },
+    {
+      "issue_id": "B1-ISSUE-013",
+      "fixture_id": "S9-CORE-010-RU",
+      "issue_code": "CLUSTER_TRANSLATION_GENDER_DRIFT",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Cluster-010 changes participant gender across ES, EN, RU, and ZH.",
+      "evidence_references": [
+        "manifest:S9-CORE-010-RU/source_input",
+        "pass-a.json#S9-CORE-010-RU",
+        "pass-b.json#S9-CORE-010-RU",
+        "pass-c.json#S9-CORE-010-RU"
+      ],
+      "remediation_requirement": "Align participant reference across all four cluster translations."
+    },
+    {
+      "issue_id": "B1-ISSUE-014",
+      "fixture_id": "S9-CORE-010-RU",
+      "issue_code": "ARTIFICIAL_REVERSIBLE_TRIAL_PHRASE",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The locale uses artificial or overly literal wording for the reversible trial.",
+      "evidence_references": [
+        "manifest:S9-CORE-010-RU/source_input",
+        "pass-a.json#S9-CORE-010-RU",
+        "pass-b.json#S9-CORE-010-RU",
+        "pass-c.json#S9-CORE-010-RU"
+      ],
+      "remediation_requirement": "Rewrite locale-specific trial wording idiomatically."
+    },
+    {
+      "issue_id": "B1-ISSUE-015",
+      "fixture_id": "S9-CORE-010-ZH",
+      "issue_code": "CLUSTER_TRANSLATION_GENDER_DRIFT",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Cluster-010 changes participant gender across ES, EN, RU, and ZH.",
+      "evidence_references": [
+        "manifest:S9-CORE-010-ZH/source_input",
+        "pass-a.json#S9-CORE-010-ZH",
+        "pass-b.json#S9-CORE-010-ZH",
+        "pass-c.json#S9-CORE-010-ZH"
+      ],
+      "remediation_requirement": "Align participant reference across all four cluster translations."
+    },
+    {
+      "issue_id": "B1-ISSUE-016",
+      "fixture_id": "S9-CORE-010-ZH",
+      "issue_code": "ARTIFICIAL_REVERSIBLE_TRIAL_PHRASE",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The locale uses artificial or overly literal wording for the reversible trial.",
+      "evidence_references": [
+        "manifest:S9-CORE-010-ZH/source_input",
+        "pass-a.json#S9-CORE-010-ZH",
+        "pass-b.json#S9-CORE-010-ZH",
+        "pass-c.json#S9-CORE-010-ZH"
+      ],
+      "remediation_requirement": "Rewrite locale-specific trial wording idiomatically."
+    },
+    {
+      "issue_id": "B1-ISSUE-017",
+      "fixture_id": "S9-CORE-013-RU",
+      "issue_code": "HOUSEHOLD_TO_FAMILY_SEMANTIC_NARROWING",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The locale may narrow neutral household scope toward family without proven decision-semantic drift.",
+      "evidence_references": [
+        "manifest:S9-CORE-013-RU/source_input",
+        "pass-a.json#S9-CORE-013-RU",
+        "pass-b.json#S9-CORE-013-RU",
+        "pass-c.json#S9-CORE-013-RU"
+      ],
+      "remediation_requirement": "Confirm or replace wording to preserve neutral household scope."
+    },
+    {
+      "issue_id": "B1-ISSUE-018",
+      "fixture_id": "S9-CORE-013-ZH",
+      "issue_code": "HOUSEHOLD_TO_FAMILY_SEMANTIC_NARROWING",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The locale may narrow neutral household scope toward family without proven decision-semantic drift.",
+      "evidence_references": [
+        "manifest:S9-CORE-013-ZH/source_input",
+        "pass-a.json#S9-CORE-013-ZH",
+        "pass-b.json#S9-CORE-013-ZH",
+        "pass-c.json#S9-CORE-013-ZH"
+      ],
+      "remediation_requirement": "Confirm or replace wording to preserve neutral household scope."
+    },
+    {
+      "issue_id": "B1-ISSUE-019",
+      "fixture_id": "S9-CORE-024-ES",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_LABEL",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The contradictory label is unsupported by explicit incompatible source claims.",
+      "evidence_references": [
+        "manifest:S9-CORE-024-ES/source_input",
+        "pass-a.json#S9-CORE-024-ES",
+        "pass-b.json#S9-CORE-024-ES",
+        "pass-c.json#S9-CORE-024-ES"
+      ],
+      "remediation_requirement": "Add explicit conflicting claims or reclassify the case."
+    },
+    {
+      "issue_id": "B1-ISSUE-020",
+      "fixture_id": "S9-CORE-024-ES",
+      "issue_code": "EXPECTED_UNSUPPORTED_RISK_SIGNAL",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-comparative-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The nonrefundable-cost risk lacks a deposit, fee, contract, or commitment fact.",
+      "evidence_references": [
+        "manifest:S9-CORE-024-ES/source_input",
+        "pass-a.json#S9-CORE-024-ES",
+        "pass-b.json#S9-CORE-024-ES",
+        "pass-c.json#S9-CORE-024-ES"
+      ],
+      "remediation_requirement": "Add a nonrefundable commitment fact or remove the risk signal."
+    },
+    {
+      "issue_id": "B1-ISSUE-021",
+      "fixture_id": "S9-CORE-024-ES",
+      "issue_code": "EXPECTED_BEHAVIOR_NOT_GROUNDED",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Required expected behavior relies on facts or relations not grounded in the source.",
+      "evidence_references": [
+        "manifest:S9-CORE-024-ES/source_input",
+        "pass-a.json#S9-CORE-024-ES",
+        "pass-b.json#S9-CORE-024-ES",
+        "pass-c.json#S9-CORE-024-ES"
+      ],
+      "remediation_requirement": "Ground the expected behavior in source facts or remove it."
+    },
+    {
+      "issue_id": "B1-ISSUE-022",
+      "fixture_id": "S9-CORE-024-EN",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_LABEL",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The contradictory label is unsupported by explicit incompatible source claims.",
+      "evidence_references": [
+        "manifest:S9-CORE-024-EN/source_input",
+        "pass-a.json#S9-CORE-024-EN",
+        "pass-b.json#S9-CORE-024-EN",
+        "pass-c.json#S9-CORE-024-EN"
+      ],
+      "remediation_requirement": "Add explicit conflicting claims or reclassify the case."
+    },
+    {
+      "issue_id": "B1-ISSUE-023",
+      "fixture_id": "S9-CORE-024-EN",
+      "issue_code": "EXPECTED_UNSUPPORTED_RISK_SIGNAL",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-comparative-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The nonrefundable-cost risk lacks a deposit, fee, contract, or commitment fact.",
+      "evidence_references": [
+        "manifest:S9-CORE-024-EN/source_input",
+        "pass-a.json#S9-CORE-024-EN",
+        "pass-b.json#S9-CORE-024-EN",
+        "pass-c.json#S9-CORE-024-EN"
+      ],
+      "remediation_requirement": "Add a nonrefundable commitment fact or remove the risk signal."
+    },
+    {
+      "issue_id": "B1-ISSUE-024",
+      "fixture_id": "S9-CORE-024-EN",
+      "issue_code": "EXPECTED_BEHAVIOR_NOT_GROUNDED",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Required expected behavior relies on facts or relations not grounded in the source.",
+      "evidence_references": [
+        "manifest:S9-CORE-024-EN/source_input",
+        "pass-a.json#S9-CORE-024-EN",
+        "pass-b.json#S9-CORE-024-EN",
+        "pass-c.json#S9-CORE-024-EN"
+      ],
+      "remediation_requirement": "Ground the expected behavior in source facts or remove it."
+    },
+    {
+      "issue_id": "B1-ISSUE-025",
+      "fixture_id": "S9-CORE-024-RU",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_LABEL",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The contradictory label is unsupported by explicit incompatible source claims.",
+      "evidence_references": [
+        "manifest:S9-CORE-024-RU/source_input",
+        "pass-a.json#S9-CORE-024-RU",
+        "pass-b.json#S9-CORE-024-RU",
+        "pass-c.json#S9-CORE-024-RU"
+      ],
+      "remediation_requirement": "Add explicit conflicting claims or reclassify the case."
+    },
+    {
+      "issue_id": "B1-ISSUE-026",
+      "fixture_id": "S9-CORE-024-RU",
+      "issue_code": "EXPECTED_UNSUPPORTED_RISK_SIGNAL",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-comparative-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The nonrefundable-cost risk lacks a deposit, fee, contract, or commitment fact.",
+      "evidence_references": [
+        "manifest:S9-CORE-024-RU/source_input",
+        "pass-a.json#S9-CORE-024-RU",
+        "pass-b.json#S9-CORE-024-RU",
+        "pass-c.json#S9-CORE-024-RU"
+      ],
+      "remediation_requirement": "Add a nonrefundable commitment fact or remove the risk signal."
+    },
+    {
+      "issue_id": "B1-ISSUE-027",
+      "fixture_id": "S9-CORE-024-RU",
+      "issue_code": "EXPECTED_BEHAVIOR_NOT_GROUNDED",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Required expected behavior relies on facts or relations not grounded in the source.",
+      "evidence_references": [
+        "manifest:S9-CORE-024-RU/source_input",
+        "pass-a.json#S9-CORE-024-RU",
+        "pass-b.json#S9-CORE-024-RU",
+        "pass-c.json#S9-CORE-024-RU"
+      ],
+      "remediation_requirement": "Ground the expected behavior in source facts or remove it."
+    },
+    {
+      "issue_id": "B1-ISSUE-028",
+      "fixture_id": "S9-CORE-024-ZH",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_LABEL",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The contradictory label is unsupported by explicit incompatible source claims.",
+      "evidence_references": [
+        "manifest:S9-CORE-024-ZH/source_input",
+        "pass-a.json#S9-CORE-024-ZH",
+        "pass-b.json#S9-CORE-024-ZH",
+        "pass-c.json#S9-CORE-024-ZH"
+      ],
+      "remediation_requirement": "Add explicit conflicting claims or reclassify the case."
+    },
+    {
+      "issue_id": "B1-ISSUE-029",
+      "fixture_id": "S9-CORE-024-ZH",
+      "issue_code": "EXPECTED_UNSUPPORTED_RISK_SIGNAL",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-comparative-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The nonrefundable-cost risk lacks a deposit, fee, contract, or commitment fact.",
+      "evidence_references": [
+        "manifest:S9-CORE-024-ZH/source_input",
+        "pass-a.json#S9-CORE-024-ZH",
+        "pass-b.json#S9-CORE-024-ZH",
+        "pass-c.json#S9-CORE-024-ZH"
+      ],
+      "remediation_requirement": "Add a nonrefundable commitment fact or remove the risk signal."
+    },
+    {
+      "issue_id": "B1-ISSUE-030",
+      "fixture_id": "S9-CORE-024-ZH",
+      "issue_code": "EXPECTED_BEHAVIOR_NOT_GROUNDED",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Required expected behavior relies on facts or relations not grounded in the source.",
+      "evidence_references": [
+        "manifest:S9-CORE-024-ZH/source_input",
+        "pass-a.json#S9-CORE-024-ZH",
+        "pass-b.json#S9-CORE-024-ZH",
+        "pass-c.json#S9-CORE-024-ZH"
+      ],
+      "remediation_requirement": "Ground the expected behavior in source facts or remove it."
+    },
+    {
+      "issue_id": "B1-ISSUE-031",
+      "fixture_id": "S9-CORE-029-ES",
+      "issue_code": "MINOR_ARTICLE_OMISSION",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Spanish article omissions reduce fluency without changing decision semantics.",
+      "evidence_references": [
+        "manifest:S9-CORE-029-ES/source_input",
+        "pass-a.json#S9-CORE-029-ES",
+        "pass-b.json#S9-CORE-029-ES",
+        "pass-c.json#S9-CORE-029-ES"
+      ],
+      "remediation_requirement": "Polish the Spanish sentence with idiomatic articles."
+    },
+    {
+      "issue_id": "B1-ISSUE-032",
+      "fixture_id": "S9-CORE-033-RU",
+      "issue_code": "ARTIFICIAL_RELATIONSHIP_BOUNDARY_LOCALIZATION",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Russian relationship-boundary wording is artificial and may distort the intended options.",
+      "evidence_references": [
+        "manifest:S9-CORE-033-RU/source_input",
+        "pass-a.json#S9-CORE-033-RU",
+        "pass-b.json#S9-CORE-033-RU",
+        "pass-c.json#S9-CORE-033-RU"
+      ],
+      "remediation_requirement": "Rewrite idiomatically around обсудить сейчас and временно обозначить границы."
+    },
+    {
+      "issue_id": "B1-ISSUE-033",
+      "fixture_id": "S9-CORE-036-ZH",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_LABEL",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The contradictory label is unsupported by explicit incompatible source claims.",
+      "evidence_references": [
+        "manifest:S9-CORE-036-ZH/source_input",
+        "pass-a.json#S9-CORE-036-ZH",
+        "pass-b.json#S9-CORE-036-ZH",
+        "pass-c.json#S9-CORE-036-ZH"
+      ],
+      "remediation_requirement": "Add explicit conflicting claims or reclassify the case."
+    },
+    {
+      "issue_id": "B1-ISSUE-034",
+      "fixture_id": "S9-CORE-036-ZH",
+      "issue_code": "EXPECTED_BEHAVIOR_NOT_GROUNDED",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Required expected behavior relies on facts or relations not grounded in the source.",
+      "evidence_references": [
+        "manifest:S9-CORE-036-ZH/source_input",
+        "pass-a.json#S9-CORE-036-ZH",
+        "pass-b.json#S9-CORE-036-ZH",
+        "pass-c.json#S9-CORE-036-ZH"
+      ],
+      "remediation_requirement": "Ground the expected behavior in source facts or remove it."
+    },
+    {
+      "issue_id": "B1-ISSUE-035",
+      "fixture_id": "S9-CORE-036-ZH",
+      "issue_code": "HIGH_RISK_HEALTH_CONTEXT",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The grounding defect occurs in a safety-sensitive health context.",
+      "evidence_references": [
+        "manifest:S9-CORE-036-ZH/source_input",
+        "pass-a.json#S9-CORE-036-ZH",
+        "pass-b.json#S9-CORE-036-ZH",
+        "pass-c.json#S9-CORE-036-ZH"
+      ],
+      "remediation_requirement": "Retain urgent-warning-sign clarification and non-diagnostic safeguards in reinforced AI review."
+    },
+    {
+      "issue_id": "B1-ISSUE-036",
+      "fixture_id": "S9-CORE-037-EN",
+      "issue_code": "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+      "severity": "HIGH",
+      "status": "DISPUTED",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The no-action path may be read as permitting harmful delay during an uncertain evacuation alert.",
+      "evidence_references": [
+        "manifest:S9-CORE-037-EN/source_input",
+        "pass-a.json#S9-CORE-037-EN",
+        "pass-b.json#S9-CORE-037-EN",
+        "pass-c.json#S9-CORE-037-EN"
+      ],
+      "remediation_requirement": "Clarify that official evacuation instructions override any no-action path."
+    },
+    {
+      "issue_id": "B1-ISSUE-037",
+      "fixture_id": "S9-CORE-037-EN",
+      "issue_code": "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR",
+      "severity": "HIGH",
+      "status": "DISPUTED",
+      "confirmed_by_roles": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The recommendation does not explicitly state that official evacuation instructions override optimization.",
+      "evidence_references": [
+        "manifest:S9-CORE-037-EN/source_input",
+        "pass-a.json#S9-CORE-037-EN",
+        "pass-b.json#S9-CORE-037-EN",
+        "pass-c.json#S9-CORE-037-EN"
+      ],
+      "remediation_requirement": "State that official evacuation instructions override optimization, delay, or no-action analysis."
+    }
+  ],
+  "summary": {
+    "issue_count": 37,
+    "open_count": 23,
+    "disputed_count": 3,
+    "recorded_note_count": 11
+  }
+}

@@ -1,5 +1,11 @@
 # Levio Stage 9 Offline Dataset Human-Review Methodology
 
+> Historical artifact: this document records the human-review readiness package
+> prepared before the 21 July 2026 owner decision adopting the active independent
+> AI review protocol. It is retained unchanged below for traceability and is not
+> the current Stage 9 review procedure. See
+> `docs/qa/LEVIO_STAGE_9_AI_REVIEW_METHODOLOGY.md`.
+
 - Date: 21 July 2026, Europe/Madrid.
 - Package version: `stage-9-human-review-package.1`.
 - Human review status: `Pending`.

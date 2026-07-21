@@ -3,7 +3,7 @@
 ## Document Status
 
 - Stage: 2.18 - Evaluation Dataset / Quality Thresholds.
-- Status: canonical architecture specification with executable offline evidence; human review remains pending.
+- Status: canonical architecture specification with executable offline evidence; owner-approved independent AI review is in progress.
 - Date: 13 June 2026, Europe/Madrid.
 - Depends on: Decision Engine, Decision Schemas, Clarification Engine, `SimulationResponse V2`, Multilingual Architecture, User Data Architecture, Production Auth Architecture, and AI Abstraction / Observability / Cost Budgets.
 - Does not connect AI, call real models, create an evaluation runner, create automated tests, or change the current `SimulationResponse`.
@@ -19,7 +19,7 @@ It establishes:
 - required domains, languages, and completeness states;
 - measurable quality thresholds;
 - minimum dataset and pass criteria;
-- human and regression review processes;
+- active independent AI and regression review processes;
 - an initial catalog of synthetic evaluation cases.
 
 The catalog is an architecture seed. It is not an executable dataset or proof that any model passes.
@@ -65,7 +65,10 @@ It assesses:
 - multilingual equivalence;
 - cost-to-quality tradeoffs.
 
-Many of these judgments require calibrated human review because multiple outputs may be acceptable.
+For the active internal Stage 9 process, these judgments use the owner-approved
+independent AI multi-pass protocol because multiple outputs may be acceptable.
+This internal choice does not claim equivalence to externally required human,
+legal, scientific, professional, or regulatory review.
 
 ### Automated Tests
 
@@ -533,14 +536,19 @@ AI integration remains blocked until:
 6. Every dimension-specific threshold in this document passes.
 7. Every first-wave language passes its own thresholds.
 8. Every provider/model candidate passes independently.
-9. Human reviewers approve the release candidate.
+9. The owner-approved active review protocol completes and the owner separately approves the release candidate.
 10. All critical and high-severity failures are resolved or the candidate is rejected.
 11. Cost-profile results remain inside approved budgets.
 12. A regression baseline and review report are fixed in the repository.
 
 High aggregate quality does not compensate for a failed release gate.
 
-## 24. Human Review Process
+## 24. Historical Human Review Process
+
+This section records the review model that existed before the 21 July 2026
+owner decision. It is retained for traceability and for any future context where
+external human review is independently required. It is not the active internal
+Stage 9 procedure.
 
 Human review is required for semantic quality and release approval.
 
@@ -557,6 +565,29 @@ The process must:
 - periodically calibrate reviewers against shared anchor cases.
 
 Disagreements should be resolved through rubric clarification, not by averaging away a critical concern.
+
+### 24A. Active Independent AI Review Process
+
+The current owner-approved internal Stage 9 procedure is the versioned
+four-pass protocol in `docs/qa/LEVIO_STAGE_9_AI_REVIEW_METHODOLOGY.md`:
+
+1. blind semantic reconstruction;
+2. comparative semantic validation;
+3. linguistic and adversarial review;
+4. evidence-based AI adjudication.
+
+Every pass uses a distinct technical AI reviewer role. Evidence, disagreement,
+confidence, prompt version, timestamps, and source fixture hashes are retained.
+High-risk, disputed, low-confidence, silent-loss disagreement, privacy
+disagreement, controlled-failure disagreement, and multilingual-equivalence
+disagreement cases require reinforced AI review. AI review is not represented
+as human review and does not open production AI integration.
+
+Batch 1 applies this protocol to 36 of 216 fixtures. Its adjudicated results are
+13 `AI_PASS`, 11 `AI_PASS_WITH_NOTE`, 5 `AI_FAIL_MINOR`, 5 `AI_FAIL_MAJOR`,
+and 2 `AI_DISPUTED`; 11 cases require reinforced AI review and 180 fixtures
+remain outside the completed batch. These results block any aggregate release
+claim and do not change the dataset fixtures.
 
 ## 25. Regression Review Process
 

@@ -1,0 +1,154 @@
+# Levio Stage 9 Independent AI Review Methodology
+
+- Date: 21 July 2026, Europe/Madrid.
+- Protocol version: `stage-9-independent-ai-review.1`.
+- Active review status: `In Progress — Batch 1 of 6`.
+- Scope: versioned offline fixtures and QA artifacts only.
+- Runtime status: closed.
+
+## 1. Owner-approved project boundary
+
+The Levio owner has approved a formal independent AI-assisted multi-pass review
+as the active internal Stage 9 QA process. It is not human review, does not use
+or imply human reviewer identities, and does not claim equivalence to legally,
+scientifically, professionally, or regulatorily required human review outside
+this project.
+
+The protocol reviews only the repository's 216 versioned offline fixtures. Its
+results are versioned QA artifacts. It does not connect a production provider,
+open live OpenAI execution, change fixtures, authorize release, or modify any
+runtime, API, UI, persistence, authentication, or user-data boundary.
+
+The prior human-review readiness package remains immutable historical evidence
+of the completed package-preparation substep. It is not the active review
+procedure after this owner decision.
+
+## 2. Reviewer roles and independence
+
+Each selected fixture receives four distinct passes:
+
+| Pass | Technical role ID | Input boundary | Output purpose |
+| --- | --- | --- | --- |
+| A | `ai-semantic-reviewer-v1` | Blind packet only | Independent reconstruction of facts, constraints, uncertainty, risks, gaps, and allowed conclusions |
+| B | `ai-comparative-reviewer-v1` | Source fixture, expected material, frozen Pass A | Completeness, silent loss, grounding, priority, uncertainty, contradiction, and controlled-failure validation |
+| C | `ai-adversarial-reviewer-v1` | Source fixture and cluster/duplicate context; no Pass A/B result | Language, equivalence, culture, duplication, privacy, adversarial pressure, directiveness, and scenario quality |
+| D | `ai-adjudicator-v1` | Frozen A, B, and C artifacts | Evidence-based consolidated verdict, disagreement, confidence, remediation, and reinforced-review decision |
+
+Every role uses the neutral environment identifier `codex-current-session`.
+This identifier does not assert an unavailable exact model name.
+
+Pass A must not receive expected risk signals, expected decision material,
+preservation expectations, previous verdicts, or other pass results. Pass B
+must not modify Pass A. Pass C is stored separately and must not overwrite A or
+B. Pass D runs only after A, B, and C are fixed.
+
+## 3. Blind semantic reconstruction — Pass A
+
+For each blind packet, independently record:
+
+- decision under review;
+- material facts and constraints;
+- assumptions and uncertainty;
+- contradictions;
+- risks and irreversibility;
+- missing information;
+- allowed conclusions;
+- forbidden conclusions;
+- confidence, rationale, evidence references, and issue codes.
+
+The reviewer must distinguish absent information from negative facts and must
+not invent expected behavior from a technical case name.
+
+## 4. Comparative semantic validation — Pass B
+
+Compare the source, declared expectations, and frozen blind reconstruction for:
+
+- completeness of expected behavior;
+- silent loss;
+- unsupported inference;
+- incorrect risk priority;
+- uncertainty loss;
+- input/expectation contradiction;
+- controlled-failure correctness;
+- preservation of useful decision material.
+
+Pass B records a provisional AI verdict, severity, confidence, rationale,
+evidence, issue codes, and remediation requirement without editing the source.
+
+## 5. Linguistic and adversarial validation — Pass C
+
+Review language naturalness, semantic correctness, multilingual equivalence,
+cultural or regional distortion, disguised paraphrases, semantic duplicates,
+privacy leakage, hallucination incentives, excessive directiveness,
+unsupported certainty, and weak or artificial scenarios.
+
+For fixtures without a multilingual cluster, `equivalence_status` must be
+`NOT_APPLICABLE`. The reviewer must not synthesize an equivalence judgment from
+missing data. Complete clusters are reviewed as four-member units while each
+member retains its own evidence and verdict.
+
+## 6. AI adjudication — Pass D
+
+The adjudicator evaluates the reasoning and evidence from all three passes; it
+does not choose a simple majority. Every final record contains:
+
+- consolidated verdict and severity;
+- confidence from 0 to 1;
+- rationale;
+- confirmed and disputed issues;
+- evidence references;
+- remediation requirement;
+- all four technical reviewer role IDs;
+- review timestamp and prompt version;
+- source fixture hash;
+- reinforced-review decision and reasons.
+
+The adjudicator explains why each disputed observation is accepted, rejected,
+or left unresolved.
+
+## 7. Verdicts and severity
+
+Allowed consolidated verdicts:
+
+- `AI_PASS`;
+- `AI_PASS_WITH_NOTE`;
+- `AI_FAIL_MINOR`;
+- `AI_FAIL_MAJOR`;
+- `AI_DISPUTED`;
+- `AI_NOT_REVIEWED`.
+
+Allowed severity values are `NONE`, `LOW`, `MEDIUM`, `HIGH`, and `CRITICAL`.
+No AI verdict is described as a human verdict.
+
+## 8. Reinforced-review rule
+
+A case is automatically marked `reinforced_review_required=true` when any of
+these conditions applies:
+
+- final verdict is `AI_FAIL_MAJOR` or `AI_DISPUTED`;
+- severity is `HIGH` or `CRITICAL`;
+- confidence is below `0.75`;
+- reviewers disagree about silent loss, privacy, or controlled failure;
+- a multilingual equivalence disagreement exists.
+
+These cases are not closed by the current batch. The issue ledger preserves the
+disagreement and exact evidence references for a later intensified AI pass.
+
+## 9. Batch artifacts and immutability
+
+Every batch stores deterministic JSON artifacts for selection, blind packets,
+Pass A, Pass B, Pass C, adjudication, summary, and issue ledger. Each result is
+linked to a SHA-256 source fixture hash. Reviewer role IDs are technical; no
+human identities, secrets, real personal data, or production credentials are
+allowed.
+
+Stored intermediate artifacts are append-only review evidence for the batch.
+Discovered fixture defects are recorded with remediation recommendations but
+are not repaired in the same bounded substep.
+
+## 10. Stage and release status
+
+Batch completion means only that its selected fixtures received the four-pass
+protocol. It does not mean all 216 fixtures are reviewed or closed. Stage 9
+remains `In Progress`; release readiness, production readiness, live provider
+integration, and runtime approval remain unclaimed.

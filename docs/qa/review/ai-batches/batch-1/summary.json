@@ -1,0 +1,90 @@
+{
+  "artifact_version": "stage-9-ai-review-batch-summary.1",
+  "batch_id": "stage-9-ai-review-batch-1-of-6",
+  "status": "COMPLETED_WITH_REINFORCED_REVIEW_PENDING",
+  "reviewed_fixture_count": 36,
+  "remaining_fixture_count": 180,
+  "coverage": {
+    "selected_count": 36,
+    "dataset_types": {
+      "canonical_core": 20,
+      "rich_decision_material_baseline": 8,
+      "synthetic_risk": 8
+    },
+    "languages": {
+      "en": 5,
+      "es": 13,
+      "not_declared": 8,
+      "ru": 5,
+      "zh": 5
+    },
+    "domains": {
+      "adapter_contract_and_safety": 8,
+      "business_decisions": 1,
+      "career_and_work": 4,
+      "decision_material_contract_and_preservation": 8,
+      "education": 4,
+      "finance_and_spending": 4,
+      "high_risk_and_safety_sensitive": 2,
+      "personal_planning": 1,
+      "relocation_and_housing": 4
+    },
+    "completeness": {
+      "complete": 7,
+      "contradictory": 5,
+      "critically_incomplete": 4,
+      "not_applicable": 16,
+      "partial": 4
+    },
+    "high_risk_count": 16,
+    "privacy_count": 17,
+    "controlled_failure_count": 14,
+    "complete_equivalence_clusters": [
+      "S9-CLUSTER-003",
+      "S9-CLUSTER-010",
+      "S9-CLUSTER-013",
+      "S9-CLUSTER-024"
+    ]
+  },
+  "verdict_counts": {
+    "AI_PASS": 13,
+    "AI_PASS_WITH_NOTE": 11,
+    "AI_FAIL_MINOR": 5,
+    "AI_FAIL_MAJOR": 5,
+    "AI_DISPUTED": 2,
+    "AI_NOT_REVIEWED": 0
+  },
+  "severity_counts": {
+    "NONE": 13,
+    "LOW": 10,
+    "MEDIUM": 7,
+    "HIGH": 6,
+    "CRITICAL": 0
+  },
+  "minor_issue_case_count": 5,
+  "major_issue_case_count": 5,
+  "disputed_case_count": 2,
+  "disputed_cases": [
+    "S9-MATERIAL-013",
+    "S9-CORE-037-EN"
+  ],
+  "reinforced_review_count": 11,
+  "reinforced_review_cases": [
+    "S9-MATERIAL-013",
+    "S9-CORE-010-ES",
+    "S9-CORE-010-EN",
+    "S9-CORE-010-RU",
+    "S9-CORE-010-ZH",
+    "S9-CORE-024-ES",
+    "S9-CORE-024-EN",
+    "S9-CORE-024-RU",
+    "S9-CORE-024-ZH",
+    "S9-CORE-036-ZH",
+    "S9-CORE-037-EN"
+  ],
+  "issue_count": 37,
+  "network_request_count": 0,
+  "stage_status": "In Progress",
+  "release_readiness": "NOT_DECLARED",
+  "runtime_boundaries": "CLOSED"
+}
