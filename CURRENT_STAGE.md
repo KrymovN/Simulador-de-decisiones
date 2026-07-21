@@ -1,5 +1,34 @@
 # CURRENT STAGE
 
+## Stage 9 Human-Review Readiness Package Prepared — 21 July 2026
+
+Stage 9 remains **In Progress**. A deterministic human-review manifest and
+strict review methodology are ready for all 216 offline fixtures. Manifest
+membership matches the source dataset exactly, all 40 four-language clusters
+are complete, metadata mismatches are zero, and all 216 verdicts remain
+`NOT_REVIEWED`. Human review remains pending and must be performed by qualified
+people, including native or professionally qualified reviewers for each first-
+wave language and two reviewers for safety-sensitive or disputed cases.
+
+The threshold audit confirms the original commit `5b0674e8` requires at least
+160 versioned case records, permits multilingual equivalents to count as cases,
+and separately governs their equivalence. It does not require 160 semantically
+independent scenarios. The canonical minimum of 160 case records has been
+reached by 40 scenarios × 4 languages; semantic diversity and translation
+quality remain unapproved human-review risks.
+
+Automated RC pre-assessment verdict: `READY_FOR_HUMAN_REVIEW`. This is not human
+approval, release approval, or runtime readiness. Live OpenAI execution is not
+opened; `/api/simulate` remains deterministic with `mockOnly=true`;
+`HomeSimulator` remains mock-only, and all runtime boundaries remain closed.
+Visual migration remains fully closed with 0 remaining substeps. Stage 15
+remains a bounded documentation and scale-readiness planning stage.
+
+No next Stage 9 implementation substep is open. The planning candidate, not In
+Progress work, is the later release-candidate assessment after the mandatory
+human review has produced no unresolved `FAIL_MAJOR` and no applicable
+`NOT_REVIEWED` verdicts.
+
 ## Stage 9 Offline Evaluation Dataset Expansion Complete — 21 July 2026
 
 Stage 9 remains **In Progress**. The latest completed bounded substep adds 160

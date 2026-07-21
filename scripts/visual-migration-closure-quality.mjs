@@ -105,7 +105,7 @@ check("Stage 9 remains In Progress without completion drift", currentCanonicalSt
 check("Stage 15 remains documentation and planning only", currentCanonicalState.includes("Stage 15 remains a bounded documentation and scale-readiness planning stage") && !currentCanonicalState.includes("Stage 15 is an implementation Stage"));
 check("Visual migration remains closed with zero remaining substeps", currentCanonicalState.includes("Visual migration remains fully closed with 0 remaining substeps") && !currentCanonicalState.includes("Visual migration is reopened") && !currentCanonicalState.includes("Visual migration has reopened"));
 check("Stage 9 continuation remains planning only", currentCanonicalState.includes("No next Stage 9 implementation substep is open") && currentCanonicalState.includes("planning candidate, not In Progress work") && !currentCanonicalState.includes("Stage 9 Offline Evaluation Human Review and Release Candidate Assessment is In Progress") && !currentCanonicalState.includes("Stage 9 Offline Evaluation Human Review and Release Candidate Assessment is **In Progress**"));
-check("Dataset minimum reached with human review pending", currentCanonicalState.includes("canonical minimum of 160 reviewed cases has been reached") && !currentCanonicalState.includes("canonical minimum of 160 reviewed cases is not reached") && currentCanonicalState.includes("Human review remains pending") && !currentCanonicalState.includes("Human review is complete") && !currentCanonicalState.includes("Human review has been completed"));
+check("Dataset minimum reached with human review pending", currentCanonicalState.includes("canonical minimum of 160 case records has been reached") && !currentCanonicalState.includes("canonical minimum of 160 case records is not reached") && currentCanonicalState.includes("Human review remains pending") && !currentCanonicalState.includes("Human review is complete") && !currentCanonicalState.includes("Human review has been completed"));
 
 for (const directory of [
   "app/login", "app/register", "app/forgot-password", "app/privacy-policy", "app/terms",
@@ -120,6 +120,8 @@ check("No new Stage or Batch is introduced", currentCanonicalState.includes("No 
 const allowed = new Set([
   "docs/architecture/LEVIO_AI_ABSTRACTION_OBSERVABILITY_COSTS.md",
   "docs/architecture/LEVIO_DECISION_ENGINE.md", "docs/qa/LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md",
+  "docs/qa/LEVIO_STAGE_9_HUMAN_REVIEW_METHODOLOGY.md",
+  "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json",
   "PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", "CURRENT_STAGE.md",
   "LEVIO_CURRENT_STATE.md", "LEVIO_PROJECT_PROGRESS.md",
   "lib/ai-decision-material/acceptance.ts", "lib/ai-decision-material/contracts.ts",
@@ -128,6 +130,8 @@ const allowed = new Set([
   "scripts/homepage-one-time-assembly-refinement-quality.mjs",
   "scripts/stage-9-ai-value-preservation-quality.mjs",
   "scripts/stage-9-offline-dataset-coverage-quality.mjs",
+  "scripts/generate-stage-9-human-review-package.mjs",
+  "scripts/stage-9-human-review-readiness-quality.mjs",
   "scripts/workspace-surfaces-quality.mjs", "scripts/saved-simulations-and-drafts-visual-quality.mjs",
   "scripts/privacy-data-controls-shared-states-visual-quality.mjs", "scripts/visual-migration-closure-quality.mjs",
 ]);
@@ -138,7 +142,9 @@ check("Final cleanup diff stays inside the approved file set", actual.every((pat
 const reconciliationAllowed = new Set([
   "scripts/stage-9-ai-value-preservation-quality.mjs", "scripts/visual-migration-closure-quality.mjs",
   "scripts/stage-9-offline-dataset-coverage-quality.mjs", "lib/ai-decision-material/fixtures.ts",
+  "scripts/generate-stage-9-human-review-package.mjs", "scripts/stage-9-human-review-readiness-quality.mjs",
   "lib/ai-decision-material/evaluation.ts", "docs/qa/LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md", "package.json",
+  "docs/qa/LEVIO_STAGE_9_HUMAN_REVIEW_METHODOLOGY.md", "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json",
   "PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", "CURRENT_STAGE.md",
   "LEVIO_CURRENT_STATE.md", "LEVIO_PROJECT_PROGRESS.md",
 ]);

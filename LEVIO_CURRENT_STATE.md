@@ -1,5 +1,32 @@
 # LEVIO CURRENT STATE
 
+## Current Stage 9 Human-Review Readiness State — 21 July 2026
+
+The existing 216 offline fixtures now have a deterministic, source-derived
+human-review manifest and written review methodology. The manifest contains 32
+synthetic-risk, 24 rich baseline, and 160 canonical core entries; 40 complete
+equivalence clusters; zero duplicate IDs; zero missing entries; and zero
+metadata mismatches. All 216 review verdicts remain `NOT_REVIEWED`, with null
+reviewer identities and timestamps. Human review remains pending.
+
+Git-history audit confirms the unchanged canonical minimum means 160 versioned
+case records. The original rule explicitly counts per-language cases and also
+requires equivalence clusters, so multilingual equivalents count separately.
+The canonical minimum of 160 case records has been reached by the current 40 ×
+4 core. This does not resolve semantic-diversity, equivalence, translation, or
+cultural-quality risks; qualified people must review those dimensions.
+
+The automated pre-assessment verdict is `READY_FOR_HUMAN_REVIEW`, not release
+ready. Stage 9 remains **In Progress**. Live OpenAI execution is not opened;
+`/api/simulate` remains deterministic with `mockOnly=true`; `HomeSimulator`
+remains mock-only, and all runtime boundaries remain closed. Visual migration
+remains fully closed with 0 remaining substeps. Stage 15 remains a bounded
+documentation and scale-readiness planning stage.
+
+No next Stage 9 implementation substep is open. The planning candidate, not In
+Progress work, is the later owner/product release-candidate decision after the
+mandatory 216-entry human review.
+
 ## Current Stage 9 Offline Evaluation Dataset State — 21 July 2026
 
 The offline evaluation foundation contains 216 executable cases after adding

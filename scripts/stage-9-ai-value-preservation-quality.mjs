@@ -163,8 +163,8 @@ const canonicalReconciliationBoundariesPreserved =
   currentCanonicalState.includes("planning candidate, not In Progress work") &&
   !currentCanonicalState.includes("Stage 9 Offline Evaluation Human Review and Release Candidate Assessment is In Progress") &&
   !currentCanonicalState.includes("Stage 9 Offline Evaluation Human Review and Release Candidate Assessment is **In Progress**") &&
-  currentCanonicalState.includes("canonical minimum of 160 reviewed cases has been reached") &&
-  !currentCanonicalState.includes("canonical minimum of 160 reviewed cases is not reached") &&
+  currentCanonicalState.includes("canonical minimum of 160 case records has been reached") &&
+  !currentCanonicalState.includes("canonical minimum of 160 case records is not reached") &&
   currentCanonicalState.includes("Human review remains pending") &&
   !currentCanonicalState.includes("Human review is complete") &&
   !currentCanonicalState.includes("Human review has been completed") &&
@@ -188,6 +188,8 @@ const allowedDiff = new Set([
   "docs/architecture/LEVIO_AI_ABSTRACTION_OBSERVABILITY_COSTS.md",
   "docs/architecture/LEVIO_DECISION_ENGINE.md",
   "docs/qa/LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md",
+  "docs/qa/LEVIO_STAGE_9_HUMAN_REVIEW_METHODOLOGY.md",
+  "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json",
   "PROJECT_CONTEXT.md",
   "LEVIO_IMPLEMENTATION_PLAN.md",
   "CURRENT_STAGE.md",
@@ -203,6 +205,8 @@ const allowedDiff = new Set([
   "scripts/saved-simulations-and-drafts-visual-quality.mjs",
   "scripts/stage-9-ai-value-preservation-quality.mjs",
   "scripts/stage-9-offline-dataset-coverage-quality.mjs",
+  "scripts/generate-stage-9-human-review-package.mjs",
+  "scripts/stage-9-human-review-readiness-quality.mjs",
   "scripts/visual-migration-closure-quality.mjs",
   "scripts/workspace-surfaces-quality.mjs",
 ]);
@@ -214,9 +218,13 @@ const reconciliationAllowed = new Set([
   "scripts/stage-9-ai-value-preservation-quality.mjs",
   "scripts/visual-migration-closure-quality.mjs",
   "scripts/stage-9-offline-dataset-coverage-quality.mjs",
+  "scripts/generate-stage-9-human-review-package.mjs",
+  "scripts/stage-9-human-review-readiness-quality.mjs",
   "lib/ai-decision-material/fixtures.ts",
   "lib/ai-decision-material/evaluation.ts",
   "docs/qa/LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md",
+  "docs/qa/LEVIO_STAGE_9_HUMAN_REVIEW_METHODOLOGY.md",
+  "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json",
   "package.json",
   "PROJECT_CONTEXT.md",
   "LEVIO_IMPLEMENTATION_PLAN.md",

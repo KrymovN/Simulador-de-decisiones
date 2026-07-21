@@ -3,7 +3,7 @@
 ## Document Status
 
 - Stage: 2.18 - Evaluation Dataset / Quality Thresholds.
-- Status: architecture specification and initial synthetic case catalog only.
+- Status: canonical architecture specification with executable offline evidence; human review remains pending.
 - Date: 13 June 2026, Europe/Madrid.
 - Depends on: Decision Engine, Decision Schemas, Clarification Engine, `SimulationResponse V2`, Multilingual Architecture, User Data Architecture, Production Auth Architecture, and AI Abstraction / Observability / Cost Budgets.
 - Does not connect AI, call real models, create an evaluation runner, create automated tests, or change the current `SimulationResponse`.
@@ -144,6 +144,30 @@ clusters, at least 20 cases in every required core domain, 60 high-risk cases,
 40 privacy-boundary cases, 40 controlled-failure cases, and 160 cost-profile
 cases. Human review remains pending; provider/model approval, AI integration,
 and release readiness remain blocked by the remaining criteria in this document.
+
+### Stage 9 threshold interpretation and human-review readiness audit
+
+Git history attributes the unchanged 160-case minimum and its coverage rules to
+commit `5b0674e8`. In that original text, a case is a versioned dataset record.
+The same section requires at least 20 cases in each first-wave language and at
+least eight four-language semantic-equivalence clusters. Multilingual
+equivalents therefore count as separate cases while remaining subject to a
+separate equivalence requirement. The rule does not require 160 semantically
+independent scenarios, and commit `81435cb` did not reduce or reinterpret its
+numeric thresholds.
+
+The 40-scenario × 4-language core satisfies the 160 case-record minimum under
+that original interpretation. Semantic diversity, realism, translation
+equivalence, cultural correctness, and paraphrase-level duplication cannot be
+approved automatically and remain mandatory human-review dimensions.
+
+The deterministic manifest
+`docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json` contains all 216
+offline fixtures. The written methodology is
+`docs/qa/LEVIO_STAGE_9_HUMAN_REVIEW_METHODOLOGY.md`. Every human verdict begins
+as `NOT_REVIEWED`; human review status is `Pending`. The automated RC
+pre-assessment is `READY_FOR_HUMAN_REVIEW`, not release approval or runtime
+approval.
 
 ## 5. Evaluation Dataset Structure
 

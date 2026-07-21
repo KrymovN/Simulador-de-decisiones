@@ -1,5 +1,40 @@
 # PROJECT CONTEXT
 
+## Stage 9 Human-Review Readiness Package Prepared — 21 July 2026
+
+The deterministic human-review package now projects every one of the 216
+offline fixtures into a machine-readable manifest: 32 synthetic-risk cases, 24
+rich decision-material baseline cases, and 160 canonical core cases. The
+manifest contains the source input, expected risk signals and decision material,
+critical-information preservation expectations, review fields, and exact source
+metadata. All 216 human verdicts remain `NOT_REVIEWED`; reviewer identities and
+timestamps remain null. Human review remains pending.
+
+The Git-history audit traces the minimum to commit `5b0674e8`. Its original
+canonical intent is at least 160 versioned case records, not 160 semantically
+independent scenarios: it counts cases per language while separately requiring
+four-language semantic-equivalence clusters. Therefore the canonical minimum of
+160 case records has been reached by the 40-scenario × 4-language core without a
+retroactive threshold change. Semantic diversity, translation equivalence,
+cultural correctness, and hidden paraphrase duplication still require qualified
+human review.
+
+The automated RC pre-assessment verdict is `READY_FOR_HUMAN_REVIEW`. This means
+only that quantitative, schema, coverage, deterministic, network-isolation, and
+silent-loss prerequisites allow human review to begin. It is not release
+approval, provider/model approval, production readiness, or human approval.
+
+Stage 9 remains **In Progress**. Live OpenAI execution is not opened;
+`/api/simulate` remains deterministic with `mockOnly=true`; `HomeSimulator`
+remains mock-only, and all runtime boundaries remain closed. Visual migration
+remains fully closed with 0 remaining substeps. Stage 15 remains a bounded
+documentation and scale-readiness planning stage. No new Stage is created.
+
+No next Stage 9 implementation substep is open. The planning candidate, not In
+Progress work, is the later release-candidate assessment after real human
+review. The immediate non-Codex action is the mandatory 216-entry review by
+qualified human reviewers.
+
 ## Stage 9 Offline Evaluation Dataset Expansion Complete — 21 July 2026
 
 The bounded offline dataset expansion adds 160 purpose-written synthetic
