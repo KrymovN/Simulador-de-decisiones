@@ -1,0 +1,1784 @@
+{
+  "artifact_version": "stage-9-ai-review-adjudication.4",
+  "batch_id": "stage-9-ai-review-batch-4-of-6",
+  "pass": "PASS_D_AI_ADJUDICATION",
+  "reviewer_role_id": "ai-adjudicator-v1",
+  "model_id": "codex-current-session",
+  "prompt_version": "stage-9-ai-review-adjudication.4",
+  "review_timestamp": "2026-07-21T22:30:00.000Z",
+  "context_isolation": {
+    "review_session": "stage-9-ai-review-batch-4",
+    "reviewer_role_id": "ai-adjudicator-v1",
+    "model_id": "codex-current-session",
+    "independence_type": "role-and-context-isolated",
+    "model_independence": "not_claimed"
+  },
+  "immutable_input_packet": [
+    {
+      "path": "docs/qa/review/ai-batches/batch-4/pass-a.json",
+      "sha256": "1b637167cba6380a844bd0115cd9e8a7b9e3a6edb31a7f2c0f6f09d52ecf1327"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-4/pass-b.json",
+      "sha256": "1149e156e2f7cf5f2dd739f3318d7109029fb48f21f13d9e3d19d930ffabf5ba"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-4/pass-c.json",
+      "sha256": "a18f58367ac9ad5e91190213f2073b948d34ee27d9589cfdf03eb4ff45d6b10e"
+    }
+  ],
+  "results": [
+    {
+      "sequence": 1,
+      "fixture_id": "S9-EVAL-003",
+      "source_fixture_hash": "ad84e04604a8b102bf6fff613756fdfc69ceda4fa5cbf395eb1e6b6f4ca514fc",
+      "consolidated_verdict": "AI_FAIL_MINOR",
+      "severity": "MEDIUM",
+      "confidence": 0.93,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: The source states an initial internal investment and limited provider capacity, while the expected risks strengthen these into a recurring fixed cost and a provider outage mechanism that are not explicit.",
+      "accepted_observations": [
+        "The source states an initial internal investment and limited provider capacity, while the expected risks strengthen these into a recurring fixed cost and a provider outage mechanism that are not explicit."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [
+        "The source states an initial internal investment and limited provider capacity, while the expected risks strengthen these into a recurring fixed cost and a provider outage mechanism that are not explicit."
+      ],
+      "disputed_issues": [],
+      "issue_codes": [
+        "OVER_SPECIFIED_GROUNDED_RISK_MECHANISMS"
+      ],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-EVAL-003]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-EVAL-003]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-EVAL-003]"
+      ],
+      "remediation_requirement": "Keep the candidate mechanisms at the stated initial-investment and limited-capacity level, or add facts supporting recurrent cost and operational interruption.",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "The source states an initial internal investment and limited provider capacity, while the expected risks strengthen these into a recurring fixed cost and a provider outage mechanism that are not explicit.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 2,
+      "fixture_id": "S9-EVAL-005",
+      "source_fixture_hash": "4c9fa7aea5ca51f6e045fed2dc5062794060c3c0a9b107f873bfbf3f3ecbcad9",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.99,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: Six repeated candidate risks visibly exceed the bounded candidate contract and the schema-invalid rejection is directly testable.",
+      "accepted_observations": [
+        "Six repeated candidate risks visibly exceed the bounded candidate contract and the schema-invalid rejection is directly testable."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-EVAL-005]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-EVAL-005]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-EVAL-005]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "Six repeated candidate risks visibly exceed the bounded candidate contract and the schema-invalid rejection is directly testable.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 3,
+      "fixture_id": "S9-EVAL-015",
+      "source_fixture_hash": "c1cd911a119eb97c6223fcde71accaed54f7140aa4874dcd9503a3b7b6921cbe",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.99,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: The candidate explicitly selects a best option, so the safety-invalid rejection is grounded in the visible text and preserves Decision Engine authority.",
+      "accepted_observations": [
+        "The candidate explicitly selects a best option, so the safety-invalid rejection is grounded in the visible text and preserves Decision Engine authority."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-EVAL-015]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-EVAL-015]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-EVAL-015]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "The candidate explicitly selects a best option, so the safety-invalid rejection is grounded in the visible text and preserves Decision Engine authority.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 4,
+      "fixture_id": "S9-EVAL-024",
+      "source_fixture_hash": "4431cecfac638b8d5767bc6b58e846298c1bb194d1462532cae3247f0218dbcc",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.99,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: The meaningless candidate content is visible and the semantic-validation rejection is deterministic and appropriately fail-closed.",
+      "accepted_observations": [
+        "The meaningless candidate content is visible and the semantic-validation rejection is deterministic and appropriately fail-closed."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-EVAL-024]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-EVAL-024]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-EVAL-024]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "The meaningless candidate content is visible and the semantic-validation rejection is deterministic and appropriately fail-closed.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 5,
+      "fixture_id": "S9-MATERIAL-002",
+      "source_fixture_hash": "596296d7f45eb62bc727beb6dfc0d36c7c840cd1df082b21882a238428afe221",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.99,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: The accepted benefit and risk remain distinct, keep valid option, scenario, and criterion references, and each receives a traceable future-composition item.",
+      "accepted_observations": [
+        "The accepted benefit and risk remain distinct, keep valid option, scenario, and criterion references, and each receives a traceable future-composition item."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-MATERIAL-002]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-MATERIAL-002]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-MATERIAL-002]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "The accepted benefit and risk remain distinct, keep valid option, scenario, and criterion references, and each receives a traceable future-composition item.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 6,
+      "fixture_id": "S9-MATERIAL-004",
+      "source_fixture_hash": "12067b87fdb20b4f691726674ffb7a77902837bd0f5b0fcc6fc93ff4ec0a018b",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.99,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: Short- and long-term consequences are separately retained with valid scenario references, correct horizon transformations, and complete traceability.",
+      "accepted_observations": [
+        "Short- and long-term consequences are separately retained with valid scenario references, correct horizon transformations, and complete traceability."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-MATERIAL-004]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-MATERIAL-004]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-MATERIAL-004]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "Short- and long-term consequences are separately retained with valid scenario references, correct horizon transformations, and complete traceability.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 7,
+      "fixture_id": "S9-MATERIAL-016",
+      "source_fixture_hash": "752f2bcaa77733247f5912fe38f32cfc616cbafd24917d99434abac2f7889897",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.99,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: The unknown top-level material field produces the declared critical contract failure before any candidate item is accepted or composed.",
+      "accepted_observations": [
+        "The unknown top-level material field produces the declared critical contract failure before any candidate item is accepted or composed."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-MATERIAL-016]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-MATERIAL-016]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-MATERIAL-016]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "The unknown top-level material field produces the declared critical contract failure before any candidate item is accepted or composed.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 8,
+      "fixture_id": "S9-MATERIAL-021",
+      "source_fixture_hash": "fdf549cf1d2b6883cc9c3ba93e61bbe409892b85642c345246d7274d24bf38c5",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.99,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: The imperative to choose immediately is explicit, and rejection for unsupported authority correctly prevents provider material from becoming product instruction.",
+      "accepted_observations": [
+        "The imperative to choose immediately is explicit, and rejection for unsupported authority correctly prevents provider material from becoming product instruction."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-MATERIAL-021]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-MATERIAL-021]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-MATERIAL-021]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "The imperative to choose immediately is explicit, and rejection for unsupported authority correctly prevents provider material from becoming product instruction.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 9,
+      "fixture_id": "S9-CORE-004-ES",
+      "source_fixture_hash": "e0ba94e1e4ce76b326b888eced4f04867dca5f1dba48a3f23a30d5088b7256f4",
+      "consolidated_verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "confidence": 0.98,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair.",
+      "accepted_observations": [
+        "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [
+        "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair."
+      ],
+      "disputed_issues": [],
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH"
+      ],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-004-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-004-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-004-ES]"
+      ],
+      "remediation_requirement": "Add two explicit incompatible promotion, relocation, or household claims, or classify the case as incomplete rather than contradictory.",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": true,
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "adjudication_notes": [
+        {
+          "observation": "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 10,
+      "fixture_id": "S9-CORE-004-EN",
+      "source_fixture_hash": "9d2204b508ec66f2f8279b7b0f23bd0e0f2853a16ba6c518ed5ad8048a253234",
+      "consolidated_verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "confidence": 0.98,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair.",
+      "accepted_observations": [
+        "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [
+        "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair."
+      ],
+      "disputed_issues": [],
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH"
+      ],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-004-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-004-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-004-EN]"
+      ],
+      "remediation_requirement": "Add two explicit incompatible promotion, relocation, or household claims, or classify the case as incomplete rather than contradictory.",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": true,
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "adjudication_notes": [
+        {
+          "observation": "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 11,
+      "fixture_id": "S9-CORE-004-RU",
+      "source_fixture_hash": "94b1bb9576f29d9f7ec1dac2957ce9347c704d19295422721f176ace6982ba5a",
+      "consolidated_verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "confidence": 0.98,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair.",
+      "accepted_observations": [
+        "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [
+        "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair."
+      ],
+      "disputed_issues": [],
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH"
+      ],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-004-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-004-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-004-RU]"
+      ],
+      "remediation_requirement": "Add two explicit incompatible promotion, relocation, or household claims, or classify the case as incomplete rather than contradictory.",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": true,
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "adjudication_notes": [
+        {
+          "observation": "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 12,
+      "fixture_id": "S9-CORE-004-ZH",
+      "source_fixture_hash": "8023334b34d30dffc181029ae362d3aff906f4595e2ff817b4b7689b20abbd10",
+      "consolidated_verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "confidence": 0.98,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair.",
+      "accepted_observations": [
+        "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [
+        "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair."
+      ],
+      "disputed_issues": [],
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH"
+      ],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-004-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-004-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-004-ZH]"
+      ],
+      "remediation_requirement": "Add two explicit incompatible promotion, relocation, or household claims, or classify the case as incomplete rather than contradictory.",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": true,
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "adjudication_notes": [
+        {
+          "observation": "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 13,
+      "fixture_id": "S9-CORE-009-ES",
+      "source_fixture_hash": "a7d9b19878d30fa6c10e4e0a6e615a36a3dd7a7abc95e3e6c5ec62eed4c56630",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.97,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: The three education options, placement-quality assumption, opportunity-cost and skill-fit risks, and conditional recommendation behavior are mutually coherent and equivalent across languages.",
+      "accepted_observations": [
+        "The three education options, placement-quality assumption, opportunity-cost and skill-fit risks, and conditional recommendation behavior are mutually coherent and equivalent across languages."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-009-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-009-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-009-ES]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "The three education options, placement-quality assumption, opportunity-cost and skill-fit risks, and conditional recommendation behavior are mutually coherent and equivalent across languages.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 14,
+      "fixture_id": "S9-CORE-009-EN",
+      "source_fixture_hash": "24767a8f6a3ca4d6ccf0692833e7f0af4de01f72fa6c0efb8f51039fd344a1c4",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.97,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: The three education options, placement-quality assumption, opportunity-cost and skill-fit risks, and conditional recommendation behavior are mutually coherent and equivalent across languages.",
+      "accepted_observations": [
+        "The three education options, placement-quality assumption, opportunity-cost and skill-fit risks, and conditional recommendation behavior are mutually coherent and equivalent across languages."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-009-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-009-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-009-EN]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "The three education options, placement-quality assumption, opportunity-cost and skill-fit risks, and conditional recommendation behavior are mutually coherent and equivalent across languages.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 15,
+      "fixture_id": "S9-CORE-009-RU",
+      "source_fixture_hash": "49b3f6bbafea794fef613969c7d697076159a3a868284a6aed945de0aaac8333",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.97,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: The three education options, placement-quality assumption, opportunity-cost and skill-fit risks, and conditional recommendation behavior are mutually coherent and equivalent across languages.",
+      "accepted_observations": [
+        "The three education options, placement-quality assumption, opportunity-cost and skill-fit risks, and conditional recommendation behavior are mutually coherent and equivalent across languages."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-009-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-009-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-009-RU]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "The three education options, placement-quality assumption, opportunity-cost and skill-fit risks, and conditional recommendation behavior are mutually coherent and equivalent across languages.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 16,
+      "fixture_id": "S9-CORE-009-ZH",
+      "source_fixture_hash": "0c13fe05b0be33836ea5fe295dbc81fcaaa3dc536e9a4ca2977724f7c9ddd8ca",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.97,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: The three education options, placement-quality assumption, opportunity-cost and skill-fit risks, and conditional recommendation behavior are mutually coherent and equivalent across languages.",
+      "accepted_observations": [
+        "The three education options, placement-quality assumption, opportunity-cost and skill-fit risks, and conditional recommendation behavior are mutually coherent and equivalent across languages."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-009-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-009-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-009-ZH]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "The three education options, placement-quality assumption, opportunity-cost and skill-fit risks, and conditional recommendation behavior are mutually coherent and equivalent across languages.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 17,
+      "fixture_id": "S9-CORE-018-ES",
+      "source_fixture_hash": "4b218875f339e7f18676a5c5dd890858410d4314b13abaff80b4a8c33b6f7213",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.94,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: Usage history, uncertain future usage, cancellation-penalty gap, service continuity, and sunk-cost caution form a coherent partial subscription decision without unsupported certainty.",
+      "accepted_observations": [
+        "Usage history, uncertain future usage, cancellation-penalty gap, service continuity, and sunk-cost caution form a coherent partial subscription decision without unsupported certainty."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-018-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-018-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-018-ES]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "Usage history, uncertain future usage, cancellation-penalty gap, service continuity, and sunk-cost caution form a coherent partial subscription decision without unsupported certainty.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 18,
+      "fixture_id": "S9-CORE-018-EN",
+      "source_fixture_hash": "b971fc4cec44046d54ec2ec699804d698e6487f8db05f8bc0a2a1822145cc6b5",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.94,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: Usage history, uncertain future usage, cancellation-penalty gap, service continuity, and sunk-cost caution form a coherent partial subscription decision without unsupported certainty.",
+      "accepted_observations": [
+        "Usage history, uncertain future usage, cancellation-penalty gap, service continuity, and sunk-cost caution form a coherent partial subscription decision without unsupported certainty."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-018-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-018-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-018-EN]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "Usage history, uncertain future usage, cancellation-penalty gap, service continuity, and sunk-cost caution form a coherent partial subscription decision without unsupported certainty.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 19,
+      "fixture_id": "S9-CORE-018-RU",
+      "source_fixture_hash": "096ab2dadfe9998486d15e872f98aab2cb827a04fcec74c6993a2f5de71484c5",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.94,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: Usage history, uncertain future usage, cancellation-penalty gap, service continuity, and sunk-cost caution form a coherent partial subscription decision without unsupported certainty.",
+      "accepted_observations": [
+        "Usage history, uncertain future usage, cancellation-penalty gap, service continuity, and sunk-cost caution form a coherent partial subscription decision without unsupported certainty."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-018-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-018-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-018-RU]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "Usage history, uncertain future usage, cancellation-penalty gap, service continuity, and sunk-cost caution form a coherent partial subscription decision without unsupported certainty.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 20,
+      "fixture_id": "S9-CORE-018-ZH",
+      "source_fixture_hash": "cacc86ad05afca0311a0225acc7d03fb121f95e192326f32d7c90c3e5288b5b7",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.94,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: Usage history, uncertain future usage, cancellation-penalty gap, service continuity, and sunk-cost caution form a coherent partial subscription decision without unsupported certainty.",
+      "accepted_observations": [
+        "Usage history, uncertain future usage, cancellation-penalty gap, service continuity, and sunk-cost caution form a coherent partial subscription decision without unsupported certainty."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-018-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-018-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-018-ZH]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "Usage history, uncertain future usage, cancellation-penalty gap, service continuity, and sunk-cost caution form a coherent partial subscription decision without unsupported certainty.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 21,
+      "fixture_id": "S9-CORE-020-ES",
+      "source_fixture_hash": "38f4a952add156fbe8955947bbb476f9e9d934b292f53457fef48e1b29bbfdc7",
+      "consolidated_verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "confidence": 0.98,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: The source has no incompatible claim pair, and the Spanish fixture adds a specifically female tenant where EN and ZH are neutral and RU uses a masculine-form referent.",
+      "accepted_observations": [
+        "The source has no incompatible claim pair, and the Spanish fixture adds a specifically female tenant where EN and ZH are neutral and RU uses a masculine-form referent."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [
+        "The source has no incompatible claim pair, and the Spanish fixture adds a specifically female tenant where EN and ZH are neutral and RU uses a masculine-form referent."
+      ],
+      "disputed_issues": [],
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_AND_GENDER_DRIFT"
+      ],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-020-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-020-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-020-ES]"
+      ],
+      "remediation_requirement": "Add explicit contradictory claims or reclassify the case, and align the referent's gender treatment across all four locale variants.",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": true,
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "adjudication_notes": [
+        {
+          "observation": "The source has no incompatible claim pair, and the Spanish fixture adds a specifically female tenant where EN and ZH are neutral and RU uses a masculine-form referent.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 22,
+      "fixture_id": "S9-CORE-020-EN",
+      "source_fixture_hash": "12eed0b9a71fd8332109cdf7be588a72a761eab73429bb647ca3dda7b1256be7",
+      "consolidated_verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "confidence": 0.98,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: A renewal deadline, an expected alternative offer, and a missing response date create uncertainty and urgency but do not form an explicit contradiction requiring two incompatible claims to be preserved.",
+      "accepted_observations": [
+        "A renewal deadline, an expected alternative offer, and a missing response date create uncertainty and urgency but do not form an explicit contradiction requiring two incompatible claims to be preserved."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [
+        "A renewal deadline, an expected alternative offer, and a missing response date create uncertainty and urgency but do not form an explicit contradiction requiring two incompatible claims to be preserved."
+      ],
+      "disputed_issues": [],
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH"
+      ],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-020-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-020-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-020-EN]"
+      ],
+      "remediation_requirement": "Add explicit incompatible lease or response-date claims, or reclassify the case as critically incomplete and retain only the grounded clarification path.",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": true,
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "adjudication_notes": [
+        {
+          "observation": "A renewal deadline, an expected alternative offer, and a missing response date create uncertainty and urgency but do not form an explicit contradiction requiring two incompatible claims to be preserved.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 23,
+      "fixture_id": "S9-CORE-020-RU",
+      "source_fixture_hash": "e2e0f0c950460287fd66b06acd6dd2484dfa45384834e9477a8289c46fd634b4",
+      "consolidated_verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "confidence": 0.98,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: A renewal deadline, an expected alternative offer, and a missing response date create uncertainty and urgency but do not form an explicit contradiction requiring two incompatible claims to be preserved.",
+      "accepted_observations": [
+        "A renewal deadline, an expected alternative offer, and a missing response date create uncertainty and urgency but do not form an explicit contradiction requiring two incompatible claims to be preserved."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [
+        "A renewal deadline, an expected alternative offer, and a missing response date create uncertainty and urgency but do not form an explicit contradiction requiring two incompatible claims to be preserved."
+      ],
+      "disputed_issues": [],
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH"
+      ],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-020-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-020-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-020-RU]"
+      ],
+      "remediation_requirement": "Add explicit incompatible lease or response-date claims, or reclassify the case as critically incomplete and retain only the grounded clarification path.",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": true,
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "adjudication_notes": [
+        {
+          "observation": "A renewal deadline, an expected alternative offer, and a missing response date create uncertainty and urgency but do not form an explicit contradiction requiring two incompatible claims to be preserved.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 24,
+      "fixture_id": "S9-CORE-020-ZH",
+      "source_fixture_hash": "5058b4d8fe5cfaf519b174f7f1678d93d304e27eb674837e0189f52b59053a82",
+      "consolidated_verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "confidence": 0.98,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: A renewal deadline, an expected alternative offer, and a missing response date create uncertainty and urgency but do not form an explicit contradiction requiring two incompatible claims to be preserved.",
+      "accepted_observations": [
+        "A renewal deadline, an expected alternative offer, and a missing response date create uncertainty and urgency but do not form an explicit contradiction requiring two incompatible claims to be preserved."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [
+        "A renewal deadline, an expected alternative offer, and a missing response date create uncertainty and urgency but do not form an explicit contradiction requiring two incompatible claims to be preserved."
+      ],
+      "disputed_issues": [],
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH"
+      ],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-020-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-020-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-020-ZH]"
+      ],
+      "remediation_requirement": "Add explicit incompatible lease or response-date claims, or reclassify the case as critically incomplete and retain only the grounded clarification path.",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": true,
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "adjudication_notes": [
+        {
+          "observation": "A renewal deadline, an expected alternative offer, and a missing response date create uncertainty and urgency but do not form an explicit contradiction requiring two incompatible claims to be preserved.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 25,
+      "fixture_id": "S9-CORE-027-ES",
+      "source_fixture_hash": "15fac7b8f5551d6e586407067b3119e1e010431e919e72e6d069d6b744c8f42d",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.97,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: Minimum launch scope, uncertain demand transfer, missing support capacity, missed-window and reputation risks, and recommendation withholding are coherently grounded.",
+      "accepted_observations": [
+        "Minimum launch scope, uncertain demand transfer, missing support capacity, missed-window and reputation risks, and recommendation withholding are coherently grounded."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-027-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-027-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-027-ES]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "Minimum launch scope, uncertain demand transfer, missing support capacity, missed-window and reputation risks, and recommendation withholding are coherently grounded.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 26,
+      "fixture_id": "S9-CORE-027-EN",
+      "source_fixture_hash": "a7a8e915a9135d30835098e8797fbd9f38621a5ed2adc45f5e2197950f7fb0bc",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.97,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: Minimum launch scope, uncertain demand transfer, missing support capacity, missed-window and reputation risks, and recommendation withholding are coherently grounded.",
+      "accepted_observations": [
+        "Minimum launch scope, uncertain demand transfer, missing support capacity, missed-window and reputation risks, and recommendation withholding are coherently grounded."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-027-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-027-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-027-EN]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "Minimum launch scope, uncertain demand transfer, missing support capacity, missed-window and reputation risks, and recommendation withholding are coherently grounded.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 27,
+      "fixture_id": "S9-CORE-027-RU",
+      "source_fixture_hash": "9bc1aa42d18e119bbc7f58f1af2e85e965585f4c30250492b426d2c52b870574",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.97,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: Minimum launch scope, uncertain demand transfer, missing support capacity, missed-window and reputation risks, and recommendation withholding are coherently grounded.",
+      "accepted_observations": [
+        "Minimum launch scope, uncertain demand transfer, missing support capacity, missed-window and reputation risks, and recommendation withholding are coherently grounded."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-027-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-027-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-027-RU]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "Minimum launch scope, uncertain demand transfer, missing support capacity, missed-window and reputation risks, and recommendation withholding are coherently grounded.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 28,
+      "fixture_id": "S9-CORE-027-ZH",
+      "source_fixture_hash": "ef5fab82e2df770c15da313d95127081e13b4810660378ff526c4267284b1a6e",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.97,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: Minimum launch scope, uncertain demand transfer, missing support capacity, missed-window and reputation risks, and recommendation withholding are coherently grounded.",
+      "accepted_observations": [
+        "Minimum launch scope, uncertain demand transfer, missing support capacity, missed-window and reputation risks, and recommendation withholding are coherently grounded."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-027-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-027-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-027-ZH]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "Minimum launch scope, uncertain demand transfer, missing support capacity, missed-window and reputation risks, and recommendation withholding are coherently grounded.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 29,
+      "fixture_id": "S9-CORE-034-ES",
+      "source_fixture_hash": "6c6627cd391153f4e244167fcbce16bfe483e98b451ed8fb1ab372df10456a5b",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.95,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: Overlapping schedules, uncertain travel time, missing minimum-rest preference, overcommitment, and withdrawal-cost risks support a bounded clarification-first comparison.",
+      "accepted_observations": [
+        "Overlapping schedules, uncertain travel time, missing minimum-rest preference, overcommitment, and withdrawal-cost risks support a bounded clarification-first comparison."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-034-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-034-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-034-ES]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "Overlapping schedules, uncertain travel time, missing minimum-rest preference, overcommitment, and withdrawal-cost risks support a bounded clarification-first comparison.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 30,
+      "fixture_id": "S9-CORE-034-EN",
+      "source_fixture_hash": "462f058c4da660c2e137c0ea794af30e6bc50c05569f0ad727953684045e1d40",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.95,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: Overlapping schedules, uncertain travel time, missing minimum-rest preference, overcommitment, and withdrawal-cost risks support a bounded clarification-first comparison.",
+      "accepted_observations": [
+        "Overlapping schedules, uncertain travel time, missing minimum-rest preference, overcommitment, and withdrawal-cost risks support a bounded clarification-first comparison."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-034-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-034-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-034-EN]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "Overlapping schedules, uncertain travel time, missing minimum-rest preference, overcommitment, and withdrawal-cost risks support a bounded clarification-first comparison.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 31,
+      "fixture_id": "S9-CORE-034-RU",
+      "source_fixture_hash": "983210ceb92a4d9ee678c8d9d19686166fbc42ec4a737e175363ba2ed851355f",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.95,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: Overlapping schedules, uncertain travel time, missing minimum-rest preference, overcommitment, and withdrawal-cost risks support a bounded clarification-first comparison.",
+      "accepted_observations": [
+        "Overlapping schedules, uncertain travel time, missing minimum-rest preference, overcommitment, and withdrawal-cost risks support a bounded clarification-first comparison."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-034-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-034-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-034-RU]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "Overlapping schedules, uncertain travel time, missing minimum-rest preference, overcommitment, and withdrawal-cost risks support a bounded clarification-first comparison.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 32,
+      "fixture_id": "S9-CORE-034-ZH",
+      "source_fixture_hash": "1e596bbeefd545b4c4e7d27b9fd52b38a83d81f439c875c3d26c29f2c74de023",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.95,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: Overlapping schedules, uncertain travel time, missing minimum-rest preference, overcommitment, and withdrawal-cost risks support a bounded clarification-first comparison.",
+      "accepted_observations": [
+        "Overlapping schedules, uncertain travel time, missing minimum-rest preference, overcommitment, and withdrawal-cost risks support a bounded clarification-first comparison."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-034-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-034-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-034-ZH]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "Overlapping schedules, uncertain travel time, missing minimum-rest preference, overcommitment, and withdrawal-cost risks support a bounded clarification-first comparison.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 33,
+      "fixture_id": "S9-CORE-039-ES",
+      "source_fixture_hash": "783ea474951ac587fd69de3bc68a8f3690997626803381d44338cac9921e0389",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.98,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: Temporary physical limits, pending qualified clearance, injury and coverage risks, elevated privacy handling, and recommendation withholding form a grounded high-risk counterexample.",
+      "accepted_observations": [
+        "Temporary physical limits, pending qualified clearance, injury and coverage risks, elevated privacy handling, and recommendation withholding form a grounded high-risk counterexample."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-039-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-039-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-039-ES]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "Temporary physical limits, pending qualified clearance, injury and coverage risks, elevated privacy handling, and recommendation withholding form a grounded high-risk counterexample.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 34,
+      "fixture_id": "S9-CORE-039-EN",
+      "source_fixture_hash": "dfa190171885b77949efaf905deb6a87d5cce71357360bca6af4aca29e1b3d21",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.98,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: Temporary physical limits, pending qualified clearance, injury and coverage risks, elevated privacy handling, and recommendation withholding form a grounded high-risk counterexample.",
+      "accepted_observations": [
+        "Temporary physical limits, pending qualified clearance, injury and coverage risks, elevated privacy handling, and recommendation withholding form a grounded high-risk counterexample."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-039-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-039-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-039-EN]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "Temporary physical limits, pending qualified clearance, injury and coverage risks, elevated privacy handling, and recommendation withholding form a grounded high-risk counterexample.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 35,
+      "fixture_id": "S9-CORE-039-RU",
+      "source_fixture_hash": "13ff08c2f6846332c7e9b289c538d116bd1edb827a61b6f999b2bc4c40624a65",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.98,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: Temporary physical limits, pending qualified clearance, injury and coverage risks, elevated privacy handling, and recommendation withholding form a grounded high-risk counterexample.",
+      "accepted_observations": [
+        "Temporary physical limits, pending qualified clearance, injury and coverage risks, elevated privacy handling, and recommendation withholding form a grounded high-risk counterexample."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-039-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-039-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-039-RU]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "Temporary physical limits, pending qualified clearance, injury and coverage risks, elevated privacy handling, and recommendation withholding form a grounded high-risk counterexample.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    },
+    {
+      "sequence": 36,
+      "fixture_id": "S9-CORE-039-ZH",
+      "source_fixture_hash": "2d0169fb6c8c883c6069d0876bd824160b662f4c89cde44ebb738f8590cb27e5",
+      "consolidated_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.98,
+      "rationale": "The frozen semantic reconstruction, comparative validation, and independent adversarial evidence support this disposition: Temporary physical limits, pending qualified clearance, injury and coverage risks, elevated privacy handling, and recommendation withholding form a grounded high-risk counterexample.",
+      "accepted_observations": [
+        "Temporary physical limits, pending qualified clearance, injury and coverage risks, elevated privacy handling, and recommendation withholding form a grounded high-risk counterexample."
+      ],
+      "rejected_observations": [],
+      "unresolved_observations": [],
+      "confirmed_issues": [],
+      "disputed_issues": [],
+      "issue_codes": [],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-039-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-039-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-039-ZH]"
+      ],
+      "remediation_requirement": "NONE",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "review_timestamp": "2026-07-21T22:30:00.000Z",
+      "prompt_version": "stage-9-ai-review-adjudication.4",
+      "disagreement_flags": {
+        "silent_loss": false,
+        "privacy": false,
+        "controlled_failure": false,
+        "multilingual_equivalence": false,
+        "unsupported_high_risk_ground_truth": false
+      },
+      "reinforced_review_required": false,
+      "reinforced_review_reasons": [],
+      "adjudication_notes": [
+        {
+          "observation": "Temporary physical limits, pending qualified clearance, injury and coverage risks, elevated privacy handling, and recommendation withholding form a grounded high-risk counterexample.",
+          "disposition": "ACCEPTED",
+          "reason": "The observation is directly grounded in the frozen source and independently traceable in the comparative and adversarial records."
+        }
+      ]
+    }
+  ]
+}

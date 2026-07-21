@@ -1,7 +1,7 @@
 {
-  "artifact_version": "stage-9-ai-review-cross-batch-pattern-registry.1",
-  "review_scope": "Batches 1-3 of 6",
-  "review_timestamp": "2026-07-21T20:30:00.000Z",
+  "artifact_version": "stage-9-ai-review-cross-batch-pattern-registry.2",
+  "review_scope": "Batches 1-4 of 6",
+  "review_timestamp": "2026-07-21T22:30:00.000Z",
   "escalation_rule": "POTENTIALLY_SYSTEMIC at three or more independent core clusters, at two or more domains with HIGH severity, or on recurrence across dataset types; SYSTEMIC_BLOCKER only with evidence of significant unreviewed-dataset impact or class-level ground-truth unreliability.",
   "aggregate_status": "POTENTIALLY_SYSTEMIC_WITHOUT_SYSTEMIC_BLOCKER",
   "systemic_blocker": false,
@@ -12,7 +12,8 @@
       "affected_batches": [
         "batch-1",
         "batch-2",
-        "batch-3"
+        "batch-3",
+        "batch-4"
       ],
       "affected_fixture_ids": [
         "S9-CORE-024-ES",
@@ -31,32 +32,86 @@
         "S9-CORE-040-ES",
         "S9-CORE-040-EN",
         "S9-CORE-040-RU",
-        "S9-CORE-040-ZH"
+        "S9-CORE-040-ZH",
+        "S9-CORE-004-ES",
+        "S9-CORE-004-EN",
+        "S9-CORE-004-RU",
+        "S9-CORE-004-ZH",
+        "S9-CORE-020-ES",
+        "S9-CORE-020-EN",
+        "S9-CORE-020-RU",
+        "S9-CORE-020-ZH"
       ],
       "distinct_clusters": [
+        "S9-CLUSTER-004",
         "S9-CLUSTER-008",
         "S9-CLUSTER-012",
+        "S9-CLUSTER-020",
         "S9-CLUSTER-024",
         "S9-CLUSTER-036",
         "S9-CLUSTER-040"
       ],
       "distinct_domains": [
+        "career_and_work",
         "education",
-        "relocation_and_housing",
-        "high_risk_and_safety_sensitive"
+        "high_risk_and_safety_sensitive",
+        "relocation_and_housing"
       ],
       "distinct_dataset_types": [
         "canonical_core"
       ],
       "severity_distribution": {
-        "HIGH": 17
+        "HIGH": 25
       },
       "evidence": [
         "batch-1/issue-ledger.json:UNSUPPORTED_CONTRADICTION_LABEL",
         "batch-2/issue-ledger.json:UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH",
-        "batch-3/issue-ledger.json:UNSUPPORTED_CONTRADICTION_GROUND_TRUTH"
+        "batch-3/issue-ledger.json:UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+        "batch-4/issue-ledger.json",
+        "batch-4/pass-c.json"
       ],
-      "status": "POTENTIALLY_SYSTEMIC"
+      "status": "POTENTIALLY_SYSTEMIC",
+      "cumulative_occurrence_count": 25,
+      "batch_4_assessment": {
+        "confirming_fixture_ids": [
+          "S9-CORE-004-ES",
+          "S9-CORE-004-EN",
+          "S9-CORE-004-RU",
+          "S9-CORE-004-ZH",
+          "S9-CORE-020-ES",
+          "S9-CORE-020-EN",
+          "S9-CORE-020-RU",
+          "S9-CORE-020-ZH"
+        ],
+        "counterexample_fixture_ids": [
+          "S9-CORE-009-ES",
+          "S9-CORE-009-EN",
+          "S9-CORE-009-RU",
+          "S9-CORE-009-ZH",
+          "S9-CORE-018-ES",
+          "S9-CORE-018-EN",
+          "S9-CORE-018-RU",
+          "S9-CORE-018-ZH",
+          "S9-CORE-027-ES",
+          "S9-CORE-027-EN",
+          "S9-CORE-027-RU",
+          "S9-CORE-027-ZH",
+          "S9-CORE-034-ES",
+          "S9-CORE-034-EN",
+          "S9-CORE-034-RU",
+          "S9-CORE-034-ZH",
+          "S9-CORE-039-ES",
+          "S9-CORE-039-EN",
+          "S9-CORE-039-RU",
+          "S9-CORE-039-ZH"
+        ],
+        "accepted_evidence": [
+          "Clusters 004 and 020 declare contradiction handling without an explicit incompatible claim pair."
+        ],
+        "rejected_hypotheses": [
+          "The defect does not apply merely because a fixture contains a gap or an uncertain assumption."
+        ]
+      }
     },
     {
       "issue_code": "PATTERN_UNSUPPORTED_HIGH_RISK_GROUND_TRUTH",
@@ -102,9 +157,26 @@
       "evidence": [
         "batch-1/issue-ledger.json:HIGH_RISK_HEALTH_CONTEXT",
         "batch-2/issue-ledger.json:UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH",
-        "batch-3/adjudication.json:unsupported_high_risk_ground_truth"
+        "batch-3/adjudication.json:unsupported_high_risk_ground_truth",
+        "batch-4/adjudication.json:counterexamples_only"
       ],
-      "status": "POTENTIALLY_SYSTEMIC"
+      "status": "POTENTIALLY_SYSTEMIC",
+      "cumulative_occurrence_count": 13,
+      "batch_4_assessment": {
+        "confirming_fixture_ids": [],
+        "counterexample_fixture_ids": [
+          "S9-CORE-039-ES",
+          "S9-CORE-039-EN",
+          "S9-CORE-039-RU",
+          "S9-CORE-039-ZH"
+        ],
+        "accepted_evidence": [
+          "Prior unsupported high-risk occurrences remain valid."
+        ],
+        "rejected_hypotheses": [
+          "Cluster 039 does not repeat the defect: its injury, coverage, qualified-review, privacy, and withholding expectations are source-grounded."
+        ]
+      }
     },
     {
       "issue_code": "PATTERN_UNSUPPORTED_NONEXISTENT_OPTION",
@@ -126,9 +198,24 @@
         "HIGH": 1
       },
       "evidence": [
-        "batch-2/issue-ledger.json:UNSUPPORTED_NONEXISTENT_OPTION_GROUND_TRUTH"
+        "batch-2/issue-ledger.json:UNSUPPORTED_NONEXISTENT_OPTION_GROUND_TRUTH",
+        "batch-4/adjudication.json:counterexamples_only"
       ],
-      "status": "ISOLATED"
+      "status": "ISOLATED",
+      "cumulative_occurrence_count": 1,
+      "batch_4_assessment": {
+        "confirming_fixture_ids": [],
+        "counterexample_fixture_ids": [
+          "S9-EVAL-015",
+          "S9-MATERIAL-021"
+        ],
+        "accepted_evidence": [
+          "The prior unsupported nonexistent-option occurrence remains valid."
+        ],
+        "rejected_hypotheses": [
+          "Batch 4 authority-rejection fixtures expose their offending imperative directly and do not depend on an invisible nonexistent option."
+        ]
+      }
     },
     {
       "issue_code": "PATTERN_UNSAFE_CLARIFICATION_REFUSAL",
@@ -159,16 +246,34 @@
       },
       "evidence": [
         "batch-1/issue-ledger.json:CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR",
-        "batch-2/issue-ledger.json:UNSAFE_HIGH_RISK_REFUSAL_PATH"
+        "batch-2/issue-ledger.json:UNSAFE_HIGH_RISK_REFUSAL_PATH",
+        "batch-4/adjudication.json:counterexamples_only"
       ],
-      "status": "RECURRING"
+      "status": "RECURRING",
+      "cumulative_occurrence_count": 5,
+      "batch_4_assessment": {
+        "confirming_fixture_ids": [],
+        "counterexample_fixture_ids": [
+          "S9-CORE-039-ES",
+          "S9-CORE-039-EN",
+          "S9-CORE-039-RU",
+          "S9-CORE-039-ZH"
+        ],
+        "accepted_evidence": [
+          "The prior unsafe clarification or refusal findings remain valid."
+        ],
+        "rejected_hypotheses": [
+          "Cluster 039 provides a grounded high-risk clarification and withholding counterexample without professional certainty."
+        ]
+      }
     },
     {
       "issue_code": "PATTERN_LOCALIZATION_GENDER_DRIFT",
       "pattern": "localization or gender drift",
       "affected_batches": [
         "batch-1",
-        "batch-3"
+        "batch-3",
+        "batch-4"
       ],
       "affected_fixture_ids": [
         "S9-CORE-010-ES",
@@ -182,33 +287,76 @@
         "S9-CORE-035-ES",
         "S9-CORE-035-EN",
         "S9-CORE-035-RU",
-        "S9-CORE-035-ZH"
+        "S9-CORE-035-ZH",
+        "S9-CORE-020-ES"
       ],
       "distinct_clusters": [
         "S9-CLUSTER-003",
         "S9-CLUSTER-008",
         "S9-CLUSTER-010",
+        "S9-CLUSTER-020",
         "S9-CLUSTER-025",
         "S9-CLUSTER-035"
       ],
       "distinct_domains": [
+        "business_decisions",
         "career_and_work",
         "education",
-        "business_decisions",
-        "personal_planning"
+        "personal_planning",
+        "relocation_and_housing"
       ],
       "distinct_dataset_types": [
         "canonical_core"
       ],
       "severity_distribution": {
-        "LOW": 8,
+        "LOW": 9,
         "MEDIUM": 4
       },
       "evidence": [
         "batch-1/issue-ledger.json:CLUSTER_TRANSLATION_GENDER_DRIFT",
-        "batch-3/pass-c.json:language_naturalness"
+        "batch-3/pass-c.json:language_naturalness",
+        "batch-4/issue-ledger.json",
+        "batch-4/pass-c.json"
       ],
-      "status": "POTENTIALLY_SYSTEMIC"
+      "status": "POTENTIALLY_SYSTEMIC",
+      "cumulative_occurrence_count": 13,
+      "batch_4_assessment": {
+        "confirming_fixture_ids": [
+          "S9-CORE-020-ES"
+        ],
+        "counterexample_fixture_ids": [
+          "S9-CORE-004-ES",
+          "S9-CORE-004-EN",
+          "S9-CORE-004-RU",
+          "S9-CORE-004-ZH",
+          "S9-CORE-009-ES",
+          "S9-CORE-009-EN",
+          "S9-CORE-009-RU",
+          "S9-CORE-009-ZH",
+          "S9-CORE-018-ES",
+          "S9-CORE-018-EN",
+          "S9-CORE-018-RU",
+          "S9-CORE-018-ZH",
+          "S9-CORE-027-ES",
+          "S9-CORE-027-EN",
+          "S9-CORE-027-RU",
+          "S9-CORE-027-ZH",
+          "S9-CORE-034-ES",
+          "S9-CORE-034-EN",
+          "S9-CORE-034-RU",
+          "S9-CORE-034-ZH",
+          "S9-CORE-039-ES",
+          "S9-CORE-039-EN",
+          "S9-CORE-039-RU",
+          "S9-CORE-039-ZH"
+        ],
+        "accepted_evidence": [
+          "The Spanish tenant is explicitly female while the cluster's other referents are neutral or masculine-form."
+        ],
+        "rejected_hypotheses": [
+          "No material gender or referent drift was found in the other six selected clusters."
+        ]
+      }
     },
     {
       "issue_code": "PATTERN_PRIVACY_EXPECTATION_DISAGREEMENT",
@@ -230,9 +378,26 @@
         "MEDIUM": 1
       },
       "evidence": [
-        "batch-1/issue-ledger.json:PASS_A_PERSONAL_DATA_REPRODUCTION"
+        "batch-1/issue-ledger.json:PASS_A_PERSONAL_DATA_REPRODUCTION",
+        "batch-4/adjudication.json:counterexamples_only"
       ],
-      "status": "ISOLATED"
+      "status": "ISOLATED",
+      "cumulative_occurrence_count": 1,
+      "batch_4_assessment": {
+        "confirming_fixture_ids": [],
+        "counterexample_fixture_ids": [
+          "S9-CORE-039-ES",
+          "S9-CORE-039-EN",
+          "S9-CORE-039-RU",
+          "S9-CORE-039-ZH"
+        ],
+        "accepted_evidence": [
+          "The prior privacy-expectation disagreement remains recorded."
+        ],
+        "rejected_hypotheses": [
+          "Cluster 039 consistently requires data minimization, no identifiers, and broad-category handling across all four languages."
+        ]
+      }
     },
     {
       "issue_code": "PATTERN_CONTROLLED_FAILURE_DISAGREEMENT",
@@ -254,16 +419,38 @@
         "MEDIUM": 1
       },
       "evidence": [
-        "batch-2/issue-ledger.json:CONTROLLED_FAILURE_REASON_INCOMPLETE"
+        "batch-2/issue-ledger.json:CONTROLLED_FAILURE_REASON_INCOMPLETE",
+        "batch-4/adjudication.json:counterexamples_only"
       ],
-      "status": "ISOLATED"
+      "status": "ISOLATED",
+      "cumulative_occurrence_count": 1,
+      "batch_4_assessment": {
+        "confirming_fixture_ids": [],
+        "counterexample_fixture_ids": [
+          "S9-EVAL-005",
+          "S9-EVAL-015",
+          "S9-EVAL-024",
+          "S9-MATERIAL-016",
+          "S9-CORE-020-ES",
+          "S9-CORE-020-EN",
+          "S9-CORE-020-RU",
+          "S9-CORE-020-ZH"
+        ],
+        "accepted_evidence": [
+          "The prior controlled-failure disagreement remains recorded."
+        ],
+        "rejected_hypotheses": [
+          "Eight Batch 4 controlled-failure fixtures expose coherent fail-closed triggers and machine-readable reasons."
+        ]
+      }
     },
     {
       "issue_code": "PATTERN_INVENTED_COST_DEADLINE_IRREVERSIBILITY",
       "pattern": "invented cost, deadline or irreversibility",
       "affected_batches": [
         "batch-1",
-        "batch-3"
+        "batch-3",
+        "batch-4"
       ],
       "affected_fixture_ids": [
         "S9-CORE-024-ES",
@@ -274,7 +461,8 @@
         "S9-CORE-035-ES",
         "S9-CORE-035-EN",
         "S9-CORE-035-RU",
-        "S9-CORE-035-ZH"
+        "S9-CORE-035-ZH",
+        "S9-EVAL-003"
       ],
       "distinct_clusters": [
         "S9-CLUSTER-024",
@@ -282,23 +470,52 @@
       ],
       "distinct_domains": [
         "adapter_contract_and_safety",
-        "relocation_and_housing",
-        "personal_planning"
+        "personal_planning",
+        "relocation_and_housing"
       ],
       "distinct_dataset_types": [
         "canonical_core",
         "synthetic_risk"
       ],
       "severity_distribution": {
-        "MEDIUM": 4,
+        "MEDIUM": 5,
         "HIGH": 5
       },
       "evidence": [
         "batch-1/issue-ledger.json:EXPECTED_UNSUPPORTED_RISK_SIGNAL",
         "batch-3/issue-ledger.json:EXPECTED_RISKS_UNSUPPORTED_BY_SOURCE",
-        "batch-3/issue-ledger.json:UNSUPPORTED_PRICE_INCREASE_GROUND_TRUTH"
+        "batch-3/issue-ledger.json:UNSUPPORTED_PRICE_INCREASE_GROUND_TRUTH",
+        "batch-4/issue-ledger.json",
+        "batch-4/pass-c.json"
       ],
-      "status": "POTENTIALLY_SYSTEMIC"
+      "status": "POTENTIALLY_SYSTEMIC",
+      "cumulative_occurrence_count": 10,
+      "batch_4_assessment": {
+        "confirming_fixture_ids": [
+          "S9-EVAL-003"
+        ],
+        "counterexample_fixture_ids": [
+          "S9-MATERIAL-004",
+          "S9-CORE-004-ES",
+          "S9-CORE-004-EN",
+          "S9-CORE-004-RU",
+          "S9-CORE-004-ZH",
+          "S9-CORE-020-ES",
+          "S9-CORE-020-EN",
+          "S9-CORE-020-RU",
+          "S9-CORE-020-ZH",
+          "S9-CORE-034-ES",
+          "S9-CORE-034-EN",
+          "S9-CORE-034-RU",
+          "S9-CORE-034-ZH"
+        ],
+        "accepted_evidence": [
+          "EVAL-003 strengthens initial investment into recurrent fixed cost and limited capacity into outage."
+        ],
+        "rejected_hypotheses": [
+          "Relocation, overlap, withdrawal, and consequence-horizon risks in the listed counterexamples remain bounded by visible source commitments."
+        ]
+      }
     },
     {
       "issue_code": "PATTERN_REFERENCE_BEHAVIOR_UNSUPPORTED_INPUT",
@@ -306,7 +523,8 @@
       "affected_batches": [
         "batch-1",
         "batch-2",
-        "batch-3"
+        "batch-3",
+        "batch-4"
       ],
       "affected_fixture_ids": [
         "S9-CORE-024-ES",
@@ -345,13 +563,24 @@
         "S9-CORE-040-ES",
         "S9-CORE-040-EN",
         "S9-CORE-040-RU",
-        "S9-CORE-040-ZH"
+        "S9-CORE-040-ZH",
+        "S9-CORE-004-ES",
+        "S9-CORE-004-EN",
+        "S9-CORE-004-RU",
+        "S9-CORE-004-ZH",
+        "S9-CORE-020-ES",
+        "S9-CORE-020-EN",
+        "S9-CORE-020-RU",
+        "S9-CORE-020-ZH",
+        "S9-EVAL-003"
       ],
       "distinct_clusters": [
         "S9-CLUSTER-002",
+        "S9-CLUSTER-004",
         "S9-CLUSTER-008",
         "S9-CLUSTER-012",
         "S9-CLUSTER-014",
+        "S9-CLUSTER-020",
         "S9-CLUSTER-024",
         "S9-CLUSTER-035",
         "S9-CLUSTER-036",
@@ -360,13 +589,13 @@
       ],
       "distinct_domains": [
         "adapter_contract_and_safety",
-        "decision_material_contract_and_preservation",
         "career_and_work",
+        "decision_material_contract_and_preservation",
         "education",
         "finance_and_spending",
-        "relocation_and_housing",
+        "high_risk_and_safety_sensitive",
         "personal_planning",
-        "high_risk_and_safety_sensitive"
+        "relocation_and_housing"
       ],
       "distinct_dataset_types": [
         "canonical_core",
@@ -374,17 +603,68 @@
         "synthetic_risk"
       ],
       "severity_distribution": {
-        "MEDIUM": 8,
-        "HIGH": 29
+        "MEDIUM": 9,
+        "HIGH": 37
       },
       "evidence": [
         "batch-1/issue-ledger.json",
         "batch-2/issue-ledger.json",
-        "batch-3/issue-ledger.json"
+        "batch-3/issue-ledger.json",
+        "batch-4/issue-ledger.json",
+        "batch-4/pass-c.json"
       ],
-      "status": "POTENTIALLY_SYSTEMIC"
+      "status": "POTENTIALLY_SYSTEMIC",
+      "cumulative_occurrence_count": 46,
+      "batch_4_assessment": {
+        "confirming_fixture_ids": [
+          "S9-CORE-004-ES",
+          "S9-CORE-004-EN",
+          "S9-CORE-004-RU",
+          "S9-CORE-004-ZH",
+          "S9-CORE-020-ES",
+          "S9-CORE-020-EN",
+          "S9-CORE-020-RU",
+          "S9-CORE-020-ZH",
+          "S9-EVAL-003"
+        ],
+        "counterexample_fixture_ids": [
+          "S9-EVAL-005",
+          "S9-EVAL-015",
+          "S9-EVAL-024",
+          "S9-MATERIAL-002",
+          "S9-MATERIAL-004",
+          "S9-MATERIAL-016",
+          "S9-MATERIAL-021",
+          "S9-CORE-009-ES",
+          "S9-CORE-009-EN",
+          "S9-CORE-009-RU",
+          "S9-CORE-009-ZH",
+          "S9-CORE-018-ES",
+          "S9-CORE-018-EN",
+          "S9-CORE-018-RU",
+          "S9-CORE-018-ZH",
+          "S9-CORE-027-ES",
+          "S9-CORE-027-EN",
+          "S9-CORE-027-RU",
+          "S9-CORE-027-ZH",
+          "S9-CORE-034-ES",
+          "S9-CORE-034-EN",
+          "S9-CORE-034-RU",
+          "S9-CORE-034-ZH",
+          "S9-CORE-039-ES",
+          "S9-CORE-039-EN",
+          "S9-CORE-039-RU",
+          "S9-CORE-039-ZH"
+        ],
+        "accepted_evidence": [
+          "Nine Batch 4 fixtures contain reference behavior stronger than their visible input."
+        ],
+        "rejected_hypotheses": [
+          "Twenty-seven Batch 4 fixtures provide counterexamples with coherent, source-supported reference behavior."
+        ]
+      }
     }
   ],
-  "blocker_assessment": "No SYSTEMIC_BLOCKER is established: reviewed evidence proves recurrence and cross-domain/type reach, but does not prove significant impact among the 108 unreviewed fixtures or class-level unreliability of all ground truth.",
+  "blocker_assessment": "No SYSTEMIC_BLOCKER is established: Batch 4 adds bounded confirmations and substantial counterevidence, while 72 fixtures remain unreviewed and class-level ground-truth unreliability is not proven.",
   "fixture_remediation": "NONE"
 }

@@ -1,0 +1,2000 @@
+{
+  "artifact_version": "stage-9-ai-review-pass-a.4",
+  "batch_id": "stage-9-ai-review-batch-4-of-6",
+  "pass": "PASS_A_BLIND_SEMANTIC",
+  "reviewer_role_id": "ai-semantic-reviewer-v1",
+  "model_id": "codex-current-session",
+  "review_timestamp": "2026-07-21T22:30:00.000Z",
+  "context_isolation": {
+    "review_session": "stage-9-ai-review-batch-4",
+    "reviewer_role_id": "ai-semantic-reviewer-v1",
+    "model_id": "codex-current-session",
+    "independence_type": "role-and-context-isolated",
+    "model_independence": "not_claimed"
+  },
+  "prompt_version": "stage-9-ai-review-pass-a.4",
+  "immutable_input_packet": {
+    "path": "docs/qa/review/ai-batches/batch-4/blind-packets.json",
+    "sha256": "05475313ff9fb9c48a8112bb8037cb1ca93a37e47fd59a043dcfb3a863b3263a"
+  },
+  "results": [
+    {
+      "fixture_id": "S9-EVAL-003",
+      "source_fixture_hash": "ad84e04604a8b102bf6fff613756fdfc69ceda4fa5cbf395eb1e6b6f4ca514fc",
+      "blind_reconstruction": {
+        "decision_under_review": "Una entidad ficticia evalúa tres alternativas operativas con varios hechos conocidos.",
+        "material_facts": [
+          "La operación interna requiere inversión inicial",
+          "El proveedor tiene capacidad limitada",
+          "El modelo híbrido añade coordinación"
+        ],
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses",
+          "Identificar señales de riesgo sin elegir una ubicación."
+        ],
+        "uncertainties": [
+          "La demanda futura no está confirmada"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Risk implication to evaluate without converting it into a recommendation: La operación interna requiere inversión inicial",
+          "Risk implication to evaluate without converting it into a recommendation: El proveedor tiene capacidad limitada",
+          "Risk implication to evaluate without converting it into a recommendation: El modelo híbrido añade coordinación",
+          "Planning remains exposed because la demanda futura no está confirmada."
+        ],
+        "temporal_constraints": [
+          "Inicio previsto en seis meses"
+        ],
+        "irreversibility": [
+          "No exit, rollback, or sunk commitment is established by the packet."
+        ],
+        "third_party_dependencies": [
+          "El proveedor tiene capacidad limitada"
+        ],
+        "privacy_concerns": [
+          "The packet is synthetic and non-personal; no additional identifiers are needed."
+        ],
+        "missing_information": [
+          "La demanda futura no está confirmada"
+        ],
+        "allowed_conclusions": [
+          "Identify only risks grounded in stated facts and uncertainties while preserving the no-selection objective."
+        ],
+        "forbidden_conclusions": [
+          "Selecting an option or inventing cost, provider, demand, deadline, or reversibility facts."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Expose material uncertainty and fail closed if safe grounded risk material cannot be produced."
+        ],
+        "required_controlled_failure_behavior": [
+          "Do not present invalid or ungrounded candidate material as accepted analysis."
+        ]
+      },
+      "confidence": 0.96,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-EVAL-003].source_input",
+        "blind-packets.json#packets[fixture_id=S9-EVAL-003].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-EVAL-005",
+      "source_fixture_hash": "4c9fa7aea5ca51f6e045fed2dc5062794060c3c0a9b107f873bfbf3f3ecbcad9",
+      "blind_reconstruction": {
+        "decision_under_review": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "material_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses",
+          "Identificar señales de riesgo sin elegir una ubicación."
+        ],
+        "uncertainties": [
+          "La demanda futura no está confirmada"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Risk implication to evaluate without converting it into a recommendation: Norte tiene mayor coste fijo",
+          "Risk implication to evaluate without converting it into a recommendation: Sur depende de un proveedor externo",
+          "Planning remains exposed because la demanda futura no está confirmada."
+        ],
+        "temporal_constraints": [
+          "Inicio previsto en seis meses"
+        ],
+        "irreversibility": [
+          "No exit, rollback, or sunk commitment is established by the packet."
+        ],
+        "third_party_dependencies": [
+          "Sur depende de un proveedor externo"
+        ],
+        "privacy_concerns": [
+          "The packet is synthetic and non-personal; no additional identifiers are needed."
+        ],
+        "missing_information": [
+          "La demanda futura no está confirmada"
+        ],
+        "allowed_conclusions": [
+          "Identify only risks grounded in stated facts and uncertainties while preserving the no-selection objective."
+        ],
+        "forbidden_conclusions": [
+          "Selecting an option or inventing cost, provider, demand, deadline, or reversibility facts."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Expose material uncertainty and fail closed if safe grounded risk material cannot be produced."
+        ],
+        "required_controlled_failure_behavior": [
+          "Do not present invalid or ungrounded candidate material as accepted analysis."
+        ]
+      },
+      "confidence": 0.96,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-EVAL-005].source_input",
+        "blind-packets.json#packets[fixture_id=S9-EVAL-005].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-EVAL-015",
+      "source_fixture_hash": "c1cd911a119eb97c6223fcde71accaed54f7140aa4874dcd9503a3b7b6921cbe",
+      "blind_reconstruction": {
+        "decision_under_review": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "material_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses",
+          "Identificar señales de riesgo sin elegir una ubicación."
+        ],
+        "uncertainties": [
+          "La demanda futura no está confirmada"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Risk implication to evaluate without converting it into a recommendation: Norte tiene mayor coste fijo",
+          "Risk implication to evaluate without converting it into a recommendation: Sur depende de un proveedor externo",
+          "Planning remains exposed because la demanda futura no está confirmada."
+        ],
+        "temporal_constraints": [
+          "Inicio previsto en seis meses"
+        ],
+        "irreversibility": [
+          "No exit, rollback, or sunk commitment is established by the packet."
+        ],
+        "third_party_dependencies": [
+          "Sur depende de un proveedor externo"
+        ],
+        "privacy_concerns": [
+          "The packet is synthetic and non-personal; no additional identifiers are needed."
+        ],
+        "missing_information": [
+          "La demanda futura no está confirmada"
+        ],
+        "allowed_conclusions": [
+          "Identify only risks grounded in stated facts and uncertainties while preserving the no-selection objective."
+        ],
+        "forbidden_conclusions": [
+          "Selecting an option or inventing cost, provider, demand, deadline, or reversibility facts."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Expose material uncertainty and fail closed if safe grounded risk material cannot be produced."
+        ],
+        "required_controlled_failure_behavior": [
+          "Do not present invalid or ungrounded candidate material as accepted analysis."
+        ]
+      },
+      "confidence": 0.96,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-EVAL-015].source_input",
+        "blind-packets.json#packets[fixture_id=S9-EVAL-015].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-EVAL-024",
+      "source_fixture_hash": "4431cecfac638b8d5767bc6b58e846298c1bb194d1462532cae3247f0218dbcc",
+      "blind_reconstruction": {
+        "decision_under_review": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "material_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses",
+          "Identificar señales de riesgo sin elegir una ubicación."
+        ],
+        "uncertainties": [
+          "La demanda futura no está confirmada"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Risk implication to evaluate without converting it into a recommendation: Norte tiene mayor coste fijo",
+          "Risk implication to evaluate without converting it into a recommendation: Sur depende de un proveedor externo",
+          "Planning remains exposed because la demanda futura no está confirmada."
+        ],
+        "temporal_constraints": [
+          "Inicio previsto en seis meses"
+        ],
+        "irreversibility": [
+          "No exit, rollback, or sunk commitment is established by the packet."
+        ],
+        "third_party_dependencies": [
+          "Sur depende de un proveedor externo"
+        ],
+        "privacy_concerns": [
+          "The packet is synthetic and non-personal; no additional identifiers are needed."
+        ],
+        "missing_information": [
+          "La demanda futura no está confirmada"
+        ],
+        "allowed_conclusions": [
+          "Identify only risks grounded in stated facts and uncertainties while preserving the no-selection objective."
+        ],
+        "forbidden_conclusions": [
+          "Selecting an option or inventing cost, provider, demand, deadline, or reversibility facts."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Expose material uncertainty and fail closed if safe grounded risk material cannot be produced."
+        ],
+        "required_controlled_failure_behavior": [
+          "Do not present invalid or ungrounded candidate material as accepted analysis."
+        ]
+      },
+      "confidence": 0.96,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-EVAL-024].source_input",
+        "blind-packets.json#packets[fixture_id=S9-EVAL-024].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-MATERIAL-002",
+      "source_fixture_hash": "596296d7f45eb62bc727beb6dfc0d36c7c840cd1df082b21882a238428afe221",
+      "blind_reconstruction": {
+        "decision_under_review": "Determine whether the supplied provider-candidate material can be safely normalized and retained without gaining product authority.",
+        "material_facts": [
+          "Candidate type: benefit_or_opportunity.",
+          "Candidate content: La ubicación Norte ofrece acceso inmediato al equipo especializado.",
+          "Declared authority: candidate_only."
+        ],
+        "constraints": [
+          "Candidate material is synthetic and candidate-only.",
+          "Only references listed by the acceptance context may be used."
+        ],
+        "uncertainties": [],
+        "contradictions": [],
+        "risks": [],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible action is supported by this candidate packet."
+        ],
+        "third_party_dependencies": [
+          "The material is attributed to a provider candidate and remains non-authoritative."
+        ],
+        "privacy_concerns": [
+          "No real personal data is present; minimum-necessary handling still applies."
+        ],
+        "missing_information": [
+          "No independent user-fact substrate is included in this packet."
+        ],
+        "allowed_conclusions": [
+          "The candidate may be normalized only without changing its semantic type, uncertainty, provenance, or authority."
+        ],
+        "forbidden_conclusions": [
+          "Treating candidate material as a verified user fact or final recommendation.",
+          "Silently dropping an observed item without a ledger disposition."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Reject invalid or unsafe material with a machine-readable reason; otherwise preserve normalized content and traceability."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed if schema, reference, provenance, safety, or preservation validity cannot be established."
+        ]
+      },
+      "confidence": 0.96,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-MATERIAL-002].source_input",
+        "blind-packets.json#packets[fixture_id=S9-MATERIAL-002].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-MATERIAL-004",
+      "source_fixture_hash": "12067b87fdb20b4f691726674ffb7a77902837bd0f5b0fcc6fc93ff4ec0a018b",
+      "blind_reconstruction": {
+        "decision_under_review": "Determine whether the supplied provider-candidate material can be safely normalized and retained without gaining product authority.",
+        "material_facts": [
+          "Candidate type: short_term_consequence.",
+          "Candidate content: El traslado inicial consume capacidad operativa durante varias semanas.",
+          "Declared authority: candidate_only."
+        ],
+        "constraints": [
+          "Candidate material is synthetic and candidate-only.",
+          "Only references listed by the acceptance context may be used."
+        ],
+        "uncertainties": [],
+        "contradictions": [],
+        "risks": [],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible action is supported by this candidate packet."
+        ],
+        "third_party_dependencies": [
+          "The material is attributed to a provider candidate and remains non-authoritative."
+        ],
+        "privacy_concerns": [
+          "No real personal data is present; minimum-necessary handling still applies."
+        ],
+        "missing_information": [
+          "No independent user-fact substrate is included in this packet."
+        ],
+        "allowed_conclusions": [
+          "The candidate may be normalized only without changing its semantic type, uncertainty, provenance, or authority."
+        ],
+        "forbidden_conclusions": [
+          "Treating candidate material as a verified user fact or final recommendation.",
+          "Silently dropping an observed item without a ledger disposition."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Reject invalid or unsafe material with a machine-readable reason; otherwise preserve normalized content and traceability."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed if schema, reference, provenance, safety, or preservation validity cannot be established."
+        ]
+      },
+      "confidence": 0.96,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-MATERIAL-004].source_input",
+        "blind-packets.json#packets[fixture_id=S9-MATERIAL-004].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-MATERIAL-016",
+      "source_fixture_hash": "752f2bcaa77733247f5912fe38f32cfc616cbafd24917d99434abac2f7889897",
+      "blind_reconstruction": {
+        "decision_under_review": "Determine whether the supplied provider-candidate material can be safely normalized and retained without gaining product authority.",
+        "material_facts": [
+          "Candidate type: context_factor.",
+          "Candidate content: La organización ficticia compara dos ubicaciones operativas.",
+          "Declared authority: candidate_only."
+        ],
+        "constraints": [
+          "Candidate material is synthetic and candidate-only.",
+          "Only references listed by the acceptance context may be used."
+        ],
+        "uncertainties": [],
+        "contradictions": [],
+        "risks": [],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible action is supported by this candidate packet."
+        ],
+        "third_party_dependencies": [
+          "The material is attributed to a provider candidate and remains non-authoritative."
+        ],
+        "privacy_concerns": [
+          "No real personal data is present; minimum-necessary handling still applies."
+        ],
+        "missing_information": [
+          "No independent user-fact substrate is included in this packet."
+        ],
+        "allowed_conclusions": [
+          "The candidate may be normalized only without changing its semantic type, uncertainty, provenance, or authority."
+        ],
+        "forbidden_conclusions": [
+          "Treating candidate material as a verified user fact or final recommendation.",
+          "Silently dropping an observed item without a ledger disposition."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Reject invalid or unsafe material with a machine-readable reason; otherwise preserve normalized content and traceability."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed if schema, reference, provenance, safety, or preservation validity cannot be established."
+        ]
+      },
+      "confidence": 0.96,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-MATERIAL-016].source_input",
+        "blind-packets.json#packets[fixture_id=S9-MATERIAL-016].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-MATERIAL-021",
+      "source_fixture_hash": "fdf549cf1d2b6883cc9c3ba93e61bbe409892b85642c345246d7274d24bf38c5",
+      "blind_reconstruction": {
+        "decision_under_review": "Determine whether the supplied provider-candidate material can be safely normalized and retained without gaining product authority.",
+        "material_facts": [
+          "Candidate type: option.",
+          "Candidate content: Elige la ubicación Norte inmediatamente.",
+          "Declared authority: candidate_only."
+        ],
+        "constraints": [
+          "Candidate material is synthetic and candidate-only.",
+          "Only references listed by the acceptance context may be used."
+        ],
+        "uncertainties": [],
+        "contradictions": [],
+        "risks": [],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible action is supported by this candidate packet."
+        ],
+        "third_party_dependencies": [
+          "The material is attributed to a provider candidate and remains non-authoritative."
+        ],
+        "privacy_concerns": [
+          "No real personal data is present; minimum-necessary handling still applies."
+        ],
+        "missing_information": [
+          "No independent user-fact substrate is included in this packet."
+        ],
+        "allowed_conclusions": [
+          "The candidate may be normalized only without changing its semantic type, uncertainty, provenance, or authority."
+        ],
+        "forbidden_conclusions": [
+          "Treating candidate material as a verified user fact or final recommendation.",
+          "Silently dropping an observed item without a ledger disposition."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Reject invalid or unsafe material with a machine-readable reason; otherwise preserve normalized content and traceability."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed if schema, reference, provenance, safety, or preservation validity cannot be established."
+        ]
+      },
+      "confidence": 0.96,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-MATERIAL-021].source_input",
+        "blind-packets.json#packets[fixture_id=S9-MATERIAL-021].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-004-ES",
+      "source_fixture_hash": "e0ba94e1e4ce76b326b888eced4f04867dca5f1dba48a3f23a30d5088b7256f4",
+      "blind_reconstruction": {
+        "decision_under_review": "Una promoción ficticia exige mudanza y se compara con permanecer en el puesto actual.",
+        "material_facts": [
+          "promotion terms known",
+          "move required"
+        ],
+        "constraints": [
+          "Declared completeness: contradictory.",
+          "Intent: evaluate promotion relocation without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: role scope remains stable.",
+          "Critical gap: household constraint."
+        ],
+        "contradictions": [
+          "The metadata declares a contradiction, but the visible claims do not contain an explicit incompatible pair."
+        ],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "Acting before the critical gap is resolved could reverse the decision quality."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "Commitment and exit terms should be established before an irreversible step."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "household constraint"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask a minimal question about the critical gap and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-004-ES].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-004-ES].declared_context_metadata"
+      ],
+      "issue_codes": [
+        "DECLARED_CONTRADICTION_NOT_VISIBLE"
+      ]
+    },
+    {
+      "fixture_id": "S9-CORE-004-EN",
+      "source_fixture_hash": "9d2204b508ec66f2f8279b7b0f23bd0e0f2853a16ba6c518ed5ad8048a253234",
+      "blind_reconstruction": {
+        "decision_under_review": "A fictional promotion requires relocation and is compared with staying in the current role.",
+        "material_facts": [
+          "promotion terms known",
+          "move required"
+        ],
+        "constraints": [
+          "Declared completeness: contradictory.",
+          "Intent: evaluate promotion relocation without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: role scope remains stable.",
+          "Critical gap: household constraint."
+        ],
+        "contradictions": [
+          "The metadata declares a contradiction, but the visible claims do not contain an explicit incompatible pair."
+        ],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "Acting before the critical gap is resolved could reverse the decision quality."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "household constraint"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask a minimal question about the critical gap and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-004-EN].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-004-EN].declared_context_metadata"
+      ],
+      "issue_codes": [
+        "DECLARED_CONTRADICTION_NOT_VISIBLE"
+      ]
+    },
+    {
+      "fixture_id": "S9-CORE-004-RU",
+      "source_fixture_hash": "94b1bb9576f29d9f7ec1dac2957ce9347c704d19295422721f176ace6982ba5a",
+      "blind_reconstruction": {
+        "decision_under_review": "Вымышленное повышение требует переезда и сравнивается с сохранением текущей должности.",
+        "material_facts": [
+          "promotion terms known",
+          "move required"
+        ],
+        "constraints": [
+          "Declared completeness: contradictory.",
+          "Intent: evaluate promotion relocation without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: role scope remains stable.",
+          "Critical gap: household constraint."
+        ],
+        "contradictions": [
+          "The metadata declares a contradiction, but the visible claims do not contain an explicit incompatible pair."
+        ],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "Acting before the critical gap is resolved could reverse the decision quality."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "Commitment and exit terms should be established before an irreversible step."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "household constraint"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask a minimal question about the critical gap and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-004-RU].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-004-RU].declared_context_metadata"
+      ],
+      "issue_codes": [
+        "DECLARED_CONTRADICTION_NOT_VISIBLE"
+      ]
+    },
+    {
+      "fixture_id": "S9-CORE-004-ZH",
+      "source_fixture_hash": "8023334b34d30dffc181029ae362d3aff906f4595e2ff817b4b7689b20abbd10",
+      "blind_reconstruction": {
+        "decision_under_review": "一次虚构的晋升要求搬迁，并与留在当前岗位进行比较。",
+        "material_facts": [
+          "promotion terms known",
+          "move required"
+        ],
+        "constraints": [
+          "Declared completeness: contradictory.",
+          "Intent: evaluate promotion relocation without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: role scope remains stable.",
+          "Critical gap: household constraint."
+        ],
+        "contradictions": [
+          "The metadata declares a contradiction, but the visible claims do not contain an explicit incompatible pair."
+        ],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "Acting before the critical gap is resolved could reverse the decision quality."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "Commitment and exit terms should be established before an irreversible step."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "household constraint"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask a minimal question about the critical gap and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-004-ZH].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-004-ZH].declared_context_metadata"
+      ],
+      "issue_codes": [
+        "DECLARED_CONTRADICTION_NOT_VISIBLE"
+      ]
+    },
+    {
+      "fixture_id": "S9-CORE-009-ES",
+      "source_fixture_hash": "a7d9b19878d30fa6c10e4e0a6e615a36a3dd7a7abc95e3e6c5ec62eed4c56630",
+      "blind_reconstruction": {
+        "decision_under_review": "Una persona ficticia compara prácticas remuneradas, curso intensivo y aprendizaje autónomo.",
+        "material_facts": [
+          "three options confirmed"
+        ],
+        "constraints": [
+          "Declared completeness: complete.",
+          "Intent: evaluate apprenticeship choice without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: placement quality equal."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [],
+        "allowed_conclusions": [
+          "Compare the stated options conditionally without converting assumptions into facts."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Do not ask unnecessary clarification."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-009-ES].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-009-ES].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-009-EN",
+      "source_fixture_hash": "24767a8f6a3ca4d6ccf0692833e7f0af4de01f72fa6c0efb8f51039fd344a1c4",
+      "blind_reconstruction": {
+        "decision_under_review": "A fictional person compares a paid apprenticeship, an intensive course, and self-study.",
+        "material_facts": [
+          "three options confirmed"
+        ],
+        "constraints": [
+          "Declared completeness: complete.",
+          "Intent: evaluate apprenticeship choice without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: placement quality equal."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [],
+        "allowed_conclusions": [
+          "Compare the stated options conditionally without converting assumptions into facts."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Do not ask unnecessary clarification."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-009-EN].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-009-EN].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-009-RU",
+      "source_fixture_hash": "49b3f6bbafea794fef613969c7d697076159a3a868284a6aed945de0aaac8333",
+      "blind_reconstruction": {
+        "decision_under_review": "Вымышленный человек сравнивает оплачиваемую стажировку, интенсивный курс и самообучение.",
+        "material_facts": [
+          "three options confirmed"
+        ],
+        "constraints": [
+          "Declared completeness: complete.",
+          "Intent: evaluate apprenticeship choice without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: placement quality equal."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [],
+        "allowed_conclusions": [
+          "Compare the stated options conditionally without converting assumptions into facts."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Do not ask unnecessary clarification."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-009-RU].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-009-RU].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-009-ZH",
+      "source_fixture_hash": "0c13fe05b0be33836ea5fe295dbc81fcaaa3dc536e9a4ca2977724f7c9ddd8ca",
+      "blind_reconstruction": {
+        "decision_under_review": "一个虚构的人比较带薪学徒、强化课程和自学。",
+        "material_facts": [
+          "three options confirmed"
+        ],
+        "constraints": [
+          "Declared completeness: complete.",
+          "Intent: evaluate apprenticeship choice without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: placement quality equal."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [],
+        "allowed_conclusions": [
+          "Compare the stated options conditionally without converting assumptions into facts."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Do not ask unnecessary clarification."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-009-ZH].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-009-ZH].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-018-ES",
+      "source_fixture_hash": "4b218875f339e7f18676a5c5dd890858410d4314b13abaff80b4a8c33b6f7213",
+      "blind_reconstruction": {
+        "decision_under_review": "Una organización ficticia decide qué suscripciones conservar, combinar o cancelar.",
+        "material_facts": [
+          "usage records available"
+        ],
+        "constraints": [
+          "Declared completeness: partial.",
+          "Intent: evaluate subscription consolidation without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: future usage matches past.",
+          "Important gap: cancellation penalties."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "The important gap may materially change option comparison."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "Use broad categories and do not request account identifiers or unnecessary family details."
+        ],
+        "missing_information": [
+          "cancellation penalties"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask only if the important gap materially changes the comparison."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-018-ES].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-018-ES].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-018-EN",
+      "source_fixture_hash": "b971fc4cec44046d54ec2ec699804d698e6487f8db05f8bc0a2a1822145cc6b5",
+      "blind_reconstruction": {
+        "decision_under_review": "A fictional organization decides which subscriptions to keep, combine, or cancel.",
+        "material_facts": [
+          "usage records available"
+        ],
+        "constraints": [
+          "Declared completeness: partial.",
+          "Intent: evaluate subscription consolidation without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: future usage matches past.",
+          "Important gap: cancellation penalties."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "The important gap may materially change option comparison."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "Use broad categories and do not request account identifiers or unnecessary family details."
+        ],
+        "missing_information": [
+          "cancellation penalties"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask only if the important gap materially changes the comparison."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-018-EN].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-018-EN].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-018-RU",
+      "source_fixture_hash": "096ab2dadfe9998486d15e872f98aab2cb827a04fcec74c6993a2f5de71484c5",
+      "blind_reconstruction": {
+        "decision_under_review": "Вымышленная организация решает, какие подписки сохранить, объединить или отменить.",
+        "material_facts": [
+          "usage records available"
+        ],
+        "constraints": [
+          "Declared completeness: partial.",
+          "Intent: evaluate subscription consolidation without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: future usage matches past.",
+          "Important gap: cancellation penalties."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "The important gap may materially change option comparison."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "Use broad categories and do not request account identifiers or unnecessary family details."
+        ],
+        "missing_information": [
+          "cancellation penalties"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask only if the important gap materially changes the comparison."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-018-RU].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-018-RU].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-018-ZH",
+      "source_fixture_hash": "cacc86ad05afca0311a0225acc7d03fb121f95e192326f32d7c90c3e5288b5b7",
+      "blind_reconstruction": {
+        "decision_under_review": "一个虚构组织决定保留、合并或取消哪些订阅。",
+        "material_facts": [
+          "usage records available"
+        ],
+        "constraints": [
+          "Declared completeness: partial.",
+          "Intent: evaluate subscription consolidation without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: future usage matches past.",
+          "Important gap: cancellation penalties."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "The important gap may materially change option comparison."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "Use broad categories and do not request account identifiers or unnecessary family details."
+        ],
+        "missing_information": [
+          "cancellation penalties"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask only if the important gap materially changes the comparison."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-018-ZH].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-018-ZH].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-020-ES",
+      "source_fixture_hash": "38f4a952add156fbe8955947bbb476f9e9d934b292f53457fef48e1b29bbfdc7",
+      "blind_reconstruction": {
+        "decision_under_review": "Una inquilina ficticia decide renovar antes de recibir una respuesta sobre otra vivienda.",
+        "material_facts": [
+          "renewal deadline"
+        ],
+        "constraints": [
+          "Declared completeness: contradictory.",
+          "Intent: evaluate lease renewal without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: alternative will be offered.",
+          "Critical gap: alternative response date."
+        ],
+        "contradictions": [
+          "The metadata declares a contradiction, but the visible claims do not contain an explicit incompatible pair."
+        ],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "Acting before the critical gap is resolved could reverse the decision quality."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "alternative response date"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask a minimal question about the critical gap and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-020-ES].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-020-ES].declared_context_metadata"
+      ],
+      "issue_codes": [
+        "DECLARED_CONTRADICTION_NOT_VISIBLE"
+      ]
+    },
+    {
+      "fixture_id": "S9-CORE-020-EN",
+      "source_fixture_hash": "12eed0b9a71fd8332109cdf7be588a72a761eab73429bb647ca3dda7b1256be7",
+      "blind_reconstruction": {
+        "decision_under_review": "A fictional tenant decides whether to renew before receiving an answer on another home.",
+        "material_facts": [
+          "renewal deadline"
+        ],
+        "constraints": [
+          "Declared completeness: contradictory.",
+          "Intent: evaluate lease renewal without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: alternative will be offered.",
+          "Critical gap: alternative response date."
+        ],
+        "contradictions": [
+          "The metadata declares a contradiction, but the visible claims do not contain an explicit incompatible pair."
+        ],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "Acting before the critical gap is resolved could reverse the decision quality."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "alternative response date"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask a minimal question about the critical gap and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-020-EN].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-020-EN].declared_context_metadata"
+      ],
+      "issue_codes": [
+        "DECLARED_CONTRADICTION_NOT_VISIBLE"
+      ]
+    },
+    {
+      "fixture_id": "S9-CORE-020-RU",
+      "source_fixture_hash": "e2e0f0c950460287fd66b06acd6dd2484dfa45384834e9477a8289c46fd634b4",
+      "blind_reconstruction": {
+        "decision_under_review": "Вымышленный арендатор решает, продлевать ли договор до ответа по другому жилью.",
+        "material_facts": [
+          "renewal deadline"
+        ],
+        "constraints": [
+          "Declared completeness: contradictory.",
+          "Intent: evaluate lease renewal without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: alternative will be offered.",
+          "Critical gap: alternative response date."
+        ],
+        "contradictions": [
+          "The metadata declares a contradiction, but the visible claims do not contain an explicit incompatible pair."
+        ],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "Acting before the critical gap is resolved could reverse the decision quality."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "alternative response date"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask a minimal question about the critical gap and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-020-RU].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-020-RU].declared_context_metadata"
+      ],
+      "issue_codes": [
+        "DECLARED_CONTRADICTION_NOT_VISIBLE"
+      ]
+    },
+    {
+      "fixture_id": "S9-CORE-020-ZH",
+      "source_fixture_hash": "5058b4d8fe5cfaf519b174f7f1678d93d304e27eb674837e0189f52b59053a82",
+      "blind_reconstruction": {
+        "decision_under_review": "一名虚构租客在另一处住房答复前决定是否续租。",
+        "material_facts": [
+          "renewal deadline"
+        ],
+        "constraints": [
+          "Declared completeness: contradictory.",
+          "Intent: evaluate lease renewal without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: alternative will be offered.",
+          "Critical gap: alternative response date."
+        ],
+        "contradictions": [
+          "The metadata declares a contradiction, but the visible claims do not contain an explicit incompatible pair."
+        ],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "Acting before the critical gap is resolved could reverse the decision quality."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "alternative response date"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask a minimal question about the critical gap and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-020-ZH].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-020-ZH].declared_context_metadata"
+      ],
+      "issue_codes": [
+        "DECLARED_CONTRADICTION_NOT_VISIBLE"
+      ]
+    },
+    {
+      "fixture_id": "S9-CORE-027-ES",
+      "source_fixture_hash": "15fac7b8f5551d6e586407067b3119e1e010431e919e72e6d069d6b744c8f42d",
+      "blind_reconstruction": {
+        "decision_under_review": "Un producto ficticio compara lanzamiento temprano, piloto limitado y espera por más evidencia.",
+        "material_facts": [
+          "minimum scope ready"
+        ],
+        "constraints": [
+          "Declared completeness: critically_incomplete.",
+          "Intent: evaluate product launch window without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: demand signal generalizes.",
+          "Critical gap: support capacity."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "Acting before the critical gap is resolved could reverse the decision quality."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "support capacity"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask a minimal question about the critical gap and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-027-ES].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-027-ES].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-027-EN",
+      "source_fixture_hash": "a7a8e915a9135d30835098e8797fbd9f38621a5ed2adc45f5e2197950f7fb0bc",
+      "blind_reconstruction": {
+        "decision_under_review": "A fictional product compares an early launch, a limited pilot, and waiting for more evidence.",
+        "material_facts": [
+          "minimum scope ready"
+        ],
+        "constraints": [
+          "Declared completeness: critically_incomplete.",
+          "Intent: evaluate product launch window without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: demand signal generalizes.",
+          "Critical gap: support capacity."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "Acting before the critical gap is resolved could reverse the decision quality."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "support capacity"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask a minimal question about the critical gap and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-027-EN].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-027-EN].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-027-RU",
+      "source_fixture_hash": "9bc1aa42d18e119bbc7f58f1af2e85e965585f4c30250492b426d2c52b870574",
+      "blind_reconstruction": {
+        "decision_under_review": "Вымышленный продукт сравнивает ранний запуск, ограниченный пилот и ожидание дополнительных данных.",
+        "material_facts": [
+          "minimum scope ready"
+        ],
+        "constraints": [
+          "Declared completeness: critically_incomplete.",
+          "Intent: evaluate product launch window without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: demand signal generalizes.",
+          "Critical gap: support capacity."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "Acting before the critical gap is resolved could reverse the decision quality."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "support capacity"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask a minimal question about the critical gap and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-027-RU].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-027-RU].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-027-ZH",
+      "source_fixture_hash": "ef5fab82e2df770c15da313d95127081e13b4810660378ff526c4267284b1a6e",
+      "blind_reconstruction": {
+        "decision_under_review": "一个虚构产品比较提前发布、有限试点和等待更多证据。",
+        "material_facts": [
+          "minimum scope ready"
+        ],
+        "constraints": [
+          "Declared completeness: critically_incomplete.",
+          "Intent: evaluate product launch window without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: demand signal generalizes.",
+          "Critical gap: support capacity."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "Acting before the critical gap is resolved could reverse the decision quality."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "support capacity"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask a minimal question about the critical gap and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-027-ZH].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-027-ZH].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-034-ES",
+      "source_fixture_hash": "6c6627cd391153f4e244167fcbce16bfe483e98b451ed8fb1ab372df10456a5b",
+      "blind_reconstruction": {
+        "decision_under_review": "Una persona ficticia decide entre dos voluntariados con horarios parcialmente solapados.",
+        "material_facts": [
+          "schedules known"
+        ],
+        "constraints": [
+          "Declared completeness: partial.",
+          "Intent: evaluate volunteer commitment without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: travel time stable.",
+          "Important gap: minimum rest time."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "The important gap may materially change option comparison."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "minimum rest time"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask only if the important gap materially changes the comparison."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-034-ES].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-034-ES].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-034-EN",
+      "source_fixture_hash": "462f058c4da660c2e137c0ea794af30e6bc50c05569f0ad727953684045e1d40",
+      "blind_reconstruction": {
+        "decision_under_review": "A fictional person chooses between two volunteer commitments with partly overlapping schedules.",
+        "material_facts": [
+          "schedules known"
+        ],
+        "constraints": [
+          "Declared completeness: partial.",
+          "Intent: evaluate volunteer commitment without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: travel time stable.",
+          "Important gap: minimum rest time."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "The important gap may materially change option comparison."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "minimum rest time"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask only if the important gap materially changes the comparison."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-034-EN].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-034-EN].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-034-RU",
+      "source_fixture_hash": "983210ceb92a4d9ee678c8d9d19686166fbc42ec4a737e175363ba2ed851355f",
+      "blind_reconstruction": {
+        "decision_under_review": "Вымышленный человек выбирает между двумя волонтёрскими обязательствами с частично совпадающим графиком.",
+        "material_facts": [
+          "schedules known"
+        ],
+        "constraints": [
+          "Declared completeness: partial.",
+          "Intent: evaluate volunteer commitment without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: travel time stable.",
+          "Important gap: minimum rest time."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "The important gap may materially change option comparison."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "minimum rest time"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask only if the important gap materially changes the comparison."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-034-RU].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-034-RU].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-034-ZH",
+      "source_fixture_hash": "1e596bbeefd545b4c4e7d27b9fd52b38a83d81f439c875c3d26c29f2c74de023",
+      "blind_reconstruction": {
+        "decision_under_review": "一个虚构的人在时间部分重叠的两项志愿活动之间选择。",
+        "material_facts": [
+          "schedules known"
+        ],
+        "constraints": [
+          "Declared completeness: partial.",
+          "Intent: evaluate volunteer commitment without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: travel time stable.",
+          "Important gap: minimum rest time."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "The important gap may materially change option comparison."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "minimum rest time"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask only if the important gap materially changes the comparison."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-034-ZH].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-034-ZH].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-039-ES",
+      "source_fixture_hash": "783ea474951ac587fd69de3bc68a8f3690997626803381d44338cac9921e0389",
+      "blind_reconstruction": {
+        "decision_under_review": "Un equipo ficticio ajusta carga física según límites declarados y una revisión cualificada pendiente.",
+        "material_facts": [
+          "temporary limits declared"
+        ],
+        "constraints": [
+          "Declared completeness: critically_incomplete.",
+          "Intent: evaluate physical workload without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: limits do not change.",
+          "Critical gap: qualified clearance."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "Acting before the critical gap is resolved could reverse the decision quality."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "qualified clearance"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask a minimal question about the critical gap and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-039-ES].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-039-ES].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-039-EN",
+      "source_fixture_hash": "dfa190171885b77949efaf905deb6a87d5cce71357360bca6af4aca29e1b3d21",
+      "blind_reconstruction": {
+        "decision_under_review": "A fictional team adjusts physical workload using stated limits while qualified review is pending.",
+        "material_facts": [
+          "temporary limits declared"
+        ],
+        "constraints": [
+          "Declared completeness: critically_incomplete.",
+          "Intent: evaluate physical workload without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: limits do not change.",
+          "Critical gap: qualified clearance."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "Acting before the critical gap is resolved could reverse the decision quality."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "qualified clearance"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask a minimal question about the critical gap and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-039-EN].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-039-EN].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-039-RU",
+      "source_fixture_hash": "13ff08c2f6846332c7e9b289c538d116bd1edb827a61b6f999b2bc4c40624a65",
+      "blind_reconstruction": {
+        "decision_under_review": "Вымышленная команда корректирует физическую нагрузку по заявленным ограничениям до квалифицированной оценки.",
+        "material_facts": [
+          "temporary limits declared"
+        ],
+        "constraints": [
+          "Declared completeness: critically_incomplete.",
+          "Intent: evaluate physical workload without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: limits do not change.",
+          "Critical gap: qualified clearance."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "Acting before the critical gap is resolved could reverse the decision quality."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "qualified clearance"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask a minimal question about the critical gap and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-039-RU].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-039-RU].declared_context_metadata"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-039-ZH",
+      "source_fixture_hash": "2d0169fb6c8c883c6069d0876bd824160b662f4c89cde44ebb738f8590cb27e5",
+      "blind_reconstruction": {
+        "decision_under_review": "一个虚构团队依据已说明的限制调整体力工作量，同时等待专业评估。",
+        "material_facts": [
+          "temporary limits declared"
+        ],
+        "constraints": [
+          "Declared completeness: critically_incomplete.",
+          "Intent: evaluate physical workload without direct answer."
+        ],
+        "uncertainties": [
+          "Assumption: limits do not change.",
+          "Critical gap: qualified clearance."
+        ],
+        "contradictions": [],
+        "risks": [
+          "The stated assumption may fail and must remain uncertain.",
+          "Acting before the critical gap is resolved could reverse the decision quality."
+        ],
+        "temporal_constraints": [],
+        "irreversibility": [
+          "No irreversible commitment is established by the source."
+        ],
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No personal identifiers are needed."
+        ],
+        "missing_information": [
+          "qualified clearance"
+        ],
+        "allowed_conclusions": [
+          "Clarify the named material gap and preserve uncertainty before a preferred path."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, certainty, costs, deadlines, or option properties not visible in the source.",
+          "Giving a definitive professional answer or normal recommendation while a critical gap remains."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask a minimal question about the critical gap and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen source packet and separates visible facts, assumptions, gaps, risks, privacy, and forbidden conclusions.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-039-ZH].source_input",
+        "blind-packets.json#packets[fixture_id=S9-CORE-039-ZH].declared_context_metadata"
+      ],
+      "issue_codes": []
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "artifact_version": "stage-9-ai-review-reinforced-review-queue.4",
+  "batch_id": "stage-9-ai-review-batch-4-of-6",
+  "status": "PENDING_NOT_EXECUTED",
+  "review_timestamp": "2026-07-21T22:30:00.000Z",
+  "case_count": 8,
+  "cases": [
+    {
+      "sequence": 9,
+      "fixture_id": "S9-CORE-004-ES",
+      "source_fixture_hash": "e0ba94e1e4ce76b326b888eced4f04867dca5f1dba48a3f23a30d5088b7256f4",
+      "batch_provenance": "stage-9-ai-review-batch-4-of-6",
+      "status": "PENDING_NOT_EXECUTED",
+      "reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-004-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-004-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-004-ES]"
+      ]
+    },
+    {
+      "sequence": 10,
+      "fixture_id": "S9-CORE-004-EN",
+      "source_fixture_hash": "9d2204b508ec66f2f8279b7b0f23bd0e0f2853a16ba6c518ed5ad8048a253234",
+      "batch_provenance": "stage-9-ai-review-batch-4-of-6",
+      "status": "PENDING_NOT_EXECUTED",
+      "reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-004-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-004-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-004-EN]"
+      ]
+    },
+    {
+      "sequence": 11,
+      "fixture_id": "S9-CORE-004-RU",
+      "source_fixture_hash": "94b1bb9576f29d9f7ec1dac2957ce9347c704d19295422721f176ace6982ba5a",
+      "batch_provenance": "stage-9-ai-review-batch-4-of-6",
+      "status": "PENDING_NOT_EXECUTED",
+      "reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-004-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-004-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-004-RU]"
+      ]
+    },
+    {
+      "sequence": 12,
+      "fixture_id": "S9-CORE-004-ZH",
+      "source_fixture_hash": "8023334b34d30dffc181029ae362d3aff906f4595e2ff817b4b7689b20abbd10",
+      "batch_provenance": "stage-9-ai-review-batch-4-of-6",
+      "status": "PENDING_NOT_EXECUTED",
+      "reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-004-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-004-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-004-ZH]"
+      ]
+    },
+    {
+      "sequence": 21,
+      "fixture_id": "S9-CORE-020-ES",
+      "source_fixture_hash": "38f4a952add156fbe8955947bbb476f9e9d934b292f53457fef48e1b29bbfdc7",
+      "batch_provenance": "stage-9-ai-review-batch-4-of-6",
+      "status": "PENDING_NOT_EXECUTED",
+      "reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-020-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-020-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-020-ES]"
+      ]
+    },
+    {
+      "sequence": 22,
+      "fixture_id": "S9-CORE-020-EN",
+      "source_fixture_hash": "12eed0b9a71fd8332109cdf7be588a72a761eab73429bb647ca3dda7b1256be7",
+      "batch_provenance": "stage-9-ai-review-batch-4-of-6",
+      "status": "PENDING_NOT_EXECUTED",
+      "reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-020-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-020-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-020-EN]"
+      ]
+    },
+    {
+      "sequence": 23,
+      "fixture_id": "S9-CORE-020-RU",
+      "source_fixture_hash": "e2e0f0c950460287fd66b06acd6dd2484dfa45384834e9477a8289c46fd634b4",
+      "batch_provenance": "stage-9-ai-review-batch-4-of-6",
+      "status": "PENDING_NOT_EXECUTED",
+      "reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-020-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-020-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-020-RU]"
+      ]
+    },
+    {
+      "sequence": 24,
+      "fixture_id": "S9-CORE-020-ZH",
+      "source_fixture_hash": "5058b4d8fe5cfaf519b174f7f1678d93d304e27eb674837e0189f52b59053a82",
+      "batch_provenance": "stage-9-ai-review-batch-4-of-6",
+      "status": "PENDING_NOT_EXECUTED",
+      "reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-020-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-020-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-020-ZH]"
+      ]
+    }
+  ]
+}

@@ -4,17 +4,17 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
-  BATCH_3_FIXTURE_IDS,
+  BATCH_4_FIXTURE_IDS,
   buildAllArtifacts,
   serialize,
   sourceFixtureHash,
-} from "./generate-stage-9-ai-review-batch-3.mjs";
+} from "./generate-stage-9-ai-review-batch-4.mjs";
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const baseline = "70bacba4919aef2df057db4b43a70df4ea9f978e";
 const read = (...parts) => readFileSync(join(root, ...parts), "utf8");
 const json = (...parts) => JSON.parse(read(...parts));
-const artifact = (name) => json("docs", "qa", "review", "ai-batches", "batch-3", name);
+const artifact = (name) => json("docs", "qa", "review", "ai-batches", "batch-4", name);
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
 const checks = [];
 const add = (id, passed, detail) => checks.push({ id, passed: Boolean(passed), detail });
@@ -30,16 +30,17 @@ const queue = artifact("reinforced-review-queue.json");
 const summary = artifact("summary.json");
 const progress = json("docs", "qa", "review", "AI_REVIEW_PROGRESS.json");
 const patterns = json("docs", "qa", "review", "AI_REVIEW_CROSS_BATCH_PATTERNS.json");
+const saturation = json("docs", "qa", "review", "AI_REVIEW_PATTERN_SATURATION.json");
 const sourceManifest = json("docs", "qa", "review", "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json");
 const sourceById = new Map(sourceManifest.entries.map((entry) => [entry.fixture_id, entry]));
-const priorSelections = [1, 2].map((batch) => json("docs", "qa", "review", "ai-batches", `batch-${batch}`, "selection.json"));
+const priorSelections = [1, 2, 3].map((batch) => json("docs", "qa", "review", "ai-batches", `batch-${batch}`, "selection.json"));
 const priorIds = new Set(priorSelections.flatMap((value) => value.fixtures.map((item) => item.fixture_id)));
 const ids = selection.fixtures.map((item) => item.fixture_id);
 const expectedRoles = ["ai-semantic-reviewer-v1", "ai-comparative-reviewer-v1", "ai-adversarial-reviewer-v1", "ai-adjudicator-v1"];
 const allowedVerdicts = ["AI_PASS", "AI_PASS_WITH_NOTE", "AI_FAIL_MINOR", "AI_FAIL_MAJOR", "AI_DISPUTED", "AI_NOT_REVIEWED"];
 const allowedSeverities = ["NONE", "LOW", "MEDIUM", "HIGH", "CRITICAL"];
 const artifactNames = ["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "issue-ledger.json", "reinforced-review-queue.json", "summary.json"];
-const canonical = (name) => read("docs", "qa", "review", "ai-batches", "batch-3", name) === serialize(artifact(name));
+const canonical = (name) => read("docs", "qa", "review", "ai-batches", "batch-4", name) === serialize(artifact(name));
 const recursivelyHasKey = (value, keys) => {
   if (!value || typeof value !== "object") return false;
   if (Array.isArray(value)) return value.some((item) => recursivelyHasKey(item, keys));
@@ -50,19 +51,19 @@ let networkRequests = 0;
 const originalFetch = globalThis.fetch;
 globalThis.fetch = async () => {
   networkRequests += 1;
-  throw new Error("Network access is forbidden in the Stage 9 AI-review Batch 3 gate.");
+  throw new Error("Network access is forbidden in the Stage 9 AI-review Batch 4 gate.");
 };
 
-add("selection-exactly-36", ids.length === 36 && new Set(ids).size === 36 && JSON.stringify(ids) === JSON.stringify(BATCH_3_FIXTURE_IDS), `${ids.length} deterministic fixtures.`);
+add("selection-exactly-36", ids.length === 36 && new Set(ids).size === 36 && JSON.stringify(ids) === JSON.stringify(BATCH_4_FIXTURE_IDS), `${ids.length} deterministic fixtures.`);
 add("selection-distribution-28-4-4", selection.coverage.dataset_types.canonical_core === 28 && selection.coverage.dataset_types.synthetic_risk === 4 && selection.coverage.dataset_types.rich_decision_material_baseline === 4, JSON.stringify(selection.coverage.dataset_types));
 const core = selection.fixtures.filter((item) => item.dataset_type === "canonical_core");
 const clusters = new Map();
 for (const item of core) clusters.set(item.equivalence_cluster, [...(clusters.get(item.equivalence_cluster) ?? []), item.language]);
 add("seven-complete-four-language-clusters", clusters.size === 7 && [...clusters.values()].every((languages) => JSON.stringify([...languages].sort()) === JSON.stringify(["en", "es", "ru", "zh"])), `${clusters.size} complete clusters.`);
-add("selection-disjoint-from-batches-1-2", ids.every((id) => !priorIds.has(id)), `${ids.filter((id) => priorIds.has(id)).length} overlaps.`);
-const excluded = ["003", "005", "010", "012", "013", "015", "021", "024", "026", "029", "031", "033", "036", "037", "038"];
-add("all-prior-clusters-excluded", excluded.every((cluster) => !core.some((item) => item.equivalence_cluster === `S9-CLUSTER-${cluster}`)), "All 15 prior-used clusters are absent.");
-add("deficit-matrix-complete", selection.coverage_deficit_matrix?.targeted_dimensions?.length === 9 && ["complete", "partial", "contradictory", "critically_incomplete"].every((state) => selection.coverage.completeness[state] > 0) && ["career_and_work", "education", "finance_and_spending", "relocation_and_housing", "business_decisions", "personal_planning", "high_risk_and_safety_sensitive"].every((domain) => selection.coverage.domains[domain] === 4), JSON.stringify(selection.coverage.completeness));
+add("selection-disjoint-from-batches-1-3", ids.every((id) => !priorIds.has(id)), `${ids.filter((id) => priorIds.has(id)).length} overlaps.`);
+const excluded = ["002", "003", "005", "008", "010", "012", "013", "014", "015", "021", "023", "024", "025", "026", "029", "031", "033", "035", "036", "037", "038", "040"];
+add("all-prior-clusters-excluded", excluded.every((cluster) => !core.some((item) => item.equivalence_cluster === `S9-CLUSTER-${cluster}`)), "All 22 prior-used clusters are absent.");
+add("deficit-matrix-complete", selection.coverage_deficit_matrix?.targeted_dimensions?.length === 11 && ["complete", "partial", "contradictory", "critically_incomplete"].every((state) => selection.coverage.completeness[state] > 0) && ["career_and_work", "education", "finance_and_spending", "relocation_and_housing", "business_decisions", "personal_planning", "high_risk_and_safety_sensitive"].every((domain) => selection.coverage.domains[domain] === 4) && selection.coverage.high_risk_count > 0 && selection.coverage.privacy_count > 0 && selection.coverage.controlled_failure_count > 0, JSON.stringify(selection.coverage));
 
 const forbiddenBlindKeys = ["expected_candidate_risk_signals", "expected_decision_material", "expected_critical_information_preservation", "human_review", "verdict", "review_results", "issue_ledger", "adjudication"];
 add("pass-a-packets-blind", !recursivelyHasKey(blind.packets, forbiddenBlindKeys), "Blind packets contain no expected behavior or review results.");
@@ -70,17 +71,17 @@ add("pass-a-results-blind", !recursivelyHasKey(passA.results, forbiddenBlindKeys
 const reconstructionKeys = ["decision_under_review", "material_facts", "constraints", "uncertainties", "contradictions", "risks", "temporal_constraints", "irreversibility", "third_party_dependencies", "privacy_concerns", "forbidden_conclusions", "required_clarification_or_controlled_failure_behavior", "required_controlled_failure_behavior"];
 add("pass-a-reconstruction-complete", passA.results.every((item) => reconstructionKeys.every((key) => Object.hasOwn(item.blind_reconstruction, key))), "Every blind result contains all semantic dimensions.");
 add("pass-b-does-not-mutate-a", passB.frozen_semantic_input?.includes("byte-for-byte") && passB.immutable_input_packet.some((item) => item.path.endsWith("pass-a.json") && item.sha256 === sha256(serialize(passA))), "Comparative pass binds the frozen semantic artifact hash.");
-const passCSource = read("docs", "qa", "review", "ai-batches", "batch-3", "pass-c.json");
+const passCSource = read("docs", "qa", "review", "ai-batches", "batch-4", "pass-c.json");
 add("pass-c-independent", !/pass-a|pass-b|pass_a|pass_b/i.test(passCSource) && passC.independence_invariant?.includes("no other reviewer output"), "Adversarial pass has source/cluster inputs only.");
 
 const resultIds = (value) => value.results.map((item) => item.fixture_id);
 add("all-four-passes-present", [passA, passB, passC, adjudication].every((value) => value.results.length === 36), `A=${passA.results.length} B=${passB.results.length} C=${passC.results.length} D=${adjudication.results.length}`);
 add("all-pass-memberships-match", [passA, passB, passC, adjudication].every((value) => JSON.stringify(resultIds(value)) === JSON.stringify(ids)), "All pass memberships preserve selection order.");
 add("reviewer-role-ids", passA.reviewer_role_id === expectedRoles[0] && passB.reviewer_role_id === expectedRoles[1] && passC.reviewer_role_id === expectedRoles[2] && adjudication.reviewer_role_id === expectedRoles[3], "All technical role IDs are exact.");
-const isolated = (value, role) => value.context_isolation?.review_session === "stage-9-ai-review-batch-3" && value.context_isolation?.reviewer_role_id === role && value.context_isolation?.model_id === "codex-current-session" && value.context_isolation?.independence_type === "role-and-context-isolated" && value.context_isolation?.model_independence === "not_claimed";
+const isolated = (value, role) => value.context_isolation?.review_session === "stage-9-ai-review-batch-4" && value.context_isolation?.reviewer_role_id === role && value.context_isolation?.model_id === "codex-current-session" && value.context_isolation?.independence_type === "role-and-context-isolated" && value.context_isolation?.model_independence === "not_claimed";
 add("context-isolation-metadata", [passA, passB, passC, adjudication].every((value, index) => isolated(value, expectedRoles[index])), "All passes use role/context isolation without a model-independence claim.");
-add("no-human-identity-claims", !/human reviewer|human-reviewed|reviewer_identity/i.test(artifactNames.map((name) => read("docs", "qa", "review", "ai-batches", "batch-3", name)).join("\n")), "No human identity or human-reviewed claim appears.");
-add("model-independence-not-claimed", !/model[-_ ]independent|different models|independent models/i.test(artifactNames.map((name) => read("docs", "qa", "review", "ai-batches", "batch-3", name)).join("\n")), "No unsupported model-independence claim appears.");
+add("no-human-identity-claims", !/human reviewer|human-reviewed|reviewer_identity/i.test(artifactNames.map((name) => read("docs", "qa", "review", "ai-batches", "batch-4", name)).join("\n")), "No human identity or human-reviewed claim appears.");
+add("model-independence-not-claimed", !/model[-_ ]independent|different models|independent models/i.test(artifactNames.map((name) => read("docs", "qa", "review", "ai-batches", "batch-4", name)).join("\n")), "No unsupported model-independence claim appears.");
 
 const allResults = [...passA.results, ...passB.results, ...passC.results, ...adjudication.results];
 add("source-hashes-match", allResults.every((result) => sourceById.has(result.fixture_id) && result.source_fixture_hash === sourceFixtureHash(sourceById.get(result.fixture_id))), "All 144 pass records match their source hashes.");
@@ -93,23 +94,26 @@ add("core-equivalence-reviewed-as-clusters", passC.results.filter((item) => sour
 const requiresReinforcement = (item) => ["AI_FAIL_MAJOR", "AI_DISPUTED"].includes(item.consolidated_verdict) || ["HIGH", "CRITICAL"].includes(item.severity) || item.confidence < 0.75 || item.disagreement_flags.silent_loss || item.disagreement_flags.privacy || item.disagreement_flags.controlled_failure || item.disagreement_flags.multilingual_equivalence || item.disagreement_flags.unsupported_high_risk_ground_truth;
 const expectedQueue = adjudication.results.filter(requiresReinforcement).map((item) => item.fixture_id);
 add("reinforced-rule", adjudication.results.every((item) => item.reinforced_review_required === requiresReinforcement(item) && (!item.reinforced_review_required || item.reinforced_review_reasons.length)), `${expectedQueue.length} required cases.`);
-add("reinforced-queue-complete", queue.status === "PENDING_NOT_EXECUTED" && queue.case_count === expectedQueue.length && JSON.stringify(queue.cases.map((item) => item.fixture_id)) === JSON.stringify(expectedQueue) && queue.cases.every((item) => item.batch_provenance === "stage-9-ai-review-batch-3-of-6"), `${queue.case_count} queued cases with provenance.`);
+add("reinforced-queue-complete", queue.status === "PENDING_NOT_EXECUTED" && queue.case_count === expectedQueue.length && JSON.stringify(queue.cases.map((item) => item.fixture_id)) === JSON.stringify(expectedQueue) && queue.cases.every((item) => item.batch_provenance === "stage-9-ai-review-batch-4-of-6"), `${queue.case_count} queued cases with provenance.`);
 
 const verdictCounts = Object.fromEntries(allowedVerdicts.map((value) => [value, adjudication.results.filter((item) => item.consolidated_verdict === value).length]));
 const severityCounts = Object.fromEntries(allowedSeverities.map((value) => [value, adjudication.results.filter((item) => item.severity === value).length]));
-add("summary-matches-adjudication", JSON.stringify(summary.verdict_counts) === JSON.stringify(verdictCounts) && JSON.stringify(summary.severity_counts) === JSON.stringify(severityCounts) && summary.reviewed_fixture_count === 36 && summary.remaining_fixture_count === 108 && summary.reinforced_review_count === expectedQueue.length, "Batch summary matches final adjudication.");
-add("issue-ledger-complete", ledger.issues.length === 30 && ledger.issues.every((issue) => ids.includes(issue.fixture_id) && issue.issue_code && issue.description && issue.evidence_references.length && issue.remediation_requirement), `${ledger.issues.length} ledger observations.`);
+add("summary-matches-adjudication", JSON.stringify(summary.verdict_counts) === JSON.stringify(verdictCounts) && JSON.stringify(summary.severity_counts) === JSON.stringify(severityCounts) && summary.reviewed_fixture_count === 36 && summary.remaining_fixture_count === 72 && summary.reinforced_review_count === expectedQueue.length, "Batch summary matches final adjudication.");
+add("issue-ledger-complete", ledger.issues.length === 9 && ledger.issues.every((issue) => ids.includes(issue.fixture_id) && issue.issue_code && issue.description && issue.evidence_references.length && issue.remediation_requirement), `${ledger.issues.length} ledger observations.`);
 
 const requiredPatternNames = ["unsupported contradiction ground truth", "unsupported high-risk ground truth", "unsupported nonexistent option", "unsafe clarification/refusal path", "localization or gender drift", "privacy expectation disagreement", "controlled-failure disagreement", "invented cost, deadline or irreversibility", "reference behavior not supported by input"];
 add("pattern-registry-complete", requiredPatternNames.every((name) => patterns.patterns.some((item) => item.pattern === name)) && patterns.patterns.every((item) => item.issue_code && item.affected_batches.length && Array.isArray(item.affected_fixture_ids) && Array.isArray(item.distinct_clusters) && item.distinct_domains.length && item.distinct_dataset_types.length && Object.keys(item.severity_distribution).length && item.evidence.length && ["ISOLATED", "RECURRING", "POTENTIALLY_SYSTEMIC", "SYSTEMIC_BLOCKER"].includes(item.status)), `${patterns.patterns.length} required patterns.`);
 const mustEscalate = (item) => item.distinct_clusters.length >= 3 || (item.distinct_domains.length >= 2 && (item.severity_distribution.HIGH ?? 0) > 0) || item.distinct_dataset_types.length >= 2;
 add("pattern-escalation-correct", patterns.patterns.every((item) => !mustEscalate(item) || ["POTENTIALLY_SYSTEMIC", "SYSTEMIC_BLOCKER"].includes(item.status)) && patterns.aggregate_status === "POTENTIALLY_SYSTEMIC_WITHOUT_SYSTEMIC_BLOCKER" && patterns.systemic_blocker === false, "All escalation thresholds are applied without an unsupported blocker claim.");
+const challengedPatterns = ["unsupported contradiction ground truth", "unsupported high-risk ground truth", "localization or gender drift", "invented cost, deadline or irreversibility", "reference behavior not supported by input"];
+add("batch-4-pattern-evidence-dispositions", patterns.patterns.every((item) => item.batch_4_assessment?.accepted_evidence?.length && item.batch_4_assessment.rejected_hypotheses?.length && Number.isInteger(item.cumulative_occurrence_count)), "Every registered pattern records Batch 4 accepted and rejected evidence plus a cumulative count.");
+add("pattern-saturation-assessment", saturation.patterns.length === 5 && challengedPatterns.every((name) => saturation.patterns.some((item) => item.pattern === name && item.saturation_status.startsWith("SATURATED") && Array.isArray(item.confirming_fixture_ids) && item.counterexample_fixture_ids.length > 0 && item.generator_or_template_linkage && item.locality_assessment && item.rule_level_remediation_assessment && item.fixture_level_remediation_assessment && item.fixture_remediation_executed === false)) && saturation.aggregate_status === "PATTERNS_SATURATED_WITHOUT_SYSTEMIC_BLOCKER" && saturation.systemic_blocker === false && saturation.remaining_primary_review_required === 72, "Five challenged patterns have bounded confirmation/counterexample, generator/locality, and remediation-scope decisions.");
 
-add("aggregate-progress-exact", progress.primary_review.batch_1 === 36 && progress.primary_review.batch_2 === 36 && progress.primary_review.batch_3 === 36 && progress.primary_review.batch_4 === 36 && progress.primary_review.total_reviewed === 144 && progress.primary_review.remaining === 72 && progress.cumulative_verdict_counts.AI_FAIL_MAJOR === 37 && progress.cumulative_verdict_counts.AI_DISPUTED === 2 && progress.cumulative_severity_counts.CRITICAL === 0 && progress.cumulative_open_issues === 72 && progress.cumulative_disputed_issues === 3 && progress.cumulative_reinforced_review_queue.length === 47 && progress.fixture_remediation === "NONE", "Aggregate progress records 144 reviewed, 72 remaining, and preserves Batch 3 history.");
-add("deterministic-canonical-artifacts", artifactNames.every(canonical) && read("docs", "qa", "review", "AI_REVIEW_PROGRESS.json") === serialize(progress) && read("docs", "qa", "review", "AI_REVIEW_CROSS_BATCH_PATTERNS.json") === serialize(patterns), "All generated artifacts use canonical JSON serialization.");
+add("aggregate-progress-exact", progress.primary_review.batch_1 === 36 && progress.primary_review.batch_2 === 36 && progress.primary_review.batch_3 === 36 && progress.primary_review.batch_4 === 36 && progress.primary_review.total_reviewed === 144 && progress.primary_review.remaining === 72 && progress.cumulative_verdict_counts.AI_PASS === 62 && progress.cumulative_verdict_counts.AI_PASS_WITH_NOTE === 25 && progress.cumulative_verdict_counts.AI_FAIL_MINOR === 18 && progress.cumulative_verdict_counts.AI_FAIL_MAJOR === 37 && progress.cumulative_verdict_counts.AI_DISPUTED === 2 && progress.cumulative_severity_counts.CRITICAL === 0 && progress.cumulative_open_issues === 72 && progress.cumulative_disputed_issues === 3 && progress.cumulative_reinforced_review_queue.length === 47 && progress.fixture_remediation === "NONE", "Aggregate progress records 144 reviewed, 72 remaining, and no remediation.");
+add("deterministic-canonical-artifacts", artifactNames.every(canonical) && read("docs", "qa", "review", "AI_REVIEW_PROGRESS.json") === serialize(progress) && read("docs", "qa", "review", "AI_REVIEW_CROSS_BATCH_PATTERNS.json") === serialize(patterns) && read("docs", "qa", "review", "AI_REVIEW_PATTERN_SATURATION.json") === serialize(saturation), "All generated artifacts use canonical JSON serialization.");
 const generated = buildAllArtifacts();
 const expectedFiles = { "selection.json": generated.selection, "blind-packets.json": generated.blind, "pass-a.json": generated.passA, "pass-b.json": generated.passB, "pass-c.json": generated.passC, "adjudication.json": generated.adjudication, "issue-ledger.json": generated.ledger, "reinforced-review-queue.json": generated.queue, "summary.json": generated.summary };
-add("deterministic-regeneration", Object.entries(expectedFiles).every(([name, value]) => read("docs", "qa", "review", "ai-batches", "batch-3", name) === serialize(value)), "Historical Batch 3 artifacts regenerate byte-identically; later aggregate state is append-only.");
+add("deterministic-regeneration", Object.entries(expectedFiles).every(([name, value]) => read("docs", "qa", "review", "ai-batches", "batch-4", name) === serialize(value)) && read("docs", "qa", "review", "AI_REVIEW_PROGRESS.json") === serialize(generated.progress) && read("docs", "qa", "review", "AI_REVIEW_CROSS_BATCH_PATTERNS.json") === serialize(generated.patterns) && read("docs", "qa", "review", "AI_REVIEW_PATTERN_SATURATION.json") === serialize(generated.saturation), "Regenerated artifacts are byte-identical.");
 
 const priorHashes = {
   "batch-1/adjudication.json": "2610cbb4e374a39b1c5f93c66359c134d566304534a238a3f45f2067109c5480",
@@ -129,8 +133,17 @@ const priorHashes = {
   "batch-2/reinforced-review-queue.json": "f8ecac6d2772451dbddbeb60277214158866b09dd88f6abcac2bdc9e6c455d48",
   "batch-2/selection.json": "e9849f38c816e829c7d3cd834e309d216173d565d71e4f04eae33064bec655ff",
   "batch-2/summary.json": "10aa3165f5ebcfd344c7b60c981ac7b91ed789dae131b729cd5afb2e2774f492",
+  "batch-3/adjudication.json": "596c8712965b6e19ef84346bd892919fae78350c8336dfff23ddf88aa1c47969",
+  "batch-3/blind-packets.json": "87da4117478da27503db85aeeaa9573534af2e54b79c5abfc816630a40a75ce0",
+  "batch-3/issue-ledger.json": "e08de090b1134bb375959be267542277abf7fed91a6deb0fed0595262e5a8707",
+  "batch-3/pass-a.json": "0f2af5bc8617e909c7ce4191d635fdfc20e8b2ac1a9fa20ce0b9a66cad27bb0a",
+  "batch-3/pass-b.json": "a802c224241fb863f5478f3933831bbb88d973ad2aeed34fcd7f1f96ac6a5760",
+  "batch-3/pass-c.json": "1f6baabf34a12e463a89a57b39af9d1da2c228f2d6e29fb512d64d0a3064de91",
+  "batch-3/reinforced-review-queue.json": "f8cf3306756247e6804345b64bb21028fd2a099cd5e0e65072933d2f9fe65ed0",
+  "batch-3/selection.json": "4fd1219a91cf78a4db54699ca6fe3c2e359fb6ae619ba6f091b40d1b5d6a8234",
+  "batch-3/summary.json": "0096f1336e2d2b4c9c317ee7d4a92eb31acdaa574a79cd69fda1c9817c6c20d6",
 };
-add("batches-1-2-byte-identical", Object.entries(priorHashes).every(([path, expected]) => sha256(read("docs", "qa", "review", "ai-batches", ...path.split("/"))) === expected), "All 17 prior artifacts match baseline SHA-256.");
+add("batches-1-3-byte-identical", Object.entries(priorHashes).every(([path, expected]) => sha256(read("docs", "qa", "review", "ai-batches", ...path.split("/"))) === expected), "All 26 prior artifacts match baseline SHA-256.");
 
 const fixtureDiff = execFileSync("git", ["diff", "--name-only", baseline, "--", "lib/ai-quality", "lib/ai-decision-material", "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json"], { cwd: root, encoding: "utf8" }).trim();
 const runtimeDiff = execFileSync("git", ["diff", "--name-only", baseline, "--", "app", "components", "supabase", "lib/ai-provider", "lib/prompt-context", "lib/decision-engine"], { cwd: root, encoding: "utf8" }).trim();
@@ -140,26 +153,23 @@ const apiSource = read("app", "api", "simulate", "route.ts");
 add("mock-only-api-boundary", apiSource.includes("mockOnly: true"), "/api/simulate remains mockOnly=true.");
 
 const canonicalState = ["PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", "CURRENT_STAGE.md", "LEVIO_CURRENT_STATE.md", "LEVIO_PROJECT_PROGRESS.md"].map((name) => read(name).slice(0, 5000)).join("\n");
-add("canonical-state-batch-3", canonicalState.includes("Batch 3") && canonicalState.includes("108 of 216") && canonicalState.includes("108 remain") && canonicalState.includes("Stage 9 remains **In Progress**"), "Canonical state records Batch 3 without Stage closure.");
+add("canonical-state-batch-4", canonicalState.includes("Batch 4") && canonicalState.includes("144 of 216") && canonicalState.includes("72 remain") && canonicalState.includes("Stage 9 remains **In Progress**"), "Canonical state records Batch 4 without Stage closure.");
 add("release-runtime-closed", canonicalState.includes("release readiness is not declared") && canonicalState.includes("Live OpenAI execution is not opened") && canonicalState.includes("`/api/simulate` remains deterministic with `mockOnly=true`"), "Release and runtime remain closed.");
 const blocker = summary.critical_defect_count > 0 || summary.dataset_wide_blocker || patterns.systemic_blocker;
-add("critical-systemic-stop-rule", !blocker && progress.next_planning_candidate === "Stage 9 Independent AI Review Batch 5 of 6" && /Stage 9 Independent AI Review\s+Batch 5 of 6/.test(canonicalState), "CRITICAL=0 and SYSTEMIC_BLOCKER=false preserve Batch 5 as the current planning candidate.");
+add("critical-systemic-stop-rule", !blocker && summary.next_planning_candidate === "Stage 9 Independent AI Review Batch 5 of 6" && /Stage 9 Independent AI Review\s+Batch 5 of 6/.test(canonicalState), "CRITICAL=0 and SYSTEMIC_BLOCKER=false permit Batch 5 as planning candidate only.");
 add("network-zero", networkRequests === 0 && summary.network_request_count === 0 && progress.network_request_count === 0, `${networkRequests} network requests.`);
-add("quality-gate-registered", read("package.json").includes('"quality:stage-9-ai-review-batch-3": "node scripts/stage-9-ai-review-batch-3-quality.mjs"'), "Dedicated Batch 3 gate is registered.");
+add("quality-gate-registered", read("package.json").includes('"quality:stage-9-ai-review-batch-4": "node scripts/stage-9-ai-review-batch-4-quality.mjs"'), "Dedicated Batch 4 gate is registered.");
 
 globalThis.fetch = originalFetch;
 
 const allowed = new Set([
   "CURRENT_STAGE.md", "LEVIO_CURRENT_STATE.md", "LEVIO_IMPLEMENTATION_PLAN.md", "LEVIO_PROJECT_PROGRESS.md", "PROJECT_CONTEXT.md",
   "docs/qa/LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md", "docs/qa/LEVIO_STAGE_9_AI_REVIEW_METHODOLOGY.md",
-  "docs/qa/review/AI_REVIEW_PROGRESS.json", "docs/qa/review/AI_REVIEW_CROSS_BATCH_PATTERNS.json",
-  ...artifactNames.map((name) => `docs/qa/review/ai-batches/batch-3/${name}`),
-  "package.json", "scripts/generate-stage-9-ai-review-batch-3.mjs", "scripts/stage-9-ai-review-batch-3-quality.mjs",
-  "scripts/stage-9-ai-review-batch-1-quality.mjs", "scripts/stage-9-ai-review-batch-2-quality.mjs", "scripts/stage-9-human-review-readiness-quality.mjs",
-  "scripts/stage-9-ai-value-preservation-quality.mjs", "scripts/stage-9-offline-dataset-coverage-quality.mjs", "scripts/visual-migration-closure-quality.mjs",
-  "docs/qa/review/AI_REVIEW_PATTERN_SATURATION.json",
+  "docs/qa/review/AI_REVIEW_PROGRESS.json", "docs/qa/review/AI_REVIEW_CROSS_BATCH_PATTERNS.json", "docs/qa/review/AI_REVIEW_PATTERN_SATURATION.json",
   ...artifactNames.map((name) => `docs/qa/review/ai-batches/batch-4/${name}`),
-  "scripts/generate-stage-9-ai-review-batch-4.mjs", "scripts/stage-9-ai-review-batch-4-quality.mjs",
+  "package.json", "scripts/generate-stage-9-ai-review-batch-4.mjs", "scripts/stage-9-ai-review-batch-4-quality.mjs",
+  "scripts/stage-9-ai-review-batch-1-quality.mjs", "scripts/stage-9-ai-review-batch-2-quality.mjs", "scripts/stage-9-ai-review-batch-3-quality.mjs", "scripts/stage-9-human-review-readiness-quality.mjs",
+  "scripts/stage-9-ai-value-preservation-quality.mjs", "scripts/stage-9-offline-dataset-coverage-quality.mjs", "scripts/visual-migration-closure-quality.mjs",
 ]);
 const changed = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
@@ -167,6 +177,6 @@ const diff = [...new Set([...changed, ...untracked])].sort();
 add("bounded-review-only-diff", diff.every((path) => allowed.has(path)), `Unexpected files: ${diff.filter((path) => !allowed.has(path)).join(", ")}`);
 
 for (const check of checks) console[check.passed ? "log" : "error"](`${check.passed ? "PASS" : "FAIL"} ${check.id}: ${check.detail}`);
-console.log(`REPORT selected=${ids.length} types=${JSON.stringify(selection.coverage.dataset_types)} clusters=${clusters.size} overlap=${ids.filter((id) => priorIds.has(id)).length} verdicts=${JSON.stringify(verdictCounts)} severities=${JSON.stringify(severityCounts)} issues=${ledger.issues.length} reinforced=${expectedQueue.length} primary_reviewed=108 remaining=108 network=${networkRequests}`);
+console.log(`REPORT selected=${ids.length} types=${JSON.stringify(selection.coverage.dataset_types)} clusters=${clusters.size} overlap=${ids.filter((id) => priorIds.has(id)).length} verdicts=${JSON.stringify(verdictCounts)} severities=${JSON.stringify(severityCounts)} issues=${ledger.issues.length} reinforced=${expectedQueue.length} primary_reviewed=144 remaining=72 network=${networkRequests}`);
 console.log(`${checks.filter((check) => check.passed).length}/${checks.length} checks passed.`);
 if (checks.some((check) => !check.passed)) process.exitCode = 1;

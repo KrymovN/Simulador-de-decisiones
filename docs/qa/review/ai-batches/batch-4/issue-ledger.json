@@ -1,0 +1,204 @@
+{
+  "artifact_version": "stage-9-ai-review-issue-ledger.4",
+  "batch_id": "stage-9-ai-review-batch-4-of-6",
+  "review_timestamp": "2026-07-21T22:30:00.000Z",
+  "reviewer_role_id": "ai-adjudicator-v1",
+  "issues": [
+    {
+      "issue_id": "B4-ISSUE-001",
+      "fixture_id": "S9-EVAL-003",
+      "source_fixture_hash": "ad84e04604a8b102bf6fff613756fdfc69ceda4fa5cbf395eb1e6b6f4ca514fc",
+      "issue_code": "OVER_SPECIFIED_GROUNDED_RISK_MECHANISMS",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The source states an initial internal investment and limited provider capacity, while the expected risks strengthen these into a recurring fixed cost and a provider outage mechanism that are not explicit.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-EVAL-003]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-EVAL-003]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-EVAL-003]"
+      ],
+      "remediation_requirement": "Keep the candidate mechanisms at the stated initial-investment and limited-capacity level, or add facts supporting recurrent cost and operational interruption."
+    },
+    {
+      "issue_id": "B4-ISSUE-002",
+      "fixture_id": "S9-CORE-004-ES",
+      "source_fixture_hash": "e0ba94e1e4ce76b326b888eced4f04867dca5f1dba48a3f23a30d5088b7256f4",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-004-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-004-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-004-ES]"
+      ],
+      "remediation_requirement": "Add two explicit incompatible promotion, relocation, or household claims, or classify the case as incomplete rather than contradictory."
+    },
+    {
+      "issue_id": "B4-ISSUE-003",
+      "fixture_id": "S9-CORE-004-EN",
+      "source_fixture_hash": "9d2204b508ec66f2f8279b7b0f23bd0e0f2853a16ba6c518ed5ad8048a253234",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-004-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-004-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-004-EN]"
+      ],
+      "remediation_requirement": "Add two explicit incompatible promotion, relocation, or household claims, or classify the case as incomplete rather than contradictory."
+    },
+    {
+      "issue_id": "B4-ISSUE-004",
+      "fixture_id": "S9-CORE-004-RU",
+      "source_fixture_hash": "94b1bb9576f29d9f7ec1dac2957ce9347c704d19295422721f176ace6982ba5a",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-004-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-004-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-004-RU]"
+      ],
+      "remediation_requirement": "Add two explicit incompatible promotion, relocation, or household claims, or classify the case as incomplete rather than contradictory."
+    },
+    {
+      "issue_id": "B4-ISSUE-005",
+      "fixture_id": "S9-CORE-004-ZH",
+      "source_fixture_hash": "8023334b34d30dffc181029ae362d3aff906f4595e2ff817b4b7689b20abbd10",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-004-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-004-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-004-ZH]"
+      ],
+      "remediation_requirement": "Add two explicit incompatible promotion, relocation, or household claims, or classify the case as incomplete rather than contradictory."
+    },
+    {
+      "issue_id": "B4-ISSUE-006",
+      "fixture_id": "S9-CORE-020-ES",
+      "source_fixture_hash": "38f4a952add156fbe8955947bbb476f9e9d934b292f53457fef48e1b29bbfdc7",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_AND_GENDER_DRIFT",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The source has no incompatible claim pair, and the Spanish fixture adds a specifically female tenant where EN and ZH are neutral and RU uses a masculine-form referent.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-020-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-020-ES]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-020-ES]"
+      ],
+      "remediation_requirement": "Add explicit contradictory claims or reclassify the case, and align the referent's gender treatment across all four locale variants."
+    },
+    {
+      "issue_id": "B4-ISSUE-007",
+      "fixture_id": "S9-CORE-020-EN",
+      "source_fixture_hash": "12eed0b9a71fd8332109cdf7be588a72a761eab73429bb647ca3dda7b1256be7",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "A renewal deadline, an expected alternative offer, and a missing response date create uncertainty and urgency but do not form an explicit contradiction requiring two incompatible claims to be preserved.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-020-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-020-EN]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-020-EN]"
+      ],
+      "remediation_requirement": "Add explicit incompatible lease or response-date claims, or reclassify the case as critically incomplete and retain only the grounded clarification path."
+    },
+    {
+      "issue_id": "B4-ISSUE-008",
+      "fixture_id": "S9-CORE-020-RU",
+      "source_fixture_hash": "e2e0f0c950460287fd66b06acd6dd2484dfa45384834e9477a8289c46fd634b4",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "A renewal deadline, an expected alternative offer, and a missing response date create uncertainty and urgency but do not form an explicit contradiction requiring two incompatible claims to be preserved.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-020-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-020-RU]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-020-RU]"
+      ],
+      "remediation_requirement": "Add explicit incompatible lease or response-date claims, or reclassify the case as critically incomplete and retain only the grounded clarification path."
+    },
+    {
+      "issue_id": "B4-ISSUE-009",
+      "fixture_id": "S9-CORE-020-ZH",
+      "source_fixture_hash": "5058b4d8fe5cfaf519b174f7f1678d93d304e27eb674837e0189f52b59053a82",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "A renewal deadline, an expected alternative offer, and a missing response date create uncertainty and urgency but do not form an explicit contradiction requiring two incompatible claims to be preserved.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-4/pass-a.json#results[fixture_id=S9-CORE-020-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-b.json#results[fixture_id=S9-CORE-020-ZH]",
+        "docs/qa/review/ai-batches/batch-4/pass-c.json#results[fixture_id=S9-CORE-020-ZH]"
+      ],
+      "remediation_requirement": "Add explicit incompatible lease or response-date claims, or reclassify the case as critically incomplete and retain only the grounded clarification path."
+    }
+  ],
+  "summary": {
+    "issue_count": 9,
+    "affected_fixture_count": 9,
+    "status_counts": {
+      "OPEN": 9,
+      "DISPUTED": 0,
+      "RECORDED_NOTE": 0
+    },
+    "severity_counts": {
+      "NONE": 0,
+      "LOW": 0,
+      "MEDIUM": 1,
+      "HIGH": 8,
+      "CRITICAL": 0
+    }
+  }
+}

@@ -1,5 +1,35 @@
 # LEVIO CURRENT STATE
 
+## Current Stage 9 Independent AI Review Batch 4 State — 21 July 2026
+
+The active owner-approved protocol has completed a fourth disjoint 36-fixture
+primary-review batch: 4 synthetic-risk, 4 rich baseline, and 28 core fixtures in
+seven complete ES/EN/RU/ZH clusters. Primary review covers 144 of 216 fixtures;
+72 remain. All source hashes match, and Batches 1–3 artifacts and fixture
+sources remain byte-identical.
+
+Batch 4 has 27 `AI_PASS`, 0 `AI_PASS_WITH_NOTE`, 1 `AI_FAIL_MINOR`, 8
+`AI_FAIL_MAJOR`, 0 `AI_DISPUTED`, and 0 `AI_NOT_REVIEWED`; severity is 27
+`NONE`, 0 `LOW`, 1 `MEDIUM`, 8 `HIGH`, and 0 `CRITICAL`. It contributes 9
+open issues and 8 pending reinforced-review cases. Cumulative verdicts are
+62/25/18/37/2/0, severities are 62/24/20/38/0, open/disputed issues are 72/3,
+and the cumulative queue contains 47 cases. Fixture remediation and reinforced
+review were not performed.
+
+Five challenged pattern families now have explicit saturation decisions,
+confirmations, and counterexamples. Aggregate status remains
+`POTENTIALLY_SYSTEMIC_WITHOUT_SYSTEMIC_BLOCKER`; critical defects remain zero.
+
+AI review status remains `In Progress`; Stage 9 remains **In Progress** and
+release readiness is not declared. Live OpenAI execution is not opened;
+`/api/simulate` remains deterministic with `mockOnly=true`; `HomeSimulator`
+remains mock-only, and all runtime boundaries remain closed. Visual migration
+remains fully closed with 0 remaining substeps. Stage 15 remains a bounded
+documentation and scale-readiness planning stage. No new Stage is created.
+
+No next Stage 9 implementation substep is open. `Stage 9 Independent AI Review
+Batch 5 of 6` is the next planning candidate only.
+
 ## Current Stage 9 Independent AI Review Batch 3 State — 21 July 2026
 
 The active owner-approved protocol has completed a third 36-fixture primary

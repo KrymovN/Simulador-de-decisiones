@@ -2,7 +2,7 @@
 
 - Date: 21 July 2026, Europe/Madrid.
 - Protocol version: `stage-9-independent-ai-review.1`.
-- Active review status: `In Progress — Batch 3 of 6 complete; Batch 4 planning candidate`.
+- Active review status: `In Progress — Batch 4 of 6 complete; Batch 5 planning candidate`.
 - Scope: versioned offline fixtures and QA artifacts only.
 - Runtime status: closed.
 
@@ -171,3 +171,26 @@ portion of unreviewed fixtures is affected or that ground truth is unreliable as
 a class. Batch 3 meets several potentially-systemic thresholds but does not
 establish that stronger blocker condition. Reinforced review and remediation
 remain separate, unexecuted substeps.
+
+## 12. Batch 4 challenge sample and pattern saturation
+
+Batch 4 applies the unchanged four-pass protocol to 36 new fixtures: 4
+synthetic-risk, 4 rich decision-material baseline, and 28 canonical core records
+forming seven complete ES/EN/RU/ZH clusters. It is disjoint from Batches 1–3,
+whose artifacts remain append-only and byte-identical.
+
+The selection explicitly challenges five prior pattern hypotheses: unsupported
+contradiction ground truth, unsupported high-risk ground truth, localization or
+gender drift, invented cost/deadline/irreversibility, and reference behavior not
+supported by input. Both confirming fixtures and counterexamples are required;
+absence of recurrence is evidence and must not be silently converted into a
+failure. Batch-level evidence dispositions and cumulative occurrence counts are
+stored in `AI_REVIEW_CROSS_BATCH_PATTERNS.json`.
+
+`AI_REVIEW_PATTERN_SATURATION.json` records whether each challenged pattern has
+enough multi-batch confirmations and counterevidence for later remediation
+design. Saturation does not authorize fixture changes, reinforced-review
+execution, early termination of the remaining primary review, or a
+`SYSTEMIC_BLOCKER`. Batch 4 leaves 72 fixtures for primary review and preserves
+Batch 5 as a planning candidate only when `CRITICAL=0` and no systemic blocker
+is established.

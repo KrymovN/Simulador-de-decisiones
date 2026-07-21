@@ -598,6 +598,16 @@ rule, but no `SYSTEMIC_BLOCKER` is proven. The cumulative reinforced-review
 queue remains pending and no fixture remediation has occurred. Stage 9 and AI
 review remain `In Progress`; release and runtime approval remain blocked.
 
+Batch 4 adds 36 further disjoint reviews: 4 synthetic-risk, 4 rich baseline,
+and 28 core fixtures in seven complete four-language clusters. Cumulative
+primary coverage is 144 of 216 fixtures with 72 remaining. Batch 4 records 27
+`AI_PASS`, 0 `AI_PASS_WITH_NOTE`, 1 `AI_FAIL_MINOR`, 8 `AI_FAIL_MAJOR`, and 0
+`AI_DISPUTED`, with 0 `CRITICAL`. Eight cases enter the pending reinforced
+queue. The separate pattern-saturation assessment records both confirming and
+counterexample evidence; aggregate status remains
+`POTENTIALLY_SYSTEMIC_WITHOUT_SYSTEMIC_BLOCKER`. No fixture remediation,
+reinforced-review execution, release approval, or runtime approval is implied.
+
 ## 25. Regression Review Process
 
 Every model, adapter, prompt-template, policy, schema, or budget change must trigger regression review.
