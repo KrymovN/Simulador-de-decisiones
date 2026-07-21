@@ -97,9 +97,9 @@ const currentCanonical = ["PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", 
   const next = source.indexOf("\n## ", source.indexOf("\n## ") + 4);
   return source.slice(0, next === -1 ? source.length : next);
 }).join("\n");
-add("canonical-ai-review-state", currentCanonical.includes("owner-approved independent AI review protocol") && currentCanonical.includes("Batch 1 is complete for 36 of 216 fixtures") && currentCanonical.includes("72 of 216") && currentCanonical.includes("144") && currentCanonical.includes("Stage 9 remains **In Progress**"), "Canonical active state preserves Batch 1 history and records cumulative Batch 2 progress without closing Stage 9.");
+add("canonical-ai-review-state", currentCanonical.includes("owner-approved independent AI review protocol") && currentCanonical.includes("Batch 1 is complete for 36 of 216 fixtures") && currentCanonical.includes("108 of 216") && currentCanonical.includes("108 remain") && currentCanonical.includes("Stage 9 remains **In Progress**"), "Canonical active state preserves Batch 1 history and records cumulative Batch 3 progress without closing Stage 9.");
 add("release-and-runtime-remain-closed", currentCanonical.includes("release readiness is not declared") && currentCanonical.includes("Live OpenAI execution is not opened") && currentCanonical.includes("`/api/simulate` remains deterministic with `mockOnly=true`") && !currentCanonical.includes("release candidate approved"), "Release and runtime boundaries remain closed.");
-add("batch-3-planning-only", /Stage 9 Independent AI Review\s+Batch 3 of 6/.test(currentCanonical) && currentCanonical.includes("planning candidate, not In Progress work"), "Batch 3 is planning-only after Batch 2 completion.");
+add("batch-4-planning-only", /Stage 9 Independent AI Review\s+Batch 4 of 6/.test(currentCanonical) && currentCanonical.includes("planning candidate"), "Batch 4 is planning-only after Batch 3 completion.");
 add("network-zero", networkRequests === 0 && summary.network_request_count === 0, `${networkRequests} network requests.`);
 add("quality-gate-registered", read("package.json").includes('"quality:stage-9-ai-review-batch-1": "node scripts/stage-9-ai-review-batch-1-quality.mjs"'), "Dedicated Batch 1 gate is registered.");
 globalThis.fetch = originalFetch;
@@ -119,6 +119,11 @@ const allowed = new Set([
   "scripts/stage-9-human-review-readiness-quality.mjs", "scripts/stage-9-ai-value-preservation-quality.mjs", "scripts/visual-migration-closure-quality.mjs",
   "scripts/stage-9-offline-dataset-coverage-quality.mjs",
 ]);
+for (const path of [
+  "docs/qa/LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md", "docs/qa/review/AI_REVIEW_CROSS_BATCH_PATTERNS.json",
+  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-3/${name}`),
+  "scripts/generate-stage-9-ai-review-batch-3.mjs", "scripts/stage-9-ai-review-batch-3-quality.mjs",
+]) allowed.add(path);
 const changed = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const diff = [...new Set([...changed, ...untracked])].sort();

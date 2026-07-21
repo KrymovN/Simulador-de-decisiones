@@ -146,6 +146,11 @@ const allowed = new Set([
   "scripts/workspace-surfaces-quality.mjs", "scripts/saved-simulations-and-drafts-visual-quality.mjs",
   "scripts/privacy-data-controls-shared-states-visual-quality.mjs", "scripts/visual-migration-closure-quality.mjs",
 ]);
+for (const path of [
+  "docs/qa/review/AI_REVIEW_CROSS_BATCH_PATTERNS.json",
+  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-3/${name}`),
+  "scripts/generate-stage-9-ai-review-batch-3.mjs", "scripts/stage-9-ai-review-batch-3-quality.mjs",
+]) allowed.add(path);
 const tracked = execFileSync("git", ["diff", "--name-only", baseline], { cwd: rootDir, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: rootDir, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const actual = Array.from(new Set([...tracked, ...untracked])).sort();
@@ -170,6 +175,11 @@ const reconciliationAllowed = new Set([
   "PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", "CURRENT_STAGE.md",
   "LEVIO_CURRENT_STATE.md", "LEVIO_PROJECT_PROGRESS.md",
 ]);
+for (const path of [
+  "docs/qa/review/AI_REVIEW_CROSS_BATCH_PATTERNS.json",
+  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-3/${name}`),
+  "scripts/generate-stage-9-ai-review-batch-3.mjs", "scripts/stage-9-ai-review-batch-3-quality.mjs",
+]) reconciliationAllowed.add(path);
 const reconciliationTracked = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: rootDir, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const reconciliationDiff = Array.from(new Set([...reconciliationTracked, ...untracked])).sort();
 check("Reconciliation changes no visual application or UI file", reconciliationDiff.every((path) => reconciliationAllowed.has(path)), `Unexpected current reconciliation files: ${reconciliationDiff.filter((path) => !reconciliationAllowed.has(path)).join(", ")}`);

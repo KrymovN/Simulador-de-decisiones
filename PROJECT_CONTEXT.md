@@ -1,5 +1,44 @@
 # PROJECT CONTEXT
 
+## Stage 9 Independent AI Review Batch 3 of 6 Complete — 21 July 2026
+
+The owner-approved independent AI review protocol, using role-and-context
+isolation, has completed
+Batch 3 for 36 new fixtures without changing any fixture or prior-batch artifact.
+The deterministic selection contains 4 synthetic-risk, 4 rich baseline, and 28
+canonical core fixtures in seven complete ES/EN/RU/ZH clusters, one per core
+domain. Primary review now covers 108 of 216 fixtures; 108 remain.
+
+The canonical minimum of 160 case records has been reached and is unchanged.
+Batch 1 is complete for 36 of 216 fixtures, Batch 2 is complete for another 36,
+and Batch 3 completes the current cumulative primary-review state.
+
+Batch 3 adjudication is `AI_PASS=6`, `AI_PASS_WITH_NOTE=6`,
+`AI_FAIL_MINOR=9`, `AI_FAIL_MAJOR=15`, `AI_DISPUTED=0`, and
+`AI_NOT_REVIEWED=0`; severity is `NONE=6`, `LOW=6`, `MEDIUM=9`, `HIGH=15`,
+and `CRITICAL=0`. Its ledger has 30 observations: 24 open, 0 disputed, and 6
+recorded notes. Nineteen Batch 3 cases require reinforced review, which was not
+executed. The cumulative queue is 39 cases. Cumulative verdicts are
+35/25/17/29/2/0, cumulative severities are 35/24/19/30/0, and cumulative
+open/disputed issues are 63/3. Fixture remediation is `NONE`.
+
+Cross-batch evidence now marks unsupported contradiction and high-risk ground
+truth, localization drift, invented cost/price behavior, and the broader
+reference-behavior-without-input-support pattern as `POTENTIALLY_SYSTEMIC`.
+No `CRITICAL` defect or `SYSTEMIC_BLOCKER` is established because the evidence
+does not prove significant impact among the 108 unreviewed fixtures or
+class-level unreliability of all ground truth.
+
+AI review status remains `In Progress`; Stage 9 remains **In Progress** and
+release readiness is not declared. Live OpenAI execution is not opened;
+`/api/simulate` remains deterministic with `mockOnly=true`; `HomeSimulator`
+remains mock-only, and all runtime boundaries remain closed. Visual migration
+remains fully closed with 0 remaining substeps. Stage 15 remains a bounded
+documentation and scale-readiness planning stage. No new Stage is created.
+
+No next Stage 9 implementation substep is open. `Stage 9 Independent AI Review
+Batch 4 of 6` is the planning candidate, not authorized or In Progress work.
+
 ## Stage 9 Independent AI Review Batch 2 of 6 Complete — 21 July 2026
 
 The owner-approved independent AI review protocol remains the active internal

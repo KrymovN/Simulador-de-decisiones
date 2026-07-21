@@ -109,8 +109,9 @@ const cumulativeVerdicts = addCounts(batch1Summary.verdict_counts, summary.verdi
 const cumulativeSeverities = addCounts(batch1Summary.severity_counts, summary.severity_counts, allowedSeverity);
 const cumulativeOpen = batch1Ledger.issues.filter((item) => item.status === "OPEN").length + issueLedger.issues.filter((item) => item.status === "OPEN").length;
 const cumulativeDisputed = batch1Ledger.issues.filter((item) => item.status === "DISPUTED").length + issueLedger.issues.filter((item) => item.status === "DISPUTED").length;
-add("aggregate-progress-exact", progress.primary_review.batch_1 === 36 && progress.primary_review.batch_2 === 36 && progress.primary_review.total_reviewed === 72 && progress.primary_review.remaining === 144 && JSON.stringify(progress.cumulative_verdict_counts) === JSON.stringify(cumulativeVerdicts) && JSON.stringify(progress.cumulative_severity_counts) === JSON.stringify(cumulativeSeverities) && progress.cumulative_open_issues === cumulativeOpen && progress.cumulative_disputed_issues === cumulativeDisputed && progress.fixture_remediation === "NONE", "Aggregate progress records 72 reviewed and 144 remaining without remediation.");
-add("aggregate-queue-provenance", progress.cumulative_reinforced_review_queue.length === batch1Summary.reinforced_review_count + reinforcedQueue.cases.length && progress.cumulative_reinforced_review_queue.every((item) => ["stage-9-ai-review-batch-1-of-6", "stage-9-ai-review-batch-2-of-6"].includes(item.batch_provenance)), `${progress.cumulative_reinforced_review_queue.length} cumulative reinforced cases.`);
+const recordedBatch2 = progress.batch_progress.find((item) => item.batch_id === "stage-9-ai-review-batch-2-of-6");
+add("aggregate-progress-exact", progress.primary_review.batch_1 === 36 && progress.primary_review.batch_2 === 36 && progress.primary_review.batch_3 === 36 && progress.primary_review.total_reviewed === 108 && progress.primary_review.remaining === 108 && JSON.stringify(recordedBatch2?.verdict_counts) === JSON.stringify(summary.verdict_counts) && JSON.stringify(recordedBatch2?.severity_counts) === JSON.stringify(summary.severity_counts) && progress.fixture_remediation === "NONE", "Aggregate progress preserves the exact Batch 2 record inside the 108-reviewed Batch 3 cumulative state.");
+add("aggregate-queue-provenance", progress.cumulative_reinforced_review_queue.filter((item) => item.batch_provenance === "stage-9-ai-review-batch-1-of-6").length === batch1Summary.reinforced_review_count && progress.cumulative_reinforced_review_queue.filter((item) => item.batch_provenance === "stage-9-ai-review-batch-2-of-6").length === reinforcedQueue.cases.length && progress.cumulative_reinforced_review_queue.length === 39, `${progress.cumulative_reinforced_review_queue.length} cumulative reinforced cases with preserved Batch 1-2 provenance.`);
 
 const batch1Hashes = {
   "adjudication.json": "2610cbb4e374a39b1c5f93c66359c134d566304534a238a3f45f2067109c5480",
@@ -133,10 +134,10 @@ const currentCanonical = ["PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", 
   const next = source.indexOf("\n## ", source.indexOf("\n## ") + 4);
   return source.slice(0, next === -1 ? source.length : next);
 }).join("\n");
-add("canonical-ai-review-state", currentCanonical.includes("Batch 2") && currentCanonical.includes("72 of 216") && currentCanonical.includes("144") && currentCanonical.includes("Stage 9 remains **In Progress**"), "Canonical state records Batch 2 completion without closing Stage 9.");
+add("canonical-ai-review-state", currentCanonical.includes("Batch 2") && currentCanonical.includes("Batch 3") && currentCanonical.includes("108 of 216") && currentCanonical.includes("108 remain") && currentCanonical.includes("Stage 9 remains **In Progress**"), "Canonical state preserves Batch 2 and records Batch 3 completion without closing Stage 9.");
 add("release-and-runtime-remain-closed", currentCanonical.includes("release readiness is not declared") && currentCanonical.includes("Live OpenAI execution is not opened") && currentCanonical.includes("`/api/simulate` remains deterministic with `mockOnly=true`") && !currentCanonical.includes("release candidate approved"), "Release and runtime boundaries remain closed.");
 const blocker = summary.critical_defect_count > 0 || summary.dataset_wide_blocker === true;
-add("next-candidate-follows-critical-rule", blocker ? !currentCanonical.includes("Batch 3 of 6") : /Stage 9 Independent AI Review\s+Batch 3 of 6/.test(currentCanonical), blocker ? "Critical/blocker prevents automatic Batch 3 candidacy." : "Batch 3 is the next planning candidate.");
+add("next-candidate-follows-critical-rule", blocker ? !currentCanonical.includes("Batch 4 of 6") : /Stage 9 Independent AI Review\s+Batch 4 of 6/.test(currentCanonical), blocker ? "Critical/blocker prevents automatic Batch 4 candidacy." : "Batch 4 is the next planning candidate after completed Batch 3.");
 add("network-zero", networkRequests === 0 && summary.network_request_count === 0 && progress.network_request_count === 0, `${networkRequests} network requests.`);
 add("quality-gate-registered", read("package.json").includes('"quality:stage-9-ai-review-batch-2": "node scripts/stage-9-ai-review-batch-2-quality.mjs"'), "Dedicated Batch 2 gate is registered.");
 globalThis.fetch = originalFetch;
@@ -149,6 +150,11 @@ const allowed = new Set([
   "scripts/stage-9-ai-review-batch-1-quality.mjs", "scripts/stage-9-human-review-readiness-quality.mjs",
   "scripts/stage-9-ai-value-preservation-quality.mjs", "scripts/stage-9-offline-dataset-coverage-quality.mjs", "scripts/visual-migration-closure-quality.mjs",
 ]);
+for (const path of [
+  "docs/qa/LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md", "docs/qa/review/AI_REVIEW_CROSS_BATCH_PATTERNS.json",
+  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-3/${name}`),
+  "scripts/generate-stage-9-ai-review-batch-3.mjs", "scripts/stage-9-ai-review-batch-3-quality.mjs",
+]) allowed.add(path);
 const changed = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const diff = [...new Set([...changed, ...untracked])].sort();

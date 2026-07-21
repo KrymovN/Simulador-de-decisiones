@@ -233,6 +233,11 @@ const allowedDiff = new Set([
   "scripts/visual-migration-closure-quality.mjs",
   "scripts/workspace-surfaces-quality.mjs",
 ]);
+for (const path of [
+  "docs/qa/review/AI_REVIEW_CROSS_BATCH_PATTERNS.json",
+  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-3/${name}`),
+  "scripts/generate-stage-9-ai-review-batch-3.mjs", "scripts/stage-9-ai-review-batch-3-quality.mjs",
+]) allowedDiff.add(path);
 const tracked = execFileSync("git", ["diff", "--name-only", baseline], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const actualDiff = [...new Set([...tracked, ...untracked])].sort();
@@ -278,6 +283,11 @@ const reconciliationAllowed = new Set([
   "LEVIO_CURRENT_STATE.md",
   "LEVIO_PROJECT_PROGRESS.md",
 ]);
+for (const path of [
+  "docs/qa/review/AI_REVIEW_CROSS_BATCH_PATTERNS.json",
+  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-3/${name}`),
+  "scripts/generate-stage-9-ai-review-batch-3.mjs", "scripts/stage-9-ai-review-batch-3-quality.mjs",
+]) reconciliationAllowed.add(path);
 const reconciliationTracked = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const reconciliationDiff = [...new Set([...reconciliationTracked, ...untracked])].sort();
 add("no-production-diff", reconciliationDiff.every((path) => reconciliationAllowed.has(path)), `Current reconciliation diff must contain only approved gate and canonical files. Unexpected files: ${reconciliationDiff.filter((path) => !reconciliationAllowed.has(path)).join(", ")}`);

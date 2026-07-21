@@ -1,0 +1,390 @@
+{
+  "artifact_version": "stage-9-ai-review-cross-batch-pattern-registry.1",
+  "review_scope": "Batches 1-3 of 6",
+  "review_timestamp": "2026-07-21T20:30:00.000Z",
+  "escalation_rule": "POTENTIALLY_SYSTEMIC at three or more independent core clusters, at two or more domains with HIGH severity, or on recurrence across dataset types; SYSTEMIC_BLOCKER only with evidence of significant unreviewed-dataset impact or class-level ground-truth unreliability.",
+  "aggregate_status": "POTENTIALLY_SYSTEMIC_WITHOUT_SYSTEMIC_BLOCKER",
+  "systemic_blocker": false,
+  "patterns": [
+    {
+      "issue_code": "PATTERN_UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+      "pattern": "unsupported contradiction ground truth",
+      "affected_batches": [
+        "batch-1",
+        "batch-2",
+        "batch-3"
+      ],
+      "affected_fixture_ids": [
+        "S9-CORE-024-ES",
+        "S9-CORE-024-EN",
+        "S9-CORE-024-RU",
+        "S9-CORE-024-ZH",
+        "S9-CORE-036-ZH",
+        "S9-CORE-012-ES",
+        "S9-CORE-012-EN",
+        "S9-CORE-012-RU",
+        "S9-CORE-012-ZH",
+        "S9-CORE-008-ES",
+        "S9-CORE-008-EN",
+        "S9-CORE-008-RU",
+        "S9-CORE-008-ZH",
+        "S9-CORE-040-ES",
+        "S9-CORE-040-EN",
+        "S9-CORE-040-RU",
+        "S9-CORE-040-ZH"
+      ],
+      "distinct_clusters": [
+        "S9-CLUSTER-008",
+        "S9-CLUSTER-012",
+        "S9-CLUSTER-024",
+        "S9-CLUSTER-036",
+        "S9-CLUSTER-040"
+      ],
+      "distinct_domains": [
+        "education",
+        "relocation_and_housing",
+        "high_risk_and_safety_sensitive"
+      ],
+      "distinct_dataset_types": [
+        "canonical_core"
+      ],
+      "severity_distribution": {
+        "HIGH": 17
+      },
+      "evidence": [
+        "batch-1/issue-ledger.json:UNSUPPORTED_CONTRADICTION_LABEL",
+        "batch-2/issue-ledger.json:UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH",
+        "batch-3/issue-ledger.json:UNSUPPORTED_CONTRADICTION_GROUND_TRUTH"
+      ],
+      "status": "POTENTIALLY_SYSTEMIC"
+    },
+    {
+      "issue_code": "PATTERN_UNSUPPORTED_HIGH_RISK_GROUND_TRUTH",
+      "pattern": "unsupported high-risk ground truth",
+      "affected_batches": [
+        "batch-1",
+        "batch-2",
+        "batch-3"
+      ],
+      "affected_fixture_ids": [
+        "S9-CORE-036-ZH",
+        "S9-CORE-012-ES",
+        "S9-CORE-012-EN",
+        "S9-CORE-012-RU",
+        "S9-CORE-012-ZH",
+        "S9-CORE-014-ES",
+        "S9-CORE-014-EN",
+        "S9-CORE-014-RU",
+        "S9-CORE-014-ZH",
+        "S9-CORE-040-ES",
+        "S9-CORE-040-EN",
+        "S9-CORE-040-RU",
+        "S9-CORE-040-ZH"
+      ],
+      "distinct_clusters": [
+        "S9-CLUSTER-012",
+        "S9-CLUSTER-014",
+        "S9-CLUSTER-036",
+        "S9-CLUSTER-040"
+      ],
+      "distinct_domains": [
+        "education",
+        "finance_and_spending",
+        "high_risk_and_safety_sensitive"
+      ],
+      "distinct_dataset_types": [
+        "canonical_core"
+      ],
+      "severity_distribution": {
+        "MEDIUM": 4,
+        "HIGH": 9
+      },
+      "evidence": [
+        "batch-1/issue-ledger.json:HIGH_RISK_HEALTH_CONTEXT",
+        "batch-2/issue-ledger.json:UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH",
+        "batch-3/adjudication.json:unsupported_high_risk_ground_truth"
+      ],
+      "status": "POTENTIALLY_SYSTEMIC"
+    },
+    {
+      "issue_code": "PATTERN_UNSUPPORTED_NONEXISTENT_OPTION",
+      "pattern": "unsupported nonexistent option",
+      "affected_batches": [
+        "batch-2"
+      ],
+      "affected_fixture_ids": [
+        "S9-EVAL-011"
+      ],
+      "distinct_clusters": [],
+      "distinct_domains": [
+        "adapter_contract_and_safety"
+      ],
+      "distinct_dataset_types": [
+        "synthetic_risk"
+      ],
+      "severity_distribution": {
+        "HIGH": 1
+      },
+      "evidence": [
+        "batch-2/issue-ledger.json:UNSUPPORTED_NONEXISTENT_OPTION_GROUND_TRUTH"
+      ],
+      "status": "ISOLATED"
+    },
+    {
+      "issue_code": "PATTERN_UNSAFE_CLARIFICATION_REFUSAL",
+      "pattern": "unsafe clarification/refusal path",
+      "affected_batches": [
+        "batch-1",
+        "batch-2"
+      ],
+      "affected_fixture_ids": [
+        "S9-CORE-037-EN",
+        "S9-CORE-038-ES",
+        "S9-CORE-038-EN",
+        "S9-CORE-038-RU",
+        "S9-CORE-038-ZH"
+      ],
+      "distinct_clusters": [
+        "S9-CLUSTER-037",
+        "S9-CLUSTER-038"
+      ],
+      "distinct_domains": [
+        "high_risk_and_safety_sensitive"
+      ],
+      "distinct_dataset_types": [
+        "canonical_core"
+      ],
+      "severity_distribution": {
+        "HIGH": 5
+      },
+      "evidence": [
+        "batch-1/issue-ledger.json:CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR",
+        "batch-2/issue-ledger.json:UNSAFE_HIGH_RISK_REFUSAL_PATH"
+      ],
+      "status": "RECURRING"
+    },
+    {
+      "issue_code": "PATTERN_LOCALIZATION_GENDER_DRIFT",
+      "pattern": "localization or gender drift",
+      "affected_batches": [
+        "batch-1",
+        "batch-3"
+      ],
+      "affected_fixture_ids": [
+        "S9-CORE-010-ES",
+        "S9-CORE-010-EN",
+        "S9-CORE-010-RU",
+        "S9-CORE-010-ZH",
+        "S9-CORE-003-ES",
+        "S9-CORE-003-RU",
+        "S9-CORE-008-ES",
+        "S9-CORE-025-ES",
+        "S9-CORE-035-ES",
+        "S9-CORE-035-EN",
+        "S9-CORE-035-RU",
+        "S9-CORE-035-ZH"
+      ],
+      "distinct_clusters": [
+        "S9-CLUSTER-003",
+        "S9-CLUSTER-008",
+        "S9-CLUSTER-010",
+        "S9-CLUSTER-025",
+        "S9-CLUSTER-035"
+      ],
+      "distinct_domains": [
+        "career_and_work",
+        "education",
+        "business_decisions",
+        "personal_planning"
+      ],
+      "distinct_dataset_types": [
+        "canonical_core"
+      ],
+      "severity_distribution": {
+        "LOW": 8,
+        "MEDIUM": 4
+      },
+      "evidence": [
+        "batch-1/issue-ledger.json:CLUSTER_TRANSLATION_GENDER_DRIFT",
+        "batch-3/pass-c.json:language_naturalness"
+      ],
+      "status": "POTENTIALLY_SYSTEMIC"
+    },
+    {
+      "issue_code": "PATTERN_PRIVACY_EXPECTATION_DISAGREEMENT",
+      "pattern": "privacy expectation disagreement",
+      "affected_batches": [
+        "batch-1"
+      ],
+      "affected_fixture_ids": [
+        "S9-MATERIAL-013"
+      ],
+      "distinct_clusters": [],
+      "distinct_domains": [
+        "decision_material_contract_and_preservation"
+      ],
+      "distinct_dataset_types": [
+        "rich_decision_material_baseline"
+      ],
+      "severity_distribution": {
+        "MEDIUM": 1
+      },
+      "evidence": [
+        "batch-1/issue-ledger.json:PASS_A_PERSONAL_DATA_REPRODUCTION"
+      ],
+      "status": "ISOLATED"
+    },
+    {
+      "issue_code": "PATTERN_CONTROLLED_FAILURE_DISAGREEMENT",
+      "pattern": "controlled-failure disagreement",
+      "affected_batches": [
+        "batch-2"
+      ],
+      "affected_fixture_ids": [
+        "S9-MATERIAL-015"
+      ],
+      "distinct_clusters": [],
+      "distinct_domains": [
+        "decision_material_contract_and_preservation"
+      ],
+      "distinct_dataset_types": [
+        "rich_decision_material_baseline"
+      ],
+      "severity_distribution": {
+        "MEDIUM": 1
+      },
+      "evidence": [
+        "batch-2/issue-ledger.json:CONTROLLED_FAILURE_REASON_INCOMPLETE"
+      ],
+      "status": "ISOLATED"
+    },
+    {
+      "issue_code": "PATTERN_INVENTED_COST_DEADLINE_IRREVERSIBILITY",
+      "pattern": "invented cost, deadline or irreversibility",
+      "affected_batches": [
+        "batch-1",
+        "batch-3"
+      ],
+      "affected_fixture_ids": [
+        "S9-CORE-024-ES",
+        "S9-CORE-024-EN",
+        "S9-CORE-024-RU",
+        "S9-CORE-024-ZH",
+        "S9-EVAL-002",
+        "S9-CORE-035-ES",
+        "S9-CORE-035-EN",
+        "S9-CORE-035-RU",
+        "S9-CORE-035-ZH"
+      ],
+      "distinct_clusters": [
+        "S9-CLUSTER-024",
+        "S9-CLUSTER-035"
+      ],
+      "distinct_domains": [
+        "adapter_contract_and_safety",
+        "relocation_and_housing",
+        "personal_planning"
+      ],
+      "distinct_dataset_types": [
+        "canonical_core",
+        "synthetic_risk"
+      ],
+      "severity_distribution": {
+        "MEDIUM": 4,
+        "HIGH": 5
+      },
+      "evidence": [
+        "batch-1/issue-ledger.json:EXPECTED_UNSUPPORTED_RISK_SIGNAL",
+        "batch-3/issue-ledger.json:EXPECTED_RISKS_UNSUPPORTED_BY_SOURCE",
+        "batch-3/issue-ledger.json:UNSUPPORTED_PRICE_INCREASE_GROUND_TRUTH"
+      ],
+      "status": "POTENTIALLY_SYSTEMIC"
+    },
+    {
+      "issue_code": "PATTERN_REFERENCE_BEHAVIOR_UNSUPPORTED_INPUT",
+      "pattern": "reference behavior not supported by input",
+      "affected_batches": [
+        "batch-1",
+        "batch-2",
+        "batch-3"
+      ],
+      "affected_fixture_ids": [
+        "S9-CORE-024-ES",
+        "S9-CORE-024-EN",
+        "S9-CORE-024-RU",
+        "S9-CORE-024-ZH",
+        "S9-CORE-036-ZH",
+        "S9-EVAL-011",
+        "S9-CORE-012-ES",
+        "S9-CORE-012-EN",
+        "S9-CORE-012-RU",
+        "S9-CORE-012-ZH",
+        "S9-CORE-038-ES",
+        "S9-CORE-038-EN",
+        "S9-CORE-038-RU",
+        "S9-CORE-038-ZH",
+        "S9-EVAL-002",
+        "S9-EVAL-012",
+        "S9-MATERIAL-006",
+        "S9-CORE-002-ES",
+        "S9-CORE-002-EN",
+        "S9-CORE-002-RU",
+        "S9-CORE-002-ZH",
+        "S9-CORE-008-ES",
+        "S9-CORE-008-EN",
+        "S9-CORE-008-RU",
+        "S9-CORE-008-ZH",
+        "S9-CORE-014-ES",
+        "S9-CORE-014-EN",
+        "S9-CORE-014-RU",
+        "S9-CORE-014-ZH",
+        "S9-CORE-035-ES",
+        "S9-CORE-035-EN",
+        "S9-CORE-035-RU",
+        "S9-CORE-035-ZH",
+        "S9-CORE-040-ES",
+        "S9-CORE-040-EN",
+        "S9-CORE-040-RU",
+        "S9-CORE-040-ZH"
+      ],
+      "distinct_clusters": [
+        "S9-CLUSTER-002",
+        "S9-CLUSTER-008",
+        "S9-CLUSTER-012",
+        "S9-CLUSTER-014",
+        "S9-CLUSTER-024",
+        "S9-CLUSTER-035",
+        "S9-CLUSTER-036",
+        "S9-CLUSTER-038",
+        "S9-CLUSTER-040"
+      ],
+      "distinct_domains": [
+        "adapter_contract_and_safety",
+        "decision_material_contract_and_preservation",
+        "career_and_work",
+        "education",
+        "finance_and_spending",
+        "relocation_and_housing",
+        "personal_planning",
+        "high_risk_and_safety_sensitive"
+      ],
+      "distinct_dataset_types": [
+        "canonical_core",
+        "rich_decision_material_baseline",
+        "synthetic_risk"
+      ],
+      "severity_distribution": {
+        "MEDIUM": 8,
+        "HIGH": 29
+      },
+      "evidence": [
+        "batch-1/issue-ledger.json",
+        "batch-2/issue-ledger.json",
+        "batch-3/issue-ledger.json"
+      ],
+      "status": "POTENTIALLY_SYSTEMIC"
+    }
+  ],
+  "blocker_assessment": "No SYSTEMIC_BLOCKER is established: reviewed evidence proves recurrence and cross-domain/type reach, but does not prove significant impact among the 108 unreviewed fixtures or class-level unreliability of all ground truth.",
+  "fixture_remediation": "NONE"
+}

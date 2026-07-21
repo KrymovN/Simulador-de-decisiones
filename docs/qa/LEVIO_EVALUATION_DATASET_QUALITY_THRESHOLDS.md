@@ -589,6 +589,15 @@ and 2 `AI_DISPUTED`; 11 cases require reinforced AI review and 180 fixtures
 remain outside the completed batch. These results block any aggregate release
 claim and do not change the dataset fixtures.
 
+Batches 2 and 3 add 72 disjoint primary reviews, bringing cumulative primary
+coverage to 108 of 216 fixtures with 108 remaining. Batch 3 results are 6
+`AI_PASS`, 6 `AI_PASS_WITH_NOTE`, 9 `AI_FAIL_MINOR`, 15 `AI_FAIL_MAJOR`, and
+0 `AI_DISPUTED`; severity includes 15 `HIGH` and 0 `CRITICAL`. Repeated
+reference-grounding findings meet the owner-approved `POTENTIALLY_SYSTEMIC`
+rule, but no `SYSTEMIC_BLOCKER` is proven. The cumulative reinforced-review
+queue remains pending and no fixture remediation has occurred. Stage 9 and AI
+review remain `In Progress`; release and runtime approval remain blocked.
+
 ## 25. Regression Review Process
 
 Every model, adapter, prompt-template, policy, schema, or budget change must trigger regression review.

@@ -1,12 +1,13 @@
 {
-  "artifact_version": "stage-9-ai-review-progress.2",
-  "review_session": "stage-9-ai-review-batch-2",
+  "artifact_version": "stage-9-ai-review-progress.3",
+  "review_session": "stage-9-ai-review-batch-3",
   "status": "IN_PROGRESS",
   "primary_review": {
     "batch_1": 36,
     "batch_2": 36,
-    "total_reviewed": 72,
-    "remaining": 144,
+    "batch_3": 36,
+    "total_reviewed": 108,
+    "remaining": 108,
     "dataset_total": 216
   },
   "batch_progress": [
@@ -53,24 +54,46 @@
       "open_issues": 16,
       "disputed_issues": 0,
       "reinforced_review_count": 9
+    },
+    {
+      "batch_id": "stage-9-ai-review-batch-3-of-6",
+      "primary_reviewed": 36,
+      "verdict_counts": {
+        "AI_PASS": 6,
+        "AI_PASS_WITH_NOTE": 6,
+        "AI_FAIL_MINOR": 9,
+        "AI_FAIL_MAJOR": 15,
+        "AI_DISPUTED": 0,
+        "AI_NOT_REVIEWED": 0
+      },
+      "severity_counts": {
+        "NONE": 6,
+        "LOW": 6,
+        "MEDIUM": 9,
+        "HIGH": 15,
+        "CRITICAL": 0
+      },
+      "open_issues": 24,
+      "disputed_issues": 0,
+      "reinforced_review_count": 19
     }
   ],
   "cumulative_verdict_counts": {
-    "AI_PASS": 29,
-    "AI_PASS_WITH_NOTE": 19,
-    "AI_FAIL_MINOR": 8,
-    "AI_FAIL_MAJOR": 14,
+    "AI_PASS": 35,
+    "AI_PASS_WITH_NOTE": 25,
+    "AI_FAIL_MINOR": 17,
+    "AI_FAIL_MAJOR": 29,
     "AI_DISPUTED": 2,
     "AI_NOT_REVIEWED": 0
   },
   "cumulative_severity_counts": {
-    "NONE": 29,
-    "LOW": 18,
-    "MEDIUM": 10,
-    "HIGH": 15,
+    "NONE": 35,
+    "LOW": 24,
+    "MEDIUM": 19,
+    "HIGH": 30,
     "CRITICAL": 0
   },
-  "cumulative_open_issues": 39,
+  "cumulative_open_issues": 63,
   "cumulative_disputed_issues": 3,
   "cumulative_reinforced_review_queue": [
     {
@@ -172,8 +195,106 @@
       "fixture_id": "S9-CORE-038-ZH",
       "batch_provenance": "stage-9-ai-review-batch-2-of-6",
       "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-EVAL-002",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-EVAL-012",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-MATERIAL-006",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-002-ES",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-002-EN",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-002-RU",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-002-ZH",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-008-ES",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-008-EN",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-008-RU",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-008-ZH",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-014-ES",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-014-EN",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-014-RU",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-014-ZH",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-040-ES",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-040-EN",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-040-RU",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-040-ZH",
+      "batch_provenance": "stage-9-ai-review-batch-3-of-6",
+      "status": "PENDING_NOT_EXECUTED"
     }
   ],
+  "systemic_pattern_status": "POTENTIALLY_SYSTEMIC_WITHOUT_SYSTEMIC_BLOCKER",
+  "systemic_blocker": false,
+  "cross_batch_pattern_registry": "docs/qa/review/AI_REVIEW_CROSS_BATCH_PATTERNS.json",
   "fixture_remediation": "NONE",
   "critical_defect_count": 0,
   "dataset_wide_blocker": false,
@@ -181,5 +302,5 @@
   "stage_status": "In Progress",
   "release_readiness": "NOT_DECLARED",
   "runtime_boundaries": "CLOSED",
-  "next_planning_candidate": "Stage 9 Independent AI Review Batch 3 of 6"
+  "next_planning_candidate": "Stage 9 Independent AI Review Batch 4 of 6"
 }

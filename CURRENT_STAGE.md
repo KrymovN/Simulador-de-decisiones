@@ -1,5 +1,40 @@
 # CURRENT STAGE
 
+## Stage 9 Independent AI Review — Batch 3 of 6 Complete — 21 July 2026
+
+Batch 3 is complete for 36 new fixtures under the owner-approved independent AI
+review protocol. Its 4 synthetic-risk, 4 rich baseline, and 28 canonical core
+fixtures are disjoint from Batches 1–2 and form seven complete four-language
+clusters across all seven core domains. Every fixture has frozen A/B/C/D
+evidence and a verified source hash. Primary review covers 108 of 216 fixtures;
+108 remain. Model independence, human review, remediation, and reinforced-review
+execution are not claimed.
+
+The canonical minimum of 160 case records has been reached and is unchanged.
+Batch 1 is complete for 36 of 216 fixtures; the later disjoint batches extend
+primary review without changing that historical artifact.
+
+Batch 3 verdicts are `AI_PASS=6`, `AI_PASS_WITH_NOTE=6`, `AI_FAIL_MINOR=9`,
+`AI_FAIL_MAJOR=15`, `AI_DISPUTED=0`, and `AI_NOT_REVIEWED=0`; severity is
+`NONE=6`, `LOW=6`, `MEDIUM=9`, `HIGH=15`, and `CRITICAL=0`. Its ledger has 24
+open issues and 6 notes. Nineteen Batch 3 cases are queued for reinforced review;
+the cumulative queue is 39. Cumulative verdicts are 35/25/17/29/2/0, severity
+is 35/24/19/30/0, and open/disputed issues are 63/3. Fixtures remain unchanged.
+
+The cross-batch registry contains `POTENTIALLY_SYSTEMIC` patterns, including
+unsupported contradiction ground truth and broader reference behavior not
+supported by input. No `CRITICAL` defect or `SYSTEMIC_BLOCKER` is established.
+
+AI review status remains `In Progress`; Stage 9 remains **In Progress** and
+release readiness is not declared. Live OpenAI execution is not opened;
+`/api/simulate` remains deterministic with `mockOnly=true`; `HomeSimulator`
+remains mock-only, and all runtime boundaries remain closed. Visual migration
+remains fully closed with 0 remaining substeps. Stage 15 remains a bounded
+documentation and scale-readiness planning stage. No new Stage is created.
+
+No next Stage 9 implementation substep is open. `Stage 9 Independent AI Review
+Batch 4 of 6` is the planning candidate, not In Progress work.
+
 ## Stage 9 Independent AI Review — Batch 2 of 6 Complete — 21 July 2026
 
 The owner-approved independent AI review protocol is active for internal Stage

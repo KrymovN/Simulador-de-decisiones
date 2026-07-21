@@ -2,7 +2,7 @@
 
 - Date: 21 July 2026, Europe/Madrid.
 - Protocol version: `stage-9-independent-ai-review.1`.
-- Active review status: `In Progress — Batch 2 of 6 complete; Batch 3 planning candidate`.
+- Active review status: `In Progress — Batch 3 of 6 complete; Batch 4 planning candidate`.
 - Scope: versioned offline fixtures and QA artifacts only.
 - Runtime status: closed.
 
@@ -154,3 +154,20 @@ Batch completion means only that its selected fixtures received the four-pass
 protocol. It does not mean all 216 fixtures are reviewed or closed. Stage 9
 remains `In Progress`; release readiness, production readiness, live provider
 integration, and runtime approval remain unclaimed.
+
+## 11. Batch 3 and cross-batch pattern assessment
+
+Batch 3 applies the unchanged four-pass protocol to 36 new fixtures: 4
+synthetic-risk, 4 rich decision-material baseline, and 28 canonical core records
+forming seven complete four-language clusters. The batch selection is disjoint
+from Batches 1 and 2; their artifacts and all fixture sources remain immutable.
+
+Cross-batch pattern assessment is stored separately in
+`docs/qa/review/AI_REVIEW_CROSS_BATCH_PATTERNS.json`. A pattern is at least
+`POTENTIALLY_SYSTEMIC` when it is confirmed in three or more independent core
+clusters, occurs with high severity in at least two domains, or recurs across
+dataset types. `SYSTEMIC_BLOCKER` requires stronger evidence that a significant
+portion of unreviewed fixtures is affected or that ground truth is unreliable as
+a class. Batch 3 meets several potentially-systemic thresholds but does not
+establish that stronger blocker condition. Reinforced review and remediation
+remain separate, unexecuted substeps.

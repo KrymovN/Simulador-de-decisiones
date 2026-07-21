@@ -97,12 +97,17 @@ const allowed = new Set([
   "scripts/stage-9-offline-dataset-coverage-quality.mjs",
   "scripts/stage-9-ai-value-preservation-quality.mjs", "scripts/visual-migration-closure-quality.mjs",
 ]);
+for (const path of [
+  "docs/qa/review/AI_REVIEW_CROSS_BATCH_PATTERNS.json",
+  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-3/${name}`),
+  "scripts/generate-stage-9-ai-review-batch-3.mjs", "scripts/stage-9-ai-review-batch-3-quality.mjs",
+]) allowed.add(path);
 const tracked = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const diff = [...new Set([...tracked, ...untracked])].sort();
 add("bounded-review-only-diff", diff.every((path) => allowed.has(path)), `Unexpected files: ${diff.filter((path) => !allowed.has(path)).join(", ")}`);
 
 for (const check of checks) console[check.passed ? "log" : "error"](`${check.passed ? "PASS" : "FAIL"} ${check.id}: ${check.detail}`);
-console.log(`REPORT source=${rebuilt.entries.length} manifest=${manifest.entries.length} clusters=${clusters.size} languages=${JSON.stringify(manifest.summary.languages)} historical_not_reviewed=${notReviewedCount} duplicates=${duplicateCount} missing=${missingCount} metadata_mismatch=${metadataMismatchCount} threshold=${manifest.threshold_interpretation.verdict} historical_rc=${manifest.rc_pre_assessment.verdict} active_review=INDEPENDENT_AI_REVIEW_BATCH_2_COMPLETE network=${networkRequests}`);
+console.log(`REPORT source=${rebuilt.entries.length} manifest=${manifest.entries.length} clusters=${clusters.size} languages=${JSON.stringify(manifest.summary.languages)} historical_not_reviewed=${notReviewedCount} duplicates=${duplicateCount} missing=${missingCount} metadata_mismatch=${metadataMismatchCount} threshold=${manifest.threshold_interpretation.verdict} historical_rc=${manifest.rc_pre_assessment.verdict} active_review=INDEPENDENT_AI_REVIEW_BATCH_3_COMPLETE network=${networkRequests}`);
 console.log(`${checks.filter((check) => check.passed).length}/${checks.length} checks passed.`);
 if (checks.some((check) => !check.passed)) process.exitCode = 1;
