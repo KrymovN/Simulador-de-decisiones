@@ -195,7 +195,7 @@ export function runAIValuePreservationEvaluation(
     required_categories: RICH_DECISION_MATERIAL_COVERAGE_IDS.length,
     network_requests: 0,
     public_mock_only_path_unchanged: true,
-    passed: fullCoverage && results.length === RICH_DECISION_MATERIAL_COVERAGE_IDS.length &&
+    passed: fullCoverage && results.length >= RICH_DECISION_MATERIAL_COVERAGE_IDS.length &&
       passedCases === results.length,
     results,
   };

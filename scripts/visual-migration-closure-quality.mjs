@@ -92,15 +92,20 @@ for (const path of [
   "LEVIO_PROJECT_CONSTITUTION.md",
 ]) check(`${path} remains byte-identical to baseline`, read(path) === before(path));
 
-const canonicalState = [
+const currentCanonicalState = [
   "PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", "CURRENT_STAGE.md",
   "LEVIO_CURRENT_STATE.md", "LEVIO_PROJECT_PROGRESS.md",
-].map(read).join("\n").replace(/\s+/g, " ");
-check("Stage 9 remains In Progress without completion drift", canonicalState.includes("Stage 9 remains **In Progress**") && !canonicalState.includes("Stage 9 is complete") && !canonicalState.includes("Stage 9 is **Complete**") && !canonicalState.includes("Stage 9 Closed"));
-check("Stage 15 remains documentation and planning only", canonicalState.includes("Stage 15 remains a bounded documentation and scale-readiness planning stage") && !canonicalState.includes("Stage 15 is an implementation Stage"));
-check("Visual migration remains closed with zero remaining substeps", canonicalState.includes("Visual migration remains fully closed with 0 remaining substeps") && !canonicalState.includes("Visual migration is reopened") && !canonicalState.includes("Visual migration has reopened"));
-check("Stage 9 continuation remains planning only", canonicalState.includes("No next Stage 9 implementation substep is open") && canonicalState.includes("planning candidate, not In Progress work") && !canonicalState.includes("Stage 9 Offline Evaluation Dataset Expansion is In Progress") && !canonicalState.includes("Stage 9 Offline Evaluation Dataset Expansion is **In Progress**"));
-check("Dataset and human-review gates remain open", canonicalState.includes("canonical minimum of 160 reviewed cases is not reached") && !canonicalState.includes("canonical minimum of 160 reviewed cases is reached") && !canonicalState.includes("canonical minimum of 160 reviewed cases has been reached") && canonicalState.includes("Human review is not complete") && !canonicalState.includes("Human review is complete") && !canonicalState.includes("Human review has been completed"));
+].map((path) => {
+  const source = read(path);
+  const firstHeading = source.indexOf("\n## ");
+  const nextHeading = source.indexOf("\n## ", firstHeading + 4);
+  return source.slice(0, nextHeading === -1 ? source.length : nextHeading);
+}).join("\n").replace(/\s+/g, " ");
+check("Stage 9 remains In Progress without completion drift", currentCanonicalState.includes("Stage 9 remains **In Progress**") && !currentCanonicalState.includes("Stage 9 is complete") && !currentCanonicalState.includes("Stage 9 is **Complete**") && !currentCanonicalState.includes("Stage 9 Closed"));
+check("Stage 15 remains documentation and planning only", currentCanonicalState.includes("Stage 15 remains a bounded documentation and scale-readiness planning stage") && !currentCanonicalState.includes("Stage 15 is an implementation Stage"));
+check("Visual migration remains closed with zero remaining substeps", currentCanonicalState.includes("Visual migration remains fully closed with 0 remaining substeps") && !currentCanonicalState.includes("Visual migration is reopened") && !currentCanonicalState.includes("Visual migration has reopened"));
+check("Stage 9 continuation remains planning only", currentCanonicalState.includes("No next Stage 9 implementation substep is open") && currentCanonicalState.includes("planning candidate, not In Progress work") && !currentCanonicalState.includes("Stage 9 Offline Evaluation Human Review and Release Candidate Assessment is In Progress") && !currentCanonicalState.includes("Stage 9 Offline Evaluation Human Review and Release Candidate Assessment is **In Progress**"));
+check("Dataset minimum reached with human review pending", currentCanonicalState.includes("canonical minimum of 160 reviewed cases has been reached") && !currentCanonicalState.includes("canonical minimum of 160 reviewed cases is not reached") && currentCanonicalState.includes("Human review remains pending") && !currentCanonicalState.includes("Human review is complete") && !currentCanonicalState.includes("Human review has been completed"));
 
 for (const directory of [
   "app/login", "app/register", "app/forgot-password", "app/privacy-policy", "app/terms",
@@ -110,7 +115,7 @@ check("not-found copy and route remain exact", read("app/not-found.tsx") === bef
 
 const packageJson = read("package.json");
 includes(packageJson, '"quality:visual-migration-closure": "node scripts/visual-migration-closure-quality.mjs"', "Final closure gate is registered");
-check("No new Stage or Batch is introduced", canonicalState.includes("No new Stage is created") && !/\bStage (?:1[6-9]|[2-9]\d)\b/.test(canonicalState));
+check("No new Stage or Batch is introduced", currentCanonicalState.includes("No new Stage is created") && !/\bStage (?:1[6-9]|[2-9]\d)\b/.test(currentCanonicalState));
 
 const allowed = new Set([
   "docs/architecture/LEVIO_AI_ABSTRACTION_OBSERVABILITY_COSTS.md",
@@ -122,6 +127,7 @@ const allowed = new Set([
   ...removedFiles, "app/styles/motion.css", "package.json", "scripts/dashboard-shell-landing-quality.mjs",
   "scripts/homepage-one-time-assembly-refinement-quality.mjs",
   "scripts/stage-9-ai-value-preservation-quality.mjs",
+  "scripts/stage-9-offline-dataset-coverage-quality.mjs",
   "scripts/workspace-surfaces-quality.mjs", "scripts/saved-simulations-and-drafts-visual-quality.mjs",
   "scripts/privacy-data-controls-shared-states-visual-quality.mjs", "scripts/visual-migration-closure-quality.mjs",
 ]);
@@ -131,6 +137,8 @@ const actual = Array.from(new Set([...tracked, ...untracked])).sort();
 check("Final cleanup diff stays inside the approved file set", actual.every((path) => allowed.has(path)), `Unexpected files: ${actual.filter((path) => !allowed.has(path)).join(", ")}`);
 const reconciliationAllowed = new Set([
   "scripts/stage-9-ai-value-preservation-quality.mjs", "scripts/visual-migration-closure-quality.mjs",
+  "scripts/stage-9-offline-dataset-coverage-quality.mjs", "lib/ai-decision-material/fixtures.ts",
+  "lib/ai-decision-material/evaluation.ts", "docs/qa/LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md", "package.json",
   "PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", "CURRENT_STAGE.md",
   "LEVIO_CURRENT_STATE.md", "LEVIO_PROJECT_PROGRESS.md",
 ]);

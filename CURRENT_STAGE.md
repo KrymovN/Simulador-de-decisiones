@@ -1,5 +1,32 @@
 # CURRENT STAGE
 
+## Stage 9 Offline Evaluation Dataset Expansion Complete — 21 July 2026
+
+Stage 9 remains **In Progress**. The latest completed bounded substep adds 160
+purpose-written synthetic rich-material cases while preserving the existing 32
+risk and 24 rich-material fixtures. The total is 216 executable offline cases:
+32 risk and 184 rich-material. The canonical minimum of 160 reviewed cases has
+been reached for executable size and quantitative coverage.
+
+The canonical core has 40 cases per first-wave language, 40 per completeness
+state, 40 four-language equivalence clusters, domain counts of 24/24/24/24/24/
+20/20, 60 high-risk cases, 40 privacy-boundary cases, 40 controlled-failure
+cases, and 160 cost-profile cases. Duplicate IDs, normalized-text duplicates,
+invalid schemas, silent loss, and network requests are all zero. Human review
+remains pending; Stage 9 is not complete and AI integration remains blocked.
+
+Live OpenAI execution is not opened. `/api/simulate` remains deterministic with
+`mockOnly=true`; `HomeSimulator` remains mock-only. Prompt Context, Decision
+Engine, structured production composition, API/UI, persistence, authenticated
+production, provider configuration/secrets, and user-data bridges remain
+closed. Visual migration remains fully closed with 0 remaining substeps. Stage
+15 remains a bounded documentation and scale-readiness planning stage. No new
+Stage is created.
+
+No next Stage 9 implementation substep is open. The planning candidate, not In
+Progress work, is `Stage 9 Offline Evaluation Human Review and Release Candidate
+Assessment.`
+
 ## Stage 9 AI Value Preservation Foundation Reconciled — 21 July 2026
 
 Stage 9 remains **In Progress**. The latest completed bounded substep is the

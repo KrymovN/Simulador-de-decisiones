@@ -1,5 +1,33 @@
 # LEVIO PROJECT PROGRESS TRACKER
 
+## Stage 9 Progress Update — Offline Evaluation Dataset Expanded to 216 Cases — 21 July 2026
+
+The bounded offline dataset substep adds 160 purpose-written synthetic
+rich-material cases and preserves the existing 32 risk plus 24 rich-material
+fixtures. Stage 9 now has 216 executable offline cases: 32 risk and 184 rich-
+material. The canonical minimum of 160 reviewed cases has been reached for
+executable size and quantitative coverage.
+
+The new core matrix records 40 cases per Spanish, English, Russian, and Chinese;
+40 per complete, partial, critically incomplete, and contradictory state; 40
+four-language equivalence clusters; domain counts of 24, 24, 24, 24, 24, 20,
+and 20; 60 high-risk; 40 privacy-boundary; 40 controlled-failure; and 160 cost-
+profile cases. IDs, exact/normalized user-situation duplicates, invalid schemas,
+silent loss, and network requests are zero. Human review remains pending.
+
+Stage 9 remains **In Progress** and is not production-ready. Live OpenAI
+execution is not opened; `/api/simulate` remains deterministic with
+`mockOnly=true`; `HomeSimulator` remains mock-only. Prompt Context, Decision
+Engine, structured production composition, API/UI, persistence, authenticated
+production, provider configuration/secrets, and user-data bridges remain
+closed. Visual migration remains fully closed with 0 remaining substeps. Stage
+15 remains a bounded documentation and scale-readiness planning stage. No new
+Stage is created.
+
+No next Stage 9 implementation substep is open. The planning candidate, not In
+Progress work, is `Stage 9 Offline Evaluation Human Review and Release Candidate
+Assessment.`
+
 ## Stage 9 Progress Update — AI Value Preservation Foundation Reconciled — 21 July 2026
 
 Commit `6d44a6f0d77c37794d1507a9e5a852c6c8f43663` completed the bounded offline,

@@ -1,5 +1,37 @@
 # PROJECT CONTEXT
 
+## Stage 9 Offline Evaluation Dataset Expansion Complete — 21 July 2026
+
+The bounded offline dataset expansion adds 160 purpose-written synthetic
+rich-material cases without removing the existing 32 risk fixtures or 24
+value-preservation fixtures. Stage 9 now has 216 executable offline cases:
+32 synthetic risk cases and 184 rich-material cases, of which 160 form the new
+canonical core matrix. All case IDs and normalized user situations are unique;
+invalid schema cases and duplicate cases are zero.
+
+The canonical minimum of 160 reviewed cases has been reached for executable
+dataset size and quantitative coverage. The 160-case core contains 40 cases in
+each of Spanish, English, Russian, and Chinese; 40 cases in each completeness
+state; 40 four-language equivalence clusters; 60 high-risk cases; 40 privacy-
+boundary cases; 40 controlled-failure cases; and 160 cost-profile cases. Core
+domain counts are 24 each for career/work, education, finance/spending,
+relocation/housing, and business decisions, plus 20 each for personal planning
+and high-risk/safety-sensitive decisions. Human review remains pending, so AI
+integration and release-candidate approval remain blocked.
+
+Stage 9 remains **In Progress**. Live OpenAI execution is not opened;
+`/api/simulate` remains deterministic with `mockOnly=true`; `HomeSimulator`
+remains a mock-only consumer. Prompt Context, Decision Engine, structured
+production composition, API/UI, persistence, authentication/production,
+provider configuration, secrets, and user-data bridges remain closed. Network
+requests and silent loss are zero. Visual migration remains fully closed with 0
+remaining substeps, Stage 15 remains documentation/planning only, and no new
+Stage is created.
+
+No next Stage 9 implementation substep is open. The planning candidate, not In
+Progress work, is `Stage 9 Offline Evaluation Human Review and Release Candidate
+Assessment.`
+
 ## Stage 9 Canonical State Reconciliation — 21 July 2026
 
 The factual Stage 9 state after commit

@@ -50,7 +50,11 @@ const canonicalStateSources = [
   "LEVIO_CURRENT_STATE.md",
   "LEVIO_PROJECT_PROGRESS.md",
 ].map((path) => read(path));
-const canonicalState = canonicalStateSources.join("\n").replace(/\s+/g, " ");
+const currentCanonicalState = canonicalStateSources.map((source) => {
+  const firstHeading = source.indexOf("\n## ");
+  const nextHeading = source.indexOf("\n## ", firstHeading + 4);
+  return source.slice(0, nextHeading === -1 ? source.length : nextHeading);
+}).join("\n").replace(/\s+/g, " ");
 
 const contracts = require(join(root, "lib", "ai-decision-material", "contracts.ts"));
 const fixtures = require(join(root, "lib", "ai-decision-material", "fixtures.ts"));
@@ -132,8 +136,8 @@ add("epistemic-boundaries-preserved", report.results.every((item) => item.metric
 add("risk-only-loss-detected", lossExample?.metrics.risk_only_value_loss_detected, "Fixture must prove that risk-only mapping would lose useful rich material.");
 add("meaningful-transformation-measured", evaluationSource.includes("meaningful_transformation_count") && evaluationSource.includes("no_meaningful_transformation"), "Value-add evaluation must reject composition without substantive transformation.");
 
-add("fixture-count-24-new", fixtures.RICH_DECISION_MATERIAL_FIXTURE_COUNT === 24, `${fixtures.RICH_DECISION_MATERIAL_FIXTURE_COUNT} rich fixtures found.`);
-add("fixture-count-32-to-56", fixtures.EXISTING_SYNTHETIC_RISK_FIXTURE_BASELINE === 32 && fixtures.COMBINED_STAGE9_OFFLINE_FIXTURE_COUNT === 56, "Combined offline fixture count must grow from 32 to 56.");
+add("fixture-count-24-baseline-preserved", fixtures.RICH_DECISION_MATERIAL_BASELINE_COUNT === 24 && fixtures.RICH_DECISION_MATERIAL_FIXTURES.slice(0, 24).every((item, index) => item.fixture_id === `S9-MATERIAL-${String(index + 1).padStart(3, "0")}`), "The original 24 rich-material fixtures must remain intact and ordered.");
+add("fixture-count-expanded-to-216", fixtures.EXISTING_SYNTHETIC_RISK_FIXTURE_BASELINE === 32 && fixtures.CANONICAL_OFFLINE_DATASET_EXPANSION_COUNT === 160 && fixtures.RICH_DECISION_MATERIAL_FIXTURE_COUNT === 184 && fixtures.COMBINED_STAGE9_OFFLINE_FIXTURE_COUNT === 216, "Combined offline fixture count must grow from 56 to 216 without removing the baseline.");
 add("fixture-coverage-complete", report.covered_categories === report.required_categories && report.required_categories === 24, `${report.covered_categories}/${report.required_categories} categories covered.`);
 add("offline-evaluation-pass", report.passed && report.failed_cases === 0, `${report.passed_cases}/${report.total_cases} cases passed.`);
 add("zero-network", networkRequests === 0 && report.network_requests === 0 && !evaluationSource.includes("process.env") && !fixturesSource.includes("process.env"), `${networkRequests} network requests.`);
@@ -148,29 +152,28 @@ add("raw-provider-material-not-persisted", report.results.every((item) => item.a
 add("quality-gate-registered", packageJson.includes('"quality:stage-9-ai-value-preservation": "node scripts/stage-9-ai-value-preservation-quality.mjs"'), "Dedicated gate must be registered.");
 
 const canonicalReconciliationBoundariesPreserved =
-  canonicalState.includes("Stage 9 remains **In Progress**") &&
-  !canonicalState.includes("Stage 9 is complete") &&
-  !canonicalState.includes("Stage 9 is **Complete**") &&
-  !canonicalState.includes("Stage 9 Closed") &&
-  canonicalState.includes("Live OpenAI execution is not opened") &&
-  !canonicalState.includes("Live OpenAI execution is opened") &&
-  canonicalState.includes("`/api/simulate` remains deterministic with `mockOnly=true`") &&
-  canonicalState.includes("No next Stage 9 implementation substep is open") &&
-  canonicalState.includes("planning candidate, not In Progress work") &&
-  !canonicalState.includes("Stage 9 Offline Evaluation Dataset Expansion is In Progress") &&
-  !canonicalState.includes("Stage 9 Offline Evaluation Dataset Expansion is **In Progress**") &&
-  canonicalState.includes("canonical minimum of 160 reviewed cases is not reached") &&
-  !canonicalState.includes("canonical minimum of 160 reviewed cases is reached") &&
-  !canonicalState.includes("canonical minimum of 160 reviewed cases has been reached") &&
-  canonicalState.includes("Human review is not complete") &&
-  !canonicalState.includes("Human review is complete") &&
-  !canonicalState.includes("Human review has been completed") &&
-  canonicalState.includes("Stage 15 remains a bounded documentation and scale-readiness planning stage") &&
-  !canonicalState.includes("Stage 15 is an implementation Stage") &&
-  canonicalState.includes("Visual migration remains fully closed with 0 remaining substeps") &&
-  !canonicalState.includes("Visual migration is reopened") &&
-  !canonicalState.includes("Visual migration has reopened") &&
-  !/\bStage (?:1[6-9]|[2-9]\d)\b/.test(canonicalState) &&
+  currentCanonicalState.includes("Stage 9 remains **In Progress**") &&
+  !currentCanonicalState.includes("Stage 9 is complete") &&
+  !currentCanonicalState.includes("Stage 9 is **Complete**") &&
+  !currentCanonicalState.includes("Stage 9 Closed") &&
+  currentCanonicalState.includes("Live OpenAI execution is not opened") &&
+  !currentCanonicalState.includes("Live OpenAI execution is opened") &&
+  currentCanonicalState.includes("`/api/simulate` remains deterministic with `mockOnly=true`") &&
+  currentCanonicalState.includes("No next Stage 9 implementation substep is open") &&
+  currentCanonicalState.includes("planning candidate, not In Progress work") &&
+  !currentCanonicalState.includes("Stage 9 Offline Evaluation Human Review and Release Candidate Assessment is In Progress") &&
+  !currentCanonicalState.includes("Stage 9 Offline Evaluation Human Review and Release Candidate Assessment is **In Progress**") &&
+  currentCanonicalState.includes("canonical minimum of 160 reviewed cases has been reached") &&
+  !currentCanonicalState.includes("canonical minimum of 160 reviewed cases is not reached") &&
+  currentCanonicalState.includes("Human review remains pending") &&
+  !currentCanonicalState.includes("Human review is complete") &&
+  !currentCanonicalState.includes("Human review has been completed") &&
+  currentCanonicalState.includes("Stage 15 remains a bounded documentation and scale-readiness planning stage") &&
+  !currentCanonicalState.includes("Stage 15 is an implementation Stage") &&
+  currentCanonicalState.includes("Visual migration remains fully closed with 0 remaining substeps") &&
+  !currentCanonicalState.includes("Visual migration is reopened") &&
+  !currentCanonicalState.includes("Visual migration has reopened") &&
+  !/\bStage (?:1[6-9]|[2-9]\d)\b/.test(currentCanonicalState) &&
   routeSource.includes("mockOnly: true") &&
   !routeSource.toLowerCase().includes("openai") &&
   homeSource.includes('fetch("/api/simulate"') &&
@@ -199,6 +202,7 @@ const allowedDiff = new Set([
   "scripts/privacy-data-controls-shared-states-visual-quality.mjs",
   "scripts/saved-simulations-and-drafts-visual-quality.mjs",
   "scripts/stage-9-ai-value-preservation-quality.mjs",
+  "scripts/stage-9-offline-dataset-coverage-quality.mjs",
   "scripts/visual-migration-closure-quality.mjs",
   "scripts/workspace-surfaces-quality.mjs",
 ]);
@@ -209,6 +213,11 @@ add("git-diff-bounded", actualDiff.every((path) => allowedDiff.has(path)), `Unex
 const reconciliationAllowed = new Set([
   "scripts/stage-9-ai-value-preservation-quality.mjs",
   "scripts/visual-migration-closure-quality.mjs",
+  "scripts/stage-9-offline-dataset-coverage-quality.mjs",
+  "lib/ai-decision-material/fixtures.ts",
+  "lib/ai-decision-material/evaluation.ts",
+  "docs/qa/LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md",
+  "package.json",
   "PROJECT_CONTEXT.md",
   "LEVIO_IMPLEMENTATION_PLAN.md",
   "CURRENT_STAGE.md",

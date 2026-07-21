@@ -1,5 +1,34 @@
 # LEVIO CURRENT STATE
 
+## Current Stage 9 Offline Evaluation Dataset State — 21 July 2026
+
+The offline evaluation foundation contains 216 executable cases after adding
+160 purpose-written synthetic core cases. The previous 32 risk fixtures and 24
+rich-material fixtures remain intact; the resulting distribution is 32 risk and
+184 rich-material. The canonical minimum of 160 reviewed cases has been reached
+for executable dataset size and quantitative coverage.
+
+The core distribution is 40 cases per language, 40 per completeness state, 40
+four-language semantic-equivalence clusters, and 24 cases in each of five core
+domains plus 20 in each of two core domains. It includes 60 high-risk, 40
+privacy-boundary, 40 controlled-failure, and 160 cost-profile cases. Duplicate
+IDs, exact/normalized duplicates, invalid schemas, silent loss, and network
+requests are zero. Human review remains pending; production/provider/model
+quality and release readiness are not claimed.
+
+Stage 9 remains **In Progress**. Live OpenAI execution is not opened;
+`/api/simulate` remains deterministic with `mockOnly=true`; `HomeSimulator`
+remains a mock-only consumer. Prompt Context, Decision Engine, structured
+production composition, API/UI, persistence, authenticated production, provider
+configuration/secrets, and personal-data processing remain closed. Visual
+migration remains fully closed with 0 remaining substeps. Stage 15 remains a
+bounded documentation and scale-readiness planning stage. No new Stage is
+created.
+
+No next Stage 9 implementation substep is open. The planning candidate, not In
+Progress work, is `Stage 9 Offline Evaluation Human Review and Release Candidate
+Assessment.`
+
 ## Current Stage 9 AI Value Preservation State — 21 July 2026
 
 The latest completed Stage 9 bounded substep is the offline, server-only AI

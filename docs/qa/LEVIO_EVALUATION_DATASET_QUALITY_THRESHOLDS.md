@@ -134,6 +134,17 @@ in addition to the existing 32 synthetic risk fixtures. This 56-fixture combined
 offline count remains an implementation foundation, not completion of the
 canonical minimum 160-case pre-integration dataset and not a readiness claim.
 
+The later bounded Stage 9 offline dataset expansion preserves those 56 fixtures
+and adds 160 purpose-written synthetic rich-material cases, for 216 executable
+offline cases in total: 32 risk and 184 rich-material. The canonical minimum of
+160 reviewed cases has been reached for executable dataset size and quantitative
+coverage. The 160-case core supplies 40 cases per first-wave language, all four
+completeness states in every language, 40 four-language semantic-equivalence
+clusters, at least 20 cases in every required core domain, 60 high-risk cases,
+40 privacy-boundary cases, 40 controlled-failure cases, and 160 cost-profile
+cases. Human review remains pending; provider/model approval, AI integration,
+and release readiness remain blocked by the remaining criteria in this document.
+
 ## 5. Evaluation Dataset Structure
 
 The future dataset should contain:
@@ -664,6 +675,17 @@ The initial catalog contains:
 - privacy-minimizing and high-risk cases.
 
 It does not yet satisfy the minimum 160-case pre-integration dataset requirement.
+
+### Executable Stage 9 expansion evidence — 21 July 2026
+
+The initial catalog remains specification evidence. The executable Stage 9
+dataset now separately contains a 160-case purpose-written synthetic core plus
+the preserved 56 capability-specific fixtures, for 216 total offline cases.
+Automated coverage verifies unique IDs, zero exact or normalized user-situation
+duplicates, schema validity, domain/language/completeness/equivalence coverage,
+high-risk/privacy/failure/cost thresholds, deterministic execution, zero network
+requests, and zero silent loss. Human review remains pending, so satisfying the
+quantitative minimum does not approve AI integration.
 
 Future expansion must add:
 
