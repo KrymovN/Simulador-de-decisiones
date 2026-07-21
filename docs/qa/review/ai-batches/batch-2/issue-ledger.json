@@ -1,0 +1,645 @@
+{
+  "artifact_version": "stage-9-ai-review-issue-ledger.2",
+  "batch_id": "stage-9-ai-review-batch-2-of-6",
+  "review_timestamp": "2026-07-21T18:11:38.403Z",
+  "reviewer_role_id": "ai-adjudicator-v1",
+  "issues": [
+    {
+      "issue_id": "B2-ISSUE-001",
+      "fixture_id": "S9-EVAL-011",
+      "source_fixture_hash": "60c75229fda2860f54f365d4343165322c6c7aedede7189fc3b4d1ea702b4d5a",
+      "issue_code": "UNSUPPORTED_NONEXISTENT_OPTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The fixture declares a nonexistent-option grounding failure without an offending option-reference field or value in the retained candidate payload.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-EVAL-011]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-EVAL-011]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-EVAL-011]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-EVAL-011]"
+      ],
+      "remediation_requirement": "Add an explicit out-of-set option reference in the supported candidate format, or remove the nonexistent-option marker and grounding-invalid expectation."
+    },
+    {
+      "issue_id": "B2-ISSUE-002",
+      "fixture_id": "S9-MATERIAL-005",
+      "source_fixture_hash": "534df9f0bbf679ee7b252f11f77745984386821d1e25667b8f5d295defcfa264",
+      "issue_code": "REFERENCE_CONTRACT_TRANSFORMATION_SCOPE_AMBIGUOUS",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The future-composition items repeat dependency, reversibility, and clarification transformations even though each source candidate represents only one item type, and the contract does not define transformation-list scope.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-MATERIAL-005]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-MATERIAL-005]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-MATERIAL-005]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-MATERIAL-005]"
+      ],
+      "remediation_requirement": "Define transformation-list semantics and, if transformations are per-item, retain only transformations supported by each source candidate with traceability."
+    },
+    {
+      "issue_id": "B2-ISSUE-003",
+      "fixture_id": "S9-MATERIAL-008",
+      "source_fixture_hash": "9989cacc6ddbe62f46f316ad52faabee789293acd888f68e76770c15d6ffdc48",
+      "issue_code": "DETERMINISTIC_DISPOSITION_NOT_EXPLICIT",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The reconstruction does not explicitly state rejected_invalid disposition, zero accepted items, and exclusion from future composition.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-MATERIAL-008]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-MATERIAL-008]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-MATERIAL-008]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-MATERIAL-008]"
+      ],
+      "remediation_requirement": "State the rejected_invalid disposition, zero accepted count, and exclusion from future composition explicitly."
+    },
+    {
+      "issue_id": "B2-ISSUE-004",
+      "fixture_id": "S9-MATERIAL-008",
+      "source_fixture_hash": "9989cacc6ddbe62f46f316ad52faabee789293acd888f68e76770c15d6ffdc48",
+      "issue_code": "SCENARIO_LOW_REALISM_SELF_LABELLED_CONTRADICTION",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "reviewer_role_ids": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The fixture labels a contradiction but omits the two conflicting propositions, limiting content-level contradiction testing.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-MATERIAL-008]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-MATERIAL-008]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-MATERIAL-008]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-MATERIAL-008]"
+      ],
+      "remediation_requirement": "Optionally add both conflicting deadline claims while retaining the deterministic context-handling test."
+    },
+    {
+      "issue_id": "B2-ISSUE-005",
+      "fixture_id": "S9-MATERIAL-015",
+      "source_fixture_hash": "ac2823e4bc05de4818d197728852b4cbb4a46b300c26a93243c738921f6c0326",
+      "issue_code": "CONTROLLED_FAILURE_REASON_INCOMPLETE",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The reconstruction does not name excessive_item_count or explicitly state zero accepted items and ledger disposition for all 65 observed items.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-MATERIAL-015]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-MATERIAL-015]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-MATERIAL-015]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-MATERIAL-015]"
+      ],
+      "remediation_requirement": "Name excessive_item_count and state that all 65 observed items receive ledger disposition with zero accepted items."
+    },
+    {
+      "issue_id": "B2-ISSUE-006",
+      "fixture_id": "S9-MATERIAL-015",
+      "source_fixture_hash": "ac2823e4bc05de4818d197728852b4cbb4a46b300c26a93243c738921f6c0326",
+      "issue_code": "INTENTIONAL_DUPLICATION_BOUNDARY_FIXTURE",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "reviewer_role_ids": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The 65 numbered items are intentionally repetitive and should not be interpreted as semantic diversity.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-MATERIAL-015]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-MATERIAL-015]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-MATERIAL-015]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-MATERIAL-015]"
+      ],
+      "remediation_requirement": "Preserve the boundary-test classification when interpreting coverage and duplication metrics."
+    },
+    {
+      "issue_id": "B2-ISSUE-007",
+      "fixture_id": "S9-CORE-005-ES",
+      "source_fixture_hash": "794fde107d7949c908a7506611fdf29c721c0df27a380fb76be0ab620dd94cde",
+      "issue_code": "RISK_SPECIFICITY_REDUCED",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Fatigue risk and coverage gap are preserved only in broader workload language rather than named separately.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-005-ES]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-005-ES]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-005-ES]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-005-ES]"
+      ],
+      "remediation_requirement": "Name fatigue risk and coverage gap separately in a future reconstruction while retaining capacity uncertainty."
+    },
+    {
+      "issue_id": "B2-ISSUE-008",
+      "fixture_id": "S9-CORE-005-ES",
+      "source_fixture_hash": "794fde107d7949c908a7506611fdf29c721c0df27a380fb76be0ab620dd94cde",
+      "issue_code": "SCENARIO_ABSTRACT_LOW_DIAGNOSTIC_POWER",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "reviewer_role_ids": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Symbolic shift facts and absent concrete limits reduce the scenario ability to discriminate fatigue and coverage outcomes.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-005-ES]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-005-ES]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-005-ES]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-005-ES]"
+      ],
+      "remediation_requirement": "Optionally add bounded, non-identifying operational detail to improve diagnostic power."
+    },
+    {
+      "issue_id": "B2-ISSUE-009",
+      "fixture_id": "S9-CORE-005-EN",
+      "source_fixture_hash": "a40e611a0d2d2348e910d11f18a4202c62a720f78d7b9a866a47ce6026d8da1e",
+      "issue_code": "RISK_SPECIFICITY_REDUCED",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Fatigue risk and coverage gap are preserved only in broader workload language rather than named separately.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-005-EN]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-005-EN]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-005-EN]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-005-EN]"
+      ],
+      "remediation_requirement": "Name fatigue risk and coverage gap separately in a future reconstruction while retaining capacity uncertainty."
+    },
+    {
+      "issue_id": "B2-ISSUE-010",
+      "fixture_id": "S9-CORE-005-EN",
+      "source_fixture_hash": "a40e611a0d2d2348e910d11f18a4202c62a720f78d7b9a866a47ce6026d8da1e",
+      "issue_code": "SCENARIO_ABSTRACT_LOW_DIAGNOSTIC_POWER",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "reviewer_role_ids": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Symbolic shift facts and absent concrete limits reduce the scenario ability to discriminate fatigue and coverage outcomes.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-005-EN]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-005-EN]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-005-EN]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-005-EN]"
+      ],
+      "remediation_requirement": "Optionally add bounded, non-identifying operational detail to improve diagnostic power."
+    },
+    {
+      "issue_id": "B2-ISSUE-011",
+      "fixture_id": "S9-CORE-005-RU",
+      "source_fixture_hash": "5acc298eb2ad60a16f722cd33e77c7334fa3c9b18b5c84c4f90e267fa7502e55",
+      "issue_code": "RISK_SPECIFICITY_REDUCED",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Fatigue risk and coverage gap are preserved only in broader workload language rather than named separately.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-005-RU]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-005-RU]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-005-RU]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-005-RU]"
+      ],
+      "remediation_requirement": "Name fatigue risk and coverage gap separately in a future reconstruction while retaining capacity uncertainty."
+    },
+    {
+      "issue_id": "B2-ISSUE-012",
+      "fixture_id": "S9-CORE-005-RU",
+      "source_fixture_hash": "5acc298eb2ad60a16f722cd33e77c7334fa3c9b18b5c84c4f90e267fa7502e55",
+      "issue_code": "SCENARIO_ABSTRACT_LOW_DIAGNOSTIC_POWER",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "reviewer_role_ids": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Symbolic shift facts and absent concrete limits reduce the scenario ability to discriminate fatigue and coverage outcomes.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-005-RU]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-005-RU]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-005-RU]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-005-RU]"
+      ],
+      "remediation_requirement": "Optionally add bounded, non-identifying operational detail to improve diagnostic power."
+    },
+    {
+      "issue_id": "B2-ISSUE-013",
+      "fixture_id": "S9-CORE-005-ZH",
+      "source_fixture_hash": "c89d37111d9ae692ed0571efd2a88eedda3ffc77d5016a4f3d9014308e990bae",
+      "issue_code": "RISK_SPECIFICITY_REDUCED",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Fatigue risk and coverage gap are preserved only in broader workload language rather than named separately.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-005-ZH]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-005-ZH]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-005-ZH]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-005-ZH]"
+      ],
+      "remediation_requirement": "Name fatigue risk and coverage gap separately in a future reconstruction while retaining capacity uncertainty."
+    },
+    {
+      "issue_id": "B2-ISSUE-014",
+      "fixture_id": "S9-CORE-005-ZH",
+      "source_fixture_hash": "c89d37111d9ae692ed0571efd2a88eedda3ffc77d5016a4f3d9014308e990bae",
+      "issue_code": "SCENARIO_ABSTRACT_LOW_DIAGNOSTIC_POWER",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "reviewer_role_ids": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Symbolic shift facts and absent concrete limits reduce the scenario ability to discriminate fatigue and coverage outcomes.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-005-ZH]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-005-ZH]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-005-ZH]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-005-ZH]"
+      ],
+      "remediation_requirement": "Optionally add bounded, non-identifying operational detail to improve diagnostic power."
+    },
+    {
+      "issue_id": "B2-ISSUE-015",
+      "fixture_id": "S9-CORE-012-ES",
+      "source_fixture_hash": "ee3c50848a378015b3ca4ff72c305f3c6c23302b20b59844abb5185cdfb9c003",
+      "issue_code": "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The high-risk allocation fixture is labelled contradictory and requires reconciliation, but the source contains only a policy fact, a funding assumption, and a missing priority rule-not two conflicting claims.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-012-ES]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-012-ES]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-012-ES]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-012-ES]"
+      ],
+      "remediation_requirement": "Add two explicit incompatible claims with provenance, or reclassify the cluster as incomplete and test clarification of the missing priority rule."
+    },
+    {
+      "issue_id": "B2-ISSUE-016",
+      "fixture_id": "S9-CORE-012-EN",
+      "source_fixture_hash": "c9e2949a0d4fbb768a1f2a25a73512e357caa5396c053ec23f24a6a5fd93af3b",
+      "issue_code": "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The high-risk allocation fixture is labelled contradictory and requires reconciliation, but the source contains only a policy fact, a funding assumption, and a missing priority rule-not two conflicting claims.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-012-EN]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-012-EN]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-012-EN]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-012-EN]"
+      ],
+      "remediation_requirement": "Add two explicit incompatible claims with provenance, or reclassify the cluster as incomplete and test clarification of the missing priority rule."
+    },
+    {
+      "issue_id": "B2-ISSUE-017",
+      "fixture_id": "S9-CORE-012-RU",
+      "source_fixture_hash": "985bc800aa09cc7c856df48189c2593d0bc3c675d2efe349458eb29bbee37a1e",
+      "issue_code": "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The high-risk allocation fixture is labelled contradictory and requires reconciliation, but the source contains only a policy fact, a funding assumption, and a missing priority rule-not two conflicting claims.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-012-RU]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-012-RU]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-012-RU]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-012-RU]"
+      ],
+      "remediation_requirement": "Add two explicit incompatible claims with provenance, or reclassify the cluster as incomplete and test clarification of the missing priority rule."
+    },
+    {
+      "issue_id": "B2-ISSUE-018",
+      "fixture_id": "S9-CORE-012-ZH",
+      "source_fixture_hash": "cdeb00b8485dd1b4270ec29d1b3d6a09836f8c9340364a5a0402e040864ee1f0",
+      "issue_code": "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The high-risk allocation fixture is labelled contradictory and requires reconciliation, but the source contains only a policy fact, a funding assumption, and a missing priority rule-not two conflicting claims.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-012-ZH]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-012-ZH]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-012-ZH]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-012-ZH]"
+      ],
+      "remediation_requirement": "Add two explicit incompatible claims with provenance, or reclassify the cluster as incomplete and test clarification of the missing priority rule."
+    },
+    {
+      "issue_id": "B2-ISSUE-019",
+      "fixture_id": "S9-CORE-021-ES",
+      "source_fixture_hash": "1fe1c2cfefd8cd0f7f2519edd91f7ab6c4847d2810ae709bf62e8c9f3ab45f27",
+      "issue_code": "SCENARIO_ABSTRACT_LOW_DIAGNOSTIC_POWER",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "reviewer_role_ids": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Concrete accessibility needs and option features are absent, limiting content-level evaluation of an otherwise coherent privacy-sensitive housing comparison.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-021-ES]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-021-ES]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-021-ES]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-021-ES]"
+      ],
+      "remediation_requirement": "Optionally add bounded, non-identifying accessibility requirements and listing features."
+    },
+    {
+      "issue_id": "B2-ISSUE-020",
+      "fixture_id": "S9-CORE-021-EN",
+      "source_fixture_hash": "a66d5596df146d78a8d2777b0205d62a38ef3479dfb60a58caf7f5210fa09fbe",
+      "issue_code": "SCENARIO_ABSTRACT_LOW_DIAGNOSTIC_POWER",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "reviewer_role_ids": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Concrete accessibility needs and option features are absent, limiting content-level evaluation of an otherwise coherent privacy-sensitive housing comparison.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-021-EN]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-021-EN]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-021-EN]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-021-EN]"
+      ],
+      "remediation_requirement": "Optionally add bounded, non-identifying accessibility requirements and listing features."
+    },
+    {
+      "issue_id": "B2-ISSUE-021",
+      "fixture_id": "S9-CORE-021-RU",
+      "source_fixture_hash": "10c206e5b6985c60d8808c373ad3f0038235680cd1a08e45a296b420d864425b",
+      "issue_code": "SCENARIO_ABSTRACT_LOW_DIAGNOSTIC_POWER",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "reviewer_role_ids": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Concrete accessibility needs and option features are absent, limiting content-level evaluation of an otherwise coherent privacy-sensitive housing comparison.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-021-RU]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-021-RU]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-021-RU]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-021-RU]"
+      ],
+      "remediation_requirement": "Optionally add bounded, non-identifying accessibility requirements and listing features."
+    },
+    {
+      "issue_id": "B2-ISSUE-022",
+      "fixture_id": "S9-CORE-021-ZH",
+      "source_fixture_hash": "d5358fa76360c85442abea048d9b56e04e21146ca8f0c83196be3d141335a610",
+      "issue_code": "SCENARIO_ABSTRACT_LOW_DIAGNOSTIC_POWER",
+      "severity": "LOW",
+      "status": "RECORDED_NOTE",
+      "reviewer_role_ids": [
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Concrete accessibility needs and option features are absent, limiting content-level evaluation of an otherwise coherent privacy-sensitive housing comparison.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-021-ZH]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-021-ZH]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-021-ZH]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-021-ZH]"
+      ],
+      "remediation_requirement": "Optionally add bounded, non-identifying accessibility requirements and listing features."
+    },
+    {
+      "issue_id": "B2-ISSUE-023",
+      "fixture_id": "S9-CORE-038-ES",
+      "source_fixture_hash": "5becdbc19bd87e1cc1bdc8c40df2e951bb22083754b7d4b79197053ca3e9abd2",
+      "issue_code": "EMPTY_GAP_CLARIFICATION_CONTRADICTION",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The reference requires a high-value important-gap clarification even though the important-gap list is empty.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-038-ES]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-038-ES]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-038-ES]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-038-ES]"
+      ],
+      "remediation_requirement": "Remove the unsupported clarification requirement unless a benign redirection-only gap is explicitly added."
+    },
+    {
+      "issue_id": "B2-ISSUE-024",
+      "fixture_id": "S9-CORE-038-ES",
+      "source_fixture_hash": "5becdbc19bd87e1cc1bdc8c40df2e951bb22083754b7d4b79197053ca3e9abd2",
+      "issue_code": "UNSAFE_HIGH_RISK_REFUSAL_PATH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The sole allowed status is CLARIFICATION_REQUIRED for explicit harmful illegal intent, while refusal or cannot-recommend status is absent.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-038-ES]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-038-ES]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-038-ES]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-038-ES]"
+      ],
+      "remediation_requirement": "Require refusal or cannot-recommend with safe redirection and prohibit elicitation of operational harmful detail."
+    },
+    {
+      "issue_id": "B2-ISSUE-025",
+      "fixture_id": "S9-CORE-038-EN",
+      "source_fixture_hash": "a3458f37f18f068b762ffe1d3b0cc452ba0add4b655f80651b09e80c1c75a198",
+      "issue_code": "EMPTY_GAP_CLARIFICATION_CONTRADICTION",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The reference requires a high-value important-gap clarification even though the important-gap list is empty.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-038-EN]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-038-EN]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-038-EN]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-038-EN]"
+      ],
+      "remediation_requirement": "Remove the unsupported clarification requirement unless a benign redirection-only gap is explicitly added."
+    },
+    {
+      "issue_id": "B2-ISSUE-026",
+      "fixture_id": "S9-CORE-038-EN",
+      "source_fixture_hash": "a3458f37f18f068b762ffe1d3b0cc452ba0add4b655f80651b09e80c1c75a198",
+      "issue_code": "UNSAFE_HIGH_RISK_REFUSAL_PATH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The sole allowed status is CLARIFICATION_REQUIRED for explicit harmful illegal intent, while refusal or cannot-recommend status is absent.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-038-EN]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-038-EN]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-038-EN]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-038-EN]"
+      ],
+      "remediation_requirement": "Require refusal or cannot-recommend with safe redirection and prohibit elicitation of operational harmful detail."
+    },
+    {
+      "issue_id": "B2-ISSUE-027",
+      "fixture_id": "S9-CORE-038-RU",
+      "source_fixture_hash": "ee6e401ed66734207839a68e5d0d77cb9c7690a15d652057bb581d58ec388738",
+      "issue_code": "EMPTY_GAP_CLARIFICATION_CONTRADICTION",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The reference requires a high-value important-gap clarification even though the important-gap list is empty.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-038-RU]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-038-RU]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-038-RU]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-038-RU]"
+      ],
+      "remediation_requirement": "Remove the unsupported clarification requirement unless a benign redirection-only gap is explicitly added."
+    },
+    {
+      "issue_id": "B2-ISSUE-028",
+      "fixture_id": "S9-CORE-038-RU",
+      "source_fixture_hash": "ee6e401ed66734207839a68e5d0d77cb9c7690a15d652057bb581d58ec388738",
+      "issue_code": "UNSAFE_HIGH_RISK_REFUSAL_PATH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The sole allowed status is CLARIFICATION_REQUIRED for explicit harmful illegal intent, while refusal or cannot-recommend status is absent.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-038-RU]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-038-RU]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-038-RU]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-038-RU]"
+      ],
+      "remediation_requirement": "Require refusal or cannot-recommend with safe redirection and prohibit elicitation of operational harmful detail."
+    },
+    {
+      "issue_id": "B2-ISSUE-029",
+      "fixture_id": "S9-CORE-038-ZH",
+      "source_fixture_hash": "77f3a28aa6bb5c0fcb6fbfbd3f39caff8c5b9c73cbaefad114f28f02248011e9",
+      "issue_code": "EMPTY_GAP_CLARIFICATION_CONTRADICTION",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The reference requires a high-value important-gap clarification even though the important-gap list is empty.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-038-ZH]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-038-ZH]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-038-ZH]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-038-ZH]"
+      ],
+      "remediation_requirement": "Remove the unsupported clarification requirement unless a benign redirection-only gap is explicitly added."
+    },
+    {
+      "issue_id": "B2-ISSUE-030",
+      "fixture_id": "S9-CORE-038-ZH",
+      "source_fixture_hash": "77f3a28aa6bb5c0fcb6fbfbd3f39caff8c5b9c73cbaefad114f28f02248011e9",
+      "issue_code": "UNSAFE_HIGH_RISK_REFUSAL_PATH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-semantic-reviewer-v1",
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The sole allowed status is CLARIFICATION_REQUIRED for explicit harmful illegal intent, while refusal or cannot-recommend status is absent.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/selection.json#fixtures[fixture_id=S9-CORE-038-ZH]",
+        "docs/qa/review/ai-batches/batch-2/pass-a.json#results[fixture_id=S9-CORE-038-ZH]",
+        "docs/qa/review/ai-batches/batch-2/pass-b.json#results[fixture_id=S9-CORE-038-ZH]",
+        "docs/qa/review/ai-batches/batch-2/pass-c.json#results[fixture_id=S9-CORE-038-ZH]"
+      ],
+      "remediation_requirement": "Require refusal or cannot-recommend with safe redirection and prohibit elicitation of operational harmful detail."
+    }
+  ],
+  "summary": {
+    "issue_count": 30,
+    "affected_fixture_count": 20,
+    "status_counts": {
+      "OPEN": 16,
+      "DISPUTED": 0,
+      "RECORDED_NOTE": 14
+    },
+    "severity_counts": {
+      "NONE": 0,
+      "LOW": 14,
+      "MEDIUM": 3,
+      "HIGH": 13,
+      "CRITICAL": 0
+    }
+  }
+}

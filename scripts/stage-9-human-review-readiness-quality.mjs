@@ -87,8 +87,13 @@ const allowed = new Set([
   "docs/qa/review/ai-batches/batch-1/selection.json", "docs/qa/review/ai-batches/batch-1/blind-packets.json",
   "docs/qa/review/ai-batches/batch-1/pass-a.json", "docs/qa/review/ai-batches/batch-1/pass-b.json", "docs/qa/review/ai-batches/batch-1/pass-c.json",
   "docs/qa/review/ai-batches/batch-1/adjudication.json", "docs/qa/review/ai-batches/batch-1/summary.json", "docs/qa/review/ai-batches/batch-1/issue-ledger.json",
+  "docs/qa/review/AI_REVIEW_PROGRESS.json",
+  "docs/qa/review/ai-batches/batch-2/selection.json", "docs/qa/review/ai-batches/batch-2/blind-packets.json",
+  "docs/qa/review/ai-batches/batch-2/pass-a.json", "docs/qa/review/ai-batches/batch-2/pass-b.json", "docs/qa/review/ai-batches/batch-2/pass-c.json",
+  "docs/qa/review/ai-batches/batch-2/adjudication.json", "docs/qa/review/ai-batches/batch-2/summary.json", "docs/qa/review/ai-batches/batch-2/issue-ledger.json", "docs/qa/review/ai-batches/batch-2/reinforced-review-queue.json",
   "scripts/generate-stage-9-human-review-package.mjs", "scripts/stage-9-human-review-readiness-quality.mjs",
   "scripts/generate-stage-9-ai-review-batch-1.mjs", "scripts/stage-9-ai-review-batch-1-quality.mjs",
+  "scripts/generate-stage-9-ai-review-batch-2.mjs", "scripts/stage-9-ai-review-batch-2-quality.mjs",
   "scripts/stage-9-offline-dataset-coverage-quality.mjs",
   "scripts/stage-9-ai-value-preservation-quality.mjs", "scripts/visual-migration-closure-quality.mjs",
 ]);
@@ -98,6 +103,6 @@ const diff = [...new Set([...tracked, ...untracked])].sort();
 add("bounded-review-only-diff", diff.every((path) => allowed.has(path)), `Unexpected files: ${diff.filter((path) => !allowed.has(path)).join(", ")}`);
 
 for (const check of checks) console[check.passed ? "log" : "error"](`${check.passed ? "PASS" : "FAIL"} ${check.id}: ${check.detail}`);
-console.log(`REPORT source=${rebuilt.entries.length} manifest=${manifest.entries.length} clusters=${clusters.size} languages=${JSON.stringify(manifest.summary.languages)} historical_not_reviewed=${notReviewedCount} duplicates=${duplicateCount} missing=${missingCount} metadata_mismatch=${metadataMismatchCount} threshold=${manifest.threshold_interpretation.verdict} historical_rc=${manifest.rc_pre_assessment.verdict} active_review=INDEPENDENT_AI_REVIEW_BATCH_1_COMPLETE network=${networkRequests}`);
+console.log(`REPORT source=${rebuilt.entries.length} manifest=${manifest.entries.length} clusters=${clusters.size} languages=${JSON.stringify(manifest.summary.languages)} historical_not_reviewed=${notReviewedCount} duplicates=${duplicateCount} missing=${missingCount} metadata_mismatch=${metadataMismatchCount} threshold=${manifest.threshold_interpretation.verdict} historical_rc=${manifest.rc_pre_assessment.verdict} active_review=INDEPENDENT_AI_REVIEW_BATCH_2_COMPLETE network=${networkRequests}`);
 console.log(`${checks.filter((check) => check.passed).length}/${checks.length} checks passed.`);
 if (checks.some((check) => !check.passed)) process.exitCode = 1;

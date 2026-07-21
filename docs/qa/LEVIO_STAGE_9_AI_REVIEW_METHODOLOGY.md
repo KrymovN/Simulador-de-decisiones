@@ -2,7 +2,7 @@
 
 - Date: 21 July 2026, Europe/Madrid.
 - Protocol version: `stage-9-independent-ai-review.1`.
-- Active review status: `In Progress — Batch 1 of 6`.
+- Active review status: `In Progress — Batch 2 of 6 complete; Batch 3 planning candidate`.
 - Scope: versioned offline fixtures and QA artifacts only.
 - Runtime status: closed.
 
@@ -130,6 +130,7 @@ these conditions applies:
 - confidence is below `0.75`;
 - reviewers disagree about silent loss, privacy, or controlled failure;
 - a multilingual equivalence disagreement exists.
+- high-risk ground truth remains unsupported after adjudication.
 
 These cases are not closed by the current batch. The issue ledger preserves the
 disagreement and exact evidence references for a later intensified AI pass.
@@ -137,10 +138,11 @@ disagreement and exact evidence references for a later intensified AI pass.
 ## 9. Batch artifacts and immutability
 
 Every batch stores deterministic JSON artifacts for selection, blind packets,
-Pass A, Pass B, Pass C, adjudication, summary, and issue ledger. Each result is
-linked to a SHA-256 source fixture hash. Reviewer role IDs are technical; no
-human identities, secrets, real personal data, or production credentials are
-allowed.
+Pass A, Pass B, Pass C, adjudication, summary, issue ledger, and its separate
+reinforced-review queue. Aggregate progress preserves batch provenance. Each
+result is linked to a SHA-256 source fixture hash. Reviewer role IDs are
+technical; no human identities, secrets, real personal data, or production
+credentials are allowed.
 
 Stored intermediate artifacts are append-only review evidence for the batch.
 Discovered fixture defects are recorded with remediation recommendations but

@@ -97,9 +97,9 @@ const currentCanonical = ["PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", 
   const next = source.indexOf("\n## ", source.indexOf("\n## ") + 4);
   return source.slice(0, next === -1 ? source.length : next);
 }).join("\n");
-add("canonical-ai-review-state", currentCanonical.includes("owner-approved independent AI review protocol") && currentCanonical.includes("Batch 1 is complete for 36 of 216 fixtures") && currentCanonical.includes("180 fixtures remain") && currentCanonical.includes("Stage 9 remains **In Progress**"), "Canonical active state records Batch 1 without closing Stage 9.");
+add("canonical-ai-review-state", currentCanonical.includes("owner-approved independent AI review protocol") && currentCanonical.includes("Batch 1 is complete for 36 of 216 fixtures") && currentCanonical.includes("72 of 216") && currentCanonical.includes("144") && currentCanonical.includes("Stage 9 remains **In Progress**"), "Canonical active state preserves Batch 1 history and records cumulative Batch 2 progress without closing Stage 9.");
 add("release-and-runtime-remain-closed", currentCanonical.includes("release readiness is not declared") && currentCanonical.includes("Live OpenAI execution is not opened") && currentCanonical.includes("`/api/simulate` remains deterministic with `mockOnly=true`") && !currentCanonical.includes("release candidate approved"), "Release and runtime boundaries remain closed.");
-add("batch-2-planning-only", /Stage 9 Independent AI Review\s+Batch 2 of 6/.test(currentCanonical) && currentCanonical.includes("planning candidate, not In Progress work"), "Batch 2 is planning-only.");
+add("batch-3-planning-only", /Stage 9 Independent AI Review\s+Batch 3 of 6/.test(currentCanonical) && currentCanonical.includes("planning candidate, not In Progress work"), "Batch 3 is planning-only after Batch 2 completion.");
 add("network-zero", networkRequests === 0 && summary.network_request_count === 0, `${networkRequests} network requests.`);
 add("quality-gate-registered", read("package.json").includes('"quality:stage-9-ai-review-batch-1": "node scripts/stage-9-ai-review-batch-1-quality.mjs"'), "Dedicated Batch 1 gate is registered.");
 globalThis.fetch = originalFetch;
@@ -110,7 +110,12 @@ const allowed = new Set([
   "docs/qa/review/ai-batches/batch-1/selection.json", "docs/qa/review/ai-batches/batch-1/blind-packets.json",
   "docs/qa/review/ai-batches/batch-1/pass-a.json", "docs/qa/review/ai-batches/batch-1/pass-b.json", "docs/qa/review/ai-batches/batch-1/pass-c.json",
   "docs/qa/review/ai-batches/batch-1/adjudication.json", "docs/qa/review/ai-batches/batch-1/summary.json", "docs/qa/review/ai-batches/batch-1/issue-ledger.json",
+  "docs/qa/review/AI_REVIEW_PROGRESS.json",
+  "docs/qa/review/ai-batches/batch-2/selection.json", "docs/qa/review/ai-batches/batch-2/blind-packets.json",
+  "docs/qa/review/ai-batches/batch-2/pass-a.json", "docs/qa/review/ai-batches/batch-2/pass-b.json", "docs/qa/review/ai-batches/batch-2/pass-c.json",
+  "docs/qa/review/ai-batches/batch-2/adjudication.json", "docs/qa/review/ai-batches/batch-2/summary.json", "docs/qa/review/ai-batches/batch-2/issue-ledger.json", "docs/qa/review/ai-batches/batch-2/reinforced-review-queue.json",
   "package.json", "scripts/generate-stage-9-ai-review-batch-1.mjs", "scripts/stage-9-ai-review-batch-1-quality.mjs",
+  "scripts/generate-stage-9-ai-review-batch-2.mjs", "scripts/stage-9-ai-review-batch-2-quality.mjs",
   "scripts/stage-9-human-review-readiness-quality.mjs", "scripts/stage-9-ai-value-preservation-quality.mjs", "scripts/visual-migration-closure-quality.mjs",
   "scripts/stage-9-offline-dataset-coverage-quality.mjs",
 ]);

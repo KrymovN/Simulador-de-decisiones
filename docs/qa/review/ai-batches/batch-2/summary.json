@@ -1,0 +1,122 @@
+{
+  "artifact_version": "stage-9-ai-review-batch-summary.2",
+  "batch_id": "stage-9-ai-review-batch-2-of-6",
+  "review_timestamp": "2026-07-21T18:11:38.403Z",
+  "stage_status": "In Progress",
+  "release_readiness": "NOT_DECLARED",
+  "runtime_boundaries": "CLOSED",
+  "status": "COMPLETE_WITH_REINFORCED_REVIEW_PENDING",
+  "reviewed_fixture_count": 36,
+  "remaining_fixture_count": 144,
+  "coverage": {
+    "selected_count": 36,
+    "dataset_types": {
+      "canonical_core": 28,
+      "rich_decision_material_baseline": 3,
+      "synthetic_risk": 5
+    },
+    "languages": {
+      "en": 7,
+      "es": 12,
+      "not_declared": 3,
+      "ru": 7,
+      "zh": 7
+    },
+    "domains": {
+      "adapter_contract_and_safety": 5,
+      "business_decisions": 4,
+      "career_and_work": 4,
+      "decision_material_contract_and_preservation": 3,
+      "education": 4,
+      "finance_and_spending": 4,
+      "high_risk_and_safety_sensitive": 4,
+      "personal_planning": 4,
+      "relocation_and_housing": 4
+    },
+    "completeness": {
+      "complete": 8,
+      "contradictory": 4,
+      "critically_incomplete": 8,
+      "not_applicable": 8,
+      "partial": 8
+    },
+    "high_risk_count": 20,
+    "privacy_count": 8,
+    "controlled_failure_count": 14,
+    "complete_equivalence_clusters": [
+      "S9-CLUSTER-005",
+      "S9-CLUSTER-012",
+      "S9-CLUSTER-015",
+      "S9-CLUSTER-021",
+      "S9-CLUSTER-026",
+      "S9-CLUSTER-031",
+      "S9-CLUSTER-038"
+    ]
+  },
+  "verdict_counts": {
+    "AI_PASS": 16,
+    "AI_PASS_WITH_NOTE": 8,
+    "AI_FAIL_MINOR": 3,
+    "AI_FAIL_MAJOR": 9,
+    "AI_DISPUTED": 0,
+    "AI_NOT_REVIEWED": 0
+  },
+  "severity_counts": {
+    "NONE": 16,
+    "LOW": 8,
+    "MEDIUM": 3,
+    "HIGH": 9,
+    "CRITICAL": 0
+  },
+  "reinforced_review_count": 9,
+  "reinforced_review_cases": [
+    "S9-EVAL-011",
+    "S9-CORE-012-ES",
+    "S9-CORE-012-EN",
+    "S9-CORE-012-RU",
+    "S9-CORE-012-ZH",
+    "S9-CORE-038-ES",
+    "S9-CORE-038-EN",
+    "S9-CORE-038-RU",
+    "S9-CORE-038-ZH"
+  ],
+  "issue_count": 30,
+  "minor_issue_case_count": 3,
+  "major_issue_case_count": 9,
+  "disputed_case_count": 0,
+  "disputed_cases": [],
+  "issue_status_counts": {
+    "OPEN": 16,
+    "DISPUTED": 0,
+    "RECORDED_NOTE": 14
+  },
+  "network_request_count": 0,
+  "critical_defect_count": 0,
+  "dataset_wide_blocker": false,
+  "dataset_wide_impact_assessment": "No evidence in the frozen Batch 2 packet establishes a defect across the full 216-fixture dataset. Two high-risk multilingual clusters contain shared ground-truth failures, and one isolated synthetic fixture has an unsupported oracle; these are serious but bounded to the identified references pending reinforced review.",
+  "affected_pattern": [
+    "Unsupported contradiction ground truth in a four-language high-risk allocation cluster.",
+    "Unsafe clarification-only ground truth in a four-language harmful-request cluster.",
+    "Unsupported nonexistent-option oracle in one synthetic controlled-failure fixture."
+  ],
+  "potential_scope": {
+    "known_high_severity_fixture_count": 9,
+    "known_high_severity_cluster_count": 2,
+    "known_isolated_high_severity_fixture_count": 1,
+    "broader_dataset_scope": "NOT_ESTABLISHED_FROM_BATCH_2_EVIDENCE"
+  },
+  "affected_fixture_candidates": [
+    "S9-EVAL-011",
+    "S9-CORE-012-ES",
+    "S9-CORE-012-EN",
+    "S9-CORE-012-RU",
+    "S9-CORE-012-ZH",
+    "S9-CORE-038-ES",
+    "S9-CORE-038-EN",
+    "S9-CORE-038-RU",
+    "S9-CORE-038-ZH"
+  ],
+  "emergency_remediation_decision_required": false,
+  "next_planning_candidate": "Stage 9 Independent AI Review Batch 3 of 6",
+  "automatic_next_batch_authorization": "NOT_GRANTED"
+}

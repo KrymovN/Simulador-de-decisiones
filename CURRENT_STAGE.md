@@ -1,22 +1,24 @@
 # CURRENT STAGE
 
-## Stage 9 Independent AI Review Protocol — Batch 1 of 6 Complete — 21 July 2026
+## Stage 9 Independent AI Review — Batch 2 of 6 Complete — 21 July 2026
 
 The owner-approved independent AI review protocol is active for internal Stage
-9 QA. Batch 1 is complete for 36 of 216 fixtures; 180 fixtures remain. Every
-selected case has frozen Pass A, B, C, and D artifacts with source hashes,
-technical reviewer role IDs, confidence, evidence, disagreement, remediation,
-and prompt/timestamp metadata. No human reviewer or human-reviewed status is
-claimed.
+9 QA. Batch 1 is complete for 36 of 216 fixtures, and Batch 2 is complete for 36
+new fixtures. Primary review covers 72 of 216; 144 remain. Every Batch 2 case has
+frozen role-and-context-isolated A/B/C/D evidence with source hashes. Model
+independence, human review, and remediation are not claimed.
 
 The canonical minimum of 160 case records has been reached and is unchanged.
+Batch 2 verdicts are `AI_PASS=16`, `AI_PASS_WITH_NOTE=8`, `AI_FAIL_MINOR=3`,
+`AI_FAIL_MAJOR=9`, `AI_DISPUTED=0`, `AI_NOT_REVIEWED=0`; severity is
+`NONE=16`, `LOW=8`, `MEDIUM=3`, `HIGH=9`, `CRITICAL=0`. Its 30 ledger entries
+are 16 open, 0 disputed, and 14 notes. Nine Batch 2 and eleven Batch 1 cases
+remain queued for reinforced review. Cumulative verdicts are 29/19/8/14/2/0,
+cumulative severity is 29/18/10/15/0, and cumulative open/disputed issues are
+39/3. Fixtures remain unchanged.
 
-Adjudicated verdicts: `AI_PASS=13`, `AI_PASS_WITH_NOTE=11`,
-`AI_FAIL_MINOR=5`, `AI_FAIL_MAJOR=5`, `AI_DISPUTED=2`. Severity:
-`NONE=13`, `LOW=10`, `MEDIUM=7`, `HIGH=6`, `CRITICAL=0`. Eleven fixtures
-require reinforced review. The issue ledger records 37 observations, including
-23 open, 3 disputed, and 11 notes. Five minor-failure cases, five major-failure
-cases, and two disputed cases remain unremediated by design.
+No critical defect or dataset-wide blocker is established; two bounded shared
+cluster-reference patterns and one isolated unsupported oracle are recorded.
 
 AI review status remains `In Progress`; Stage 9 remains **In Progress** and
 release readiness is not declared. Live OpenAI execution is not opened;
@@ -26,7 +28,7 @@ remains fully closed with 0 remaining substeps. Stage 15 remains a bounded
 documentation and scale-readiness planning stage. No new Stage is created.
 
 No next Stage 9 implementation substep is open. `Stage 9 Independent AI Review
-Batch 2 of 6` is the planning candidate, not In Progress work.
+Batch 3 of 6` is the planning candidate, not In Progress work.
 
 ## Stage 9 Human-Review Readiness Package Prepared — 21 July 2026
 

@@ -1,31 +1,30 @@
 # PROJECT CONTEXT
 
-## Stage 9 Independent AI Review Protocol and Batch 1 Complete — 21 July 2026
+## Stage 9 Independent AI Review Batch 2 of 6 Complete — 21 July 2026
 
-The owner-approved independent AI review protocol is now the active internal
-Stage 9 QA process. It uses four separate technical roles: blind semantic
-reconstruction, comparative semantic validation, linguistic/adversarial review,
-and evidence-based AI adjudication. This process is not human review, does not
-claim external legal/scientific/regulatory equivalence, and operates only over
-versioned offline fixtures and versioned QA artifacts.
+The owner-approved independent AI review protocol remains the active internal
+Stage 9 QA process. It uses role-and-context-isolated blind, comparative,
+adversarial, and adjudication passes over versioned offline artifacts. Model
+independence is not claimed, and the process is not human review.
 
 The canonical minimum of 160 case records has been reached and is unchanged.
+Batch 1 is complete for 36 of 216 fixtures. Batch 2 is complete for 36 new,
+disjoint fixtures. Primary review now covers 72 of 216 fixtures; 144 remain.
+Batch 2 contains 5 synthetic-risk, 3 rich baseline, and 28 canonical core cases
+forming seven complete four-language clusters across all seven core domains.
 
-Batch 1 is complete for 36 of 216 fixtures; 180 fixtures remain. The
-deterministic selection contains 8 synthetic-risk, 8 rich baseline, and 20
-canonical core cases, with all first-wave languages, all seven core domains,
-all four completeness states, four complete equivalence clusters, 16 high-risk,
-17 privacy, and 14 controlled-failure cases.
+Batch 2 adjudication is `AI_PASS=16`, `AI_PASS_WITH_NOTE=8`,
+`AI_FAIL_MINOR=3`, `AI_FAIL_MAJOR=9`, `AI_DISPUTED=0`, and
+`AI_NOT_REVIEWED=0`; severity is `NONE=16`, `LOW=8`, `MEDIUM=3`, `HIGH=9`,
+`CRITICAL=0`. Its ledger has 30 observations: 16 open, 0 disputed, and 14
+recorded notes. Nine Batch 2 cases require reinforced review; the 11-case Batch
+1 queue remains open. Cumulatively the verdicts are 29/19/8/14/2/0 and
+severities are 29/18/10/15/0, with 39 open and 3 disputed issues. No fixture or
+review defect was remediated.
 
-Adjudication records `AI_PASS=13`, `AI_PASS_WITH_NOTE=11`, `AI_FAIL_MINOR=5`,
-`AI_FAIL_MAJOR=5`, `AI_DISPUTED=2`, and `AI_NOT_REVIEWED=0` for the selected
-batch. Severity is `NONE=13`, `LOW=10`, `MEDIUM=7`, `HIGH=6`, `CRITICAL=0`.
-Eleven cases require reinforced AI review. The issue ledger contains 37
-observations: 23 open, 3 disputed, and 11 recorded notes. Confirmed defects
-include cluster-010 localization/equivalence drift, cluster-024 unsupported
-contradiction and risk grounding, and CORE-036-ZH contradiction grounding; the
-CORE-037-EN safety scope and MATERIAL-013 privacy-review artifact remain
-disputed. Fixtures were not changed.
+No critical defect or dataset-wide blocker was established. Evidence identifies
+two bounded four-language reference patterns in clusters 012 and 038 plus one
+isolated unsupported oracle in EVAL-011; broader dataset impact is not proven.
 
 AI review status remains `In Progress`; Stage 9 remains **In Progress** and
 release readiness is not declared. Live OpenAI execution is not opened;
@@ -35,7 +34,7 @@ remains fully closed with 0 remaining substeps. Stage 15 remains a bounded
 documentation and scale-readiness planning stage. No new Stage is created.
 
 No next Stage 9 implementation substep is open. `Stage 9 Independent AI Review
-Batch 2 of 6` is the planning candidate, not In Progress work.
+Batch 3 of 6` is the planning candidate, not In Progress work.
 
 ## Stage 9 Human-Review Readiness Package Prepared — 21 July 2026
 
