@@ -1,7 +1,7 @@
 {
-  "artifact_version": "stage-9-ai-review-cross-batch-pattern-registry.5",
-  "review_scope": "Primary Batches 1-6 plus Reinforced Batch 1 of 3",
-  "review_timestamp": "2026-07-22T17:00:00.000Z",
+  "artifact_version": "stage-9-ai-review-cross-batch-pattern-registry.6",
+  "review_scope": "Primary Batches 1-6 plus Reinforced Batches 1-2 of 3",
+  "review_timestamp": "2026-07-22T20:00:00.000Z",
   "escalation_rule": "POTENTIALLY_SYSTEMIC at three or more independent core clusters, at two or more domains with HIGH severity, or on recurrence across dataset types; SYSTEMIC_BLOCKER only with evidence of significant unreviewed-dataset impact or class-level ground-truth unreliability.",
   "aggregate_status": "POTENTIALLY_SYSTEMIC_WITHOUT_SYSTEMIC_BLOCKER",
   "systemic_blocker": false,
@@ -246,6 +246,36 @@
         "proposed_remediation_level": [
           "FULL_CLUSTER"
         ]
+      },
+      "reinforced_batch_2_assessment": {
+        "selected_fixture_ids": [
+          "S9-CORE-038-ES",
+          "S9-CORE-038-RU",
+          "S9-CORE-038-ZH",
+          "S9-CORE-012-EN",
+          "S9-CORE-012-ES",
+          "S9-CORE-012-RU",
+          "S9-CORE-012-ZH"
+        ],
+        "reinforced_confirmed": 10,
+        "reinforced_rejected": 0,
+        "reinforced_partial": 0,
+        "reinforced_disputed": 0,
+        "root_cause_distribution": {
+          "FIXTURE_CONTENT": 0,
+          "CLUSTER_LOCALIZATION": 0,
+          "GENERATOR_TEMPLATE": 0,
+          "SCHEMA_ORACLE": 0,
+          "EXPECTED_BEHAVIOR_REFERENCE": 7,
+          "REVIEW_METHODOLOGY": 0,
+          "PRIMARY_REVIEW_FALSE_POSITIVE": 0,
+          "UNRESOLVED": 0
+        },
+        "confidence_adjustment": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "current_status": "POTENTIALLY_SYSTEMIC",
+        "proposed_remediation_level": [
+          "FULL_CLUSTER"
+        ]
       }
     },
     {
@@ -389,6 +419,36 @@
           "FURTHER_ADJUDICATION_REQUIRED",
           "FULL_CLUSTER"
         ]
+      },
+      "reinforced_batch_2_assessment": {
+        "selected_fixture_ids": [
+          "S9-CORE-038-ES",
+          "S9-CORE-038-RU",
+          "S9-CORE-038-ZH",
+          "S9-CORE-012-EN",
+          "S9-CORE-012-ES",
+          "S9-CORE-012-RU",
+          "S9-CORE-012-ZH"
+        ],
+        "reinforced_confirmed": 10,
+        "reinforced_rejected": 0,
+        "reinforced_partial": 0,
+        "reinforced_disputed": 0,
+        "root_cause_distribution": {
+          "FIXTURE_CONTENT": 0,
+          "CLUSTER_LOCALIZATION": 0,
+          "GENERATOR_TEMPLATE": 0,
+          "SCHEMA_ORACLE": 0,
+          "EXPECTED_BEHAVIOR_REFERENCE": 7,
+          "REVIEW_METHODOLOGY": 0,
+          "PRIMARY_REVIEW_FALSE_POSITIVE": 0,
+          "UNRESOLVED": 0
+        },
+        "confidence_adjustment": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "current_status": "POTENTIALLY_SYSTEMIC",
+        "proposed_remediation_level": [
+          "FULL_CLUSTER"
+        ]
       }
     },
     {
@@ -509,6 +569,32 @@
           "REVIEW_METHODOLOGY": 0,
           "UNRESOLVED": 0
         },
+        "proposed_remediation_level": [
+          "SCHEMA_RULE"
+        ]
+      },
+      "reinforced_batch_2_assessment": {
+        "selected_fixture_ids": [
+          "S9-EVAL-006",
+          "S9-EVAL-011",
+          "S9-EVAL-012"
+        ],
+        "reinforced_confirmed": 3,
+        "reinforced_rejected": 0,
+        "reinforced_partial": 0,
+        "reinforced_disputed": 0,
+        "root_cause_distribution": {
+          "FIXTURE_CONTENT": 0,
+          "CLUSTER_LOCALIZATION": 0,
+          "GENERATOR_TEMPLATE": 0,
+          "SCHEMA_ORACLE": 3,
+          "EXPECTED_BEHAVIOR_REFERENCE": 0,
+          "REVIEW_METHODOLOGY": 0,
+          "PRIMARY_REVIEW_FALSE_POSITIVE": 0,
+          "UNRESOLVED": 0
+        },
+        "confidence_adjustment": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "current_status": "RECURRING",
         "proposed_remediation_level": [
           "SCHEMA_RULE"
         ]
@@ -716,6 +802,32 @@
           "FULL_CLUSTER",
           "FURTHER_ADJUDICATION_REQUIRED"
         ]
+      },
+      "reinforced_batch_2_assessment": {
+        "selected_fixture_ids": [
+          "S9-CORE-038-ES",
+          "S9-CORE-038-RU",
+          "S9-CORE-038-ZH"
+        ],
+        "reinforced_confirmed": 6,
+        "reinforced_rejected": 0,
+        "reinforced_partial": 0,
+        "reinforced_disputed": 0,
+        "root_cause_distribution": {
+          "FIXTURE_CONTENT": 0,
+          "CLUSTER_LOCALIZATION": 0,
+          "GENERATOR_TEMPLATE": 0,
+          "SCHEMA_ORACLE": 0,
+          "EXPECTED_BEHAVIOR_REFERENCE": 3,
+          "REVIEW_METHODOLOGY": 0,
+          "PRIMARY_REVIEW_FALSE_POSITIVE": 0,
+          "UNRESOLVED": 0
+        },
+        "confidence_adjustment": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "current_status": "POTENTIALLY_SYSTEMIC",
+        "proposed_remediation_level": [
+          "FULL_CLUSTER"
+        ]
       }
     },
     {
@@ -921,6 +1033,34 @@
           "UNRESOLVED": 0
         },
         "proposed_remediation_level": []
+      },
+      "reinforced_batch_2_assessment": {
+        "selected_fixture_ids": [
+          "S9-CORE-010-EN",
+          "S9-CORE-010-ES",
+          "S9-CORE-010-RU",
+          "S9-CORE-010-ZH"
+        ],
+        "reinforced_confirmed": 3,
+        "reinforced_rejected": 4,
+        "reinforced_partial": 0,
+        "reinforced_disputed": 0,
+        "root_cause_distribution": {
+          "FIXTURE_CONTENT": 0,
+          "CLUSTER_LOCALIZATION": 0,
+          "GENERATOR_TEMPLATE": 3,
+          "SCHEMA_ORACLE": 0,
+          "EXPECTED_BEHAVIOR_REFERENCE": 0,
+          "REVIEW_METHODOLOGY": 0,
+          "PRIMARY_REVIEW_FALSE_POSITIVE": 1,
+          "UNRESOLVED": 0
+        },
+        "confidence_adjustment": "MIXED_EVIDENCE_CALIBRATION_REQUIRED",
+        "current_status": "POTENTIALLY_SYSTEMIC",
+        "proposed_remediation_level": [
+          "NONE",
+          "GENERATOR_RULE"
+        ]
       }
     },
     {
@@ -1033,6 +1173,26 @@
         "proposed_remediation_level": [
           "REFERENCE_METHODOLOGY"
         ]
+      },
+      "reinforced_batch_2_assessment": {
+        "selected_fixture_ids": [],
+        "reinforced_confirmed": 0,
+        "reinforced_rejected": 0,
+        "reinforced_partial": 0,
+        "reinforced_disputed": 0,
+        "root_cause_distribution": {
+          "FIXTURE_CONTENT": 0,
+          "CLUSTER_LOCALIZATION": 0,
+          "GENERATOR_TEMPLATE": 0,
+          "SCHEMA_ORACLE": 0,
+          "EXPECTED_BEHAVIOR_REFERENCE": 0,
+          "REVIEW_METHODOLOGY": 0,
+          "PRIMARY_REVIEW_FALSE_POSITIVE": 0,
+          "UNRESOLVED": 0
+        },
+        "confidence_adjustment": "NOT_CHALLENGED",
+        "current_status": "ISOLATED",
+        "proposed_remediation_level": []
       }
     },
     {
@@ -1178,6 +1338,34 @@
         "proposed_remediation_level": [
           "SCHEMA_RULE",
           "FULL_CLUSTER"
+        ]
+      },
+      "reinforced_batch_2_assessment": {
+        "selected_fixture_ids": [
+          "S9-EVAL-006",
+          "S9-MATERIAL-006",
+          "S9-EVAL-011",
+          "S9-EVAL-012"
+        ],
+        "reinforced_confirmed": 4,
+        "reinforced_rejected": 0,
+        "reinforced_partial": 0,
+        "reinforced_disputed": 0,
+        "root_cause_distribution": {
+          "FIXTURE_CONTENT": 1,
+          "CLUSTER_LOCALIZATION": 0,
+          "GENERATOR_TEMPLATE": 0,
+          "SCHEMA_ORACLE": 3,
+          "EXPECTED_BEHAVIOR_REFERENCE": 0,
+          "REVIEW_METHODOLOGY": 0,
+          "PRIMARY_REVIEW_FALSE_POSITIVE": 0,
+          "UNRESOLVED": 0
+        },
+        "confidence_adjustment": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "current_status": "POTENTIALLY_SYSTEMIC",
+        "proposed_remediation_level": [
+          "SCHEMA_RULE",
+          "SINGLE_FIXTURE"
         ]
       }
     },
@@ -1383,6 +1571,37 @@
           "REVIEW_METHODOLOGY": 0,
           "UNRESOLVED": 0
         },
+        "proposed_remediation_level": [
+          "FULL_CLUSTER"
+        ]
+      },
+      "reinforced_batch_2_assessment": {
+        "selected_fixture_ids": [
+          "S9-CORE-002-EN",
+          "S9-CORE-002-ES",
+          "S9-CORE-002-RU",
+          "S9-CORE-002-ZH",
+          "S9-CORE-019-EN",
+          "S9-CORE-019-ES",
+          "S9-CORE-019-RU",
+          "S9-CORE-019-ZH"
+        ],
+        "reinforced_confirmed": 8,
+        "reinforced_rejected": 0,
+        "reinforced_partial": 0,
+        "reinforced_disputed": 0,
+        "root_cause_distribution": {
+          "FIXTURE_CONTENT": 0,
+          "CLUSTER_LOCALIZATION": 0,
+          "GENERATOR_TEMPLATE": 0,
+          "SCHEMA_ORACLE": 0,
+          "EXPECTED_BEHAVIOR_REFERENCE": 8,
+          "REVIEW_METHODOLOGY": 0,
+          "PRIMARY_REVIEW_FALSE_POSITIVE": 0,
+          "UNRESOLVED": 0
+        },
+        "confidence_adjustment": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "current_status": "POTENTIALLY_SYSTEMIC",
         "proposed_remediation_level": [
           "FULL_CLUSTER"
         ]
@@ -1749,12 +1968,58 @@
           "FULL_CLUSTER",
           "SCHEMA_RULE"
         ]
+      },
+      "reinforced_batch_2_assessment": {
+        "selected_fixture_ids": [
+          "S9-CORE-038-ES",
+          "S9-CORE-038-RU",
+          "S9-CORE-038-ZH",
+          "S9-CORE-012-EN",
+          "S9-CORE-012-ES",
+          "S9-CORE-012-RU",
+          "S9-CORE-012-ZH",
+          "S9-EVAL-006",
+          "S9-MATERIAL-006",
+          "S9-EVAL-002",
+          "S9-EVAL-011",
+          "S9-EVAL-012",
+          "S9-CORE-002-EN",
+          "S9-CORE-002-ES",
+          "S9-CORE-002-RU",
+          "S9-CORE-002-ZH",
+          "S9-CORE-019-EN",
+          "S9-CORE-019-ES",
+          "S9-CORE-019-RU",
+          "S9-CORE-019-ZH"
+        ],
+        "reinforced_confirmed": 23,
+        "reinforced_rejected": 0,
+        "reinforced_partial": 0,
+        "reinforced_disputed": 0,
+        "root_cause_distribution": {
+          "FIXTURE_CONTENT": 1,
+          "CLUSTER_LOCALIZATION": 0,
+          "GENERATOR_TEMPLATE": 0,
+          "SCHEMA_ORACLE": 3,
+          "EXPECTED_BEHAVIOR_REFERENCE": 16,
+          "REVIEW_METHODOLOGY": 0,
+          "PRIMARY_REVIEW_FALSE_POSITIVE": 0,
+          "UNRESOLVED": 0
+        },
+        "confidence_adjustment": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "current_status": "POTENTIALLY_SYSTEMIC",
+        "proposed_remediation_level": [
+          "FULL_CLUSTER",
+          "SCHEMA_RULE",
+          "SINGLE_FIXTURE",
+          "REFERENCE_METHODOLOGY"
+        ]
       }
     }
   ],
   "blocker_assessment": "All 216 fixtures have primary review. Recurring source-entailment and oracle-visibility defects require reinforced adjudication and future remediation design, but bounded counterexamples prevent a class-wide unusability finding.",
   "fixture_remediation": "NONE",
   "reinforced_review": "PENDING_NOT_EXECUTED",
-  "reinforced_review_status": "25/73_COMPLETE",
+  "reinforced_review_status": "49/73_COMPLETE",
   "final_corpus_wide_verdict": "DEFERRED_UNTIL_REINFORCED_BATCH_3"
 }

@@ -134,10 +134,10 @@ const currentCanonical = ["PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", 
   const next = source.indexOf("\n## ", source.indexOf("\n## ") + 4);
   return source.slice(0, next === -1 ? source.length : next);
 }).join("\n");
-add("canonical-ai-review-state", currentCanonical.includes("reinforced review Batch 1") && currentCanonical.includes("216 of 216") && currentCanonical.includes("25 of 73") && currentCanonical.includes("Stage 9 remain") && currentCanonical.includes("In Progress"), "Canonical state records reinforced Batch 1 without closing Stage 9; aggregate progress preserves primary Batch 2 history.");
+add("canonical-ai-review-state", currentCanonical.includes("reinforced review Batch 2") && currentCanonical.includes("216/216") && currentCanonical.includes("49/73") && currentCanonical.includes("Stage 9 remain") && currentCanonical.includes("In Progress"), "Canonical state records reinforced Batch 2 without closing Stage 9; aggregate progress preserves primary Batch 2 history.");
 add("release-and-runtime-remain-closed", currentCanonical.includes("release readiness is not declared") && currentCanonical.includes("`mockOnly=true`") && currentCanonical.includes("runtime boundaries remain closed") && !currentCanonical.includes("release candidate approved"), "Release and runtime boundaries remain closed.");
 const blocker = summary.critical_defect_count > 0 || summary.dataset_wide_blocker === true;
-add("next-candidate-follows-critical-rule", blocker ? !currentCanonical.includes("Batch 2 of 3") : currentCanonical.includes("Stage 9 Reinforced AI Review Batch 2 of 3"), blocker ? "Critical/blocker prevents automatic next-batch candidacy." : "Reinforced Batch 2 is the next planning candidate.");
+add("next-candidate-follows-critical-rule", blocker ? !currentCanonical.includes("Batch 3 of 3") : /Stage 9 Reinforced AI Review Batch 3 of 3 and Final Cross-Batch\s+Adjudication/.test(currentCanonical), blocker ? "Critical/blocker prevents automatic next-batch candidacy." : "Reinforced Batch 3 and final adjudication is the next planning candidate.");
 add("network-zero", networkRequests === 0 && summary.network_request_count === 0 && progress.network_request_count === 0, `${networkRequests} network requests.`);
 add("quality-gate-registered", read("package.json").includes('"quality:stage-9-ai-review-batch-2": "node scripts/stage-9-ai-review-batch-2-quality.mjs"'), "Dedicated Batch 2 gate is registered.");
 globalThis.fetch = originalFetch;
@@ -163,6 +163,7 @@ for (const path of [
   ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-6/${name}`),
   "scripts/generate-stage-9-ai-review-batch-6.mjs", "scripts/stage-9-ai-review-batch-6-quality.mjs",
 ]) allowed.add(path);
+for (const path of ["docs/qa/review/AI_REVIEW_CALIBRATION_ASSESSMENT.json", ...["selection.json", "blind-packets.json", "pass-r1.json", "pass-r2.json", "pass-r3.json", "adjudication.json", "issue-dispositions.json", "final-adjudication-queue.json", "summary.json"].map((name) => `docs/qa/review/ai-reinforced-batches/batch-2/${name}`), "scripts/generate-stage-9-reinforced-ai-review-batch-2.mjs", "scripts/stage-9-reinforced-ai-review-batch-2-quality.mjs"]) allowed.add(path);
 const changed = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const diff = [...new Set([...changed, ...untracked])].sort();

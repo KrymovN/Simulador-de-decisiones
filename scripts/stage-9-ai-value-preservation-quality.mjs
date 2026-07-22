@@ -155,8 +155,8 @@ const canonicalReconciliationBoundariesPreserved =
   currentCanonicalState.includes("Stage 9 remains **In Progress**") &&
   !currentCanonicalState.includes("Stage 9 is complete") &&
   !currentCanonicalState.includes("Stage 9 is **Complete**") &&
-  currentCanonicalState.includes("25 of 73") &&
-  currentCanonicalState.includes("48") &&
+  currentCanonicalState.includes("49/73") &&
+  currentCanonicalState.includes("24") &&
   currentCanonicalState.includes("release readiness is not declared") &&
   currentCanonicalState.includes("next planning candidate") &&
   currentCanonicalState.includes("Visual migration remains fully closed with 0 remaining substeps") &&
@@ -236,7 +236,7 @@ for (const path of [
 const tracked = execFileSync("git", ["diff", "--name-only", baseline], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const actualDiff = [...new Set([...tracked, ...untracked])].sort();
-add("git-diff-bounded", actualDiff.every((path) => allowedDiff.has(path) || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-1/") || ["docs/qa/LEVIO_STAGE_9_REINFORCED_AI_REVIEW_METHODOLOGY.md", "docs/qa/review/AI_REINFORCED_REVIEW_PROGRESS.json", "docs/qa/review/AI_REVIEW_CONSOLIDATED_ISSUE_DISPOSITIONS.json", "scripts/generate-stage-9-reinforced-ai-review-batch-1.mjs", "scripts/stage-9-reinforced-ai-review-batch-1-quality.mjs"].includes(path)), `Unexpected files: ${actualDiff.filter((path) => !allowedDiff.has(path)).join(", ")}`);
+add("git-diff-bounded", actualDiff.every((path) => allowedDiff.has(path) || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-1/") || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-2/") || ["docs/qa/LEVIO_STAGE_9_REINFORCED_AI_REVIEW_METHODOLOGY.md", "docs/qa/review/AI_REINFORCED_REVIEW_PROGRESS.json", "docs/qa/review/AI_REVIEW_CONSOLIDATED_ISSUE_DISPOSITIONS.json", "docs/qa/review/AI_REVIEW_CALIBRATION_ASSESSMENT.json", "scripts/generate-stage-9-reinforced-ai-review-batch-1.mjs", "scripts/stage-9-reinforced-ai-review-batch-1-quality.mjs", "scripts/generate-stage-9-reinforced-ai-review-batch-2.mjs", "scripts/stage-9-reinforced-ai-review-batch-2-quality.mjs"].includes(path)), `Unexpected files: ${actualDiff.filter((path) => !allowedDiff.has(path)).join(", ")}`);
 const reconciliationAllowed = new Set([
   "scripts/stage-9-ai-value-preservation-quality.mjs",
   "scripts/visual-migration-closure-quality.mjs",
@@ -293,7 +293,7 @@ for (const path of [
 ]) reconciliationAllowed.add(path);
 const reconciliationTracked = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const reconciliationDiff = [...new Set([...reconciliationTracked, ...untracked])].sort();
-add("no-production-diff", reconciliationDiff.every((path) => reconciliationAllowed.has(path) || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-1/") || ["docs/qa/LEVIO_STAGE_9_REINFORCED_AI_REVIEW_METHODOLOGY.md", "docs/qa/review/AI_REINFORCED_REVIEW_PROGRESS.json", "docs/qa/review/AI_REVIEW_CONSOLIDATED_ISSUE_DISPOSITIONS.json", "scripts/generate-stage-9-reinforced-ai-review-batch-1.mjs", "scripts/stage-9-reinforced-ai-review-batch-1-quality.mjs"].includes(path)), `Current reconciliation diff must contain only approved gate and canonical files. Unexpected files: ${reconciliationDiff.filter((path) => !reconciliationAllowed.has(path)).join(", ")}`);
+add("no-production-diff", reconciliationDiff.every((path) => reconciliationAllowed.has(path) || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-1/") || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-2/") || ["docs/qa/LEVIO_STAGE_9_REINFORCED_AI_REVIEW_METHODOLOGY.md", "docs/qa/review/AI_REINFORCED_REVIEW_PROGRESS.json", "docs/qa/review/AI_REVIEW_CONSOLIDATED_ISSUE_DISPOSITIONS.json", "docs/qa/review/AI_REVIEW_CALIBRATION_ASSESSMENT.json", "scripts/generate-stage-9-reinforced-ai-review-batch-1.mjs", "scripts/stage-9-reinforced-ai-review-batch-1-quality.mjs", "scripts/generate-stage-9-reinforced-ai-review-batch-2.mjs", "scripts/stage-9-reinforced-ai-review-batch-2-quality.mjs"].includes(path)), `Current reconciliation diff must contain only approved gate and canonical files. Unexpected files: ${reconciliationDiff.filter((path) => !reconciliationAllowed.has(path)).join(", ")}`);
 
 for (const check of checks) {
   console[check.passed ? "log" : "error"](`${check.passed ? "PASS" : "FAIL"} ${check.id}: ${check.detail}`);

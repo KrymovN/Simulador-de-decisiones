@@ -1,0 +1,118 @@
+{
+  "artifact_version": "stage-9-reinforced-final-adjudication-queue.2",
+  "batch_id": "stage-9-reinforced-ai-review-batch-2-of-3",
+  "status": "PENDING_NOT_EXECUTED",
+  "preserved_batch_1_count": 4,
+  "batch_2_addition_count": 4,
+  "case_count": 8,
+  "cases": [
+    {
+      "fixture_id": "S9-CORE-037-ES",
+      "reinforced_outcome": "REMAINS_DISPUTED",
+      "reasons": [
+        "Whether information-first semantics sufficiently constrain the literal no-action wording."
+      ],
+      "evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-ES]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-ES]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-ES]"
+      ],
+      "source_reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3"
+    },
+    {
+      "fixture_id": "S9-CORE-037-RU",
+      "reinforced_outcome": "REMAINS_DISPUTED",
+      "reasons": [
+        "Whether information-first semantics sufficiently constrain the literal no-action wording."
+      ],
+      "evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-RU]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-RU]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-RU]"
+      ],
+      "source_reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3"
+    },
+    {
+      "fixture_id": "S9-CORE-037-ZH",
+      "reinforced_outcome": "REMAINS_DISPUTED",
+      "reasons": [
+        "Whether information-first semantics sufficiently constrain the literal no-action wording."
+      ],
+      "evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-ZH]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-ZH]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-ZH]"
+      ],
+      "source_reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3"
+    },
+    {
+      "fixture_id": "S9-CORE-037-EN",
+      "reinforced_outcome": "REMAINS_DISPUTED",
+      "reasons": [
+        "Whether information-first semantics sufficiently constrain the literal no-action wording."
+      ],
+      "evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-EN]"
+      ],
+      "source_reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3"
+    },
+    {
+      "fixture_id": "S9-CORE-010-EN",
+      "source_reinforced_batch": "stage-9-reinforced-ai-review-batch-2-of-3",
+      "reinforced_outcome": "PRIMARY_FINDING_REJECTED",
+      "queue_reasons": [
+        "CONFLICTING_ROOT_CAUSE_CONCLUSION_PRIMARY_LOCALIZATION_VS_REINFORCED_GENERATOR_TEMPLATE_OR_FALSE_POSITIVE"
+      ],
+      "confidence": 0.93,
+      "evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-010-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-010-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-010-EN]"
+      ]
+    },
+    {
+      "fixture_id": "S9-CORE-010-ES",
+      "source_reinforced_batch": "stage-9-reinforced-ai-review-batch-2-of-3",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MINOR",
+      "queue_reasons": [
+        "CONFLICTING_ROOT_CAUSE_CONCLUSION_PRIMARY_LOCALIZATION_VS_REINFORCED_GENERATOR_TEMPLATE_OR_FALSE_POSITIVE"
+      ],
+      "confidence": 0.86,
+      "evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-010-ES]",
+        "pass-r2.json#results[fixture_id=S9-CORE-010-ES]",
+        "pass-r3.json#results[fixture_id=S9-CORE-010-ES]"
+      ]
+    },
+    {
+      "fixture_id": "S9-CORE-010-RU",
+      "source_reinforced_batch": "stage-9-reinforced-ai-review-batch-2-of-3",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MINOR",
+      "queue_reasons": [
+        "CONFLICTING_ROOT_CAUSE_CONCLUSION_PRIMARY_LOCALIZATION_VS_REINFORCED_GENERATOR_TEMPLATE_OR_FALSE_POSITIVE"
+      ],
+      "confidence": 0.86,
+      "evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-010-RU]",
+        "pass-r2.json#results[fixture_id=S9-CORE-010-RU]",
+        "pass-r3.json#results[fixture_id=S9-CORE-010-RU]"
+      ]
+    },
+    {
+      "fixture_id": "S9-CORE-010-ZH",
+      "source_reinforced_batch": "stage-9-reinforced-ai-review-batch-2-of-3",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MINOR",
+      "queue_reasons": [
+        "CONFLICTING_ROOT_CAUSE_CONCLUSION_PRIMARY_LOCALIZATION_VS_REINFORCED_GENERATOR_TEMPLATE_OR_FALSE_POSITIVE"
+      ],
+      "confidence": 0.86,
+      "evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-010-ZH]",
+        "pass-r2.json#results[fixture_id=S9-CORE-010-ZH]",
+        "pass-r3.json#results[fixture_id=S9-CORE-010-ZH]"
+      ]
+    }
+  ]
+}

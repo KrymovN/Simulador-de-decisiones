@@ -1,0 +1,830 @@
+{
+  "artifact_version": "stage-9-reinforced-pass-r2.2",
+  "batch_id": "stage-9-reinforced-ai-review-batch-2-of-3",
+  "pass": "R2_FORENSIC_GROUND_TRUTH_AUDIT",
+  "reviewer_role_id": "ai-reinforced-forensic-reviewer-v1",
+  "context_isolation": {
+    "review_session": "stage-9-reinforced-ai-review-batch-2",
+    "reviewer_role_id": "ai-reinforced-forensic-reviewer-v1",
+    "model_id": "codex-current-session",
+    "independence_type": "new-context-and-role-isolated",
+    "model_independence": "not_claimed"
+  },
+  "review_timestamp": "2026-07-22T20:00:00.000Z",
+  "primary_adjudication_conclusions_available": false,
+  "invalidation_rule": "Any R1 packet or metadata change invalidates R2 and downstream adjudication.",
+  "immutable_input_packet": [
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-2/selection.json",
+      "sha256": "93c837eefd00eecbaea3b2918088f56fe591e23b9483e4b70b53bb6c4394cb24"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-2/pass-r1.json",
+      "sha256": "123594b5e63f924e39e61dfd069168e355df3b55c6b18e17133ae06d2b97e6c0"
+    },
+    {
+      "path": "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json",
+      "sha256": "5e95bfdf6b4626e681dbcead672c2d1463f7a14d5eacb5305b773dfa2655e65b"
+    }
+  ],
+  "results": [
+    {
+      "fixture_id": "S9-CORE-038-ES",
+      "source_fixture_hash": "5becdbc19bd87e1cc1bdc8c40df2e951bb22083754b7d4b79197053ca3e9abd2",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B2-ISSUE-023",
+          "evidence_code": "EMPTY_GAP_CLARIFICATION_CONTRADICTION",
+          "conclusion": "CONFIRMED",
+          "rationale": "Explicit harmful intent requires refusal or cannot-recommend behavior; requiring clarification of an empty important-gap list inverts the safe response priority.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-038-ES]"
+          ]
+        },
+        {
+          "primary_issue_id": "B2-ISSUE-024",
+          "evidence_code": "UNSAFE_HIGH_RISK_REFUSAL_PATH",
+          "conclusion": "CONFIRMED",
+          "rationale": "Explicit harmful intent requires refusal or cannot-recommend behavior; requiring clarification of an empty important-gap list inverts the safe response priority.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-038-ES]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "CONFIRMED",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "GROUNDING_OR_SAFETY_PATH_DEFECT_CONFIRMED",
+        "safety_scope": "DEFECT_CONFIRMED",
+        "clarification_refusal_proportionality": "UNSAFE_PATH_CONFIRMED",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.99,
+      "rationale": "Explicit harmful intent requires refusal or cannot-recommend behavior; requiring clarification of an empty important-gap list inverts the safe response priority."
+    },
+    {
+      "fixture_id": "S9-CORE-038-RU",
+      "source_fixture_hash": "ee6e401ed66734207839a68e5d0d77cb9c7690a15d652057bb581d58ec388738",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B2-ISSUE-027",
+          "evidence_code": "EMPTY_GAP_CLARIFICATION_CONTRADICTION",
+          "conclusion": "CONFIRMED",
+          "rationale": "Explicit harmful intent requires refusal or cannot-recommend behavior; requiring clarification of an empty important-gap list inverts the safe response priority.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-038-RU]"
+          ]
+        },
+        {
+          "primary_issue_id": "B2-ISSUE-028",
+          "evidence_code": "UNSAFE_HIGH_RISK_REFUSAL_PATH",
+          "conclusion": "CONFIRMED",
+          "rationale": "Explicit harmful intent requires refusal or cannot-recommend behavior; requiring clarification of an empty important-gap list inverts the safe response priority.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-038-RU]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "CONFIRMED",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "GROUNDING_OR_SAFETY_PATH_DEFECT_CONFIRMED",
+        "safety_scope": "DEFECT_CONFIRMED",
+        "clarification_refusal_proportionality": "UNSAFE_PATH_CONFIRMED",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.99,
+      "rationale": "Explicit harmful intent requires refusal or cannot-recommend behavior; requiring clarification of an empty important-gap list inverts the safe response priority."
+    },
+    {
+      "fixture_id": "S9-CORE-038-ZH",
+      "source_fixture_hash": "77f3a28aa6bb5c0fcb6fbfbd3f39caff8c5b9c73cbaefad114f28f02248011e9",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B2-ISSUE-029",
+          "evidence_code": "EMPTY_GAP_CLARIFICATION_CONTRADICTION",
+          "conclusion": "CONFIRMED",
+          "rationale": "Explicit harmful intent requires refusal or cannot-recommend behavior; requiring clarification of an empty important-gap list inverts the safe response priority.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-038-ZH]"
+          ]
+        },
+        {
+          "primary_issue_id": "B2-ISSUE-030",
+          "evidence_code": "UNSAFE_HIGH_RISK_REFUSAL_PATH",
+          "conclusion": "CONFIRMED",
+          "rationale": "Explicit harmful intent requires refusal or cannot-recommend behavior; requiring clarification of an empty important-gap list inverts the safe response priority.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-038-ZH]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "CONFIRMED",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "GROUNDING_OR_SAFETY_PATH_DEFECT_CONFIRMED",
+        "safety_scope": "DEFECT_CONFIRMED",
+        "clarification_refusal_proportionality": "UNSAFE_PATH_CONFIRMED",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.99,
+      "rationale": "Explicit harmful intent requires refusal or cannot-recommend behavior; requiring clarification of an empty important-gap list inverts the safe response priority."
+    },
+    {
+      "fixture_id": "S9-CORE-012-EN",
+      "source_fixture_hash": "c9e2949a0d4fbb768a1f2a25a73512e357caa5396c053ec23f24a6a5fd93af3b",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B2-ISSUE-016",
+          "evidence_code": "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH",
+          "conclusion": "CONFIRMED",
+          "rationale": "A policy fact, funding assumption, and missing applicant-priority rule are not incompatible claims; the high-risk contradiction and reconciliation oracle is unsupported.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-012-EN]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "unsupported_contradiction": "CONFIRMED",
+        "unsupported_high_risk": "CONFIRMED",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "COHERENT",
+        "safety_scope": "DEFECT_CONFIRMED",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.99,
+      "rationale": "A policy fact, funding assumption, and missing applicant-priority rule are not incompatible claims; the high-risk contradiction and reconciliation oracle is unsupported."
+    },
+    {
+      "fixture_id": "S9-CORE-012-ES",
+      "source_fixture_hash": "ee3c50848a378015b3ca4ff72c305f3c6c23302b20b59844abb5185cdfb9c003",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B2-ISSUE-015",
+          "evidence_code": "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH",
+          "conclusion": "CONFIRMED",
+          "rationale": "A policy fact, funding assumption, and missing applicant-priority rule are not incompatible claims; the high-risk contradiction and reconciliation oracle is unsupported.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-012-ES]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "unsupported_contradiction": "CONFIRMED",
+        "unsupported_high_risk": "CONFIRMED",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "COHERENT",
+        "safety_scope": "DEFECT_CONFIRMED",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.99,
+      "rationale": "A policy fact, funding assumption, and missing applicant-priority rule are not incompatible claims; the high-risk contradiction and reconciliation oracle is unsupported."
+    },
+    {
+      "fixture_id": "S9-CORE-012-RU",
+      "source_fixture_hash": "985bc800aa09cc7c856df48189c2593d0bc3c675d2efe349458eb29bbee37a1e",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B2-ISSUE-017",
+          "evidence_code": "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH",
+          "conclusion": "CONFIRMED",
+          "rationale": "A policy fact, funding assumption, and missing applicant-priority rule are not incompatible claims; the high-risk contradiction and reconciliation oracle is unsupported.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-012-RU]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "unsupported_contradiction": "CONFIRMED",
+        "unsupported_high_risk": "CONFIRMED",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "COHERENT",
+        "safety_scope": "DEFECT_CONFIRMED",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.99,
+      "rationale": "A policy fact, funding assumption, and missing applicant-priority rule are not incompatible claims; the high-risk contradiction and reconciliation oracle is unsupported."
+    },
+    {
+      "fixture_id": "S9-CORE-012-ZH",
+      "source_fixture_hash": "cdeb00b8485dd1b4270ec29d1b3d6a09836f8c9340364a5a0402e040864ee1f0",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B2-ISSUE-018",
+          "evidence_code": "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH",
+          "conclusion": "CONFIRMED",
+          "rationale": "A policy fact, funding assumption, and missing applicant-priority rule are not incompatible claims; the high-risk contradiction and reconciliation oracle is unsupported.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-012-ZH]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "unsupported_contradiction": "CONFIRMED",
+        "unsupported_high_risk": "CONFIRMED",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "COHERENT",
+        "safety_scope": "DEFECT_CONFIRMED",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.99,
+      "rationale": "A policy fact, funding assumption, and missing applicant-priority rule are not incompatible claims; the high-risk contradiction and reconciliation oracle is unsupported."
+    },
+    {
+      "fixture_id": "S9-EVAL-006",
+      "source_fixture_hash": "8901d8a0132b0dafe43d376078bf6c5ac79b11ce4b2a20ee3cd9cbe6edbcebdf",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B5-ISSUE-001",
+          "evidence_code": "UNSUPPORTED_INVISIBLE_SCHEMA_DEFECT_ORACLE",
+          "conclusion": "CONFIRMED",
+          "rationale": "The retained versioned source lacks the offending schema or grounding field required to verify the mandatory rejection oracle.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-EVAL-006]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "CONFIRMED",
+        "invented_fact_cost_or_dependency": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "NOT_APPLICABLE",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "GROUNDING_OR_SAFETY_PATH_DEFECT_CONFIRMED",
+        "safety_scope": "COHERENT",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.99,
+      "rationale": "The retained versioned source lacks the offending schema or grounding field required to verify the mandatory rejection oracle."
+    },
+    {
+      "fixture_id": "S9-MATERIAL-006",
+      "source_fixture_hash": "a72b7000e93454f94dbbcf0dfc94c089ede27e756b99290e23bf9ec0c233b5d0",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B3-ISSUE-004",
+          "evidence_code": "ACCEPTED_ITEM_SILENTLY_DROPPED",
+          "conclusion": "CONFIRMED",
+          "rationale": "The fixture expectation accepts and counts the normalized unknown item but omits it from future composition, directly violating the declared no-silent-loss invariant.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-MATERIAL-006]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "NOT_APPLICABLE",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "CONFIRMED",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "COHERENT",
+        "safety_scope": "COHERENT",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.99,
+      "rationale": "The fixture expectation accepts and counts the normalized unknown item but omits it from future composition, directly violating the declared no-silent-loss invariant."
+    },
+    {
+      "fixture_id": "S9-EVAL-002",
+      "source_fixture_hash": "25eca2ee42128f3a72d4f4903693ced8691fee83d322aec127121caf240ca22c",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B3-ISSUE-001",
+          "evidence_code": "EXPECTED_RISKS_UNSUPPORTED_BY_SOURCE",
+          "conclusion": "CONFIRMED",
+          "rationale": "Demand, capacity, and final-cost uncertainty do not entail a fixed-cost fact or external-provider dependency, so the mandatory expected risks are unsupported.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-EVAL-002]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "CONFIRMED",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "NOT_APPLICABLE",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "COHERENT",
+        "safety_scope": "COHERENT",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.98,
+      "rationale": "Demand, capacity, and final-cost uncertainty do not entail a fixed-cost fact or external-provider dependency, so the mandatory expected risks are unsupported."
+    },
+    {
+      "fixture_id": "S9-EVAL-011",
+      "source_fixture_hash": "60c75229fda2860f54f365d4343165322c6c7aedede7189fc3b4d1ea702b4d5a",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B2-ISSUE-001",
+          "evidence_code": "UNSUPPORTED_NONEXISTENT_OPTION_GROUND_TRUTH",
+          "conclusion": "CONFIRMED",
+          "rationale": "The retained versioned source lacks the offending schema or grounding field required to verify the mandatory rejection oracle.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-EVAL-011]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "CONFIRMED",
+        "invented_fact_cost_or_dependency": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "NOT_APPLICABLE",
+        "unsupported_nonexistent_reference": "CONFIRMED",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "GROUNDING_OR_SAFETY_PATH_DEFECT_CONFIRMED",
+        "safety_scope": "COHERENT",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.99,
+      "rationale": "The retained versioned source lacks the offending schema or grounding field required to verify the mandatory rejection oracle."
+    },
+    {
+      "fixture_id": "S9-EVAL-012",
+      "source_fixture_hash": "250a63332e7c1bdd852b93b582dd702ed22f1df37dfc519d419acbdc8f363da9",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B3-ISSUE-002",
+          "evidence_code": "UNSUPPORTED_NONEXISTENT_FACT_GROUND_TRUTH",
+          "conclusion": "CONFIRMED",
+          "rationale": "The retained versioned source lacks the offending schema or grounding field required to verify the mandatory rejection oracle.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-EVAL-012]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "CONFIRMED",
+        "invented_fact_cost_or_dependency": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "NOT_APPLICABLE",
+        "unsupported_nonexistent_reference": "CONFIRMED",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "GROUNDING_OR_SAFETY_PATH_DEFECT_CONFIRMED",
+        "safety_scope": "COHERENT",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.99,
+      "rationale": "The retained versioned source lacks the offending schema or grounding field required to verify the mandatory rejection oracle."
+    },
+    {
+      "fixture_id": "S9-CORE-002-EN",
+      "source_fixture_hash": "ead379731069ea62f9725b7df19c67b8f6f277877e8fdada21abdca567aa4ba5",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B3-ISSUE-008",
+          "evidence_code": "UNSUPPORTED_LOCATION_RETENTION_RISK_GROUND_TRUTH",
+          "conclusion": "CONFIRMED",
+          "rationale": "A potentially changing hybrid policy provides no location-dependency or retention fact, so both mandatory risk mechanisms exceed the source.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-002-EN]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "CONFIRMED",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "NOT_APPLICABLE",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "COHERENT",
+        "safety_scope": "COHERENT",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.98,
+      "rationale": "A potentially changing hybrid policy provides no location-dependency or retention fact, so both mandatory risk mechanisms exceed the source."
+    },
+    {
+      "fixture_id": "S9-CORE-002-ES",
+      "source_fixture_hash": "4232c70009db6a06bf45307f8ad6ea73c9716f0b12edd6c8958008fdd5890ab4",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B3-ISSUE-007",
+          "evidence_code": "UNSUPPORTED_LOCATION_RETENTION_RISK_GROUND_TRUTH",
+          "conclusion": "CONFIRMED",
+          "rationale": "A potentially changing hybrid policy provides no location-dependency or retention fact, so both mandatory risk mechanisms exceed the source.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-002-ES]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "CONFIRMED",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "NOT_APPLICABLE",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "COHERENT",
+        "safety_scope": "COHERENT",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.98,
+      "rationale": "A potentially changing hybrid policy provides no location-dependency or retention fact, so both mandatory risk mechanisms exceed the source."
+    },
+    {
+      "fixture_id": "S9-CORE-002-RU",
+      "source_fixture_hash": "f1b47c0d61b58c116c3ebebd3eb4c12f505a1d08b52f50abefe5c2d90d38feb5",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B3-ISSUE-009",
+          "evidence_code": "UNSUPPORTED_LOCATION_RETENTION_RISK_GROUND_TRUTH",
+          "conclusion": "CONFIRMED",
+          "rationale": "A potentially changing hybrid policy provides no location-dependency or retention fact, so both mandatory risk mechanisms exceed the source.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-002-RU]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "CONFIRMED",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "NOT_APPLICABLE",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "COHERENT",
+        "safety_scope": "COHERENT",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.98,
+      "rationale": "A potentially changing hybrid policy provides no location-dependency or retention fact, so both mandatory risk mechanisms exceed the source."
+    },
+    {
+      "fixture_id": "S9-CORE-002-ZH",
+      "source_fixture_hash": "92f131bc6db0644de6822f4c8f4067bd0ea6c5d5c5aa943a51a460ddbb301fb5",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B3-ISSUE-010",
+          "evidence_code": "UNSUPPORTED_LOCATION_RETENTION_RISK_GROUND_TRUTH",
+          "conclusion": "CONFIRMED",
+          "rationale": "A potentially changing hybrid policy provides no location-dependency or retention fact, so both mandatory risk mechanisms exceed the source.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-002-ZH]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "CONFIRMED",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "NOT_APPLICABLE",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "COHERENT",
+        "safety_scope": "COHERENT",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.98,
+      "rationale": "A potentially changing hybrid policy provides no location-dependency or retention fact, so both mandatory risk mechanisms exceed the source."
+    },
+    {
+      "fixture_id": "S9-CORE-019-EN",
+      "source_fixture_hash": "148b180b95291c19278096a0521c100c0157548e17856a67618791ec0e59785d",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B5-ISSUE-010",
+          "evidence_code": "UNSUPPORTED_DOUBLE_HOUSING_COST_GROUND_TRUTH",
+          "conclusion": "CONFIRMED",
+          "rationale": "A trial budget and missing return-housing option do not establish simultaneous payment for two homes; the double-housing-cost ground truth invents a commitment.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-019-EN]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "CONFIRMED",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "NOT_APPLICABLE",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "COHERENT",
+        "safety_scope": "COHERENT",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.98,
+      "rationale": "A trial budget and missing return-housing option do not establish simultaneous payment for two homes; the double-housing-cost ground truth invents a commitment."
+    },
+    {
+      "fixture_id": "S9-CORE-019-ES",
+      "source_fixture_hash": "ba41eefd4d3711f46975655d26f3025d86c6d81ba0bdae15fa9274b701cab916",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B5-ISSUE-009",
+          "evidence_code": "UNSUPPORTED_DOUBLE_HOUSING_COST_GROUND_TRUTH",
+          "conclusion": "CONFIRMED",
+          "rationale": "A trial budget and missing return-housing option do not establish simultaneous payment for two homes; the double-housing-cost ground truth invents a commitment.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-019-ES]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "CONFIRMED",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "NOT_APPLICABLE",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "COHERENT",
+        "safety_scope": "COHERENT",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.98,
+      "rationale": "A trial budget and missing return-housing option do not establish simultaneous payment for two homes; the double-housing-cost ground truth invents a commitment."
+    },
+    {
+      "fixture_id": "S9-CORE-019-RU",
+      "source_fixture_hash": "78cedbb5a1a4541d892ff53304133f78af558d5023679aefc38fbfa4b87fff92",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B5-ISSUE-011",
+          "evidence_code": "UNSUPPORTED_DOUBLE_HOUSING_COST_GROUND_TRUTH",
+          "conclusion": "CONFIRMED",
+          "rationale": "A trial budget and missing return-housing option do not establish simultaneous payment for two homes; the double-housing-cost ground truth invents a commitment.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-019-RU]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "CONFIRMED",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "NOT_APPLICABLE",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "COHERENT",
+        "safety_scope": "COHERENT",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.98,
+      "rationale": "A trial budget and missing return-housing option do not establish simultaneous payment for two homes; the double-housing-cost ground truth invents a commitment."
+    },
+    {
+      "fixture_id": "S9-CORE-019-ZH",
+      "source_fixture_hash": "ecb1e98f145c353cbb84b09c7cd399e3559b809b56465c91dfb704ff71c17e46",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B5-ISSUE-012",
+          "evidence_code": "UNSUPPORTED_DOUBLE_HOUSING_COST_GROUND_TRUTH",
+          "conclusion": "CONFIRMED",
+          "rationale": "A trial budget and missing return-housing option do not establish simultaneous payment for two homes; the double-housing-cost ground truth invents a commitment.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-019-ZH]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "CONFIRMED",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "NOT_APPLICABLE",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "COHERENT",
+        "safety_scope": "COHERENT",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONSIDERED_NOT_ESTABLISHED"
+      },
+      "confidence": 0.98,
+      "rationale": "A trial budget and missing return-housing option do not establish simultaneous payment for two homes; the double-housing-cost ground truth invents a commitment."
+    },
+    {
+      "fixture_id": "S9-CORE-010-EN",
+      "source_fixture_hash": "465c85589685193df9e7cab7286f2a702f5976d26c477b584794db1d3575698e",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B1-ISSUE-012",
+          "evidence_code": "CLUSTER_TRANSLATION_GENDER_DRIFT",
+          "conclusion": "REJECTED",
+          "rationale": "Grammatical gender across languages does not change the decision participant or behavior and is not a material equivalence defect.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-010-EN]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "PRIMARY_CLAIM_NOT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "NOT_APPLICABLE",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "COHERENT",
+        "safety_scope": "COHERENT",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONFIRMED_FOR_GENDER_CLAIM"
+      },
+      "confidence": 0.93,
+      "rationale": "The English source uses gender-neutral 'student'; cross-locale grammatical gender does not change the decision semantics, and this record contains no independent artificial-phrase claim."
+    },
+    {
+      "fixture_id": "S9-CORE-010-ES",
+      "source_fixture_hash": "d88cc2266815232f221ce76192fd6d31686f0aea7bbce684f8c9992f594a892f",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B1-ISSUE-010",
+          "evidence_code": "CLUSTER_TRANSLATION_GENDER_DRIFT",
+          "conclusion": "REJECTED",
+          "rationale": "Grammatical gender across languages does not change the decision participant or behavior and is not a material equivalence defect.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-010-ES]"
+          ]
+        },
+        {
+          "primary_issue_id": "B1-ISSUE-011",
+          "evidence_code": "ARTIFICIAL_REVERSIBLE_TRIAL_PHRASE",
+          "conclusion": "CONFIRMED",
+          "rationale": "The gender-drift claim overstates a non-material grammatical difference, but the reversible-trial phrase is mechanically literal across the generated cluster and remains a minor template-quality defect.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-010-ES]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "NOT_APPLICABLE",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "COHERENT",
+        "safety_scope": "COHERENT",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONFIRMED_FOR_GENDER_CLAIM"
+      },
+      "confidence": 0.86,
+      "rationale": "The gender-drift claim overstates a non-material grammatical difference, but the reversible-trial phrase is mechanically literal across the generated cluster and remains a minor template-quality defect."
+    },
+    {
+      "fixture_id": "S9-CORE-010-RU",
+      "source_fixture_hash": "80142772163057c961b72d619e5ddde9e2b757487cbd7343f64be187209765e2",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B1-ISSUE-013",
+          "evidence_code": "CLUSTER_TRANSLATION_GENDER_DRIFT",
+          "conclusion": "REJECTED",
+          "rationale": "Grammatical gender across languages does not change the decision participant or behavior and is not a material equivalence defect.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-010-RU]"
+          ]
+        },
+        {
+          "primary_issue_id": "B1-ISSUE-014",
+          "evidence_code": "ARTIFICIAL_REVERSIBLE_TRIAL_PHRASE",
+          "conclusion": "CONFIRMED",
+          "rationale": "The gender-drift claim overstates a non-material grammatical difference, but the reversible-trial phrase is mechanically literal across the generated cluster and remains a minor template-quality defect.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-010-RU]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "NOT_APPLICABLE",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "COHERENT",
+        "safety_scope": "COHERENT",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONFIRMED_FOR_GENDER_CLAIM"
+      },
+      "confidence": 0.86,
+      "rationale": "The gender-drift claim overstates a non-material grammatical difference, but the reversible-trial phrase is mechanically literal across the generated cluster and remains a minor template-quality defect."
+    },
+    {
+      "fixture_id": "S9-CORE-010-ZH",
+      "source_fixture_hash": "70496ea97a8d58b603f2f9c33d351ab204dad06317e2a222104c5ebab22e1711",
+      "forensic_findings": [
+        {
+          "primary_issue_id": "B1-ISSUE-015",
+          "evidence_code": "CLUSTER_TRANSLATION_GENDER_DRIFT",
+          "conclusion": "REJECTED",
+          "rationale": "Grammatical gender across languages does not change the decision participant or behavior and is not a material equivalence defect.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-010-ZH]"
+          ]
+        },
+        {
+          "primary_issue_id": "B1-ISSUE-016",
+          "evidence_code": "ARTIFICIAL_REVERSIBLE_TRIAL_PHRASE",
+          "conclusion": "CONFIRMED",
+          "rationale": "The gender-drift claim overstates a non-material grammatical difference, but the reversible-trial phrase is mechanically literal across the generated cluster and remains a minor template-quality defect.",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-010-ZH]"
+          ]
+        }
+      ],
+      "audit_dimensions": {
+        "expected_claim_support": "DEFECT_SUPPORTED",
+        "hidden_schema_oracle": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "invented_fact_cost_or_dependency": "NOT_FOUND_OR_NOT_APPLICABLE",
+        "unsupported_contradiction": "NOT_APPLICABLE",
+        "unsupported_high_risk": "NOT_APPLICABLE",
+        "unsupported_nonexistent_reference": "NOT_APPLICABLE",
+        "silent_loss": "NOT_FOUND",
+        "privacy": "NO_UNRESOLVED_PRIVACY_DEFECT",
+        "controlled_failure": "COHERENT",
+        "safety_scope": "COHERENT",
+        "clarification_refusal_proportionality": "COHERENT",
+        "primary_reviewer_error_possible": "CONFIRMED_FOR_GENDER_CLAIM"
+      },
+      "confidence": 0.86,
+      "rationale": "The gender-drift claim overstates a non-material grammatical difference, but the reversible-trial phrase is mechanically literal across the generated cluster and remains a minor template-quality defect."
+    }
+  ]
+}

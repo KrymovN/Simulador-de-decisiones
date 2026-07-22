@@ -134,6 +134,7 @@ const allowed = new Set([
   ...artifactNames.map((name) => `docs/qa/review/ai-batches/batch-6/${name}`), "package.json", "scripts/generate-stage-9-ai-review-batch-6.mjs", "scripts/stage-9-ai-review-batch-6-quality.mjs",
   "scripts/stage-9-ai-value-preservation-quality.mjs", "scripts/stage-9-human-review-readiness-quality.mjs", "scripts/stage-9-ai-review-batch-1-quality.mjs", "scripts/stage-9-ai-review-batch-2-quality.mjs", "scripts/stage-9-ai-review-batch-3-quality.mjs", "scripts/stage-9-ai-review-batch-4-quality.mjs", "scripts/stage-9-ai-review-batch-5-quality.mjs", "scripts/visual-migration-closure-quality.mjs",
 ]);
+for (const path of ["docs/qa/review/AI_REVIEW_CALIBRATION_ASSESSMENT.json", ...["selection.json", "blind-packets.json", "pass-r1.json", "pass-r2.json", "pass-r3.json", "adjudication.json", "issue-dispositions.json", "final-adjudication-queue.json", "summary.json"].map((name) => `docs/qa/review/ai-reinforced-batches/batch-2/${name}`), "scripts/generate-stage-9-reinforced-ai-review-batch-2.mjs", "scripts/stage-9-reinforced-ai-review-batch-2-quality.mjs"]) allowed.add(path);
 const changed = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const diff = [...new Set([...changed, ...untracked])].sort();

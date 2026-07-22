@@ -16,6 +16,14 @@ ascending primary confidence; descending issue-code count; and fixture ID.
 Selection must retain broad source, locale, risk, contradiction, and domain
 coverage where the priority order permits it.
 
+Batch 2 selects 24 of the 48 remaining fixtures. It first retains all remaining
+safety-sensitive clarification/refusal cases, then applies fixed calibration
+reservations so the batch includes schema-oracle, rich silent-loss,
+expected-reference, invented-cost, localization/template, and plausible
+false-positive evidence. This deterministic coverage overlay prevents a batch
+made only of repetitive major contradiction findings and leaves exactly 24
+fixtures for Batch 3.
+
 ## Isolated review passes
 
 - R1 blind reassessment receives fixture evidence and review criteria but no
@@ -35,9 +43,10 @@ offline repository-grounded AI review.
 
 ## Adjudication contract
 
-Allowed reinforced outcomes are `DEFECT_CONFIRMED_MAJOR`,
-`DEFECT_CONFIRMED_MINOR`, `PRIMARY_CLEARED`, `PARTIALLY_CONFIRMED`,
-`REMAINS_DISPUTED`, and `ESCALATED_CRITICAL`. Every primary issue claim must be
+Allowed reinforced outcomes are `REINFORCED_PASS`,
+`REINFORCED_PASS_WITH_NOTE`, `DEFECT_CONFIRMED_MAJOR`,
+`DEFECT_CONFIRMED_MINOR`, `PRIMARY_FINDING_REJECTED`, `REMAINS_DISPUTED`, and
+`ESCALATED_CRITICAL`. Every primary issue claim must be
 mapped exactly once to `CONFIRMED`, `REJECTED`, `PARTIALLY_CONFIRMED`, or
 `REMAINS_DISPUTED`. Root causes and remediation scopes are classifications for
 future planning only; they do not authorize implementation.
@@ -46,3 +55,10 @@ Unresolved disputes enter a final adjudication queue. Batch arithmetic,
 selection membership, source hashes, pass isolation, aggregate ledgers, and
 byte identity of all primary-review artifacts are enforced by the dedicated
 quality gate.
+
+After Batch 2, calibration is computed over all 49 reinforced fixtures. It
+reports claim confirmation, rejection, partial and dispute counts, primary-major
+confirmation rate, false-positive rate, dataset-type and pattern-family
+differences, and the residual risk of shared-model confirmation bias. Calibration
+is internal QA only, never a release verdict, and may not claim methodological
+infallibility because model independence is not established.

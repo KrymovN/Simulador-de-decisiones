@@ -1,5 +1,25 @@
 # CURRENT STAGE
 
+## Stage 9 reinforced review Batch 2 of 3 complete — 22 July 2026
+
+Batch 2 reviewed 24 new fixtures and advances reinforced progress to `49/73`;
+24 remain for Batch 3. Primary review stays complete at `216/216`. Batch 2
+outcomes are 20 major confirmed, 3 minor confirmed, 1 primary finding rejected,
+0 disputed, and 0 critical. Its issue dispositions are 26 confirmed and 4
+rejected; cumulative dispositions are 61 confirmed, 4 rejected, 0 partial, and
+8 disputed. Batch root causes are 16 expected-reference, 3 schema-oracle, 3
+generator-template, 1 fixture-content, and 1 primary-review false positive.
+
+The common final-adjudication queue has eight unique fixtures: four preserved
+`S9-CORE-037` entries and four `S9-CORE-010` conflicting-root entries.
+Calibration is `PRIMARY_REVIEW_CALIBRATION_NEEDS_ADJUSTMENT`. Remediation is
+`NONE`; Batch 3 and final cross-batch adjudication were not executed. Stage 9
+remains **In Progress**; release readiness is not declared. Live provider and
+runtime integration remain closed, `/api/simulate` remains `mockOnly=true`, and
+all runtime boundaries remain closed. Visual migration remains fully closed
+with 0 remaining substeps. `Stage 9 Reinforced AI Review Batch 3 of 3 and Final
+Cross-Batch Adjudication` is the next planning candidate only.
+
 ## Stage 9 reinforced review Batch 1 of 3 complete — 22 July 2026
 
 The deterministic priority slice has adjudicated 25 of 73 reinforced-review

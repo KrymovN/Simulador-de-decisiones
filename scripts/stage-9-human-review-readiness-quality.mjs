@@ -71,7 +71,7 @@ add("batch-1-selection-ready", batchSelection.coverage.selected_count === 36 && 
 add("threshold-audit-not-retroactive", manifest.threshold_interpretation.originating_commit === "5b0674e8" && manifest.threshold_interpretation.verdict === "CASE_RECORD_THRESHOLD_SATISFIED" && manifest.threshold_interpretation.semantic_independence_requirement === false, manifest.threshold_interpretation.verdict);
 add("historical-rc-verdict-bounded", manifest.rc_pre_assessment.verdict === "READY_FOR_HUMAN_REVIEW" && !JSON.stringify(manifest.rc_pre_assessment).includes("RELEASE_READY"), manifest.rc_pre_assessment.verdict);
 add("historical-human-review-not-misrepresented", manifest.review_policy.human_review_status === "Pending" && !currentCanonical.includes("Human review is complete") && !currentCanonical.includes("Human review has been completed"), manifest.review_policy.human_review_status);
-add("active-ai-review-status", currentCanonical.includes("reinforced review Batch 1") && currentCanonical.includes("25 of 73"), "Active AI review status is explicit.");
+add("active-ai-review-status", currentCanonical.includes("reinforced review Batch 2") && currentCanonical.includes("49/73"), "Active AI review status is explicit.");
 add("stage-9-in-progress", currentCanonical.includes("Stage 9 remains **In Progress**") && !currentCanonical.includes("Stage 9 is complete"), "Stage 9 remains In Progress.");
 add("runtime-boundaries-closed", currentCanonical.includes("`/api/simulate` remains") && currentCanonical.includes("`mockOnly=true`") && currentCanonical.includes("runtime boundaries remain closed"), "Runtime and live-provider boundaries remain closed.");
 add("network-zero", networkRequests === 0 && manifest.summary.network_request_count === 0, `${networkRequests} network requests.`);
@@ -110,6 +110,7 @@ for (const path of [
   ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-6/${name}`),
   "scripts/generate-stage-9-ai-review-batch-6.mjs", "scripts/stage-9-ai-review-batch-6-quality.mjs",
 ]) allowed.add(path);
+for (const path of ["docs/qa/review/AI_REVIEW_CALIBRATION_ASSESSMENT.json", ...["selection.json", "blind-packets.json", "pass-r1.json", "pass-r2.json", "pass-r3.json", "adjudication.json", "issue-dispositions.json", "final-adjudication-queue.json", "summary.json"].map((name) => `docs/qa/review/ai-reinforced-batches/batch-2/${name}`), "scripts/generate-stage-9-reinforced-ai-review-batch-2.mjs", "scripts/stage-9-reinforced-ai-review-batch-2-quality.mjs"]) allowed.add(path);
 const tracked = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const diff = [...new Set([...tracked, ...untracked])].sort();

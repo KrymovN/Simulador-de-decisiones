@@ -1,0 +1,108 @@
+{
+  "artifact_version": "stage-9-primary-review-calibration-assessment.1",
+  "review_timestamp": "2026-07-22T20:00:00.000Z",
+  "scope": "49 of 73 reinforced fixtures after Batch 2",
+  "calibration_verdict": "PRIMARY_REVIEW_CALIBRATION_NEEDS_ADJUSTMENT",
+  "internal_qa_only_not_release_verdict": true,
+  "cumulative_primary_issue_dispositions": {
+    "CONFIRMED": 61,
+    "REJECTED": 4,
+    "PARTIALLY_CONFIRMED": 0,
+    "REMAINS_DISPUTED": 8
+  },
+  "cumulative_reinforced_outcomes": {
+    "REINFORCED_PASS": 0,
+    "REINFORCED_PASS_WITH_NOTE": 0,
+    "DEFECT_CONFIRMED_MINOR": 8,
+    "DEFECT_CONFIRMED_MAJOR": 36,
+    "PRIMARY_FINDING_REJECTED": 1,
+    "REMAINS_DISPUTED": 4,
+    "ESCALATED_CRITICAL": 0
+  },
+  "cumulative_root_cause_distribution": {
+    "FIXTURE_CONTENT": 1,
+    "CLUSTER_LOCALIZATION": 0,
+    "GENERATOR_TEMPLATE": 3,
+    "SCHEMA_ORACLE": 6,
+    "EXPECTED_BEHAVIOR_REFERENCE": 33,
+    "REVIEW_METHODOLOGY": 1,
+    "PRIMARY_REVIEW_FALSE_POSITIVE": 1,
+    "UNRESOLVED": 4
+  },
+  "primary_major_confirmation_rate": {
+    "numerator": 36,
+    "denominator": 36,
+    "rate": 1
+  },
+  "false_positive_rate": {
+    "numerator": 4,
+    "denominator": 73,
+    "rate": 0.054795
+  },
+  "by_dataset_type": {
+    "rich_decision_material_baseline": {
+      "CONFIRMED": 2,
+      "REJECTED": 0,
+      "PARTIALLY_CONFIRMED": 0,
+      "REMAINS_DISPUTED": 0
+    },
+    "canonical_core": {
+      "CONFIRMED": 52,
+      "REJECTED": 4,
+      "PARTIALLY_CONFIRMED": 0,
+      "REMAINS_DISPUTED": 8
+    },
+    "synthetic_risk": {
+      "CONFIRMED": 7,
+      "REJECTED": 0,
+      "PARTIALLY_CONFIRMED": 0,
+      "REMAINS_DISPUTED": 0
+    }
+  },
+  "by_pattern_family": {
+    "other": {
+      "CONFIRMED": 18,
+      "REJECTED": 0,
+      "PARTIALLY_CONFIRMED": 0,
+      "REMAINS_DISPUTED": 8
+    },
+    "expected_reference_grounding": {
+      "CONFIRMED": 29,
+      "REJECTED": 0,
+      "PARTIALLY_CONFIRMED": 0,
+      "REMAINS_DISPUTED": 0
+    },
+    "schema_oracle": {
+      "CONFIRMED": 6,
+      "REJECTED": 0,
+      "PARTIALLY_CONFIRMED": 0,
+      "REMAINS_DISPUTED": 0
+    },
+    "safety_clarification_refusal": {
+      "CONFIRMED": 4,
+      "REJECTED": 0,
+      "PARTIALLY_CONFIRMED": 0,
+      "REMAINS_DISPUTED": 0
+    },
+    "silent_loss": {
+      "CONFIRMED": 1,
+      "REJECTED": 0,
+      "PARTIALLY_CONFIRMED": 0,
+      "REMAINS_DISPUTED": 0
+    },
+    "localization_and_template": {
+      "CONFIRMED": 3,
+      "REJECTED": 4,
+      "PARTIALLY_CONFIRMED": 0,
+      "REMAINS_DISPUTED": 0
+    }
+  },
+  "confirmation_bias_assessment": {
+    "model_independence": "not_claimed",
+    "shared_model_or_method_risk": "PRESENT",
+    "observed_counterevidence": "Four localization/gender claims are rejected, showing the reinforced pass can overturn primary claims.",
+    "residual_risk": "High major-confirmation concentration may reflect real reference defects, but shared methodology prevents treating agreement as independent validation.",
+    "methodology_infallibility_claimed": false
+  },
+  "rationale": "Primary review remains useful for detecting grounding defects, but the rejected localization claims and non-independent review architecture require calibration adjustment before final corpus adjudication."
+}

@@ -1,5 +1,23 @@
 # LEVIO CURRENT STATE
 
+## Stage 9 reinforced review Batch 2 of 3 complete — 22 July 2026
+
+Reinforced review covers `49/73` fixtures after 24 new Batch 2 adjudications;
+24 remain and primary review remains `216/216`. Batch 2 records 20 confirmed
+major defects, 3 confirmed minor defects, 1 rejected primary finding, and no
+disputed or critical outcomes. Its 30 issue claims are 26 confirmed and 4
+rejected; cumulative claim dispositions are 61/4/0/8. Root causes are 16
+expected-reference, 3 schema-oracle, 3 generator-template, 1 fixture-content,
+and 1 primary-review false positive.
+
+The cumulative final-adjudication queue contains eight unique cases.
+`PRIMARY_REVIEW_CALIBRATION_NEEDS_ADJUSTMENT` is an internal QA verdict and does
+not declare release readiness. No remediation occurred; Batch 3 and final
+adjudication were not executed. Stage 9 remains **In Progress**, release
+readiness is not declared, `/api/simulate` remains `mockOnly=true`, and all
+runtime boundaries remain closed. The next planning candidate is `Stage 9
+Reinforced AI Review Batch 3 of 3 and Final Cross-Batch Adjudication` only.
+
 ## Stage 9 reinforced review Batch 1 of 3 complete — 22 July 2026
 
 Reinforced review now covers 25 of 73 queued fixtures, leaving 48; primary
