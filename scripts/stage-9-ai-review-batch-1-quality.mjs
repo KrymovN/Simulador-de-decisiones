@@ -97,9 +97,9 @@ const currentCanonical = ["PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", 
   const next = source.indexOf("\n## ", source.indexOf("\n## ") + 4);
   return source.slice(0, next === -1 ? source.length : next);
 }).join("\n");
-add("canonical-ai-review-state", currentCanonical.includes("reinforced AI review") && currentCanonical.includes("216/216") && currentCanonical.includes("73/73") && currentCanonical.includes("Stage 9 remain") && currentCanonical.includes("In Progress"), "Canonical active state preserves primary Batch 1 history and current reinforced closure without closing Stage 9.");
+add("canonical-ai-review-state", currentCanonical.includes("216/216") && currentCanonical.includes("73/73") && currentCanonical.includes("Stage 9 remain") && currentCanonical.includes("In Progress"), "Canonical active state preserves primary Batch 1 history and current reinforced closure without closing Stage 9.");
 add("release-and-runtime-remain-closed", currentCanonical.includes("release readiness is not declared") && currentCanonical.includes("`mockOnly=true`") && currentCanonical.includes("runtime boundaries remain closed") && !currentCanonical.includes("release candidate approved"), "Release and runtime boundaries remain closed.");
-add("batch-6-planning-only", currentCanonical.includes("Stage 9 Remediation Plan and Bounded Fix") && currentCanonical.includes("planning candidate"), "Only bounded remediation planning is the next candidate after reinforced closure.");
+add("batch-6-planning-only", currentCanonical.includes("Stage 9 Schema-Oracle") && currentCanonical.includes("implementation-ready candidate") && currentCanonical.includes("not implemented"), "Accepted bounded remediation planning selects exactly one unimplemented first candidate after reinforced closure.");
 add("network-zero", networkRequests === 0 && summary.network_request_count === 0, `${networkRequests} network requests.`);
 add("quality-gate-registered", read("package.json").includes('"quality:stage-9-ai-review-batch-1": "node scripts/stage-9-ai-review-batch-1-quality.mjs"'), "Dedicated Batch 1 gate is registered.");
 globalThis.fetch = originalFetch;

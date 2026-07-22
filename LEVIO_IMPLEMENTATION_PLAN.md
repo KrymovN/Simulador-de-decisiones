@@ -1,5 +1,21 @@
 # LEVIO IMPLEMENTATION PLAN
 
+## Stage 9 bounded remediation sequence — accepted, not implemented — 22 July 2026
+
+The versioned plan maps all 8 candidates and all 97 actionable claims into nine
+bounded substeps with exactly one commit each. The dependency graph keeps
+source-rule work ahead of one versioned regeneration, then reserves one final
+full-corpus assessment. Historical review artifacts remain byte-identical,
+fixture remediation remains `NONE`, and this planning commit changes no schema,
+generator, fixture, expected reference, runtime, UI, or API behavior.
+
+Exactly one implementation-ready candidate is selected: `Stage 9 Schema-Oracle
+Evidence Projection Revision`. Stage 9 remains **In Progress**, release
+readiness is not declared, `/api/simulate` remains `mockOnly=true`, and all
+runtime boundaries remain closed. `Stage 9 Release Readiness and Runtime
+Boundary Decision` is a separate future planning candidate. Visual migration
+remains fully closed with 0 remaining substeps.
+
 ## Stage 9 reinforced AI review closure — 22 July 2026
 
 The exact final 24-fixture queue completed calibration-adjusted R1–R4 review.

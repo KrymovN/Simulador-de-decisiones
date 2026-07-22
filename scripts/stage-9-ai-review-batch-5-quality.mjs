@@ -139,9 +139,9 @@ add("mock-only-api-boundary", apiSource.includes("mockOnly: true"), "/api/simula
 
 const canonicalState = ["LEVIO_IMPLEMENTATION_PLAN.md", "CURRENT_STAGE.md", "LEVIO_CURRENT_STATE.md", "LEVIO_PROJECT_PROGRESS.md"].map((name) => read(name).slice(0, 6500)).join("\n");
 add("canonical-state-batch-5", canonicalState.includes("Batch 5") && canonicalState.includes("180 of 216") && canonicalState.includes("36 remain") && canonicalState.includes("Stage 9 remains **In Progress**"), "Canonical state records Batch 5 without Stage closure.");
-add("release-runtime-closed", canonicalState.includes("release readiness is not declared") && canonicalState.includes("Live OpenAI execution is not opened") && canonicalState.includes("`/api/simulate` remains deterministic with `mockOnly=true`"), "Release and runtime remain closed.");
+add("release-runtime-closed", canonicalState.includes("release readiness is not declared") && canonicalState.includes("runtime boundaries remain closed") && canonicalState.includes("`/api/simulate` remains `mockOnly=true`"), "Release and runtime remain closed.");
 const blocker = summary.critical_defect_count > 0 || summary.dataset_wide_blocker || patterns.systemic_blocker;
-add("critical-systemic-stop-rule", !blocker && summary.next_planning_candidate === "Stage 9 Independent AI Review Batch 6 of 6" && /Stage 9 Independent AI Review\s+Batch 6 of 6/.test(canonicalState), "CRITICAL=0 and SYSTEMIC_BLOCKER=false permit Batch 6 as planning candidate only.");
+add("critical-systemic-stop-rule", !blocker && summary.next_planning_candidate === "Stage 9 Independent AI Review Batch 6 of 6" && canonicalState.includes("Stage 9 Schema-Oracle") && canonicalState.includes("implementation-ready candidate"), "Historical Batch 6 candidacy is preserved and the accepted plan advances to one bounded first candidate.");
 add("network-zero", networkRequests === 0 && summary.network_request_count === 0 && progress.network_request_count === 0, `${networkRequests} network requests.`);
 add("quality-gate-registered", read("package.json").includes('"quality:stage-9-ai-review-batch-5": "node scripts/stage-9-ai-review-batch-5-quality.mjs"'), "Dedicated Batch 5 gate is registered.");
 

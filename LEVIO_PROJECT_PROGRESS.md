@@ -1,5 +1,22 @@
 # LEVIO PROJECT PROGRESS TRACKER
 
+## Stage 9 Progress — remediation plan accepted — 22 July 2026
+
+Planning now accounts for all 8 remediation candidates and all 97 actionable
+claims in nine bounded, one-commit substeps. The acyclic sequence fixes sources
+before one versioned dataset regeneration and runs one full post-remediation
+corpus assessment afterward. Historical primary (`216/216`), reinforced
+(`73/73`), final, calibration, closure, and legacy-manifest artifacts remain
+byte-identical. Fixture remediation remains `NONE`; implementation has not
+started.
+
+Exactly one implementation-ready candidate is selected: `Stage 9 Schema-Oracle
+Evidence Projection Revision`. Stage 9 remains **In Progress**, release
+readiness is not declared, `/api/simulate` remains `mockOnly=true`, and all
+runtime boundaries remain closed. Release readiness remains a separate future
+planning candidate. Visual migration remains fully closed with 0 remaining
+substeps.
+
 ## Stage 9 Progress — reinforced AI review closure — 22 July 2026
 
 Primary review is `216/216`; Batch 3 reviewed the exact 24 remaining fixtures,

@@ -134,10 +134,10 @@ const currentCanonical = ["PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", 
   const next = source.indexOf("\n## ", source.indexOf("\n## ") + 4);
   return source.slice(0, next === -1 ? source.length : next);
 }).join("\n");
-add("canonical-ai-review-state", currentCanonical.includes("reinforced AI review") && currentCanonical.includes("216/216") && currentCanonical.includes("73/73") && currentCanonical.includes("Stage 9 remain") && currentCanonical.includes("In Progress"), "Canonical state records reinforced closure without closing Stage 9; aggregate progress preserves primary Batch 2 history.");
+add("canonical-ai-review-state", currentCanonical.includes("216/216") && currentCanonical.includes("73/73") && currentCanonical.includes("Stage 9 remain") && currentCanonical.includes("In Progress"), "Canonical state records reinforced closure without closing Stage 9; aggregate progress preserves primary Batch 2 history.");
 add("release-and-runtime-remain-closed", currentCanonical.includes("release readiness is not declared") && currentCanonical.includes("`mockOnly=true`") && currentCanonical.includes("runtime boundaries remain closed") && !currentCanonical.includes("release candidate approved"), "Release and runtime boundaries remain closed.");
 const blocker = summary.critical_defect_count > 0 || summary.dataset_wide_blocker === true;
-add("next-candidate-follows-critical-rule", blocker ? !currentCanonical.includes("Bounded Fix Sequencing") : currentCanonical.includes("Stage 9 Remediation Plan and Bounded Fix"), blocker ? "Critical/blocker prevents automatic remediation candidacy." : "Bounded remediation planning follows reinforced closure.");
+add("next-candidate-follows-critical-rule", blocker ? !currentCanonical.includes("implementation-ready candidate") : currentCanonical.includes("Stage 9 Schema-Oracle") && currentCanonical.includes("implementation-ready candidate"), blocker ? "Critical/blocker prevents automatic remediation candidacy." : "Accepted bounded remediation planning selects the first implementation-ready candidate after reinforced closure.");
 add("network-zero", networkRequests === 0 && summary.network_request_count === 0 && progress.network_request_count === 0, `${networkRequests} network requests.`);
 add("quality-gate-registered", read("package.json").includes('"quality:stage-9-ai-review-batch-2": "node scripts/stage-9-ai-review-batch-2-quality.mjs"'), "Dedicated Batch 2 gate is registered.");
 globalThis.fetch = originalFetch;

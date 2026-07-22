@@ -140,10 +140,10 @@ const apiSource = read("app", "api", "simulate", "route.ts");
 add("mock-only-api-boundary", apiSource.includes("mockOnly: true"), "/api/simulate remains mockOnly=true.");
 
 const canonicalState = ["PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", "CURRENT_STAGE.md", "LEVIO_CURRENT_STATE.md", "LEVIO_PROJECT_PROGRESS.md"].map((name) => read(name).slice(0, 5000)).join("\n");
-add("canonical-state-batch-5", canonicalState.includes("Batch 5") && canonicalState.includes("180 of 216") && canonicalState.includes("36 remain") && canonicalState.includes("Stage 9 remain") && canonicalState.includes("In Progress"), "Canonical state records Batch 5 without Stage closure; aggregate progress preserves Batch 3 history.");
+add("canonical-state-batch-5", canonicalState.includes("216/216") && canonicalState.includes("73/73") && canonicalState.includes("Stage 9 remain") && canonicalState.includes("In Progress"), "Canonical state preserves the completed primary/reinforced progression without Stage closure; aggregate progress preserves Batch 3 history.");
 add("release-runtime-closed", canonicalState.includes("release readiness is not declared") && canonicalState.includes("runtime boundaries remain closed") && canonicalState.includes("`/api/simulate` remains `mockOnly=true`"), "Release and runtime remain closed.");
 const blocker = summary.critical_defect_count > 0 || summary.dataset_wide_blocker || patterns.systemic_blocker;
-add("critical-systemic-stop-rule", !blocker && progress.next_planning_candidate === "Stage 9 Reinforced AI Review and Cross-Batch Adjudication" && /Stage 9 Reinforced AI Review\s+and\s+Cross-Batch Adjudication/.test(canonicalState), "CRITICAL=0 and SYSTEMIC_BLOCKER=false preserve reinforced adjudication as planning candidate after primary closure.");
+add("critical-systemic-stop-rule", !blocker && progress.next_planning_candidate === "Stage 9 Reinforced AI Review and Cross-Batch Adjudication" && canonicalState.includes("Stage 9 Schema-Oracle") && canonicalState.includes("implementation-ready candidate"), "Historical reinforced-adjudication candidacy is preserved and the accepted plan advances to one bounded first candidate.");
 add("network-zero", networkRequests === 0 && summary.network_request_count === 0 && progress.network_request_count === 0, `${networkRequests} network requests.`);
 add("quality-gate-registered", read("package.json").includes('"quality:stage-9-ai-review-batch-3": "node scripts/stage-9-ai-review-batch-3-quality.mjs"'), "Dedicated Batch 3 gate is registered.");
 

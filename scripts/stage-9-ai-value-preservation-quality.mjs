@@ -156,9 +156,11 @@ const canonicalReconciliationBoundariesPreserved =
   !currentCanonicalState.includes("Stage 9 is complete") &&
   !currentCanonicalState.includes("Stage 9 is **Complete**") &&
   currentCanonicalState.includes("73/73") &&
-  currentCanonicalState.includes("reinforced remaining: `0`") &&
+  currentCanonicalState.includes("fixture remediation") &&
+  currentCanonicalState.includes("`NONE`") &&
   currentCanonicalState.includes("release readiness is not declared") &&
-  currentCanonicalState.includes("next planning candidate") &&
+  currentCanonicalState.includes("implementation-ready candidate") &&
+  currentCanonicalState.includes("Stage 9 Schema-Oracle") &&
   currentCanonicalState.includes("Visual migration remains fully closed with 0 remaining substeps") &&
   !/\bStage (?:1[6-9]|[2-9]\d)\b/.test(currentCanonicalState) &&
   routeSource.includes("mockOnly: true") &&
@@ -236,7 +238,7 @@ for (const path of [
 const tracked = execFileSync("git", ["diff", "--name-only", baseline], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const actualDiff = [...new Set([...tracked, ...untracked])].sort();
-add("git-diff-bounded", actualDiff.every((path) => allowedDiff.has(path) || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-1/") || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-2/") || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-3/") || ["docs/qa/LEVIO_STAGE_9_REINFORCED_AI_REVIEW_METHODOLOGY.md", "docs/qa/review/AI_REINFORCED_REVIEW_PROGRESS.json", "docs/qa/review/AI_REINFORCED_REVIEW_CLOSURE.json", "docs/qa/review/AI_REVIEW_CONSOLIDATED_ISSUE_DISPOSITIONS.json", "docs/qa/review/AI_REVIEW_CALIBRATION_ASSESSMENT.json", "docs/qa/review/AI_REVIEW_FINAL_CALIBRATION_ASSESSMENT.json", "docs/qa/review/AI_REVIEW_FINAL_CROSS_BATCH_ADJUDICATION.json", "docs/qa/review/AI_REVIEW_FINAL_PATTERN_ADJUDICATION.json", "docs/qa/review/AI_REVIEW_REMEDIATION_CANDIDATE_REGISTRY.json", "scripts/generate-stage-9-reinforced-ai-review-batch-1.mjs", "scripts/stage-9-reinforced-ai-review-batch-1-quality.mjs", "scripts/generate-stage-9-reinforced-ai-review-batch-2.mjs", "scripts/stage-9-reinforced-ai-review-batch-2-quality.mjs", "scripts/generate-stage-9-reinforced-ai-review-batch-3.mjs", "scripts/stage-9-reinforced-ai-review-batch-3-quality.mjs"].includes(path)), `Unexpected files: ${actualDiff.filter((path) => !allowedDiff.has(path)).join(", ")}`);
+add("git-diff-bounded", actualDiff.every((path) => allowedDiff.has(path) || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-1/") || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-2/") || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-3/") || path.startsWith("docs/qa/remediation/stage-9/") || ["docs/qa/LEVIO_STAGE_9_REINFORCED_AI_REVIEW_METHODOLOGY.md", "docs/qa/review/AI_REINFORCED_REVIEW_PROGRESS.json", "docs/qa/review/AI_REINFORCED_REVIEW_CLOSURE.json", "docs/qa/review/AI_REVIEW_CONSOLIDATED_ISSUE_DISPOSITIONS.json", "docs/qa/review/AI_REVIEW_CALIBRATION_ASSESSMENT.json", "docs/qa/review/AI_REVIEW_FINAL_CALIBRATION_ASSESSMENT.json", "docs/qa/review/AI_REVIEW_FINAL_CROSS_BATCH_ADJUDICATION.json", "docs/qa/review/AI_REVIEW_FINAL_PATTERN_ADJUDICATION.json", "docs/qa/review/AI_REVIEW_REMEDIATION_CANDIDATE_REGISTRY.json", "scripts/generate-stage-9-reinforced-ai-review-batch-1.mjs", "scripts/stage-9-reinforced-ai-review-batch-1-quality.mjs", "scripts/generate-stage-9-reinforced-ai-review-batch-2.mjs", "scripts/stage-9-reinforced-ai-review-batch-2-quality.mjs", "scripts/generate-stage-9-reinforced-ai-review-batch-3.mjs", "scripts/stage-9-reinforced-ai-review-batch-3-quality.mjs", "scripts/stage-9-remediation-plan-quality.mjs"].includes(path)), `Unexpected files: ${actualDiff.filter((path) => !allowedDiff.has(path) && !path.startsWith("docs/qa/remediation/stage-9/")).join(", ")}`);
 const reconciliationAllowed = new Set([
   "scripts/stage-9-ai-value-preservation-quality.mjs",
   "scripts/visual-migration-closure-quality.mjs",

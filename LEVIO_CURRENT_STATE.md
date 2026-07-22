@@ -1,5 +1,22 @@
 # LEVIO CURRENT STATE
 
+## Stage 9 remediation planning state — 22 July 2026
+
+The accepted versioned sequence covers all 8 remediation candidates and gives
+all 97 actionable claims exactly one owner across nine bounded, one-commit
+substeps. Source-rule corrections precede one versioned regeneration, and the
+full post-remediation corpus assessment runs once after reconciliation. All
+historical review artifacts and the legacy manifest remain byte-identical;
+fixture remediation remains `NONE`, and no schema, generator, fixture,
+expected-reference, runtime, UI, or API implementation occurred here.
+
+Exactly one implementation-ready candidate is selected: `Stage 9 Schema-Oracle
+Evidence Projection Revision`. Stage 9 remains **In Progress**, release
+readiness is not declared, `/api/simulate` remains `mockOnly=true`, and all
+runtime boundaries remain closed. Release readiness and runtime opening remain
+a separate future planning candidate. Visual migration remains fully closed
+with 0 remaining substeps.
+
 ## Reinforced AI review final state — 22 July 2026
 
 Primary review remains `216/216`; the exact Batch 3 queue closes reinforced

@@ -1,5 +1,21 @@
 # CURRENT STAGE
 
+## Stage 9 remediation plan accepted — implementation not started — 22 July 2026
+
+The versioned remediation registry covers 8 candidates and assigns all 97
+actionable claims exactly once. The accepted dependency order contains nine
+bounded substeps, each restricted to one commit; it performs all source and
+methodology fixes before a single versioned regeneration and one final
+full-corpus assessment. Historical review artifacts remain immutable, fixture
+remediation remains `NONE`, and this substep implemented no fix.
+
+Exactly one implementation-ready candidate is selected: `Stage 9 Schema-Oracle
+Evidence Projection Revision`. Stage 9 remains **In Progress**, release
+readiness is not declared, `/api/simulate` remains `mockOnly=true`, and all
+runtime boundaries remain closed. `Stage 9 Release Readiness and Runtime
+Boundary Decision` remains a separate future planning candidate. Visual
+migration remains fully closed with 0 remaining substeps.
+
 ## Stage 9 reinforced AI review closure — 22 July 2026
 
 Primary review is `216/216`; reinforced review is `73/73`; reinforced remaining:
