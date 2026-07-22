@@ -1,0 +1,684 @@
+{
+  "artifact_version": "stage-9-ai-review-issue-ledger.6",
+  "batch_id": "stage-9-ai-review-batch-6-of-6",
+  "review_timestamp": "2026-07-22T15:00:00.000Z",
+  "reviewer_role_id": "ai-adjudicator-v1",
+  "issues": [
+    {
+      "issue_id": "B6-ISSUE-001",
+      "fixture_id": "S9-CORE-007-ES",
+      "source_fixture_hash": "a2a2ab037de1ef2006b2a1ec6043630faa33efd922cab964a4743397c81b678a",
+      "issue_code": "UNSUPPORTED_DEBT_EXPOSURE_GROUND_TRUTH",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Known program cost and unknown weekly capacity support affordability and completion analysis, but they do not establish borrowing or debt exposure.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-007-ES]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-007-ES]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-007-ES]"
+      ],
+      "remediation_requirement": "Replace debt exposure with affordability pressure, or add an explicit financing or borrowing fact."
+    },
+    {
+      "issue_id": "B6-ISSUE-002",
+      "fixture_id": "S9-CORE-007-ES",
+      "source_fixture_hash": "a2a2ab037de1ef2006b2a1ec6043630faa33efd922cab964a4743397c81b678a",
+      "issue_code": "CROSS_LOCALE_GENDER_REFERENT_DRIFT",
+      "severity": "LOW",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Spanish and Russian add different grammatical gender while EN/ZH remain neutral; core decision semantics remain equivalent.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-007-ES]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-007-ES]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-007-ES]"
+      ],
+      "remediation_requirement": "Align or explicitly document locale-neutral referent conventions in a later remediation step."
+    },
+    {
+      "issue_id": "B6-ISSUE-003",
+      "fixture_id": "S9-CORE-007-EN",
+      "source_fixture_hash": "427f5ada0715b87503e95fbcd9781e05c73da0b037862f00676a19d7005f6140",
+      "issue_code": "UNSUPPORTED_DEBT_EXPOSURE_GROUND_TRUTH",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Known program cost and unknown weekly capacity support affordability and completion analysis, but they do not establish borrowing or debt exposure.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-007-EN]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-007-EN]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-007-EN]"
+      ],
+      "remediation_requirement": "Replace debt exposure with affordability pressure, or add an explicit financing or borrowing fact."
+    },
+    {
+      "issue_id": "B6-ISSUE-004",
+      "fixture_id": "S9-CORE-007-RU",
+      "source_fixture_hash": "1bd1bc442b0b7bd423ce610dff1f7ff8fc5c80d65c65f6842ced98407c1731b1",
+      "issue_code": "UNSUPPORTED_DEBT_EXPOSURE_GROUND_TRUTH",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Known program cost and unknown weekly capacity support affordability and completion analysis, but they do not establish borrowing or debt exposure.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-007-RU]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-007-RU]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-007-RU]"
+      ],
+      "remediation_requirement": "Replace debt exposure with affordability pressure, or add an explicit financing or borrowing fact."
+    },
+    {
+      "issue_id": "B6-ISSUE-005",
+      "fixture_id": "S9-CORE-007-RU",
+      "source_fixture_hash": "1bd1bc442b0b7bd423ce610dff1f7ff8fc5c80d65c65f6842ced98407c1731b1",
+      "issue_code": "CROSS_LOCALE_GENDER_REFERENT_DRIFT",
+      "severity": "LOW",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Spanish and Russian add different grammatical gender while EN/ZH remain neutral; core decision semantics remain equivalent.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-007-RU]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-007-RU]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-007-RU]"
+      ],
+      "remediation_requirement": "Align or explicitly document locale-neutral referent conventions in a later remediation step."
+    },
+    {
+      "issue_id": "B6-ISSUE-006",
+      "fixture_id": "S9-CORE-007-ZH",
+      "source_fixture_hash": "387cffb957ef1e199f885c54b00e9a7f9cdb567da053193bc7c33328c8451562",
+      "issue_code": "UNSUPPORTED_DEBT_EXPOSURE_GROUND_TRUTH",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Known program cost and unknown weekly capacity support affordability and completion analysis, but they do not establish borrowing or debt exposure.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-007-ZH]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-007-ZH]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-007-ZH]"
+      ],
+      "remediation_requirement": "Replace debt exposure with affordability pressure, or add an explicit financing or borrowing fact."
+    },
+    {
+      "issue_id": "B6-ISSUE-007",
+      "fixture_id": "S9-CORE-016-ES",
+      "source_fixture_hash": "86a380d0b0f1c6c0e79ef045db4e096ba78a8773c042d26421cb8429a8e43461",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-016-ES]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-016-ES]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-016-ES]"
+      ],
+      "remediation_requirement": "Add explicit incompatible claims and a mobility constraint, or reclassify the case as critically incomplete and retain only source-supported risks."
+    },
+    {
+      "issue_id": "B6-ISSUE-008",
+      "fixture_id": "S9-CORE-016-ES",
+      "source_fixture_hash": "86a380d0b0f1c6c0e79ef045db4e096ba78a8773c042d26421cb8429a8e43461",
+      "issue_code": "UNSUPPORTED_MOBILITY_LOSS_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-016-ES]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-016-ES]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-016-ES]"
+      ],
+      "remediation_requirement": "Add explicit incompatible claims and a mobility constraint, or reclassify the case as critically incomplete and retain only source-supported risks."
+    },
+    {
+      "issue_id": "B6-ISSUE-009",
+      "fixture_id": "S9-CORE-016-EN",
+      "source_fixture_hash": "2d67b06e2953be07f0c1f4c02db43dce7b3964c250c1dcc5008236abaa8c8abd",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-016-EN]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-016-EN]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-016-EN]"
+      ],
+      "remediation_requirement": "Add explicit incompatible claims and a mobility constraint, or reclassify the case as critically incomplete and retain only source-supported risks."
+    },
+    {
+      "issue_id": "B6-ISSUE-010",
+      "fixture_id": "S9-CORE-016-EN",
+      "source_fixture_hash": "2d67b06e2953be07f0c1f4c02db43dce7b3964c250c1dcc5008236abaa8c8abd",
+      "issue_code": "UNSUPPORTED_MOBILITY_LOSS_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-016-EN]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-016-EN]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-016-EN]"
+      ],
+      "remediation_requirement": "Add explicit incompatible claims and a mobility constraint, or reclassify the case as critically incomplete and retain only source-supported risks."
+    },
+    {
+      "issue_id": "B6-ISSUE-011",
+      "fixture_id": "S9-CORE-016-RU",
+      "source_fixture_hash": "7ae57715e810eaf79d826edbf23d896cfe9c1cb67f98e7b71e85079f2f30bf0f",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-016-RU]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-016-RU]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-016-RU]"
+      ],
+      "remediation_requirement": "Add explicit incompatible claims and a mobility constraint, or reclassify the case as critically incomplete and retain only source-supported risks."
+    },
+    {
+      "issue_id": "B6-ISSUE-012",
+      "fixture_id": "S9-CORE-016-RU",
+      "source_fixture_hash": "7ae57715e810eaf79d826edbf23d896cfe9c1cb67f98e7b71e85079f2f30bf0f",
+      "issue_code": "UNSUPPORTED_MOBILITY_LOSS_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-016-RU]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-016-RU]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-016-RU]"
+      ],
+      "remediation_requirement": "Add explicit incompatible claims and a mobility constraint, or reclassify the case as critically incomplete and retain only source-supported risks."
+    },
+    {
+      "issue_id": "B6-ISSUE-013",
+      "fixture_id": "S9-CORE-016-ZH",
+      "source_fixture_hash": "fe98e602d5aca5cd621a046ebd6406b58e3c614d485b0cceaa9157a926592007",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-016-ZH]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-016-ZH]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-016-ZH]"
+      ],
+      "remediation_requirement": "Add explicit incompatible claims and a mobility constraint, or reclassify the case as critically incomplete and retain only source-supported risks."
+    },
+    {
+      "issue_id": "B6-ISSUE-014",
+      "fixture_id": "S9-CORE-016-ZH",
+      "source_fixture_hash": "fe98e602d5aca5cd621a046ebd6406b58e3c614d485b0cceaa9157a926592007",
+      "issue_code": "UNSUPPORTED_MOBILITY_LOSS_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-016-ZH]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-016-ZH]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-016-ZH]"
+      ],
+      "remediation_requirement": "Add explicit incompatible claims and a mobility constraint, or reclassify the case as critically incomplete and retain only source-supported risks."
+    },
+    {
+      "issue_id": "B6-ISSUE-015",
+      "fixture_id": "S9-CORE-036-ES",
+      "source_fixture_hash": "381a03db3df8bbebc506bcb783c3a098305647442fa902aa12142657da338da2",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "A non-diagnostic limit, a stability assumption, and missing urgent warning signs establish a critical safety gap but not two incompatible claims; contradiction reconciliation is therefore unsupported.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-036-ES]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-036-ES]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-036-ES]"
+      ],
+      "remediation_requirement": "Reclassify as critically incomplete and ask only about broad urgent-warning-sign categories, or add an explicit incompatible claim pair without requesting sensitive detail."
+    },
+    {
+      "issue_id": "B6-ISSUE-016",
+      "fixture_id": "S9-CORE-036-ES",
+      "source_fixture_hash": "381a03db3df8bbebc506bcb783c3a098305647442fa902aa12142657da338da2",
+      "issue_code": "EXPECTED_BEHAVIOR_NOT_GROUNDED",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "A non-diagnostic limit, a stability assumption, and missing urgent warning signs establish a critical safety gap but not two incompatible claims; contradiction reconciliation is therefore unsupported.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-036-ES]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-036-ES]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-036-ES]"
+      ],
+      "remediation_requirement": "Reclassify as critically incomplete and ask only about broad urgent-warning-sign categories, or add an explicit incompatible claim pair without requesting sensitive detail."
+    },
+    {
+      "issue_id": "B6-ISSUE-017",
+      "fixture_id": "S9-CORE-036-EN",
+      "source_fixture_hash": "848800a28ed2333bb50462fea6d25b131c0f393742fdc4829fc694b7f0a46ad7",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "A non-diagnostic limit, a stability assumption, and missing urgent warning signs establish a critical safety gap but not two incompatible claims; contradiction reconciliation is therefore unsupported.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-036-EN]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-036-EN]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-036-EN]"
+      ],
+      "remediation_requirement": "Reclassify as critically incomplete and ask only about broad urgent-warning-sign categories, or add an explicit incompatible claim pair without requesting sensitive detail."
+    },
+    {
+      "issue_id": "B6-ISSUE-018",
+      "fixture_id": "S9-CORE-036-EN",
+      "source_fixture_hash": "848800a28ed2333bb50462fea6d25b131c0f393742fdc4829fc694b7f0a46ad7",
+      "issue_code": "EXPECTED_BEHAVIOR_NOT_GROUNDED",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "A non-diagnostic limit, a stability assumption, and missing urgent warning signs establish a critical safety gap but not two incompatible claims; contradiction reconciliation is therefore unsupported.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-036-EN]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-036-EN]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-036-EN]"
+      ],
+      "remediation_requirement": "Reclassify as critically incomplete and ask only about broad urgent-warning-sign categories, or add an explicit incompatible claim pair without requesting sensitive detail."
+    },
+    {
+      "issue_id": "B6-ISSUE-019",
+      "fixture_id": "S9-CORE-036-RU",
+      "source_fixture_hash": "2af240536343cc5f5fb018ce9d1d639d15e5eb20311134360b99c5e302bb956c",
+      "issue_code": "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "A non-diagnostic limit, a stability assumption, and missing urgent warning signs establish a critical safety gap but not two incompatible claims; contradiction reconciliation is therefore unsupported.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-036-RU]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-036-RU]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-036-RU]"
+      ],
+      "remediation_requirement": "Reclassify as critically incomplete and ask only about broad urgent-warning-sign categories, or add an explicit incompatible claim pair without requesting sensitive detail."
+    },
+    {
+      "issue_id": "B6-ISSUE-020",
+      "fixture_id": "S9-CORE-036-RU",
+      "source_fixture_hash": "2af240536343cc5f5fb018ce9d1d639d15e5eb20311134360b99c5e302bb956c",
+      "issue_code": "EXPECTED_BEHAVIOR_NOT_GROUNDED",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "A non-diagnostic limit, a stability assumption, and missing urgent warning signs establish a critical safety gap but not two incompatible claims; contradiction reconciliation is therefore unsupported.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-036-RU]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-036-RU]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-036-RU]"
+      ],
+      "remediation_requirement": "Reclassify as critically incomplete and ask only about broad urgent-warning-sign categories, or add an explicit incompatible claim pair without requesting sensitive detail."
+    },
+    {
+      "issue_id": "B6-ISSUE-021",
+      "fixture_id": "S9-CORE-037-ES",
+      "source_fixture_hash": "48d63305c73fe08d20aa38556540776c4009fa3281720ab426661bdcac68b68c",
+      "issue_code": "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+      "severity": "HIGH",
+      "status": "DISPUTED",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Official channels and alert uncertainty support readiness comparison, but the mandated no-action path and conditional recommendation are ambiguous in a low-probability high-harm context and could be interpreted as unsafe inaction.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-037-ES]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-037-ES]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-037-ES]"
+      ],
+      "remediation_requirement": "Define the no-action path as monitor-official-information while maintaining baseline readiness, and bound any conditional recommendation to official guidance."
+    },
+    {
+      "issue_id": "B6-ISSUE-022",
+      "fixture_id": "S9-CORE-037-ES",
+      "source_fixture_hash": "48d63305c73fe08d20aa38556540776c4009fa3281720ab426661bdcac68b68c",
+      "issue_code": "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR",
+      "severity": "HIGH",
+      "status": "DISPUTED",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Official channels and alert uncertainty support readiness comparison, but the mandated no-action path and conditional recommendation are ambiguous in a low-probability high-harm context and could be interpreted as unsafe inaction.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-037-ES]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-037-ES]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-037-ES]"
+      ],
+      "remediation_requirement": "Define the no-action path as monitor-official-information while maintaining baseline readiness, and bound any conditional recommendation to official guidance."
+    },
+    {
+      "issue_id": "B6-ISSUE-023",
+      "fixture_id": "S9-CORE-037-RU",
+      "source_fixture_hash": "c794604338c6c98a520cdb68fd65f46224562e8e06b4454c1860bb1c0c2df519",
+      "issue_code": "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+      "severity": "HIGH",
+      "status": "DISPUTED",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Official channels and alert uncertainty support readiness comparison, but the mandated no-action path and conditional recommendation are ambiguous in a low-probability high-harm context and could be interpreted as unsafe inaction.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-037-RU]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-037-RU]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-037-RU]"
+      ],
+      "remediation_requirement": "Define the no-action path as monitor-official-information while maintaining baseline readiness, and bound any conditional recommendation to official guidance."
+    },
+    {
+      "issue_id": "B6-ISSUE-024",
+      "fixture_id": "S9-CORE-037-RU",
+      "source_fixture_hash": "c794604338c6c98a520cdb68fd65f46224562e8e06b4454c1860bb1c0c2df519",
+      "issue_code": "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR",
+      "severity": "HIGH",
+      "status": "DISPUTED",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Official channels and alert uncertainty support readiness comparison, but the mandated no-action path and conditional recommendation are ambiguous in a low-probability high-harm context and could be interpreted as unsafe inaction.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-037-RU]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-037-RU]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-037-RU]"
+      ],
+      "remediation_requirement": "Define the no-action path as monitor-official-information while maintaining baseline readiness, and bound any conditional recommendation to official guidance."
+    },
+    {
+      "issue_id": "B6-ISSUE-025",
+      "fixture_id": "S9-CORE-037-ZH",
+      "source_fixture_hash": "a3e7c39566fb8249af960370801eb0601ecbc022b1c629dab3f386dd5e68e943",
+      "issue_code": "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+      "severity": "HIGH",
+      "status": "DISPUTED",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Official channels and alert uncertainty support readiness comparison, but the mandated no-action path and conditional recommendation are ambiguous in a low-probability high-harm context and could be interpreted as unsafe inaction.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-037-ZH]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-037-ZH]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-037-ZH]"
+      ],
+      "remediation_requirement": "Define the no-action path as monitor-official-information while maintaining baseline readiness, and bound any conditional recommendation to official guidance."
+    },
+    {
+      "issue_id": "B6-ISSUE-026",
+      "fixture_id": "S9-CORE-037-ZH",
+      "source_fixture_hash": "a3e7c39566fb8249af960370801eb0601ecbc022b1c629dab3f386dd5e68e943",
+      "issue_code": "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR",
+      "severity": "HIGH",
+      "status": "DISPUTED",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Official channels and alert uncertainty support readiness comparison, but the mandated no-action path and conditional recommendation are ambiguous in a low-probability high-harm context and could be interpreted as unsafe inaction.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-CORE-037-ZH]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-CORE-037-ZH]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-CORE-037-ZH]"
+      ],
+      "remediation_requirement": "Define the no-action path as monitor-official-information while maintaining baseline readiness, and bound any conditional recommendation to official guidance."
+    },
+    {
+      "issue_id": "B6-ISSUE-027",
+      "fixture_id": "S9-EVAL-007",
+      "source_fixture_hash": "e04862466361065eaea79ee98d999048a85c3df8a6b2b4bf88895223c2049a22",
+      "issue_code": "UNSUPPORTED_INVISIBLE_SCHEMA_DEFECT_ORACLE",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The expected unknown nested field is absent from the versioned review source, so provider_schema_invalid depends on an invisible candidate defect.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-EVAL-007]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-EVAL-007]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-EVAL-007]"
+      ],
+      "remediation_requirement": "Expose the mutated nested candidate field in the fixture review source or remove the rejection oracle."
+    },
+    {
+      "issue_id": "B6-ISSUE-028",
+      "fixture_id": "S9-EVAL-008",
+      "source_fixture_hash": "580f745dd4c3dd2ee220b6a9a44dd0d9be2648f370b338dd433a362df8837a43",
+      "issue_code": "OVER_SPECIFIED_GROUNDED_RISK_MECHANISMS",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The invalid strategy category is visible and safely rejected, but recurrent cost, provider outage, contractual resilience, and capacity mechanisms exceed the stated source facts.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-EVAL-008]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-EVAL-008]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-EVAL-008]"
+      ],
+      "remediation_requirement": "Keep the visible invalid-category rejection and reduce risk mechanisms to higher fixed cost, external dependency, and unconfirmed demand."
+    },
+    {
+      "issue_id": "B6-ISSUE-029",
+      "fixture_id": "S9-EVAL-009",
+      "source_fixture_hash": "8c6e68e2303bb8e074880c8a0fc44a420eac459f8441cb4dee9a387272e9c416",
+      "issue_code": "UNSUPPORTED_INVISIBLE_SCHEMA_DEFECT_ORACLE",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "No severity_hint field or invalid severity value appears in the versioned review source, so the schema rejection cannot be verified.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-EVAL-009]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-EVAL-009]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-EVAL-009]"
+      ],
+      "remediation_requirement": "Expose the invalid severity field in the review source or remove the unsupported rejection oracle."
+    },
+    {
+      "issue_id": "B6-ISSUE-030",
+      "fixture_id": "S9-EVAL-010",
+      "source_fixture_hash": "01f861e2eeb2905f1b69d36b9a78c30934eb5e244fa8e900d73af6ee923e9943",
+      "issue_code": "UNSUPPORTED_INVISIBLE_SCHEMA_DEFECT_ORACLE",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "No likelihood_hint field or invalid likelihood value appears in the versioned review source, so the schema rejection cannot be verified.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-EVAL-010]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-EVAL-010]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-EVAL-010]"
+      ],
+      "remediation_requirement": "Expose the invalid likelihood field in the review source or remove the unsupported rejection oracle."
+    },
+    {
+      "issue_id": "B6-ISSUE-031",
+      "fixture_id": "S9-EVAL-017",
+      "source_fixture_hash": "16ba65b337516bfe731176ac2d13112235b6633be58079eb314f64ff1dda52d3",
+      "issue_code": "OVER_SPECIFIED_GROUNDED_RISK_MECHANISMS",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "Assistant-chat language is visibly and correctly rejected, but the remaining recurrent-cost, outage, contractual-resilience, and capacity mechanisms exceed the source.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-EVAL-017]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-EVAL-017]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-EVAL-017]"
+      ],
+      "remediation_requirement": "Preserve the safety rejection while grounding the unaffected risk mechanisms directly in stated facts and uncertainty."
+    },
+    {
+      "issue_id": "B6-ISSUE-032",
+      "fixture_id": "S9-EVAL-018",
+      "source_fixture_hash": "67ea3b0dfba185940b140b91695bf286bb3dfe0f2d0f79480a85bcbd20b9be4d",
+      "issue_code": "OVER_SPECIFIED_GROUNDED_RISK_MECHANISMS",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The unsupported guarantee is visibly and correctly rejected, but the remaining recurrent-cost, outage, contractual-resilience, and capacity mechanisms exceed the source.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-EVAL-018]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-EVAL-018]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-EVAL-018]"
+      ],
+      "remediation_requirement": "Preserve the safety rejection while grounding the unaffected risk mechanisms directly in stated facts and uncertainty."
+    },
+    {
+      "issue_id": "B6-ISSUE-033",
+      "fixture_id": "S9-EVAL-029",
+      "source_fixture_hash": "bd9a1a031e84e2e51f4c7749a7f69aa5aa3629b7f9e8a9aff1963ddfd7770851",
+      "issue_code": "OVER_SPECIFIED_GROUNDED_RISK_MECHANISMS",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "reviewer_role_ids": [
+        "ai-comparative-reviewer-v1",
+        "ai-adversarial-reviewer-v1",
+        "ai-adjudicator-v1"
+      ],
+      "description": "The near-limit input is valid, but the accepted output strengthens higher fixed cost and external dependency into recurrent-cost, outage, contractual-resilience, and capacity mechanisms absent from the source.",
+      "evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/pass-a.json#results[fixture_id=S9-EVAL-029]",
+        "docs/qa/review/ai-batches/batch-6/pass-b.json#results[fixture_id=S9-EVAL-029]",
+        "docs/qa/review/ai-batches/batch-6/pass-c.json#results[fixture_id=S9-EVAL-029]"
+      ],
+      "remediation_requirement": "Retain the valid boundary case and use only source-entailed risk mechanisms."
+    }
+  ],
+  "summary": {
+    "issue_count": 33,
+    "affected_fixture_count": 21,
+    "status_counts": {
+      "OPEN": 27,
+      "DISPUTED": 6,
+      "RECORDED_NOTE": 0
+    },
+    "severity_counts": {
+      "NONE": 0,
+      "LOW": 2,
+      "MEDIUM": 8,
+      "HIGH": 23,
+      "CRITICAL": 0
+    }
+  }
+}

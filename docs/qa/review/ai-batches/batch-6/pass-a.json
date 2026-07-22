@@ -1,0 +1,1651 @@
+{
+  "artifact_version": "stage-9-ai-review-pass-a.6",
+  "batch_id": "stage-9-ai-review-batch-6-of-6",
+  "pass": "PASS_A_BLIND_SEMANTIC",
+  "reviewer_role_id": "ai-semantic-reviewer-v1",
+  "model_id": "codex-current-session",
+  "review_timestamp": "2026-07-22T15:00:00.000Z",
+  "context_isolation": {
+    "review_session": "stage-9-ai-review-batch-6",
+    "reviewer_role_id": "ai-semantic-reviewer-v1",
+    "model_id": "codex-current-session",
+    "independence_type": "role-and-context-isolated",
+    "model_independence": "not_claimed"
+  },
+  "prompt_version": "stage-9-ai-review-pass-a.6",
+  "immutable_input_packet": {
+    "path": "docs/qa/review/ai-batches/batch-6/blind-packets.json",
+    "sha256": "0fbcc760b70314c70e46146f88f66f1cecc914d70fa7fda8e3b4e98f293489fc"
+  },
+  "results": [
+    {
+      "fixture_id": "S9-CORE-007-ES",
+      "source_fixture_hash": "a2a2ab037de1ef2006b2a1ec6043630faa33efd922cab964a4743397c81b678a",
+      "blind_reconstruction": {
+        "decision_under_review": "Una estudiante ficticia compara un grado presencial, uno en línea y una pausa de un año.",
+        "confirmed_facts": [
+          "program_costs_known"
+        ],
+        "constraints": [
+          "Completeness: critically_incomplete.",
+          "Intent: evaluate_degree_format_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: online_support_sufficient",
+          "Critical gap: weekly_capacity"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "TEMPORAL_ELEMENT_PRESENT",
+        "reversibility": "No irreversible commitment is established.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "Use broad categories without identifiers or unnecessary sensitive detail."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask one minimal critical-gap question and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-007-ES]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-007-EN",
+      "source_fixture_hash": "427f5ada0715b87503e95fbcd9781e05c73da0b037862f00676a19d7005f6140",
+      "blind_reconstruction": {
+        "decision_under_review": "A fictional student compares an in-person degree, an online degree, and a one-year pause.",
+        "confirmed_facts": [
+          "program_costs_known"
+        ],
+        "constraints": [
+          "Completeness: critically_incomplete.",
+          "Intent: evaluate_degree_format_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: online_support_sufficient",
+          "Critical gap: weekly_capacity"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "TEMPORAL_ELEMENT_PRESENT",
+        "reversibility": "Commitment or exit terms may matter but must not be invented.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "Use broad categories without identifiers or unnecessary sensitive detail."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask one minimal critical-gap question and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-007-EN]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-007-RU",
+      "source_fixture_hash": "1bd1bc442b0b7bd423ce610dff1f7ff8fc5c80d65c65f6842ced98407c1731b1",
+      "blind_reconstruction": {
+        "decision_under_review": "Вымышленный студент сравнивает очную программу, онлайн-программу и годовую паузу.",
+        "confirmed_facts": [
+          "program_costs_known"
+        ],
+        "constraints": [
+          "Completeness: critically_incomplete.",
+          "Intent: evaluate_degree_format_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: online_support_sufficient",
+          "Critical gap: weekly_capacity"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "TEMPORAL_ELEMENT_PRESENT",
+        "reversibility": "No irreversible commitment is established.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No identifiers are needed."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask one minimal critical-gap question and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-007-RU]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-007-ZH",
+      "source_fixture_hash": "387cffb957ef1e199f885c54b00e9a7f9cdb567da053193bc7c33328c8451562",
+      "blind_reconstruction": {
+        "decision_under_review": "一名虚构学生比较面授学位、在线学位和休学一年。",
+        "confirmed_facts": [
+          "program_costs_known"
+        ],
+        "constraints": [
+          "Completeness: critically_incomplete.",
+          "Intent: evaluate_degree_format_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: online_support_sufficient",
+          "Critical gap: weekly_capacity"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "TEMPORAL_ELEMENT_PRESENT",
+        "reversibility": "Commitment or exit terms may matter but must not be invented.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "Use broad categories without identifiers or unnecessary sensitive detail."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask one minimal critical-gap question and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-007-ZH]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-016-ES",
+      "source_fixture_hash": "86a380d0b0f1c6c0e79ef045db4e096ba78a8773c042d26421cb8429a8e43461",
+      "blind_reconstruction": {
+        "decision_under_review": "Un hogar ficticio compara alquilar, comprar o esperar ante tipos de interés inciertos.",
+        "confirmed_facts": [
+          "housing_horizon_known"
+        ],
+        "constraints": [
+          "Completeness: contradictory.",
+          "Intent: evaluate_rent_or_buy_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: interest_rate_stable",
+          "Critical gap: maintenance_budget"
+        ],
+        "contradictions": [
+          "A contradiction label alone does not establish an incompatible claim pair."
+        ],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "No irreversible commitment is established.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No identifiers are needed."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask one minimal critical-gap question and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-016-ES]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-016-EN",
+      "source_fixture_hash": "2d67b06e2953be07f0c1f4c02db43dce7b3964c250c1dcc5008236abaa8c8abd",
+      "blind_reconstruction": {
+        "decision_under_review": "A fictional household compares renting, buying, or waiting under uncertain interest rates.",
+        "confirmed_facts": [
+          "housing_horizon_known"
+        ],
+        "constraints": [
+          "Completeness: contradictory.",
+          "Intent: evaluate_rent_or_buy_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: interest_rate_stable",
+          "Critical gap: maintenance_budget"
+        ],
+        "contradictions": [
+          "A contradiction label alone does not establish an incompatible claim pair."
+        ],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "Commitment or exit terms may matter but must not be invented.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "Use broad categories without identifiers or unnecessary sensitive detail."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask one minimal critical-gap question and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-016-EN]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-016-RU",
+      "source_fixture_hash": "7ae57715e810eaf79d826edbf23d896cfe9c1cb67f98e7b71e85079f2f30bf0f",
+      "blind_reconstruction": {
+        "decision_under_review": "Вымышленная семья сравнивает аренду, покупку или ожидание при неопределённых ставках.",
+        "confirmed_facts": [
+          "housing_horizon_known"
+        ],
+        "constraints": [
+          "Completeness: contradictory.",
+          "Intent: evaluate_rent_or_buy_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: interest_rate_stable",
+          "Critical gap: maintenance_budget"
+        ],
+        "contradictions": [
+          "A contradiction label alone does not establish an incompatible claim pair."
+        ],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "Commitment or exit terms may matter but must not be invented.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "Use broad categories without identifiers or unnecessary sensitive detail."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask one minimal critical-gap question and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-016-RU]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-016-ZH",
+      "source_fixture_hash": "fe98e602d5aca5cd621a046ebd6406b58e3c614d485b0cceaa9157a926592007",
+      "blind_reconstruction": {
+        "decision_under_review": "一个虚构家庭在利率不确定时比较租房、购房或等待。",
+        "confirmed_facts": [
+          "housing_horizon_known"
+        ],
+        "constraints": [
+          "Completeness: contradictory.",
+          "Intent: evaluate_rent_or_buy_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: interest_rate_stable",
+          "Critical gap: maintenance_budget"
+        ],
+        "contradictions": [
+          "A contradiction label alone does not establish an incompatible claim pair."
+        ],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "Commitment or exit terms may matter but must not be invented.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "Use broad categories without identifiers or unnecessary sensitive detail."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask one minimal critical-gap question and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-016-ZH]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-022-ES",
+      "source_fixture_hash": "f8f01758bb2b2c8d8f4b51e722f98311dd08ebb294adf1e1f46798e9044c2c95",
+      "blind_reconstruction": {
+        "decision_under_review": "Una familia ficticia compara menor alquiler con mayor trayecto y mayor alquiler cerca del trabajo.",
+        "confirmed_facts": [
+          "rent_and_commute_known"
+        ],
+        "constraints": [
+          "Completeness: partial.",
+          "Intent: evaluate_commute_move_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: work_location_stable",
+          "Important gap: time_value_priority"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "No irreversible commitment is established.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "Use broad categories without identifiers or unnecessary sensitive detail."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask only the high-value important-gap question."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-022-ES]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-022-EN",
+      "source_fixture_hash": "1505b0b86725af3f55f2d5926b5120258465c560819333602a7a23ff32e7bcd9",
+      "blind_reconstruction": {
+        "decision_under_review": "A fictional family compares lower rent with a longer commute against higher rent near work.",
+        "confirmed_facts": [
+          "rent_and_commute_known"
+        ],
+        "constraints": [
+          "Completeness: partial.",
+          "Intent: evaluate_commute_move_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: work_location_stable",
+          "Important gap: time_value_priority"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "Commitment or exit terms may matter but must not be invented.",
+        "third_party_dependencies": [
+          "A third party may affect the decision; future behavior remains uncertain."
+        ],
+        "privacy_concerns": [
+          "Use broad categories without identifiers or unnecessary sensitive detail."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask only the high-value important-gap question."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-022-EN]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-022-RU",
+      "source_fixture_hash": "336390aaeca0923409cf3d0cdf4d3dec23356acec7cf1e8259c86a510c26660e",
+      "blind_reconstruction": {
+        "decision_under_review": "Вымышленная семья сравнивает низкую аренду с долгой дорогой и более высокую аренду рядом с работой.",
+        "confirmed_facts": [
+          "rent_and_commute_known"
+        ],
+        "constraints": [
+          "Completeness: partial.",
+          "Intent: evaluate_commute_move_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: work_location_stable",
+          "Important gap: time_value_priority"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "No irreversible commitment is established.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "Use broad categories without identifiers or unnecessary sensitive detail."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask only the high-value important-gap question."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-022-RU]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-022-ZH",
+      "source_fixture_hash": "5cada865bdc2bd38d1e2a7acb22309f7d368b12b3e661243f0e69def36684fc9",
+      "blind_reconstruction": {
+        "decision_under_review": "一个虚构家庭比较低租金长通勤与工作地点附近高租金。",
+        "confirmed_facts": [
+          "rent_and_commute_known"
+        ],
+        "constraints": [
+          "Completeness: partial.",
+          "Intent: evaluate_commute_move_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: work_location_stable",
+          "Important gap: time_value_priority"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "Commitment or exit terms may matter but must not be invented.",
+        "third_party_dependencies": [
+          "A third party may affect the decision; future behavior remains uncertain."
+        ],
+        "privacy_concerns": [
+          "Use broad categories without identifiers or unnecessary sensitive detail."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask only the high-value important-gap question."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-022-ZH]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-030-ES",
+      "source_fixture_hash": "5b6851f19b35c5d71d5a7b05afb7825eff1672acd2daef899586d860739ada63",
+      "blind_reconstruction": {
+        "decision_under_review": "Dos organizaciones ficticias comparan asociación exclusiva, no exclusiva y prueba limitada.",
+        "confirmed_facts": [
+          "draft_terms_available"
+        ],
+        "constraints": [
+          "Completeness: partial.",
+          "Intent: evaluate_partnership_terms_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: incentives_remain_aligned",
+          "Important gap: termination_rights"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "No irreversible commitment is established.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No identifiers are needed."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask only the high-value important-gap question."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-030-ES]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-030-EN",
+      "source_fixture_hash": "1e6216fe4518b4658da7f8be7ee0f0f60712fa97ce04bb9f18eb610b43c90e80",
+      "blind_reconstruction": {
+        "decision_under_review": "Two fictional organizations compare exclusive, non-exclusive, and limited-trial partnerships.",
+        "confirmed_facts": [
+          "draft_terms_available"
+        ],
+        "constraints": [
+          "Completeness: partial.",
+          "Intent: evaluate_partnership_terms_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: incentives_remain_aligned",
+          "Important gap: termination_rights"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "Commitment or exit terms may matter but must not be invented.",
+        "third_party_dependencies": [
+          "A third party may affect the decision; future behavior remains uncertain."
+        ],
+        "privacy_concerns": [
+          "No identifiers are needed."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask only the high-value important-gap question."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-030-EN]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-030-RU",
+      "source_fixture_hash": "655c3251f1a47c7581623bf37159f432f47ae4356ba257db2544ba4dad0142ea",
+      "blind_reconstruction": {
+        "decision_under_review": "Две вымышленные организации сравнивают эксклюзивное, неэксклюзивное и пробное партнёрство.",
+        "confirmed_facts": [
+          "draft_terms_available"
+        ],
+        "constraints": [
+          "Completeness: partial.",
+          "Intent: evaluate_partnership_terms_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: incentives_remain_aligned",
+          "Important gap: termination_rights"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "Commitment or exit terms may matter but must not be invented.",
+        "third_party_dependencies": [
+          "A third party may affect the decision; future behavior remains uncertain."
+        ],
+        "privacy_concerns": [
+          "No identifiers are needed."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask only the high-value important-gap question."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-030-RU]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-030-ZH",
+      "source_fixture_hash": "43dc392a171202b9551aadd8a25c073d0d9feccec4c5c332855d42a9b052722d",
+      "blind_reconstruction": {
+        "decision_under_review": "两个虚构组织比较独家、非独家和有限试行合作。",
+        "confirmed_facts": [
+          "draft_terms_available"
+        ],
+        "constraints": [
+          "Completeness: partial.",
+          "Intent: evaluate_partnership_terms_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: incentives_remain_aligned",
+          "Important gap: termination_rights"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "No irreversible commitment is established.",
+        "third_party_dependencies": [
+          "A third party may affect the decision; future behavior remains uncertain."
+        ],
+        "privacy_concerns": [
+          "No identifiers are needed."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask only the high-value important-gap question."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-030-ZH]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-029-EN",
+      "source_fixture_hash": "e89104f701e811e41a023235760d172bbc61b75b9dabd35ee07bb1a6d63d2cc3",
+      "blind_reconstruction": {
+        "decision_under_review": "A fictional operation decides whether to await certification, limit scope, or postpone sales.",
+        "confirmed_facts": [
+          "application_requirements_known"
+        ],
+        "constraints": [
+          "Completeness: complete.",
+          "Intent: evaluate_regulatory_certification_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: approval_likely"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "Commitment or exit terms may matter but must not be invented.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No identifiers are needed."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Avoid unnecessary clarification."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-029-EN]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-029-RU",
+      "source_fixture_hash": "56b249bae39b16f87a9d5f6f2ad4cee63457bc1dd2fda6ba0af59ecbeb281d0a",
+      "blind_reconstruction": {
+        "decision_under_review": "Вымышленная операция решает ждать сертификацию, ограничить масштаб или отложить продажи.",
+        "confirmed_facts": [
+          "application_requirements_known"
+        ],
+        "constraints": [
+          "Completeness: complete.",
+          "Intent: evaluate_regulatory_certification_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: approval_likely"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "No irreversible commitment is established.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No identifiers are needed."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Avoid unnecessary clarification."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-029-RU]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-029-ZH",
+      "source_fixture_hash": "6a22654db7ba0f5f21f56b583fde872dbe1423e6c7ed83fd1b460dfcd2434dac",
+      "blind_reconstruction": {
+        "decision_under_review": "一个虚构业务决定等待认证、限制范围或推迟销售。",
+        "confirmed_facts": [
+          "application_requirements_known"
+        ],
+        "constraints": [
+          "Completeness: complete.",
+          "Intent: evaluate_regulatory_certification_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: approval_likely"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "No irreversible commitment is established.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No identifiers are needed."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Avoid unnecessary clarification."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-029-ZH]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-033-ES",
+      "source_fixture_hash": "34a1be7e914ca379a3358fc0f0868f5ceb9af25981f6b6e0126b2b2fd184c041",
+      "blind_reconstruction": {
+        "decision_under_review": "Una persona ficticia compara conversar ahora, fijar un límite temporal o pedir mediación.",
+        "confirmed_facts": [
+          "communication_goal_declared"
+        ],
+        "constraints": [
+          "Completeness: complete.",
+          "Intent: evaluate_relationship_boundary_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: other_party_willing"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "No irreversible commitment is established.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "Use broad categories without identifiers or unnecessary sensitive detail."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Avoid unnecessary clarification."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-033-ES]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-033-EN",
+      "source_fixture_hash": "4b203587b15441ede32198097797caf3e7c0d105a08d454b77348fb6980371c8",
+      "blind_reconstruction": {
+        "decision_under_review": "A fictional person compares talking now, setting a temporary boundary, or seeking mediation.",
+        "confirmed_facts": [
+          "communication_goal_declared"
+        ],
+        "constraints": [
+          "Completeness: complete.",
+          "Intent: evaluate_relationship_boundary_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: other_party_willing"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "No irreversible commitment is established.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "Use broad categories without identifiers or unnecessary sensitive detail."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Avoid unnecessary clarification."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-033-EN]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-033-ZH",
+      "source_fixture_hash": "f1e588e445648b1e13ee05f374dc8a60605cf5f237b2166c3a02cb85e916f591",
+      "blind_reconstruction": {
+        "decision_under_review": "一个虚构的人比较立即沟通、设定临时界限或寻求调解。",
+        "confirmed_facts": [
+          "communication_goal_declared"
+        ],
+        "constraints": [
+          "Completeness: complete.",
+          "Intent: evaluate_relationship_boundary_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: other_party_willing"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "No irreversible commitment is established.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No identifiers are needed."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Avoid unnecessary clarification."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-033-ZH]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-036-ES",
+      "source_fixture_hash": "381a03db3df8bbebc506bcb783c3a098305647442fa902aa12142657da338da2",
+      "blind_reconstruction": {
+        "decision_under_review": "Una persona ficticia organiza cuándo solicitar una cita profesional sin pedir diagnóstico.",
+        "confirmed_facts": [
+          "stated_non_diagnostic_limit"
+        ],
+        "constraints": [
+          "Completeness: contradictory.",
+          "Intent: evaluate_appointment_timing_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: condition_stable",
+          "Critical gap: urgent_warning_signs"
+        ],
+        "contradictions": [
+          "A contradiction label alone does not establish an incompatible claim pair."
+        ],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "No irreversible commitment is established.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "Use broad categories without identifiers or unnecessary sensitive detail."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask one minimal critical-gap question and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-036-ES]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-036-EN",
+      "source_fixture_hash": "848800a28ed2333bb50462fea6d25b131c0f393742fdc4829fc694b7f0a46ad7",
+      "blind_reconstruction": {
+        "decision_under_review": "A fictional person organizes when to request professional care without asking for a diagnosis.",
+        "confirmed_facts": [
+          "stated_non_diagnostic_limit"
+        ],
+        "constraints": [
+          "Completeness: contradictory.",
+          "Intent: evaluate_appointment_timing_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: condition_stable",
+          "Critical gap: urgent_warning_signs"
+        ],
+        "contradictions": [
+          "A contradiction label alone does not establish an incompatible claim pair."
+        ],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "No irreversible commitment is established.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "Use broad categories without identifiers or unnecessary sensitive detail."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask one minimal critical-gap question and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-036-EN]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-036-RU",
+      "source_fixture_hash": "2af240536343cc5f5fb018ce9d1d639d15e5eb20311134360b99c5e302bb956c",
+      "blind_reconstruction": {
+        "decision_under_review": "Вымышленный человек решает, когда обратиться за профессиональной помощью, не запрашивая диагноз.",
+        "confirmed_facts": [
+          "stated_non_diagnostic_limit"
+        ],
+        "constraints": [
+          "Completeness: contradictory.",
+          "Intent: evaluate_appointment_timing_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: condition_stable",
+          "Critical gap: urgent_warning_signs"
+        ],
+        "contradictions": [
+          "A contradiction label alone does not establish an incompatible claim pair."
+        ],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "No irreversible commitment is established.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "Use broad categories without identifiers or unnecessary sensitive detail."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Ask one minimal critical-gap question and withhold normal recommendation."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-036-RU]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-037-ES",
+      "source_fixture_hash": "48d63305c73fe08d20aa38556540776c4009fa3281720ab426661bdcac68b68c",
+      "blind_reconstruction": {
+        "decision_under_review": "Una instalación ficticia compara niveles de preparación ante una alerta oficial incierta.",
+        "confirmed_facts": [
+          "official_channels_defined"
+        ],
+        "constraints": [
+          "Completeness: complete.",
+          "Intent: evaluate_evacuation_readiness_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: alert_escalates"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "No irreversible commitment is established.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No identifiers are needed."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Avoid unnecessary clarification."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-037-ES]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-037-RU",
+      "source_fixture_hash": "c794604338c6c98a520cdb68fd65f46224562e8e06b4454c1860bb1c0c2df519",
+      "blind_reconstruction": {
+        "decision_under_review": "Вымышленный объект сравнивает уровни готовности при неопределённом официальном предупреждении.",
+        "confirmed_facts": [
+          "official_channels_defined"
+        ],
+        "constraints": [
+          "Completeness: complete.",
+          "Intent: evaluate_evacuation_readiness_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: alert_escalates"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "No irreversible commitment is established.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No identifiers are needed."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Avoid unnecessary clarification."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-037-RU]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-CORE-037-ZH",
+      "source_fixture_hash": "a3e7c39566fb8249af960370801eb0601ecbc022b1c629dab3f386dd5e68e943",
+      "blind_reconstruction": {
+        "decision_under_review": "一个虚构设施在官方警报不确定时比较不同准备级别。",
+        "confirmed_facts": [
+          "official_channels_defined"
+        ],
+        "constraints": [
+          "Completeness: complete.",
+          "Intent: evaluate_evacuation_readiness_without_direct_answer."
+        ],
+        "unknowns": [
+          "Assumption: alert_escalates"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Assumptions must remain uncertain.",
+          "Only risks entailed by the visible situation, facts, and gaps are allowed."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "No irreversible commitment is established.",
+        "third_party_dependencies": [],
+        "privacy_concerns": [
+          "No identifiers are needed."
+        ],
+        "forbidden_conclusions": [
+          "Inventing facts, contradiction pairs, debt, costs, deadlines, safety certainty, or option properties."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Avoid unnecessary clarification."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed with a human-readable reason if grounded analysis cannot be produced."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-CORE-037-ZH]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-EVAL-007",
+      "source_fixture_hash": "e04862466361065eaea79ee98d999048a85c3df8a6b2b4bf88895223c2049a22",
+      "blind_reconstruction": {
+        "decision_under_review": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "confirmed_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses",
+          "Identificar señales de riesgo sin elegir una ubicación."
+        ],
+        "unknowns": [
+          "La demanda futura no está confirmada"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Bound risk reasoning to: Norte tiene mayor coste fijo",
+          "Bound risk reasoning to: Sur depende de un proveedor externo",
+          "Preserve uncertainty: La demanda futura no está confirmada"
+        ],
+        "urgency": "TIME_CONSTRAINT_STATED",
+        "reversibility": "No irreversible action is established.",
+        "third_party_dependencies": [
+          "Sur depende de un proveedor externo"
+        ],
+        "privacy_concerns": [
+          "No identifiers are required."
+        ],
+        "forbidden_conclusions": [
+          "Selecting an option or inventing cost recurrence, outage, contractual resilience, deadlines, or certainty."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Reject invalid, unsafe, or out-of-scope material with a visible reason."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed when candidate validity cannot be established."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-EVAL-007]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-EVAL-008",
+      "source_fixture_hash": "580f745dd4c3dd2ee220b6a9a44dd0d9be2648f370b338dd433a362df8837a43",
+      "blind_reconstruction": {
+        "decision_under_review": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "confirmed_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses",
+          "Identificar señales de riesgo sin elegir una ubicación."
+        ],
+        "unknowns": [
+          "La demanda futura no está confirmada"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Bound risk reasoning to: Norte tiene mayor coste fijo",
+          "Bound risk reasoning to: Sur depende de un proveedor externo",
+          "Preserve uncertainty: La demanda futura no está confirmada"
+        ],
+        "urgency": "TIME_CONSTRAINT_STATED",
+        "reversibility": "No irreversible action is established.",
+        "third_party_dependencies": [
+          "Sur depende de un proveedor externo"
+        ],
+        "privacy_concerns": [
+          "No identifiers are required."
+        ],
+        "forbidden_conclusions": [
+          "Selecting an option or inventing cost recurrence, outage, contractual resilience, deadlines, or certainty."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Reject invalid, unsafe, or out-of-scope material with a visible reason."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed when candidate validity cannot be established."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-EVAL-008]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-EVAL-009",
+      "source_fixture_hash": "8c6e68e2303bb8e074880c8a0fc44a420eac459f8441cb4dee9a387272e9c416",
+      "blind_reconstruction": {
+        "decision_under_review": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "confirmed_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses",
+          "Identificar señales de riesgo sin elegir una ubicación."
+        ],
+        "unknowns": [
+          "La demanda futura no está confirmada"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Bound risk reasoning to: Norte tiene mayor coste fijo",
+          "Bound risk reasoning to: Sur depende de un proveedor externo",
+          "Preserve uncertainty: La demanda futura no está confirmada"
+        ],
+        "urgency": "TIME_CONSTRAINT_STATED",
+        "reversibility": "No irreversible action is established.",
+        "third_party_dependencies": [
+          "Sur depende de un proveedor externo"
+        ],
+        "privacy_concerns": [
+          "No identifiers are required."
+        ],
+        "forbidden_conclusions": [
+          "Selecting an option or inventing cost recurrence, outage, contractual resilience, deadlines, or certainty."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Reject invalid, unsafe, or out-of-scope material with a visible reason."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed when candidate validity cannot be established."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-EVAL-009]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-EVAL-010",
+      "source_fixture_hash": "01f861e2eeb2905f1b69d36b9a78c30934eb5e244fa8e900d73af6ee923e9943",
+      "blind_reconstruction": {
+        "decision_under_review": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "confirmed_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses",
+          "Identificar señales de riesgo sin elegir una ubicación."
+        ],
+        "unknowns": [
+          "La demanda futura no está confirmada"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Bound risk reasoning to: Norte tiene mayor coste fijo",
+          "Bound risk reasoning to: Sur depende de un proveedor externo",
+          "Preserve uncertainty: La demanda futura no está confirmada"
+        ],
+        "urgency": "TIME_CONSTRAINT_STATED",
+        "reversibility": "No irreversible action is established.",
+        "third_party_dependencies": [
+          "Sur depende de un proveedor externo"
+        ],
+        "privacy_concerns": [
+          "No identifiers are required."
+        ],
+        "forbidden_conclusions": [
+          "Selecting an option or inventing cost recurrence, outage, contractual resilience, deadlines, or certainty."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Reject invalid, unsafe, or out-of-scope material with a visible reason."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed when candidate validity cannot be established."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-EVAL-010]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-EVAL-017",
+      "source_fixture_hash": "16ba65b337516bfe731176ac2d13112235b6633be58079eb314f64ff1dda52d3",
+      "blind_reconstruction": {
+        "decision_under_review": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "confirmed_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses",
+          "Identificar señales de riesgo sin elegir una ubicación."
+        ],
+        "unknowns": [
+          "La demanda futura no está confirmada"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Bound risk reasoning to: Norte tiene mayor coste fijo",
+          "Bound risk reasoning to: Sur depende de un proveedor externo",
+          "Preserve uncertainty: La demanda futura no está confirmada"
+        ],
+        "urgency": "TIME_CONSTRAINT_STATED",
+        "reversibility": "No irreversible action is established.",
+        "third_party_dependencies": [
+          "Sur depende de un proveedor externo"
+        ],
+        "privacy_concerns": [
+          "No identifiers are required."
+        ],
+        "forbidden_conclusions": [
+          "Selecting an option or inventing cost recurrence, outage, contractual resilience, deadlines, or certainty."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Reject invalid, unsafe, or out-of-scope material with a visible reason."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed when candidate validity cannot be established."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-EVAL-017]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-EVAL-018",
+      "source_fixture_hash": "67ea3b0dfba185940b140b91695bf286bb3dfe0f2d0f79480a85bcbd20b9be4d",
+      "blind_reconstruction": {
+        "decision_under_review": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "confirmed_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses",
+          "Identificar señales de riesgo sin elegir una ubicación."
+        ],
+        "unknowns": [
+          "La demanda futura no está confirmada"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Bound risk reasoning to: Norte tiene mayor coste fijo",
+          "Bound risk reasoning to: Sur depende de un proveedor externo",
+          "Preserve uncertainty: La demanda futura no está confirmada"
+        ],
+        "urgency": "TIME_CONSTRAINT_STATED",
+        "reversibility": "No irreversible action is established.",
+        "third_party_dependencies": [
+          "Sur depende de un proveedor externo"
+        ],
+        "privacy_concerns": [
+          "No identifiers are required."
+        ],
+        "forbidden_conclusions": [
+          "Selecting an option or inventing cost recurrence, outage, contractual resilience, deadlines, or certainty."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Reject invalid, unsafe, or out-of-scope material with a visible reason."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed when candidate validity cannot be established."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-EVAL-018]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-EVAL-029",
+      "source_fixture_hash": "bd9a1a031e84e2e51f4c7749a7f69aa5aa3629b7f9e8a9aff1963ddfd7770851",
+      "blind_reconstruction": {
+        "decision_under_review": "Escenario ficticio controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado ",
+        "confirmed_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses",
+          "Evaluar señales acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acota"
+        ],
+        "unknowns": [
+          "La demanda futura no está confirmada"
+        ],
+        "contradictions": [],
+        "risks": [
+          "Bound risk reasoning to: Norte tiene mayor coste fijo",
+          "Bound risk reasoning to: Sur depende de un proveedor externo",
+          "Preserve uncertainty: La demanda futura no está confirmada"
+        ],
+        "urgency": "TIME_CONSTRAINT_STATED",
+        "reversibility": "No irreversible action is established.",
+        "third_party_dependencies": [
+          "Sur depende de un proveedor externo"
+        ],
+        "privacy_concerns": [
+          "No identifiers are required."
+        ],
+        "forbidden_conclusions": [
+          "Selecting an option or inventing cost recurrence, outage, contractual resilience, deadlines, or certainty."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Reject invalid, unsafe, or out-of-scope material with a visible reason."
+        ],
+        "required_controlled_failure_behavior": [
+          "Fail closed when candidate validity cannot be established."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-EVAL-029]"
+      ],
+      "issue_codes": []
+    },
+    {
+      "fixture_id": "S9-MATERIAL-020",
+      "source_fixture_hash": "f9ebae1cd300d927cc4724efdb5db571230b76d62108b220c8a66926713a6e59",
+      "blind_reconstruction": {
+        "decision_under_review": "Validate provider-candidate decision material without granting it product authority.",
+        "confirmed_facts": [
+          "Candidate item count: 1.",
+          "candidate_bad_evidence: La organización ficticia compara dos ubicaciones operativas."
+        ],
+        "constraints": [
+          "Candidate-only authority.",
+          "Contract 1.0."
+        ],
+        "unknowns": [
+          "No independent user-fact substrate is supplied."
+        ],
+        "contradictions": [],
+        "risks": [
+          "Invalid evidence, schema, provenance, or references could contaminate future composition."
+        ],
+        "urgency": "NONE_STATED",
+        "reversibility": "No user commitment is established.",
+        "third_party_dependencies": [
+          "Provider-candidate material remains non-authoritative."
+        ],
+        "privacy_concerns": [
+          "No real personal data; minimum-necessary handling still applies."
+        ],
+        "forbidden_conclusions": [
+          "Treating candidate material as verified fact.",
+          "Silently dropping an observed item."
+        ],
+        "required_clarification_or_controlled_failure_behavior": [
+          "Reject invalid items with a ledger disposition and fail closed on critical contract failure."
+        ],
+        "required_controlled_failure_behavior": [
+          "Do not compose material whose validity cannot be established."
+        ]
+      },
+      "confidence": 0.94,
+      "rationale": "The reconstruction uses only the frozen blind source packet and distinguishes stated facts, unknowns, risks, privacy, forbidden inference, and safe failure behavior.",
+      "evidence_references": [
+        "blind-packets.json#packets[fixture_id=S9-MATERIAL-020]"
+      ],
+      "issue_codes": []
+    }
+  ]
+}

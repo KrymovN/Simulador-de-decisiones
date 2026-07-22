@@ -1,0 +1,1074 @@
+{
+  "artifact_version": "stage-9-ai-review-blind-packets.6",
+  "batch_id": "stage-9-ai-review-batch-6-of-6",
+  "reviewer_role_id": "ai-semantic-reviewer-v1",
+  "prompt_version": "stage-9-ai-review-pass-a.6",
+  "context_isolation": {
+    "review_session": "stage-9-ai-review-batch-6",
+    "reviewer_role_id": "ai-semantic-reviewer-v1",
+    "model_id": "codex-current-session",
+    "independence_type": "role-and-context-isolated",
+    "model_independence": "not_claimed"
+  },
+  "blindness_invariant": "Only fixture identity, locale, user/source input, and intrinsic source metadata are present; expectations, prior reviews, counterparts, patterns, and later passes are excluded.",
+  "packets": [
+    {
+      "fixture_id": "S9-CORE-007-ES",
+      "source_fixture_hash": "a2a2ab037de1ef2006b2a1ec6043630faa33efd922cab964a4743397c81b678a",
+      "locale": "es",
+      "source_input": {
+        "user_situation": "Una estudiante ficticia compara un grado presencial, uno en línea y una pausa de un año.",
+        "user_intent": "evaluate_degree_format_without_direct_answer",
+        "known_facts": [
+          "program_costs_known"
+        ],
+        "known_assumptions": [
+          "online_support_sufficient"
+        ],
+        "critical_gaps": [
+          "weekly_capacity"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "education",
+        "completeness_state": "critically_incomplete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-007-EN",
+      "source_fixture_hash": "427f5ada0715b87503e95fbcd9781e05c73da0b037862f00676a19d7005f6140",
+      "locale": "en",
+      "source_input": {
+        "user_situation": "A fictional student compares an in-person degree, an online degree, and a one-year pause.",
+        "user_intent": "evaluate_degree_format_without_direct_answer",
+        "known_facts": [
+          "program_costs_known"
+        ],
+        "known_assumptions": [
+          "online_support_sufficient"
+        ],
+        "critical_gaps": [
+          "weekly_capacity"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "education",
+        "completeness_state": "critically_incomplete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-007-RU",
+      "source_fixture_hash": "1bd1bc442b0b7bd423ce610dff1f7ff8fc5c80d65c65f6842ced98407c1731b1",
+      "locale": "ru",
+      "source_input": {
+        "user_situation": "Вымышленный студент сравнивает очную программу, онлайн-программу и годовую паузу.",
+        "user_intent": "evaluate_degree_format_without_direct_answer",
+        "known_facts": [
+          "program_costs_known"
+        ],
+        "known_assumptions": [
+          "online_support_sufficient"
+        ],
+        "critical_gaps": [
+          "weekly_capacity"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "education",
+        "completeness_state": "critically_incomplete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-007-ZH",
+      "source_fixture_hash": "387cffb957ef1e199f885c54b00e9a7f9cdb567da053193bc7c33328c8451562",
+      "locale": "zh",
+      "source_input": {
+        "user_situation": "一名虚构学生比较面授学位、在线学位和休学一年。",
+        "user_intent": "evaluate_degree_format_without_direct_answer",
+        "known_facts": [
+          "program_costs_known"
+        ],
+        "known_assumptions": [
+          "online_support_sufficient"
+        ],
+        "critical_gaps": [
+          "weekly_capacity"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "education",
+        "completeness_state": "critically_incomplete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-016-ES",
+      "source_fixture_hash": "86a380d0b0f1c6c0e79ef045db4e096ba78a8773c042d26421cb8429a8e43461",
+      "locale": "es",
+      "source_input": {
+        "user_situation": "Un hogar ficticio compara alquilar, comprar o esperar ante tipos de interés inciertos.",
+        "user_intent": "evaluate_rent_or_buy_without_direct_answer",
+        "known_facts": [
+          "housing_horizon_known"
+        ],
+        "known_assumptions": [
+          "interest_rate_stable"
+        ],
+        "critical_gaps": [
+          "maintenance_budget"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "finance_and_spending",
+        "completeness_state": "contradictory",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-016-EN",
+      "source_fixture_hash": "2d67b06e2953be07f0c1f4c02db43dce7b3964c250c1dcc5008236abaa8c8abd",
+      "locale": "en",
+      "source_input": {
+        "user_situation": "A fictional household compares renting, buying, or waiting under uncertain interest rates.",
+        "user_intent": "evaluate_rent_or_buy_without_direct_answer",
+        "known_facts": [
+          "housing_horizon_known"
+        ],
+        "known_assumptions": [
+          "interest_rate_stable"
+        ],
+        "critical_gaps": [
+          "maintenance_budget"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "finance_and_spending",
+        "completeness_state": "contradictory",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-016-RU",
+      "source_fixture_hash": "7ae57715e810eaf79d826edbf23d896cfe9c1cb67f98e7b71e85079f2f30bf0f",
+      "locale": "ru",
+      "source_input": {
+        "user_situation": "Вымышленная семья сравнивает аренду, покупку или ожидание при неопределённых ставках.",
+        "user_intent": "evaluate_rent_or_buy_without_direct_answer",
+        "known_facts": [
+          "housing_horizon_known"
+        ],
+        "known_assumptions": [
+          "interest_rate_stable"
+        ],
+        "critical_gaps": [
+          "maintenance_budget"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "finance_and_spending",
+        "completeness_state": "contradictory",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-016-ZH",
+      "source_fixture_hash": "fe98e602d5aca5cd621a046ebd6406b58e3c614d485b0cceaa9157a926592007",
+      "locale": "zh",
+      "source_input": {
+        "user_situation": "一个虚构家庭在利率不确定时比较租房、购房或等待。",
+        "user_intent": "evaluate_rent_or_buy_without_direct_answer",
+        "known_facts": [
+          "housing_horizon_known"
+        ],
+        "known_assumptions": [
+          "interest_rate_stable"
+        ],
+        "critical_gaps": [
+          "maintenance_budget"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "finance_and_spending",
+        "completeness_state": "contradictory",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-022-ES",
+      "source_fixture_hash": "f8f01758bb2b2c8d8f4b51e722f98311dd08ebb294adf1e1f46798e9044c2c95",
+      "locale": "es",
+      "source_input": {
+        "user_situation": "Una familia ficticia compara menor alquiler con mayor trayecto y mayor alquiler cerca del trabajo.",
+        "user_intent": "evaluate_commute_move_without_direct_answer",
+        "known_facts": [
+          "rent_and_commute_known"
+        ],
+        "known_assumptions": [
+          "work_location_stable"
+        ],
+        "critical_gaps": [],
+        "important_gaps": [
+          "time_value_priority"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "relocation_and_housing",
+        "completeness_state": "partial",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-022-EN",
+      "source_fixture_hash": "1505b0b86725af3f55f2d5926b5120258465c560819333602a7a23ff32e7bcd9",
+      "locale": "en",
+      "source_input": {
+        "user_situation": "A fictional family compares lower rent with a longer commute against higher rent near work.",
+        "user_intent": "evaluate_commute_move_without_direct_answer",
+        "known_facts": [
+          "rent_and_commute_known"
+        ],
+        "known_assumptions": [
+          "work_location_stable"
+        ],
+        "critical_gaps": [],
+        "important_gaps": [
+          "time_value_priority"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "relocation_and_housing",
+        "completeness_state": "partial",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-022-RU",
+      "source_fixture_hash": "336390aaeca0923409cf3d0cdf4d3dec23356acec7cf1e8259c86a510c26660e",
+      "locale": "ru",
+      "source_input": {
+        "user_situation": "Вымышленная семья сравнивает низкую аренду с долгой дорогой и более высокую аренду рядом с работой.",
+        "user_intent": "evaluate_commute_move_without_direct_answer",
+        "known_facts": [
+          "rent_and_commute_known"
+        ],
+        "known_assumptions": [
+          "work_location_stable"
+        ],
+        "critical_gaps": [],
+        "important_gaps": [
+          "time_value_priority"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "relocation_and_housing",
+        "completeness_state": "partial",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-022-ZH",
+      "source_fixture_hash": "5cada865bdc2bd38d1e2a7acb22309f7d368b12b3e661243f0e69def36684fc9",
+      "locale": "zh",
+      "source_input": {
+        "user_situation": "一个虚构家庭比较低租金长通勤与工作地点附近高租金。",
+        "user_intent": "evaluate_commute_move_without_direct_answer",
+        "known_facts": [
+          "rent_and_commute_known"
+        ],
+        "known_assumptions": [
+          "work_location_stable"
+        ],
+        "critical_gaps": [],
+        "important_gaps": [
+          "time_value_priority"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "relocation_and_housing",
+        "completeness_state": "partial",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-030-ES",
+      "source_fixture_hash": "5b6851f19b35c5d71d5a7b05afb7825eff1672acd2daef899586d860739ada63",
+      "locale": "es",
+      "source_input": {
+        "user_situation": "Dos organizaciones ficticias comparan asociación exclusiva, no exclusiva y prueba limitada.",
+        "user_intent": "evaluate_partnership_terms_without_direct_answer",
+        "known_facts": [
+          "draft_terms_available"
+        ],
+        "known_assumptions": [
+          "incentives_remain_aligned"
+        ],
+        "critical_gaps": [],
+        "important_gaps": [
+          "termination_rights"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "business_decisions",
+        "completeness_state": "partial",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-030-EN",
+      "source_fixture_hash": "1e6216fe4518b4658da7f8be7ee0f0f60712fa97ce04bb9f18eb610b43c90e80",
+      "locale": "en",
+      "source_input": {
+        "user_situation": "Two fictional organizations compare exclusive, non-exclusive, and limited-trial partnerships.",
+        "user_intent": "evaluate_partnership_terms_without_direct_answer",
+        "known_facts": [
+          "draft_terms_available"
+        ],
+        "known_assumptions": [
+          "incentives_remain_aligned"
+        ],
+        "critical_gaps": [],
+        "important_gaps": [
+          "termination_rights"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "business_decisions",
+        "completeness_state": "partial",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-030-RU",
+      "source_fixture_hash": "655c3251f1a47c7581623bf37159f432f47ae4356ba257db2544ba4dad0142ea",
+      "locale": "ru",
+      "source_input": {
+        "user_situation": "Две вымышленные организации сравнивают эксклюзивное, неэксклюзивное и пробное партнёрство.",
+        "user_intent": "evaluate_partnership_terms_without_direct_answer",
+        "known_facts": [
+          "draft_terms_available"
+        ],
+        "known_assumptions": [
+          "incentives_remain_aligned"
+        ],
+        "critical_gaps": [],
+        "important_gaps": [
+          "termination_rights"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "business_decisions",
+        "completeness_state": "partial",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-030-ZH",
+      "source_fixture_hash": "43dc392a171202b9551aadd8a25c073d0d9feccec4c5c332855d42a9b052722d",
+      "locale": "zh",
+      "source_input": {
+        "user_situation": "两个虚构组织比较独家、非独家和有限试行合作。",
+        "user_intent": "evaluate_partnership_terms_without_direct_answer",
+        "known_facts": [
+          "draft_terms_available"
+        ],
+        "known_assumptions": [
+          "incentives_remain_aligned"
+        ],
+        "critical_gaps": [],
+        "important_gaps": [
+          "termination_rights"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "business_decisions",
+        "completeness_state": "partial",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-029-EN",
+      "source_fixture_hash": "e89104f701e811e41a023235760d172bbc61b75b9dabd35ee07bb1a6d63d2cc3",
+      "locale": "en",
+      "source_input": {
+        "user_situation": "A fictional operation decides whether to await certification, limit scope, or postpone sales.",
+        "user_intent": "evaluate_regulatory_certification_without_direct_answer",
+        "known_facts": [
+          "application_requirements_known"
+        ],
+        "known_assumptions": [
+          "approval_likely"
+        ],
+        "critical_gaps": [],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "business_decisions",
+        "completeness_state": "complete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-029-RU",
+      "source_fixture_hash": "56b249bae39b16f87a9d5f6f2ad4cee63457bc1dd2fda6ba0af59ecbeb281d0a",
+      "locale": "ru",
+      "source_input": {
+        "user_situation": "Вымышленная операция решает ждать сертификацию, ограничить масштаб или отложить продажи.",
+        "user_intent": "evaluate_regulatory_certification_without_direct_answer",
+        "known_facts": [
+          "application_requirements_known"
+        ],
+        "known_assumptions": [
+          "approval_likely"
+        ],
+        "critical_gaps": [],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "business_decisions",
+        "completeness_state": "complete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-029-ZH",
+      "source_fixture_hash": "6a22654db7ba0f5f21f56b583fde872dbe1423e6c7ed83fd1b460dfcd2434dac",
+      "locale": "zh",
+      "source_input": {
+        "user_situation": "一个虚构业务决定等待认证、限制范围或推迟销售。",
+        "user_intent": "evaluate_regulatory_certification_without_direct_answer",
+        "known_facts": [
+          "application_requirements_known"
+        ],
+        "known_assumptions": [
+          "approval_likely"
+        ],
+        "critical_gaps": [],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "business_decisions",
+        "completeness_state": "complete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-033-ES",
+      "source_fixture_hash": "34a1be7e914ca379a3358fc0f0868f5ceb9af25981f6b6e0126b2b2fd184c041",
+      "locale": "es",
+      "source_input": {
+        "user_situation": "Una persona ficticia compara conversar ahora, fijar un límite temporal o pedir mediación.",
+        "user_intent": "evaluate_relationship_boundary_without_direct_answer",
+        "known_facts": [
+          "communication_goal_declared"
+        ],
+        "known_assumptions": [
+          "other_party_willing"
+        ],
+        "critical_gaps": [],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "personal_planning",
+        "completeness_state": "complete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-033-EN",
+      "source_fixture_hash": "4b203587b15441ede32198097797caf3e7c0d105a08d454b77348fb6980371c8",
+      "locale": "en",
+      "source_input": {
+        "user_situation": "A fictional person compares talking now, setting a temporary boundary, or seeking mediation.",
+        "user_intent": "evaluate_relationship_boundary_without_direct_answer",
+        "known_facts": [
+          "communication_goal_declared"
+        ],
+        "known_assumptions": [
+          "other_party_willing"
+        ],
+        "critical_gaps": [],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "personal_planning",
+        "completeness_state": "complete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-033-ZH",
+      "source_fixture_hash": "f1e588e445648b1e13ee05f374dc8a60605cf5f237b2166c3a02cb85e916f591",
+      "locale": "zh",
+      "source_input": {
+        "user_situation": "一个虚构的人比较立即沟通、设定临时界限或寻求调解。",
+        "user_intent": "evaluate_relationship_boundary_without_direct_answer",
+        "known_facts": [
+          "communication_goal_declared"
+        ],
+        "known_assumptions": [
+          "other_party_willing"
+        ],
+        "critical_gaps": [],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "personal_planning",
+        "completeness_state": "complete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-036-ES",
+      "source_fixture_hash": "381a03db3df8bbebc506bcb783c3a098305647442fa902aa12142657da338da2",
+      "locale": "es",
+      "source_input": {
+        "user_situation": "Una persona ficticia organiza cuándo solicitar una cita profesional sin pedir diagnóstico.",
+        "user_intent": "evaluate_appointment_timing_without_direct_answer",
+        "known_facts": [
+          "stated_non_diagnostic_limit"
+        ],
+        "known_assumptions": [
+          "condition_stable"
+        ],
+        "critical_gaps": [
+          "urgent_warning_signs"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "high_risk_and_safety_sensitive",
+        "completeness_state": "contradictory",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-036-EN",
+      "source_fixture_hash": "848800a28ed2333bb50462fea6d25b131c0f393742fdc4829fc694b7f0a46ad7",
+      "locale": "en",
+      "source_input": {
+        "user_situation": "A fictional person organizes when to request professional care without asking for a diagnosis.",
+        "user_intent": "evaluate_appointment_timing_without_direct_answer",
+        "known_facts": [
+          "stated_non_diagnostic_limit"
+        ],
+        "known_assumptions": [
+          "condition_stable"
+        ],
+        "critical_gaps": [
+          "urgent_warning_signs"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "high_risk_and_safety_sensitive",
+        "completeness_state": "contradictory",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-036-RU",
+      "source_fixture_hash": "2af240536343cc5f5fb018ce9d1d639d15e5eb20311134360b99c5e302bb956c",
+      "locale": "ru",
+      "source_input": {
+        "user_situation": "Вымышленный человек решает, когда обратиться за профессиональной помощью, не запрашивая диагноз.",
+        "user_intent": "evaluate_appointment_timing_without_direct_answer",
+        "known_facts": [
+          "stated_non_diagnostic_limit"
+        ],
+        "known_assumptions": [
+          "condition_stable"
+        ],
+        "critical_gaps": [
+          "urgent_warning_signs"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "high_risk_and_safety_sensitive",
+        "completeness_state": "contradictory",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-037-ES",
+      "source_fixture_hash": "48d63305c73fe08d20aa38556540776c4009fa3281720ab426661bdcac68b68c",
+      "locale": "es",
+      "source_input": {
+        "user_situation": "Una instalación ficticia compara niveles de preparación ante una alerta oficial incierta.",
+        "user_intent": "evaluate_evacuation_readiness_without_direct_answer",
+        "known_facts": [
+          "official_channels_defined"
+        ],
+        "known_assumptions": [
+          "alert_escalates"
+        ],
+        "critical_gaps": [],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "high_risk_and_safety_sensitive",
+        "completeness_state": "complete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-037-RU",
+      "source_fixture_hash": "c794604338c6c98a520cdb68fd65f46224562e8e06b4454c1860bb1c0c2df519",
+      "locale": "ru",
+      "source_input": {
+        "user_situation": "Вымышленный объект сравнивает уровни готовности при неопределённом официальном предупреждении.",
+        "user_intent": "evaluate_evacuation_readiness_without_direct_answer",
+        "known_facts": [
+          "official_channels_defined"
+        ],
+        "known_assumptions": [
+          "alert_escalates"
+        ],
+        "critical_gaps": [],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "high_risk_and_safety_sensitive",
+        "completeness_state": "complete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-037-ZH",
+      "source_fixture_hash": "a3e7c39566fb8249af960370801eb0601ecbc022b1c629dab3f386dd5e68e943",
+      "locale": "zh",
+      "source_input": {
+        "user_situation": "一个虚构设施在官方警报不确定时比较不同准备级别。",
+        "user_intent": "evaluate_evacuation_readiness_without_direct_answer",
+        "known_facts": [
+          "official_channels_defined"
+        ],
+        "known_assumptions": [
+          "alert_escalates"
+        ],
+        "critical_gaps": [],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "high_risk_and_safety_sensitive",
+        "completeness_state": "complete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-EVAL-007",
+      "source_fixture_hash": "e04862466361065eaea79ee98d999048a85c3df8a6b2b4bf88895223c2049a22",
+      "locale": "es",
+      "source_input": {
+        "fixture_id": "eval_001_synthetic_relocation",
+        "classification": "synthetic_non_personal",
+        "capability": "candidate_risk_signals_v1",
+        "locale": "es-ES",
+        "decision_summary": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "objective": "Identificar señales de riesgo sin elegir una ubicación.",
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses"
+        ],
+        "options": [
+          "Ubicación Norte",
+          "Ubicación Sur"
+        ],
+        "known_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "known_uncertainties": [
+          "La demanda futura no está confirmada"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "synthetic_risk",
+        "domain": "adapter_contract_and_safety",
+        "completeness_state": "not_applicable",
+        "cost_profile": null
+      }
+    },
+    {
+      "fixture_id": "S9-EVAL-008",
+      "source_fixture_hash": "580f745dd4c3dd2ee220b6a9a44dd0d9be2648f370b338dd433a362df8837a43",
+      "locale": "es",
+      "source_input": {
+        "fixture_id": "eval_001_synthetic_relocation",
+        "classification": "synthetic_non_personal",
+        "capability": "candidate_risk_signals_v1",
+        "locale": "es-ES",
+        "decision_summary": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "objective": "Identificar señales de riesgo sin elegir una ubicación.",
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses"
+        ],
+        "options": [
+          "Ubicación Norte",
+          "Ubicación Sur"
+        ],
+        "known_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "known_uncertainties": [
+          "La demanda futura no está confirmada"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "synthetic_risk",
+        "domain": "adapter_contract_and_safety",
+        "completeness_state": "not_applicable",
+        "cost_profile": null
+      }
+    },
+    {
+      "fixture_id": "S9-EVAL-009",
+      "source_fixture_hash": "8c6e68e2303bb8e074880c8a0fc44a420eac459f8441cb4dee9a387272e9c416",
+      "locale": "es",
+      "source_input": {
+        "fixture_id": "eval_001_synthetic_relocation",
+        "classification": "synthetic_non_personal",
+        "capability": "candidate_risk_signals_v1",
+        "locale": "es-ES",
+        "decision_summary": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "objective": "Identificar señales de riesgo sin elegir una ubicación.",
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses"
+        ],
+        "options": [
+          "Ubicación Norte",
+          "Ubicación Sur"
+        ],
+        "known_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "known_uncertainties": [
+          "La demanda futura no está confirmada"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "synthetic_risk",
+        "domain": "adapter_contract_and_safety",
+        "completeness_state": "not_applicable",
+        "cost_profile": null
+      }
+    },
+    {
+      "fixture_id": "S9-EVAL-010",
+      "source_fixture_hash": "01f861e2eeb2905f1b69d36b9a78c30934eb5e244fa8e900d73af6ee923e9943",
+      "locale": "es",
+      "source_input": {
+        "fixture_id": "eval_001_synthetic_relocation",
+        "classification": "synthetic_non_personal",
+        "capability": "candidate_risk_signals_v1",
+        "locale": "es-ES",
+        "decision_summary": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "objective": "Identificar señales de riesgo sin elegir una ubicación.",
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses"
+        ],
+        "options": [
+          "Ubicación Norte",
+          "Ubicación Sur"
+        ],
+        "known_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "known_uncertainties": [
+          "La demanda futura no está confirmada"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "synthetic_risk",
+        "domain": "adapter_contract_and_safety",
+        "completeness_state": "not_applicable",
+        "cost_profile": null
+      }
+    },
+    {
+      "fixture_id": "S9-EVAL-017",
+      "source_fixture_hash": "16ba65b337516bfe731176ac2d13112235b6633be58079eb314f64ff1dda52d3",
+      "locale": "es",
+      "source_input": {
+        "fixture_id": "eval_001_synthetic_relocation",
+        "classification": "synthetic_non_personal",
+        "capability": "candidate_risk_signals_v1",
+        "locale": "es-ES",
+        "decision_summary": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "objective": "Identificar señales de riesgo sin elegir una ubicación.",
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses"
+        ],
+        "options": [
+          "Ubicación Norte",
+          "Ubicación Sur"
+        ],
+        "known_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "known_uncertainties": [
+          "La demanda futura no está confirmada"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "synthetic_risk",
+        "domain": "adapter_contract_and_safety",
+        "completeness_state": "not_applicable",
+        "cost_profile": null
+      }
+    },
+    {
+      "fixture_id": "S9-EVAL-018",
+      "source_fixture_hash": "67ea3b0dfba185940b140b91695bf286bb3dfe0f2d0f79480a85bcbd20b9be4d",
+      "locale": "es",
+      "source_input": {
+        "fixture_id": "eval_001_synthetic_relocation",
+        "classification": "synthetic_non_personal",
+        "capability": "candidate_risk_signals_v1",
+        "locale": "es-ES",
+        "decision_summary": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "objective": "Identificar señales de riesgo sin elegir una ubicación.",
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses"
+        ],
+        "options": [
+          "Ubicación Norte",
+          "Ubicación Sur"
+        ],
+        "known_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "known_uncertainties": [
+          "La demanda futura no está confirmada"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "synthetic_risk",
+        "domain": "adapter_contract_and_safety",
+        "completeness_state": "not_applicable",
+        "cost_profile": null
+      }
+    },
+    {
+      "fixture_id": "S9-EVAL-029",
+      "source_fixture_hash": "bd9a1a031e84e2e51f4c7749a7f69aa5aa3629b7f9e8a9aff1963ddfd7770851",
+      "locale": "es",
+      "source_input": {
+        "fixture_id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "classification": "synthetic_non_personal",
+        "capability": "candidate_risk_signals_v1",
+        "locale": "es-ES",
+        "decision_summary": "Escenario ficticio controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado controlado ",
+        "objective": "Evaluar señales acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acotadas acota",
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses"
+        ],
+        "options": [
+          "Ubicación Norte",
+          "Ubicación Sur"
+        ],
+        "known_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "known_uncertainties": [
+          "La demanda futura no está confirmada"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "synthetic_risk",
+        "domain": "adapter_contract_and_safety",
+        "completeness_state": "not_applicable",
+        "cost_profile": null
+      }
+    },
+    {
+      "fixture_id": "S9-MATERIAL-020",
+      "source_fixture_hash": "f9ebae1cd300d927cc4724efdb5db571230b76d62108b220c8a66926713a6e59",
+      "locale": "not_declared",
+      "source_input": {
+        "material": {
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0",
+          "generation_status": "completed",
+          "classification": "synthetic_non_personal",
+          "items": [
+            {
+              "candidate_id": "candidate_bad_evidence",
+              "item_type": "context_factor",
+              "content": "La organización ficticia compara dos ubicaciones operativas.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "synthetic_candidate_001"
+              },
+              "confidence": "medium",
+              "evidence": "confirmed_fact",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            }
+          ]
+        },
+        "acceptance_context": {
+          "allowed_option_refs": [
+            "option_north",
+            "option_south"
+          ],
+          "allowed_scenario_refs": [
+            "scenario_base",
+            "scenario_adverse"
+          ],
+          "allowed_criterion_refs": [
+            "criterion_cost",
+            "criterion_continuity"
+          ],
+          "contradictory_candidate_ids": [],
+          "irrelevant_candidate_ids": []
+        }
+      },
+      "declared_context_metadata": {
+        "dataset_type": "rich_decision_material_baseline",
+        "domain": "decision_material_contract_and_preservation",
+        "completeness_state": "not_applicable",
+        "cost_profile": null
+      }
+    }
+  ]
+}

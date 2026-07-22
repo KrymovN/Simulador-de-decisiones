@@ -1,0 +1,1129 @@
+{
+  "artifact_version": "stage-9-ai-review-pass-b.6",
+  "batch_id": "stage-9-ai-review-batch-6-of-6",
+  "pass": "PASS_B_COMPARATIVE_SEMANTIC",
+  "reviewer_role_id": "ai-comparative-reviewer-v1",
+  "model_id": "codex-current-session",
+  "review_timestamp": "2026-07-22T15:00:00.000Z",
+  "context_isolation": {
+    "review_session": "stage-9-ai-review-batch-6",
+    "reviewer_role_id": "ai-comparative-reviewer-v1",
+    "model_id": "codex-current-session",
+    "independence_type": "role-and-context-isolated",
+    "model_independence": "not_claimed"
+  },
+  "prompt_version": "stage-9-ai-review-pass-b.6",
+  "immutable_input_packet": [
+    {
+      "path": "docs/qa/review/ai-batches/batch-6/selection.json",
+      "sha256": "bf3b7fcfa4dbdfab1bb9d6295a43a4c1a9ea9498a0c9710114559abe629a8c12"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-6/pass-a.json",
+      "sha256": "1882dfea7a65623cdff5ec4ea0220225efe4e0084fc1d8e356d78c739bac73b9"
+    },
+    {
+      "path": "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json",
+      "sha256": "5e95bfdf6b4626e681dbcead672c2d1463f7a14d5eacb5305b773dfa2655e65b"
+    }
+  ],
+  "frozen_semantic_input": "Pass A is consumed byte-for-byte and is never edited by Pass B.",
+  "results": [
+    {
+      "fixture_id": "S9-CORE-007-ES",
+      "source_fixture_hash": "a2a2ab037de1ef2006b2a1ec6043630faa33efd922cab964a4743397c81b678a",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "FOUND_IN_EXPECTATION",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_FAIL_MINOR",
+      "severity": "MEDIUM",
+      "confidence": 0.93,
+      "rationale": "Known program cost and unknown weekly capacity support affordability and completion analysis, but they do not establish borrowing or debt exposure.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-007-ES]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-007-ES]",
+        "pass-a.json#results[fixture_id=S9-CORE-007-ES]"
+      ],
+      "issue_codes": [
+        "UNSUPPORTED_DEBT_EXPOSURE_GROUND_TRUTH"
+      ],
+      "remediation_requirement": "Replace debt exposure with affordability pressure, or add an explicit financing or borrowing fact."
+    },
+    {
+      "fixture_id": "S9-CORE-007-EN",
+      "source_fixture_hash": "427f5ada0715b87503e95fbcd9781e05c73da0b037862f00676a19d7005f6140",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "FOUND_IN_EXPECTATION",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_FAIL_MINOR",
+      "severity": "MEDIUM",
+      "confidence": 0.93,
+      "rationale": "Known program cost and unknown weekly capacity support affordability and completion analysis, but they do not establish borrowing or debt exposure.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-007-EN]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-007-EN]",
+        "pass-a.json#results[fixture_id=S9-CORE-007-EN]"
+      ],
+      "issue_codes": [
+        "UNSUPPORTED_DEBT_EXPOSURE_GROUND_TRUTH"
+      ],
+      "remediation_requirement": "Replace debt exposure with affordability pressure, or add an explicit financing or borrowing fact."
+    },
+    {
+      "fixture_id": "S9-CORE-007-RU",
+      "source_fixture_hash": "1bd1bc442b0b7bd423ce610dff1f7ff8fc5c80d65c65f6842ced98407c1731b1",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "FOUND_IN_EXPECTATION",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_FAIL_MINOR",
+      "severity": "MEDIUM",
+      "confidence": 0.93,
+      "rationale": "Known program cost and unknown weekly capacity support affordability and completion analysis, but they do not establish borrowing or debt exposure.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-007-RU]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-007-RU]",
+        "pass-a.json#results[fixture_id=S9-CORE-007-RU]"
+      ],
+      "issue_codes": [
+        "UNSUPPORTED_DEBT_EXPOSURE_GROUND_TRUTH"
+      ],
+      "remediation_requirement": "Replace debt exposure with affordability pressure, or add an explicit financing or borrowing fact."
+    },
+    {
+      "fixture_id": "S9-CORE-007-ZH",
+      "source_fixture_hash": "387cffb957ef1e199f885c54b00e9a7f9cdb567da053193bc7c33328c8451562",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "FOUND_IN_EXPECTATION",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_FAIL_MINOR",
+      "severity": "MEDIUM",
+      "confidence": 0.93,
+      "rationale": "Known program cost and unknown weekly capacity support affordability and completion analysis, but they do not establish borrowing or debt exposure.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-007-ZH]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-007-ZH]",
+        "pass-a.json#results[fixture_id=S9-CORE-007-ZH]"
+      ],
+      "issue_codes": [
+        "UNSUPPORTED_DEBT_EXPOSURE_GROUND_TRUTH"
+      ],
+      "remediation_requirement": "Replace debt exposure with affordability pressure, or add an explicit financing or borrowing fact."
+    },
+    {
+      "fixture_id": "S9-CORE-016-ES",
+      "source_fixture_hash": "86a380d0b0f1c6c0e79ef045db4e096ba78a8773c042d26421cb8429a8e43461",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "DEFECT_OR_DISPUTE_FOUND",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "confidence": 0.98,
+      "rationale": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-016-ES]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-016-ES]",
+        "pass-a.json#results[fixture_id=S9-CORE-016-ES]"
+      ],
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+        "UNSUPPORTED_MOBILITY_LOSS_GROUND_TRUTH"
+      ],
+      "remediation_requirement": "Add explicit incompatible claims and a mobility constraint, or reclassify the case as critically incomplete and retain only source-supported risks."
+    },
+    {
+      "fixture_id": "S9-CORE-016-EN",
+      "source_fixture_hash": "2d67b06e2953be07f0c1f4c02db43dce7b3964c250c1dcc5008236abaa8c8abd",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "DEFECT_OR_DISPUTE_FOUND",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "confidence": 0.98,
+      "rationale": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-016-EN]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-016-EN]",
+        "pass-a.json#results[fixture_id=S9-CORE-016-EN]"
+      ],
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+        "UNSUPPORTED_MOBILITY_LOSS_GROUND_TRUTH"
+      ],
+      "remediation_requirement": "Add explicit incompatible claims and a mobility constraint, or reclassify the case as critically incomplete and retain only source-supported risks."
+    },
+    {
+      "fixture_id": "S9-CORE-016-RU",
+      "source_fixture_hash": "7ae57715e810eaf79d826edbf23d896cfe9c1cb67f98e7b71e85079f2f30bf0f",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "DEFECT_OR_DISPUTE_FOUND",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "confidence": 0.98,
+      "rationale": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-016-RU]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-016-RU]",
+        "pass-a.json#results[fixture_id=S9-CORE-016-RU]"
+      ],
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+        "UNSUPPORTED_MOBILITY_LOSS_GROUND_TRUTH"
+      ],
+      "remediation_requirement": "Add explicit incompatible claims and a mobility constraint, or reclassify the case as critically incomplete and retain only source-supported risks."
+    },
+    {
+      "fixture_id": "S9-CORE-016-ZH",
+      "source_fixture_hash": "fe98e602d5aca5cd621a046ebd6406b58e3c614d485b0cceaa9157a926592007",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "DEFECT_OR_DISPUTE_FOUND",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "confidence": 0.98,
+      "rationale": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-016-ZH]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-016-ZH]",
+        "pass-a.json#results[fixture_id=S9-CORE-016-ZH]"
+      ],
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+        "UNSUPPORTED_MOBILITY_LOSS_GROUND_TRUTH"
+      ],
+      "remediation_requirement": "Add explicit incompatible claims and a mobility constraint, or reclassify the case as critically incomplete and retain only source-supported risks."
+    },
+    {
+      "fixture_id": "S9-CORE-022-ES",
+      "source_fixture_hash": "f8f01758bb2b2c8d8f4b51e722f98311dd08ebb294adf1e1f46798e9044c2c95",
+      "comparative_assessment": {
+        "groundedness": "SUPPORTED",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "NOT_FOUND",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.97,
+      "rationale": "Known rent and commute differences, uncertain work-location stability, and missing time-value priority coherently support commute-fatigue and budget-pressure comparison with focused clarification.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-022-ES]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-022-ES]",
+        "pass-a.json#results[fixture_id=S9-CORE-022-ES]"
+      ],
+      "issue_codes": [],
+      "remediation_requirement": "NONE"
+    },
+    {
+      "fixture_id": "S9-CORE-022-EN",
+      "source_fixture_hash": "1505b0b86725af3f55f2d5926b5120258465c560819333602a7a23ff32e7bcd9",
+      "comparative_assessment": {
+        "groundedness": "SUPPORTED",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "NOT_FOUND",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.97,
+      "rationale": "Known rent and commute differences, uncertain work-location stability, and missing time-value priority coherently support commute-fatigue and budget-pressure comparison with focused clarification.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-022-EN]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-022-EN]",
+        "pass-a.json#results[fixture_id=S9-CORE-022-EN]"
+      ],
+      "issue_codes": [],
+      "remediation_requirement": "NONE"
+    },
+    {
+      "fixture_id": "S9-CORE-022-RU",
+      "source_fixture_hash": "336390aaeca0923409cf3d0cdf4d3dec23356acec7cf1e8259c86a510c26660e",
+      "comparative_assessment": {
+        "groundedness": "SUPPORTED",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "NOT_FOUND",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.97,
+      "rationale": "Known rent and commute differences, uncertain work-location stability, and missing time-value priority coherently support commute-fatigue and budget-pressure comparison with focused clarification.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-022-RU]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-022-RU]",
+        "pass-a.json#results[fixture_id=S9-CORE-022-RU]"
+      ],
+      "issue_codes": [],
+      "remediation_requirement": "NONE"
+    },
+    {
+      "fixture_id": "S9-CORE-022-ZH",
+      "source_fixture_hash": "5cada865bdc2bd38d1e2a7acb22309f7d368b12b3e661243f0e69def36684fc9",
+      "comparative_assessment": {
+        "groundedness": "SUPPORTED",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "NOT_FOUND",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.97,
+      "rationale": "Known rent and commute differences, uncertain work-location stability, and missing time-value priority coherently support commute-fatigue and budget-pressure comparison with focused clarification.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-022-ZH]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-022-ZH]",
+        "pass-a.json#results[fixture_id=S9-CORE-022-ZH]"
+      ],
+      "issue_codes": [],
+      "remediation_requirement": "NONE"
+    },
+    {
+      "fixture_id": "S9-CORE-030-ES",
+      "source_fixture_hash": "5b6851f19b35c5d71d5a7b05afb7825eff1672acd2daef899586d860739ada63",
+      "comparative_assessment": {
+        "groundedness": "SUPPORTED",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "NOT_FOUND",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.97,
+      "rationale": "Available draft terms, uncertain incentive alignment, and missing termination rights coherently support lock-in and governance-risk comparison without inventing a recommendation.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-030-ES]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-030-ES]",
+        "pass-a.json#results[fixture_id=S9-CORE-030-ES]"
+      ],
+      "issue_codes": [],
+      "remediation_requirement": "NONE"
+    },
+    {
+      "fixture_id": "S9-CORE-030-EN",
+      "source_fixture_hash": "1e6216fe4518b4658da7f8be7ee0f0f60712fa97ce04bb9f18eb610b43c90e80",
+      "comparative_assessment": {
+        "groundedness": "SUPPORTED",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "NOT_FOUND",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.97,
+      "rationale": "Available draft terms, uncertain incentive alignment, and missing termination rights coherently support lock-in and governance-risk comparison without inventing a recommendation.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-030-EN]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-030-EN]",
+        "pass-a.json#results[fixture_id=S9-CORE-030-EN]"
+      ],
+      "issue_codes": [],
+      "remediation_requirement": "NONE"
+    },
+    {
+      "fixture_id": "S9-CORE-030-RU",
+      "source_fixture_hash": "655c3251f1a47c7581623bf37159f432f47ae4356ba257db2544ba4dad0142ea",
+      "comparative_assessment": {
+        "groundedness": "SUPPORTED",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "NOT_FOUND",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.97,
+      "rationale": "Available draft terms, uncertain incentive alignment, and missing termination rights coherently support lock-in and governance-risk comparison without inventing a recommendation.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-030-RU]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-030-RU]",
+        "pass-a.json#results[fixture_id=S9-CORE-030-RU]"
+      ],
+      "issue_codes": [],
+      "remediation_requirement": "NONE"
+    },
+    {
+      "fixture_id": "S9-CORE-030-ZH",
+      "source_fixture_hash": "43dc392a171202b9551aadd8a25c073d0d9feccec4c5c332855d42a9b052722d",
+      "comparative_assessment": {
+        "groundedness": "SUPPORTED",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "NOT_FOUND",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.97,
+      "rationale": "Available draft terms, uncertain incentive alignment, and missing termination rights coherently support lock-in and governance-risk comparison without inventing a recommendation.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-030-ZH]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-030-ZH]",
+        "pass-a.json#results[fixture_id=S9-CORE-030-ZH]"
+      ],
+      "issue_codes": [],
+      "remediation_requirement": "NONE"
+    },
+    {
+      "fixture_id": "S9-CORE-029-EN",
+      "source_fixture_hash": "e89104f701e811e41a023235760d172bbc61b75b9dabd35ee07bb1a6d63d2cc3",
+      "comparative_assessment": {
+        "groundedness": "SUPPORTED",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "NOT_FOUND",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.96,
+      "rationale": "Known certification requirements and uncertain approval support bounded policy-breach and launch-delay analysis; the remaining locales preserve the source semantics.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-029-EN]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-029-EN]",
+        "pass-a.json#results[fixture_id=S9-CORE-029-EN]"
+      ],
+      "issue_codes": [],
+      "remediation_requirement": "NONE"
+    },
+    {
+      "fixture_id": "S9-CORE-029-RU",
+      "source_fixture_hash": "56b249bae39b16f87a9d5f6f2ad4cee63457bc1dd2fda6ba0af59ecbeb281d0a",
+      "comparative_assessment": {
+        "groundedness": "SUPPORTED",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "NOT_FOUND",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.96,
+      "rationale": "Known certification requirements and uncertain approval support bounded policy-breach and launch-delay analysis; the remaining locales preserve the source semantics.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-029-RU]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-029-RU]",
+        "pass-a.json#results[fixture_id=S9-CORE-029-RU]"
+      ],
+      "issue_codes": [],
+      "remediation_requirement": "NONE"
+    },
+    {
+      "fixture_id": "S9-CORE-029-ZH",
+      "source_fixture_hash": "6a22654db7ba0f5f21f56b583fde872dbe1423e6c7ed83fd1b460dfcd2434dac",
+      "comparative_assessment": {
+        "groundedness": "SUPPORTED",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "NOT_FOUND",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.96,
+      "rationale": "Known certification requirements and uncertain approval support bounded policy-breach and launch-delay analysis; the remaining locales preserve the source semantics.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-029-ZH]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-029-ZH]",
+        "pass-a.json#results[fixture_id=S9-CORE-029-ZH]"
+      ],
+      "issue_codes": [],
+      "remediation_requirement": "NONE"
+    },
+    {
+      "fixture_id": "S9-CORE-033-ES",
+      "source_fixture_hash": "34a1be7e914ca379a3358fc0f0868f5ceb9af25981f6b6e0126b2b2fd184c041",
+      "comparative_assessment": {
+        "groundedness": "SUPPORTED",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "NOT_FOUND",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.96,
+      "rationale": "The declared communication goal and uncertain willingness of the other party support conditional escalation and boundary-erosion analysis with privacy minimization.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-033-ES]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-033-ES]",
+        "pass-a.json#results[fixture_id=S9-CORE-033-ES]"
+      ],
+      "issue_codes": [],
+      "remediation_requirement": "NONE"
+    },
+    {
+      "fixture_id": "S9-CORE-033-EN",
+      "source_fixture_hash": "4b203587b15441ede32198097797caf3e7c0d105a08d454b77348fb6980371c8",
+      "comparative_assessment": {
+        "groundedness": "SUPPORTED",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "NOT_FOUND",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.96,
+      "rationale": "The declared communication goal and uncertain willingness of the other party support conditional escalation and boundary-erosion analysis with privacy minimization.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-033-EN]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-033-EN]",
+        "pass-a.json#results[fixture_id=S9-CORE-033-EN]"
+      ],
+      "issue_codes": [],
+      "remediation_requirement": "NONE"
+    },
+    {
+      "fixture_id": "S9-CORE-033-ZH",
+      "source_fixture_hash": "f1e588e445648b1e13ee05f374dc8a60605cf5f237b2166c3a02cb85e916f591",
+      "comparative_assessment": {
+        "groundedness": "SUPPORTED",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "NOT_FOUND",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.96,
+      "rationale": "The declared communication goal and uncertain willingness of the other party support conditional escalation and boundary-erosion analysis with privacy minimization.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-033-ZH]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-033-ZH]",
+        "pass-a.json#results[fixture_id=S9-CORE-033-ZH]"
+      ],
+      "issue_codes": [],
+      "remediation_requirement": "NONE"
+    },
+    {
+      "fixture_id": "S9-CORE-036-ES",
+      "source_fixture_hash": "381a03db3df8bbebc506bcb783c3a098305647442fa902aa12142657da338da2",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "DEFECT_OR_DISPUTE_FOUND",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "confidence": 0.98,
+      "rationale": "A non-diagnostic limit, a stability assumption, and missing urgent warning signs establish a critical safety gap but not two incompatible claims; contradiction reconciliation is therefore unsupported.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-036-ES]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-036-ES]",
+        "pass-a.json#results[fixture_id=S9-CORE-036-ES]"
+      ],
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED"
+      ],
+      "remediation_requirement": "Reclassify as critically incomplete and ask only about broad urgent-warning-sign categories, or add an explicit incompatible claim pair without requesting sensitive detail."
+    },
+    {
+      "fixture_id": "S9-CORE-036-EN",
+      "source_fixture_hash": "848800a28ed2333bb50462fea6d25b131c0f393742fdc4829fc694b7f0a46ad7",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "DEFECT_OR_DISPUTE_FOUND",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "confidence": 0.98,
+      "rationale": "A non-diagnostic limit, a stability assumption, and missing urgent warning signs establish a critical safety gap but not two incompatible claims; contradiction reconciliation is therefore unsupported.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-036-EN]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-036-EN]",
+        "pass-a.json#results[fixture_id=S9-CORE-036-EN]"
+      ],
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED"
+      ],
+      "remediation_requirement": "Reclassify as critically incomplete and ask only about broad urgent-warning-sign categories, or add an explicit incompatible claim pair without requesting sensitive detail."
+    },
+    {
+      "fixture_id": "S9-CORE-036-RU",
+      "source_fixture_hash": "2af240536343cc5f5fb018ce9d1d639d15e5eb20311134360b99c5e302bb956c",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "DEFECT_OR_DISPUTE_FOUND",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "confidence": 0.98,
+      "rationale": "A non-diagnostic limit, a stability assumption, and missing urgent warning signs establish a critical safety gap but not two incompatible claims; contradiction reconciliation is therefore unsupported.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-036-RU]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-036-RU]",
+        "pass-a.json#results[fixture_id=S9-CORE-036-RU]"
+      ],
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED"
+      ],
+      "remediation_requirement": "Reclassify as critically incomplete and ask only about broad urgent-warning-sign categories, or add an explicit incompatible claim pair without requesting sensitive detail."
+    },
+    {
+      "fixture_id": "S9-CORE-037-ES",
+      "source_fixture_hash": "48d63305c73fe08d20aa38556540776c4009fa3281720ab426661bdcac68b68c",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "DEFECT_OR_DISPUTE_FOUND",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_DISPUTED",
+      "severity": "HIGH",
+      "confidence": 0.82,
+      "rationale": "Official channels and alert uncertainty support readiness comparison, but the mandated no-action path and conditional recommendation are ambiguous in a low-probability high-harm context and could be interpreted as unsafe inaction.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-037-ES]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-037-ES]",
+        "pass-a.json#results[fixture_id=S9-CORE-037-ES]"
+      ],
+      "issue_codes": [
+        "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+        "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR"
+      ],
+      "remediation_requirement": "Define the no-action path as monitor-official-information while maintaining baseline readiness, and bound any conditional recommendation to official guidance."
+    },
+    {
+      "fixture_id": "S9-CORE-037-RU",
+      "source_fixture_hash": "c794604338c6c98a520cdb68fd65f46224562e8e06b4454c1860bb1c0c2df519",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "DEFECT_OR_DISPUTE_FOUND",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_DISPUTED",
+      "severity": "HIGH",
+      "confidence": 0.82,
+      "rationale": "Official channels and alert uncertainty support readiness comparison, but the mandated no-action path and conditional recommendation are ambiguous in a low-probability high-harm context and could be interpreted as unsafe inaction.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-037-RU]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-037-RU]",
+        "pass-a.json#results[fixture_id=S9-CORE-037-RU]"
+      ],
+      "issue_codes": [
+        "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+        "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR"
+      ],
+      "remediation_requirement": "Define the no-action path as monitor-official-information while maintaining baseline readiness, and bound any conditional recommendation to official guidance."
+    },
+    {
+      "fixture_id": "S9-CORE-037-ZH",
+      "source_fixture_hash": "a3e7c39566fb8249af960370801eb0601ecbc022b1c629dab3f386dd5e68e943",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "DEFECT_OR_DISPUTE_FOUND",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_DISPUTED",
+      "severity": "HIGH",
+      "confidence": 0.82,
+      "rationale": "Official channels and alert uncertainty support readiness comparison, but the mandated no-action path and conditional recommendation are ambiguous in a low-probability high-harm context and could be interpreted as unsafe inaction.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-CORE-037-ZH]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-037-ZH]",
+        "pass-a.json#results[fixture_id=S9-CORE-037-ZH]"
+      ],
+      "issue_codes": [
+        "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+        "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR"
+      ],
+      "remediation_requirement": "Define the no-action path as monitor-official-information while maintaining baseline readiness, and bound any conditional recommendation to official guidance."
+    },
+    {
+      "fixture_id": "S9-EVAL-007",
+      "source_fixture_hash": "e04862466361065eaea79ee98d999048a85c3df8a6b2b4bf88895223c2049a22",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "INVISIBLE_ORACLE_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "UNVERIFIABLE_TRIGGER"
+      },
+      "provisional_verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "confidence": 0.98,
+      "rationale": "The expected unknown nested field is absent from the versioned review source, so provider_schema_invalid depends on an invisible candidate defect.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-EVAL-007]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-EVAL-007]",
+        "pass-a.json#results[fixture_id=S9-EVAL-007]"
+      ],
+      "issue_codes": [
+        "UNSUPPORTED_INVISIBLE_SCHEMA_DEFECT_ORACLE"
+      ],
+      "remediation_requirement": "Expose the mutated nested candidate field in the fixture review source or remove the rejection oracle."
+    },
+    {
+      "fixture_id": "S9-EVAL-008",
+      "source_fixture_hash": "580f745dd4c3dd2ee220b6a9a44dd0d9be2648f370b338dd433a362df8837a43",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "FOUND_IN_EXPECTATION",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_FAIL_MINOR",
+      "severity": "MEDIUM",
+      "confidence": 0.95,
+      "rationale": "The invalid strategy category is visible and safely rejected, but recurrent cost, provider outage, contractual resilience, and capacity mechanisms exceed the stated source facts.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-EVAL-008]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-EVAL-008]",
+        "pass-a.json#results[fixture_id=S9-EVAL-008]"
+      ],
+      "issue_codes": [
+        "OVER_SPECIFIED_GROUNDED_RISK_MECHANISMS"
+      ],
+      "remediation_requirement": "Keep the visible invalid-category rejection and reduce risk mechanisms to higher fixed cost, external dependency, and unconfirmed demand."
+    },
+    {
+      "fixture_id": "S9-EVAL-009",
+      "source_fixture_hash": "8c6e68e2303bb8e074880c8a0fc44a420eac459f8441cb4dee9a387272e9c416",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "INVISIBLE_ORACLE_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "UNVERIFIABLE_TRIGGER"
+      },
+      "provisional_verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "confidence": 0.98,
+      "rationale": "No severity_hint field or invalid severity value appears in the versioned review source, so the schema rejection cannot be verified.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-EVAL-009]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-EVAL-009]",
+        "pass-a.json#results[fixture_id=S9-EVAL-009]"
+      ],
+      "issue_codes": [
+        "UNSUPPORTED_INVISIBLE_SCHEMA_DEFECT_ORACLE"
+      ],
+      "remediation_requirement": "Expose the invalid severity field in the review source or remove the unsupported rejection oracle."
+    },
+    {
+      "fixture_id": "S9-EVAL-010",
+      "source_fixture_hash": "01f861e2eeb2905f1b69d36b9a78c30934eb5e244fa8e900d73af6ee923e9943",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "INVISIBLE_ORACLE_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "UNVERIFIABLE_TRIGGER"
+      },
+      "provisional_verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "confidence": 0.98,
+      "rationale": "No likelihood_hint field or invalid likelihood value appears in the versioned review source, so the schema rejection cannot be verified.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-EVAL-010]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-EVAL-010]",
+        "pass-a.json#results[fixture_id=S9-EVAL-010]"
+      ],
+      "issue_codes": [
+        "UNSUPPORTED_INVISIBLE_SCHEMA_DEFECT_ORACLE"
+      ],
+      "remediation_requirement": "Expose the invalid likelihood field in the review source or remove the unsupported rejection oracle."
+    },
+    {
+      "fixture_id": "S9-EVAL-017",
+      "source_fixture_hash": "16ba65b337516bfe731176ac2d13112235b6633be58079eb314f64ff1dda52d3",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "FOUND_IN_EXPECTATION",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_FAIL_MINOR",
+      "severity": "MEDIUM",
+      "confidence": 0.95,
+      "rationale": "Assistant-chat language is visibly and correctly rejected, but the remaining recurrent-cost, outage, contractual-resilience, and capacity mechanisms exceed the source.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-EVAL-017]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-EVAL-017]",
+        "pass-a.json#results[fixture_id=S9-EVAL-017]"
+      ],
+      "issue_codes": [
+        "OVER_SPECIFIED_GROUNDED_RISK_MECHANISMS"
+      ],
+      "remediation_requirement": "Preserve the safety rejection while grounding the unaffected risk mechanisms directly in stated facts and uncertainty."
+    },
+    {
+      "fixture_id": "S9-EVAL-018",
+      "source_fixture_hash": "67ea3b0dfba185940b140b91695bf286bb3dfe0f2d0f79480a85bcbd20b9be4d",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "FOUND_IN_EXPECTATION",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_FAIL_MINOR",
+      "severity": "MEDIUM",
+      "confidence": 0.95,
+      "rationale": "The unsupported guarantee is visibly and correctly rejected, but the remaining recurrent-cost, outage, contractual-resilience, and capacity mechanisms exceed the source.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-EVAL-018]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-EVAL-018]",
+        "pass-a.json#results[fixture_id=S9-EVAL-018]"
+      ],
+      "issue_codes": [
+        "OVER_SPECIFIED_GROUNDED_RISK_MECHANISMS"
+      ],
+      "remediation_requirement": "Preserve the safety rejection while grounding the unaffected risk mechanisms directly in stated facts and uncertainty."
+    },
+    {
+      "fixture_id": "S9-EVAL-029",
+      "source_fixture_hash": "bd9a1a031e84e2e51f4c7749a7f69aa5aa3629b7f9e8a9aff1963ddfd7770851",
+      "comparative_assessment": {
+        "groundedness": "DEFECT_OR_DISPUTE_FOUND",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "FOUND_IN_EXPECTATION",
+        "unsupported_reference_behavior": "FOUND_OR_DISPUTED",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_FAIL_MINOR",
+      "severity": "MEDIUM",
+      "confidence": 0.95,
+      "rationale": "The near-limit input is valid, but the accepted output strengthens higher fixed cost and external dependency into recurrent-cost, outage, contractual-resilience, and capacity mechanisms absent from the source.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-EVAL-029]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-EVAL-029]",
+        "pass-a.json#results[fixture_id=S9-EVAL-029]"
+      ],
+      "issue_codes": [
+        "OVER_SPECIFIED_GROUNDED_RISK_MECHANISMS"
+      ],
+      "remediation_requirement": "Retain the valid boundary case and use only source-entailed risk mechanisms."
+    },
+    {
+      "fixture_id": "S9-MATERIAL-020",
+      "source_fixture_hash": "f9ebae1cd300d927cc4724efdb5db571230b76d62108b220c8a66926713a6e59",
+      "comparative_assessment": {
+        "groundedness": "SUPPORTED",
+        "silent_loss": "NOT_FOUND",
+        "unsupported_contradiction": "NOT_FOUND",
+        "unsupported_high_risk_status": "NOT_FOUND",
+        "nonexistent_option_or_schema_oracle": "NOT_FOUND",
+        "invented_cost_price_outage_deadline_or_irreversibility": "NOT_FOUND",
+        "unsupported_reference_behavior": "NOT_FOUND",
+        "risk_priority_inversion": "NOT_FOUND",
+        "uncertainty_preservation": "PRESERVED",
+        "privacy_handling": "COHERENT",
+        "clarification_refusal_safety": "COHERENT",
+        "controlled_failure_correctness": "COHERENT"
+      },
+      "provisional_verdict": "AI_PASS",
+      "severity": "NONE",
+      "confidence": 0.99,
+      "rationale": "The candidate visibly uses the unsupported confirmed_fact evidence classification, and rejected_invalid preserves a ledger disposition without opening composition or personal-data scope.",
+      "evidence_references": [
+        "selection.json#fixtures[fixture_id=S9-MATERIAL-020]",
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-MATERIAL-020]",
+        "pass-a.json#results[fixture_id=S9-MATERIAL-020]"
+      ],
+      "issue_codes": [],
+      "remediation_requirement": "NONE"
+    }
+  ]
+}

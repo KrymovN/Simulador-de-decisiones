@@ -1,5 +1,40 @@
 # PROJECT CONTEXT
 
+## Stage 9 Independent AI Review Batch 6 of 6 — Primary Review Complete — 22 July 2026
+
+The owner-approved independent AI review protocol completed Batch 6 under the
+frozen role-and-context-isolated A/B/C/D procedure for the
+exact final 36 offline fixtures: 28 core, 7 synthetic-risk, and 1 rich baseline.
+Batches 1–5 artifacts and fixture sources remain byte-identical. Primary AI
+review now covers 216 of 216 fixtures and remaining primary review is 0.
+The canonical minimum of 160 case records has been reached and is unchanged;
+Batch 1 is complete for 36 of 216 fixtures. Stage 15 remains a bounded
+documentation and scale-readiness planning stage.
+
+Batch 6 verdicts are `AI_PASS=15`, `AI_PASS_WITH_NOTE=0`, `AI_FAIL_MINOR=8`,
+`AI_FAIL_MAJOR=10`, `AI_DISPUTED=3`, and `AI_NOT_REVIEWED=0`; severity is
+`NONE=15`, `LOW=0`, `MEDIUM=8`, `HIGH=13`, and `CRITICAL=0`. Its ledger has 33
+observations: 27 open and 6 disputed. Thirteen Batch 6 fixtures enter the
+pending reinforced queue. Cumulative verdicts are 93/31/27/60/5/0, cumulative
+severity is 93/30/29/64/0, open/disputed issues are 113/9, and the unique
+cumulative reinforced queue contains 73 fixtures.
+
+All nine cross-batch patterns are finalized for primary-review evidence and the
+aggregate assessment remains `POTENTIALLY_SYSTEMIC_WITHOUT_SYSTEMIC_BLOCKER`.
+The closure verdict is
+`PRIMARY_AI_REVIEW_COMPLETE_REINFORCED_REVIEW_REQUIRED`. Fixture remediation
+was not performed and reinforced review was not executed.
+
+AI review status remains `In Progress` because reinforced review is pending.
+Stage 9 remains **In Progress**; release readiness is not declared.
+Live OpenAI execution is not opened; `/api/simulate` remains deterministic with `mockOnly=true`.
+`HomeSimulator` remains mock-only, and all runtime boundaries remain closed.
+Visual migration remains fully closed with 0 remaining substeps.
+No new Stage is created.
+
+No next Stage 9 implementation substep is open. `Stage 9 Reinforced AI Review and
+Cross-Batch Adjudication` is the next planning candidate only.
+
 ## Stage 9 Independent AI Review Batch 5 of 6 Complete — 22 July 2026
 
 The owner-approved independent AI review protocol, using role-and-context

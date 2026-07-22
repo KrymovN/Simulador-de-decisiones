@@ -1,5 +1,35 @@
 # CURRENT STAGE
 
+## Stage 9 Independent AI Review — Batch 6 of 6 Primary Review Complete — 22 July 2026
+
+Batch 6 completed primary review for the exact final 36 fixtures: full clusters
+007/016/022/030; the remaining three locales of clusters 029/033/036/037; seven
+synthetic-risk cases; and rich baseline 020. Batches 1–5 artifacts and fixture
+sources are unchanged. Primary AI review is 216 of 216 and remaining primary
+review is 0. This does not close reinforced review or Stage 9.
+
+Batch 6 verdicts are `AI_PASS=15`, `AI_PASS_WITH_NOTE=0`, `AI_FAIL_MINOR=8`,
+`AI_FAIL_MAJOR=10`, `AI_DISPUTED=3`, and `AI_NOT_REVIEWED=0`. Severity is
+`NONE=15`, `LOW=0`, `MEDIUM=8`, `HIGH=13`, and `CRITICAL=0`. The Batch 6
+ledger contains 27 open and 6 disputed observations; 13 cases join the pending
+reinforced queue. Cumulative verdicts are 93/31/27/60/5/0, severity is
+93/30/29/64/0, open/disputed observations are 113/9, and the cumulative queue
+contains 73 unique fixtures.
+
+The primary-review closure verdict is
+`PRIMARY_AI_REVIEW_COMPLETE_REINFORCED_REVIEW_REQUIRED`. Cross-batch status is
+`POTENTIALLY_SYSTEMIC_WITHOUT_SYSTEMIC_BLOCKER`. Fixture remediation was not
+performed and reinforced review was not executed.
+
+Stage 9 remains **In Progress**; release readiness is not declared. Live OpenAI
+execution, runtime integration, and provider execution remain closed;
+`/api/simulate` remains deterministic with `mockOnly=true`, `HomeSimulator`
+remains mock-only, and all runtime boundaries remain closed. Visual migration
+remains fully closed with 0 remaining substeps.
+
+No next implementation substep is open. `Stage 9 Reinforced AI Review and
+Cross-Batch Adjudication` is the next planning candidate only.
+
 ## Stage 9 Independent AI Review — Batch 5 of 6 Complete — 22 July 2026
 
 Batch 5 is complete for 36 new fixtures under the unchanged four-pass protocol:

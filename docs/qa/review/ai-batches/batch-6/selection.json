@@ -1,0 +1,562 @@
+{
+  "artifact_version": "stage-9-ai-review-batch-selection.6",
+  "batch_id": "stage-9-ai-review-batch-6-of-6",
+  "source_dataset_commit": "81435cbf4ce3ebc00c80aba33b8b753b2c62322c",
+  "implementation_baseline_commit": "058a124678e84c49e35e559be59ebc1ce2eccdf6",
+  "selection_method": "Exact owner-approved source-derived remainder after immutable Batches 1-5",
+  "context_isolation": {
+    "review_session": "stage-9-ai-review-batch-6",
+    "reviewer_role_id": "ai-review-batch-selector-v1",
+    "model_id": "codex-current-session",
+    "independence_type": "role-and-context-isolated",
+    "model_independence": "not_claimed"
+  },
+  "selection_rationale": [
+    "The selection is the exact 36-fixture remainder recorded after Batch 5.",
+    "It contains four complete core clusters, twelve remaining locale variants with immutable counterparts, seven synthetic-risk cases, and one rich-material case.",
+    "No fixture remains outside primary review after this selection."
+  ],
+  "coverage": {
+    "selected_count": 36,
+    "dataset_types": {
+      "canonical_core": 28,
+      "rich_decision_material_baseline": 1,
+      "synthetic_risk": 7
+    },
+    "languages": {
+      "en": 7,
+      "es": 14,
+      "not_declared": 1,
+      "ru": 7,
+      "zh": 7
+    },
+    "domains": {
+      "adapter_contract_and_safety": 7,
+      "business_decisions": 7,
+      "decision_material_contract_and_preservation": 1,
+      "education": 4,
+      "finance_and_spending": 4,
+      "high_risk_and_safety_sensitive": 6,
+      "personal_planning": 3,
+      "relocation_and_housing": 4
+    },
+    "completeness": {
+      "complete": 9,
+      "contradictory": 7,
+      "critically_incomplete": 4,
+      "not_applicable": 8,
+      "partial": 8
+    },
+    "high_risk_count": 12,
+    "privacy_count": 6,
+    "controlled_failure_count": 12
+  },
+  "complete_clusters": [
+    "S9-CLUSTER-007",
+    "S9-CLUSTER-016",
+    "S9-CLUSTER-022",
+    "S9-CLUSTER-030"
+  ],
+  "partial_cluster_counterparts": {
+    "S9-CLUSTER-029": {
+      "fixture_id": "S9-CORE-029-ES",
+      "artifact": "docs/qa/review/ai-batches/batch-1/adjudication.json",
+      "verdict": "AI_PASS_WITH_NOTE",
+      "severity": "LOW",
+      "concern": "MINOR_ARTICLE_OMISSION"
+    },
+    "S9-CLUSTER-033": {
+      "fixture_id": "S9-CORE-033-RU",
+      "artifact": "docs/qa/review/ai-batches/batch-1/adjudication.json",
+      "verdict": "AI_FAIL_MINOR",
+      "severity": "MEDIUM",
+      "concern": "ARTIFICIAL_RELATIONSHIP_BOUNDARY_LOCALIZATION"
+    },
+    "S9-CLUSTER-036": {
+      "fixture_id": "S9-CORE-036-ZH",
+      "artifact": "docs/qa/review/ai-batches/batch-1/adjudication.json",
+      "verdict": "AI_FAIL_MAJOR",
+      "severity": "HIGH",
+      "concern": "UNSUPPORTED_CONTRADICTION_LABEL"
+    },
+    "S9-CLUSTER-037": {
+      "fixture_id": "S9-CORE-037-EN",
+      "artifact": "docs/qa/review/ai-batches/batch-1/adjudication.json",
+      "verdict": "AI_DISPUTED",
+      "severity": "HIGH",
+      "concern": "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS"
+    }
+  },
+  "prior_reviewed_count": 180,
+  "remaining_after_batch": 0,
+  "fixtures": [
+    {
+      "sequence": 1,
+      "fixture_id": "S9-CORE-007-ES",
+      "source_fixture_hash": "a2a2ab037de1ef2006b2a1ec6043630faa33efd922cab964a4743397c81b678a",
+      "dataset_type": "canonical_core",
+      "language": "es",
+      "domain": "education",
+      "completeness_state": "critically_incomplete",
+      "equivalence_cluster": "S9-CLUSTER-007",
+      "counterpart": null
+    },
+    {
+      "sequence": 2,
+      "fixture_id": "S9-CORE-007-EN",
+      "source_fixture_hash": "427f5ada0715b87503e95fbcd9781e05c73da0b037862f00676a19d7005f6140",
+      "dataset_type": "canonical_core",
+      "language": "en",
+      "domain": "education",
+      "completeness_state": "critically_incomplete",
+      "equivalence_cluster": "S9-CLUSTER-007",
+      "counterpart": null
+    },
+    {
+      "sequence": 3,
+      "fixture_id": "S9-CORE-007-RU",
+      "source_fixture_hash": "1bd1bc442b0b7bd423ce610dff1f7ff8fc5c80d65c65f6842ced98407c1731b1",
+      "dataset_type": "canonical_core",
+      "language": "ru",
+      "domain": "education",
+      "completeness_state": "critically_incomplete",
+      "equivalence_cluster": "S9-CLUSTER-007",
+      "counterpart": null
+    },
+    {
+      "sequence": 4,
+      "fixture_id": "S9-CORE-007-ZH",
+      "source_fixture_hash": "387cffb957ef1e199f885c54b00e9a7f9cdb567da053193bc7c33328c8451562",
+      "dataset_type": "canonical_core",
+      "language": "zh",
+      "domain": "education",
+      "completeness_state": "critically_incomplete",
+      "equivalence_cluster": "S9-CLUSTER-007",
+      "counterpart": null
+    },
+    {
+      "sequence": 5,
+      "fixture_id": "S9-CORE-016-ES",
+      "source_fixture_hash": "86a380d0b0f1c6c0e79ef045db4e096ba78a8773c042d26421cb8429a8e43461",
+      "dataset_type": "canonical_core",
+      "language": "es",
+      "domain": "finance_and_spending",
+      "completeness_state": "contradictory",
+      "equivalence_cluster": "S9-CLUSTER-016",
+      "counterpart": null
+    },
+    {
+      "sequence": 6,
+      "fixture_id": "S9-CORE-016-EN",
+      "source_fixture_hash": "2d67b06e2953be07f0c1f4c02db43dce7b3964c250c1dcc5008236abaa8c8abd",
+      "dataset_type": "canonical_core",
+      "language": "en",
+      "domain": "finance_and_spending",
+      "completeness_state": "contradictory",
+      "equivalence_cluster": "S9-CLUSTER-016",
+      "counterpart": null
+    },
+    {
+      "sequence": 7,
+      "fixture_id": "S9-CORE-016-RU",
+      "source_fixture_hash": "7ae57715e810eaf79d826edbf23d896cfe9c1cb67f98e7b71e85079f2f30bf0f",
+      "dataset_type": "canonical_core",
+      "language": "ru",
+      "domain": "finance_and_spending",
+      "completeness_state": "contradictory",
+      "equivalence_cluster": "S9-CLUSTER-016",
+      "counterpart": null
+    },
+    {
+      "sequence": 8,
+      "fixture_id": "S9-CORE-016-ZH",
+      "source_fixture_hash": "fe98e602d5aca5cd621a046ebd6406b58e3c614d485b0cceaa9157a926592007",
+      "dataset_type": "canonical_core",
+      "language": "zh",
+      "domain": "finance_and_spending",
+      "completeness_state": "contradictory",
+      "equivalence_cluster": "S9-CLUSTER-016",
+      "counterpart": null
+    },
+    {
+      "sequence": 9,
+      "fixture_id": "S9-CORE-022-ES",
+      "source_fixture_hash": "f8f01758bb2b2c8d8f4b51e722f98311dd08ebb294adf1e1f46798e9044c2c95",
+      "dataset_type": "canonical_core",
+      "language": "es",
+      "domain": "relocation_and_housing",
+      "completeness_state": "partial",
+      "equivalence_cluster": "S9-CLUSTER-022",
+      "counterpart": null
+    },
+    {
+      "sequence": 10,
+      "fixture_id": "S9-CORE-022-EN",
+      "source_fixture_hash": "1505b0b86725af3f55f2d5926b5120258465c560819333602a7a23ff32e7bcd9",
+      "dataset_type": "canonical_core",
+      "language": "en",
+      "domain": "relocation_and_housing",
+      "completeness_state": "partial",
+      "equivalence_cluster": "S9-CLUSTER-022",
+      "counterpart": null
+    },
+    {
+      "sequence": 11,
+      "fixture_id": "S9-CORE-022-RU",
+      "source_fixture_hash": "336390aaeca0923409cf3d0cdf4d3dec23356acec7cf1e8259c86a510c26660e",
+      "dataset_type": "canonical_core",
+      "language": "ru",
+      "domain": "relocation_and_housing",
+      "completeness_state": "partial",
+      "equivalence_cluster": "S9-CLUSTER-022",
+      "counterpart": null
+    },
+    {
+      "sequence": 12,
+      "fixture_id": "S9-CORE-022-ZH",
+      "source_fixture_hash": "5cada865bdc2bd38d1e2a7acb22309f7d368b12b3e661243f0e69def36684fc9",
+      "dataset_type": "canonical_core",
+      "language": "zh",
+      "domain": "relocation_and_housing",
+      "completeness_state": "partial",
+      "equivalence_cluster": "S9-CLUSTER-022",
+      "counterpart": null
+    },
+    {
+      "sequence": 13,
+      "fixture_id": "S9-CORE-030-ES",
+      "source_fixture_hash": "5b6851f19b35c5d71d5a7b05afb7825eff1672acd2daef899586d860739ada63",
+      "dataset_type": "canonical_core",
+      "language": "es",
+      "domain": "business_decisions",
+      "completeness_state": "partial",
+      "equivalence_cluster": "S9-CLUSTER-030",
+      "counterpart": null
+    },
+    {
+      "sequence": 14,
+      "fixture_id": "S9-CORE-030-EN",
+      "source_fixture_hash": "1e6216fe4518b4658da7f8be7ee0f0f60712fa97ce04bb9f18eb610b43c90e80",
+      "dataset_type": "canonical_core",
+      "language": "en",
+      "domain": "business_decisions",
+      "completeness_state": "partial",
+      "equivalence_cluster": "S9-CLUSTER-030",
+      "counterpart": null
+    },
+    {
+      "sequence": 15,
+      "fixture_id": "S9-CORE-030-RU",
+      "source_fixture_hash": "655c3251f1a47c7581623bf37159f432f47ae4356ba257db2544ba4dad0142ea",
+      "dataset_type": "canonical_core",
+      "language": "ru",
+      "domain": "business_decisions",
+      "completeness_state": "partial",
+      "equivalence_cluster": "S9-CLUSTER-030",
+      "counterpart": null
+    },
+    {
+      "sequence": 16,
+      "fixture_id": "S9-CORE-030-ZH",
+      "source_fixture_hash": "43dc392a171202b9551aadd8a25c073d0d9feccec4c5c332855d42a9b052722d",
+      "dataset_type": "canonical_core",
+      "language": "zh",
+      "domain": "business_decisions",
+      "completeness_state": "partial",
+      "equivalence_cluster": "S9-CLUSTER-030",
+      "counterpart": null
+    },
+    {
+      "sequence": 17,
+      "fixture_id": "S9-CORE-029-EN",
+      "source_fixture_hash": "e89104f701e811e41a023235760d172bbc61b75b9dabd35ee07bb1a6d63d2cc3",
+      "dataset_type": "canonical_core",
+      "language": "en",
+      "domain": "business_decisions",
+      "completeness_state": "complete",
+      "equivalence_cluster": "S9-CLUSTER-029",
+      "counterpart": {
+        "fixture_id": "S9-CORE-029-ES",
+        "artifact": "docs/qa/review/ai-batches/batch-1/adjudication.json",
+        "verdict": "AI_PASS_WITH_NOTE",
+        "severity": "LOW",
+        "concern": "MINOR_ARTICLE_OMISSION"
+      }
+    },
+    {
+      "sequence": 18,
+      "fixture_id": "S9-CORE-029-RU",
+      "source_fixture_hash": "56b249bae39b16f87a9d5f6f2ad4cee63457bc1dd2fda6ba0af59ecbeb281d0a",
+      "dataset_type": "canonical_core",
+      "language": "ru",
+      "domain": "business_decisions",
+      "completeness_state": "complete",
+      "equivalence_cluster": "S9-CLUSTER-029",
+      "counterpart": {
+        "fixture_id": "S9-CORE-029-ES",
+        "artifact": "docs/qa/review/ai-batches/batch-1/adjudication.json",
+        "verdict": "AI_PASS_WITH_NOTE",
+        "severity": "LOW",
+        "concern": "MINOR_ARTICLE_OMISSION"
+      }
+    },
+    {
+      "sequence": 19,
+      "fixture_id": "S9-CORE-029-ZH",
+      "source_fixture_hash": "6a22654db7ba0f5f21f56b583fde872dbe1423e6c7ed83fd1b460dfcd2434dac",
+      "dataset_type": "canonical_core",
+      "language": "zh",
+      "domain": "business_decisions",
+      "completeness_state": "complete",
+      "equivalence_cluster": "S9-CLUSTER-029",
+      "counterpart": {
+        "fixture_id": "S9-CORE-029-ES",
+        "artifact": "docs/qa/review/ai-batches/batch-1/adjudication.json",
+        "verdict": "AI_PASS_WITH_NOTE",
+        "severity": "LOW",
+        "concern": "MINOR_ARTICLE_OMISSION"
+      }
+    },
+    {
+      "sequence": 20,
+      "fixture_id": "S9-CORE-033-ES",
+      "source_fixture_hash": "34a1be7e914ca379a3358fc0f0868f5ceb9af25981f6b6e0126b2b2fd184c041",
+      "dataset_type": "canonical_core",
+      "language": "es",
+      "domain": "personal_planning",
+      "completeness_state": "complete",
+      "equivalence_cluster": "S9-CLUSTER-033",
+      "counterpart": {
+        "fixture_id": "S9-CORE-033-RU",
+        "artifact": "docs/qa/review/ai-batches/batch-1/adjudication.json",
+        "verdict": "AI_FAIL_MINOR",
+        "severity": "MEDIUM",
+        "concern": "ARTIFICIAL_RELATIONSHIP_BOUNDARY_LOCALIZATION"
+      }
+    },
+    {
+      "sequence": 21,
+      "fixture_id": "S9-CORE-033-EN",
+      "source_fixture_hash": "4b203587b15441ede32198097797caf3e7c0d105a08d454b77348fb6980371c8",
+      "dataset_type": "canonical_core",
+      "language": "en",
+      "domain": "personal_planning",
+      "completeness_state": "complete",
+      "equivalence_cluster": "S9-CLUSTER-033",
+      "counterpart": {
+        "fixture_id": "S9-CORE-033-RU",
+        "artifact": "docs/qa/review/ai-batches/batch-1/adjudication.json",
+        "verdict": "AI_FAIL_MINOR",
+        "severity": "MEDIUM",
+        "concern": "ARTIFICIAL_RELATIONSHIP_BOUNDARY_LOCALIZATION"
+      }
+    },
+    {
+      "sequence": 22,
+      "fixture_id": "S9-CORE-033-ZH",
+      "source_fixture_hash": "f1e588e445648b1e13ee05f374dc8a60605cf5f237b2166c3a02cb85e916f591",
+      "dataset_type": "canonical_core",
+      "language": "zh",
+      "domain": "personal_planning",
+      "completeness_state": "complete",
+      "equivalence_cluster": "S9-CLUSTER-033",
+      "counterpart": {
+        "fixture_id": "S9-CORE-033-RU",
+        "artifact": "docs/qa/review/ai-batches/batch-1/adjudication.json",
+        "verdict": "AI_FAIL_MINOR",
+        "severity": "MEDIUM",
+        "concern": "ARTIFICIAL_RELATIONSHIP_BOUNDARY_LOCALIZATION"
+      }
+    },
+    {
+      "sequence": 23,
+      "fixture_id": "S9-CORE-036-ES",
+      "source_fixture_hash": "381a03db3df8bbebc506bcb783c3a098305647442fa902aa12142657da338da2",
+      "dataset_type": "canonical_core",
+      "language": "es",
+      "domain": "high_risk_and_safety_sensitive",
+      "completeness_state": "contradictory",
+      "equivalence_cluster": "S9-CLUSTER-036",
+      "counterpart": {
+        "fixture_id": "S9-CORE-036-ZH",
+        "artifact": "docs/qa/review/ai-batches/batch-1/adjudication.json",
+        "verdict": "AI_FAIL_MAJOR",
+        "severity": "HIGH",
+        "concern": "UNSUPPORTED_CONTRADICTION_LABEL"
+      }
+    },
+    {
+      "sequence": 24,
+      "fixture_id": "S9-CORE-036-EN",
+      "source_fixture_hash": "848800a28ed2333bb50462fea6d25b131c0f393742fdc4829fc694b7f0a46ad7",
+      "dataset_type": "canonical_core",
+      "language": "en",
+      "domain": "high_risk_and_safety_sensitive",
+      "completeness_state": "contradictory",
+      "equivalence_cluster": "S9-CLUSTER-036",
+      "counterpart": {
+        "fixture_id": "S9-CORE-036-ZH",
+        "artifact": "docs/qa/review/ai-batches/batch-1/adjudication.json",
+        "verdict": "AI_FAIL_MAJOR",
+        "severity": "HIGH",
+        "concern": "UNSUPPORTED_CONTRADICTION_LABEL"
+      }
+    },
+    {
+      "sequence": 25,
+      "fixture_id": "S9-CORE-036-RU",
+      "source_fixture_hash": "2af240536343cc5f5fb018ce9d1d639d15e5eb20311134360b99c5e302bb956c",
+      "dataset_type": "canonical_core",
+      "language": "ru",
+      "domain": "high_risk_and_safety_sensitive",
+      "completeness_state": "contradictory",
+      "equivalence_cluster": "S9-CLUSTER-036",
+      "counterpart": {
+        "fixture_id": "S9-CORE-036-ZH",
+        "artifact": "docs/qa/review/ai-batches/batch-1/adjudication.json",
+        "verdict": "AI_FAIL_MAJOR",
+        "severity": "HIGH",
+        "concern": "UNSUPPORTED_CONTRADICTION_LABEL"
+      }
+    },
+    {
+      "sequence": 26,
+      "fixture_id": "S9-CORE-037-ES",
+      "source_fixture_hash": "48d63305c73fe08d20aa38556540776c4009fa3281720ab426661bdcac68b68c",
+      "dataset_type": "canonical_core",
+      "language": "es",
+      "domain": "high_risk_and_safety_sensitive",
+      "completeness_state": "complete",
+      "equivalence_cluster": "S9-CLUSTER-037",
+      "counterpart": {
+        "fixture_id": "S9-CORE-037-EN",
+        "artifact": "docs/qa/review/ai-batches/batch-1/adjudication.json",
+        "verdict": "AI_DISPUTED",
+        "severity": "HIGH",
+        "concern": "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS"
+      }
+    },
+    {
+      "sequence": 27,
+      "fixture_id": "S9-CORE-037-RU",
+      "source_fixture_hash": "c794604338c6c98a520cdb68fd65f46224562e8e06b4454c1860bb1c0c2df519",
+      "dataset_type": "canonical_core",
+      "language": "ru",
+      "domain": "high_risk_and_safety_sensitive",
+      "completeness_state": "complete",
+      "equivalence_cluster": "S9-CLUSTER-037",
+      "counterpart": {
+        "fixture_id": "S9-CORE-037-EN",
+        "artifact": "docs/qa/review/ai-batches/batch-1/adjudication.json",
+        "verdict": "AI_DISPUTED",
+        "severity": "HIGH",
+        "concern": "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS"
+      }
+    },
+    {
+      "sequence": 28,
+      "fixture_id": "S9-CORE-037-ZH",
+      "source_fixture_hash": "a3e7c39566fb8249af960370801eb0601ecbc022b1c629dab3f386dd5e68e943",
+      "dataset_type": "canonical_core",
+      "language": "zh",
+      "domain": "high_risk_and_safety_sensitive",
+      "completeness_state": "complete",
+      "equivalence_cluster": "S9-CLUSTER-037",
+      "counterpart": {
+        "fixture_id": "S9-CORE-037-EN",
+        "artifact": "docs/qa/review/ai-batches/batch-1/adjudication.json",
+        "verdict": "AI_DISPUTED",
+        "severity": "HIGH",
+        "concern": "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS"
+      }
+    },
+    {
+      "sequence": 29,
+      "fixture_id": "S9-EVAL-007",
+      "source_fixture_hash": "e04862466361065eaea79ee98d999048a85c3df8a6b2b4bf88895223c2049a22",
+      "dataset_type": "synthetic_risk",
+      "language": "es",
+      "domain": "adapter_contract_and_safety",
+      "completeness_state": "not_applicable",
+      "equivalence_cluster": null,
+      "counterpart": null
+    },
+    {
+      "sequence": 30,
+      "fixture_id": "S9-EVAL-008",
+      "source_fixture_hash": "580f745dd4c3dd2ee220b6a9a44dd0d9be2648f370b338dd433a362df8837a43",
+      "dataset_type": "synthetic_risk",
+      "language": "es",
+      "domain": "adapter_contract_and_safety",
+      "completeness_state": "not_applicable",
+      "equivalence_cluster": null,
+      "counterpart": null
+    },
+    {
+      "sequence": 31,
+      "fixture_id": "S9-EVAL-009",
+      "source_fixture_hash": "8c6e68e2303bb8e074880c8a0fc44a420eac459f8441cb4dee9a387272e9c416",
+      "dataset_type": "synthetic_risk",
+      "language": "es",
+      "domain": "adapter_contract_and_safety",
+      "completeness_state": "not_applicable",
+      "equivalence_cluster": null,
+      "counterpart": null
+    },
+    {
+      "sequence": 32,
+      "fixture_id": "S9-EVAL-010",
+      "source_fixture_hash": "01f861e2eeb2905f1b69d36b9a78c30934eb5e244fa8e900d73af6ee923e9943",
+      "dataset_type": "synthetic_risk",
+      "language": "es",
+      "domain": "adapter_contract_and_safety",
+      "completeness_state": "not_applicable",
+      "equivalence_cluster": null,
+      "counterpart": null
+    },
+    {
+      "sequence": 33,
+      "fixture_id": "S9-EVAL-017",
+      "source_fixture_hash": "16ba65b337516bfe731176ac2d13112235b6633be58079eb314f64ff1dda52d3",
+      "dataset_type": "synthetic_risk",
+      "language": "es",
+      "domain": "adapter_contract_and_safety",
+      "completeness_state": "not_applicable",
+      "equivalence_cluster": null,
+      "counterpart": null
+    },
+    {
+      "sequence": 34,
+      "fixture_id": "S9-EVAL-018",
+      "source_fixture_hash": "67ea3b0dfba185940b140b91695bf286bb3dfe0f2d0f79480a85bcbd20b9be4d",
+      "dataset_type": "synthetic_risk",
+      "language": "es",
+      "domain": "adapter_contract_and_safety",
+      "completeness_state": "not_applicable",
+      "equivalence_cluster": null,
+      "counterpart": null
+    },
+    {
+      "sequence": 35,
+      "fixture_id": "S9-EVAL-029",
+      "source_fixture_hash": "bd9a1a031e84e2e51f4c7749a7f69aa5aa3629b7f9e8a9aff1963ddfd7770851",
+      "dataset_type": "synthetic_risk",
+      "language": "es",
+      "domain": "adapter_contract_and_safety",
+      "completeness_state": "not_applicable",
+      "equivalence_cluster": null,
+      "counterpart": null
+    },
+    {
+      "sequence": 36,
+      "fixture_id": "S9-MATERIAL-020",
+      "source_fixture_hash": "f9ebae1cd300d927cc4724efdb5db571230b76d62108b220c8a66926713a6e59",
+      "dataset_type": "rich_decision_material_baseline",
+      "language": "not_declared",
+      "domain": "decision_material_contract_and_preservation",
+      "completeness_state": "not_applicable",
+      "equivalence_cluster": null,
+      "counterpart": null
+    }
+  ]
+}

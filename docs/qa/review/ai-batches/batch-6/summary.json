@@ -1,0 +1,90 @@
+{
+  "artifact_version": "stage-9-ai-review-batch-summary.6",
+  "batch_id": "stage-9-ai-review-batch-6-of-6",
+  "review_timestamp": "2026-07-22T15:00:00.000Z",
+  "stage_status": "In Progress",
+  "release_readiness": "NOT_DECLARED",
+  "runtime_boundaries": "CLOSED",
+  "status": "PRIMARY_BATCH_COMPLETE_WITH_REINFORCED_REVIEW_PENDING",
+  "reviewed_fixture_count": 36,
+  "remaining_fixture_count": 0,
+  "coverage": {
+    "selected_count": 36,
+    "dataset_types": {
+      "canonical_core": 28,
+      "rich_decision_material_baseline": 1,
+      "synthetic_risk": 7
+    },
+    "languages": {
+      "en": 7,
+      "es": 14,
+      "not_declared": 1,
+      "ru": 7,
+      "zh": 7
+    },
+    "domains": {
+      "adapter_contract_and_safety": 7,
+      "business_decisions": 7,
+      "decision_material_contract_and_preservation": 1,
+      "education": 4,
+      "finance_and_spending": 4,
+      "high_risk_and_safety_sensitive": 6,
+      "personal_planning": 3,
+      "relocation_and_housing": 4
+    },
+    "completeness": {
+      "complete": 9,
+      "contradictory": 7,
+      "critically_incomplete": 4,
+      "not_applicable": 8,
+      "partial": 8
+    },
+    "high_risk_count": 12,
+    "privacy_count": 6,
+    "controlled_failure_count": 12
+  },
+  "verdict_counts": {
+    "AI_PASS": 15,
+    "AI_PASS_WITH_NOTE": 0,
+    "AI_FAIL_MINOR": 8,
+    "AI_FAIL_MAJOR": 10,
+    "AI_DISPUTED": 3,
+    "AI_NOT_REVIEWED": 0
+  },
+  "severity_counts": {
+    "NONE": 15,
+    "LOW": 0,
+    "MEDIUM": 8,
+    "HIGH": 13,
+    "CRITICAL": 0
+  },
+  "issue_count": 33,
+  "issue_status_counts": {
+    "OPEN": 27,
+    "DISPUTED": 6,
+    "RECORDED_NOTE": 0
+  },
+  "reinforced_review_count": 13,
+  "reinforced_review_cases": [
+    "S9-CORE-016-ES",
+    "S9-CORE-016-EN",
+    "S9-CORE-016-RU",
+    "S9-CORE-016-ZH",
+    "S9-CORE-036-ES",
+    "S9-CORE-036-EN",
+    "S9-CORE-036-RU",
+    "S9-CORE-037-ES",
+    "S9-CORE-037-RU",
+    "S9-CORE-037-ZH",
+    "S9-EVAL-007",
+    "S9-EVAL-009",
+    "S9-EVAL-010"
+  ],
+  "network_request_count": 0,
+  "critical_defect_count": 0,
+  "systemic_blocker": false,
+  "fixture_remediation": "NONE",
+  "reinforced_review": "PENDING_NOT_EXECUTED",
+  "primary_review_closure_verdict": "PRIMARY_AI_REVIEW_COMPLETE_REINFORCED_REVIEW_REQUIRED",
+  "next_planning_candidate": "Stage 9 Reinforced AI Review and Cross-Batch Adjudication"
+}

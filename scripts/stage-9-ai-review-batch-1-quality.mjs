@@ -97,7 +97,7 @@ const currentCanonical = ["PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", 
   const next = source.indexOf("\n## ", source.indexOf("\n## ") + 4);
   return source.slice(0, next === -1 ? source.length : next);
 }).join("\n");
-add("canonical-ai-review-state", currentCanonical.includes("owner-approved independent AI review protocol") && currentCanonical.includes("Batch 1 is complete for 36 of 216 fixtures") && currentCanonical.includes("180 of 216") && currentCanonical.includes("36 remain") && currentCanonical.includes("Stage 9 remain") && currentCanonical.includes("In Progress"), "Canonical active state preserves Batch 1 history and records cumulative Batch 5 progress without closing Stage 9.");
+add("canonical-ai-review-state", currentCanonical.includes("owner-approved independent AI review protocol") && currentCanonical.includes("Batch 1 is complete for 36 of 216 fixtures") && currentCanonical.includes("216 of 216") && currentCanonical.includes("remaining primary review is 0") && currentCanonical.includes("Stage 9 remain") && currentCanonical.includes("In Progress"), "Canonical active state preserves Batch 1 history and records 216/216 primary closure without closing Stage 9.");
 add("release-and-runtime-remain-closed", currentCanonical.includes("release readiness is not declared") && currentCanonical.includes("Live OpenAI execution is not opened") && currentCanonical.includes("`/api/simulate` remains deterministic with `mockOnly=true`") && !currentCanonical.includes("release candidate approved"), "Release and runtime boundaries remain closed.");
 add("batch-6-planning-only", /Stage 9 Independent AI Review\s+Batch 6 of 6/.test(currentCanonical) && currentCanonical.includes("planning candidate"), "Batch 6 is planning-only after Batch 5 completion.");
 add("network-zero", networkRequests === 0 && summary.network_request_count === 0, `${networkRequests} network requests.`);
@@ -128,6 +128,9 @@ for (const path of [
   "scripts/generate-stage-9-ai-review-batch-4.mjs", "scripts/stage-9-ai-review-batch-4-quality.mjs",
   ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-5/${name}`),
   "scripts/generate-stage-9-ai-review-batch-5.mjs", "scripts/stage-9-ai-review-batch-5-quality.mjs",
+  "docs/qa/review/AI_REVIEW_PRIMARY_CLOSURE.json",
+  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-6/${name}`),
+  "scripts/generate-stage-9-ai-review-batch-6.mjs", "scripts/stage-9-ai-review-batch-6-quality.mjs",
 ]) allowed.add(path);
 const changed = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);

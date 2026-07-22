@@ -2,7 +2,7 @@
 
 - Date: 22 July 2026, Europe/Madrid.
 - Protocol version: `stage-9-independent-ai-review.1`.
-- Active review status: `In Progress — Batch 5 of 6 complete; Batch 6 planning candidate`.
+- Active review status: `Primary AI review complete for 216/216; reinforced review pending and not executed`.
 - Scope: versioned offline fixtures and QA artifacts only.
 - Runtime status: closed.
 
@@ -147,6 +147,23 @@ credentials are allowed.
 Stored intermediate artifacts are append-only review evidence for the batch.
 Discovered fixture defects are recorded with remediation recommendations but
 are not repaired in the same bounded substep.
+
+### Batch 6 primary-review closure
+
+Batch 6 uses the exact source-derived 36-fixture remainder and records four
+complete clusters plus the twelve unreviewed locale variants of four partial
+clusters. Previously reviewed locale counterparts are available only to Pass C
+as immutable source-equivalence anchors. They are excluded from Pass A and are
+not re-adjudicated.
+
+Completion of Batch 6 closes only primary AI review coverage at 216 of 216.
+The presence of major, disputed, or otherwise reinforced cases requires the
+closure verdict
+`PRIMARY_AI_REVIEW_COMPLETE_REINFORCED_REVIEW_REQUIRED`. This verdict does not
+mean full AI review, human review, model-independent review, release approval,
+production readiness, or Stage 9 completion. Reinforced review and all forms of
+fixture, generator, schema, or reference remediation require a separately
+approved bounded substep.
 
 ## 10. Stage and release status
 
