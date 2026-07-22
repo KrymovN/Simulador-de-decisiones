@@ -62,3 +62,42 @@ confirmation rate, false-positive rate, dataset-type and pattern-family
 differences, and the residual risk of shared-model confirmation bias. Calibration
 is internal QA only, never a release verdict, and may not claim methodological
 infallibility because model independence is not established.
+
+## Batch 3 calibration-adjusted evidence burden
+
+Batch 3 is the exact 24-fixture canonical pending queue and uses
+`calibration-adjusted-evidence-burden-v1`. R1-R4 use the v2 reviewer roles in
+the `stage-9-reinforced-ai-review-batch-3` session. Each role is context- and
+packet-isolated, but model independence is not claimed; shared-model
+confirmation-bias risk remains applicable.
+
+R1 labels every statement as `EXPLICIT_FACT`, `SUPPORTED_INFERENCE`,
+`POSSIBLE_INTERPRETATION`, `UNSUPPORTED_ASSERTION`, or `UNKNOWN` and records
+plausible alternatives. R2 must bind an exact primary claim to exact source and
+expected-reference evidence, a reasoning bridge, the strongest alternative,
+and one of `CONFIRMED_DEFECT`, `NO_DEFECT`, `PARTIAL_DEFECT`, or
+`INSUFFICIENT_EVIDENCE`. R3 receives no R2 conclusion and records the strongest
+confirmation, strongest rejection, and residual uncertainty. R4 accepts a
+defect only when this full evidence chain survives the counterargument.
+
+Localization is material only when evidence shows a changed actor or referent,
+gender meaning, modality, negation, urgency, or risk; stylistic and ordinary
+grammatical differences are not automatically defects. Safety adjudication
+distinguishes cautious advice, clarification, controlled failure, refusal, and
+unsupported risk rather than treating them as interchangeable.
+
+## Final cross-batch adjudication and closure
+
+After 73/73 reinforced coverage, `ai-final-cross-batch-adjudicator-v1` reviews
+the eight frozen final-queue cases using source, primary, reinforced,
+multilingual, calibration, and pattern evidence. This step is not a new blind
+review and does not automatically confirm the reinforced conclusion. Final
+issue dispositions preserve every historical primary and reinforced
+observation while adding the current cross-batch disposition.
+
+Corpus-wide calibration, nine-pattern adjudication, and the versioned
+remediation candidate registry are planning evidence only. No fixture, schema,
+generator, expected reference, runtime, UI, API, persistence, provider, or
+production behavior is changed. Reinforced-review closure does not close Stage
+9 and does not declare release, production, human-review, or model-independent
+readiness.

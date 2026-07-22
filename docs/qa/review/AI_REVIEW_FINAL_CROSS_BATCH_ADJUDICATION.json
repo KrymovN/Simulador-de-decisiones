@@ -1,0 +1,331 @@
+{
+  "artifact_version": "stage-9-final-cross-batch-adjudication.1",
+  "review_timestamp": "2026-07-22T22:00:00.000Z",
+  "reviewer_role_id": "ai-final-cross-batch-adjudicator-v1",
+  "context_isolation": {
+    "review_session": "stage-9-reinforced-ai-review-batch-3",
+    "reviewer_role_id": "ai-final-cross-batch-adjudicator-v1",
+    "model_id": "codex-current-session",
+    "independence_type": "new-context-and-role-isolated",
+    "model_independence": "not_claimed",
+    "shared_model_confirmation_bias_risk": "APPLICABLE"
+  },
+  "methodology_adjustment": "calibration-adjusted-evidence-burden-v1",
+  "new_blind_review_performed": false,
+  "queue_count": 8,
+  "processed_count": 8,
+  "remaining_count": 0,
+  "results": [
+    {
+      "sequence": 1,
+      "fixture_id": "S9-CORE-037-ES",
+      "final_outcome": "FINAL_PARTIALLY_CONFIRMED",
+      "final_confidence": 0.92,
+      "exact_evidence_chain": [
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-037-ES]",
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-CORE-037-ES]",
+        "docs/qa/review/ai-reinforced-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-037-ES]",
+        "AI_REVIEW_CROSS_BATCH_PATTERNS.json"
+      ],
+      "accepted_interpretation": "The literal no-action branch is insufficiently constrained for an elevated-safety scenario and creates a real ambiguity.",
+      "rejected_interpretation": "Every information-first branch is unsafe or equivalent to doing nothing.",
+      "unresolved_uncertainty": "Implementation may safely realize information-first behavior, but the reference contract does not require that safe narrowing.",
+      "root_cause": "EXPECTED_BEHAVIOR_REFERENCE",
+      "remediation_scope": "FULL_CLUSTER",
+      "affected_fixtures": [
+        "S9-CORE-037-ES",
+        "S9-CORE-037-EN",
+        "S9-CORE-037-RU",
+        "S9-CORE-037-ZH"
+      ],
+      "affected_cluster": "S9-CLUSTER-037",
+      "final_issue_dispositions": [
+        {
+          "primary_issue_id": "B6-ISSUE-021",
+          "primary_issue_code": "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+          "reinforced_disposition": "REMAINS_DISPUTED",
+          "final_disposition": "PARTIALLY_CONFIRMED"
+        },
+        {
+          "primary_issue_id": "B6-ISSUE-022",
+          "primary_issue_code": "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR",
+          "reinforced_disposition": "REMAINS_DISPUTED",
+          "final_disposition": "PARTIALLY_CONFIRMED"
+        }
+      ],
+      "reinforced_conclusion_automatically_confirmed": false
+    },
+    {
+      "sequence": 2,
+      "fixture_id": "S9-CORE-037-EN",
+      "final_outcome": "FINAL_PARTIALLY_CONFIRMED",
+      "final_confidence": 0.92,
+      "exact_evidence_chain": [
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-037-EN]",
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-037-EN]",
+        "docs/qa/review/ai-reinforced-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-037-EN]",
+        "AI_REVIEW_CROSS_BATCH_PATTERNS.json"
+      ],
+      "accepted_interpretation": "The literal no-action branch is insufficiently constrained for an elevated-safety scenario and creates a real ambiguity.",
+      "rejected_interpretation": "Every information-first branch is unsafe or equivalent to doing nothing.",
+      "unresolved_uncertainty": "Implementation may safely realize information-first behavior, but the reference contract does not require that safe narrowing.",
+      "root_cause": "EXPECTED_BEHAVIOR_REFERENCE",
+      "remediation_scope": "FULL_CLUSTER",
+      "affected_fixtures": [
+        "S9-CORE-037-ES",
+        "S9-CORE-037-EN",
+        "S9-CORE-037-RU",
+        "S9-CORE-037-ZH"
+      ],
+      "affected_cluster": "S9-CLUSTER-037",
+      "final_issue_dispositions": [
+        {
+          "primary_issue_id": "B1-ISSUE-036",
+          "primary_issue_code": "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+          "reinforced_disposition": "REMAINS_DISPUTED",
+          "final_disposition": "PARTIALLY_CONFIRMED"
+        },
+        {
+          "primary_issue_id": "B1-ISSUE-037",
+          "primary_issue_code": "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR",
+          "reinforced_disposition": "REMAINS_DISPUTED",
+          "final_disposition": "PARTIALLY_CONFIRMED"
+        }
+      ],
+      "reinforced_conclusion_automatically_confirmed": false
+    },
+    {
+      "sequence": 3,
+      "fixture_id": "S9-CORE-037-RU",
+      "final_outcome": "FINAL_PARTIALLY_CONFIRMED",
+      "final_confidence": 0.92,
+      "exact_evidence_chain": [
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-037-RU]",
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-CORE-037-RU]",
+        "docs/qa/review/ai-reinforced-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-037-RU]",
+        "AI_REVIEW_CROSS_BATCH_PATTERNS.json"
+      ],
+      "accepted_interpretation": "The literal no-action branch is insufficiently constrained for an elevated-safety scenario and creates a real ambiguity.",
+      "rejected_interpretation": "Every information-first branch is unsafe or equivalent to doing nothing.",
+      "unresolved_uncertainty": "Implementation may safely realize information-first behavior, but the reference contract does not require that safe narrowing.",
+      "root_cause": "EXPECTED_BEHAVIOR_REFERENCE",
+      "remediation_scope": "FULL_CLUSTER",
+      "affected_fixtures": [
+        "S9-CORE-037-ES",
+        "S9-CORE-037-EN",
+        "S9-CORE-037-RU",
+        "S9-CORE-037-ZH"
+      ],
+      "affected_cluster": "S9-CLUSTER-037",
+      "final_issue_dispositions": [
+        {
+          "primary_issue_id": "B6-ISSUE-023",
+          "primary_issue_code": "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+          "reinforced_disposition": "REMAINS_DISPUTED",
+          "final_disposition": "PARTIALLY_CONFIRMED"
+        },
+        {
+          "primary_issue_id": "B6-ISSUE-024",
+          "primary_issue_code": "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR",
+          "reinforced_disposition": "REMAINS_DISPUTED",
+          "final_disposition": "PARTIALLY_CONFIRMED"
+        }
+      ],
+      "reinforced_conclusion_automatically_confirmed": false
+    },
+    {
+      "sequence": 4,
+      "fixture_id": "S9-CORE-037-ZH",
+      "final_outcome": "FINAL_PARTIALLY_CONFIRMED",
+      "final_confidence": 0.92,
+      "exact_evidence_chain": [
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-037-ZH]",
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-CORE-037-ZH]",
+        "docs/qa/review/ai-reinforced-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-037-ZH]",
+        "AI_REVIEW_CROSS_BATCH_PATTERNS.json"
+      ],
+      "accepted_interpretation": "The literal no-action branch is insufficiently constrained for an elevated-safety scenario and creates a real ambiguity.",
+      "rejected_interpretation": "Every information-first branch is unsafe or equivalent to doing nothing.",
+      "unresolved_uncertainty": "Implementation may safely realize information-first behavior, but the reference contract does not require that safe narrowing.",
+      "root_cause": "EXPECTED_BEHAVIOR_REFERENCE",
+      "remediation_scope": "FULL_CLUSTER",
+      "affected_fixtures": [
+        "S9-CORE-037-ES",
+        "S9-CORE-037-EN",
+        "S9-CORE-037-RU",
+        "S9-CORE-037-ZH"
+      ],
+      "affected_cluster": "S9-CLUSTER-037",
+      "final_issue_dispositions": [
+        {
+          "primary_issue_id": "B6-ISSUE-025",
+          "primary_issue_code": "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+          "reinforced_disposition": "REMAINS_DISPUTED",
+          "final_disposition": "PARTIALLY_CONFIRMED"
+        },
+        {
+          "primary_issue_id": "B6-ISSUE-026",
+          "primary_issue_code": "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR",
+          "reinforced_disposition": "REMAINS_DISPUTED",
+          "final_disposition": "PARTIALLY_CONFIRMED"
+        }
+      ],
+      "reinforced_conclusion_automatically_confirmed": false
+    },
+    {
+      "sequence": 5,
+      "fixture_id": "S9-CORE-010-ES",
+      "final_outcome": "FINAL_DEFECT_CONFIRMED_MINOR",
+      "final_confidence": 0.94,
+      "exact_evidence_chain": [
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-010-ES]",
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-010-ES]",
+        "docs/qa/review/ai-reinforced-batches/batch-2/adjudication.json#results[fixture_id=S9-CORE-010-ES]",
+        "AI_REVIEW_CROSS_BATCH_PATTERNS.json"
+      ],
+      "accepted_interpretation": "The locale-specific reversible-trial wording is mechanically literal and independently claimed as a minor template-quality defect.",
+      "rejected_interpretation": "Grammatical gender across ES, EN, RU, and ZH establishes material actor drift.",
+      "unresolved_uncertainty": "NONE",
+      "root_cause": "GENERATOR_TEMPLATE",
+      "remediation_scope": "GENERATOR_RULE",
+      "affected_fixtures": [
+        "S9-CORE-010-ES",
+        "S9-CORE-010-RU",
+        "S9-CORE-010-ZH"
+      ],
+      "affected_cluster": "S9-CLUSTER-010",
+      "final_issue_dispositions": [
+        {
+          "primary_issue_id": "B1-ISSUE-010",
+          "primary_issue_code": "CLUSTER_TRANSLATION_GENDER_DRIFT",
+          "reinforced_disposition": "REJECTED",
+          "final_disposition": "REJECTED"
+        },
+        {
+          "primary_issue_id": "B1-ISSUE-011",
+          "primary_issue_code": "ARTIFICIAL_REVERSIBLE_TRIAL_PHRASE",
+          "reinforced_disposition": "CONFIRMED",
+          "final_disposition": "CONFIRMED"
+        }
+      ],
+      "reinforced_conclusion_automatically_confirmed": false
+    },
+    {
+      "sequence": 6,
+      "fixture_id": "S9-CORE-010-EN",
+      "final_outcome": "FINAL_PRIMARY_FINDING_REJECTED",
+      "final_confidence": 0.97,
+      "exact_evidence_chain": [
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-010-EN]",
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-010-EN]",
+        "docs/qa/review/ai-reinforced-batches/batch-2/adjudication.json#results[fixture_id=S9-CORE-010-EN]",
+        "AI_REVIEW_CROSS_BATCH_PATTERNS.json"
+      ],
+      "accepted_interpretation": "English 'student' is gender-neutral and this fixture has no separate artificial-phrase issue claim.",
+      "rejected_interpretation": "Cross-locale grammatical gender alone changes the decision actor or behavior.",
+      "unresolved_uncertainty": "NONE",
+      "root_cause": "PRIMARY_REVIEW_FALSE_POSITIVE",
+      "remediation_scope": "NONE",
+      "affected_fixtures": [
+        "S9-CORE-010-EN"
+      ],
+      "affected_cluster": "S9-CLUSTER-010",
+      "final_issue_dispositions": [
+        {
+          "primary_issue_id": "B1-ISSUE-012",
+          "primary_issue_code": "CLUSTER_TRANSLATION_GENDER_DRIFT",
+          "reinforced_disposition": "REJECTED",
+          "final_disposition": "REJECTED"
+        }
+      ],
+      "reinforced_conclusion_automatically_confirmed": false
+    },
+    {
+      "sequence": 7,
+      "fixture_id": "S9-CORE-010-RU",
+      "final_outcome": "FINAL_DEFECT_CONFIRMED_MINOR",
+      "final_confidence": 0.94,
+      "exact_evidence_chain": [
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-010-RU]",
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-010-RU]",
+        "docs/qa/review/ai-reinforced-batches/batch-2/adjudication.json#results[fixture_id=S9-CORE-010-RU]",
+        "AI_REVIEW_CROSS_BATCH_PATTERNS.json"
+      ],
+      "accepted_interpretation": "The locale-specific reversible-trial wording is mechanically literal and independently claimed as a minor template-quality defect.",
+      "rejected_interpretation": "Grammatical gender across ES, EN, RU, and ZH establishes material actor drift.",
+      "unresolved_uncertainty": "NONE",
+      "root_cause": "GENERATOR_TEMPLATE",
+      "remediation_scope": "GENERATOR_RULE",
+      "affected_fixtures": [
+        "S9-CORE-010-ES",
+        "S9-CORE-010-RU",
+        "S9-CORE-010-ZH"
+      ],
+      "affected_cluster": "S9-CLUSTER-010",
+      "final_issue_dispositions": [
+        {
+          "primary_issue_id": "B1-ISSUE-013",
+          "primary_issue_code": "CLUSTER_TRANSLATION_GENDER_DRIFT",
+          "reinforced_disposition": "REJECTED",
+          "final_disposition": "REJECTED"
+        },
+        {
+          "primary_issue_id": "B1-ISSUE-014",
+          "primary_issue_code": "ARTIFICIAL_REVERSIBLE_TRIAL_PHRASE",
+          "reinforced_disposition": "CONFIRMED",
+          "final_disposition": "CONFIRMED"
+        }
+      ],
+      "reinforced_conclusion_automatically_confirmed": false
+    },
+    {
+      "sequence": 8,
+      "fixture_id": "S9-CORE-010-ZH",
+      "final_outcome": "FINAL_DEFECT_CONFIRMED_MINOR",
+      "final_confidence": 0.94,
+      "exact_evidence_chain": [
+        "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-010-ZH]",
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-010-ZH]",
+        "docs/qa/review/ai-reinforced-batches/batch-2/adjudication.json#results[fixture_id=S9-CORE-010-ZH]",
+        "AI_REVIEW_CROSS_BATCH_PATTERNS.json"
+      ],
+      "accepted_interpretation": "The locale-specific reversible-trial wording is mechanically literal and independently claimed as a minor template-quality defect.",
+      "rejected_interpretation": "Grammatical gender across ES, EN, RU, and ZH establishes material actor drift.",
+      "unresolved_uncertainty": "NONE",
+      "root_cause": "GENERATOR_TEMPLATE",
+      "remediation_scope": "GENERATOR_RULE",
+      "affected_fixtures": [
+        "S9-CORE-010-ES",
+        "S9-CORE-010-RU",
+        "S9-CORE-010-ZH"
+      ],
+      "affected_cluster": "S9-CLUSTER-010",
+      "final_issue_dispositions": [
+        {
+          "primary_issue_id": "B1-ISSUE-015",
+          "primary_issue_code": "CLUSTER_TRANSLATION_GENDER_DRIFT",
+          "reinforced_disposition": "REJECTED",
+          "final_disposition": "REJECTED"
+        },
+        {
+          "primary_issue_id": "B1-ISSUE-016",
+          "primary_issue_code": "ARTIFICIAL_REVERSIBLE_TRIAL_PHRASE",
+          "reinforced_disposition": "CONFIRMED",
+          "final_disposition": "CONFIRMED"
+        }
+      ],
+      "reinforced_conclusion_automatically_confirmed": false
+    }
+  ],
+  "outcome_counts": {
+    "FINAL_DEFECT_CONFIRMED_MAJOR": 0,
+    "FINAL_DEFECT_CONFIRMED_MINOR": 3,
+    "FINAL_PRIMARY_FINDING_REJECTED": 1,
+    "FINAL_PARTIALLY_CONFIRMED": 4,
+    "FINAL_UNRESOLVED": 0,
+    "FINAL_ESCALATED_CRITICAL": 0
+  },
+  "unresolved_final_cases": [],
+  "critical_count": 0,
+  "fixture_remediation": "NONE"
+}

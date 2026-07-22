@@ -1,0 +1,624 @@
+{
+  "artifact_version": "stage-9-reinforced-blind-packets.3",
+  "batch_id": "stage-9-reinforced-ai-review-batch-3-of-3",
+  "reviewer_role_id": "ai-reinforced-semantic-reviewer-v2",
+  "context_isolation": {
+    "review_session": "stage-9-reinforced-ai-review-batch-3",
+    "reviewer_role_id": "ai-reinforced-semantic-reviewer-v2",
+    "model_id": "codex-current-session",
+    "independence_type": "new-context-and-role-isolated",
+    "model_independence": "not_claimed",
+    "shared_model_confirmation_bias_risk": "APPLICABLE"
+  },
+  "blindness_invariant": "R1 receives source fixture data and intrinsic metadata only; primary outcomes, primary issue claims, expected behavior, prior reinforced conclusions, pattern findings, and final queue are excluded.",
+  "packets": [
+    {
+      "fixture_id": "S9-CORE-008-ES",
+      "source_fixture_hash": "b7a644b5cbae7ca3aaa2ece467b11776fad2a3498d3bf2352e8100e4ff2ce785",
+      "locale": "es",
+      "user_input": {
+        "user_situation": "Una profesional ficticia decide cuándo preparar una certificación con fecha administrativa fija.",
+        "user_intent": "evaluate_certification_deadline_without_direct_answer",
+        "known_facts": [
+          "registration_deadline",
+          "exam_window"
+        ],
+        "known_assumptions": [
+          "study_hours_available"
+        ],
+        "critical_gaps": [
+          "actual_weekly_capacity"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "education",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-008"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-008-EN",
+      "source_fixture_hash": "f89814d6c9855333e0b8853d55d0f9330cd29f1c82194b77f6a1fad09dc80f81",
+      "locale": "en",
+      "user_input": {
+        "user_situation": "A fictional professional decides when to prepare for a certification with a fixed administrative date.",
+        "user_intent": "evaluate_certification_deadline_without_direct_answer",
+        "known_facts": [
+          "registration_deadline",
+          "exam_window"
+        ],
+        "known_assumptions": [
+          "study_hours_available"
+        ],
+        "critical_gaps": [
+          "actual_weekly_capacity"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "education",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-008"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-008-RU",
+      "source_fixture_hash": "485aaa8fc4c431f084b7c9df45dadb9ba68ed6fdbf62d6d2a52692b5026757e1",
+      "locale": "ru",
+      "user_input": {
+        "user_situation": "Вымышленный специалист решает, когда готовиться к сертификации с фиксированной административной датой.",
+        "user_intent": "evaluate_certification_deadline_without_direct_answer",
+        "known_facts": [
+          "registration_deadline",
+          "exam_window"
+        ],
+        "known_assumptions": [
+          "study_hours_available"
+        ],
+        "critical_gaps": [
+          "actual_weekly_capacity"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "education",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-008"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-008-ZH",
+      "source_fixture_hash": "7532529a60c9f26aad2149ce62bb44f6bf1cdb892140dac30741ecae105077f3",
+      "locale": "zh",
+      "user_input": {
+        "user_situation": "一名虚构专业人士决定何时准备具有固定行政日期的认证。",
+        "user_intent": "evaluate_certification_deadline_without_direct_answer",
+        "known_facts": [
+          "registration_deadline",
+          "exam_window"
+        ],
+        "known_assumptions": [
+          "study_hours_available"
+        ],
+        "critical_gaps": [
+          "actual_weekly_capacity"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "education",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-008"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-004-ES",
+      "source_fixture_hash": "e0ba94e1e4ce76b326b888eced4f04867dca5f1dba48a3f23a30d5088b7256f4",
+      "locale": "es",
+      "user_input": {
+        "user_situation": "Una promoción ficticia exige mudanza y se compara con permanecer en el puesto actual.",
+        "user_intent": "evaluate_promotion_relocation_without_direct_answer",
+        "known_facts": [
+          "promotion_terms_known",
+          "move_required"
+        ],
+        "known_assumptions": [
+          "role_scope_remains_stable"
+        ],
+        "critical_gaps": [
+          "household_constraint"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "career_and_work",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-004"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-004-EN",
+      "source_fixture_hash": "9d2204b508ec66f2f8279b7b0f23bd0e0f2853a16ba6c518ed5ad8048a253234",
+      "locale": "en",
+      "user_input": {
+        "user_situation": "A fictional promotion requires relocation and is compared with staying in the current role.",
+        "user_intent": "evaluate_promotion_relocation_without_direct_answer",
+        "known_facts": [
+          "promotion_terms_known",
+          "move_required"
+        ],
+        "known_assumptions": [
+          "role_scope_remains_stable"
+        ],
+        "critical_gaps": [
+          "household_constraint"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "career_and_work",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-004"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-004-RU",
+      "source_fixture_hash": "94b1bb9576f29d9f7ec1dac2957ce9347c704d19295422721f176ace6982ba5a",
+      "locale": "ru",
+      "user_input": {
+        "user_situation": "Вымышленное повышение требует переезда и сравнивается с сохранением текущей должности.",
+        "user_intent": "evaluate_promotion_relocation_without_direct_answer",
+        "known_facts": [
+          "promotion_terms_known",
+          "move_required"
+        ],
+        "known_assumptions": [
+          "role_scope_remains_stable"
+        ],
+        "critical_gaps": [
+          "household_constraint"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "career_and_work",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-004"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-004-ZH",
+      "source_fixture_hash": "8023334b34d30dffc181029ae362d3aff906f4595e2ff817b4b7689b20abbd10",
+      "locale": "zh",
+      "user_input": {
+        "user_situation": "一次虚构的晋升要求搬迁，并与留在当前岗位进行比较。",
+        "user_intent": "evaluate_promotion_relocation_without_direct_answer",
+        "known_facts": [
+          "promotion_terms_known",
+          "move_required"
+        ],
+        "known_assumptions": [
+          "role_scope_remains_stable"
+        ],
+        "critical_gaps": [
+          "household_constraint"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "career_and_work",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-004"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-020-ES",
+      "source_fixture_hash": "38f4a952add156fbe8955947bbb476f9e9d934b292f53457fef48e1b29bbfdc7",
+      "locale": "es",
+      "user_input": {
+        "user_situation": "Una inquilina ficticia decide renovar antes de recibir una respuesta sobre otra vivienda.",
+        "user_intent": "evaluate_lease_renewal_without_direct_answer",
+        "known_facts": [
+          "renewal_deadline"
+        ],
+        "known_assumptions": [
+          "alternative_will_be_offered"
+        ],
+        "critical_gaps": [
+          "alternative_response_date"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "relocation_and_housing",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-020"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-020-EN",
+      "source_fixture_hash": "12eed0b9a71fd8332109cdf7be588a72a761eab73429bb647ca3dda7b1256be7",
+      "locale": "en",
+      "user_input": {
+        "user_situation": "A fictional tenant decides whether to renew before receiving an answer on another home.",
+        "user_intent": "evaluate_lease_renewal_without_direct_answer",
+        "known_facts": [
+          "renewal_deadline"
+        ],
+        "known_assumptions": [
+          "alternative_will_be_offered"
+        ],
+        "critical_gaps": [
+          "alternative_response_date"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "relocation_and_housing",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-020"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-020-RU",
+      "source_fixture_hash": "e2e0f0c950460287fd66b06acd6dd2484dfa45384834e9477a8289c46fd634b4",
+      "locale": "ru",
+      "user_input": {
+        "user_situation": "Вымышленный арендатор решает, продлевать ли договор до ответа по другому жилью.",
+        "user_intent": "evaluate_lease_renewal_without_direct_answer",
+        "known_facts": [
+          "renewal_deadline"
+        ],
+        "known_assumptions": [
+          "alternative_will_be_offered"
+        ],
+        "critical_gaps": [
+          "alternative_response_date"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "relocation_and_housing",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-020"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-020-ZH",
+      "source_fixture_hash": "5058b4d8fe5cfaf519b174f7f1678d93d304e27eb674837e0189f52b59053a82",
+      "locale": "zh",
+      "user_input": {
+        "user_situation": "一名虚构租客在另一处住房答复前决定是否续租。",
+        "user_intent": "evaluate_lease_renewal_without_direct_answer",
+        "known_facts": [
+          "renewal_deadline"
+        ],
+        "known_assumptions": [
+          "alternative_will_be_offered"
+        ],
+        "critical_gaps": [
+          "alternative_response_date"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "relocation_and_housing",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-020"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-028-ES",
+      "source_fixture_hash": "df33e9604c4fa0a648623429bd86131d00d0c1dfaf32c282c50148df531d5b2e",
+      "locale": "es",
+      "user_input": {
+        "user_situation": "Una empresa ficticia compara ampliar local, usar espacio flexible o mantener capacidad.",
+        "user_intent": "evaluate_expansion_lease_without_direct_answer",
+        "known_facts": [
+          "lease_terms_known"
+        ],
+        "known_assumptions": [
+          "growth_forecast_holds"
+        ],
+        "critical_gaps": [
+          "exit_clause"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "business_decisions",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-028"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-028-EN",
+      "source_fixture_hash": "8d81b3c1d9d49f93dad597f6c1713aa2aa2f7b3cb754a2250dd0191399c17bac",
+      "locale": "en",
+      "user_input": {
+        "user_situation": "A fictional business compares expanding premises, using flexible space, or keeping capacity.",
+        "user_intent": "evaluate_expansion_lease_without_direct_answer",
+        "known_facts": [
+          "lease_terms_known"
+        ],
+        "known_assumptions": [
+          "growth_forecast_holds"
+        ],
+        "critical_gaps": [
+          "exit_clause"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "business_decisions",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-028"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-028-RU",
+      "source_fixture_hash": "8e151900e49ce9f9321b1e18f3874326f6fec0c4b925abcb77f7a4915d4010cf",
+      "locale": "ru",
+      "user_input": {
+        "user_situation": "Вымышленный бизнес сравнивает расширение помещения, гибкое пространство или сохранение мощности.",
+        "user_intent": "evaluate_expansion_lease_without_direct_answer",
+        "known_facts": [
+          "lease_terms_known"
+        ],
+        "known_assumptions": [
+          "growth_forecast_holds"
+        ],
+        "critical_gaps": [
+          "exit_clause"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "business_decisions",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-028"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-028-ZH",
+      "source_fixture_hash": "3dad65734d0cefd583710e79a8c0195967f7707cc1e43ee1415b02183d225c15",
+      "locale": "zh",
+      "user_input": {
+        "user_situation": "一家虚构企业比较扩建场地、使用灵活空间或维持现有容量。",
+        "user_intent": "evaluate_expansion_lease_without_direct_answer",
+        "known_facts": [
+          "lease_terms_known"
+        ],
+        "known_assumptions": [
+          "growth_forecast_holds"
+        ],
+        "critical_gaps": [
+          "exit_clause"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "business_decisions",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-028"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-032-ES",
+      "source_fixture_hash": "8b0768fc987d3b2f29684d3a713db362ca2c488c86fc64dcf4ef4efc84ded892",
+      "locale": "es",
+      "user_input": {
+        "user_situation": "Tres personas ficticias distribuyen cuidados semanales con disponibilidad desigual.",
+        "user_intent": "evaluate_caregiving_schedule_without_direct_answer",
+        "known_facts": [
+          "weekly_needs_known"
+        ],
+        "known_assumptions": [
+          "availability_reliable"
+        ],
+        "critical_gaps": [
+          "backup_responsibility"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "personal_planning",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-032"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-032-EN",
+      "source_fixture_hash": "926cc3f1103d0b5580558514ab480bc9489a3f4367289de555187182a86e2fd9",
+      "locale": "en",
+      "user_input": {
+        "user_situation": "Three fictional people allocate weekly care with unequal availability.",
+        "user_intent": "evaluate_caregiving_schedule_without_direct_answer",
+        "known_facts": [
+          "weekly_needs_known"
+        ],
+        "known_assumptions": [
+          "availability_reliable"
+        ],
+        "critical_gaps": [
+          "backup_responsibility"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "personal_planning",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-032"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-032-RU",
+      "source_fixture_hash": "6b3f1909b4382c9177fc3ee2829480b47b7b32c441d06f09c75ecb4b8a1b3b62",
+      "locale": "ru",
+      "user_input": {
+        "user_situation": "Три вымышленных человека распределяют еженедельный уход при разной доступности.",
+        "user_intent": "evaluate_caregiving_schedule_without_direct_answer",
+        "known_facts": [
+          "weekly_needs_known"
+        ],
+        "known_assumptions": [
+          "availability_reliable"
+        ],
+        "critical_gaps": [
+          "backup_responsibility"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "personal_planning",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-032"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-032-ZH",
+      "source_fixture_hash": "8d7f306c0aca741f901bdb5a89c31882673a9e1c4175d482c6d92ab263560caa",
+      "locale": "zh",
+      "user_input": {
+        "user_situation": "三个虚构的人在可用时间不同的情况下分配每周照护。",
+        "user_intent": "evaluate_caregiving_schedule_without_direct_answer",
+        "known_facts": [
+          "weekly_needs_known"
+        ],
+        "known_assumptions": [
+          "availability_reliable"
+        ],
+        "critical_gaps": [
+          "backup_responsibility"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "personal_planning",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-032"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-016-ES",
+      "source_fixture_hash": "86a380d0b0f1c6c0e79ef045db4e096ba78a8773c042d26421cb8429a8e43461",
+      "locale": "es",
+      "user_input": {
+        "user_situation": "Un hogar ficticio compara alquilar, comprar o esperar ante tipos de interés inciertos.",
+        "user_intent": "evaluate_rent_or_buy_without_direct_answer",
+        "known_facts": [
+          "housing_horizon_known"
+        ],
+        "known_assumptions": [
+          "interest_rate_stable"
+        ],
+        "critical_gaps": [
+          "maintenance_budget"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "finance_and_spending",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-016"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-016-EN",
+      "source_fixture_hash": "2d67b06e2953be07f0c1f4c02db43dce7b3964c250c1dcc5008236abaa8c8abd",
+      "locale": "en",
+      "user_input": {
+        "user_situation": "A fictional household compares renting, buying, or waiting under uncertain interest rates.",
+        "user_intent": "evaluate_rent_or_buy_without_direct_answer",
+        "known_facts": [
+          "housing_horizon_known"
+        ],
+        "known_assumptions": [
+          "interest_rate_stable"
+        ],
+        "critical_gaps": [
+          "maintenance_budget"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "finance_and_spending",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-016"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-016-RU",
+      "source_fixture_hash": "7ae57715e810eaf79d826edbf23d896cfe9c1cb67f98e7b71e85079f2f30bf0f",
+      "locale": "ru",
+      "user_input": {
+        "user_situation": "Вымышленная семья сравнивает аренду, покупку или ожидание при неопределённых ставках.",
+        "user_intent": "evaluate_rent_or_buy_without_direct_answer",
+        "known_facts": [
+          "housing_horizon_known"
+        ],
+        "known_assumptions": [
+          "interest_rate_stable"
+        ],
+        "critical_gaps": [
+          "maintenance_budget"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "finance_and_spending",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-016"
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-016-ZH",
+      "source_fixture_hash": "fe98e602d5aca5cd621a046ebd6406b58e3c614d485b0cceaa9157a926592007",
+      "locale": "zh",
+      "user_input": {
+        "user_situation": "一个虚构家庭在利率不确定时比较租房、购房或等待。",
+        "user_intent": "evaluate_rent_or_buy_without_direct_answer",
+        "known_facts": [
+          "housing_horizon_known"
+        ],
+        "known_assumptions": [
+          "interest_rate_stable"
+        ],
+        "critical_gaps": [
+          "maintenance_budget"
+        ],
+        "important_gaps": []
+      },
+      "source_context_metadata": {
+        "dataset_type": "canonical_core",
+        "domain": "finance_and_spending",
+        "completeness_state": "contradictory",
+        "equivalence_cluster": "S9-CLUSTER-016"
+      }
+    }
+  ]
+}

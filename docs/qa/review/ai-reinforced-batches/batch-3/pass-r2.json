@@ -1,0 +1,1897 @@
+{
+  "artifact_version": "stage-9-reinforced-pass-r2.3",
+  "batch_id": "stage-9-reinforced-ai-review-batch-3-of-3",
+  "pass": "R2_FORENSIC_EVIDENCE_CHAIN_V2",
+  "reviewer_role_id": "ai-reinforced-forensic-reviewer-v2",
+  "context_isolation": {
+    "review_session": "stage-9-reinforced-ai-review-batch-3",
+    "reviewer_role_id": "ai-reinforced-forensic-reviewer-v2",
+    "model_id": "codex-current-session",
+    "independence_type": "new-context-and-role-isolated",
+    "model_independence": "not_claimed",
+    "shared_model_confirmation_bias_risk": "APPLICABLE"
+  },
+  "methodology_adjustment": "calibration-adjusted-evidence-burden-v1",
+  "primary_adjudication_conclusions_available": false,
+  "review_timestamp": "2026-07-22T22:00:00.000Z",
+  "immutable_input_packet": [
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-3/selection.json",
+      "sha256": "4f6c47a500de8058c29b2510c130bffbb6a275e412c98f14d31cb8b0c7767d0b"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-3/pass-r1.json",
+      "sha256": "1f090a0cb5dde8be68d9e568c8e55d86b9fa4381f72e52ea9f5dfa7e82ad47ae"
+    },
+    {
+      "path": "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json",
+      "sha256": "5e95bfdf6b4626e681dbcead672c2d1463f7a14d5eacb5305b773dfa2655e65b"
+    }
+  ],
+  "results": [
+    {
+      "fixture_id": "S9-CORE-008-ES",
+      "source_fixture_hash": "b7a644b5cbae7ca3aaa2ece467b11776fad2a3498d3bf2352e8100e4ff2ce785",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B3-ISSUE-011",
+          "exact_claim": "The source contains a deadline, an exam window, an availability assumption, and a missing capacity value, but no pair of incompatible claims to reconcile.",
+          "source_evidence": {
+            "known_facts": [
+              "registration_deadline",
+              "exam_window"
+            ],
+            "known_assumptions": [
+              "study_hours_available"
+            ],
+            "critical_gaps": [
+              "actual_weekly_capacity"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "missed_deadline",
+              "overload",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_certification_deadline_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "The deadline, exam window, availability assumption, and missing capacity value create urgency and uncertainty but no incompatible claim pair; mandatory contradiction reconciliation is unsupported.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-008-ES]",
+            "pass-r1.json#results[fixture_id=S9-CORE-008-ES]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-008-EN",
+      "source_fixture_hash": "f89814d6c9855333e0b8853d55d0f9330cd29f1c82194b77f6a1fad09dc80f81",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B3-ISSUE-012",
+          "exact_claim": "The source contains a deadline, an exam window, an availability assumption, and a missing capacity value, but no pair of incompatible claims to reconcile.",
+          "source_evidence": {
+            "known_facts": [
+              "registration_deadline",
+              "exam_window"
+            ],
+            "known_assumptions": [
+              "study_hours_available"
+            ],
+            "critical_gaps": [
+              "actual_weekly_capacity"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "missed_deadline",
+              "overload",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_certification_deadline_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "The deadline, exam window, availability assumption, and missing capacity value create urgency and uncertainty but no incompatible claim pair; mandatory contradiction reconciliation is unsupported.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-008-EN]",
+            "pass-r1.json#results[fixture_id=S9-CORE-008-EN]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-008-RU",
+      "source_fixture_hash": "485aaa8fc4c431f084b7c9df45dadb9ba68ed6fdbf62d6d2a52692b5026757e1",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B3-ISSUE-013",
+          "exact_claim": "The source contains a deadline, an exam window, an availability assumption, and a missing capacity value, but no pair of incompatible claims to reconcile.",
+          "source_evidence": {
+            "known_facts": [
+              "registration_deadline",
+              "exam_window"
+            ],
+            "known_assumptions": [
+              "study_hours_available"
+            ],
+            "critical_gaps": [
+              "actual_weekly_capacity"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "missed_deadline",
+              "overload",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_certification_deadline_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "The deadline, exam window, availability assumption, and missing capacity value create urgency and uncertainty but no incompatible claim pair; mandatory contradiction reconciliation is unsupported.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-008-RU]",
+            "pass-r1.json#results[fixture_id=S9-CORE-008-RU]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-008-ZH",
+      "source_fixture_hash": "7532529a60c9f26aad2149ce62bb44f6bf1cdb892140dac30741ecae105077f3",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B3-ISSUE-014",
+          "exact_claim": "The source contains a deadline, an exam window, an availability assumption, and a missing capacity value, but no pair of incompatible claims to reconcile.",
+          "source_evidence": {
+            "known_facts": [
+              "registration_deadline",
+              "exam_window"
+            ],
+            "known_assumptions": [
+              "study_hours_available"
+            ],
+            "critical_gaps": [
+              "actual_weekly_capacity"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "missed_deadline",
+              "overload",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_certification_deadline_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "The deadline, exam window, availability assumption, and missing capacity value create urgency and uncertainty but no incompatible claim pair; mandatory contradiction reconciliation is unsupported.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-008-ZH]",
+            "pass-r1.json#results[fixture_id=S9-CORE-008-ZH]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-004-ES",
+      "source_fixture_hash": "e0ba94e1e4ce76b326b888eced4f04867dca5f1dba48a3f23a30d5088b7256f4",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B4-ISSUE-002",
+          "exact_claim": "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair.",
+          "source_evidence": {
+            "known_facts": [
+              "promotion_terms_known",
+              "move_required"
+            ],
+            "known_assumptions": [
+              "role_scope_remains_stable"
+            ],
+            "critical_gaps": [
+              "household_constraint"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "relocation_cost",
+              "role_reversibility",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_promotion_relocation_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "The promotion facts, uncertain role-scope assumption, and household gap are compatible; the expected contradiction oracle exceeds the visible source.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-004-ES]",
+            "pass-r1.json#results[fixture_id=S9-CORE-004-ES]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-004-EN",
+      "source_fixture_hash": "9d2204b508ec66f2f8279b7b0f23bd0e0f2853a16ba6c518ed5ad8048a253234",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B4-ISSUE-003",
+          "exact_claim": "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair.",
+          "source_evidence": {
+            "known_facts": [
+              "promotion_terms_known",
+              "move_required"
+            ],
+            "known_assumptions": [
+              "role_scope_remains_stable"
+            ],
+            "critical_gaps": [
+              "household_constraint"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "relocation_cost",
+              "role_reversibility",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_promotion_relocation_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "The promotion facts, uncertain role-scope assumption, and household gap are compatible; the expected contradiction oracle exceeds the visible source.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-004-EN]",
+            "pass-r1.json#results[fixture_id=S9-CORE-004-EN]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-004-RU",
+      "source_fixture_hash": "94b1bb9576f29d9f7ec1dac2957ce9347c704d19295422721f176ace6982ba5a",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B4-ISSUE-004",
+          "exact_claim": "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair.",
+          "source_evidence": {
+            "known_facts": [
+              "promotion_terms_known",
+              "move_required"
+            ],
+            "known_assumptions": [
+              "role_scope_remains_stable"
+            ],
+            "critical_gaps": [
+              "household_constraint"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "relocation_cost",
+              "role_reversibility",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_promotion_relocation_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "The promotion facts, uncertain role-scope assumption, and household gap are compatible; the expected contradiction oracle exceeds the visible source.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-004-RU]",
+            "pass-r1.json#results[fixture_id=S9-CORE-004-RU]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-004-ZH",
+      "source_fixture_hash": "8023334b34d30dffc181029ae362d3aff906f4595e2ff817b4b7689b20abbd10",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B4-ISSUE-005",
+          "exact_claim": "The promotion source supplies two compatible facts, one uncertain role-scope assumption, and one household gap, but no incompatible claims to reconcile or preserve as a pair.",
+          "source_evidence": {
+            "known_facts": [
+              "promotion_terms_known",
+              "move_required"
+            ],
+            "known_assumptions": [
+              "role_scope_remains_stable"
+            ],
+            "critical_gaps": [
+              "household_constraint"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "relocation_cost",
+              "role_reversibility",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_promotion_relocation_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "The promotion facts, uncertain role-scope assumption, and household gap are compatible; the expected contradiction oracle exceeds the visible source.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-004-ZH]",
+            "pass-r1.json#results[fixture_id=S9-CORE-004-ZH]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-020-ES",
+      "source_fixture_hash": "38f4a952add156fbe8955947bbb476f9e9d934b292f53457fef48e1b29bbfdc7",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B4-ISSUE-006",
+          "exact_claim": "The source has no incompatible claim pair, and the Spanish fixture adds a specifically female tenant where EN and ZH are neutral and RU uses a masculine-form referent.",
+          "source_evidence": {
+            "known_facts": [
+              "renewal_deadline"
+            ],
+            "known_assumptions": [
+              "alternative_will_be_offered"
+            ],
+            "critical_gaps": [
+              "alternative_response_date"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "housing_gap",
+              "overlap_cost",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_lease_renewal_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "controlled_failure_required",
+                "no_mock_as_real",
+                "human_readable_reason"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "A renewal deadline, expected alternative offer, and missing response date are uncertain but not mutually contradictory; the contradiction ground truth is unsupported.",
+          "alternative_interpretation": "Spanish grammatical gender is a concrete locale difference, but no evidence shows a changed actor, decision, modality, negation, urgency, or risk.",
+          "evidence_verdict": "PARTIAL_DEFECT",
+          "disposition": "PARTIALLY_CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-020-ES]",
+            "pass-r1.json#results[fixture_id=S9-CORE-020-ES]"
+          ]
+        }
+      ],
+      "confidence": 0.96
+    },
+    {
+      "fixture_id": "S9-CORE-020-EN",
+      "source_fixture_hash": "12eed0b9a71fd8332109cdf7be588a72a761eab73429bb647ca3dda7b1256be7",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B4-ISSUE-007",
+          "exact_claim": "A renewal deadline, an expected alternative offer, and a missing response date create uncertainty and urgency but do not form an explicit contradiction requiring two incompatible claims to be preserved.",
+          "source_evidence": {
+            "known_facts": [
+              "renewal_deadline"
+            ],
+            "known_assumptions": [
+              "alternative_will_be_offered"
+            ],
+            "critical_gaps": [
+              "alternative_response_date"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "housing_gap",
+              "overlap_cost",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_lease_renewal_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "controlled_failure_required",
+                "no_mock_as_real",
+                "human_readable_reason"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "A renewal deadline, expected alternative offer, and missing response date are uncertain but not mutually contradictory; the contradiction ground truth is unsupported.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-020-EN]",
+            "pass-r1.json#results[fixture_id=S9-CORE-020-EN]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-020-RU",
+      "source_fixture_hash": "e2e0f0c950460287fd66b06acd6dd2484dfa45384834e9477a8289c46fd634b4",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B4-ISSUE-008",
+          "exact_claim": "A renewal deadline, an expected alternative offer, and a missing response date create uncertainty and urgency but do not form an explicit contradiction requiring two incompatible claims to be preserved.",
+          "source_evidence": {
+            "known_facts": [
+              "renewal_deadline"
+            ],
+            "known_assumptions": [
+              "alternative_will_be_offered"
+            ],
+            "critical_gaps": [
+              "alternative_response_date"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "housing_gap",
+              "overlap_cost",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_lease_renewal_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "controlled_failure_required",
+                "no_mock_as_real",
+                "human_readable_reason"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "A renewal deadline, expected alternative offer, and missing response date are uncertain but not mutually contradictory; the contradiction ground truth is unsupported.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-020-RU]",
+            "pass-r1.json#results[fixture_id=S9-CORE-020-RU]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-020-ZH",
+      "source_fixture_hash": "5058b4d8fe5cfaf519b174f7f1678d93d304e27eb674837e0189f52b59053a82",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B4-ISSUE-009",
+          "exact_claim": "A renewal deadline, an expected alternative offer, and a missing response date create uncertainty and urgency but do not form an explicit contradiction requiring two incompatible claims to be preserved.",
+          "source_evidence": {
+            "known_facts": [
+              "renewal_deadline"
+            ],
+            "known_assumptions": [
+              "alternative_will_be_offered"
+            ],
+            "critical_gaps": [
+              "alternative_response_date"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "housing_gap",
+              "overlap_cost",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_lease_renewal_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "controlled_failure_required",
+                "no_mock_as_real",
+                "human_readable_reason"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "A renewal deadline, expected alternative offer, and missing response date are uncertain but not mutually contradictory; the contradiction ground truth is unsupported.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-020-ZH]",
+            "pass-r1.json#results[fixture_id=S9-CORE-020-ZH]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-028-ES",
+      "source_fixture_hash": "df33e9604c4fa0a648623429bd86131d00d0c1dfaf32c282c50148df531d5b2e",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B5-ISSUE-013",
+          "exact_claim": "Known lease terms, an uncertain growth forecast, and a missing exit clause create a material gap but no explicit incompatible claim pair to reconcile or preserve.",
+          "source_evidence": {
+            "known_facts": [
+              "lease_terms_known"
+            ],
+            "known_assumptions": [
+              "growth_forecast_holds"
+            ],
+            "critical_gaps": [
+              "exit_clause"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "long_commitment",
+              "capacity_constraint",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_expansion_lease_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "Known lease terms, uncertain growth, and a missing exit clause form a material gap, not an explicit incompatible claim pair.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-028-ES]",
+            "pass-r1.json#results[fixture_id=S9-CORE-028-ES]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-028-EN",
+      "source_fixture_hash": "8d81b3c1d9d49f93dad597f6c1713aa2aa2f7b3cb754a2250dd0191399c17bac",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B5-ISSUE-014",
+          "exact_claim": "Known lease terms, an uncertain growth forecast, and a missing exit clause create a material gap but no explicit incompatible claim pair to reconcile or preserve.",
+          "source_evidence": {
+            "known_facts": [
+              "lease_terms_known"
+            ],
+            "known_assumptions": [
+              "growth_forecast_holds"
+            ],
+            "critical_gaps": [
+              "exit_clause"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "long_commitment",
+              "capacity_constraint",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_expansion_lease_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "Known lease terms, uncertain growth, and a missing exit clause form a material gap, not an explicit incompatible claim pair.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-028-EN]",
+            "pass-r1.json#results[fixture_id=S9-CORE-028-EN]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-028-RU",
+      "source_fixture_hash": "8e151900e49ce9f9321b1e18f3874326f6fec0c4b925abcb77f7a4915d4010cf",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B5-ISSUE-015",
+          "exact_claim": "Known lease terms, an uncertain growth forecast, and a missing exit clause create a material gap but no explicit incompatible claim pair to reconcile or preserve.",
+          "source_evidence": {
+            "known_facts": [
+              "lease_terms_known"
+            ],
+            "known_assumptions": [
+              "growth_forecast_holds"
+            ],
+            "critical_gaps": [
+              "exit_clause"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "long_commitment",
+              "capacity_constraint",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_expansion_lease_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "Known lease terms, uncertain growth, and a missing exit clause form a material gap, not an explicit incompatible claim pair.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-028-RU]",
+            "pass-r1.json#results[fixture_id=S9-CORE-028-RU]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-028-ZH",
+      "source_fixture_hash": "3dad65734d0cefd583710e79a8c0195967f7707cc1e43ee1415b02183d225c15",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B5-ISSUE-016",
+          "exact_claim": "Known lease terms, an uncertain growth forecast, and a missing exit clause create a material gap but no explicit incompatible claim pair to reconcile or preserve.",
+          "source_evidence": {
+            "known_facts": [
+              "lease_terms_known"
+            ],
+            "known_assumptions": [
+              "growth_forecast_holds"
+            ],
+            "critical_gaps": [
+              "exit_clause"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "long_commitment",
+              "capacity_constraint",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_expansion_lease_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "Known lease terms, uncertain growth, and a missing exit clause form a material gap, not an explicit incompatible claim pair.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-028-ZH]",
+            "pass-r1.json#results[fixture_id=S9-CORE-028-ZH]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-032-ES",
+      "source_fixture_hash": "8b0768fc987d3b2f29684d3a713db362ca2c488c86fc64dcf4ef4efc84ded892",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B5-ISSUE-017",
+          "exact_claim": "Known weekly care needs, unequal availability, an availability assumption, and missing backup responsibility do not form two explicit incompatible claims, so contradiction reconciliation is unsupported.",
+          "source_evidence": {
+            "known_facts": [
+              "weekly_needs_known"
+            ],
+            "known_assumptions": [
+              "availability_reliable"
+            ],
+            "critical_gaps": [
+              "backup_responsibility"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "care_gap",
+              "burnout",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_caregiving_schedule_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "Care needs, unequal availability, an availability assumption, and missing backup responsibility do not form two explicit incompatible claims.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-032-ES]",
+            "pass-r1.json#results[fixture_id=S9-CORE-032-ES]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-032-EN",
+      "source_fixture_hash": "926cc3f1103d0b5580558514ab480bc9489a3f4367289de555187182a86e2fd9",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B5-ISSUE-018",
+          "exact_claim": "Known weekly care needs, unequal availability, an availability assumption, and missing backup responsibility do not form two explicit incompatible claims, so contradiction reconciliation is unsupported.",
+          "source_evidence": {
+            "known_facts": [
+              "weekly_needs_known"
+            ],
+            "known_assumptions": [
+              "availability_reliable"
+            ],
+            "critical_gaps": [
+              "backup_responsibility"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "care_gap",
+              "burnout",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_caregiving_schedule_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "Care needs, unequal availability, an availability assumption, and missing backup responsibility do not form two explicit incompatible claims.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-032-EN]",
+            "pass-r1.json#results[fixture_id=S9-CORE-032-EN]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-032-RU",
+      "source_fixture_hash": "6b3f1909b4382c9177fc3ee2829480b47b7b32c441d06f09c75ecb4b8a1b3b62",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B5-ISSUE-019",
+          "exact_claim": "Known weekly care needs, unequal availability, an availability assumption, and missing backup responsibility do not form two explicit incompatible claims, so contradiction reconciliation is unsupported.",
+          "source_evidence": {
+            "known_facts": [
+              "weekly_needs_known"
+            ],
+            "known_assumptions": [
+              "availability_reliable"
+            ],
+            "critical_gaps": [
+              "backup_responsibility"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "care_gap",
+              "burnout",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_caregiving_schedule_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "Care needs, unequal availability, an availability assumption, and missing backup responsibility do not form two explicit incompatible claims.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-032-RU]",
+            "pass-r1.json#results[fixture_id=S9-CORE-032-RU]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-032-ZH",
+      "source_fixture_hash": "8d7f306c0aca741f901bdb5a89c31882673a9e1c4175d482c6d92ab263560caa",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B5-ISSUE-020",
+          "exact_claim": "Known weekly care needs, unequal availability, an availability assumption, and missing backup responsibility do not form two explicit incompatible claims, so contradiction reconciliation is unsupported.",
+          "source_evidence": {
+            "known_facts": [
+              "weekly_needs_known"
+            ],
+            "known_assumptions": [
+              "availability_reliable"
+            ],
+            "critical_gaps": [
+              "backup_responsibility"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "care_gap",
+              "burnout",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_caregiving_schedule_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "Care needs, unequal availability, an availability assumption, and missing backup responsibility do not form two explicit incompatible claims.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-032-ZH]",
+            "pass-r1.json#results[fixture_id=S9-CORE-032-ZH]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-016-ES",
+      "source_fixture_hash": "86a380d0b0f1c6c0e79ef045db4e096ba78a8773c042d26421cb8429a8e43461",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B6-ISSUE-007",
+          "exact_claim": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+          "source_evidence": {
+            "known_facts": [
+              "housing_horizon_known"
+            ],
+            "known_assumptions": [
+              "interest_rate_stable"
+            ],
+            "critical_gaps": [
+              "maintenance_budget"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "rate_exposure",
+              "mobility_loss",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_rent_or_buy_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "The housing horizon, rate-stability assumption, and missing maintenance budget establish neither an explicit contradiction nor a necessary loss of mobility.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-016-ES]",
+            "pass-r1.json#results[fixture_id=S9-CORE-016-ES]"
+          ]
+        },
+        {
+          "primary_issue_id": "B6-ISSUE-008",
+          "exact_claim": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+          "source_evidence": {
+            "known_facts": [
+              "housing_horizon_known"
+            ],
+            "known_assumptions": [
+              "interest_rate_stable"
+            ],
+            "critical_gaps": [
+              "maintenance_budget"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "rate_exposure",
+              "mobility_loss",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_rent_or_buy_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "The housing horizon, rate-stability assumption, and missing maintenance budget establish neither an explicit contradiction nor a necessary loss of mobility.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-016-ES]",
+            "pass-r1.json#results[fixture_id=S9-CORE-016-ES]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-016-EN",
+      "source_fixture_hash": "2d67b06e2953be07f0c1f4c02db43dce7b3964c250c1dcc5008236abaa8c8abd",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B6-ISSUE-009",
+          "exact_claim": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+          "source_evidence": {
+            "known_facts": [
+              "housing_horizon_known"
+            ],
+            "known_assumptions": [
+              "interest_rate_stable"
+            ],
+            "critical_gaps": [
+              "maintenance_budget"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "rate_exposure",
+              "mobility_loss",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_rent_or_buy_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "The housing horizon, rate-stability assumption, and missing maintenance budget establish neither an explicit contradiction nor a necessary loss of mobility.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-016-EN]",
+            "pass-r1.json#results[fixture_id=S9-CORE-016-EN]"
+          ]
+        },
+        {
+          "primary_issue_id": "B6-ISSUE-010",
+          "exact_claim": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+          "source_evidence": {
+            "known_facts": [
+              "housing_horizon_known"
+            ],
+            "known_assumptions": [
+              "interest_rate_stable"
+            ],
+            "critical_gaps": [
+              "maintenance_budget"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "rate_exposure",
+              "mobility_loss",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_rent_or_buy_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "The housing horizon, rate-stability assumption, and missing maintenance budget establish neither an explicit contradiction nor a necessary loss of mobility.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-016-EN]",
+            "pass-r1.json#results[fixture_id=S9-CORE-016-EN]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-016-RU",
+      "source_fixture_hash": "7ae57715e810eaf79d826edbf23d896cfe9c1cb67f98e7b71e85079f2f30bf0f",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B6-ISSUE-011",
+          "exact_claim": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+          "source_evidence": {
+            "known_facts": [
+              "housing_horizon_known"
+            ],
+            "known_assumptions": [
+              "interest_rate_stable"
+            ],
+            "critical_gaps": [
+              "maintenance_budget"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "rate_exposure",
+              "mobility_loss",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_rent_or_buy_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "The housing horizon, rate-stability assumption, and missing maintenance budget establish neither an explicit contradiction nor a necessary loss of mobility.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-016-RU]",
+            "pass-r1.json#results[fixture_id=S9-CORE-016-RU]"
+          ]
+        },
+        {
+          "primary_issue_id": "B6-ISSUE-012",
+          "exact_claim": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+          "source_evidence": {
+            "known_facts": [
+              "housing_horizon_known"
+            ],
+            "known_assumptions": [
+              "interest_rate_stable"
+            ],
+            "critical_gaps": [
+              "maintenance_budget"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "rate_exposure",
+              "mobility_loss",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_rent_or_buy_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "The housing horizon, rate-stability assumption, and missing maintenance budget establish neither an explicit contradiction nor a necessary loss of mobility.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-016-RU]",
+            "pass-r1.json#results[fixture_id=S9-CORE-016-RU]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    },
+    {
+      "fixture_id": "S9-CORE-016-ZH",
+      "source_fixture_hash": "fe98e602d5aca5cd621a046ebd6406b58e3c614d485b0cceaa9157a926592007",
+      "evidence_chains": [
+        {
+          "primary_issue_id": "B6-ISSUE-013",
+          "exact_claim": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+          "source_evidence": {
+            "known_facts": [
+              "housing_horizon_known"
+            ],
+            "known_assumptions": [
+              "interest_rate_stable"
+            ],
+            "critical_gaps": [
+              "maintenance_budget"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "rate_exposure",
+              "mobility_loss",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_rent_or_buy_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "The housing horizon, rate-stability assumption, and missing maintenance budget establish neither an explicit contradiction nor a necessary loss of mobility.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-016-ZH]",
+            "pass-r1.json#results[fixture_id=S9-CORE-016-ZH]"
+          ]
+        },
+        {
+          "primary_issue_id": "B6-ISSUE-014",
+          "exact_claim": "A known housing horizon, a rate-stability assumption, and a missing maintenance budget do not form an explicit incompatible claim pair; mobility loss is also not stated or entailed.",
+          "source_evidence": {
+            "known_facts": [
+              "housing_horizon_known"
+            ],
+            "known_assumptions": [
+              "interest_rate_stable"
+            ],
+            "critical_gaps": [
+              "maintenance_budget"
+            ],
+            "important_gaps": []
+          },
+          "expected_reference_evidence": {
+            "expected_risk_signals": [
+              "rate_exposure",
+              "mobility_loss",
+              "preserve_likelihood_uncertainty"
+            ],
+            "expected_decision_material": {
+              "clarification": [
+                "reconcile_contradiction",
+                "preserve_both_claims",
+                "withhold_normal_recommendation"
+              ],
+              "scenarios": [
+                "compare_rent_or_buy_paths",
+                "include_no_action_or_information_first_path",
+                "do_not_invent_facts"
+              ],
+              "recommendation": [
+                "recommendation_withheld",
+                "preserve_uncertainty"
+              ],
+              "safety": [
+                "standard"
+              ],
+              "privacy": [
+                "data_minimization"
+              ],
+              "failure": [
+                "fail_closed"
+              ],
+              "allowed_v2_statuses": [
+                "CLARIFICATION_REQUIRED",
+                "CANNOT_RECOMMEND"
+              ]
+            }
+          },
+          "reasoning": "The housing horizon, rate-stability assumption, and missing maintenance budget establish neither an explicit contradiction nor a necessary loss of mobility.",
+          "alternative_interpretation": "The expectation may encode conservative planning, but caution alone cannot manufacture mutually incompatible source claims.",
+          "evidence_verdict": "CONFIRMED_DEFECT",
+          "disposition": "CONFIRMED",
+          "evidence_references": [
+            "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json#entries[fixture_id=S9-CORE-016-ZH]",
+            "pass-r1.json#results[fixture_id=S9-CORE-016-ZH]"
+          ]
+        }
+      ],
+      "confidence": 0.99
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
-  "artifact_version": "stage-9-ai-review-cross-batch-pattern-registry.6",
-  "review_scope": "Primary Batches 1-6 plus Reinforced Batches 1-2 of 3",
-  "review_timestamp": "2026-07-22T20:00:00.000Z",
+  "artifact_version": "stage-9-ai-review-cross-batch-pattern-registry.7",
+  "review_scope": "Primary Batches 1-6 plus Reinforced Batches 1-3 and final cross-batch adjudication",
+  "review_timestamp": "2026-07-22T22:00:00.000Z",
   "escalation_rule": "POTENTIALLY_SYSTEMIC at three or more independent core clusters, at two or more domains with HIGH severity, or on recurrence across dataset types; SYSTEMIC_BLOCKER only with evidence of significant unreviewed-dataset impact or class-level ground-truth unreliability.",
   "aggregate_status": "POTENTIALLY_SYSTEMIC_WITHOUT_SYSTEMIC_BLOCKER",
   "systemic_blocker": false,
@@ -97,7 +97,7 @@
         "batch-6/issue-ledger.json",
         "batch-6/pass-c.json"
       ],
-      "status": "POTENTIALLY_SYSTEMIC",
+      "status": "CONFIRMED_SYSTEMIC_REMEDIATION_REQUIRED",
       "cumulative_occurrence_count": 40,
       "batch_4_assessment": {
         "confirming_fixture_ids": [
@@ -276,6 +276,48 @@
         "proposed_remediation_level": [
           "FULL_CLUSTER"
         ]
+      },
+      "final_reinforced_adjudication": {
+        "pattern": "unsupported contradiction ground truth",
+        "current_qa_status": "CONFIRMED_SYSTEMIC_REMEDIATION_REQUIRED",
+        "primary_occurrences": 40,
+        "reinforced_reviewed_occurrences": 44,
+        "confirmed": 43,
+        "rejected": 0,
+        "partial": 1,
+        "unresolved": 0,
+        "affected_clusters": [
+          "S9-CLUSTER-004",
+          "S9-CLUSTER-008",
+          "S9-CLUSTER-012",
+          "S9-CLUSTER-016",
+          "S9-CLUSTER-020",
+          "S9-CLUSTER-024",
+          "S9-CLUSTER-028",
+          "S9-CLUSTER-032",
+          "S9-CLUSTER-036",
+          "S9-CLUSTER-038",
+          "S9-CLUSTER-040"
+        ],
+        "affected_domains": [
+          "business_decisions",
+          "career_and_work",
+          "education",
+          "finance_and_spending",
+          "high_risk_and_safety_sensitive",
+          "personal_planning",
+          "relocation_and_housing"
+        ],
+        "affected_dataset_types": [
+          "canonical_core"
+        ],
+        "root_cause_distribution": {
+          "EXPECTED_BEHAVIOR_REFERENCE": 44
+        },
+        "generator_template_linkage": "Canonical-core contradictory-state oracle template; repeated linkage is evidenced, while the exact authoring generator remains unproven.",
+        "evidence_quality": "REINFORCED_EVIDENCE_AVAILABLE_WITH_SHARED_MODEL_LIMITATION",
+        "recommended_remediation_scope": "RULE_AND_CONFIRMED_FIXTURES_AFTER_PRIMARY_REVIEW",
+        "systemic_blocker_basis": "NOT_MET; no class-wide unreliability established."
       }
     },
     {
@@ -327,7 +369,7 @@
         "batch-5/adjudication.json:counterexamples_only",
         "batch-6/adjudication.json:counterexamples_only"
       ],
-      "status": "POTENTIALLY_SYSTEMIC",
+      "status": "RECURRING",
       "cumulative_occurrence_count": 13,
       "batch_4_assessment": {
         "confirming_fixture_ids": [],
@@ -449,6 +491,37 @@
         "proposed_remediation_level": [
           "FULL_CLUSTER"
         ]
+      },
+      "final_reinforced_adjudication": {
+        "pattern": "unsupported high-risk ground truth",
+        "current_qa_status": "RECURRING",
+        "primary_occurrences": 13,
+        "reinforced_reviewed_occurrences": 17,
+        "confirmed": 13,
+        "rejected": 0,
+        "partial": 4,
+        "unresolved": 0,
+        "affected_clusters": [
+          "S9-CLUSTER-012",
+          "S9-CLUSTER-036",
+          "S9-CLUSTER-037",
+          "S9-CLUSTER-038",
+          "S9-CLUSTER-040"
+        ],
+        "affected_domains": [
+          "education",
+          "high_risk_and_safety_sensitive"
+        ],
+        "affected_dataset_types": [
+          "canonical_core"
+        ],
+        "root_cause_distribution": {
+          "EXPECTED_BEHAVIOR_REFERENCE": 17
+        },
+        "generator_template_linkage": "High-risk expectation mappings across multiple core domains; no single shared generator is established.",
+        "evidence_quality": "REINFORCED_EVIDENCE_AVAILABLE_WITH_SHARED_MODEL_LIMITATION",
+        "recommended_remediation_scope": "GENERAL_ENTAILMENT_RULE_AND_CONFIRMED_FIXTURES_AFTER_PRIMARY_REVIEW",
+        "systemic_blocker_basis": "NOT_MET; no class-wide unreliability established."
       }
     },
     {
@@ -598,6 +671,30 @@
         "proposed_remediation_level": [
           "SCHEMA_RULE"
         ]
+      },
+      "final_reinforced_adjudication": {
+        "pattern": "unsupported nonexistent option",
+        "current_qa_status": "RECURRING",
+        "primary_occurrences": 5,
+        "reinforced_reviewed_occurrences": 6,
+        "confirmed": 6,
+        "rejected": 0,
+        "partial": 0,
+        "unresolved": 0,
+        "affected_clusters": [],
+        "affected_domains": [
+          "adapter_contract_and_safety"
+        ],
+        "affected_dataset_types": [
+          "synthetic_risk"
+        ],
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 6
+        },
+        "generator_template_linkage": "Synthetic-risk negative-fixture oracle construction; recurrence is bounded and no class-wide template defect is proven.",
+        "evidence_quality": "REINFORCED_EVIDENCE_AVAILABLE_WITH_SHARED_MODEL_LIMITATION",
+        "recommended_remediation_scope": "FIXTURE_ORACLE_AND_NEGATIVE_FIXTURE_VALIDATION_RULE_AFTER_PRIMARY_REVIEW",
+        "systemic_blocker_basis": "NOT_MET; no class-wide unreliability established."
       }
     },
     {
@@ -663,7 +760,7 @@
         "batch-6/issue-ledger.json",
         "batch-6/pass-c.json"
       ],
-      "status": "POTENTIALLY_SYSTEMIC",
+      "status": "RECURRING",
       "cumulative_occurrence_count": 23,
       "batch_4_assessment": {
         "confirming_fixture_ids": [],
@@ -828,6 +925,33 @@
         "proposed_remediation_level": [
           "FULL_CLUSTER"
         ]
+      },
+      "final_reinforced_adjudication": {
+        "pattern": "unsafe clarification/refusal path",
+        "current_qa_status": "RECURRING",
+        "primary_occurrences": 23,
+        "reinforced_reviewed_occurrences": 12,
+        "confirmed": 8,
+        "rejected": 0,
+        "partial": 4,
+        "unresolved": 0,
+        "affected_clusters": [
+          "S9-CLUSTER-037",
+          "S9-CLUSTER-038"
+        ],
+        "affected_domains": [
+          "high_risk_and_safety_sensitive"
+        ],
+        "affected_dataset_types": [
+          "canonical_core"
+        ],
+        "root_cause_distribution": {
+          "EXPECTED_BEHAVIOR_REFERENCE": 12
+        },
+        "generator_template_linkage": "Clarification and failure-status mapping for core incomplete or contradictory templates.",
+        "evidence_quality": "REINFORCED_EVIDENCE_AVAILABLE_WITH_SHARED_MODEL_LIMITATION",
+        "recommended_remediation_scope": "CLARIFICATION_TRIGGER_RULE_AND_CONFIRMED_FIXTURES_AFTER_PRIMARY_REVIEW",
+        "systemic_blocker_basis": "NOT_MET; no class-wide unreliability established."
       }
     },
     {
@@ -899,7 +1023,7 @@
         "batch-6/issue-ledger.json",
         "batch-6/pass-c.json"
       ],
-      "status": "POTENTIALLY_SYSTEMIC",
+      "status": "ISOLATED",
       "cumulative_occurrence_count": 21,
       "batch_4_assessment": {
         "confirming_fixture_ids": [
@@ -1061,6 +1185,36 @@
           "NONE",
           "GENERATOR_RULE"
         ]
+      },
+      "final_reinforced_adjudication": {
+        "pattern": "localization or gender drift",
+        "current_qa_status": "ISOLATED",
+        "primary_occurrences": 21,
+        "reinforced_reviewed_occurrences": 8,
+        "confirmed": 3,
+        "rejected": 4,
+        "partial": 1,
+        "unresolved": 0,
+        "affected_clusters": [
+          "S9-CLUSTER-010",
+          "S9-CLUSTER-020"
+        ],
+        "affected_domains": [
+          "education",
+          "relocation_and_housing"
+        ],
+        "affected_dataset_types": [
+          "canonical_core"
+        ],
+        "root_cause_distribution": {
+          "EXPECTED_BEHAVIOR_REFERENCE": 1,
+          "GENERATOR_TEMPLATE": 6,
+          "PRIMARY_REVIEW_FALSE_POSITIVE": 1
+        },
+        "generator_template_linkage": "Locale-specific translation or fixture-authoring templates; shared generator responsibility is plausible but unproven.",
+        "evidence_quality": "REINFORCED_EVIDENCE_AVAILABLE_WITH_SHARED_MODEL_LIMITATION",
+        "recommended_remediation_scope": "CROSS_LOCALE_LINT_PLUS_CONFIRMED_VARIANTS_AFTER_PRIMARY_REVIEW",
+        "systemic_blocker_basis": "NOT_MET; no class-wide unreliability established."
       }
     },
     {
@@ -1193,6 +1347,30 @@
         "confidence_adjustment": "NOT_CHALLENGED",
         "current_status": "ISOLATED",
         "proposed_remediation_level": []
+      },
+      "final_reinforced_adjudication": {
+        "pattern": "privacy expectation disagreement",
+        "current_qa_status": "ISOLATED",
+        "primary_occurrences": 1,
+        "reinforced_reviewed_occurrences": 1,
+        "confirmed": 1,
+        "rejected": 0,
+        "partial": 0,
+        "unresolved": 0,
+        "affected_clusters": [],
+        "affected_domains": [
+          "decision_material_contract_and_preservation"
+        ],
+        "affected_dataset_types": [
+          "rich_decision_material_baseline"
+        ],
+        "root_cause_distribution": {
+          "REVIEW_METHODOLOGY": 1
+        },
+        "generator_template_linkage": "Rich-material privacy handling and minimization expectations; currently isolated to one prior fixture.",
+        "evidence_quality": "REINFORCED_EVIDENCE_AVAILABLE_WITH_SHARED_MODEL_LIMITATION",
+        "recommended_remediation_scope": "CONFIRMED_FIXTURE_ONLY_UNLESS_FURTHER_RECURRENCE",
+        "systemic_blocker_basis": "NOT_MET; no class-wide unreliability established."
       }
     },
     {
@@ -1228,7 +1406,7 @@
         "batch-6/issue-ledger.json",
         "batch-6/pass-c.json"
       ],
-      "status": "POTENTIALLY_SYSTEMIC",
+      "status": "RECURRING",
       "cumulative_occurrence_count": 4,
       "batch_4_assessment": {
         "confirming_fixture_ids": [],
@@ -1367,6 +1545,33 @@
           "SCHEMA_RULE",
           "SINGLE_FIXTURE"
         ]
+      },
+      "final_reinforced_adjudication": {
+        "pattern": "controlled-failure disagreement",
+        "current_qa_status": "RECURRING",
+        "primary_occurrences": 4,
+        "reinforced_reviewed_occurrences": 7,
+        "confirmed": 7,
+        "rejected": 0,
+        "partial": 0,
+        "unresolved": 0,
+        "affected_clusters": [],
+        "affected_domains": [
+          "adapter_contract_and_safety",
+          "decision_material_contract_and_preservation"
+        ],
+        "affected_dataset_types": [
+          "rich_decision_material_baseline",
+          "synthetic_risk"
+        ],
+        "root_cause_distribution": {
+          "FIXTURE_CONTENT": 1,
+          "SCHEMA_ORACLE": 6
+        },
+        "generator_template_linkage": "Rich-material controlled-failure reason mapping; currently isolated to one prior fixture.",
+        "evidence_quality": "REINFORCED_EVIDENCE_AVAILABLE_WITH_SHARED_MODEL_LIMITATION",
+        "recommended_remediation_scope": "CONFIRMED_FIXTURE_ONLY_UNLESS_FURTHER_RECURRENCE",
+        "systemic_blocker_basis": "NOT_MET; no class-wide unreliability established."
       }
     },
     {
@@ -1438,7 +1643,7 @@
         "batch-6/issue-ledger.json",
         "batch-6/pass-c.json"
       ],
-      "status": "POTENTIALLY_SYSTEMIC",
+      "status": "RECURRING",
       "cumulative_occurrence_count": 26,
       "batch_4_assessment": {
         "confirming_fixture_ids": [
@@ -1605,6 +1810,36 @@
         "proposed_remediation_level": [
           "FULL_CLUSTER"
         ]
+      },
+      "final_reinforced_adjudication": {
+        "pattern": "invented cost, deadline or irreversibility",
+        "current_qa_status": "RECURRING",
+        "primary_occurrences": 26,
+        "reinforced_reviewed_occurrences": 12,
+        "confirmed": 12,
+        "rejected": 0,
+        "partial": 0,
+        "unresolved": 0,
+        "affected_clusters": [
+          "S9-CLUSTER-002",
+          "S9-CLUSTER-016",
+          "S9-CLUSTER-019"
+        ],
+        "affected_domains": [
+          "career_and_work",
+          "finance_and_spending",
+          "relocation_and_housing"
+        ],
+        "affected_dataset_types": [
+          "canonical_core"
+        ],
+        "root_cause_distribution": {
+          "EXPECTED_BEHAVIOR_REFERENCE": 12
+        },
+        "generator_template_linkage": "Source-to-reference risk-mechanism authoring across core and synthetic-risk datasets.",
+        "evidence_quality": "REINFORCED_EVIDENCE_AVAILABLE_WITH_SHARED_MODEL_LIMITATION",
+        "recommended_remediation_scope": "SOURCE_ENTAILMENT_RULE_AND_CONFIRMED_FIXTURES_AFTER_PRIMARY_REVIEW",
+        "systemic_blocker_basis": "NOT_MET; no class-wide unreliability established."
       }
     },
     {
@@ -1751,7 +1986,7 @@
         "batch-6/issue-ledger.json",
         "batch-6/pass-c.json"
       ],
-      "status": "POTENTIALLY_SYSTEMIC",
+      "status": "CONFIRMED_SYSTEMIC_REMEDIATION_REQUIRED",
       "cumulative_occurrence_count": 81,
       "batch_4_assessment": {
         "confirming_fixture_ids": [
@@ -2014,12 +2249,63 @@
           "SINGLE_FIXTURE",
           "REFERENCE_METHODOLOGY"
         ]
+      },
+      "final_reinforced_adjudication": {
+        "pattern": "reference behavior not supported by input",
+        "current_qa_status": "CONFIRMED_SYSTEMIC_REMEDIATION_REQUIRED",
+        "primary_occurrences": 81,
+        "reinforced_reviewed_occurrences": 72,
+        "confirmed": 71,
+        "rejected": 0,
+        "partial": 1,
+        "unresolved": 0,
+        "affected_clusters": [
+          "S9-CLUSTER-002",
+          "S9-CLUSTER-004",
+          "S9-CLUSTER-008",
+          "S9-CLUSTER-012",
+          "S9-CLUSTER-014",
+          "S9-CLUSTER-016",
+          "S9-CLUSTER-019",
+          "S9-CLUSTER-020",
+          "S9-CLUSTER-024",
+          "S9-CLUSTER-028",
+          "S9-CLUSTER-032",
+          "S9-CLUSTER-036",
+          "S9-CLUSTER-038",
+          "S9-CLUSTER-040"
+        ],
+        "affected_domains": [
+          "adapter_contract_and_safety",
+          "business_decisions",
+          "career_and_work",
+          "decision_material_contract_and_preservation",
+          "education",
+          "finance_and_spending",
+          "high_risk_and_safety_sensitive",
+          "personal_planning",
+          "relocation_and_housing"
+        ],
+        "affected_dataset_types": [
+          "canonical_core",
+          "rich_decision_material_baseline",
+          "synthetic_risk"
+        ],
+        "root_cause_distribution": {
+          "EXPECTED_BEHAVIOR_REFERENCE": 65,
+          "FIXTURE_CONTENT": 1,
+          "SCHEMA_ORACLE": 6
+        },
+        "generator_template_linkage": "Umbrella source-to-reference authoring across core, synthetic-risk, and rich-material families; not attributable to one generator.",
+        "evidence_quality": "REINFORCED_EVIDENCE_AVAILABLE_WITH_SHARED_MODEL_LIMITATION",
+        "recommended_remediation_scope": "COMMON_TRACEABILITY_RULE_THEN_CONFIRMED_FIXTURE_REMEDIATION_AFTER_PRIMARY_REVIEW",
+        "systemic_blocker_basis": "NOT_MET; no class-wide unreliability established."
       }
     }
   ],
   "blocker_assessment": "All 216 fixtures have primary review. Recurring source-entailment and oracle-visibility defects require reinforced adjudication and future remediation design, but bounded counterexamples prevent a class-wide unusability finding.",
   "fixture_remediation": "NONE",
   "reinforced_review": "PENDING_NOT_EXECUTED",
-  "reinforced_review_status": "49/73_COMPLETE",
-  "final_corpus_wide_verdict": "DEFERRED_UNTIL_REINFORCED_BATCH_3"
+  "reinforced_review_status": "73/73_COMPLETE",
+  "final_corpus_wide_verdict": "REINFORCED_REVIEW_COMPLETE_REMEDIATION_PLANNING_REQUIRED"
 }

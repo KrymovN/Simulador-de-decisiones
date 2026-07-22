@@ -1,0 +1,297 @@
+{
+  "artifact_version": "stage-9-remediation-candidate-registry.1",
+  "review_timestamp": "2026-07-22T22:00:00.000Z",
+  "status": "PLANNING_ONLY",
+  "implementation_executed": false,
+  "fixture_remediation": "NONE",
+  "candidate_count": 8,
+  "categories": {
+    "SCHEMA_LEVEL": [
+      "S9-REM-SCHEMA-001"
+    ],
+    "EXPECTED_REFERENCE_LEVEL": [
+      "S9-REM-EXPECTED-001",
+      "S9-REM-EXPECTED-002",
+      "S9-REM-EXPECTED-003"
+    ],
+    "GENERATOR_TEMPLATE_LEVEL": [
+      "S9-REM-GENERATOR-001"
+    ],
+    "CLUSTER_LEVEL": [
+      "S9-REM-CLUSTER-001"
+    ],
+    "FIXTURE_LEVEL": [
+      "S9-REM-FIXTURE-001",
+      "S9-REM-FIXTURE-002"
+    ]
+  },
+  "candidates": [
+    {
+      "candidate_id": "S9-REM-SCHEMA-001",
+      "category": "SCHEMA_LEVEL",
+      "root_cause": "SCHEMA_ORACLE",
+      "affected_fixtures": [
+        "S9-EVAL-006",
+        "S9-EVAL-007",
+        "S9-EVAL-009",
+        "S9-EVAL-010",
+        "S9-EVAL-011",
+        "S9-EVAL-012"
+      ],
+      "affected_clusters": [],
+      "severity": "HIGH",
+      "confirmed_evidence": "Six reinforced cases require hidden candidate fields or metadata not present in the retained review source.",
+      "remediation_scope": "Preserve auditable negative-oracle fields without changing runtime semantics.",
+      "dependencies": [],
+      "proposed_bounded_implementation_order": 1,
+      "regression_gates": [
+        "Stage 9 schema-oracle fixture coverage",
+        "fixture hash migration gate"
+      ],
+      "status": "PLANNED_NOT_STARTED"
+    },
+    {
+      "candidate_id": "S9-REM-EXPECTED-001",
+      "category": "EXPECTED_REFERENCE_LEVEL",
+      "root_cause": "EXPECTED_BEHAVIOR_REFERENCE",
+      "affected_fixtures": [
+        "S9-CORE-004-EN",
+        "S9-CORE-004-ES",
+        "S9-CORE-004-RU",
+        "S9-CORE-004-ZH",
+        "S9-CORE-008-EN",
+        "S9-CORE-008-ES",
+        "S9-CORE-008-RU",
+        "S9-CORE-008-ZH",
+        "S9-CORE-012-EN",
+        "S9-CORE-012-ES",
+        "S9-CORE-012-RU",
+        "S9-CORE-012-ZH",
+        "S9-CORE-016-EN",
+        "S9-CORE-016-ES",
+        "S9-CORE-016-RU",
+        "S9-CORE-016-ZH",
+        "S9-CORE-020-EN",
+        "S9-CORE-020-ES",
+        "S9-CORE-020-RU",
+        "S9-CORE-020-ZH",
+        "S9-CORE-024-EN",
+        "S9-CORE-024-ES",
+        "S9-CORE-024-RU",
+        "S9-CORE-024-ZH",
+        "S9-CORE-028-EN",
+        "S9-CORE-028-ES",
+        "S9-CORE-028-RU",
+        "S9-CORE-028-ZH",
+        "S9-CORE-032-EN",
+        "S9-CORE-032-ES",
+        "S9-CORE-032-RU",
+        "S9-CORE-032-ZH",
+        "S9-CORE-036-EN",
+        "S9-CORE-036-ES",
+        "S9-CORE-036-RU",
+        "S9-CORE-036-ZH",
+        "S9-CORE-038-EN",
+        "S9-CORE-038-ES",
+        "S9-CORE-038-RU",
+        "S9-CORE-038-ZH",
+        "S9-CORE-040-EN",
+        "S9-CORE-040-ES",
+        "S9-CORE-040-RU",
+        "S9-CORE-040-ZH"
+      ],
+      "affected_clusters": [
+        "S9-CLUSTER-004",
+        "S9-CLUSTER-008",
+        "S9-CLUSTER-012",
+        "S9-CLUSTER-016",
+        "S9-CLUSTER-020",
+        "S9-CLUSTER-024",
+        "S9-CLUSTER-028",
+        "S9-CLUSTER-032",
+        "S9-CLUSTER-036",
+        "S9-CLUSTER-038",
+        "S9-CLUSTER-040"
+      ],
+      "severity": "HIGH",
+      "confirmed_evidence": "Reinforced review confirms repeated contradiction expectations without explicit incompatible source claims.",
+      "remediation_scope": "Correct only confirmed contradiction references and their cluster mappings.",
+      "dependencies": [
+        "S9-REM-SCHEMA-001 excluded from scope"
+      ],
+      "proposed_bounded_implementation_order": 2,
+      "regression_gates": [
+        "multilingual equivalence",
+        "source-entailment regression"
+      ],
+      "status": "PLANNED_NOT_STARTED"
+    },
+    {
+      "candidate_id": "S9-REM-EXPECTED-002",
+      "category": "EXPECTED_REFERENCE_LEVEL",
+      "root_cause": "EXPECTED_BEHAVIOR_REFERENCE",
+      "affected_fixtures": [
+        "S9-CORE-012-EN",
+        "S9-CORE-012-ES",
+        "S9-CORE-012-RU",
+        "S9-CORE-012-ZH",
+        "S9-CORE-036-ZH",
+        "S9-CORE-037-EN",
+        "S9-CORE-037-ES",
+        "S9-CORE-037-RU",
+        "S9-CORE-037-ZH",
+        "S9-CORE-038-EN",
+        "S9-CORE-038-ES",
+        "S9-CORE-038-RU",
+        "S9-CORE-038-ZH",
+        "S9-CORE-040-EN",
+        "S9-CORE-040-ES",
+        "S9-CORE-040-RU",
+        "S9-CORE-040-ZH"
+      ],
+      "affected_clusters": [
+        "S9-CLUSTER-012",
+        "S9-CLUSTER-036",
+        "S9-CLUSTER-037",
+        "S9-CLUSTER-038",
+        "S9-CLUSTER-040"
+      ],
+      "severity": "HIGH",
+      "confirmed_evidence": "Safety and clarification references include confirmed or partially confirmed unsupported/ambiguous behavior.",
+      "remediation_scope": "Bounded safety-reference wording and refusal/clarification priority.",
+      "dependencies": [
+        "final CORE-037 interpretation"
+      ],
+      "proposed_bounded_implementation_order": 3,
+      "regression_gates": [
+        "high-risk safety",
+        "controlled-failure",
+        "no unsupported refusal"
+      ],
+      "status": "PLANNED_NOT_STARTED"
+    },
+    {
+      "candidate_id": "S9-REM-EXPECTED-003",
+      "category": "EXPECTED_REFERENCE_LEVEL",
+      "root_cause": "EXPECTED_BEHAVIOR_REFERENCE",
+      "affected_fixtures": [
+        "S9-CORE-002-EN",
+        "S9-CORE-002-ES",
+        "S9-CORE-002-RU",
+        "S9-CORE-002-ZH",
+        "S9-CORE-016-EN",
+        "S9-CORE-016-ES",
+        "S9-CORE-016-RU",
+        "S9-CORE-016-ZH",
+        "S9-CORE-019-EN",
+        "S9-CORE-019-ES",
+        "S9-CORE-019-RU",
+        "S9-CORE-019-ZH"
+      ],
+      "affected_clusters": [
+        "S9-CLUSTER-002",
+        "S9-CLUSTER-016",
+        "S9-CLUSTER-019"
+      ],
+      "severity": "HIGH",
+      "confirmed_evidence": "Confirmed claims identify invented cost, deadline, dependency, irreversibility, or mobility consequences.",
+      "remediation_scope": "Correct confirmed expected risk mechanisms only.",
+      "dependencies": [],
+      "proposed_bounded_implementation_order": 4,
+      "regression_gates": [
+        "risk entailment",
+        "uncertainty preservation"
+      ],
+      "status": "PLANNED_NOT_STARTED"
+    },
+    {
+      "candidate_id": "S9-REM-GENERATOR-001",
+      "category": "GENERATOR_TEMPLATE_LEVEL",
+      "root_cause": "GENERATOR_TEMPLATE",
+      "affected_fixtures": [
+        "S9-CORE-010-ES",
+        "S9-CORE-010-RU",
+        "S9-CORE-010-ZH"
+      ],
+      "affected_clusters": [
+        "S9-CLUSTER-010"
+      ],
+      "severity": "LOW",
+      "confirmed_evidence": "Final adjudication confirms mechanically literal reversible-trial phrasing in three locales while rejecting gender drift.",
+      "remediation_scope": "Adjust the reversible-trial localization template without altering decision semantics.",
+      "dependencies": [
+        "gender-drift claim remains rejected"
+      ],
+      "proposed_bounded_implementation_order": 5,
+      "regression_gates": [
+        "cluster-010 equivalence",
+        "localization semantics"
+      ],
+      "status": "PLANNED_NOT_STARTED"
+    },
+    {
+      "candidate_id": "S9-REM-CLUSTER-001",
+      "category": "CLUSTER_LEVEL",
+      "root_cause": "CLUSTER_LOCALIZATION",
+      "affected_fixtures": [
+        "S9-CORE-020-ES",
+        "S9-CORE-020-EN",
+        "S9-CORE-020-RU",
+        "S9-CORE-020-ZH"
+      ],
+      "affected_clusters": [
+        "S9-CLUSTER-020"
+      ],
+      "severity": "MEDIUM",
+      "confirmed_evidence": "The combined ES claim is only partially confirmed; locale grammar must be separated from the confirmed contradiction-reference defect.",
+      "remediation_scope": "Clarify cluster-specific ground truth and material-localization criteria.",
+      "dependencies": [
+        "S9-REM-EXPECTED-001"
+      ],
+      "proposed_bounded_implementation_order": 6,
+      "regression_gates": [
+        "four-locale semantic parity",
+        "actor/modality/negation/urgency/risk equivalence"
+      ],
+      "status": "PLANNED_NOT_STARTED"
+    },
+    {
+      "candidate_id": "S9-REM-FIXTURE-001",
+      "category": "FIXTURE_LEVEL",
+      "root_cause": "FIXTURE_CONTENT",
+      "affected_fixtures": [
+        "S9-MATERIAL-006"
+      ],
+      "affected_clusters": [],
+      "severity": "HIGH",
+      "confirmed_evidence": "Reinforced review confirms isolated silent-loss fixture content evidence.",
+      "remediation_scope": "Correct the isolated fixture only after versioned migration approval.",
+      "dependencies": [],
+      "proposed_bounded_implementation_order": 7,
+      "regression_gates": [
+        "no-silent-loss",
+        "fixture migration hash"
+      ],
+      "status": "PLANNED_NOT_STARTED"
+    },
+    {
+      "candidate_id": "S9-REM-FIXTURE-002",
+      "category": "FIXTURE_LEVEL",
+      "root_cause": "REVIEW_METHODOLOGY",
+      "affected_fixtures": [
+        "S9-MATERIAL-013"
+      ],
+      "affected_clusters": [],
+      "severity": "MEDIUM",
+      "confirmed_evidence": "A retained primary privacy observation requires reference-methodology correction rather than runtime change.",
+      "remediation_scope": "Bounded review-reference clarification.",
+      "dependencies": [],
+      "proposed_bounded_implementation_order": 8,
+      "regression_gates": [
+        "privacy data minimization",
+        "review ledger preservation"
+      ],
+      "status": "PLANNED_NOT_STARTED"
+    }
+  ]
+}
