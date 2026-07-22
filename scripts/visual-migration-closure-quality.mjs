@@ -104,7 +104,7 @@ const currentCanonicalState = [
 check("Stage 9 remains In Progress without completion drift", currentCanonicalState.includes("Stage 9 remains **In Progress**") && !currentCanonicalState.includes("Stage 9 is complete") && !currentCanonicalState.includes("Stage 9 is **Complete**") && !currentCanonicalState.includes("Stage 9 Closed"));
 check("Stage 15 remains documentation and planning only", currentCanonicalState.includes("Stage 15 remains a bounded documentation and scale-readiness planning stage") && !currentCanonicalState.includes("Stage 15 is an implementation Stage"));
 check("Visual migration remains closed with zero remaining substeps", currentCanonicalState.includes("Visual migration remains fully closed with 0 remaining substeps") && !currentCanonicalState.includes("Visual migration is reopened") && !currentCanonicalState.includes("Visual migration has reopened"));
-check("Stage 9 continuation remains planning only", currentCanonicalState.includes("No next Stage 9 implementation substep is open") && currentCanonicalState.includes("planning candidate, not In Progress work") && !currentCanonicalState.includes("Stage 9 Offline Evaluation Human Review and Release Candidate Assessment is In Progress") && !currentCanonicalState.includes("Stage 9 Offline Evaluation Human Review and Release Candidate Assessment is **In Progress**"));
+check("Stage 9 continuation remains planning only", currentCanonicalState.includes("No next Stage 9 implementation substep is open") && (currentCanonicalState.includes("planning candidate, not In Progress work") || currentCanonicalState.includes("next planning candidate only")) && !currentCanonicalState.includes("Stage 9 Offline Evaluation Human Review and Release Candidate Assessment is In Progress") && !currentCanonicalState.includes("Stage 9 Offline Evaluation Human Review and Release Candidate Assessment is **In Progress**"));
 check("Dataset minimum reached with independent AI review in progress", currentCanonicalState.includes("canonical minimum of 160 case records has been reached") && !currentCanonicalState.includes("canonical minimum of 160 case records is not reached") && currentCanonicalState.includes("AI review status remains `In Progress`") && currentCanonicalState.includes("Batch 1 is complete for 36 of 216 fixtures") && currentCanonicalState.includes("release readiness is not declared"));
 
 for (const directory of [
@@ -153,6 +153,8 @@ for (const path of [
   "docs/qa/review/AI_REVIEW_PATTERN_SATURATION.json",
   ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-4/${name}`),
   "scripts/generate-stage-9-ai-review-batch-4.mjs", "scripts/stage-9-ai-review-batch-4-quality.mjs",
+  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-5/${name}`),
+  "scripts/generate-stage-9-ai-review-batch-5.mjs", "scripts/stage-9-ai-review-batch-5-quality.mjs",
 ]) allowed.add(path);
 const tracked = execFileSync("git", ["diff", "--name-only", baseline], { cwd: rootDir, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: rootDir, encoding: "utf8" }).trim().split("\n").filter(Boolean);
@@ -185,6 +187,8 @@ for (const path of [
   "docs/qa/review/AI_REVIEW_PATTERN_SATURATION.json",
   ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-4/${name}`),
   "scripts/generate-stage-9-ai-review-batch-4.mjs", "scripts/stage-9-ai-review-batch-4-quality.mjs",
+  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-5/${name}`),
+  "scripts/generate-stage-9-ai-review-batch-5.mjs", "scripts/stage-9-ai-review-batch-5-quality.mjs",
 ]) reconciliationAllowed.add(path);
 const reconciliationTracked = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: rootDir, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const reconciliationDiff = Array.from(new Set([...reconciliationTracked, ...untracked])).sort();

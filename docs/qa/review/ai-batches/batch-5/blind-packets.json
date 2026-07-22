@@ -1,0 +1,1436 @@
+{
+  "artifact_version": "stage-9-ai-review-blind-packets.5",
+  "batch_id": "stage-9-ai-review-batch-5-of-6",
+  "reviewer_role_id": "ai-semantic-reviewer-v1",
+  "prompt_version": "stage-9-ai-review-pass-a.5",
+  "context_isolation": {
+    "review_session": "stage-9-ai-review-batch-5",
+    "reviewer_role_id": "ai-semantic-reviewer-v1",
+    "model_id": "codex-current-session",
+    "independence_type": "role-and-context-isolated",
+    "model_independence": "not_claimed"
+  },
+  "blindness_invariant": "Packets contain only fixture identity, locale, user/source input, and source metadata; expected behavior, preservation expectations, prior findings, pattern registry, and later passes are excluded.",
+  "packets": [
+    {
+      "fixture_id": "S9-EVAL-006",
+      "source_fixture_hash": "8901d8a0132b0dafe43d376078bf6c5ac79b11ce4b2a20ee3cd9cbe6edbcebdf",
+      "locale": "es",
+      "source_input": {
+        "fixture_id": "eval_001_synthetic_relocation",
+        "classification": "synthetic_non_personal",
+        "capability": "candidate_risk_signals_v1",
+        "locale": "es-ES",
+        "decision_summary": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "objective": "Identificar señales de riesgo sin elegir una ubicación.",
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses"
+        ],
+        "options": [
+          "Ubicación Norte",
+          "Ubicación Sur"
+        ],
+        "known_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "known_uncertainties": [
+          "La demanda futura no está confirmada"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "synthetic_risk",
+        "equivalence_cluster": null,
+        "domain": "adapter_contract_and_safety",
+        "completeness_state": "not_applicable",
+        "cost_profile": null
+      }
+    },
+    {
+      "fixture_id": "S9-EVAL-019",
+      "source_fixture_hash": "be8704d4294bc9cc7a762c8400565b6c7de6727a38543c2b96077cbe3f05a928",
+      "locale": "es",
+      "source_input": {
+        "fixture_id": "eval_001_synthetic_relocation",
+        "classification": "synthetic_non_personal",
+        "capability": "candidate_risk_signals_v1",
+        "locale": "es-ES",
+        "decision_summary": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "objective": "Identificar señales de riesgo sin elegir una ubicación.",
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses"
+        ],
+        "options": [
+          "Ubicación Norte",
+          "Ubicación Sur"
+        ],
+        "known_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "known_uncertainties": [
+          "La demanda futura no está confirmada"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "synthetic_risk",
+        "equivalence_cluster": null,
+        "domain": "adapter_contract_and_safety",
+        "completeness_state": "not_applicable",
+        "cost_profile": null
+      }
+    },
+    {
+      "fixture_id": "S9-EVAL-027",
+      "source_fixture_hash": "8f2f5abb4d527902505c64bef39fd44988f3cf875b404b07987e21696414ba5a",
+      "locale": "es",
+      "source_input": {
+        "fixture_id": "eval_001_synthetic_relocation",
+        "classification": "synthetic_non_personal",
+        "capability": "candidate_risk_signals_v1",
+        "locale": "es-ES",
+        "decision_summary": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "objective": "Identificar señales de riesgo sin elegir una ubicación.",
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses"
+        ],
+        "options": [
+          "Ubicación Norte",
+          "Ubicación Sur"
+        ],
+        "known_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "known_uncertainties": [
+          "La demanda futura no está confirmada"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "synthetic_risk",
+        "equivalence_cluster": null,
+        "domain": "adapter_contract_and_safety",
+        "completeness_state": "not_applicable",
+        "cost_profile": null
+      }
+    },
+    {
+      "fixture_id": "S9-EVAL-032",
+      "source_fixture_hash": "aeb74ecee82a88ff82de8ef697b4fe334d81438615fc1722c30b7b5c2cacd677",
+      "locale": "es",
+      "source_input": {
+        "fixture_id": "eval_001_synthetic_relocation",
+        "classification": "personal",
+        "capability": "candidate_risk_signals_v1",
+        "locale": "es-ES",
+        "decision_summary": "Una empresa ficticia compara dos ubicaciones para un equipo nuevo.",
+        "objective": "Identificar señales de riesgo sin elegir una ubicación.",
+        "constraints": [
+          "Presupuesto limitado",
+          "Inicio previsto en seis meses"
+        ],
+        "options": [
+          "Ubicación Norte",
+          "Ubicación Sur"
+        ],
+        "known_facts": [
+          "Norte tiene mayor coste fijo",
+          "Sur depende de un proveedor externo"
+        ],
+        "known_uncertainties": [
+          "La demanda futura no está confirmada"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "synthetic_risk",
+        "equivalence_cluster": null,
+        "domain": "adapter_contract_and_safety",
+        "completeness_state": "not_applicable",
+        "cost_profile": null
+      }
+    },
+    {
+      "fixture_id": "S9-MATERIAL-009",
+      "source_fixture_hash": "a6d222ff865b410824820ab0a80b7fe3d53f3e9d8412fc5eef89c6bf8131bdeb",
+      "locale": "not_declared",
+      "source_input": {
+        "material": {
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0",
+          "generation_status": "completed",
+          "classification": "synthetic_non_personal",
+          "items": [
+            {
+              "candidate_id": "candidate_019",
+              "item_type": "context_factor",
+              "content": "El color histórico del logotipo no cambia esta decisión.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "synthetic_candidate_019"
+              },
+              "confidence": "medium",
+              "evidence": "provider_inference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            }
+          ]
+        },
+        "acceptance_context": {
+          "allowed_option_refs": [
+            "option_north",
+            "option_south"
+          ],
+          "allowed_scenario_refs": [
+            "scenario_base",
+            "scenario_adverse"
+          ],
+          "allowed_criterion_refs": [
+            "criterion_cost",
+            "criterion_continuity"
+          ],
+          "contradictory_candidate_ids": [],
+          "irrelevant_candidate_ids": [
+            "candidate_019"
+          ]
+        }
+      },
+      "declared_context_metadata": {
+        "dataset_type": "rich_decision_material_baseline",
+        "equivalence_cluster": null,
+        "domain": "decision_material_contract_and_preservation",
+        "completeness_state": "not_applicable",
+        "cost_profile": null
+      }
+    },
+    {
+      "fixture_id": "S9-MATERIAL-017",
+      "source_fixture_hash": "3a2b3ffda846684aa70236f3ba45e293da62f46aa9a84019d626ba8173814951",
+      "locale": "not_declared",
+      "source_input": {
+        "material": {
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0",
+          "generation_status": "completed",
+          "classification": "synthetic_non_personal",
+          "items": [
+            {
+              "candidate_id": "candidate_001",
+              "item_type": "context_factor",
+              "content": "La organización ficticia compara dos ubicaciones operativas.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "synthetic_candidate_001"
+              },
+              "confidence": "medium",
+              "evidence": "provider_inference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0",
+              "advice": "forbidden"
+            }
+          ]
+        },
+        "acceptance_context": {
+          "allowed_option_refs": [
+            "option_north",
+            "option_south"
+          ],
+          "allowed_scenario_refs": [
+            "scenario_base",
+            "scenario_adverse"
+          ],
+          "allowed_criterion_refs": [
+            "criterion_cost",
+            "criterion_continuity"
+          ],
+          "contradictory_candidate_ids": [],
+          "irrelevant_candidate_ids": []
+        }
+      },
+      "declared_context_metadata": {
+        "dataset_type": "rich_decision_material_baseline",
+        "equivalence_cluster": null,
+        "domain": "decision_material_contract_and_preservation",
+        "completeness_state": "not_applicable",
+        "cost_profile": null
+      }
+    },
+    {
+      "fixture_id": "S9-MATERIAL-019",
+      "source_fixture_hash": "1fac2bf97df0c1daaf38577155f727e4d9e09a46b1cea998240b72f78ce33f15",
+      "locale": "not_declared",
+      "source_input": {
+        "material": {
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0",
+          "generation_status": "completed",
+          "classification": "synthetic_non_personal",
+          "items": [
+            {
+              "candidate_id": "candidate_001",
+              "item_type": "context_factor",
+              "content": "La organización ficticia compara dos ubicaciones operativas.",
+              "provenance": {},
+              "confidence": "medium",
+              "evidence": "provider_inference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            }
+          ]
+        },
+        "acceptance_context": {
+          "allowed_option_refs": [
+            "option_north",
+            "option_south"
+          ],
+          "allowed_scenario_refs": [
+            "scenario_base",
+            "scenario_adverse"
+          ],
+          "allowed_criterion_refs": [
+            "criterion_cost",
+            "criterion_continuity"
+          ],
+          "contradictory_candidate_ids": [],
+          "irrelevant_candidate_ids": []
+        }
+      },
+      "declared_context_metadata": {
+        "dataset_type": "rich_decision_material_baseline",
+        "equivalence_cluster": null,
+        "domain": "decision_material_contract_and_preservation",
+        "completeness_state": "not_applicable",
+        "cost_profile": null
+      }
+    },
+    {
+      "fixture_id": "S9-MATERIAL-024",
+      "source_fixture_hash": "581cc072f8c70a7bc40253f1fe4ed9f9be547e39777bb07a14c766e3d1ce61b5",
+      "locale": "not_declared",
+      "source_input": {
+        "material": {
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "2.0",
+          "generation_status": "completed",
+          "classification": "synthetic_non_personal",
+          "items": [
+            {
+              "candidate_id": "candidate_001",
+              "item_type": "context_factor",
+              "content": "La organización ficticia compara dos ubicaciones operativas.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "synthetic_candidate_001"
+              },
+              "confidence": "medium",
+              "evidence": "provider_inference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "candidate_002",
+              "item_type": "user_goal",
+              "content": "Mantener continuidad sin superar el presupuesto disponible.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "synthetic_candidate_002"
+              },
+              "confidence": "medium",
+              "evidence": "provider_inference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "candidate_003",
+              "item_type": "decision_criterion",
+              "content": "Coste operativo total durante el primer año.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "synthetic_candidate_003"
+              },
+              "confidence": "medium",
+              "evidence": "provider_inference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [
+                "criterion_cost"
+              ],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "candidate_004",
+              "item_type": "option",
+              "content": "Ubicación Norte con mayor coste fijo.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "synthetic_candidate_004"
+              },
+              "confidence": "medium",
+              "evidence": "provider_inference",
+              "option_refs": [
+                "option_north"
+              ],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "candidate_005",
+              "item_type": "benefit_or_opportunity",
+              "content": "La ubicación Norte ofrece acceso inmediato al equipo especializado.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "synthetic_candidate_005"
+              },
+              "confidence": "medium",
+              "evidence": "provider_inference",
+              "option_refs": [
+                "option_north"
+              ],
+              "scenario_refs": [],
+              "criterion_refs": [
+                "criterion_continuity"
+              ],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "candidate_006",
+              "item_type": "risk_signal",
+              "content": "La dependencia de un proveedor puede interrumpir la operación.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "synthetic_candidate_006"
+              },
+              "confidence": "medium",
+              "evidence": "provider_inference",
+              "option_refs": [
+                "option_south"
+              ],
+              "scenario_refs": [
+                "scenario_adverse"
+              ],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "candidate_007",
+              "item_type": "dependency",
+              "content": "La opción Sur depende de capacidad externa todavía no confirmada.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "synthetic_candidate_007"
+              },
+              "confidence": "medium",
+              "evidence": "provider_inference",
+              "option_refs": [
+                "option_south"
+              ],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "candidate_008",
+              "item_type": "assumption",
+              "content": "Se asume que la demanda permanecerá estable durante seis meses.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "synthetic_candidate_008"
+              },
+              "confidence": "medium",
+              "evidence": "user_assumption_reference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "candidate_009",
+              "item_type": "unknown",
+              "content": "No se conoce la resiliencia contractual del proveedor.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "synthetic_candidate_009"
+              },
+              "confidence": "unknown",
+              "evidence": "unknown",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "candidate_010",
+              "item_type": "contradiction",
+              "content": "El objetivo de menor coste entra en tensión con la continuidad prioritaria.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "synthetic_candidate_010"
+              },
+              "confidence": "medium",
+              "evidence": "provider_inference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "candidate_011",
+              "item_type": "short_term_consequence",
+              "content": "El traslado inicial consume capacidad operativa durante varias semanas.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "synthetic_candidate_011"
+              },
+              "confidence": "medium",
+              "evidence": "provider_inference",
+              "option_refs": [],
+              "scenario_refs": [
+                "scenario_base"
+              ],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "candidate_012",
+              "item_type": "long_term_consequence",
+              "content": "La concentración en un proveedor reduce opcionalidad futura.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "synthetic_candidate_012"
+              },
+              "confidence": "medium",
+              "evidence": "provider_inference",
+              "option_refs": [],
+              "scenario_refs": [
+                "scenario_adverse"
+              ],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "candidate_013",
+              "item_type": "reversibility",
+              "content": "Un piloto de tres meses permite volver a la configuración anterior.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "synthetic_candidate_013"
+              },
+              "confidence": "medium",
+              "evidence": "provider_inference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "candidate_014",
+              "item_type": "decision_trigger",
+              "content": "Reevaluar si el coste fijo supera el límite acordado.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "synthetic_candidate_014"
+              },
+              "confidence": "medium",
+              "evidence": "provider_inference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [
+                "criterion_cost"
+              ],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "candidate_015",
+              "item_type": "clarification_need",
+              "content": "Confirmar el límite de interrupción operativa aceptable.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "synthetic_candidate_015"
+              },
+              "confidence": "medium",
+              "evidence": "provider_inference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [
+                "criterion_continuity"
+              ],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            }
+          ]
+        },
+        "acceptance_context": {
+          "allowed_option_refs": [
+            "option_north",
+            "option_south"
+          ],
+          "allowed_scenario_refs": [
+            "scenario_base",
+            "scenario_adverse"
+          ],
+          "allowed_criterion_refs": [
+            "criterion_cost",
+            "criterion_continuity"
+          ],
+          "contradictory_candidate_ids": [],
+          "irrelevant_candidate_ids": []
+        }
+      },
+      "declared_context_metadata": {
+        "dataset_type": "rich_decision_material_baseline",
+        "equivalence_cluster": null,
+        "domain": "decision_material_contract_and_preservation",
+        "completeness_state": "not_applicable",
+        "cost_profile": null
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-001-ES",
+      "source_fixture_hash": "1a85482419e727cddab1fea0219d39e51e049f2d3534ea1e59131db23cac156a",
+      "locale": "es",
+      "source_input": {
+        "user_situation": "Una profesional ficticia compara dos ofertas con distinto salario, trayecto y crecimiento.",
+        "user_intent": "evaluate_offer_tradeoffs_without_direct_answer",
+        "known_facts": [
+          "two_confirmed_offers",
+          "decision_deadline"
+        ],
+        "known_assumptions": [
+          "growth_estimates_are_uncertain"
+        ],
+        "critical_gaps": [],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-001",
+        "domain": "career_and_work",
+        "completeness_state": "complete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-001-EN",
+      "source_fixture_hash": "3c63815fb34e6e6e1671c5ce64715ffa86a0b27d88616c3e8a6ac8944e9e651e",
+      "locale": "en",
+      "source_input": {
+        "user_situation": "A fictional professional compares two offers with different salary, commute, and growth.",
+        "user_intent": "evaluate_offer_tradeoffs_without_direct_answer",
+        "known_facts": [
+          "two_confirmed_offers",
+          "decision_deadline"
+        ],
+        "known_assumptions": [
+          "growth_estimates_are_uncertain"
+        ],
+        "critical_gaps": [],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-001",
+        "domain": "career_and_work",
+        "completeness_state": "complete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-001-RU",
+      "source_fixture_hash": "7f583e7ea6668e62884c60892dfe40400de9ff5bf1cbbc5f892d98692b63f9c4",
+      "locale": "ru",
+      "source_input": {
+        "user_situation": "Вымышленный специалист сравнивает два предложения с разной зарплатой, дорогой и ростом.",
+        "user_intent": "evaluate_offer_tradeoffs_without_direct_answer",
+        "known_facts": [
+          "two_confirmed_offers",
+          "decision_deadline"
+        ],
+        "known_assumptions": [
+          "growth_estimates_are_uncertain"
+        ],
+        "critical_gaps": [],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-001",
+        "domain": "career_and_work",
+        "completeness_state": "complete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-001-ZH",
+      "source_fixture_hash": "2c93d84feeea5e7967f8f073fc4a1426479cdcfbf9d59aa6085732c11e87fefc",
+      "locale": "zh",
+      "source_input": {
+        "user_situation": "一名虚构的专业人士比较两份在薪资、通勤和成长方面不同的工作机会。",
+        "user_intent": "evaluate_offer_tradeoffs_without_direct_answer",
+        "known_facts": [
+          "two_confirmed_offers",
+          "decision_deadline"
+        ],
+        "known_assumptions": [
+          "growth_estimates_are_uncertain"
+        ],
+        "critical_gaps": [],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-001",
+        "domain": "career_and_work",
+        "completeness_state": "complete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-006-ES",
+      "source_fixture_hash": "1d5fc3349e21409ef587270caf49a4f41710c8aabc66c6bc66956f7882b51e58",
+      "locale": "es",
+      "source_input": {
+        "user_situation": "Una trabajadora ficticia decide si renovar un contrato temporal antes de conocer el presupuesto futuro.",
+        "user_intent": "evaluate_fixed_term_contract_without_direct_answer",
+        "known_facts": [
+          "contract_end_date"
+        ],
+        "known_assumptions": [
+          "budget_will_be_approved"
+        ],
+        "critical_gaps": [],
+        "important_gaps": [
+          "budget_confirmation"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-006",
+        "domain": "career_and_work",
+        "completeness_state": "partial",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-006-EN",
+      "source_fixture_hash": "e22899acfac4ebd9de6ceb490ec708c75bc17c0a94d22e58d13b81e327c2d7f8",
+      "locale": "en",
+      "source_input": {
+        "user_situation": "A fictional worker decides whether to renew a fixed-term contract before the future budget is known.",
+        "user_intent": "evaluate_fixed_term_contract_without_direct_answer",
+        "known_facts": [
+          "contract_end_date"
+        ],
+        "known_assumptions": [
+          "budget_will_be_approved"
+        ],
+        "critical_gaps": [],
+        "important_gaps": [
+          "budget_confirmation"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-006",
+        "domain": "career_and_work",
+        "completeness_state": "partial",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-006-RU",
+      "source_fixture_hash": "e9af9229fb2664868f6020c68347b0e97ab74e9ce531e6f25220711c4c9e0612",
+      "locale": "ru",
+      "source_input": {
+        "user_situation": "Вымышленный работник решает, продлевать ли срочный контракт до подтверждения будущего бюджета.",
+        "user_intent": "evaluate_fixed_term_contract_without_direct_answer",
+        "known_facts": [
+          "contract_end_date"
+        ],
+        "known_assumptions": [
+          "budget_will_be_approved"
+        ],
+        "critical_gaps": [],
+        "important_gaps": [
+          "budget_confirmation"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-006",
+        "domain": "career_and_work",
+        "completeness_state": "partial",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-006-ZH",
+      "source_fixture_hash": "0b84e4c60355d96e349329d48bf0624135c7f4d11d56394cd7f3ef475c38beed",
+      "locale": "zh",
+      "source_input": {
+        "user_situation": "一名虚构员工在未来预算尚未确定前决定是否续签定期合同。",
+        "user_intent": "evaluate_fixed_term_contract_without_direct_answer",
+        "known_facts": [
+          "contract_end_date"
+        ],
+        "known_assumptions": [
+          "budget_will_be_approved"
+        ],
+        "critical_gaps": [],
+        "important_gaps": [
+          "budget_confirmation"
+        ]
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-006",
+        "domain": "career_and_work",
+        "completeness_state": "partial",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-011-ES",
+      "source_fixture_hash": "350f5f74a322b0758a58cc5c68c594e51cea2a516f5d5cdb6a2daa74d4a23d47",
+      "locale": "es",
+      "source_input": {
+        "user_situation": "Una alumna ficticia evalúa un curso avanzado sin confirmación de los requisitos previos.",
+        "user_intent": "evaluate_course_prerequisites_without_direct_answer",
+        "known_facts": [
+          "course_scope_known"
+        ],
+        "known_assumptions": [
+          "prior_skills_sufficient"
+        ],
+        "critical_gaps": [
+          "prerequisite_evidence"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-011",
+        "domain": "education",
+        "completeness_state": "critically_incomplete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-011-EN",
+      "source_fixture_hash": "eec60205d37112425c7561c45113346b3320bbd5fa0c0a3b081b3fa8cec6295a",
+      "locale": "en",
+      "source_input": {
+        "user_situation": "A fictional learner evaluates an advanced course without confirmed prerequisites.",
+        "user_intent": "evaluate_course_prerequisites_without_direct_answer",
+        "known_facts": [
+          "course_scope_known"
+        ],
+        "known_assumptions": [
+          "prior_skills_sufficient"
+        ],
+        "critical_gaps": [
+          "prerequisite_evidence"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-011",
+        "domain": "education",
+        "completeness_state": "critically_incomplete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-011-RU",
+      "source_fixture_hash": "1f99741fa9dd45921d2a319b22fbc1aa1dd30cfa86011851835e7dcb299b2568",
+      "locale": "ru",
+      "source_input": {
+        "user_situation": "Вымышленный учащийся оценивает продвинутый курс без подтверждённых предварительных требований.",
+        "user_intent": "evaluate_course_prerequisites_without_direct_answer",
+        "known_facts": [
+          "course_scope_known"
+        ],
+        "known_assumptions": [
+          "prior_skills_sufficient"
+        ],
+        "critical_gaps": [
+          "prerequisite_evidence"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-011",
+        "domain": "education",
+        "completeness_state": "critically_incomplete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-011-ZH",
+      "source_fixture_hash": "ad5d03e27ce3894da664fb7dcaf352d80190ea26a6c55ce94a946cee8a7d89e3",
+      "locale": "zh",
+      "source_input": {
+        "user_situation": "一名虚构学习者在先修条件未确认时评估高级课程。",
+        "user_intent": "evaluate_course_prerequisites_without_direct_answer",
+        "known_facts": [
+          "course_scope_known"
+        ],
+        "known_assumptions": [
+          "prior_skills_sufficient"
+        ],
+        "critical_gaps": [
+          "prerequisite_evidence"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-011",
+        "domain": "education",
+        "completeness_state": "critically_incomplete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-017-ES",
+      "source_fixture_hash": "448cf4e6f0a8e8f756314af1a9c245112bc3bf1bff2affc3d17bfdbb947f83be",
+      "locale": "es",
+      "source_input": {
+        "user_situation": "Una empresa ficticia compara coberturas con distinta franquicia y límites de póliza.",
+        "user_intent": "evaluate_insurance_deductible_without_direct_answer",
+        "known_facts": [
+          "premium_and_limits_known"
+        ],
+        "known_assumptions": [
+          "claim_frequency_stable"
+        ],
+        "critical_gaps": [],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-017",
+        "domain": "finance_and_spending",
+        "completeness_state": "complete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-017-EN",
+      "source_fixture_hash": "261a71d5175e3f5e60ded3b4fd52f31ac9eb3aed432d37ab967b14b78cf766d5",
+      "locale": "en",
+      "source_input": {
+        "user_situation": "A fictional company compares coverage options with different deductibles and policy limits.",
+        "user_intent": "evaluate_insurance_deductible_without_direct_answer",
+        "known_facts": [
+          "premium_and_limits_known"
+        ],
+        "known_assumptions": [
+          "claim_frequency_stable"
+        ],
+        "critical_gaps": [],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-017",
+        "domain": "finance_and_spending",
+        "completeness_state": "complete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-017-RU",
+      "source_fixture_hash": "0bc5ccbaa37c7c06e74b6ec271f76073fda2f4a7a779bd31f38f0757bf983716",
+      "locale": "ru",
+      "source_input": {
+        "user_situation": "Вымышленная компания сравнивает варианты страхования с разной франшизой и лимитами.",
+        "user_intent": "evaluate_insurance_deductible_without_direct_answer",
+        "known_facts": [
+          "premium_and_limits_known"
+        ],
+        "known_assumptions": [
+          "claim_frequency_stable"
+        ],
+        "critical_gaps": [],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-017",
+        "domain": "finance_and_spending",
+        "completeness_state": "complete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-017-ZH",
+      "source_fixture_hash": "d9473aba5985d35e5cd46d137ef7797bb883ef189756dfdad0cc22ef2b37a2f0",
+      "locale": "zh",
+      "source_input": {
+        "user_situation": "一家虚构公司比较具有不同免赔额和保单限额的保障方案。",
+        "user_intent": "evaluate_insurance_deductible_without_direct_answer",
+        "known_facts": [
+          "premium_and_limits_known"
+        ],
+        "known_assumptions": [
+          "claim_frequency_stable"
+        ],
+        "critical_gaps": [],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-017",
+        "domain": "finance_and_spending",
+        "completeness_state": "complete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-019-ES",
+      "source_fixture_hash": "ba41eefd4d3711f46975655d26f3025d86c6d81ba0bdae15fa9274b701cab916",
+      "locale": "es",
+      "source_input": {
+        "user_situation": "Una persona ficticia compara quedarse, mudarse o probar otra ciudad durante tres meses.",
+        "user_intent": "evaluate_trial_city_without_direct_answer",
+        "known_facts": [
+          "trial_budget_known"
+        ],
+        "known_assumptions": [
+          "remote_work_continues"
+        ],
+        "critical_gaps": [
+          "return_housing_option"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-019",
+        "domain": "relocation_and_housing",
+        "completeness_state": "critically_incomplete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-019-EN",
+      "source_fixture_hash": "148b180b95291c19278096a0521c100c0157548e17856a67618791ec0e59785d",
+      "locale": "en",
+      "source_input": {
+        "user_situation": "A fictional person compares staying, moving, or trying another city for three months.",
+        "user_intent": "evaluate_trial_city_without_direct_answer",
+        "known_facts": [
+          "trial_budget_known"
+        ],
+        "known_assumptions": [
+          "remote_work_continues"
+        ],
+        "critical_gaps": [
+          "return_housing_option"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-019",
+        "domain": "relocation_and_housing",
+        "completeness_state": "critically_incomplete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-019-RU",
+      "source_fixture_hash": "78cedbb5a1a4541d892ff53304133f78af558d5023679aefc38fbfa4b87fff92",
+      "locale": "ru",
+      "source_input": {
+        "user_situation": "Вымышленный человек сравнивает остаться, переехать или попробовать другой город на три месяца.",
+        "user_intent": "evaluate_trial_city_without_direct_answer",
+        "known_facts": [
+          "trial_budget_known"
+        ],
+        "known_assumptions": [
+          "remote_work_continues"
+        ],
+        "critical_gaps": [
+          "return_housing_option"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-019",
+        "domain": "relocation_and_housing",
+        "completeness_state": "critically_incomplete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-019-ZH",
+      "source_fixture_hash": "ecb1e98f145c353cbb84b09c7cd399e3559b809b56465c91dfb704ff71c17e46",
+      "locale": "zh",
+      "source_input": {
+        "user_situation": "一个虚构的人比较留下、搬迁或在另一座城市试住三个月。",
+        "user_intent": "evaluate_trial_city_without_direct_answer",
+        "known_facts": [
+          "trial_budget_known"
+        ],
+        "known_assumptions": [
+          "remote_work_continues"
+        ],
+        "critical_gaps": [
+          "return_housing_option"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-019",
+        "domain": "relocation_and_housing",
+        "completeness_state": "critically_incomplete",
+        "cost_profile": {
+          "profile": "bounded_low",
+          "max_relative_units": 60
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-028-ES",
+      "source_fixture_hash": "df33e9604c4fa0a648623429bd86131d00d0c1dfaf32c282c50148df531d5b2e",
+      "locale": "es",
+      "source_input": {
+        "user_situation": "Una empresa ficticia compara ampliar local, usar espacio flexible o mantener capacidad.",
+        "user_intent": "evaluate_expansion_lease_without_direct_answer",
+        "known_facts": [
+          "lease_terms_known"
+        ],
+        "known_assumptions": [
+          "growth_forecast_holds"
+        ],
+        "critical_gaps": [
+          "exit_clause"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-028",
+        "domain": "business_decisions",
+        "completeness_state": "contradictory",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-028-EN",
+      "source_fixture_hash": "8d81b3c1d9d49f93dad597f6c1713aa2aa2f7b3cb754a2250dd0191399c17bac",
+      "locale": "en",
+      "source_input": {
+        "user_situation": "A fictional business compares expanding premises, using flexible space, or keeping capacity.",
+        "user_intent": "evaluate_expansion_lease_without_direct_answer",
+        "known_facts": [
+          "lease_terms_known"
+        ],
+        "known_assumptions": [
+          "growth_forecast_holds"
+        ],
+        "critical_gaps": [
+          "exit_clause"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-028",
+        "domain": "business_decisions",
+        "completeness_state": "contradictory",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-028-RU",
+      "source_fixture_hash": "8e151900e49ce9f9321b1e18f3874326f6fec0c4b925abcb77f7a4915d4010cf",
+      "locale": "ru",
+      "source_input": {
+        "user_situation": "Вымышленный бизнес сравнивает расширение помещения, гибкое пространство или сохранение мощности.",
+        "user_intent": "evaluate_expansion_lease_without_direct_answer",
+        "known_facts": [
+          "lease_terms_known"
+        ],
+        "known_assumptions": [
+          "growth_forecast_holds"
+        ],
+        "critical_gaps": [
+          "exit_clause"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-028",
+        "domain": "business_decisions",
+        "completeness_state": "contradictory",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-028-ZH",
+      "source_fixture_hash": "3dad65734d0cefd583710e79a8c0195967f7707cc1e43ee1415b02183d225c15",
+      "locale": "zh",
+      "source_input": {
+        "user_situation": "一家虚构企业比较扩建场地、使用灵活空间或维持现有容量。",
+        "user_intent": "evaluate_expansion_lease_without_direct_answer",
+        "known_facts": [
+          "lease_terms_known"
+        ],
+        "known_assumptions": [
+          "growth_forecast_holds"
+        ],
+        "critical_gaps": [
+          "exit_clause"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-028",
+        "domain": "business_decisions",
+        "completeness_state": "contradictory",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-032-ES",
+      "source_fixture_hash": "8b0768fc987d3b2f29684d3a713db362ca2c488c86fc64dcf4ef4efc84ded892",
+      "locale": "es",
+      "source_input": {
+        "user_situation": "Tres personas ficticias distribuyen cuidados semanales con disponibilidad desigual.",
+        "user_intent": "evaluate_caregiving_schedule_without_direct_answer",
+        "known_facts": [
+          "weekly_needs_known"
+        ],
+        "known_assumptions": [
+          "availability_reliable"
+        ],
+        "critical_gaps": [
+          "backup_responsibility"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-032",
+        "domain": "personal_planning",
+        "completeness_state": "contradictory",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-032-EN",
+      "source_fixture_hash": "926cc3f1103d0b5580558514ab480bc9489a3f4367289de555187182a86e2fd9",
+      "locale": "en",
+      "source_input": {
+        "user_situation": "Three fictional people allocate weekly care with unequal availability.",
+        "user_intent": "evaluate_caregiving_schedule_without_direct_answer",
+        "known_facts": [
+          "weekly_needs_known"
+        ],
+        "known_assumptions": [
+          "availability_reliable"
+        ],
+        "critical_gaps": [
+          "backup_responsibility"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-032",
+        "domain": "personal_planning",
+        "completeness_state": "contradictory",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-032-RU",
+      "source_fixture_hash": "6b3f1909b4382c9177fc3ee2829480b47b7b32c441d06f09c75ecb4b8a1b3b62",
+      "locale": "ru",
+      "source_input": {
+        "user_situation": "Три вымышленных человека распределяют еженедельный уход при разной доступности.",
+        "user_intent": "evaluate_caregiving_schedule_without_direct_answer",
+        "known_facts": [
+          "weekly_needs_known"
+        ],
+        "known_assumptions": [
+          "availability_reliable"
+        ],
+        "critical_gaps": [
+          "backup_responsibility"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-032",
+        "domain": "personal_planning",
+        "completeness_state": "contradictory",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    },
+    {
+      "fixture_id": "S9-CORE-032-ZH",
+      "source_fixture_hash": "8d7f306c0aca741f901bdb5a89c31882673a9e1c4175d482c6d92ab263560caa",
+      "locale": "zh",
+      "source_input": {
+        "user_situation": "三个虚构的人在可用时间不同的情况下分配每周照护。",
+        "user_intent": "evaluate_caregiving_schedule_without_direct_answer",
+        "known_facts": [
+          "weekly_needs_known"
+        ],
+        "known_assumptions": [
+          "availability_reliable"
+        ],
+        "critical_gaps": [
+          "backup_responsibility"
+        ],
+        "important_gaps": []
+      },
+      "declared_context_metadata": {
+        "dataset_type": "canonical_core",
+        "equivalence_cluster": "S9-CLUSTER-032",
+        "domain": "personal_planning",
+        "completeness_state": "contradictory",
+        "cost_profile": {
+          "profile": "standard",
+          "max_relative_units": 100
+        }
+      }
+    }
+  ]
+}

@@ -105,7 +105,7 @@ add("pattern-registry-complete", requiredPatternNames.every((name) => patterns.p
 const mustEscalate = (item) => item.distinct_clusters.length >= 3 || (item.distinct_domains.length >= 2 && (item.severity_distribution.HIGH ?? 0) > 0) || item.distinct_dataset_types.length >= 2;
 add("pattern-escalation-correct", patterns.patterns.every((item) => !mustEscalate(item) || ["POTENTIALLY_SYSTEMIC", "SYSTEMIC_BLOCKER"].includes(item.status)) && patterns.aggregate_status === "POTENTIALLY_SYSTEMIC_WITHOUT_SYSTEMIC_BLOCKER" && patterns.systemic_blocker === false, "All escalation thresholds are applied without an unsupported blocker claim.");
 
-add("aggregate-progress-exact", progress.primary_review.batch_1 === 36 && progress.primary_review.batch_2 === 36 && progress.primary_review.batch_3 === 36 && progress.primary_review.batch_4 === 36 && progress.primary_review.total_reviewed === 144 && progress.primary_review.remaining === 72 && progress.cumulative_verdict_counts.AI_FAIL_MAJOR === 37 && progress.cumulative_verdict_counts.AI_DISPUTED === 2 && progress.cumulative_severity_counts.CRITICAL === 0 && progress.cumulative_open_issues === 72 && progress.cumulative_disputed_issues === 3 && progress.cumulative_reinforced_review_queue.length === 47 && progress.fixture_remediation === "NONE", "Aggregate progress records 144 reviewed, 72 remaining, and preserves Batch 3 history.");
+add("aggregate-progress-exact", progress.primary_review.batch_1 === 36 && progress.primary_review.batch_2 === 36 && progress.primary_review.batch_3 === 36 && progress.primary_review.batch_4 === 36 && progress.primary_review.batch_5 === 36 && progress.primary_review.total_reviewed === 180 && progress.primary_review.remaining === 36 && progress.cumulative_verdict_counts.AI_FAIL_MAJOR === 50 && progress.cumulative_verdict_counts.AI_DISPUTED === 2 && progress.cumulative_severity_counts.CRITICAL === 0 && progress.cumulative_open_issues === 86 && progress.cumulative_disputed_issues === 3 && progress.cumulative_reinforced_review_queue.length === 60 && progress.fixture_remediation === "NONE", "Aggregate progress records 180 reviewed, 36 remaining, and preserves Batch 3 history.");
 add("deterministic-canonical-artifacts", artifactNames.every(canonical) && read("docs", "qa", "review", "AI_REVIEW_PROGRESS.json") === serialize(progress) && read("docs", "qa", "review", "AI_REVIEW_CROSS_BATCH_PATTERNS.json") === serialize(patterns), "All generated artifacts use canonical JSON serialization.");
 const generated = buildAllArtifacts();
 const expectedFiles = { "selection.json": generated.selection, "blind-packets.json": generated.blind, "pass-a.json": generated.passA, "pass-b.json": generated.passB, "pass-c.json": generated.passC, "adjudication.json": generated.adjudication, "issue-ledger.json": generated.ledger, "reinforced-review-queue.json": generated.queue, "summary.json": generated.summary };
@@ -140,10 +140,10 @@ const apiSource = read("app", "api", "simulate", "route.ts");
 add("mock-only-api-boundary", apiSource.includes("mockOnly: true"), "/api/simulate remains mockOnly=true.");
 
 const canonicalState = ["PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", "CURRENT_STAGE.md", "LEVIO_CURRENT_STATE.md", "LEVIO_PROJECT_PROGRESS.md"].map((name) => read(name).slice(0, 5000)).join("\n");
-add("canonical-state-batch-3", canonicalState.includes("Batch 3") && canonicalState.includes("108 of 216") && canonicalState.includes("108 remain") && canonicalState.includes("Stage 9 remains **In Progress**"), "Canonical state records Batch 3 without Stage closure.");
+add("canonical-state-batch-5", canonicalState.includes("Batch 5") && canonicalState.includes("180 of 216") && canonicalState.includes("36 remain") && canonicalState.includes("Stage 9 remain") && canonicalState.includes("In Progress"), "Canonical state records Batch 5 without Stage closure; aggregate progress preserves Batch 3 history.");
 add("release-runtime-closed", canonicalState.includes("release readiness is not declared") && canonicalState.includes("Live OpenAI execution is not opened") && canonicalState.includes("`/api/simulate` remains deterministic with `mockOnly=true`"), "Release and runtime remain closed.");
 const blocker = summary.critical_defect_count > 0 || summary.dataset_wide_blocker || patterns.systemic_blocker;
-add("critical-systemic-stop-rule", !blocker && progress.next_planning_candidate === "Stage 9 Independent AI Review Batch 5 of 6" && /Stage 9 Independent AI Review\s+Batch 5 of 6/.test(canonicalState), "CRITICAL=0 and SYSTEMIC_BLOCKER=false preserve Batch 5 as the current planning candidate.");
+add("critical-systemic-stop-rule", !blocker && progress.next_planning_candidate === "Stage 9 Independent AI Review Batch 6 of 6" && /Stage 9 Independent AI Review\s+Batch 6 of 6/.test(canonicalState), "CRITICAL=0 and SYSTEMIC_BLOCKER=false preserve Batch 6 as the current planning candidate.");
 add("network-zero", networkRequests === 0 && summary.network_request_count === 0 && progress.network_request_count === 0, `${networkRequests} network requests.`);
 add("quality-gate-registered", read("package.json").includes('"quality:stage-9-ai-review-batch-3": "node scripts/stage-9-ai-review-batch-3-quality.mjs"'), "Dedicated Batch 3 gate is registered.");
 
@@ -160,6 +160,8 @@ const allowed = new Set([
   "docs/qa/review/AI_REVIEW_PATTERN_SATURATION.json",
   ...artifactNames.map((name) => `docs/qa/review/ai-batches/batch-4/${name}`),
   "scripts/generate-stage-9-ai-review-batch-4.mjs", "scripts/stage-9-ai-review-batch-4-quality.mjs",
+  ...artifactNames.map((name) => `docs/qa/review/ai-batches/batch-5/${name}`),
+  "scripts/generate-stage-9-ai-review-batch-5.mjs", "scripts/stage-9-ai-review-batch-5-quality.mjs",
 ]);
 const changed = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);

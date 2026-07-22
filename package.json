@@ -43,6 +43,8 @@
     "quality:stage-9-ai-review-batch-3": "node scripts/stage-9-ai-review-batch-3-quality.mjs",
     "generate:stage-9-ai-review-batch-4": "node scripts/generate-stage-9-ai-review-batch-4.mjs",
     "quality:stage-9-ai-review-batch-4": "node scripts/stage-9-ai-review-batch-4-quality.mjs",
+    "generate:stage-9-ai-review-batch-5": "node scripts/generate-stage-9-ai-review-batch-5.mjs",
+    "quality:stage-9-ai-review-batch-5": "node scripts/stage-9-ai-review-batch-5-quality.mjs",
     "quality:block-b-auth-action-boundary": "node scripts/block-b-auth-action-boundary-quality.mjs",
     "quality:block-b-email-flow": "node scripts/block-b-email-flow-quality.mjs",
     "quality:block-b-session-lifecycle": "node scripts/block-b-session-lifecycle-quality.mjs",

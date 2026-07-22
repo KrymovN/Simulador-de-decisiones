@@ -1,14 +1,15 @@
 {
-  "artifact_version": "stage-9-ai-review-progress.4",
-  "review_session": "stage-9-ai-review-batch-4",
+  "artifact_version": "stage-9-ai-review-progress.5",
+  "review_session": "stage-9-ai-review-batch-5",
   "status": "IN_PROGRESS",
   "primary_review": {
     "batch_1": 36,
     "batch_2": 36,
     "batch_3": 36,
     "batch_4": 36,
-    "total_reviewed": 144,
-    "remaining": 72,
+    "batch_5": 36,
+    "total_reviewed": 180,
+    "remaining": 36,
     "dataset_total": 216
   },
   "batch_progress": [
@@ -99,24 +100,46 @@
       "open_issues": 9,
       "disputed_issues": 0,
       "reinforced_review_count": 8
+    },
+    {
+      "batch_id": "stage-9-ai-review-batch-5-of-6",
+      "primary_reviewed": 36,
+      "verdict_counts": {
+        "AI_PASS": 16,
+        "AI_PASS_WITH_NOTE": 6,
+        "AI_FAIL_MINOR": 1,
+        "AI_FAIL_MAJOR": 13,
+        "AI_DISPUTED": 0,
+        "AI_NOT_REVIEWED": 0
+      },
+      "severity_counts": {
+        "NONE": 16,
+        "LOW": 6,
+        "MEDIUM": 1,
+        "HIGH": 13,
+        "CRITICAL": 0
+      },
+      "open_issues": 14,
+      "disputed_issues": 0,
+      "reinforced_review_count": 13
     }
   ],
   "cumulative_verdict_counts": {
-    "AI_PASS": 62,
-    "AI_PASS_WITH_NOTE": 25,
-    "AI_FAIL_MINOR": 18,
-    "AI_FAIL_MAJOR": 37,
+    "AI_PASS": 78,
+    "AI_PASS_WITH_NOTE": 31,
+    "AI_FAIL_MINOR": 19,
+    "AI_FAIL_MAJOR": 50,
     "AI_DISPUTED": 2,
     "AI_NOT_REVIEWED": 0
   },
   "cumulative_severity_counts": {
-    "NONE": 62,
-    "LOW": 24,
-    "MEDIUM": 20,
-    "HIGH": 38,
+    "NONE": 78,
+    "LOW": 30,
+    "MEDIUM": 21,
+    "HIGH": 51,
     "CRITICAL": 0
   },
-  "cumulative_open_issues": 72,
+  "cumulative_open_issues": 86,
   "cumulative_disputed_issues": 3,
   "cumulative_reinforced_review_queue": [
     {
@@ -353,7 +376,110 @@
       "fixture_id": "S9-CORE-020-ZH",
       "batch_provenance": "stage-9-ai-review-batch-4-of-6",
       "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-EVAL-006",
+      "batch_provenance": "stage-9-ai-review-batch-5-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-019-ES",
+      "batch_provenance": "stage-9-ai-review-batch-5-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-019-EN",
+      "batch_provenance": "stage-9-ai-review-batch-5-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-019-RU",
+      "batch_provenance": "stage-9-ai-review-batch-5-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-019-ZH",
+      "batch_provenance": "stage-9-ai-review-batch-5-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-028-ES",
+      "batch_provenance": "stage-9-ai-review-batch-5-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-028-EN",
+      "batch_provenance": "stage-9-ai-review-batch-5-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-028-RU",
+      "batch_provenance": "stage-9-ai-review-batch-5-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-028-ZH",
+      "batch_provenance": "stage-9-ai-review-batch-5-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-032-ES",
+      "batch_provenance": "stage-9-ai-review-batch-5-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-032-EN",
+      "batch_provenance": "stage-9-ai-review-batch-5-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-032-RU",
+      "batch_provenance": "stage-9-ai-review-batch-5-of-6",
+      "status": "PENDING_NOT_EXECUTED"
+    },
+    {
+      "fixture_id": "S9-CORE-032-ZH",
+      "batch_provenance": "stage-9-ai-review-batch-5-of-6",
+      "status": "PENDING_NOT_EXECUTED"
     }
+  ],
+  "final_batch_fixture_ids": [
+    "S9-CORE-007-ES",
+    "S9-CORE-007-EN",
+    "S9-CORE-007-RU",
+    "S9-CORE-007-ZH",
+    "S9-CORE-016-ES",
+    "S9-CORE-016-EN",
+    "S9-CORE-016-RU",
+    "S9-CORE-016-ZH",
+    "S9-CORE-022-ES",
+    "S9-CORE-022-EN",
+    "S9-CORE-022-RU",
+    "S9-CORE-022-ZH",
+    "S9-CORE-030-ES",
+    "S9-CORE-030-EN",
+    "S9-CORE-030-RU",
+    "S9-CORE-030-ZH",
+    "S9-CORE-029-EN",
+    "S9-CORE-029-RU",
+    "S9-CORE-029-ZH",
+    "S9-CORE-033-ES",
+    "S9-CORE-033-EN",
+    "S9-CORE-033-ZH",
+    "S9-CORE-036-ES",
+    "S9-CORE-036-EN",
+    "S9-CORE-036-RU",
+    "S9-CORE-037-ES",
+    "S9-CORE-037-RU",
+    "S9-CORE-037-ZH",
+    "S9-EVAL-007",
+    "S9-EVAL-008",
+    "S9-EVAL-009",
+    "S9-EVAL-010",
+    "S9-EVAL-017",
+    "S9-EVAL-018",
+    "S9-EVAL-029",
+    "S9-MATERIAL-020"
   ],
   "systemic_pattern_status": "POTENTIALLY_SYSTEMIC_WITHOUT_SYSTEMIC_BLOCKER",
   "systemic_blocker": false,
@@ -366,5 +492,5 @@
   "stage_status": "In Progress",
   "release_readiness": "NOT_DECLARED",
   "runtime_boundaries": "CLOSED",
-  "next_planning_candidate": "Stage 9 Independent AI Review Batch 5 of 6"
+  "next_planning_candidate": "Stage 9 Independent AI Review Batch 6 of 6"
 }

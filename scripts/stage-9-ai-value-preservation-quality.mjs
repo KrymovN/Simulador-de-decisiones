@@ -160,7 +160,8 @@ const canonicalReconciliationBoundariesPreserved =
   !currentCanonicalState.includes("Live OpenAI execution is opened") &&
   currentCanonicalState.includes("`/api/simulate` remains deterministic with `mockOnly=true`") &&
   currentCanonicalState.includes("No next Stage 9 implementation substep is open") &&
-  currentCanonicalState.includes("planning candidate, not In Progress work") &&
+  (currentCanonicalState.includes("planning candidate, not In Progress work") ||
+    currentCanonicalState.includes("next planning candidate only")) &&
   !currentCanonicalState.includes("Stage 9 Offline Evaluation Human Review and Release Candidate Assessment is In Progress") &&
   !currentCanonicalState.includes("Stage 9 Offline Evaluation Human Review and Release Candidate Assessment is **In Progress**") &&
   currentCanonicalState.includes("canonical minimum of 160 case records has been reached") &&
@@ -240,6 +241,8 @@ for (const path of [
   "docs/qa/review/AI_REVIEW_PATTERN_SATURATION.json",
   ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-4/${name}`),
   "scripts/generate-stage-9-ai-review-batch-4.mjs", "scripts/stage-9-ai-review-batch-4-quality.mjs",
+  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-5/${name}`),
+  "scripts/generate-stage-9-ai-review-batch-5.mjs", "scripts/stage-9-ai-review-batch-5-quality.mjs",
 ]) allowedDiff.add(path);
 const tracked = execFileSync("git", ["diff", "--name-only", baseline], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
@@ -293,6 +296,8 @@ for (const path of [
   "docs/qa/review/AI_REVIEW_PATTERN_SATURATION.json",
   ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-4/${name}`),
   "scripts/generate-stage-9-ai-review-batch-4.mjs", "scripts/stage-9-ai-review-batch-4-quality.mjs",
+  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-5/${name}`),
+  "scripts/generate-stage-9-ai-review-batch-5.mjs", "scripts/stage-9-ai-review-batch-5-quality.mjs",
 ]) reconciliationAllowed.add(path);
 const reconciliationTracked = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const reconciliationDiff = [...new Set([...reconciliationTracked, ...untracked])].sort();

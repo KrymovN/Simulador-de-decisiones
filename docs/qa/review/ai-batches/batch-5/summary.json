@@ -1,0 +1,176 @@
+{
+  "artifact_version": "stage-9-ai-review-batch-summary.5",
+  "batch_id": "stage-9-ai-review-batch-5-of-6",
+  "review_timestamp": "2026-07-22T12:00:00.000Z",
+  "stage_status": "In Progress",
+  "release_readiness": "NOT_DECLARED",
+  "runtime_boundaries": "CLOSED",
+  "status": "COMPLETE_WITH_REINFORCED_REVIEW_PENDING",
+  "reviewed_fixture_count": 36,
+  "remaining_fixture_count": 36,
+  "coverage": {
+    "selected_count": 36,
+    "dataset_types": {
+      "canonical_core": 28,
+      "rich_decision_material_baseline": 4,
+      "synthetic_risk": 4
+    },
+    "languages": {
+      "en": 7,
+      "es": 11,
+      "not_declared": 4,
+      "ru": 7,
+      "zh": 7
+    },
+    "domains": {
+      "adapter_contract_and_safety": 4,
+      "business_decisions": 4,
+      "career_and_work": 8,
+      "decision_material_contract_and_preservation": 4,
+      "education": 4,
+      "finance_and_spending": 4,
+      "personal_planning": 4,
+      "relocation_and_housing": 4
+    },
+    "completeness": {
+      "complete": 8,
+      "contradictory": 8,
+      "critically_incomplete": 8,
+      "not_applicable": 8,
+      "partial": 4
+    },
+    "high_risk_count": 0,
+    "privacy_count": 0,
+    "privacy_handling_challenge_count": 5,
+    "controlled_failure_count": 12,
+    "complete_equivalence_clusters": [
+      "S9-CLUSTER-001",
+      "S9-CLUSTER-006",
+      "S9-CLUSTER-011",
+      "S9-CLUSTER-017",
+      "S9-CLUSTER-019",
+      "S9-CLUSTER-028",
+      "S9-CLUSTER-032"
+    ]
+  },
+  "final_batch_feasibility": {
+    "total_remaining": 36,
+    "full_cluster_fixture_count": 16,
+    "full_clusters": [
+      "S9-CLUSTER-007",
+      "S9-CLUSTER-016",
+      "S9-CLUSTER-022",
+      "S9-CLUSTER-030"
+    ],
+    "partial_cluster_fixture_count": 12,
+    "partial_clusters": {
+      "S9-CLUSTER-029": [
+        "en",
+        "ru",
+        "zh"
+      ],
+      "S9-CLUSTER-033": [
+        "es",
+        "en",
+        "zh"
+      ],
+      "S9-CLUSTER-036": [
+        "es",
+        "en",
+        "ru"
+      ],
+      "S9-CLUSTER-037": [
+        "es",
+        "ru",
+        "zh"
+      ]
+    },
+    "synthetic_risk_fixture_count": 7,
+    "rich_baseline_fixture_count": 1,
+    "fixture_ids": [
+      "S9-CORE-007-ES",
+      "S9-CORE-007-EN",
+      "S9-CORE-007-RU",
+      "S9-CORE-007-ZH",
+      "S9-CORE-016-ES",
+      "S9-CORE-016-EN",
+      "S9-CORE-016-RU",
+      "S9-CORE-016-ZH",
+      "S9-CORE-022-ES",
+      "S9-CORE-022-EN",
+      "S9-CORE-022-RU",
+      "S9-CORE-022-ZH",
+      "S9-CORE-030-ES",
+      "S9-CORE-030-EN",
+      "S9-CORE-030-RU",
+      "S9-CORE-030-ZH",
+      "S9-CORE-029-EN",
+      "S9-CORE-029-RU",
+      "S9-CORE-029-ZH",
+      "S9-CORE-033-ES",
+      "S9-CORE-033-EN",
+      "S9-CORE-033-ZH",
+      "S9-CORE-036-ES",
+      "S9-CORE-036-EN",
+      "S9-CORE-036-RU",
+      "S9-CORE-037-ES",
+      "S9-CORE-037-RU",
+      "S9-CORE-037-ZH",
+      "S9-EVAL-007",
+      "S9-EVAL-008",
+      "S9-EVAL-009",
+      "S9-EVAL-010",
+      "S9-EVAL-017",
+      "S9-EVAL-018",
+      "S9-EVAL-029",
+      "S9-MATERIAL-020"
+    ]
+  },
+  "verdict_counts": {
+    "AI_PASS": 16,
+    "AI_PASS_WITH_NOTE": 6,
+    "AI_FAIL_MINOR": 1,
+    "AI_FAIL_MAJOR": 13,
+    "AI_DISPUTED": 0,
+    "AI_NOT_REVIEWED": 0
+  },
+  "severity_counts": {
+    "NONE": 16,
+    "LOW": 6,
+    "MEDIUM": 1,
+    "HIGH": 13,
+    "CRITICAL": 0
+  },
+  "reinforced_review_count": 13,
+  "reinforced_review_cases": [
+    "S9-EVAL-006",
+    "S9-CORE-019-ES",
+    "S9-CORE-019-EN",
+    "S9-CORE-019-RU",
+    "S9-CORE-019-ZH",
+    "S9-CORE-028-ES",
+    "S9-CORE-028-EN",
+    "S9-CORE-028-RU",
+    "S9-CORE-028-ZH",
+    "S9-CORE-032-ES",
+    "S9-CORE-032-EN",
+    "S9-CORE-032-RU",
+    "S9-CORE-032-ZH"
+  ],
+  "issue_count": 20,
+  "issue_status_counts": {
+    "OPEN": 14,
+    "DISPUTED": 0,
+    "RECORDED_NOTE": 6
+  },
+  "network_request_count": 0,
+  "critical_defect_count": 0,
+  "dataset_wide_blocker": false,
+  "systemic_pattern_status": "POTENTIALLY_SYSTEMIC_WITHOUT_SYSTEMIC_BLOCKER",
+  "dataset_wide_impact_assessment": "Batch 5 confirms recurring contradiction, reference-grounding, invented-cost, unsafe-clarification, localization, and invisible-oracle defects while also adding clean contract, privacy-boundary, controlled-failure, and multilingual counterexamples. Shared generator linkage is plausible but class-wide unreliability across the exact final 36 fixtures is not proven.",
+  "pattern_saturation_assessment": "docs/qa/review/AI_REVIEW_PATTERN_SATURATION.json",
+  "fixture_remediation": "NONE",
+  "reinforced_review_execution": "NOT_EXECUTED",
+  "automatic_next_batch_authorization": "NOT_GRANTED",
+  "next_planning_candidate": "Stage 9 Independent AI Review Batch 6 of 6"
+}

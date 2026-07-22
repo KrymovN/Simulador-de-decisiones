@@ -1,5 +1,40 @@
 # CURRENT STAGE
 
+## Stage 9 Independent AI Review — Batch 5 of 6 Complete — 22 July 2026
+
+Batch 5 is complete for 36 new fixtures under the unchanged four-pass protocol:
+4 synthetic-risk, 4 rich baseline, and 28 canonical core fixtures in seven
+complete four-language clusters. The selection is disjoint from Batches 1–4;
+their artifacts and all fixture sources are byte-identical. Primary review
+covers 180 of 216 fixtures; 36 remain. Model independence, human review,
+remediation, and reinforced-review execution are not claimed.
+
+Batch 5 verdicts are `AI_PASS=16`, `AI_PASS_WITH_NOTE=6`, `AI_FAIL_MINOR=1`,
+`AI_FAIL_MAJOR=13`, `AI_DISPUTED=0`, and `AI_NOT_REVIEWED=0`; severity is
+`NONE=16`, `LOW=6`, `MEDIUM=1`, `HIGH=13`, and `CRITICAL=0`. Fourteen issues
+are open, six notes are recorded, and thirteen cases are queued for later
+reinforced review. Cumulative verdicts are 78/31/19/50/2/0, severity is
+78/30/21/51/0, open/disputed issues are 86/3, and the cumulative queue contains
+60 cases.
+
+The exact remaining pool is full clusters 007/016/022/030; the unreviewed
+EN/RU/ZH variants of 029, ES/EN/ZH of 033, ES/EN/RU of 036, and ES/RU/ZH of
+037; synthetic-risk 007/008/009/010/017/018/029; and rich baseline 020. This is
+exactly 28 core, 7 risk, 1 rich, and 36 total fixtures.
+
+All nine required systemic patterns have new confirmation or counterexample
+evidence. Aggregate status remains
+`POTENTIALLY_SYSTEMIC_WITHOUT_SYSTEMIC_BLOCKER`; `CRITICAL=0` and
+`SYSTEMIC_BLOCKER=false`. Fixture remediation was not performed.
+
+AI review and Stage 9 remain **In Progress**; release readiness is not declared.
+Live OpenAI execution is not opened; `/api/simulate` remains deterministic with
+`mockOnly=true`; `HomeSimulator` remains mock-only, and all runtime boundaries
+remain closed. Visual migration remains fully closed with 0 remaining substeps.
+
+No next Stage 9 implementation substep is open. `Stage 9 Independent AI Review
+Batch 6 of 6` is the next planning candidate only.
+
 ## Stage 9 Independent AI Review — Batch 4 of 6 Complete — 21 July 2026
 
 Batch 4 is complete for 36 new fixtures under the owner-approved independent AI

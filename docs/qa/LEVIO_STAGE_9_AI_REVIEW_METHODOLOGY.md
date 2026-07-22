@@ -1,8 +1,8 @@
 # Levio Stage 9 Independent AI Review Methodology
 
-- Date: 21 July 2026, Europe/Madrid.
+- Date: 22 July 2026, Europe/Madrid.
 - Protocol version: `stage-9-independent-ai-review.1`.
-- Active review status: `In Progress — Batch 4 of 6 complete; Batch 5 planning candidate`.
+- Active review status: `In Progress — Batch 5 of 6 complete; Batch 6 planning candidate`.
 - Scope: versioned offline fixtures and QA artifacts only.
 - Runtime status: closed.
 
@@ -194,3 +194,28 @@ execution, early termination of the remaining primary review, or a
 `SYSTEMIC_BLOCKER`. Batch 4 leaves 72 fixtures for primary review and preserves
 Batch 5 as a planning candidate only when `CRITICAL=0` and no systemic blocker
 is established.
+
+## 13. Batch 5 final-pool feasibility and expanded pattern challenge
+
+Batch 5 applies the unchanged protocol to 36 new fixtures: 4 synthetic-risk, 4
+rich baseline, and 28 canonical core records in seven complete four-language
+clusters. Its selection is disjoint from Batches 1–4 and preserves their
+append-only artifacts and every fixture source byte-for-byte.
+
+The deficit matrix records an explicit source-catalog constraint: the eleven
+owner-listed untouched cluster candidates span six, not seven, distinct core
+domains because none belongs to `high_risk_and_safety_sensitive`. The selected
+seven clusters therefore use the achievable six-domain maximum without making
+a false coverage claim. Privacy handling is challenged through consent-policy,
+personal-classification, caregiving, and data-minimization contexts even though
+the selected manifest entries have no positive privacy marker.
+
+Batch 5 expands the pattern challenge to all nine registered families and stores
+new confirmations, counterexamples, cumulative occurrence counts, generator or
+template linkage hypotheses, locality, and future remediation scope. Saturation
+does not authorize fixture remediation or reinforced-review execution.
+
+The final-batch feasibility gate derives the remaining source set after Batches
+1–5 and requires exactly 28 core, 7 synthetic-risk, and 1 rich baseline fixture.
+Batch 6 remains only a planning candidate when `CRITICAL=0` and
+`SYSTEMIC_BLOCKER=false`; Stage 9 remains `In Progress`.
