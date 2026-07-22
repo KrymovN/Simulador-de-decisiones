@@ -1,0 +1,998 @@
+{
+  "artifact_version": "stage-9-reinforced-adjudication.1",
+  "batch_id": "stage-9-reinforced-ai-review-batch-1-of-3",
+  "pass": "R4_REINFORCED_ADJUDICATION",
+  "reviewer_role_id": "ai-reinforced-adjudicator-v1",
+  "context_isolation": {
+    "review_session": "stage-9-reinforced-ai-review-batch-1",
+    "reviewer_role_id": "ai-reinforced-adjudicator-v1",
+    "model_id": "codex-current-session",
+    "independence_type": "new-context-and-role-isolated",
+    "model_independence": "not_claimed"
+  },
+  "review_timestamp": "2026-07-22T17:00:00.000Z",
+  "immutable_input_packet": [
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-1/pass-r1.json",
+      "sha256": "371ede69d927f561c9ad84431418114e819ac938f4ecdf70b60f0f2b2d283dac"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-1/pass-r2.json",
+      "sha256": "0d5077e69e10ea127d90c55bb56f61617ebf4695187765ee2d9476457244f78a"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-1/pass-r3.json",
+      "sha256": "d8213369449f6c2263ef462c82e5ce797bbe524e6ffec0d5d66e6aff7b560870"
+    }
+  ],
+  "results": [
+    {
+      "sequence": 1,
+      "fixture_id": "S9-MATERIAL-013",
+      "source_fixture_hash": "e4983e9ad8ca0c2ee5fe8d046bfe562c05f5ad050528267169dcfc608687026b",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MINOR",
+      "confidence": 0.97,
+      "rationale": "The blind review artifact unnecessarily reproduced the full synthetic email instead of categorizing or redacting it; the source fixture itself correctly expects privacy rejection.",
+      "accepted_evidence": [
+        "The blind review artifact unnecessarily reproduced the full synthetic email instead of categorizing or redacting it; the source fixture itself correctly expects privacy rejection."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "PASS_A_PERSONAL_DATA_REPRODUCTION"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "REVIEW_METHODOLOGY",
+      "recommended_remediation_scope": "REFERENCE_METHODOLOGY",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_DISPUTED",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-MATERIAL-013]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-MATERIAL-013]",
+        "pass-r2.json#results[fixture_id=S9-MATERIAL-013]",
+        "pass-r3.json#results[fixture_id=S9-MATERIAL-013]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 2,
+      "fixture_id": "S9-CORE-037-ES",
+      "source_fixture_hash": "48d63305c73fe08d20aa38556540776c4009fa3281720ab426661bdcac68b68c",
+      "reinforced_outcome": "REMAINS_DISPUTED",
+      "confidence": 0.88,
+      "rationale": "The information-first reading can preserve safety, but the unqualified no-action wording still permits a materially unsafe interpretation; neither side fully defeats the other.",
+      "accepted_evidence": [
+        "The information-first reading can preserve safety, but the unqualified no-action wording still permits a materially unsafe interpretation; neither side fully defeats the other."
+      ],
+      "rejected_evidence": [],
+      "unresolved_evidence": [
+        "Whether information-first semantics sufficiently constrain the literal no-action wording."
+      ],
+      "confirmed_issue_codes": [],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [
+        "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+        "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR"
+      ],
+      "root_cause_category": "UNRESOLVED",
+      "recommended_remediation_scope": "FURTHER_ADJUDICATION_REQUIRED",
+      "primary_verdict_disposition": "PRIMARY_VERDICT_REMAINS_DISPUTED",
+      "primary_verdict": "AI_DISPUTED",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-CORE-037-ES]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-ES]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-ES]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-ES]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 3,
+      "fixture_id": "S9-CORE-037-RU",
+      "source_fixture_hash": "c794604338c6c98a520cdb68fd65f46224562e8e06b4454c1860bb1c0c2df519",
+      "reinforced_outcome": "REMAINS_DISPUTED",
+      "confidence": 0.88,
+      "rationale": "The information-first reading can preserve safety, but the unqualified no-action wording still permits a materially unsafe interpretation; neither side fully defeats the other.",
+      "accepted_evidence": [
+        "The information-first reading can preserve safety, but the unqualified no-action wording still permits a materially unsafe interpretation; neither side fully defeats the other."
+      ],
+      "rejected_evidence": [],
+      "unresolved_evidence": [
+        "Whether information-first semantics sufficiently constrain the literal no-action wording."
+      ],
+      "confirmed_issue_codes": [],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [
+        "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+        "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR"
+      ],
+      "root_cause_category": "UNRESOLVED",
+      "recommended_remediation_scope": "FURTHER_ADJUDICATION_REQUIRED",
+      "primary_verdict_disposition": "PRIMARY_VERDICT_REMAINS_DISPUTED",
+      "primary_verdict": "AI_DISPUTED",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-CORE-037-RU]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-RU]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-RU]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-RU]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 4,
+      "fixture_id": "S9-CORE-037-ZH",
+      "source_fixture_hash": "a3e7c39566fb8249af960370801eb0601ecbc022b1c629dab3f386dd5e68e943",
+      "reinforced_outcome": "REMAINS_DISPUTED",
+      "confidence": 0.88,
+      "rationale": "The information-first reading can preserve safety, but the unqualified no-action wording still permits a materially unsafe interpretation; neither side fully defeats the other.",
+      "accepted_evidence": [
+        "The information-first reading can preserve safety, but the unqualified no-action wording still permits a materially unsafe interpretation; neither side fully defeats the other."
+      ],
+      "rejected_evidence": [],
+      "unresolved_evidence": [
+        "Whether information-first semantics sufficiently constrain the literal no-action wording."
+      ],
+      "confirmed_issue_codes": [],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [
+        "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+        "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR"
+      ],
+      "root_cause_category": "UNRESOLVED",
+      "recommended_remediation_scope": "FURTHER_ADJUDICATION_REQUIRED",
+      "primary_verdict_disposition": "PRIMARY_VERDICT_REMAINS_DISPUTED",
+      "primary_verdict": "AI_DISPUTED",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-CORE-037-ZH]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-ZH]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-ZH]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-ZH]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 5,
+      "fixture_id": "S9-CORE-037-EN",
+      "source_fixture_hash": "911de9671c966bd6fef5b1b3105956377d12a83fd7f87cb005500703d13fe6e3",
+      "reinforced_outcome": "REMAINS_DISPUTED",
+      "confidence": 0.88,
+      "rationale": "The information-first reading can preserve safety, but the unqualified no-action wording still permits a materially unsafe interpretation; neither side fully defeats the other.",
+      "accepted_evidence": [
+        "The information-first reading can preserve safety, but the unqualified no-action wording still permits a materially unsafe interpretation; neither side fully defeats the other."
+      ],
+      "rejected_evidence": [],
+      "unresolved_evidence": [
+        "Whether information-first semantics sufficiently constrain the literal no-action wording."
+      ],
+      "confirmed_issue_codes": [],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [
+        "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+        "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR"
+      ],
+      "root_cause_category": "UNRESOLVED",
+      "recommended_remediation_scope": "FURTHER_ADJUDICATION_REQUIRED",
+      "primary_verdict_disposition": "PRIMARY_VERDICT_REMAINS_DISPUTED",
+      "primary_verdict": "AI_DISPUTED",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-037-EN]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-EN]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 6,
+      "fixture_id": "S9-CORE-036-ZH",
+      "source_fixture_hash": "6c4a5cfbe942a8829765b809bdb31a6cd10e4792616c769e90ee8c9138a9e7a9",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MAJOR",
+      "confidence": 0.99,
+      "rationale": "The urgent-warning-sign gap supports safety clarification but does not form an explicit contradiction, confirming the unsupported reconciliation behavior.",
+      "accepted_evidence": [
+        "The urgent-warning-sign gap supports safety clarification but does not form an explicit contradiction, confirming the unsupported reconciliation behavior."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_LABEL",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED",
+        "HIGH_RISK_HEALTH_CONTEXT"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "recommended_remediation_scope": "FULL_CLUSTER",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-036-ZH]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-036-ZH]",
+        "pass-r2.json#results[fixture_id=S9-CORE-036-ZH]",
+        "pass-r3.json#results[fixture_id=S9-CORE-036-ZH]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 7,
+      "fixture_id": "S9-EVAL-007",
+      "source_fixture_hash": "e04862466361065eaea79ee98d999048a85c3df8a6b2b4bf88895223c2049a22",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MAJOR",
+      "confidence": 0.99,
+      "rationale": "The versioned review source omits the mutated nested, severity, or likelihood field required to verify the schema rejection oracle.",
+      "accepted_evidence": [
+        "The versioned review source omits the mutated nested, severity, or likelihood field required to verify the schema rejection oracle."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_INVISIBLE_SCHEMA_DEFECT_ORACLE"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "SCHEMA_ORACLE",
+      "recommended_remediation_scope": "SCHEMA_RULE",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-EVAL-007]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-EVAL-007]",
+        "pass-r2.json#results[fixture_id=S9-EVAL-007]",
+        "pass-r3.json#results[fixture_id=S9-EVAL-007]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 8,
+      "fixture_id": "S9-EVAL-009",
+      "source_fixture_hash": "8c6e68e2303bb8e074880c8a0fc44a420eac459f8441cb4dee9a387272e9c416",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MAJOR",
+      "confidence": 0.99,
+      "rationale": "The versioned review source omits the mutated nested, severity, or likelihood field required to verify the schema rejection oracle.",
+      "accepted_evidence": [
+        "The versioned review source omits the mutated nested, severity, or likelihood field required to verify the schema rejection oracle."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_INVISIBLE_SCHEMA_DEFECT_ORACLE"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "SCHEMA_ORACLE",
+      "recommended_remediation_scope": "SCHEMA_RULE",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-EVAL-009]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-EVAL-009]",
+        "pass-r2.json#results[fixture_id=S9-EVAL-009]",
+        "pass-r3.json#results[fixture_id=S9-EVAL-009]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 9,
+      "fixture_id": "S9-EVAL-010",
+      "source_fixture_hash": "01f861e2eeb2905f1b69d36b9a78c30934eb5e244fa8e900d73af6ee923e9943",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MAJOR",
+      "confidence": 0.99,
+      "rationale": "The versioned review source omits the mutated nested, severity, or likelihood field required to verify the schema rejection oracle.",
+      "accepted_evidence": [
+        "The versioned review source omits the mutated nested, severity, or likelihood field required to verify the schema rejection oracle."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_INVISIBLE_SCHEMA_DEFECT_ORACLE"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "SCHEMA_ORACLE",
+      "recommended_remediation_scope": "SCHEMA_RULE",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-EVAL-010]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-EVAL-010]",
+        "pass-r2.json#results[fixture_id=S9-EVAL-010]",
+        "pass-r3.json#results[fixture_id=S9-EVAL-010]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 10,
+      "fixture_id": "S9-CORE-024-EN",
+      "source_fixture_hash": "4c78bc623741404edad94ffb7aae60b189dc514b565c0be2c3c58ee2a7485ce3",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MAJOR",
+      "confidence": 0.99,
+      "rationale": "The source contains a permit assumption and a decision-date gap but no incompatible claims and no nonrefundable commitment, confirming both contradiction and cost-grounding defects.",
+      "accepted_evidence": [
+        "The source contains a permit assumption and a decision-date gap but no incompatible claims and no nonrefundable commitment, confirming both contradiction and cost-grounding defects."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_LABEL",
+        "EXPECTED_UNSUPPORTED_RISK_SIGNAL",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "recommended_remediation_scope": "FULL_CLUSTER",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-024-EN]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-024-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-024-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-024-EN]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 11,
+      "fixture_id": "S9-CORE-024-ES",
+      "source_fixture_hash": "992b232f79dbd3d80de90bf027f2c91cd294dc4c4006be453b91e241ab74a7a0",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MAJOR",
+      "confidence": 0.99,
+      "rationale": "The source contains a permit assumption and a decision-date gap but no incompatible claims and no nonrefundable commitment, confirming both contradiction and cost-grounding defects.",
+      "accepted_evidence": [
+        "The source contains a permit assumption and a decision-date gap but no incompatible claims and no nonrefundable commitment, confirming both contradiction and cost-grounding defects."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_LABEL",
+        "EXPECTED_UNSUPPORTED_RISK_SIGNAL",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "recommended_remediation_scope": "FULL_CLUSTER",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-024-ES]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-024-ES]",
+        "pass-r2.json#results[fixture_id=S9-CORE-024-ES]",
+        "pass-r3.json#results[fixture_id=S9-CORE-024-ES]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 12,
+      "fixture_id": "S9-CORE-024-RU",
+      "source_fixture_hash": "142d8633ea5db3b6660e328ca923e42577567874e20d612fd0bd4ca4d01b39fe",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MAJOR",
+      "confidence": 0.99,
+      "rationale": "The source contains a permit assumption and a decision-date gap but no incompatible claims and no nonrefundable commitment, confirming both contradiction and cost-grounding defects.",
+      "accepted_evidence": [
+        "The source contains a permit assumption and a decision-date gap but no incompatible claims and no nonrefundable commitment, confirming both contradiction and cost-grounding defects."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_LABEL",
+        "EXPECTED_UNSUPPORTED_RISK_SIGNAL",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "recommended_remediation_scope": "FULL_CLUSTER",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-024-RU]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-024-RU]",
+        "pass-r2.json#results[fixture_id=S9-CORE-024-RU]",
+        "pass-r3.json#results[fixture_id=S9-CORE-024-RU]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 13,
+      "fixture_id": "S9-CORE-024-ZH",
+      "source_fixture_hash": "53146e25677e2465b51a2d0f7a8cb5bbf8fedb777dbed0573cc541c2f6f6b0bc",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MAJOR",
+      "confidence": 0.99,
+      "rationale": "The source contains a permit assumption and a decision-date gap but no incompatible claims and no nonrefundable commitment, confirming both contradiction and cost-grounding defects.",
+      "accepted_evidence": [
+        "The source contains a permit assumption and a decision-date gap but no incompatible claims and no nonrefundable commitment, confirming both contradiction and cost-grounding defects."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_LABEL",
+        "EXPECTED_UNSUPPORTED_RISK_SIGNAL",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "recommended_remediation_scope": "FULL_CLUSTER",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-024-ZH]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-024-ZH]",
+        "pass-r2.json#results[fixture_id=S9-CORE-024-ZH]",
+        "pass-r3.json#results[fixture_id=S9-CORE-024-ZH]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 14,
+      "fixture_id": "S9-CORE-014-EN",
+      "source_fixture_hash": "a346c78605653b3455f578496cf38e46f5fafd0592fab7c62534cb03cf574d85",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MINOR",
+      "confidence": 0.98,
+      "rationale": "Known rates and terms do not imply a reset feature, so rate-reset risk remains plausible but unsupported across the cluster.",
+      "accepted_evidence": [
+        "Known rates and terms do not imply a reset feature, so rate-reset risk remains plausible but unsupported across the cluster."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_RATE_RESET_RISK_GROUND_TRUTH"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "recommended_remediation_scope": "FULL_CLUSTER",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MINOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-3/adjudication.json#results[fixture_id=S9-CORE-014-EN]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-014-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-014-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-014-EN]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 15,
+      "fixture_id": "S9-CORE-014-ES",
+      "source_fixture_hash": "f883f342003b60860869d1fe9fd5670f3a8871c941ff61eb206a4045ff5cc076",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MINOR",
+      "confidence": 0.98,
+      "rationale": "Known rates and terms do not imply a reset feature, so rate-reset risk remains plausible but unsupported across the cluster.",
+      "accepted_evidence": [
+        "Known rates and terms do not imply a reset feature, so rate-reset risk remains plausible but unsupported across the cluster."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_RATE_RESET_RISK_GROUND_TRUTH"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "recommended_remediation_scope": "FULL_CLUSTER",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MINOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-3/adjudication.json#results[fixture_id=S9-CORE-014-ES]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-014-ES]",
+        "pass-r2.json#results[fixture_id=S9-CORE-014-ES]",
+        "pass-r3.json#results[fixture_id=S9-CORE-014-ES]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 16,
+      "fixture_id": "S9-CORE-014-RU",
+      "source_fixture_hash": "64a7434efd1df288629e1281b19e305093f1fd0ad6a62b02971e36d2ee069664",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MINOR",
+      "confidence": 0.98,
+      "rationale": "Known rates and terms do not imply a reset feature, so rate-reset risk remains plausible but unsupported across the cluster.",
+      "accepted_evidence": [
+        "Known rates and terms do not imply a reset feature, so rate-reset risk remains plausible but unsupported across the cluster."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_RATE_RESET_RISK_GROUND_TRUTH"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "recommended_remediation_scope": "FULL_CLUSTER",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MINOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-3/adjudication.json#results[fixture_id=S9-CORE-014-RU]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-014-RU]",
+        "pass-r2.json#results[fixture_id=S9-CORE-014-RU]",
+        "pass-r3.json#results[fixture_id=S9-CORE-014-RU]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 17,
+      "fixture_id": "S9-CORE-014-ZH",
+      "source_fixture_hash": "3685fed195b3f9c0fae7040f59ef7739f7c3b37b551fb05648dabe50d51675e8",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MINOR",
+      "confidence": 0.98,
+      "rationale": "Known rates and terms do not imply a reset feature, so rate-reset risk remains plausible but unsupported across the cluster.",
+      "accepted_evidence": [
+        "Known rates and terms do not imply a reset feature, so rate-reset risk remains plausible but unsupported across the cluster."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_RATE_RESET_RISK_GROUND_TRUTH"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "recommended_remediation_scope": "FULL_CLUSTER",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MINOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-3/adjudication.json#results[fixture_id=S9-CORE-014-ZH]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-014-ZH]",
+        "pass-r2.json#results[fixture_id=S9-CORE-014-ZH]",
+        "pass-r3.json#results[fixture_id=S9-CORE-014-ZH]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 18,
+      "fixture_id": "S9-CORE-036-EN",
+      "source_fixture_hash": "848800a28ed2333bb50462fea6d25b131c0f393742fdc4829fc694b7f0a46ad7",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MAJOR",
+      "confidence": 0.99,
+      "rationale": "The urgent-warning-sign gap supports safety clarification but does not form an explicit contradiction, confirming the unsupported reconciliation behavior.",
+      "accepted_evidence": [
+        "The urgent-warning-sign gap supports safety clarification but does not form an explicit contradiction, confirming the unsupported reconciliation behavior."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "recommended_remediation_scope": "FULL_CLUSTER",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-CORE-036-EN]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-036-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-036-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-036-EN]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 19,
+      "fixture_id": "S9-CORE-036-ES",
+      "source_fixture_hash": "381a03db3df8bbebc506bcb783c3a098305647442fa902aa12142657da338da2",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MAJOR",
+      "confidence": 0.99,
+      "rationale": "The urgent-warning-sign gap supports safety clarification but does not form an explicit contradiction, confirming the unsupported reconciliation behavior.",
+      "accepted_evidence": [
+        "The urgent-warning-sign gap supports safety clarification but does not form an explicit contradiction, confirming the unsupported reconciliation behavior."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "recommended_remediation_scope": "FULL_CLUSTER",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-CORE-036-ES]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-036-ES]",
+        "pass-r2.json#results[fixture_id=S9-CORE-036-ES]",
+        "pass-r3.json#results[fixture_id=S9-CORE-036-ES]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 20,
+      "fixture_id": "S9-CORE-036-RU",
+      "source_fixture_hash": "2af240536343cc5f5fb018ce9d1d639d15e5eb20311134360b99c5e302bb956c",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MAJOR",
+      "confidence": 0.99,
+      "rationale": "The urgent-warning-sign gap supports safety clarification but does not form an explicit contradiction, confirming the unsupported reconciliation behavior.",
+      "accepted_evidence": [
+        "The urgent-warning-sign gap supports safety clarification but does not form an explicit contradiction, confirming the unsupported reconciliation behavior."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "recommended_remediation_scope": "FULL_CLUSTER",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-CORE-036-RU]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-036-RU]",
+        "pass-r2.json#results[fixture_id=S9-CORE-036-RU]",
+        "pass-r3.json#results[fixture_id=S9-CORE-036-RU]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 21,
+      "fixture_id": "S9-CORE-040-EN",
+      "source_fixture_hash": "dff75e5c3eb63b4f915fa1fb9e0e4360c0aeaec89d96ff3a56d9f82d01b8a112",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MAJOR",
+      "confidence": 0.99,
+      "rationale": "A published deadline, an extension assumption, and missing qualified interpretation do not form contradictory claims, so mandatory reconciliation remains unsupported in a high-risk legal context.",
+      "accepted_evidence": [
+        "A published deadline, an extension assumption, and missing qualified interpretation do not form contradictory claims, so mandatory reconciliation remains unsupported in a high-risk legal context."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "recommended_remediation_scope": "FULL_CLUSTER",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-3/adjudication.json#results[fixture_id=S9-CORE-040-EN]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-040-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-040-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-040-EN]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 22,
+      "fixture_id": "S9-CORE-040-ES",
+      "source_fixture_hash": "a2205ff0d8d2ba600be73a2d58d7db591a20387d962c3e17a09fbe8f27bfb8a5",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MAJOR",
+      "confidence": 0.99,
+      "rationale": "A published deadline, an extension assumption, and missing qualified interpretation do not form contradictory claims, so mandatory reconciliation remains unsupported in a high-risk legal context.",
+      "accepted_evidence": [
+        "A published deadline, an extension assumption, and missing qualified interpretation do not form contradictory claims, so mandatory reconciliation remains unsupported in a high-risk legal context."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "recommended_remediation_scope": "FULL_CLUSTER",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-3/adjudication.json#results[fixture_id=S9-CORE-040-ES]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-040-ES]",
+        "pass-r2.json#results[fixture_id=S9-CORE-040-ES]",
+        "pass-r3.json#results[fixture_id=S9-CORE-040-ES]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 23,
+      "fixture_id": "S9-CORE-040-RU",
+      "source_fixture_hash": "93b91bd230360120510774dfe7cea8cad5ec0c0382e5822b40f4426d2b586430",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MAJOR",
+      "confidence": 0.99,
+      "rationale": "A published deadline, an extension assumption, and missing qualified interpretation do not form contradictory claims, so mandatory reconciliation remains unsupported in a high-risk legal context.",
+      "accepted_evidence": [
+        "A published deadline, an extension assumption, and missing qualified interpretation do not form contradictory claims, so mandatory reconciliation remains unsupported in a high-risk legal context."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "recommended_remediation_scope": "FULL_CLUSTER",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-3/adjudication.json#results[fixture_id=S9-CORE-040-RU]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-040-RU]",
+        "pass-r2.json#results[fixture_id=S9-CORE-040-RU]",
+        "pass-r3.json#results[fixture_id=S9-CORE-040-RU]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 24,
+      "fixture_id": "S9-CORE-040-ZH",
+      "source_fixture_hash": "25579e8806f30590b4d6e1a6e07c5c7085f39ea8a33d450036fa9202d1a39e61",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MAJOR",
+      "confidence": 0.99,
+      "rationale": "A published deadline, an extension assumption, and missing qualified interpretation do not form contradictory claims, so mandatory reconciliation remains unsupported in a high-risk legal context.",
+      "accepted_evidence": [
+        "A published deadline, an extension assumption, and missing qualified interpretation do not form contradictory claims, so mandatory reconciliation remains unsupported in a high-risk legal context."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "recommended_remediation_scope": "FULL_CLUSTER",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-3/adjudication.json#results[fixture_id=S9-CORE-040-ZH]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-040-ZH]",
+        "pass-r2.json#results[fixture_id=S9-CORE-040-ZH]",
+        "pass-r3.json#results[fixture_id=S9-CORE-040-ZH]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    },
+    {
+      "sequence": 25,
+      "fixture_id": "S9-CORE-038-EN",
+      "source_fixture_hash": "a3458f37f18f068b762ffe1d3b0cc452ba0add4b655f80651b09e80c1c75a198",
+      "reinforced_outcome": "DEFECT_CONFIRMED_MAJOR",
+      "confidence": 0.99,
+      "rationale": "Explicit harmful illegal intent requires refusal or cannot-recommend behavior; asking a nonexistent important gap as the sole allowed path is unsafe and internally inconsistent.",
+      "accepted_evidence": [
+        "Explicit harmful illegal intent requires refusal or cannot-recommend behavior; asking a nonexistent important gap as the sole allowed path is unsafe and internally inconsistent."
+      ],
+      "rejected_evidence": [
+        "The primary issue is merely a harmless generic inference or false positive."
+      ],
+      "unresolved_evidence": [],
+      "confirmed_issue_codes": [
+        "EMPTY_GAP_CLARIFICATION_CONTRADICTION",
+        "UNSAFE_HIGH_RISK_REFUSAL_PATH"
+      ],
+      "rejected_issue_codes": [],
+      "unresolved_issue_codes": [],
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "recommended_remediation_scope": "FULL_CLUSTER",
+      "primary_verdict_disposition": "PRIMARY_FINDING_CONFIRMED",
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_evidence_references": [
+        "docs/qa/review/ai-batches/batch-2/adjudication.json#results[fixture_id=S9-CORE-038-EN]"
+      ],
+      "reinforced_evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-038-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-038-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-038-EN]"
+      ],
+      "reviewer_role_ids": [
+        "ai-reinforced-semantic-reviewer-v1",
+        "ai-reinforced-forensic-reviewer-v1",
+        "ai-reinforced-counterargument-reviewer-v1",
+        "ai-reinforced-adjudicator-v1"
+      ]
+    }
+  ]
+}

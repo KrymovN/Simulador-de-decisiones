@@ -1,0 +1,56 @@
+{
+  "artifact_version": "stage-9-reinforced-final-adjudication-queue.1",
+  "batch_id": "stage-9-reinforced-ai-review-batch-1-of-3",
+  "status": "PENDING_NOT_EXECUTED",
+  "case_count": 4,
+  "cases": [
+    {
+      "fixture_id": "S9-CORE-037-ES",
+      "reinforced_outcome": "REMAINS_DISPUTED",
+      "reasons": [
+        "Whether information-first semantics sufficiently constrain the literal no-action wording."
+      ],
+      "evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-ES]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-ES]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-ES]"
+      ]
+    },
+    {
+      "fixture_id": "S9-CORE-037-RU",
+      "reinforced_outcome": "REMAINS_DISPUTED",
+      "reasons": [
+        "Whether information-first semantics sufficiently constrain the literal no-action wording."
+      ],
+      "evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-RU]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-RU]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-RU]"
+      ]
+    },
+    {
+      "fixture_id": "S9-CORE-037-ZH",
+      "reinforced_outcome": "REMAINS_DISPUTED",
+      "reasons": [
+        "Whether information-first semantics sufficiently constrain the literal no-action wording."
+      ],
+      "evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-ZH]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-ZH]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-ZH]"
+      ]
+    },
+    {
+      "fixture_id": "S9-CORE-037-EN",
+      "reinforced_outcome": "REMAINS_DISPUTED",
+      "reasons": [
+        "Whether information-first semantics sufficiently constrain the literal no-action wording."
+      ],
+      "evidence_references": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-EN]"
+      ]
+    }
+  ]
+}

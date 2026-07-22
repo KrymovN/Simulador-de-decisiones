@@ -1,7 +1,7 @@
 {
-  "artifact_version": "stage-9-ai-review-cross-batch-pattern-registry.4",
-  "review_scope": "Batches 1-6; primary review 216/216",
-  "review_timestamp": "2026-07-22T15:00:00.000Z",
+  "artifact_version": "stage-9-ai-review-cross-batch-pattern-registry.5",
+  "review_scope": "Primary Batches 1-6 plus Reinforced Batch 1 of 3",
+  "review_timestamp": "2026-07-22T17:00:00.000Z",
   "escalation_rule": "POTENTIALLY_SYSTEMIC at three or more independent core clusters, at two or more domains with HIGH severity, or on recurrence across dataset types; SYSTEMIC_BLOCKER only with evidence of significant unreviewed-dataset impact or class-level ground-truth unreliability.",
   "aggregate_status": "POTENTIALLY_SYSTEMIC_WITHOUT_SYSTEMIC_BLOCKER",
   "systemic_blocker": false,
@@ -216,6 +216,36 @@
           "HIGH": 7,
           "CRITICAL": 0
         }
+      },
+      "reinforced_batch_1_assessment": {
+        "selected_fixture_ids": [
+          "S9-CORE-024-EN",
+          "S9-CORE-024-ES",
+          "S9-CORE-024-RU",
+          "S9-CORE-024-ZH",
+          "S9-CORE-036-ZH",
+          "S9-CORE-036-EN",
+          "S9-CORE-036-ES",
+          "S9-CORE-036-RU",
+          "S9-CORE-040-EN",
+          "S9-CORE-040-ES",
+          "S9-CORE-040-RU",
+          "S9-CORE-040-ZH"
+        ],
+        "confirmed_primary_findings": 12,
+        "rejected_primary_findings": 0,
+        "partially_confirmed_primary_findings": 0,
+        "remains_disputed": 0,
+        "pattern_confidence_change": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 0,
+          "EXPECTED_BEHAVIOR_REFERENCE": 12,
+          "REVIEW_METHODOLOGY": 0,
+          "UNRESOLVED": 0
+        },
+        "proposed_remediation_level": [
+          "FULL_CLUSTER"
+        ]
       }
     },
     {
@@ -331,6 +361,34 @@
           "HIGH": 0,
           "CRITICAL": 0
         }
+      },
+      "reinforced_batch_1_assessment": {
+        "selected_fixture_ids": [
+          "S9-CORE-037-ES",
+          "S9-CORE-037-RU",
+          "S9-CORE-037-ZH",
+          "S9-CORE-037-EN",
+          "S9-CORE-038-EN",
+          "S9-CORE-040-EN",
+          "S9-CORE-040-ES",
+          "S9-CORE-040-RU",
+          "S9-CORE-040-ZH"
+        ],
+        "confirmed_primary_findings": 5,
+        "rejected_primary_findings": 0,
+        "partially_confirmed_primary_findings": 0,
+        "remains_disputed": 4,
+        "pattern_confidence_change": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 0,
+          "EXPECTED_BEHAVIOR_REFERENCE": 5,
+          "REVIEW_METHODOLOGY": 0,
+          "UNRESOLVED": 4
+        },
+        "proposed_remediation_level": [
+          "FURTHER_ADJUDICATION_REQUIRED",
+          "FULL_CLUSTER"
+        ]
       }
     },
     {
@@ -433,6 +491,27 @@
           "HIGH": 3,
           "CRITICAL": 0
         }
+      },
+      "reinforced_batch_1_assessment": {
+        "selected_fixture_ids": [
+          "S9-EVAL-007",
+          "S9-EVAL-009",
+          "S9-EVAL-010"
+        ],
+        "confirmed_primary_findings": 3,
+        "rejected_primary_findings": 0,
+        "partially_confirmed_primary_findings": 0,
+        "remains_disputed": 0,
+        "pattern_confidence_change": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 3,
+          "EXPECTED_BEHAVIOR_REFERENCE": 0,
+          "REVIEW_METHODOLOGY": 0,
+          "UNRESOLVED": 0
+        },
+        "proposed_remediation_level": [
+          "SCHEMA_RULE"
+        ]
       }
     },
     {
@@ -601,6 +680,42 @@
           "HIGH": 10,
           "CRITICAL": 0
         }
+      },
+      "reinforced_batch_1_assessment": {
+        "selected_fixture_ids": [
+          "S9-CORE-024-EN",
+          "S9-CORE-024-ES",
+          "S9-CORE-024-RU",
+          "S9-CORE-024-ZH",
+          "S9-CORE-036-ZH",
+          "S9-CORE-036-EN",
+          "S9-CORE-036-ES",
+          "S9-CORE-036-RU",
+          "S9-CORE-037-ES",
+          "S9-CORE-037-RU",
+          "S9-CORE-037-ZH",
+          "S9-CORE-037-EN",
+          "S9-CORE-038-EN",
+          "S9-CORE-040-EN",
+          "S9-CORE-040-ES",
+          "S9-CORE-040-RU",
+          "S9-CORE-040-ZH"
+        ],
+        "confirmed_primary_findings": 13,
+        "rejected_primary_findings": 0,
+        "partially_confirmed_primary_findings": 0,
+        "remains_disputed": 4,
+        "pattern_confidence_change": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 0,
+          "EXPECTED_BEHAVIOR_REFERENCE": 13,
+          "REVIEW_METHODOLOGY": 0,
+          "UNRESOLVED": 4
+        },
+        "proposed_remediation_level": [
+          "FULL_CLUSTER",
+          "FURTHER_ADJUDICATION_REQUIRED"
+        ]
       }
     },
     {
@@ -791,6 +906,21 @@
           "HIGH": 0,
           "CRITICAL": 0
         }
+      },
+      "reinforced_batch_1_assessment": {
+        "selected_fixture_ids": [],
+        "confirmed_primary_findings": 0,
+        "rejected_primary_findings": 0,
+        "partially_confirmed_primary_findings": 0,
+        "remains_disputed": 0,
+        "pattern_confidence_change": "NOT_CHALLENGED",
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 0,
+          "EXPECTED_BEHAVIOR_REFERENCE": 0,
+          "REVIEW_METHODOLOGY": 0,
+          "UNRESOLVED": 0
+        },
+        "proposed_remediation_level": []
       }
     },
     {
@@ -884,6 +1014,25 @@
           "HIGH": 0,
           "CRITICAL": 0
         }
+      },
+      "reinforced_batch_1_assessment": {
+        "selected_fixture_ids": [
+          "S9-MATERIAL-013"
+        ],
+        "confirmed_primary_findings": 1,
+        "rejected_primary_findings": 0,
+        "partially_confirmed_primary_findings": 0,
+        "remains_disputed": 0,
+        "pattern_confidence_change": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 0,
+          "EXPECTED_BEHAVIOR_REFERENCE": 0,
+          "REVIEW_METHODOLOGY": 1,
+          "UNRESOLVED": 0
+        },
+        "proposed_remediation_level": [
+          "REFERENCE_METHODOLOGY"
+        ]
       }
     },
     {
@@ -999,6 +1148,37 @@
           "HIGH": 3,
           "CRITICAL": 0
         }
+      },
+      "reinforced_batch_1_assessment": {
+        "selected_fixture_ids": [
+          "S9-EVAL-007",
+          "S9-EVAL-009",
+          "S9-EVAL-010",
+          "S9-CORE-024-EN",
+          "S9-CORE-024-ES",
+          "S9-CORE-024-RU",
+          "S9-CORE-024-ZH",
+          "S9-CORE-036-ZH",
+          "S9-CORE-036-EN",
+          "S9-CORE-036-ES",
+          "S9-CORE-036-RU",
+          "S9-CORE-038-EN"
+        ],
+        "confirmed_primary_findings": 12,
+        "rejected_primary_findings": 0,
+        "partially_confirmed_primary_findings": 0,
+        "remains_disputed": 0,
+        "pattern_confidence_change": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 3,
+          "EXPECTED_BEHAVIOR_REFERENCE": 9,
+          "REVIEW_METHODOLOGY": 0,
+          "UNRESOLVED": 0
+        },
+        "proposed_remediation_level": [
+          "SCHEMA_RULE",
+          "FULL_CLUSTER"
+        ]
       }
     },
     {
@@ -1180,6 +1360,32 @@
           "HIGH": 3,
           "CRITICAL": 0
         }
+      },
+      "reinforced_batch_1_assessment": {
+        "selected_fixture_ids": [
+          "S9-CORE-014-EN",
+          "S9-CORE-014-ES",
+          "S9-CORE-014-RU",
+          "S9-CORE-014-ZH",
+          "S9-CORE-024-EN",
+          "S9-CORE-024-ES",
+          "S9-CORE-024-RU",
+          "S9-CORE-024-ZH"
+        ],
+        "confirmed_primary_findings": 8,
+        "rejected_primary_findings": 0,
+        "partially_confirmed_primary_findings": 0,
+        "remains_disputed": 0,
+        "pattern_confidence_change": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 0,
+          "EXPECTED_BEHAVIOR_REFERENCE": 8,
+          "REVIEW_METHODOLOGY": 0,
+          "UNRESOLVED": 0
+        },
+        "proposed_remediation_level": [
+          "FULL_CLUSTER"
+        ]
       }
     },
     {
@@ -1499,10 +1705,56 @@
           "HIGH": 13,
           "CRITICAL": 0
         }
+      },
+      "reinforced_batch_1_assessment": {
+        "selected_fixture_ids": [
+          "S9-CORE-037-ES",
+          "S9-CORE-037-RU",
+          "S9-CORE-037-ZH",
+          "S9-CORE-037-EN",
+          "S9-CORE-036-ZH",
+          "S9-EVAL-007",
+          "S9-EVAL-009",
+          "S9-EVAL-010",
+          "S9-CORE-024-EN",
+          "S9-CORE-024-ES",
+          "S9-CORE-024-RU",
+          "S9-CORE-024-ZH",
+          "S9-CORE-014-EN",
+          "S9-CORE-014-ES",
+          "S9-CORE-014-RU",
+          "S9-CORE-014-ZH",
+          "S9-CORE-036-EN",
+          "S9-CORE-036-ES",
+          "S9-CORE-036-RU",
+          "S9-CORE-040-EN",
+          "S9-CORE-040-ES",
+          "S9-CORE-040-RU",
+          "S9-CORE-040-ZH",
+          "S9-CORE-038-EN"
+        ],
+        "confirmed_primary_findings": 20,
+        "rejected_primary_findings": 0,
+        "partially_confirmed_primary_findings": 0,
+        "remains_disputed": 4,
+        "pattern_confidence_change": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 3,
+          "EXPECTED_BEHAVIOR_REFERENCE": 17,
+          "REVIEW_METHODOLOGY": 0,
+          "UNRESOLVED": 4
+        },
+        "proposed_remediation_level": [
+          "FURTHER_ADJUDICATION_REQUIRED",
+          "FULL_CLUSTER",
+          "SCHEMA_RULE"
+        ]
       }
     }
   ],
   "blocker_assessment": "All 216 fixtures have primary review. Recurring source-entailment and oracle-visibility defects require reinforced adjudication and future remediation design, but bounded counterexamples prevent a class-wide unusability finding.",
   "fixture_remediation": "NONE",
-  "reinforced_review": "PENDING_NOT_EXECUTED"
+  "reinforced_review": "PENDING_NOT_EXECUTED",
+  "reinforced_review_status": "25/73_COMPLETE",
+  "final_corpus_wide_verdict": "DEFERRED_UNTIL_REINFORCED_BATCH_3"
 }

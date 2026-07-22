@@ -1,5 +1,23 @@
 # CURRENT STAGE
 
+## Stage 9 reinforced review Batch 1 of 3 complete — 22 July 2026
+
+The deterministic priority slice has adjudicated 25 of 73 reinforced-review
+fixtures; 48 remain, while primary review remains complete at 216 of 216. Batch
+1 outcomes are 16 `DEFECT_CONFIRMED_MAJOR`, 5 `DEFECT_CONFIRMED_MINOR`, 4
+`REMAINS_DISPUTED`, and 0 `ESCALATED_CRITICAL`. Its 43 issue claims are 35
+`CONFIRMED` and 8 `REMAINS_DISPUTED`. Root-cause distribution is 17
+expected-behavior/reference, 3 schema-oracle, 1 review methodology, and 4
+unresolved. The final adjudication queue contains the four locale variants of
+`S9-CORE-037`.
+
+Remediation is `NONE`, and Batch 2 was not executed. Stage 9 remains **In
+Progress**; release readiness is not declared. Live OpenAI/provider execution
+and runtime integration remain closed; `/api/simulate` remains deterministic
+with `mockOnly=true`, and all runtime boundaries remain closed. Visual migration
+remains fully closed with 0 remaining substeps. `Stage 9 Reinforced AI Review
+Batch 2 of 3` is the next planning candidate only.
+
 ## Stage 9 Independent AI Review — Batch 6 of 6 Primary Review Complete — 22 July 2026
 
 Batch 6 completed primary review for the exact final 36 fixtures: full clusters

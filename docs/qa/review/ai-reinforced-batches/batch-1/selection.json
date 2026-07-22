@@ -1,0 +1,679 @@
+{
+  "artifact_version": "stage-9-reinforced-selection.1",
+  "batch_id": "stage-9-reinforced-ai-review-batch-1-of-3",
+  "review_timestamp": "2026-07-22T17:00:00.000Z",
+  "implementation_baseline_commit": "dc8bba8730f842a59759fd9e000396039f9efec4",
+  "selection_rule": [
+    "AI_DISPUTED first",
+    "privacy or controlled-failure disagreement",
+    "safety-sensitive",
+    "confidence ascending",
+    "accepted issue-code count descending",
+    "fixture ID ascending"
+  ],
+  "queue_size_before": 73,
+  "selected_count": 25,
+  "remaining_after": 48,
+  "context_isolation": {
+    "review_session": "stage-9-reinforced-ai-review-batch-1",
+    "reviewer_role_id": "ai-reinforced-batch-selector-v1",
+    "model_id": "codex-current-session",
+    "independence_type": "new-context-and-role-isolated",
+    "model_independence": "not_claimed"
+  },
+  "coverage": {
+    "dataset_types": {
+      "canonical_core": 21,
+      "synthetic_risk": 3,
+      "rich_decision_material_baseline": 1
+    },
+    "languages": {
+      "es": 8,
+      "en": 6,
+      "ru": 5,
+      "zh": 5,
+      "not_declared": 1
+    },
+    "high_risk": 17,
+    "privacy_disagreement": 1,
+    "controlled_failure_disagreement": 8,
+    "contradictory": 12,
+    "critically_incomplete": 0,
+    "domains": [
+      "adapter_contract_and_safety",
+      "decision_material_contract_and_preservation",
+      "finance_and_spending",
+      "high_risk_and_safety_sensitive",
+      "relocation_and_housing"
+    ]
+  },
+  "fixtures": [
+    {
+      "sequence": 1,
+      "fixture_id": "S9-MATERIAL-013",
+      "source_batch": 1,
+      "primary_verdict": "AI_DISPUTED",
+      "primary_severity": "MEDIUM",
+      "primary_confidence": 0.9,
+      "issue_codes": [
+        "PASS_A_PERSONAL_DATA_REPRODUCTION"
+      ],
+      "reinforced_review_reasons": [
+        "consolidated_verdict_requires_reinforced_review",
+        "privacy_disagreement"
+      ],
+      "privacy_disagreement": true,
+      "controlled_failure_disagreement": false,
+      "safety_sensitive": false,
+      "source_fixture_hash": "e4983e9ad8ca0c2ee5fe8d046bfe562c05f5ad050528267169dcfc608687026b",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-MATERIAL-013]",
+        "docs/qa/review/ai-batches/batch-1/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 2,
+      "fixture_id": "S9-CORE-037-ES",
+      "source_batch": 6,
+      "primary_verdict": "AI_DISPUTED",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.82,
+      "issue_codes": [
+        "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+        "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR"
+      ],
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_DISPUTED",
+        "SEVERITY_HIGH"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": false,
+      "safety_sensitive": true,
+      "source_fixture_hash": "48d63305c73fe08d20aa38556540776c4009fa3281720ab426661bdcac68b68c",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-CORE-037-ES]",
+        "docs/qa/review/ai-batches/batch-6/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 3,
+      "fixture_id": "S9-CORE-037-RU",
+      "source_batch": 6,
+      "primary_verdict": "AI_DISPUTED",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.82,
+      "issue_codes": [
+        "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+        "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR"
+      ],
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_DISPUTED",
+        "SEVERITY_HIGH"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": false,
+      "safety_sensitive": true,
+      "source_fixture_hash": "c794604338c6c98a520cdb68fd65f46224562e8e06b4454c1860bb1c0c2df519",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-CORE-037-RU]",
+        "docs/qa/review/ai-batches/batch-6/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 4,
+      "fixture_id": "S9-CORE-037-ZH",
+      "source_batch": 6,
+      "primary_verdict": "AI_DISPUTED",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.82,
+      "issue_codes": [
+        "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+        "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR"
+      ],
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_DISPUTED",
+        "SEVERITY_HIGH"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": false,
+      "safety_sensitive": true,
+      "source_fixture_hash": "a3e7c39566fb8249af960370801eb0601ecbc022b1c629dab3f386dd5e68e943",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-CORE-037-ZH]",
+        "docs/qa/review/ai-batches/batch-6/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 5,
+      "fixture_id": "S9-CORE-037-EN",
+      "source_batch": 1,
+      "primary_verdict": "AI_DISPUTED",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.9,
+      "issue_codes": [
+        "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+        "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR"
+      ],
+      "reinforced_review_reasons": [
+        "consolidated_verdict_requires_reinforced_review",
+        "high_or_critical_severity"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": false,
+      "safety_sensitive": true,
+      "source_fixture_hash": "911de9671c966bd6fef5b1b3105956377d12a83fd7f87cb005500703d13fe6e3",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-037-EN]",
+        "docs/qa/review/ai-batches/batch-1/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 6,
+      "fixture_id": "S9-CORE-036-ZH",
+      "source_batch": 1,
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.99,
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_LABEL",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED",
+        "HIGH_RISK_HEALTH_CONTEXT"
+      ],
+      "reinforced_review_reasons": [
+        "consolidated_verdict_requires_reinforced_review",
+        "high_or_critical_severity",
+        "controlled_failure_disagreement"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": true,
+      "safety_sensitive": true,
+      "source_fixture_hash": "6c4a5cfbe942a8829765b809bdb31a6cd10e4792616c769e90ee8c9138a9e7a9",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-036-ZH]",
+        "docs/qa/review/ai-batches/batch-1/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 7,
+      "fixture_id": "S9-EVAL-007",
+      "source_batch": 6,
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.98,
+      "issue_codes": [
+        "UNSUPPORTED_INVISIBLE_SCHEMA_DEFECT_ORACLE"
+      ],
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH",
+        "HIGH_SEVERITY_UNSUPPORTED_ORACLE"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": true,
+      "safety_sensitive": false,
+      "source_fixture_hash": "e04862466361065eaea79ee98d999048a85c3df8a6b2b4bf88895223c2049a22",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-EVAL-007]",
+        "docs/qa/review/ai-batches/batch-6/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 8,
+      "fixture_id": "S9-EVAL-009",
+      "source_batch": 6,
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.98,
+      "issue_codes": [
+        "UNSUPPORTED_INVISIBLE_SCHEMA_DEFECT_ORACLE"
+      ],
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH",
+        "HIGH_SEVERITY_UNSUPPORTED_ORACLE"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": true,
+      "safety_sensitive": false,
+      "source_fixture_hash": "8c6e68e2303bb8e074880c8a0fc44a420eac459f8441cb4dee9a387272e9c416",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-EVAL-009]",
+        "docs/qa/review/ai-batches/batch-6/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 9,
+      "fixture_id": "S9-EVAL-010",
+      "source_batch": 6,
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.98,
+      "issue_codes": [
+        "UNSUPPORTED_INVISIBLE_SCHEMA_DEFECT_ORACLE"
+      ],
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH",
+        "HIGH_SEVERITY_UNSUPPORTED_ORACLE"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": true,
+      "safety_sensitive": false,
+      "source_fixture_hash": "01f861e2eeb2905f1b69d36b9a78c30934eb5e244fa8e900d73af6ee923e9943",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-EVAL-010]",
+        "docs/qa/review/ai-batches/batch-6/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 10,
+      "fixture_id": "S9-CORE-024-EN",
+      "source_batch": 1,
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.99,
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_LABEL",
+        "EXPECTED_UNSUPPORTED_RISK_SIGNAL",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED"
+      ],
+      "reinforced_review_reasons": [
+        "consolidated_verdict_requires_reinforced_review",
+        "high_or_critical_severity",
+        "controlled_failure_disagreement"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": true,
+      "safety_sensitive": false,
+      "source_fixture_hash": "4c78bc623741404edad94ffb7aae60b189dc514b565c0be2c3c58ee2a7485ce3",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-024-EN]",
+        "docs/qa/review/ai-batches/batch-1/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 11,
+      "fixture_id": "S9-CORE-024-ES",
+      "source_batch": 1,
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.99,
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_LABEL",
+        "EXPECTED_UNSUPPORTED_RISK_SIGNAL",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED"
+      ],
+      "reinforced_review_reasons": [
+        "consolidated_verdict_requires_reinforced_review",
+        "high_or_critical_severity",
+        "controlled_failure_disagreement"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": true,
+      "safety_sensitive": false,
+      "source_fixture_hash": "992b232f79dbd3d80de90bf027f2c91cd294dc4c4006be453b91e241ab74a7a0",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-024-ES]",
+        "docs/qa/review/ai-batches/batch-1/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 12,
+      "fixture_id": "S9-CORE-024-RU",
+      "source_batch": 1,
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.99,
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_LABEL",
+        "EXPECTED_UNSUPPORTED_RISK_SIGNAL",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED"
+      ],
+      "reinforced_review_reasons": [
+        "consolidated_verdict_requires_reinforced_review",
+        "high_or_critical_severity",
+        "controlled_failure_disagreement"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": true,
+      "safety_sensitive": false,
+      "source_fixture_hash": "142d8633ea5db3b6660e328ca923e42577567874e20d612fd0bd4ca4d01b39fe",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-024-RU]",
+        "docs/qa/review/ai-batches/batch-1/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 13,
+      "fixture_id": "S9-CORE-024-ZH",
+      "source_batch": 1,
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.99,
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_LABEL",
+        "EXPECTED_UNSUPPORTED_RISK_SIGNAL",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED"
+      ],
+      "reinforced_review_reasons": [
+        "consolidated_verdict_requires_reinforced_review",
+        "high_or_critical_severity",
+        "controlled_failure_disagreement"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": true,
+      "safety_sensitive": false,
+      "source_fixture_hash": "53146e25677e2465b51a2d0f7a8cb5bbf8fedb777dbed0573cc541c2f6f6b0bc",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-1/adjudication.json#results[fixture_id=S9-CORE-024-ZH]",
+        "docs/qa/review/ai-batches/batch-1/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 14,
+      "fixture_id": "S9-CORE-014-EN",
+      "source_batch": 3,
+      "primary_verdict": "AI_FAIL_MINOR",
+      "primary_severity": "MEDIUM",
+      "primary_confidence": 0.91,
+      "issue_codes": [
+        "UNSUPPORTED_RATE_RESET_RISK_GROUND_TRUTH"
+      ],
+      "reinforced_review_reasons": [
+        "UNSUPPORTED_HIGH_RISK_GROUND_TRUTH"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": false,
+      "safety_sensitive": true,
+      "source_fixture_hash": "a346c78605653b3455f578496cf38e46f5fafd0592fab7c62534cb03cf574d85",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-3/adjudication.json#results[fixture_id=S9-CORE-014-EN]",
+        "docs/qa/review/ai-batches/batch-3/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 15,
+      "fixture_id": "S9-CORE-014-ES",
+      "source_batch": 3,
+      "primary_verdict": "AI_FAIL_MINOR",
+      "primary_severity": "MEDIUM",
+      "primary_confidence": 0.91,
+      "issue_codes": [
+        "UNSUPPORTED_RATE_RESET_RISK_GROUND_TRUTH"
+      ],
+      "reinforced_review_reasons": [
+        "UNSUPPORTED_HIGH_RISK_GROUND_TRUTH"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": false,
+      "safety_sensitive": true,
+      "source_fixture_hash": "f883f342003b60860869d1fe9fd5670f3a8871c941ff61eb206a4045ff5cc076",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-3/adjudication.json#results[fixture_id=S9-CORE-014-ES]",
+        "docs/qa/review/ai-batches/batch-3/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 16,
+      "fixture_id": "S9-CORE-014-RU",
+      "source_batch": 3,
+      "primary_verdict": "AI_FAIL_MINOR",
+      "primary_severity": "MEDIUM",
+      "primary_confidence": 0.91,
+      "issue_codes": [
+        "UNSUPPORTED_RATE_RESET_RISK_GROUND_TRUTH"
+      ],
+      "reinforced_review_reasons": [
+        "UNSUPPORTED_HIGH_RISK_GROUND_TRUTH"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": false,
+      "safety_sensitive": true,
+      "source_fixture_hash": "64a7434efd1df288629e1281b19e305093f1fd0ad6a62b02971e36d2ee069664",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-3/adjudication.json#results[fixture_id=S9-CORE-014-RU]",
+        "docs/qa/review/ai-batches/batch-3/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 17,
+      "fixture_id": "S9-CORE-014-ZH",
+      "source_batch": 3,
+      "primary_verdict": "AI_FAIL_MINOR",
+      "primary_severity": "MEDIUM",
+      "primary_confidence": 0.91,
+      "issue_codes": [
+        "UNSUPPORTED_RATE_RESET_RISK_GROUND_TRUTH"
+      ],
+      "reinforced_review_reasons": [
+        "UNSUPPORTED_HIGH_RISK_GROUND_TRUTH"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": false,
+      "safety_sensitive": true,
+      "source_fixture_hash": "3685fed195b3f9c0fae7040f59ef7739f7c3b37b551fb05648dabe50d51675e8",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-3/adjudication.json#results[fixture_id=S9-CORE-014-ZH]",
+        "docs/qa/review/ai-batches/batch-3/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 18,
+      "fixture_id": "S9-CORE-036-EN",
+      "source_batch": 6,
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.98,
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED"
+      ],
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": false,
+      "safety_sensitive": true,
+      "source_fixture_hash": "848800a28ed2333bb50462fea6d25b131c0f393742fdc4829fc694b7f0a46ad7",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-CORE-036-EN]",
+        "docs/qa/review/ai-batches/batch-6/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 19,
+      "fixture_id": "S9-CORE-036-ES",
+      "source_batch": 6,
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.98,
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED"
+      ],
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": false,
+      "safety_sensitive": true,
+      "source_fixture_hash": "381a03db3df8bbebc506bcb783c3a098305647442fa902aa12142657da338da2",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-CORE-036-ES]",
+        "docs/qa/review/ai-batches/batch-6/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 20,
+      "fixture_id": "S9-CORE-036-RU",
+      "source_batch": 6,
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.98,
+      "issue_codes": [
+        "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+        "EXPECTED_BEHAVIOR_NOT_GROUNDED"
+      ],
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": false,
+      "safety_sensitive": true,
+      "source_fixture_hash": "2af240536343cc5f5fb018ce9d1d639d15e5eb20311134360b99c5e302bb956c",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-6/adjudication.json#results[fixture_id=S9-CORE-036-RU]",
+        "docs/qa/review/ai-batches/batch-6/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 21,
+      "fixture_id": "S9-CORE-040-EN",
+      "source_batch": 3,
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.98,
+      "issue_codes": [
+        "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH"
+      ],
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH",
+        "UNSUPPORTED_HIGH_RISK_GROUND_TRUTH"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": false,
+      "safety_sensitive": true,
+      "source_fixture_hash": "dff75e5c3eb63b4f915fa1fb9e0e4360c0aeaec89d96ff3a56d9f82d01b8a112",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-3/adjudication.json#results[fixture_id=S9-CORE-040-EN]",
+        "docs/qa/review/ai-batches/batch-3/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 22,
+      "fixture_id": "S9-CORE-040-ES",
+      "source_batch": 3,
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.98,
+      "issue_codes": [
+        "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH"
+      ],
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH",
+        "UNSUPPORTED_HIGH_RISK_GROUND_TRUTH"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": false,
+      "safety_sensitive": true,
+      "source_fixture_hash": "a2205ff0d8d2ba600be73a2d58d7db591a20387d962c3e17a09fbe8f27bfb8a5",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-3/adjudication.json#results[fixture_id=S9-CORE-040-ES]",
+        "docs/qa/review/ai-batches/batch-3/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 23,
+      "fixture_id": "S9-CORE-040-RU",
+      "source_batch": 3,
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.98,
+      "issue_codes": [
+        "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH"
+      ],
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH",
+        "UNSUPPORTED_HIGH_RISK_GROUND_TRUTH"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": false,
+      "safety_sensitive": true,
+      "source_fixture_hash": "93b91bd230360120510774dfe7cea8cad5ec0c0382e5822b40f4426d2b586430",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-3/adjudication.json#results[fixture_id=S9-CORE-040-RU]",
+        "docs/qa/review/ai-batches/batch-3/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 24,
+      "fixture_id": "S9-CORE-040-ZH",
+      "source_batch": 3,
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.98,
+      "issue_codes": [
+        "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH"
+      ],
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH",
+        "UNSUPPORTED_HIGH_RISK_GROUND_TRUTH"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": false,
+      "safety_sensitive": true,
+      "source_fixture_hash": "25579e8806f30590b4d6e1a6e07c5c7085f39ea8a33d450036fa9202d1a39e61",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-3/adjudication.json#results[fixture_id=S9-CORE-040-ZH]",
+        "docs/qa/review/ai-batches/batch-3/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    },
+    {
+      "sequence": 25,
+      "fixture_id": "S9-CORE-038-EN",
+      "source_batch": 2,
+      "primary_verdict": "AI_FAIL_MAJOR",
+      "primary_severity": "HIGH",
+      "primary_confidence": 0.99,
+      "issue_codes": [
+        "EMPTY_GAP_CLARIFICATION_CONTRADICTION",
+        "UNSAFE_HIGH_RISK_REFUSAL_PATH"
+      ],
+      "reinforced_review_reasons": [
+        "FINAL_VERDICT_AI_FAIL_MAJOR",
+        "SEVERITY_HIGH",
+        "DISAGREEMENT_FLAG_UNSUPPORTED_HIGH_RISK_GROUND_TRUTH"
+      ],
+      "privacy_disagreement": false,
+      "controlled_failure_disagreement": false,
+      "safety_sensitive": true,
+      "source_fixture_hash": "a3458f37f18f068b762ffe1d3b0cc452ba0add4b655f80651b09e80c1c75a198",
+      "source_artifact_references": [
+        "docs/qa/review/ai-batches/batch-2/adjudication.json#results[fixture_id=S9-CORE-038-EN]",
+        "docs/qa/review/ai-batches/batch-2/issue-ledger.json",
+        "docs/qa/review/AI_REVIEW_PROGRESS.json#cumulative_reinforced_review_queue"
+      ]
+    }
+  ]
+}

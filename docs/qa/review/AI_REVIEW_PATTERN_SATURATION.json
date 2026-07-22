@@ -1,7 +1,7 @@
 {
-  "artifact_version": "stage-9-ai-review-pattern-saturation.3",
+  "artifact_version": "stage-9-ai-review-pattern-saturation.4",
   "batch_id": "stage-9-ai-review-batch-6-of-6",
-  "review_timestamp": "2026-07-22T15:00:00.000Z",
+  "review_timestamp": "2026-07-22T17:00:00.000Z",
   "primary_review_coverage": "216/216",
   "assessment_rule": "Final saturation scopes later remediation candidates from all primary-review evidence; it does not execute remediation or reinforced review.",
   "patterns": [
@@ -76,7 +76,38 @@
         "schema_level": "NONE_ESTABLISHED",
         "methodology_or_reference_level": "Add explicit source-entailment and counterevidence checks before accepting reference behavior."
       },
-      "fixture_remediation_executed": false
+      "fixture_remediation_executed": false,
+      "reinforced_batch_1_reassessment": {
+        "selected_fixture_ids": [
+          "S9-CORE-024-EN",
+          "S9-CORE-024-ES",
+          "S9-CORE-024-RU",
+          "S9-CORE-024-ZH",
+          "S9-CORE-036-ZH",
+          "S9-CORE-036-EN",
+          "S9-CORE-036-ES",
+          "S9-CORE-036-RU",
+          "S9-CORE-040-EN",
+          "S9-CORE-040-ES",
+          "S9-CORE-040-RU",
+          "S9-CORE-040-ZH"
+        ],
+        "confirmed_primary_findings": 12,
+        "rejected_primary_findings": 0,
+        "partially_confirmed_primary_findings": 0,
+        "remains_disputed": 0,
+        "pattern_confidence_change": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 0,
+          "EXPECTED_BEHAVIOR_REFERENCE": 12,
+          "REVIEW_METHODOLOGY": 0,
+          "UNRESOLVED": 0
+        },
+        "proposed_remediation_level": [
+          "FULL_CLUSTER"
+        ]
+      },
+      "final_saturation_verdict": "DEFERRED_UNTIL_REINFORCED_BATCH_3"
     },
     {
       "pattern": "unsupported high-risk ground truth",
@@ -121,7 +152,36 @@
         "schema_level": "NONE_ESTABLISHED",
         "methodology_or_reference_level": "Add explicit source-entailment and counterevidence checks before accepting reference behavior."
       },
-      "fixture_remediation_executed": false
+      "fixture_remediation_executed": false,
+      "reinforced_batch_1_reassessment": {
+        "selected_fixture_ids": [
+          "S9-CORE-037-ES",
+          "S9-CORE-037-RU",
+          "S9-CORE-037-ZH",
+          "S9-CORE-037-EN",
+          "S9-CORE-038-EN",
+          "S9-CORE-040-EN",
+          "S9-CORE-040-ES",
+          "S9-CORE-040-RU",
+          "S9-CORE-040-ZH"
+        ],
+        "confirmed_primary_findings": 5,
+        "rejected_primary_findings": 0,
+        "partially_confirmed_primary_findings": 0,
+        "remains_disputed": 4,
+        "pattern_confidence_change": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 0,
+          "EXPECTED_BEHAVIOR_REFERENCE": 5,
+          "REVIEW_METHODOLOGY": 0,
+          "UNRESOLVED": 4
+        },
+        "proposed_remediation_level": [
+          "FURTHER_ADJUDICATION_REQUIRED",
+          "FULL_CLUSTER"
+        ]
+      },
+      "final_saturation_verdict": "DEFERRED_UNTIL_REINFORCED_BATCH_3"
     },
     {
       "pattern": "unsupported nonexistent option",
@@ -155,7 +215,29 @@
         "schema_level": "Preserve mutated negative-candidate fields in review-source projection.",
         "methodology_or_reference_level": "Add explicit source-entailment and counterevidence checks before accepting reference behavior."
       },
-      "fixture_remediation_executed": false
+      "fixture_remediation_executed": false,
+      "reinforced_batch_1_reassessment": {
+        "selected_fixture_ids": [
+          "S9-EVAL-007",
+          "S9-EVAL-009",
+          "S9-EVAL-010"
+        ],
+        "confirmed_primary_findings": 3,
+        "rejected_primary_findings": 0,
+        "partially_confirmed_primary_findings": 0,
+        "remains_disputed": 0,
+        "pattern_confidence_change": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 3,
+          "EXPECTED_BEHAVIOR_REFERENCE": 0,
+          "REVIEW_METHODOLOGY": 0,
+          "UNRESOLVED": 0
+        },
+        "proposed_remediation_level": [
+          "SCHEMA_RULE"
+        ]
+      },
+      "final_saturation_verdict": "DEFERRED_UNTIL_REINFORCED_BATCH_3"
     },
     {
       "pattern": "unsafe clarification/refusal path",
@@ -215,7 +297,44 @@
         "schema_level": "NONE_ESTABLISHED",
         "methodology_or_reference_level": "Add explicit source-entailment and counterevidence checks before accepting reference behavior."
       },
-      "fixture_remediation_executed": false
+      "fixture_remediation_executed": false,
+      "reinforced_batch_1_reassessment": {
+        "selected_fixture_ids": [
+          "S9-CORE-024-EN",
+          "S9-CORE-024-ES",
+          "S9-CORE-024-RU",
+          "S9-CORE-024-ZH",
+          "S9-CORE-036-ZH",
+          "S9-CORE-036-EN",
+          "S9-CORE-036-ES",
+          "S9-CORE-036-RU",
+          "S9-CORE-037-ES",
+          "S9-CORE-037-RU",
+          "S9-CORE-037-ZH",
+          "S9-CORE-037-EN",
+          "S9-CORE-038-EN",
+          "S9-CORE-040-EN",
+          "S9-CORE-040-ES",
+          "S9-CORE-040-RU",
+          "S9-CORE-040-ZH"
+        ],
+        "confirmed_primary_findings": 13,
+        "rejected_primary_findings": 0,
+        "partially_confirmed_primary_findings": 0,
+        "remains_disputed": 4,
+        "pattern_confidence_change": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 0,
+          "EXPECTED_BEHAVIOR_REFERENCE": 13,
+          "REVIEW_METHODOLOGY": 0,
+          "UNRESOLVED": 4
+        },
+        "proposed_remediation_level": [
+          "FULL_CLUSTER",
+          "FURTHER_ADJUDICATION_REQUIRED"
+        ]
+      },
+      "final_saturation_verdict": "DEFERRED_UNTIL_REINFORCED_BATCH_3"
     },
     {
       "pattern": "localization or gender drift",
@@ -274,7 +393,23 @@
         "schema_level": "NONE_ESTABLISHED",
         "methodology_or_reference_level": "Add explicit source-entailment and counterevidence checks before accepting reference behavior."
       },
-      "fixture_remediation_executed": false
+      "fixture_remediation_executed": false,
+      "reinforced_batch_1_reassessment": {
+        "selected_fixture_ids": [],
+        "confirmed_primary_findings": 0,
+        "rejected_primary_findings": 0,
+        "partially_confirmed_primary_findings": 0,
+        "remains_disputed": 0,
+        "pattern_confidence_change": "NOT_CHALLENGED",
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 0,
+          "EXPECTED_BEHAVIOR_REFERENCE": 0,
+          "REVIEW_METHODOLOGY": 0,
+          "UNRESOLVED": 0
+        },
+        "proposed_remediation_level": []
+      },
+      "final_saturation_verdict": "DEFERRED_UNTIL_REINFORCED_BATCH_3"
     },
     {
       "pattern": "privacy expectation disagreement",
@@ -307,7 +442,27 @@
         "schema_level": "NONE_ESTABLISHED",
         "methodology_or_reference_level": "Add explicit source-entailment and counterevidence checks before accepting reference behavior."
       },
-      "fixture_remediation_executed": false
+      "fixture_remediation_executed": false,
+      "reinforced_batch_1_reassessment": {
+        "selected_fixture_ids": [
+          "S9-MATERIAL-013"
+        ],
+        "confirmed_primary_findings": 1,
+        "rejected_primary_findings": 0,
+        "partially_confirmed_primary_findings": 0,
+        "remains_disputed": 0,
+        "pattern_confidence_change": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 0,
+          "EXPECTED_BEHAVIOR_REFERENCE": 0,
+          "REVIEW_METHODOLOGY": 1,
+          "UNRESOLVED": 0
+        },
+        "proposed_remediation_level": [
+          "REFERENCE_METHODOLOGY"
+        ]
+      },
+      "final_saturation_verdict": "DEFERRED_UNTIL_REINFORCED_BATCH_3"
     },
     {
       "pattern": "controlled-failure disagreement",
@@ -341,7 +496,39 @@
         "schema_level": "Preserve mutated negative-candidate fields in review-source projection.",
         "methodology_or_reference_level": "Add explicit source-entailment and counterevidence checks before accepting reference behavior."
       },
-      "fixture_remediation_executed": false
+      "fixture_remediation_executed": false,
+      "reinforced_batch_1_reassessment": {
+        "selected_fixture_ids": [
+          "S9-EVAL-007",
+          "S9-EVAL-009",
+          "S9-EVAL-010",
+          "S9-CORE-024-EN",
+          "S9-CORE-024-ES",
+          "S9-CORE-024-RU",
+          "S9-CORE-024-ZH",
+          "S9-CORE-036-ZH",
+          "S9-CORE-036-EN",
+          "S9-CORE-036-ES",
+          "S9-CORE-036-RU",
+          "S9-CORE-038-EN"
+        ],
+        "confirmed_primary_findings": 12,
+        "rejected_primary_findings": 0,
+        "partially_confirmed_primary_findings": 0,
+        "remains_disputed": 0,
+        "pattern_confidence_change": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 3,
+          "EXPECTED_BEHAVIOR_REFERENCE": 9,
+          "REVIEW_METHODOLOGY": 0,
+          "UNRESOLVED": 0
+        },
+        "proposed_remediation_level": [
+          "SCHEMA_RULE",
+          "FULL_CLUSTER"
+        ]
+      },
+      "final_saturation_verdict": "DEFERRED_UNTIL_REINFORCED_BATCH_3"
     },
     {
       "pattern": "invented cost, deadline or irreversibility",
@@ -401,7 +588,34 @@
         "schema_level": "NONE_ESTABLISHED",
         "methodology_or_reference_level": "Add explicit source-entailment and counterevidence checks before accepting reference behavior."
       },
-      "fixture_remediation_executed": false
+      "fixture_remediation_executed": false,
+      "reinforced_batch_1_reassessment": {
+        "selected_fixture_ids": [
+          "S9-CORE-014-EN",
+          "S9-CORE-014-ES",
+          "S9-CORE-014-RU",
+          "S9-CORE-014-ZH",
+          "S9-CORE-024-EN",
+          "S9-CORE-024-ES",
+          "S9-CORE-024-RU",
+          "S9-CORE-024-ZH"
+        ],
+        "confirmed_primary_findings": 8,
+        "rejected_primary_findings": 0,
+        "partially_confirmed_primary_findings": 0,
+        "remains_disputed": 0,
+        "pattern_confidence_change": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 0,
+          "EXPECTED_BEHAVIOR_REFERENCE": 8,
+          "REVIEW_METHODOLOGY": 0,
+          "UNRESOLVED": 0
+        },
+        "proposed_remediation_level": [
+          "FULL_CLUSTER"
+        ]
+      },
+      "final_saturation_verdict": "DEFERRED_UNTIL_REINFORCED_BATCH_3"
     },
     {
       "pattern": "reference behavior not supported by input",
@@ -523,7 +737,52 @@
         "schema_level": "NONE_ESTABLISHED",
         "methodology_or_reference_level": "Add explicit source-entailment and counterevidence checks before accepting reference behavior."
       },
-      "fixture_remediation_executed": false
+      "fixture_remediation_executed": false,
+      "reinforced_batch_1_reassessment": {
+        "selected_fixture_ids": [
+          "S9-CORE-037-ES",
+          "S9-CORE-037-RU",
+          "S9-CORE-037-ZH",
+          "S9-CORE-037-EN",
+          "S9-CORE-036-ZH",
+          "S9-EVAL-007",
+          "S9-EVAL-009",
+          "S9-EVAL-010",
+          "S9-CORE-024-EN",
+          "S9-CORE-024-ES",
+          "S9-CORE-024-RU",
+          "S9-CORE-024-ZH",
+          "S9-CORE-014-EN",
+          "S9-CORE-014-ES",
+          "S9-CORE-014-RU",
+          "S9-CORE-014-ZH",
+          "S9-CORE-036-EN",
+          "S9-CORE-036-ES",
+          "S9-CORE-036-RU",
+          "S9-CORE-040-EN",
+          "S9-CORE-040-ES",
+          "S9-CORE-040-RU",
+          "S9-CORE-040-ZH",
+          "S9-CORE-038-EN"
+        ],
+        "confirmed_primary_findings": 20,
+        "rejected_primary_findings": 0,
+        "partially_confirmed_primary_findings": 0,
+        "remains_disputed": 4,
+        "pattern_confidence_change": "CONFIDENCE_STRENGTHENED_WITHIN_SELECTED_EVIDENCE",
+        "root_cause_distribution": {
+          "SCHEMA_ORACLE": 3,
+          "EXPECTED_BEHAVIOR_REFERENCE": 17,
+          "REVIEW_METHODOLOGY": 0,
+          "UNRESOLVED": 4
+        },
+        "proposed_remediation_level": [
+          "FURTHER_ADJUDICATION_REQUIRED",
+          "FULL_CLUSTER",
+          "SCHEMA_RULE"
+        ]
+      },
+      "final_saturation_verdict": "DEFERRED_UNTIL_REINFORCED_BATCH_3"
     }
   ],
   "aggregate_status": "PATTERNS_SATURATED_WITHOUT_SYSTEMIC_BLOCKER",
@@ -531,5 +790,11 @@
   "fixture_remediation": "NONE",
   "remaining_primary_review_required": 0,
   "reinforced_review": "PENDING_NOT_EXECUTED",
-  "next_planning_candidate": "Stage 9 Reinforced AI Review and Cross-Batch Adjudication"
+  "next_planning_candidate": "Stage 9 Reinforced AI Review Batch 2 of 3",
+  "reinforced_review_progress": {
+    "completed": 25,
+    "total": 73,
+    "remaining": 48
+  },
+  "remaining_reinforced_review_required": 48
 }

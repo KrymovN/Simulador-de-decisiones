@@ -1,0 +1,746 @@
+{
+  "artifact_version": "stage-9-reinforced-issue-dispositions.1",
+  "batch_id": "stage-9-reinforced-ai-review-batch-1-of-3",
+  "review_timestamp": "2026-07-22T17:00:00.000Z",
+  "append_only": true,
+  "disposition_count": 43,
+  "counts": {
+    "CONFIRMED": 35,
+    "REJECTED": 0,
+    "PARTIALLY_CONFIRMED": 0,
+    "REMAINS_DISPUTED": 8
+  },
+  "dispositions": [
+    {
+      "primary_batch": "stage-9-ai-review-batch-1-of-6",
+      "primary_issue_id": "B1-ISSUE-006",
+      "fixture_id": "S9-MATERIAL-013",
+      "primary_issue_code": "PASS_A_PERSONAL_DATA_REPRODUCTION",
+      "primary_status": "DISPUTED",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-MATERIAL-013]",
+        "pass-r2.json#results[fixture_id=S9-MATERIAL-013]",
+        "pass-r3.json#results[fixture_id=S9-MATERIAL-013]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "REFERENCE_METHODOLOGY",
+      "root_cause_category": "REVIEW_METHODOLOGY",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-6-of-6",
+      "primary_issue_id": "B6-ISSUE-021",
+      "fixture_id": "S9-CORE-037-ES",
+      "primary_issue_code": "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+      "primary_status": "DISPUTED",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-ES]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-ES]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-ES]"
+      ],
+      "final_current_disposition": "REMAINS_DISPUTED",
+      "remediation_candidate": "FURTHER_ADJUDICATION_REQUIRED",
+      "root_cause_category": "UNRESOLVED",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-6-of-6",
+      "primary_issue_id": "B6-ISSUE-022",
+      "fixture_id": "S9-CORE-037-ES",
+      "primary_issue_code": "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR",
+      "primary_status": "DISPUTED",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-ES]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-ES]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-ES]"
+      ],
+      "final_current_disposition": "REMAINS_DISPUTED",
+      "remediation_candidate": "FURTHER_ADJUDICATION_REQUIRED",
+      "root_cause_category": "UNRESOLVED",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-6-of-6",
+      "primary_issue_id": "B6-ISSUE-023",
+      "fixture_id": "S9-CORE-037-RU",
+      "primary_issue_code": "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+      "primary_status": "DISPUTED",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-RU]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-RU]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-RU]"
+      ],
+      "final_current_disposition": "REMAINS_DISPUTED",
+      "remediation_candidate": "FURTHER_ADJUDICATION_REQUIRED",
+      "root_cause_category": "UNRESOLVED",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-6-of-6",
+      "primary_issue_id": "B6-ISSUE-024",
+      "fixture_id": "S9-CORE-037-RU",
+      "primary_issue_code": "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR",
+      "primary_status": "DISPUTED",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-RU]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-RU]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-RU]"
+      ],
+      "final_current_disposition": "REMAINS_DISPUTED",
+      "remediation_candidate": "FURTHER_ADJUDICATION_REQUIRED",
+      "root_cause_category": "UNRESOLVED",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-6-of-6",
+      "primary_issue_id": "B6-ISSUE-025",
+      "fixture_id": "S9-CORE-037-ZH",
+      "primary_issue_code": "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+      "primary_status": "DISPUTED",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-ZH]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-ZH]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-ZH]"
+      ],
+      "final_current_disposition": "REMAINS_DISPUTED",
+      "remediation_candidate": "FURTHER_ADJUDICATION_REQUIRED",
+      "root_cause_category": "UNRESOLVED",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-6-of-6",
+      "primary_issue_id": "B6-ISSUE-026",
+      "fixture_id": "S9-CORE-037-ZH",
+      "primary_issue_code": "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR",
+      "primary_status": "DISPUTED",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-ZH]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-ZH]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-ZH]"
+      ],
+      "final_current_disposition": "REMAINS_DISPUTED",
+      "remediation_candidate": "FURTHER_ADJUDICATION_REQUIRED",
+      "root_cause_category": "UNRESOLVED",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-1-of-6",
+      "primary_issue_id": "B1-ISSUE-036",
+      "fixture_id": "S9-CORE-037-EN",
+      "primary_issue_code": "HIGH_RISK_NO_ACTION_PATH_AMBIGUOUS",
+      "primary_status": "DISPUTED",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-EN]"
+      ],
+      "final_current_disposition": "REMAINS_DISPUTED",
+      "remediation_candidate": "FURTHER_ADJUDICATION_REQUIRED",
+      "root_cause_category": "UNRESOLVED",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-1-of-6",
+      "primary_issue_id": "B1-ISSUE-037",
+      "fixture_id": "S9-CORE-037-EN",
+      "primary_issue_code": "CONDITIONAL_RECOMMENDATION_SAFETY_SCOPE_UNCLEAR",
+      "primary_status": "DISPUTED",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-037-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-037-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-037-EN]"
+      ],
+      "final_current_disposition": "REMAINS_DISPUTED",
+      "remediation_candidate": "FURTHER_ADJUDICATION_REQUIRED",
+      "root_cause_category": "UNRESOLVED",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-1-of-6",
+      "primary_issue_id": "B1-ISSUE-033",
+      "fixture_id": "S9-CORE-036-ZH",
+      "primary_issue_code": "UNSUPPORTED_CONTRADICTION_LABEL",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-036-ZH]",
+        "pass-r2.json#results[fixture_id=S9-CORE-036-ZH]",
+        "pass-r3.json#results[fixture_id=S9-CORE-036-ZH]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-1-of-6",
+      "primary_issue_id": "B1-ISSUE-034",
+      "fixture_id": "S9-CORE-036-ZH",
+      "primary_issue_code": "EXPECTED_BEHAVIOR_NOT_GROUNDED",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-036-ZH]",
+        "pass-r2.json#results[fixture_id=S9-CORE-036-ZH]",
+        "pass-r3.json#results[fixture_id=S9-CORE-036-ZH]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-1-of-6",
+      "primary_issue_id": "B1-ISSUE-035",
+      "fixture_id": "S9-CORE-036-ZH",
+      "primary_issue_code": "HIGH_RISK_HEALTH_CONTEXT",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-036-ZH]",
+        "pass-r2.json#results[fixture_id=S9-CORE-036-ZH]",
+        "pass-r3.json#results[fixture_id=S9-CORE-036-ZH]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-6-of-6",
+      "primary_issue_id": "B6-ISSUE-027",
+      "fixture_id": "S9-EVAL-007",
+      "primary_issue_code": "UNSUPPORTED_INVISIBLE_SCHEMA_DEFECT_ORACLE",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-EVAL-007]",
+        "pass-r2.json#results[fixture_id=S9-EVAL-007]",
+        "pass-r3.json#results[fixture_id=S9-EVAL-007]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "SCHEMA_RULE",
+      "root_cause_category": "SCHEMA_ORACLE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-6-of-6",
+      "primary_issue_id": "B6-ISSUE-029",
+      "fixture_id": "S9-EVAL-009",
+      "primary_issue_code": "UNSUPPORTED_INVISIBLE_SCHEMA_DEFECT_ORACLE",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-EVAL-009]",
+        "pass-r2.json#results[fixture_id=S9-EVAL-009]",
+        "pass-r3.json#results[fixture_id=S9-EVAL-009]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "SCHEMA_RULE",
+      "root_cause_category": "SCHEMA_ORACLE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-6-of-6",
+      "primary_issue_id": "B6-ISSUE-030",
+      "fixture_id": "S9-EVAL-010",
+      "primary_issue_code": "UNSUPPORTED_INVISIBLE_SCHEMA_DEFECT_ORACLE",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-EVAL-010]",
+        "pass-r2.json#results[fixture_id=S9-EVAL-010]",
+        "pass-r3.json#results[fixture_id=S9-EVAL-010]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "SCHEMA_RULE",
+      "root_cause_category": "SCHEMA_ORACLE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-1-of-6",
+      "primary_issue_id": "B1-ISSUE-022",
+      "fixture_id": "S9-CORE-024-EN",
+      "primary_issue_code": "UNSUPPORTED_CONTRADICTION_LABEL",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-024-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-024-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-024-EN]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-1-of-6",
+      "primary_issue_id": "B1-ISSUE-023",
+      "fixture_id": "S9-CORE-024-EN",
+      "primary_issue_code": "EXPECTED_UNSUPPORTED_RISK_SIGNAL",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-024-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-024-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-024-EN]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-1-of-6",
+      "primary_issue_id": "B1-ISSUE-024",
+      "fixture_id": "S9-CORE-024-EN",
+      "primary_issue_code": "EXPECTED_BEHAVIOR_NOT_GROUNDED",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-024-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-024-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-024-EN]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-1-of-6",
+      "primary_issue_id": "B1-ISSUE-019",
+      "fixture_id": "S9-CORE-024-ES",
+      "primary_issue_code": "UNSUPPORTED_CONTRADICTION_LABEL",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-024-ES]",
+        "pass-r2.json#results[fixture_id=S9-CORE-024-ES]",
+        "pass-r3.json#results[fixture_id=S9-CORE-024-ES]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-1-of-6",
+      "primary_issue_id": "B1-ISSUE-020",
+      "fixture_id": "S9-CORE-024-ES",
+      "primary_issue_code": "EXPECTED_UNSUPPORTED_RISK_SIGNAL",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-024-ES]",
+        "pass-r2.json#results[fixture_id=S9-CORE-024-ES]",
+        "pass-r3.json#results[fixture_id=S9-CORE-024-ES]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-1-of-6",
+      "primary_issue_id": "B1-ISSUE-021",
+      "fixture_id": "S9-CORE-024-ES",
+      "primary_issue_code": "EXPECTED_BEHAVIOR_NOT_GROUNDED",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-024-ES]",
+        "pass-r2.json#results[fixture_id=S9-CORE-024-ES]",
+        "pass-r3.json#results[fixture_id=S9-CORE-024-ES]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-1-of-6",
+      "primary_issue_id": "B1-ISSUE-025",
+      "fixture_id": "S9-CORE-024-RU",
+      "primary_issue_code": "UNSUPPORTED_CONTRADICTION_LABEL",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-024-RU]",
+        "pass-r2.json#results[fixture_id=S9-CORE-024-RU]",
+        "pass-r3.json#results[fixture_id=S9-CORE-024-RU]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-1-of-6",
+      "primary_issue_id": "B1-ISSUE-026",
+      "fixture_id": "S9-CORE-024-RU",
+      "primary_issue_code": "EXPECTED_UNSUPPORTED_RISK_SIGNAL",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-024-RU]",
+        "pass-r2.json#results[fixture_id=S9-CORE-024-RU]",
+        "pass-r3.json#results[fixture_id=S9-CORE-024-RU]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-1-of-6",
+      "primary_issue_id": "B1-ISSUE-027",
+      "fixture_id": "S9-CORE-024-RU",
+      "primary_issue_code": "EXPECTED_BEHAVIOR_NOT_GROUNDED",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-024-RU]",
+        "pass-r2.json#results[fixture_id=S9-CORE-024-RU]",
+        "pass-r3.json#results[fixture_id=S9-CORE-024-RU]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-1-of-6",
+      "primary_issue_id": "B1-ISSUE-028",
+      "fixture_id": "S9-CORE-024-ZH",
+      "primary_issue_code": "UNSUPPORTED_CONTRADICTION_LABEL",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-024-ZH]",
+        "pass-r2.json#results[fixture_id=S9-CORE-024-ZH]",
+        "pass-r3.json#results[fixture_id=S9-CORE-024-ZH]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-1-of-6",
+      "primary_issue_id": "B1-ISSUE-029",
+      "fixture_id": "S9-CORE-024-ZH",
+      "primary_issue_code": "EXPECTED_UNSUPPORTED_RISK_SIGNAL",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-024-ZH]",
+        "pass-r2.json#results[fixture_id=S9-CORE-024-ZH]",
+        "pass-r3.json#results[fixture_id=S9-CORE-024-ZH]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-1-of-6",
+      "primary_issue_id": "B1-ISSUE-030",
+      "fixture_id": "S9-CORE-024-ZH",
+      "primary_issue_code": "EXPECTED_BEHAVIOR_NOT_GROUNDED",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-024-ZH]",
+        "pass-r2.json#results[fixture_id=S9-CORE-024-ZH]",
+        "pass-r3.json#results[fixture_id=S9-CORE-024-ZH]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-3-of-6",
+      "primary_issue_id": "B3-ISSUE-016",
+      "fixture_id": "S9-CORE-014-EN",
+      "primary_issue_code": "UNSUPPORTED_RATE_RESET_RISK_GROUND_TRUTH",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-014-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-014-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-014-EN]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-3-of-6",
+      "primary_issue_id": "B3-ISSUE-015",
+      "fixture_id": "S9-CORE-014-ES",
+      "primary_issue_code": "UNSUPPORTED_RATE_RESET_RISK_GROUND_TRUTH",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-014-ES]",
+        "pass-r2.json#results[fixture_id=S9-CORE-014-ES]",
+        "pass-r3.json#results[fixture_id=S9-CORE-014-ES]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-3-of-6",
+      "primary_issue_id": "B3-ISSUE-017",
+      "fixture_id": "S9-CORE-014-RU",
+      "primary_issue_code": "UNSUPPORTED_RATE_RESET_RISK_GROUND_TRUTH",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-014-RU]",
+        "pass-r2.json#results[fixture_id=S9-CORE-014-RU]",
+        "pass-r3.json#results[fixture_id=S9-CORE-014-RU]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-3-of-6",
+      "primary_issue_id": "B3-ISSUE-018",
+      "fixture_id": "S9-CORE-014-ZH",
+      "primary_issue_code": "UNSUPPORTED_RATE_RESET_RISK_GROUND_TRUTH",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-014-ZH]",
+        "pass-r2.json#results[fixture_id=S9-CORE-014-ZH]",
+        "pass-r3.json#results[fixture_id=S9-CORE-014-ZH]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-6-of-6",
+      "primary_issue_id": "B6-ISSUE-017",
+      "fixture_id": "S9-CORE-036-EN",
+      "primary_issue_code": "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-036-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-036-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-036-EN]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-6-of-6",
+      "primary_issue_id": "B6-ISSUE-018",
+      "fixture_id": "S9-CORE-036-EN",
+      "primary_issue_code": "EXPECTED_BEHAVIOR_NOT_GROUNDED",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-036-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-036-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-036-EN]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-6-of-6",
+      "primary_issue_id": "B6-ISSUE-015",
+      "fixture_id": "S9-CORE-036-ES",
+      "primary_issue_code": "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-036-ES]",
+        "pass-r2.json#results[fixture_id=S9-CORE-036-ES]",
+        "pass-r3.json#results[fixture_id=S9-CORE-036-ES]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-6-of-6",
+      "primary_issue_id": "B6-ISSUE-016",
+      "fixture_id": "S9-CORE-036-ES",
+      "primary_issue_code": "EXPECTED_BEHAVIOR_NOT_GROUNDED",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-036-ES]",
+        "pass-r2.json#results[fixture_id=S9-CORE-036-ES]",
+        "pass-r3.json#results[fixture_id=S9-CORE-036-ES]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-6-of-6",
+      "primary_issue_id": "B6-ISSUE-019",
+      "fixture_id": "S9-CORE-036-RU",
+      "primary_issue_code": "UNSUPPORTED_CONTRADICTION_GROUND_TRUTH",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-036-RU]",
+        "pass-r2.json#results[fixture_id=S9-CORE-036-RU]",
+        "pass-r3.json#results[fixture_id=S9-CORE-036-RU]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-6-of-6",
+      "primary_issue_id": "B6-ISSUE-020",
+      "fixture_id": "S9-CORE-036-RU",
+      "primary_issue_code": "EXPECTED_BEHAVIOR_NOT_GROUNDED",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-036-RU]",
+        "pass-r2.json#results[fixture_id=S9-CORE-036-RU]",
+        "pass-r3.json#results[fixture_id=S9-CORE-036-RU]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-3-of-6",
+      "primary_issue_id": "B3-ISSUE-028",
+      "fixture_id": "S9-CORE-040-EN",
+      "primary_issue_code": "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-040-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-040-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-040-EN]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-3-of-6",
+      "primary_issue_id": "B3-ISSUE-027",
+      "fixture_id": "S9-CORE-040-ES",
+      "primary_issue_code": "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-040-ES]",
+        "pass-r2.json#results[fixture_id=S9-CORE-040-ES]",
+        "pass-r3.json#results[fixture_id=S9-CORE-040-ES]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-3-of-6",
+      "primary_issue_id": "B3-ISSUE-029",
+      "fixture_id": "S9-CORE-040-RU",
+      "primary_issue_code": "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-040-RU]",
+        "pass-r2.json#results[fixture_id=S9-CORE-040-RU]",
+        "pass-r3.json#results[fixture_id=S9-CORE-040-RU]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-3-of-6",
+      "primary_issue_id": "B3-ISSUE-030",
+      "fixture_id": "S9-CORE-040-ZH",
+      "primary_issue_code": "UNSUPPORTED_HIGH_RISK_CONTRADICTION_GROUND_TRUTH",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-040-ZH]",
+        "pass-r2.json#results[fixture_id=S9-CORE-040-ZH]",
+        "pass-r3.json#results[fixture_id=S9-CORE-040-ZH]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-2-of-6",
+      "primary_issue_id": "B2-ISSUE-025",
+      "fixture_id": "S9-CORE-038-EN",
+      "primary_issue_code": "EMPTY_GAP_CLARIFICATION_CONTRADICTION",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-038-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-038-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-038-EN]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    },
+    {
+      "primary_batch": "stage-9-ai-review-batch-2-of-6",
+      "primary_issue_id": "B2-ISSUE-026",
+      "fixture_id": "S9-CORE-038-EN",
+      "primary_issue_code": "UNSAFE_HIGH_RISK_REFUSAL_PATH",
+      "primary_status": "OPEN",
+      "reinforced_batch": "stage-9-reinforced-ai-review-batch-1-of-3",
+      "reinforced_evidence": [
+        "pass-r1.json#results[fixture_id=S9-CORE-038-EN]",
+        "pass-r2.json#results[fixture_id=S9-CORE-038-EN]",
+        "pass-r3.json#results[fixture_id=S9-CORE-038-EN]"
+      ],
+      "final_current_disposition": "CONFIRMED",
+      "remediation_candidate": "FULL_CLUSTER",
+      "root_cause_category": "EXPECTED_BEHAVIOR_REFERENCE",
+      "historical_primary_observation_preserved": true
+    }
+  ]
+}

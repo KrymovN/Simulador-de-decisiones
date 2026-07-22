@@ -1,5 +1,23 @@
 # PROJECT CONTEXT
 
+## Stage 9 reinforced review Batch 1 of 3 complete — 22 July 2026
+
+Reinforced review Batch 1 adjudicated the deterministic priority slice of 25 of
+73 queued fixtures while preserving primary review at 216 of 216. The batch
+contains 21 core, 3 synthetic-risk, and 1 rich fixture; its outcomes are 16
+`DEFECT_CONFIRMED_MAJOR`, 5 `DEFECT_CONFIRMED_MINOR`, and 4
+`REMAINS_DISPUTED`, with 0 `ESCALATED_CRITICAL`. All 43 primary issue claims
+were dispositioned: 35 `CONFIRMED` and 8 `REMAINS_DISPUTED`. Root-cause
+distribution is 17 expected-behavior/reference, 3 schema-oracle, 1 review
+methodology, and 4 unresolved cases. The final adjudication queue contains the
+four locale variants of `S9-CORE-037`; 48 reinforced-review fixtures remain.
+
+This was review and adjudication only: remediation is `NONE`, and Batch 2 was
+not executed. Stage 9 remains **In Progress** and release readiness is not
+declared. Live provider execution is still closed, `/api/simulate` remains
+`mockOnly=true`, and all runtime boundaries remain closed. The next planning
+candidate is `Stage 9 Reinforced AI Review Batch 2 of 3` only.
+
 ## Stage 9 Independent AI Review Batch 6 of 6 — Primary Review Complete — 22 July 2026
 
 The owner-approved independent AI review protocol completed Batch 6 under the

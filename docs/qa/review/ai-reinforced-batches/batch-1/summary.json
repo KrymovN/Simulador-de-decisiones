@@ -1,0 +1,54 @@
+{
+  "artifact_version": "stage-9-reinforced-summary.1",
+  "batch_id": "stage-9-reinforced-ai-review-batch-1-of-3",
+  "review_timestamp": "2026-07-22T17:00:00.000Z",
+  "status": "BATCH_COMPLETE",
+  "selected_count": 25,
+  "reinforced_outcome_counts": {
+    "REINFORCED_PASS": 0,
+    "REINFORCED_PASS_WITH_NOTE": 0,
+    "DEFECT_CONFIRMED_MINOR": 5,
+    "DEFECT_CONFIRMED_MAJOR": 16,
+    "PRIMARY_FINDING_REJECTED": 0,
+    "REMAINS_DISPUTED": 4,
+    "ESCALATED_CRITICAL": 0
+  },
+  "primary_issue_disposition_counts": {
+    "CONFIRMED": 35,
+    "REJECTED": 0,
+    "PARTIALLY_CONFIRMED": 0,
+    "REMAINS_DISPUTED": 8
+  },
+  "root_cause_distribution": {
+    "FIXTURE_CONTENT": 0,
+    "CLUSTER_LOCALIZATION": 0,
+    "GENERATOR_TEMPLATE": 0,
+    "SCHEMA_ORACLE": 3,
+    "EXPECTED_BEHAVIOR_REFERENCE": 17,
+    "REVIEW_METHODOLOGY": 1,
+    "PRIMARY_REVIEW_FALSE_POSITIVE": 0,
+    "UNRESOLVED": 4
+  },
+  "remediation_scope_distribution": {
+    "NONE": 0,
+    "SINGLE_FIXTURE": 0,
+    "FULL_CLUSTER": 17,
+    "MULTIPLE_FIXTURES": 0,
+    "GENERATOR_RULE": 0,
+    "SCHEMA_RULE": 3,
+    "REFERENCE_METHODOLOGY": 1,
+    "FURTHER_ADJUDICATION_REQUIRED": 4
+  },
+  "final_adjudication_queue_count": 4,
+  "critical_count": 0,
+  "aggregate_reinforced_completed": 25,
+  "aggregate_reinforced_remaining": 48,
+  "aggregate_reinforced_total": 73,
+  "fixture_remediation": "NONE",
+  "reinforced_batch_2_execution": "NOT_EXECUTED",
+  "stage_status": "In Progress",
+  "release_readiness": "NOT_DECLARED",
+  "runtime_boundaries": "CLOSED",
+  "network_request_count": 0,
+  "next_planning_candidate": "Stage 9 Reinforced AI Review Batch 2 of 3"
+}

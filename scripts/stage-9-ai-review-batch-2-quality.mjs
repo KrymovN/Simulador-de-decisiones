@@ -134,10 +134,10 @@ const currentCanonical = ["PROJECT_CONTEXT.md", "LEVIO_IMPLEMENTATION_PLAN.md", 
   const next = source.indexOf("\n## ", source.indexOf("\n## ") + 4);
   return source.slice(0, next === -1 ? source.length : next);
 }).join("\n");
-add("canonical-ai-review-state", currentCanonical.includes("Batch 6") && currentCanonical.includes("216 of 216") && currentCanonical.includes("remaining primary review is 0") && currentCanonical.includes("Stage 9 remain") && currentCanonical.includes("In Progress"), "Canonical state records Batch 6 primary closure without closing Stage 9; aggregate progress preserves Batch 2 history.");
-add("release-and-runtime-remain-closed", currentCanonical.includes("release readiness is not declared") && currentCanonical.includes("Live OpenAI execution is not opened") && currentCanonical.includes("`/api/simulate` remains deterministic with `mockOnly=true`") && !currentCanonical.includes("release candidate approved"), "Release and runtime boundaries remain closed.");
+add("canonical-ai-review-state", currentCanonical.includes("reinforced review Batch 1") && currentCanonical.includes("216 of 216") && currentCanonical.includes("25 of 73") && currentCanonical.includes("Stage 9 remain") && currentCanonical.includes("In Progress"), "Canonical state records reinforced Batch 1 without closing Stage 9; aggregate progress preserves primary Batch 2 history.");
+add("release-and-runtime-remain-closed", currentCanonical.includes("release readiness is not declared") && currentCanonical.includes("`mockOnly=true`") && currentCanonical.includes("runtime boundaries remain closed") && !currentCanonical.includes("release candidate approved"), "Release and runtime boundaries remain closed.");
 const blocker = summary.critical_defect_count > 0 || summary.dataset_wide_blocker === true;
-add("next-candidate-follows-critical-rule", blocker ? !currentCanonical.includes("Batch 6 of 6") : /Stage 9 Independent AI Review\s+Batch 6 of 6/.test(currentCanonical), blocker ? "Critical/blocker prevents automatic Batch 6 candidacy." : "Batch 6 is the next planning candidate after completed Batch 5.");
+add("next-candidate-follows-critical-rule", blocker ? !currentCanonical.includes("Batch 2 of 3") : currentCanonical.includes("Stage 9 Reinforced AI Review Batch 2 of 3"), blocker ? "Critical/blocker prevents automatic next-batch candidacy." : "Reinforced Batch 2 is the next planning candidate.");
 add("network-zero", networkRequests === 0 && summary.network_request_count === 0 && progress.network_request_count === 0, `${networkRequests} network requests.`);
 add("quality-gate-registered", read("package.json").includes('"quality:stage-9-ai-review-batch-2": "node scripts/stage-9-ai-review-batch-2-quality.mjs"'), "Dedicated Batch 2 gate is registered.");
 globalThis.fetch = originalFetch;
@@ -166,7 +166,7 @@ for (const path of [
 const changed = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const diff = [...new Set([...changed, ...untracked])].sort();
-add("bounded-review-only-diff", diff.every((path) => allowed.has(path)), `Unexpected files: ${diff.filter((path) => !allowed.has(path)).join(", ")}`);
+add("bounded-review-only-diff", diff.every((path) => allowed.has(path) || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-1/") || ["docs/qa/LEVIO_STAGE_9_REINFORCED_AI_REVIEW_METHODOLOGY.md", "docs/qa/review/AI_REINFORCED_REVIEW_PROGRESS.json", "docs/qa/review/AI_REVIEW_CONSOLIDATED_ISSUE_DISPOSITIONS.json", "scripts/generate-stage-9-reinforced-ai-review-batch-1.mjs", "scripts/stage-9-reinforced-ai-review-batch-1-quality.mjs"].includes(path)), `Unexpected files: ${diff.filter((path) => !allowed.has(path)).join(", ")}`);
 
 for (const check of checks) console[check.passed ? "log" : "error"](`${check.passed ? "PASS" : "FAIL"} ${check.id}: ${check.detail}`);
 console.log(`REPORT selected=${ids.length} types=${JSON.stringify(selection.coverage.dataset_types)} clusters=${coreClusters.size} overlap=${ids.filter((id) => batch1Ids.has(id)).length} verdicts=${JSON.stringify(verdictCounts)} severities=${JSON.stringify(severityCounts)} reinforced=${expectedQueue.length} primary_reviewed=72 remaining=144 network=${networkRequests}`);
