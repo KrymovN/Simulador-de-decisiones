@@ -183,18 +183,76 @@ const exactContractAlignmentSemantics = exactContractAlignmentDiff && (() => {
     && mandatoryGates.every((gate) => specText.includes(`\`${gate}\``))
     && specText.includes(`\`${statusHeading}\``);
 })();
+const fixtureContractAlignmentAllowed = [
+  "scripts/stage-9-remediation-plan-quality.mjs",
+  "docs/qa/remediation/stage-9/STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_SPEC.v1.md",
+];
+const exactFixtureContractAlignmentDiff = diff.length === fixtureContractAlignmentAllowed.length
+  && fixtureContractAlignmentAllowed.every((path) => diff.includes(path));
+const exactFixtureContractAlignmentSemantics = exactFixtureContractAlignmentDiff && (() => {
+  const currentSubstep = sequence.sequence.find((row) => row.substep_id === "S9-FIX-01");
+  const currentCandidate = registry.candidates.find((row) => row.candidate_id === "S9-REM-SCHEMA-001");
+  const fixtureClaimRows = [
+    "| `S9-EVAL-006` | `B5-ISSUE-001` | exact unknown-field path and value |",
+    "| `S9-EVAL-007` | `B6-ISSUE-027` | nested unknown field at `candidate.output.risks[0].advice` with exact invalid value `\"none\"` |",
+    "| `S9-EVAL-009` | `B6-ISSUE-029` | invalid severity at `candidate.output.risks[0].severity_hint` with exact invalid value `\"critical\"` |",
+    "| `S9-EVAL-010` | `B6-ISSUE-030` | invalid likelihood at `candidate.output.risks[0].likelihood_hint` with exact invalid value `\"certain\"` |",
+    "| `S9-EVAL-011` | `B2-ISSUE-001` | nonexistent affected-option reference and candidate option IDs |",
+    "| `S9-EVAL-012` | `B3-ISSUE-002` | nonexistent affected-fact reference and candidate/source fact IDs |",
+  ];
+  const expectedFixtures = ["S9-EVAL-006", "S9-EVAL-007", "S9-EVAL-009", "S9-EVAL-010", "S9-EVAL-011", "S9-EVAL-012"];
+  const expectedClaims = ["B6-ISSUE-027", "B6-ISSUE-029", "B6-ISSUE-030", "B5-ISSUE-001", "B2-ISSUE-001", "B3-ISSUE-002"];
+  const mandatoryGates = [
+    "quality:stage-9-schema-oracle-evidence-projection",
+    "quality:stage-9-synthetic-risk-evaluation",
+    "quality:stage-9-human-review-readiness",
+    "quality:stage-9-remediation-revision-integrity",
+  ];
+  const futureWritePaths = [
+    "scripts/generate-stage-9-human-review-package.mjs",
+    "docs/qa/remediation/stage-9/LEVIO_STAGE_9_POST_REMEDIATION_MANIFEST.json",
+    "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json",
+    "scripts/stage-9-schema-oracle-evidence-projection-quality.mjs",
+    "scripts/stage-9-remediation-revision-integrity-quality.mjs",
+    "package.json",
+    "docs/qa/remediation/stage-9/results/STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_RESULT.v1.json",
+    "PROJECT_CONTEXT.md",
+  ];
+  const same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
+  return specText.includes("Candidate: `S9-REM-SCHEMA-001`")
+    && fixtureClaimRows.every((row) => specText.includes(row))
+    && same(currentSubstep.exact_candidate_scope, ["S9-REM-SCHEMA-001"])
+    && currentCandidate.candidate_id === "S9-REM-SCHEMA-001"
+    && same(currentCandidate.affected_fixtures, expectedFixtures)
+    && same(currentCandidate.owned_issue_ids, expectedClaims)
+    && same(currentSubstep.prerequisites, [])
+    && same(currentCandidate.dependencies, [])
+    && same(sequence.sequence.map((row) => [row.order, row.substep_id]), expectedSubstepIds.map((id, index) => [index + 1, id]))
+    && same(currentSubstep.gates, mandatoryGates)
+    && same(currentCandidate.required_regression_gates, mandatoryGates)
+    && same(currentSubstep.allowed_files, futureWritePaths)
+    && same(currentCandidate.planned_write_files, futureWritePaths)
+    && currentSubstep.bounded_result_artifact === "docs/qa/remediation/stage-9/results/STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_RESULT.v1.json"
+    && currentCandidate.bounded_result_artifact === currentSubstep.bounded_result_artifact
+    && currentSubstep.canonical_status_update?.file_path === "PROJECT_CONTEXT.md"
+    && currentCandidate.canonical_status_update?.file_path === "PROJECT_CONTEXT.md"
+    && currentSubstep.canonical_status_update?.section_heading === "## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026"
+    && currentCandidate.canonical_status_update?.section_heading === currentSubstep.canonical_status_update.section_heading;
+})();
 const boundedDiffProfile = diff.length === 0
   ? "clean-tree"
   : exactPlanningDiff
     ? "full-planning"
     : exactContractAlignmentSemantics
       ? "schema-oracle-remediation-contract-alignment"
-      : "rejected";
+      : exactFixtureContractAlignmentSemantics
+        ? "schema-oracle-fixture-contract-alignment"
+        : "rejected";
 add(
   "bounded-diff",
   boundedDiffProfile !== "rejected",
   boundedDiffProfile === "rejected"
-    ? `Profile rejected. Unexpected full-planning paths: ${diff.filter((path) => !allowed.has(path)).join(", ") || "none"}; exact contract-alignment diff required: ${contractAlignmentAllowed.join(", ")}.`
+    ? `Profile rejected. Unexpected full-planning paths: ${diff.filter((path) => !allowed.has(path)).join(", ") || "none"}; exact contract-alignment diff required: ${contractAlignmentAllowed.join(", ")}; exact fixture-contract diff required: ${fixtureContractAlignmentAllowed.join(", ")}.`
     : `Profile ${boundedDiffProfile} accepted.`,
 );
 add("network-zero", networkRequests === 0, `${networkRequests} network requests.`);

@@ -27,9 +27,9 @@ validation rule and does not authorize a change to
 | Fixture | Claim | Evidence that must become visible |
 |---|---|---|
 | `S9-EVAL-006` | `B5-ISSUE-001` | exact unknown-field path and value |
-| `S9-EVAL-007` | `B6-ISSUE-027` | exact invalid severity path and value |
-| `S9-EVAL-009` | `B6-ISSUE-029` | exact invalid likelihood path and value |
-| `S9-EVAL-010` | `B6-ISSUE-030` | exact nested unknown-field path and value |
+| `S9-EVAL-007` | `B6-ISSUE-027` | nested unknown field at `candidate.output.risks[0].advice` with exact invalid value `"none"` |
+| `S9-EVAL-009` | `B6-ISSUE-029` | invalid severity at `candidate.output.risks[0].severity_hint` with exact invalid value `"critical"` |
+| `S9-EVAL-010` | `B6-ISSUE-030` | invalid likelihood at `candidate.output.risks[0].likelihood_hint` with exact invalid value `"certain"` |
 | `S9-EVAL-011` | `B2-ISSUE-001` | nonexistent affected-option reference and candidate option IDs |
 | `S9-EVAL-012` | `B3-ISSUE-002` | nonexistent affected-fact reference and candidate/source fact IDs |
 
