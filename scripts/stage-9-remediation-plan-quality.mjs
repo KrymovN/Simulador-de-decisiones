@@ -5,7 +5,7 @@ import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
-const baseline = "eae42639c26445dd8ee8e437a6f73b31383c9c8b";
+const baseline = "6b04c405a2a8aaba9e9c3e164413a9d954ee04af";
 const read = (...parts) => readFileSync(join(root, ...parts), "utf8");
 const json = (...parts) => JSON.parse(read(...parts));
 const sha = (value) => createHash("sha256").update(value).digest("hex");
@@ -72,9 +72,10 @@ add("consolidation-justified", JSON.stringify(graph.consolidation.candidate_ids)
 
 const planText = read(...baseDir, "LEVIO_STAGE_9_REMEDIATION_SEQUENCING_PLAN.v1.md");
 const specText = read(...baseDir, "STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_SPEC.v1.md");
+const contradictionSpecText = read(...baseDir, "STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_SPEC.v1.md");
 const strategyText = read(...baseDir, "STAGE_9_POST_REMEDIATION_VALIDATION_STRATEGY.v1.md");
 add("versioning-mechanism", planText.includes("case_version` from `1.0` to `1.1`") && planText.includes("AI_REMEDIATION_REVISION_LEDGER.json") && planText.includes("LEVIO_STAGE_9_POST_REMEDIATION_MANIFEST.json") && planText.includes("append-only"), "Plan defines repository-compatible canonical and non-versioned fixture history.");
-add("first-spec-complete", ["Purpose and exact defect", "Exact fixture and claim scope", "Allowed implementation", "Forbidden implementation", "Exact files", "Required tests and gate contract"].every((heading) => specText.includes(heading)) && ["S9-EVAL-006", "S9-EVAL-007", "S9-EVAL-009", "S9-EVAL-010", "S9-EVAL-011", "S9-EVAL-012"].every((id) => specText.includes(id)), "First implementation-ready spec has exact six-fixture scope, files, symbols, constraints, and tests.");
+add("implementation-specs-complete", ["Purpose and exact defect", "Exact fixture and claim scope", "Allowed implementation", "Forbidden implementation", "Exact files", "Required tests and gate contract"].every((heading) => specText.includes(heading)) && ["S9-EVAL-006", "S9-EVAL-007", "S9-EVAL-009", "S9-EVAL-010", "S9-EVAL-011", "S9-EVAL-012"].every((id) => specText.includes(id)) && ["Purpose", "Exact ownership", "Dependency and order", "Exact implementation source", "Exact future implementation write allowlist", "Mandatory gates", "Acceptance criteria", "Prohibited scope", "Commit message and atomicity"].every((heading) => contradictionSpecText.includes(heading)), "The first and second implementation-ready specs have exact ownership, files, symbols, constraints, and tests.");
 add("validation-strategy", strategyText.includes("full 216-fixture corpus assessment runs once") && strategyText.includes("only in S9-FIX-09") && strategyText.includes("97 actionable claims") && strategyText.includes("Targeted regression matrix"), "Validation strategy defines targeted regression after each fix and one final full-corpus assessment.");
 add("release-boundary", sequence.release_boundary.stage_9_status_after_this_plan === "In Progress" && sequence.release_boundary.release_readiness_after_this_plan === "NOT_DECLARED" && sequence.release_boundary.runtime_integration === "CLOSED" && sequence.release_boundary.api_simulate_mock_only === true && sequence.release_boundary.next_release_candidate_separate === true && graph.release_candidate_is_graph_node === false, "Release readiness and runtime opening remain a separate future planning candidate.");
 
@@ -123,9 +124,14 @@ const allowed = new Set([
   "docs/qa/remediation/stage-9/STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_SPEC.v1.md",
   "docs/qa/remediation/stage-9/STAGE_9_POST_REMEDIATION_VALIDATION_STRATEGY.v1.md",
 ]);
-const changed = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
-const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
-const diff = [...new Set([...changed, ...untracked])];
+const normalizeRepoPath = (path) => path.replaceAll("\\", "/").replace(/^\.\//, "");
+const changed = execFileSync("git", ["diff", "--name-only", "-z", "HEAD"], { cwd: root, encoding: "utf8" })
+  .split("\0").filter(Boolean).map(normalizeRepoPath);
+const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard", "-z"], { cwd: root, encoding: "utf8" })
+  .split("\0").filter(Boolean).map(normalizeRepoPath);
+const diff = [...new Set([...changed, ...untracked])].sort();
+const repositoryPathCollectionValid = [...changed, ...untracked].every((path) =>
+  path && !path.startsWith("/") && path === normalizeRepoPath(path) && !path.startsWith(".git/"));
 const exactPlanningDiff = diff.length === allowed.size && diff.every((path) => allowed.has(path));
 const contractAlignmentAllowed = [
   "scripts/stage-9-remediation-plan-quality.mjs",
@@ -239,6 +245,138 @@ const exactFixtureContractAlignmentSemantics = exactFixtureContractAlignmentDiff
     && currentSubstep.canonical_status_update?.section_heading === "## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026"
     && currentCandidate.canonical_status_update?.section_heading === currentSubstep.canonical_status_update.section_heading;
 })();
+const contradictionContractAlignmentAllowed = [
+  "scripts/stage-9-remediation-plan-quality.mjs",
+  "docs/qa/remediation/stage-9/STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_SPEC.v1.md",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_SEQUENCE.v1.json",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_CANDIDATE_REGISTRY.v2.json",
+].sort();
+const contradictionFutureWritePaths = [
+  "lib/ai-decision-material/fixtures.ts",
+  "scripts/stage-9-systemic-contradiction-reference-quality.mjs",
+  "package.json",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json",
+  "docs/qa/remediation/stage-9/results/STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_RESULT.v1.json",
+  "PROJECT_CONTEXT.md",
+];
+const contradictionMandatoryGates = [
+  "quality:stage-9-systemic-contradiction-reference",
+  "quality:stage-9-offline-dataset-coverage",
+  "quality:stage-9-remediation-revision-integrity",
+];
+const contradictionSpecPath = "docs/qa/remediation/stage-9/STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_SPEC.v1.md";
+const contradictionResultPath = "docs/qa/remediation/stage-9/results/STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_RESULT.v1.json";
+const contradictionStatusHeading = "## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026";
+const contradictionCommitMessage = "fix(stage-9): correct contradiction references";
+const rejectedGenderInterpretation = "Grammatical gender is non-material unless actor, modality, negation, urgency, or risk changes.";
+const same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
+const headSequenceForContradiction = JSON.parse(execFileSync("git", ["show", "HEAD:docs/qa/remediation/stage-9/AI_REMEDIATION_SEQUENCE.v1.json"], { cwd: root, encoding: "utf8" }));
+const headRegistryForContradiction = JSON.parse(execFileSync("git", ["show", "HEAD:docs/qa/remediation/stage-9/AI_REMEDIATION_CANDIDATE_REGISTRY.v2.json"], { cwd: root, encoding: "utf8" }));
+
+function contradictionContractSemantics(candidateSequence, candidateRegistry, candidateSpecText, candidateDiff, collectionValid = true) {
+  const substep = candidateSequence.sequence.find((row) => row.substep_id === "S9-FIX-02");
+  const expectedCandidate = candidateRegistry.candidates.find((row) => row.candidate_id === "S9-REM-EXPECTED-001");
+  const clusterCandidate = candidateRegistry.candidates.find((row) => row.candidate_id === "S9-REM-CLUSTER-001");
+  const headSubstep = headSequenceForContradiction.sequence.find((row) => row.substep_id === "S9-FIX-02");
+  const headExpectedCandidate = headRegistryForContradiction.candidates.find((row) => row.candidate_id === "S9-REM-EXPECTED-001");
+  const headClusterCandidate = headRegistryForContradiction.candidates.find((row) => row.candidate_id === "S9-REM-CLUSTER-001");
+  if (!substep || !expectedCandidate || !clusterCandidate) return false;
+
+  const normalizedCandidateDiff = [...new Set(candidateDiff.map(normalizeRepoPath))].sort();
+  const exactDiff = collectionValid
+    && same(normalizedCandidateDiff, contradictionContractAlignmentAllowed)
+    && candidateDiff.every((path) => path === normalizeRepoPath(path) && !path.startsWith("/"));
+  const alignedEntries = [substep, expectedCandidate, clusterCandidate];
+  const ownershipPreserved = same(expectedCandidate.owned_issue_ids, headExpectedCandidate.owned_issue_ids)
+    && same(clusterCandidate.owned_issue_ids, headClusterCandidate.owned_issue_ids)
+    && same(expectedCandidate.affected_clusters, headExpectedCandidate.affected_clusters)
+    && same(clusterCandidate.affected_clusters, headClusterCandidate.affected_clusters)
+    && same(candidateRegistry.candidates.map((row) => row.candidate_id), headRegistryForContradiction.candidates.map((row) => row.candidate_id));
+  const dependenciesAndOrderPreserved = same(substep.prerequisites, headSubstep.prerequisites)
+    && same(expectedCandidate.dependencies, headExpectedCandidate.dependencies)
+    && same(clusterCandidate.dependencies, headClusterCandidate.dependencies)
+    && same(candidateSequence.sequence.map((row) => [row.order, row.substep_id]), headSequenceForContradiction.sequence.map((row) => [row.order, row.substep_id]));
+  const exactSharedScope = alignedEntries.every((row) =>
+    same(row.shared_rule_owned_claim_ids, headExpectedCandidate.owned_issue_ids)
+    && row.shared_rule_owned_claim_count === 39
+    && row.consolidated_partial_case_count === 1
+    && row.consolidated_partial_case?.claim_id === headClusterCandidate.owned_issue_ids[0]
+    && row.consolidated_partial_case?.fixture_id === "S9-CORE-020-ES"
+    && row.consolidated_partial_case?.final_disposition === "PARTIALLY_CONFIRMED"
+    && same(row.shared_rule_owned_clusters, headExpectedCandidate.affected_clusters)
+    && row.shared_rule_owned_cluster_count === 8
+    && row.excluded_rejected_interpretation?.interpretation === rejectedGenderInterpretation
+    && row.excluded_rejected_interpretation?.remediation_eligible === false);
+  const exactContract = alignedEntries.every((row) =>
+    row.implementation_specification === contradictionSpecPath
+    && row.implementation_executed === false
+    && same(row.allowed_files ?? row.planned_write_files, contradictionFutureWritePaths)
+    && same(row.gates ?? row.required_regression_gates, contradictionMandatoryGates)
+    && (row.gates ?? row.required_regression_gates).includes("quality:stage-9-remediation-revision-integrity")
+    && row.bounded_result_artifact === contradictionResultPath
+    && row.canonical_status_update?.file_path === "PROJECT_CONTEXT.md"
+    && row.canonical_status_update?.section_heading === contradictionStatusHeading)
+    && substep.commit_message === contradictionCommitMessage
+    && expectedCandidate.implementation_commit_message === contradictionCommitMessage
+    && clusterCandidate.implementation_commit_message === contradictionCommitMessage
+    && substep.completed_predecessor_evidence?.substep_id === "S9-FIX-01"
+    && substep.completed_predecessor_evidence?.commit === "6b04c405a2a8aaba9e9c3e164413a9d954ee04af"
+    && substep.implementation_source_file === "lib/ai-decision-material/fixtures.ts"
+    && expectedCandidate.implementation_source_file === substep.implementation_source_file
+    && clusterCandidate.implementation_source_file === substep.implementation_source_file
+    && same(expectedCandidate.implementation_source_symbols, substep.implementation_source_symbols)
+    && same(clusterCandidate.implementation_source_symbols, substep.implementation_source_symbols)
+    && expectedCandidate.status === "PLANNED_NOT_STARTED"
+    && clusterCandidate.status === "PLANNED_NOT_STARTED";
+  const normalizedSpec = normalizeWhitespace(candidateSpecText);
+  const exactSpec = normalizedSpec.includes("Candidates: `S9-REM-EXPECTED-001`, `S9-REM-CLUSTER-001`")
+    && normalizedSpec.includes("exactly 39 confirmed claims")
+    && normalizedSpec.includes("exactly one consolidated partial case")
+    && normalizedSpec.includes("exactly eight clusters")
+    && headExpectedCandidate.owned_issue_ids.every((id) => normalizedSpec.includes(`\`${id}\``))
+    && headExpectedCandidate.affected_clusters.every((id) => normalizedSpec.includes(`\`${id}\``))
+    && normalizedSpec.includes("`B4-ISSUE-006`")
+    && normalizedSpec.includes("`S9-CORE-020-ES`")
+    && normalizedSpec.includes(rejectedGenderInterpretation)
+    && contradictionFutureWritePaths.every((path) => normalizedSpec.includes(`\`${path}\``))
+    && contradictionMandatoryGates.every((gate) => normalizedSpec.includes(`\`${gate}\``))
+    && normalizedSpec.includes(`\`${contradictionStatusHeading}\``)
+    && normalizedSpec.includes(`\`${contradictionCommitMessage}\``);
+  return exactDiff && ownershipPreserved && dependenciesAndOrderPreserved && exactSharedScope && exactContract && exactSpec;
+}
+
+const mutate = (value, mutator) => {
+  const copy = structuredClone(value);
+  mutator(copy);
+  return copy;
+};
+const negativeContradictionProfileCasesRejected = [
+  ...contradictionContractAlignmentAllowed.map((missingPath) =>
+    contradictionContractSemantics(sequence, registry, contradictionSpecText, contradictionContractAlignmentAllowed.filter((path) => path !== missingPath))),
+  contradictionContractSemantics(sequence, registry, contradictionSpecText, [...contradictionContractAlignmentAllowed, "FIFTH_TRACKED_FILE"]),
+  contradictionContractSemantics(sequence, registry, contradictionSpecText, [...contradictionContractAlignmentAllowed, "unrelated-untracked.file"]),
+  contradictionContractSemantics(sequence, registry, contradictionSpecText, [...contradictionContractAlignmentAllowed, "ignored-unrelated.file"]),
+  contradictionContractSemantics(sequence, registry, contradictionSpecText, contradictionContractAlignmentAllowed.map((path, index) => index === 0 ? `/absolute/${path}` : path)),
+  contradictionContractSemantics(sequence, mutate(registry, (value) => {
+    value.candidates.find((row) => row.candidate_id === "S9-REM-EXPECTED-001").required_regression_gates.reverse();
+  }), contradictionSpecText, contradictionContractAlignmentAllowed),
+  contradictionContractSemantics(sequence, mutate(registry, (value) => {
+    value.candidates.find((row) => row.candidate_id === "S9-REM-EXPECTED-001").owned_issue_ids.push("OWNERSHIP-DRIFT");
+  }), contradictionSpecText, contradictionContractAlignmentAllowed),
+  contradictionContractSemantics(mutate(sequence, (value) => {
+    value.sequence.find((row) => row.substep_id === "S9-FIX-02").excluded_rejected_interpretation.remediation_eligible = true;
+  }), registry, contradictionSpecText, contradictionContractAlignmentAllowed),
+  contradictionContractSemantics(mutate(sequence, (value) => {
+    value.sequence.find((row) => row.substep_id === "S9-FIX-02").prerequisites.push("S9-FIX-01");
+  }), registry, contradictionSpecText, contradictionContractAlignmentAllowed),
+  contradictionContractSemantics(mutate(sequence, (value) => {
+    [value.sequence[1].order, value.sequence[2].order] = [value.sequence[2].order, value.sequence[1].order];
+  }), registry, contradictionSpecText, contradictionContractAlignmentAllowed),
+].every((accepted) => accepted === false);
+const exactContradictionContractAlignmentSemantics =
+  untracked.includes(contradictionSpecPath)
+  && contradictionContractSemantics(sequence, registry, contradictionSpecText, diff, repositoryPathCollectionValid)
+  && negativeContradictionProfileCasesRejected;
 const boundedDiffProfile = diff.length === 0
   ? "clean-tree"
   : exactPlanningDiff
@@ -247,13 +385,15 @@ const boundedDiffProfile = diff.length === 0
       ? "schema-oracle-remediation-contract-alignment"
       : exactFixtureContractAlignmentSemantics
         ? "schema-oracle-fixture-contract-alignment"
-        : "rejected";
+        : exactContradictionContractAlignmentSemantics
+          ? "systemic-contradiction-remediation-contract-alignment"
+          : "rejected";
 add(
   "bounded-diff",
   boundedDiffProfile !== "rejected",
   boundedDiffProfile === "rejected"
-    ? `Profile rejected. Unexpected full-planning paths: ${diff.filter((path) => !allowed.has(path)).join(", ") || "none"}; exact contract-alignment diff required: ${contractAlignmentAllowed.join(", ")}; exact fixture-contract diff required: ${fixtureContractAlignmentAllowed.join(", ")}.`
-    : `Profile ${boundedDiffProfile} accepted.`,
+    ? `Profile rejected. Repository paths: ${diff.join(", ")}; tracked: ${changed.join(", ")}; untracked: ${untracked.join(", ")}; normalized=${repositoryPathCollectionValid}; contradiction-contract semantic=${contradictionContractSemantics(sequence, registry, contradictionSpecText, diff, repositoryPathCollectionValid)}; negative-cases=${negativeContradictionProfileCasesRejected}.`
+    : `Profile ${boundedDiffProfile} accepted.${boundedDiffProfile === "systemic-contradiction-remediation-contract-alignment" ? ` Repository-backed classifier included tracked and untracked paths: ${diff.join(", ")}. All negative cases rejected.` : ""}`,
 );
 add("network-zero", networkRequests === 0, `${networkRequests} network requests.`);
 
