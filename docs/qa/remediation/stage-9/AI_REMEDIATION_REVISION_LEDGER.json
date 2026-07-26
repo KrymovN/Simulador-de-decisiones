@@ -73,5 +73,19 @@
       "evidence_fragment_sha256": "4dab6e35d471a527d09c533d4f73e39da8fa30751b9718170f02d9d67aca811a",
       "implementation_commit_message": "fix(stage-9): expose schema oracle evidence"
     }
+  ],
+  "appended_events": [
+    {
+      "event_version": "stage-9-ai-remediation-revision-event.1",
+      "substep_id": "S9-FIX-02",
+      "remediation_entry_ids": [
+        "S9-REM-EXPECTED-001",
+        "S9-REM-CLUSTER-001"
+      ],
+      "shared_rule_id": "source_entailment_requires_two_mutually_incompatible_claims",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_RESULT.v1.json",
+      "generated_at": null,
+      "implementation_commit_message": "fix(stage-9): correct contradiction references"
+    }
   ]
 }

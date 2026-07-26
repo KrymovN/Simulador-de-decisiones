@@ -33,6 +33,7 @@
     "quality:stage-9-synthetic-risk-evaluation": "node scripts/stage-9-synthetic-risk-evaluation-quality.mjs",
     "quality:stage-9-ai-value-preservation": "node scripts/stage-9-ai-value-preservation-quality.mjs",
     "quality:stage-9-offline-dataset-coverage": "node scripts/stage-9-offline-dataset-coverage-quality.mjs",
+    "quality:stage-9-systemic-contradiction-reference": "node scripts/stage-9-systemic-contradiction-reference-quality.mjs",
     "generate:stage-9-human-review-package": "node scripts/generate-stage-9-human-review-package.mjs",
     "quality:stage-9-human-review-readiness": "node scripts/stage-9-human-review-readiness-quality.mjs",
     "quality:stage-9-schema-oracle-evidence-projection": "node scripts/stage-9-schema-oracle-evidence-projection-quality.mjs",
