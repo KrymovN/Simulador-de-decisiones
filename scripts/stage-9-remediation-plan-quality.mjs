@@ -74,6 +74,7 @@ add("consolidation-justified", JSON.stringify(graph.consolidation.candidate_ids)
 const planText = read(...baseDir, "LEVIO_STAGE_9_REMEDIATION_SEQUENCING_PLAN.v1.md");
 const specText = read(...baseDir, "STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_SPEC.v1.md");
 const contradictionSpecText = read(...baseDir, "STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_SPEC.v1.md");
+const highRiskSpecText = read(...baseDir, "STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_SPEC.v1.md");
 const strategyText = read(...baseDir, "STAGE_9_POST_REMEDIATION_VALIDATION_STRATEGY.v1.md");
 add("versioning-mechanism", planText.includes("case_version` from `1.0` to `1.1`") && planText.includes("AI_REMEDIATION_REVISION_LEDGER.json") && planText.includes("LEVIO_STAGE_9_POST_REMEDIATION_MANIFEST.json") && planText.includes("append-only"), "Plan defines repository-compatible canonical and non-versioned fixture history.");
 add("implementation-specs-complete", ["Purpose and exact defect", "Exact fixture and claim scope", "Allowed implementation", "Forbidden implementation", "Exact files", "Required tests and gate contract"].every((heading) => specText.includes(heading)) && ["S9-EVAL-006", "S9-EVAL-007", "S9-EVAL-009", "S9-EVAL-010", "S9-EVAL-011", "S9-EVAL-012"].every((id) => specText.includes(id)) && ["Purpose", "Exact ownership", "Dependency and order", "Exact implementation source", "Exact future implementation write allowlist", "Mandatory gates", "Acceptance criteria", "Prohibited scope", "Commit message and atomicity"].every((heading) => contradictionSpecText.includes(heading)), "The first and second implementation-ready specs have exact ownership, files, symbols, constraints, and tests.");
@@ -93,7 +94,7 @@ add("historical-artifacts-byte-identical", historicalJsonPaths.every((path) => s
 add("legacy-manifest-byte-identical", sha(readFileSync(join(root, "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json"))) === sha(baselineBuffer("docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json")), "Legacy 216-entry manifest is byte-identical to the baseline.");
 add("closure-preserved", closure.closure_verdict === "REINFORCED_AI_REVIEW_COMPLETE_REMEDIATION_REQUIRED" && closure.fixture_remediation === "NONE" && closure.stage_status === "In Progress" && closure.release_readiness === "NOT_DECLARED", "Final review closure remains unchanged and requires future remediation.");
 
-const fixtureDiff = execFileSync("git", ["diff", "--name-only", baseline, "--", "lib/ai-quality", "lib/ai-decision-material", "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json", "scripts/generate-stage-9-human-review-package.mjs"], { cwd: root, encoding: "utf8" }).trim();
+const fixtureDiff = execFileSync("git", ["diff", "--name-only", "HEAD", "--", "lib/ai-quality", "lib/ai-decision-material", "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json", "scripts/generate-stage-9-human-review-package.mjs"], { cwd: root, encoding: "utf8" }).trim();
 const runtimeDiff = execFileSync("git", ["diff", "--name-only", baseline, "--", "app", "components", "supabase", "lib/ai-provider", "lib/prompt-context", "lib/decision-engine", "lib/runtime-integration", "lib/persistence-runtime"], { cwd: root, encoding: "utf8" }).trim();
 add("remediation-sources-unchanged", fixtureDiff === "", fixtureDiff || "Schema/generator/fixture/expected-reference sources and legacy manifest are unchanged.");
 add("runtime-ui-api-unchanged", runtimeDiff === "", runtimeDiff || "Runtime/UI/API/provider/persistence boundaries are unchanged.");
@@ -773,6 +774,192 @@ const exactContradictionContractAlignmentSemantics =
   untracked.includes(contradictionSpecPath)
   && contradictionContractSemantics(sequence, registry, contradictionSpecText, diff, repositoryPathCollectionValid)
   && negativeContradictionProfileCasesRejected;
+const highRiskContractAlignmentAllowed = [
+  "scripts/stage-9-remediation-plan-quality.mjs",
+  "docs/qa/remediation/stage-9/STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_SPEC.v1.md",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_SEQUENCE.v1.json",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_CANDIDATE_REGISTRY.v2.json",
+].sort();
+const highRiskSpecPath = "docs/qa/remediation/stage-9/STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_SPEC.v1.md";
+const highRiskRows = [
+  "S9-CORE-012-ES",
+  "S9-CORE-012-EN",
+  "S9-CORE-012-RU",
+  "S9-CORE-012-ZH",
+  "S9-CORE-036-ZH",
+  "S9-CORE-037-ES",
+  "S9-CORE-037-EN",
+  "S9-CORE-037-RU",
+  "S9-CORE-037-ZH",
+  "S9-CORE-038-ES",
+  "S9-CORE-038-EN",
+  "S9-CORE-038-RU",
+  "S9-CORE-038-ZH",
+  "S9-CORE-040-ES",
+  "S9-CORE-040-EN",
+  "S9-CORE-040-RU",
+  "S9-CORE-040-ZH",
+];
+const highRiskClusters = [
+  "S9-CLUSTER-012",
+  "S9-CLUSTER-036",
+  "S9-CLUSTER-037",
+  "S9-CLUSTER-038",
+  "S9-CLUSTER-040",
+];
+const highRiskLocaleGroups = [
+  { cluster_id: "S9-CLUSTER-012", row_ids: ["S9-CORE-012-ES", "S9-CORE-012-EN", "S9-CORE-012-RU", "S9-CORE-012-ZH"] },
+  { cluster_id: "S9-CLUSTER-036", row_ids: ["S9-CORE-036-ZH"] },
+  { cluster_id: "S9-CLUSTER-037", row_ids: ["S9-CORE-037-ES", "S9-CORE-037-EN", "S9-CORE-037-RU", "S9-CORE-037-ZH"] },
+  { cluster_id: "S9-CLUSTER-038", row_ids: ["S9-CORE-038-ES", "S9-CORE-038-EN", "S9-CORE-038-RU", "S9-CORE-038-ZH"] },
+  { cluster_id: "S9-CLUSTER-040", row_ids: ["S9-CORE-040-ES", "S9-CORE-040-EN", "S9-CORE-040-RU", "S9-CORE-040-ZH"] },
+];
+const highRiskClarificationCases = highRiskRows.filter((id) => !id.startsWith("S9-CORE-038-"));
+const highRiskRefusalCases = [
+  "S9-CORE-038-ES",
+  "S9-CORE-038-EN",
+  "S9-CORE-038-RU",
+  "S9-CORE-038-ZH",
+];
+const highRiskSourceSymbols = [
+  "SCENARIO_BLUEPRINTS",
+  "completenessClarification",
+  "completenessRecommendation",
+  "CANONICAL_OFFLINE_EVALUATION_CASES",
+];
+const highRiskFutureWritePaths = [
+  "lib/ai-decision-material/fixtures.ts",
+  "scripts/stage-9-high-risk-reference-quality.mjs",
+  "package.json",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json",
+  "docs/qa/remediation/stage-9/results/STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_RESULT.v1.json",
+  "PROJECT_CONTEXT.md",
+];
+const highRiskMandatoryGates = [
+  "quality:stage-9-high-risk-reference",
+  "quality:stage-9-offline-dataset-coverage",
+  "quality:stage-9-ai-value-preservation",
+  "quality:stage-9-remediation-revision-integrity",
+];
+const highRiskResultPath = "docs/qa/remediation/stage-9/results/STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_RESULT.v1.json";
+const highRiskStatusHeading = "## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026";
+const highRiskCommitMessage = "fix(stage-9): correct high-risk references";
+const highRiskControlledFailureOwner = "quality:stage-9-offline-dataset-coverage";
+const headSequenceForHighRisk = JSON.parse(execFileSync("git", ["show", "HEAD:docs/qa/remediation/stage-9/AI_REMEDIATION_SEQUENCE.v1.json"], { cwd: root, encoding: "utf8" }));
+const headRegistryForHighRisk = JSON.parse(execFileSync("git", ["show", "HEAD:docs/qa/remediation/stage-9/AI_REMEDIATION_CANDIDATE_REGISTRY.v2.json"], { cwd: root, encoding: "utf8" }));
+
+function highRiskContractSemantics(candidateSequence, candidateRegistry, candidateSpecText, candidateDiff, collectionValid = true) {
+  const substep = candidateSequence.sequence.find((row) => row.substep_id === "S9-FIX-03");
+  const candidate = candidateRegistry.candidates.find((row) => row.candidate_id === "S9-REM-EXPECTED-002");
+  const headSubstep = headSequenceForHighRisk.sequence.find((row) => row.substep_id === "S9-FIX-03");
+  const headCandidate = headRegistryForHighRisk.candidates.find((row) => row.candidate_id === "S9-REM-EXPECTED-002");
+  if (!substep || !candidate || !headSubstep || !headCandidate) return false;
+
+  const normalizedCandidateDiff = [...new Set(candidateDiff.map(normalizeRepoPath))].sort();
+  const exactDiff = collectionValid
+    && same(normalizedCandidateDiff, highRiskContractAlignmentAllowed)
+    && candidateDiff.every((path) =>
+      path === normalizeRepoPath(path) && !path.startsWith("/") && !path.startsWith(".git/"));
+  const entries = [substep, candidate];
+  const identityAndGraphPreserved =
+    same(candidateRegistry.candidates.map((row) => row.candidate_id), headRegistryForHighRisk.candidates.map((row) => row.candidate_id))
+    && same(substep.exact_candidate_scope, headSubstep.exact_candidate_scope)
+    && same(candidate.dependencies, headCandidate.dependencies)
+    && same(substep.prerequisites, headSubstep.prerequisites)
+    && same(candidateSequence.sequence.map((row) => [row.order, row.substep_id]), headSequenceForHighRisk.sequence.map((row) => [row.order, row.substep_id]));
+  const ownershipPreserved =
+    same(candidate.affected_fixtures, headCandidate.affected_fixtures)
+    && same(candidate.affected_clusters, headCandidate.affected_clusters)
+    && same(candidate.owned_issue_ids, headCandidate.owned_issue_ids)
+    && entries.every((row) =>
+      same(row.owned_locale_rows, highRiskRows)
+      && row.owned_locale_row_count === 17
+      && same(row.owned_safety_clusters, highRiskClusters)
+      && row.owned_safety_cluster_count === 5
+      && same(row.locale_equivalence_groups, highRiskLocaleGroups)
+      && same(row.clarification_cases, highRiskClarificationCases)
+      && same(row.refusal_cases, highRiskRefusalCases)
+      && same(row.controlled_failure_cases, highRiskRefusalCases));
+  const exactContract = entries.every((row) =>
+    row.implementation_specification === highRiskSpecPath
+    && row.implementation_executed === false
+    && same(row.allowed_files ?? row.planned_write_files, highRiskFutureWritePaths)
+    && same(row.gates ?? row.required_regression_gates, highRiskMandatoryGates)
+    && row.controlled_failure_owner_gate === highRiskControlledFailureOwner
+    && row.bounded_result_artifact === highRiskResultPath
+    && row.canonical_status_update?.file_path === "PROJECT_CONTEXT.md"
+    && row.canonical_status_update?.section_heading === highRiskStatusHeading
+    && row.implementation_source_file === "lib/ai-decision-material/fixtures.ts"
+    && same(row.implementation_source_symbols, highRiskSourceSymbols))
+    && substep.implementation_status === "PLANNED_NOT_STARTED"
+    && candidate.status === "PLANNED_NOT_STARTED"
+    && substep.commit_message === highRiskCommitMessage
+    && candidate.implementation_commit_message === highRiskCommitMessage
+    && substep.completed_predecessor_evidence?.some((row) =>
+      row.substep_id === "S9-FIX-01" && row.status === "COMPLETED")
+    && substep.completed_predecessor_evidence?.some((row) =>
+      row.substep_id === "S9-FIX-02"
+      && row.status === "COMPLETED"
+      && row.commit === "18c8d6bffa422c46f4439b6b93c1076fc98a375c");
+  const normalizedSpec = normalizeWhitespace(candidateSpecText);
+  const exactSpec =
+    normalizedSpec.includes("Candidate: `S9-REM-EXPECTED-002`")
+    && normalizedSpec.includes("Status: `PLANNED_NOT_STARTED`")
+    && normalizedSpec.includes("Implementation executed: `false`")
+    && normalizedSpec.includes("exactly 17 locale rows")
+    && normalizedSpec.includes("exactly five safety clusters")
+    && highRiskRows.every((id) => normalizedSpec.includes(`\`${id}\``))
+    && highRiskClusters.every((id) => normalizedSpec.includes(`\`${id}\``))
+    && highRiskFutureWritePaths.every((path) => normalizedSpec.includes(`\`${path}\``))
+    && highRiskMandatoryGates.every((gate) => normalizedSpec.includes(`\`${gate}\``))
+    && highRiskSourceSymbols.every((symbol) => normalizedSpec.includes(`\`${symbol}\``))
+    && normalizedSpec.includes(`\`${highRiskStatusHeading}\``)
+    && normalizedSpec.includes(`\`${highRiskCommitMessage}\``)
+    && normalizedSpec.includes("controlled-failure coverage assertion")
+    && normalizedSpec.includes("`S9-FIX-04` is outside this contract");
+  return exactDiff && identityAndGraphPreserved && ownershipPreserved && exactContract && exactSpec;
+}
+
+const negativeHighRiskProfileCasesRejected = [
+  ...highRiskContractAlignmentAllowed.map((missingPath) =>
+    highRiskContractSemantics(sequence, registry, highRiskSpecText, highRiskContractAlignmentAllowed.filter((path) => path !== missingPath))),
+  highRiskContractSemantics(sequence, registry, highRiskSpecText, [...highRiskContractAlignmentAllowed, "fifth-unrelated.file"]),
+  highRiskContractSemantics(mutate(sequence, (value) => {
+    value.sequence.find((row) => row.substep_id === "S9-FIX-03").owned_locale_row_count = 16;
+  }), registry, highRiskSpecText, highRiskContractAlignmentAllowed),
+  highRiskContractSemantics(sequence, mutate(registry, (value) => {
+    value.candidates.find((row) => row.candidate_id === "S9-REM-EXPECTED-002").owned_safety_cluster_count = 4;
+  }), highRiskSpecText, highRiskContractAlignmentAllowed),
+  highRiskContractSemantics(sequence, mutate(registry, (value) => {
+    value.candidates.find((row) => row.candidate_id === "S9-REM-EXPECTED-002").required_regression_gates.reverse();
+  }), highRiskSpecText, highRiskContractAlignmentAllowed),
+  highRiskContractSemantics(mutate(sequence, (value) => {
+    delete value.sequence.find((row) => row.substep_id === "S9-FIX-03").controlled_failure_owner_gate;
+  }), registry, highRiskSpecText, highRiskContractAlignmentAllowed),
+  highRiskContractSemantics(sequence, mutate(registry, (value) => {
+    value.candidates.find((row) => row.candidate_id === "S9-REM-EXPECTED-002").planned_write_files.pop();
+  }), highRiskSpecText, highRiskContractAlignmentAllowed),
+  highRiskContractSemantics(mutate(sequence, (value) => {
+    const row = value.sequence.find((item) => item.substep_id === "S9-FIX-03");
+    row.bounded_result_artifact = "bounded result artifact";
+    row.canonical_status_update = { file_path: "canonical Stage 9 status documents" };
+  }), registry, highRiskSpecText, highRiskContractAlignmentAllowed),
+  highRiskContractSemantics(mutate(sequence, (value) => {
+    value.sequence.find((row) => row.substep_id === "S9-FIX-03").prerequisites = [];
+  }), registry, highRiskSpecText, highRiskContractAlignmentAllowed),
+  highRiskContractSemantics(mutate(sequence, (value) => {
+    const row = value.sequence.find((item) => item.substep_id === "S9-FIX-03");
+    row.implementation_status = "IMPLEMENTED";
+    row.implementation_executed = true;
+  }), registry, highRiskSpecText, highRiskContractAlignmentAllowed),
+  highRiskContractSemantics(mutate(sequence, (value) => {
+    value.sequence.find((row) => row.substep_id === "S9-FIX-03").exact_candidate_scope.push("S9-REM-EXPECTED-003");
+  }), registry, highRiskSpecText, highRiskContractAlignmentAllowed),
+].every((accepted) => accepted === false);
+const exactHighRiskContractAlignmentSemantics =
+  untracked.includes(highRiskSpecPath)
+  && highRiskContractSemantics(sequence, registry, highRiskSpecText, diff, repositoryPathCollectionValid)
+  && negativeHighRiskProfileCasesRejected;
 const boundedDiffProfile = diff.length === 0
   ? "clean-tree"
   : exactCoverageQualityControlProfile
@@ -785,15 +972,17 @@ const boundedDiffProfile = diff.length === 0
           ? "schema-oracle-remediation-contract-alignment"
           : exactFixtureContractAlignmentSemantics
             ? "schema-oracle-fixture-contract-alignment"
-            : exactContradictionContractAlignmentSemantics
+          : exactContradictionContractAlignmentSemantics
               ? "systemic-contradiction-remediation-contract-alignment"
+              : exactHighRiskContractAlignmentSemantics
+                ? "high-risk-clarification-refusal-remediation-contract-alignment"
               : "rejected";
 add(
   "bounded-diff",
   boundedDiffProfile !== "rejected",
   boundedDiffProfile === "rejected"
     ? `Profile rejected. Repository paths: ${diff.join(", ")}; tracked: ${changed.join(", ")}; untracked: ${untracked.join(", ")}; normalized=${repositoryPathCollectionValid}; coverage-quality semantic=${coverageQualityControlProfileSemantics({ candidateDiff: diff, candidateSelfTestRuns: coverageSelfTestRuns, collectionValid: repositoryPathCollectionValid })}; coverage-machine-self-test=${validCoverageSelfTest(actualCoverageSelfTestContract)}; coverage-planning-negative-cases=${coveragePlanningNegativeChecksPass}; revision-quality semantic=${qualityControlProfileSemantics({ candidateDiff: diff, selfTestRuns, collectionValid: repositoryPathCollectionValid })}; revision-machine-self-test=${validSelfTestContract(actualSelfTestContract)}; revision-planning-negative-cases=${planningProfileNegativeChecksPass}; contradiction-contract semantic=${contradictionContractSemantics(sequence, registry, contradictionSpecText, diff, repositoryPathCollectionValid)}; contradiction negative-cases=${negativeContradictionProfileCasesRejected}.`
-    : `Profile ${boundedDiffProfile} accepted.${boundedDiffProfile === "offline-dataset-case-version-quality-control" ? ` Exact two-file coverage-validator diff: ${diff.join(", ")}. Machine-readable case-version self-test PASS; planning-profile negative checks 12/12.` : boundedDiffProfile === "remediation-revision-integrity-quality-control" ? ` Exact two-file quality-control diff: ${diff.join(", ")}. Machine-readable self-test PASS; planning-profile negative checks 12/12.` : boundedDiffProfile === "systemic-contradiction-remediation-contract-alignment" ? ` Repository-backed classifier included tracked and untracked paths: ${diff.join(", ")}. All negative cases rejected.` : ""}`,
+    : `Profile ${boundedDiffProfile} accepted.${boundedDiffProfile === "offline-dataset-case-version-quality-control" ? ` Exact two-file coverage-validator diff: ${diff.join(", ")}. Machine-readable case-version self-test PASS; planning-profile negative checks 12/12.` : boundedDiffProfile === "remediation-revision-integrity-quality-control" ? ` Exact two-file quality-control diff: ${diff.join(", ")}. Machine-readable self-test PASS; planning-profile negative checks 12/12.` : boundedDiffProfile === "systemic-contradiction-remediation-contract-alignment" ? ` Repository-backed classifier included tracked and untracked paths: ${diff.join(", ")}. All negative cases rejected.` : boundedDiffProfile === "high-risk-clarification-refusal-remediation-contract-alignment" ? ` Exact four-file S9-FIX-03 contract diff: ${diff.join(", ")}. Planning-profile negative checks 14/14.` : ""}`,
 );
 add("network-zero", networkRequests === 0, `${networkRequests} network requests.`);
 
