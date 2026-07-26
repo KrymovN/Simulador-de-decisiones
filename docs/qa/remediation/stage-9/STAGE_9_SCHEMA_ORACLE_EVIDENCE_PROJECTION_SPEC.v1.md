@@ -77,11 +77,26 @@ Permitted planned writes are:
 - `scripts/stage-9-schema-oracle-evidence-projection-quality.mjs`;
 - `scripts/stage-9-remediation-revision-integrity-quality.mjs`;
 - `package.json`;
-- a bounded substep result artifact and the current canonical status paragraph.
+- `docs/qa/remediation/stage-9/results/STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_RESULT.v1.json`;
+- `PROJECT_CONTEXT.md`, restricted to the section headed
+  `## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026`.
+
+The bounded result artifact path is exactly
+`docs/qa/remediation/stage-9/results/STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_RESULT.v1.json`.
+The only permitted canonical-status update is the paragraph under the exact
+heading above in `PROJECT_CONTEXT.md`; no other section of that file is in the
+write scope.
 
 Any additional file requires a new planning decision.
 
 ## Required tests and gate contract
+
+The mandatory gate list is exactly:
+
+- `quality:stage-9-schema-oracle-evidence-projection`;
+- `quality:stage-9-synthetic-risk-evaluation`;
+- `quality:stage-9-human-review-readiness`;
+- `quality:stage-9-remediation-revision-integrity`.
 
 The dedicated gate must fail unless:
 
@@ -94,9 +109,7 @@ The dedicated gate must fail unless:
 - runtime/UI/API diff is empty and `/api/simulate` remains `mockOnly=true`;
 - network request count is zero;
 - the diff is restricted to the approved files;
-- `quality:stage-9-synthetic-risk-evaluation`,
-  `quality:stage-9-human-review-readiness`, and
-  `quality:stage-9-remediation-revision-integrity` pass.
+- all four mandatory gates above pass.
 
 Completion means the evidence oracle is auditable, not that the six runtime
 cases have been semantically changed. Failure rolls back the single commit; the

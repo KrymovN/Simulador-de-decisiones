@@ -127,7 +127,76 @@ const changed = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root
 const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
 const diff = [...new Set([...changed, ...untracked])];
 const exactPlanningDiff = diff.length === allowed.size && diff.every((path) => allowed.has(path));
-add("bounded-diff", diff.length === 0 || exactPlanningDiff, `Unexpected: ${diff.filter((path) => !allowed.has(path)).join(", ") || "none"}; missing: ${diff.length === 0 ? "none (clean committed tree)" : [...allowed].filter((path) => !diff.includes(path)).join(", ") || "none"}.`);
+const contractAlignmentAllowed = [
+  "scripts/stage-9-remediation-plan-quality.mjs",
+  "docs/qa/remediation/stage-9/STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_SPEC.v1.md",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_SEQUENCE.v1.json",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_CANDIDATE_REGISTRY.v2.json",
+];
+const exactContractAlignmentDiff = diff.length === contractAlignmentAllowed.length
+  && contractAlignmentAllowed.every((path) => diff.includes(path));
+const exactContractAlignmentSemantics = exactContractAlignmentDiff && (() => {
+  const headJson = (path) => JSON.parse(execFileSync("git", ["show", `HEAD:${path}`], { cwd: root, encoding: "utf8" }));
+  const headSequence = headJson("docs/qa/remediation/stage-9/AI_REMEDIATION_SEQUENCE.v1.json");
+  const headRegistry = headJson("docs/qa/remediation/stage-9/AI_REMEDIATION_CANDIDATE_REGISTRY.v2.json");
+  const currentSubstep = sequence.sequence.find((row) => row.substep_id === "S9-FIX-01");
+  const currentCandidate = registry.candidates.find((row) => row.candidate_id === "S9-REM-SCHEMA-001");
+  const headSubstep = headSequence.sequence.find((row) => row.substep_id === "S9-FIX-01");
+  const headCandidate = headRegistry.candidates.find((row) => row.candidate_id === "S9-REM-SCHEMA-001");
+  const futureWritePaths = [
+    "scripts/generate-stage-9-human-review-package.mjs",
+    "docs/qa/remediation/stage-9/LEVIO_STAGE_9_POST_REMEDIATION_MANIFEST.json",
+    "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json",
+    "scripts/stage-9-schema-oracle-evidence-projection-quality.mjs",
+    "scripts/stage-9-remediation-revision-integrity-quality.mjs",
+    "package.json",
+    "docs/qa/remediation/stage-9/results/STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_RESULT.v1.json",
+    "PROJECT_CONTEXT.md",
+  ];
+  const mandatoryGates = [
+    "quality:stage-9-schema-oracle-evidence-projection",
+    "quality:stage-9-synthetic-risk-evaluation",
+    "quality:stage-9-human-review-readiness",
+    "quality:stage-9-remediation-revision-integrity",
+  ];
+  const resultArtifact = "docs/qa/remediation/stage-9/results/STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_RESULT.v1.json";
+  const statusHeading = "## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026";
+  const same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
+  return same(currentSubstep.exact_candidate_scope, headSubstep.exact_candidate_scope)
+    && currentCandidate.candidate_id === headCandidate.candidate_id
+    && same(currentCandidate.affected_fixtures, headCandidate.affected_fixtures)
+    && same(currentCandidate.owned_issue_ids, headCandidate.owned_issue_ids)
+    && same(currentSubstep.prerequisites, headSubstep.prerequisites)
+    && same(currentCandidate.dependencies, headCandidate.dependencies)
+    && same(sequence.sequence.map((row) => [row.order, row.substep_id]), headSequence.sequence.map((row) => [row.order, row.substep_id]))
+    && same(currentSubstep.allowed_files, futureWritePaths)
+    && same(currentCandidate.planned_write_files, futureWritePaths)
+    && same(currentSubstep.gates, mandatoryGates)
+    && same(currentCandidate.required_regression_gates, mandatoryGates)
+    && currentSubstep.bounded_result_artifact === resultArtifact
+    && currentCandidate.bounded_result_artifact === resultArtifact
+    && currentSubstep.canonical_status_update?.file_path === "PROJECT_CONTEXT.md"
+    && currentCandidate.canonical_status_update?.file_path === "PROJECT_CONTEXT.md"
+    && currentSubstep.canonical_status_update?.section_heading === statusHeading
+    && currentCandidate.canonical_status_update?.section_heading === statusHeading
+    && futureWritePaths.every((path) => specText.includes(`\`${path}\``))
+    && mandatoryGates.every((gate) => specText.includes(`\`${gate}\``))
+    && specText.includes(`\`${statusHeading}\``);
+})();
+const boundedDiffProfile = diff.length === 0
+  ? "clean-tree"
+  : exactPlanningDiff
+    ? "full-planning"
+    : exactContractAlignmentSemantics
+      ? "schema-oracle-remediation-contract-alignment"
+      : "rejected";
+add(
+  "bounded-diff",
+  boundedDiffProfile !== "rejected",
+  boundedDiffProfile === "rejected"
+    ? `Profile rejected. Unexpected full-planning paths: ${diff.filter((path) => !allowed.has(path)).join(", ") || "none"}; exact contract-alignment diff required: ${contractAlignmentAllowed.join(", ")}.`
+    : `Profile ${boundedDiffProfile} accepted.`,
+);
 add("network-zero", networkRequests === 0, `${networkRequests} network requests.`);
 
 globalThis.fetch = originalFetch;
