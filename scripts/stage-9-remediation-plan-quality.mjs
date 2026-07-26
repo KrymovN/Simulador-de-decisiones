@@ -331,6 +331,205 @@ const exactQualityControlProfile = qualityControlProfileSemantics({
   selfTestRuns,
   collectionValid: repositoryPathCollectionValid,
 }) && planningProfileNegativeChecksPass;
+const coverageQualityControlAllowed = [
+  "scripts/stage-9-offline-dataset-coverage-quality.mjs",
+  "scripts/stage-9-remediation-plan-quality.mjs",
+].sort();
+const coverageScriptPath = join(
+  root,
+  "scripts",
+  "stage-9-offline-dataset-coverage-quality.mjs",
+);
+const expectedVersionedClusters = [
+  "S9-CLUSTER-004",
+  "S9-CLUSTER-008",
+  "S9-CLUSTER-016",
+  "S9-CLUSTER-020",
+  "S9-CLUSTER-024",
+  "S9-CLUSTER-028",
+  "S9-CLUSTER-032",
+  "S9-CLUSTER-036",
+];
+
+function runCoverageCaseVersionSelfTest() {
+  const result = spawnSync(
+    process.execPath,
+    [coverageScriptPath, "--case-version-self-test-json"],
+    { cwd: root, encoding: "utf8" },
+  );
+  return {
+    status: result.status,
+    stdout: result.stdout ?? "",
+    stderr: result.stderr ?? "",
+    error: result.error ? String(result.error.message ?? result.error) : null,
+  };
+}
+
+function parseCoverageSelfTest(run) {
+  if (run.error || run.status !== 0 || run.stderr !== "") return null;
+  try {
+    return JSON.parse(run.stdout);
+  } catch {
+    return null;
+  }
+}
+
+function validCoverageSelfTest(contract) {
+  return contract?.profile === "S9_FIX_02_CASE_VERSION_VALIDATION"
+    && same(contract.supported_versions, ["1.0", "1.1"])
+    && contract.version_1_1_scope?.substep_id === "S9-FIX-02"
+    && contract.version_1_1_scope?.eligible_case_count === 32
+    && same(contract.version_1_1_scope?.eligible_cluster_ids, expectedVersionedClusters)
+    && contract.version_1_1_scope?.expected_reference_only === true
+    && contract.positive_cases?.total === 7
+    && contract.positive_cases?.passed === 7
+    && Array.isArray(contract.positive_cases?.failed)
+    && contract.positive_cases.failed.length === 0
+    && contract.negative_cases?.total === 12
+    && contract.negative_cases?.passed === 12
+    && Array.isArray(contract.negative_cases?.failed)
+    && contract.negative_cases.failed.length === 0
+    && contract.coverage_invariants_preserved === true
+    && contract.arbitrary_version_wildcard === false
+    && contract.deterministic === true
+    && contract.network_request_count === 0;
+}
+
+function coverageQualityControlProfileSemantics({
+  candidateDiff,
+  candidateSelfTestRuns,
+  collectionValid = true,
+  canonicalContractsChanged = false,
+}) {
+  const normalizedCandidateDiff = [...new Set(candidateDiff.map(normalizeRepoPath))].sort();
+  const exactDiff = collectionValid
+    && same(normalizedCandidateDiff, coverageQualityControlAllowed)
+    && candidateDiff.every((path) =>
+      path === normalizeRepoPath(path) && !path.startsWith("/") && !path.startsWith(".git/"));
+  const parsedContracts = candidateSelfTestRuns.map(parseCoverageSelfTest);
+  const selfTestValid = parsedContracts.length === 2
+    && parsedContracts.every(validCoverageSelfTest)
+    && candidateSelfTestRuns[0].stdout === candidateSelfTestRuns[1].stdout;
+  return exactDiff && selfTestValid && !canonicalContractsChanged;
+}
+
+const coverageSelfTestRuns = [
+  runCoverageCaseVersionSelfTest(),
+  runCoverageCaseVersionSelfTest(),
+];
+const actualCoverageSelfTestContract = parseCoverageSelfTest(coverageSelfTestRuns[0]);
+const fixtureCoverageSelfTestContract = structuredClone(actualCoverageSelfTestContract ?? {
+  profile: "S9_FIX_02_CASE_VERSION_VALIDATION",
+  supported_versions: ["1.0", "1.1"],
+  version_1_1_scope: {
+    substep_id: "S9-FIX-02",
+    eligible_case_count: 32,
+    eligible_cluster_ids: expectedVersionedClusters,
+    expected_reference_only: true,
+  },
+  positive_cases: { total: 7, passed: 7, failed: [] },
+  negative_cases: { total: 12, passed: 12, failed: [] },
+  coverage_invariants_preserved: true,
+  arbitrary_version_wildcard: false,
+  deterministic: true,
+  network_request_count: 0,
+});
+const coverageSelfTestRun = (contract = fixtureCoverageSelfTestContract, status = 0) => ({
+  status,
+  stdout: `${JSON.stringify(contract, null, 2)}\n`,
+  stderr: "",
+  error: null,
+});
+const coverageSelfTestPair = (contract = fixtureCoverageSelfTestContract, status = 0) => [
+  coverageSelfTestRun(contract, status),
+  coverageSelfTestRun(contract, status),
+];
+const mutateCoverageSelfTest = (mutator) => {
+  const copy = structuredClone(fixtureCoverageSelfTestContract);
+  mutator(copy);
+  return copy;
+};
+const coveragePlanningNegativeResults = [
+  ["missing-coverage-script", !coverageQualityControlProfileSemantics({
+    candidateDiff: coverageQualityControlAllowed.filter((path) =>
+      path !== "scripts/stage-9-offline-dataset-coverage-quality.mjs"),
+    candidateSelfTestRuns: coverageSelfTestPair(),
+  })],
+  ["missing-planning-gate", !coverageQualityControlProfileSemantics({
+    candidateDiff: coverageQualityControlAllowed.filter((path) =>
+      path !== "scripts/stage-9-remediation-plan-quality.mjs"),
+    candidateSelfTestRuns: coverageSelfTestPair(),
+  })],
+  ["unrelated-file", !coverageQualityControlProfileSemantics({
+    candidateDiff: [...coverageQualityControlAllowed, "unrelated.file"],
+    candidateSelfTestRuns: coverageSelfTestPair(),
+  })],
+  ["fixtures-change", !coverageQualityControlProfileSemantics({
+    candidateDiff: [...coverageQualityControlAllowed, "lib/ai-decision-material/fixtures.ts"],
+    candidateSelfTestRuns: coverageSelfTestPair(),
+  })],
+  ["package-change", !coverageQualityControlProfileSemantics({
+    candidateDiff: [...coverageQualityControlAllowed, "package.json"],
+    candidateSelfTestRuns: coverageSelfTestPair(),
+  })],
+  ["canonical-contract-change", !coverageQualityControlProfileSemantics({
+    candidateDiff: coverageQualityControlAllowed,
+    candidateSelfTestRuns: coverageSelfTestPair(),
+    canonicalContractsChanged: true,
+  })],
+  ["arbitrary-version-wildcard", !coverageQualityControlProfileSemantics({
+    candidateDiff: coverageQualityControlAllowed,
+    candidateSelfTestRuns: coverageSelfTestPair(mutateCoverageSelfTest((value) => {
+      value.arbitrary_version_wildcard = true;
+    })),
+  })],
+  ["version-1.0-support-removed", !coverageQualityControlProfileSemantics({
+    candidateDiff: coverageQualityControlAllowed,
+    candidateSelfTestRuns: coverageSelfTestPair(mutateCoverageSelfTest((value) => {
+      value.supported_versions = ["1.1"];
+    })),
+  })],
+  ["version-1.1-support-missing", !coverageQualityControlProfileSemantics({
+    candidateDiff: coverageQualityControlAllowed,
+    candidateSelfTestRuns: coverageSelfTestPair(mutateCoverageSelfTest((value) => {
+      value.supported_versions = ["1.0"];
+    })),
+  })],
+  ["negative-version-tests-missing", !coverageQualityControlProfileSemantics({
+    candidateDiff: coverageQualityControlAllowed,
+    candidateSelfTestRuns: coverageSelfTestPair(mutateCoverageSelfTest((value) => {
+      value.negative_cases.total = 11;
+      value.negative_cases.passed = 11;
+    })),
+  })],
+  ["coverage-invariants-changed", !coverageQualityControlProfileSemantics({
+    candidateDiff: coverageQualityControlAllowed,
+    candidateSelfTestRuns: coverageSelfTestPair(mutateCoverageSelfTest((value) => {
+      value.coverage_invariants_preserved = false;
+    })),
+  })],
+  ["malformed-or-nonzero-self-test", [
+    !coverageQualityControlProfileSemantics({
+      candidateDiff: coverageQualityControlAllowed,
+      candidateSelfTestRuns: [
+        { status: 0, stdout: "{malformed", stderr: "", error: null },
+        { status: 0, stdout: "{malformed", stderr: "", error: null },
+      ],
+    }),
+    !coverageQualityControlProfileSemantics({
+      candidateDiff: coverageQualityControlAllowed,
+      candidateSelfTestRuns: coverageSelfTestPair(fixtureCoverageSelfTestContract, 1),
+    }),
+  ].every(Boolean)],
+];
+const coveragePlanningNegativeChecksPass =
+  coveragePlanningNegativeResults.length === 12
+  && coveragePlanningNegativeResults.every(([, rejected]) => rejected);
+const exactCoverageQualityControlProfile = coverageQualityControlProfileSemantics({
+  candidateDiff: diff,
+  candidateSelfTestRuns: coverageSelfTestRuns,
+  collectionValid: repositoryPathCollectionValid,
+}) && coveragePlanningNegativeChecksPass;
 const contractAlignmentAllowed = [
   "scripts/stage-9-remediation-plan-quality.mjs",
   "docs/qa/remediation/stage-9/STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_SPEC.v1.md",
@@ -576,23 +775,25 @@ const exactContradictionContractAlignmentSemantics =
   && negativeContradictionProfileCasesRejected;
 const boundedDiffProfile = diff.length === 0
   ? "clean-tree"
-  : exactQualityControlProfile
-    ? "remediation-revision-integrity-quality-control"
-    : exactPlanningDiff
-      ? "full-planning"
-      : exactContractAlignmentSemantics
-        ? "schema-oracle-remediation-contract-alignment"
-        : exactFixtureContractAlignmentSemantics
-          ? "schema-oracle-fixture-contract-alignment"
-          : exactContradictionContractAlignmentSemantics
-            ? "systemic-contradiction-remediation-contract-alignment"
-            : "rejected";
+  : exactCoverageQualityControlProfile
+    ? "offline-dataset-case-version-quality-control"
+    : exactQualityControlProfile
+      ? "remediation-revision-integrity-quality-control"
+      : exactPlanningDiff
+        ? "full-planning"
+        : exactContractAlignmentSemantics
+          ? "schema-oracle-remediation-contract-alignment"
+          : exactFixtureContractAlignmentSemantics
+            ? "schema-oracle-fixture-contract-alignment"
+            : exactContradictionContractAlignmentSemantics
+              ? "systemic-contradiction-remediation-contract-alignment"
+              : "rejected";
 add(
   "bounded-diff",
   boundedDiffProfile !== "rejected",
   boundedDiffProfile === "rejected"
-    ? `Profile rejected. Repository paths: ${diff.join(", ")}; tracked: ${changed.join(", ")}; untracked: ${untracked.join(", ")}; normalized=${repositoryPathCollectionValid}; quality-control semantic=${qualityControlProfileSemantics({ candidateDiff: diff, selfTestRuns, collectionValid: repositoryPathCollectionValid })}; machine-self-test=${validSelfTestContract(actualSelfTestContract)}; planning-negative-cases=${planningProfileNegativeChecksPass}; contradiction-contract semantic=${contradictionContractSemantics(sequence, registry, contradictionSpecText, diff, repositoryPathCollectionValid)}; contradiction negative-cases=${negativeContradictionProfileCasesRejected}.`
-    : `Profile ${boundedDiffProfile} accepted.${boundedDiffProfile === "remediation-revision-integrity-quality-control" ? ` Exact two-file quality-control diff: ${diff.join(", ")}. Machine-readable self-test PASS; planning-profile negative checks 12/12.` : boundedDiffProfile === "systemic-contradiction-remediation-contract-alignment" ? ` Repository-backed classifier included tracked and untracked paths: ${diff.join(", ")}. All negative cases rejected.` : ""}`,
+    ? `Profile rejected. Repository paths: ${diff.join(", ")}; tracked: ${changed.join(", ")}; untracked: ${untracked.join(", ")}; normalized=${repositoryPathCollectionValid}; coverage-quality semantic=${coverageQualityControlProfileSemantics({ candidateDiff: diff, candidateSelfTestRuns: coverageSelfTestRuns, collectionValid: repositoryPathCollectionValid })}; coverage-machine-self-test=${validCoverageSelfTest(actualCoverageSelfTestContract)}; coverage-planning-negative-cases=${coveragePlanningNegativeChecksPass}; revision-quality semantic=${qualityControlProfileSemantics({ candidateDiff: diff, selfTestRuns, collectionValid: repositoryPathCollectionValid })}; revision-machine-self-test=${validSelfTestContract(actualSelfTestContract)}; revision-planning-negative-cases=${planningProfileNegativeChecksPass}; contradiction-contract semantic=${contradictionContractSemantics(sequence, registry, contradictionSpecText, diff, repositoryPathCollectionValid)}; contradiction negative-cases=${negativeContradictionProfileCasesRejected}.`
+    : `Profile ${boundedDiffProfile} accepted.${boundedDiffProfile === "offline-dataset-case-version-quality-control" ? ` Exact two-file coverage-validator diff: ${diff.join(", ")}. Machine-readable case-version self-test PASS; planning-profile negative checks 12/12.` : boundedDiffProfile === "remediation-revision-integrity-quality-control" ? ` Exact two-file quality-control diff: ${diff.join(", ")}. Machine-readable self-test PASS; planning-profile negative checks 12/12.` : boundedDiffProfile === "systemic-contradiction-remediation-contract-alignment" ? ` Repository-backed classifier included tracked and untracked paths: ${diff.join(", ")}. All negative cases rejected.` : ""}`,
 );
 add("network-zero", networkRequests === 0, `${networkRequests} network requests.`);
 

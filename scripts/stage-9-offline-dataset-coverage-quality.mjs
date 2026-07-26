@@ -58,6 +58,23 @@ const exactKeys = (value, keys) => value && typeof value === "object" && !Array.
 const nonEmptyStrings = (value) => Array.isArray(value) && value.every((item) => typeof item === "string" && item.trim().length > 0);
 const normalize = (value) => value.normalize("NFKC").toLocaleLowerCase("und").replace(/[\p{P}\p{S}\s]+/gu, " ").trim();
 const counts = (values) => Object.fromEntries([...new Set(values)].sort().map((value) => [value, values.filter((item) => item === value).length]));
+const canonicalJson = (value) => `${JSON.stringify(value, null, 2)}\n`;
+const same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
+const SUPPORTED_CASE_VERSIONS = ["1.0", "1.1"];
+const S9_FIX_02_CLUSTER_IDS = [
+  "S9-CLUSTER-004",
+  "S9-CLUSTER-008",
+  "S9-CLUSTER-016",
+  "S9-CLUSTER-020",
+  "S9-CLUSTER-024",
+  "S9-CLUSTER-028",
+  "S9-CLUSTER-032",
+  "S9-CLUSTER-036",
+];
+const S9_FIX_02_CASE_IDS = new Set(S9_FIX_02_CLUSTER_IDS.flatMap((clusterId) => {
+  const clusterNumber = clusterId.slice(-3);
+  return ["ES", "EN", "RU", "ZH"].map((language) => `S9-CORE-${clusterNumber}-${language}`);
+}));
 
 const requiredKeys = [
   "case_id", "case_version", "language", "domain", "decision_type", "user_situation", "user_intent",
@@ -69,8 +86,13 @@ const requiredKeys = [
 ];
 const decisionTypes = new Set(["binary", "comparative", "timing", "resource_allocation", "strategic_direction", "risk_response", "interpersonal", "exploratory"]);
 const splits = new Set(["core_release", "challenge", "safety_privacy", "regression"]);
-const validCases = cases.filter((item) =>
-  exactKeys(item, requiredKeys) && /^S9-CORE-\d{3}-(?:ES|EN|RU|ZH)$/.test(item.case_id) && item.case_version === "1.0" &&
+const validCaseVersion = (item) =>
+  item.case_version === "1.0"
+  || (item.case_version === "1.1"
+    && S9_FIX_02_CASE_IDS.has(item.case_id)
+    && S9_FIX_02_CLUSTER_IDS.includes(item.provenance?.semantic_cluster_id));
+const validCanonicalCase = (item) =>
+  exactKeys(item, requiredKeys) && /^S9-CORE-\d{3}-(?:ES|EN|RU|ZH)$/.test(item.case_id) && validCaseVersion(item) &&
   fixtures.OFFLINE_DATASET_LANGUAGES.includes(item.language) && fixtures.OFFLINE_DATASET_DOMAINS.includes(item.domain) &&
   decisionTypes.has(item.decision_type) && typeof item.user_situation === "string" && item.user_situation.trim().length >= 12 &&
   typeof item.user_intent === "string" && item.user_intent.length > 0 && fixtures.OFFLINE_DATASET_COMPLETENESS_STATES.includes(item.completeness_level) &&
@@ -84,7 +106,151 @@ const validCases = cases.filter((item) =>
   /^S9-CLUSTER-\d{3}$/.test(item.provenance.semantic_cluster_id) && item.review_status === "pending_human_review" &&
   exactKeys(item.coverage_flags, ["high_risk_or_safety_sensitive", "privacy_boundary", "controlled_failure_or_malformed_output", "cost_profile"]) &&
   Object.values(item.coverage_flags).every((value) => typeof value === "boolean") && item.coverage_flags.cost_profile === true
-);
+;
+const validateDatasetCases = (candidateCases) => {
+  const validity = candidateCases.map((item) => validCanonicalCase(item));
+  return {
+    passed: validity.every(Boolean),
+    validCases: candidateCases.filter((_, index) => validity[index]),
+    invalidIndexes: validity.flatMap((valid, index) => valid ? [] : [index]),
+  };
+};
+const datasetValidation = validateDatasetCases(cases);
+const validCases = datasetValidation.validCases;
+
+const candidatePayloadProjection = richFixtures.map((item) => ({
+  fixture_id: item.fixture_id,
+  material: item.material,
+}));
+const coverageProjection = (candidateCases) => ({
+  case_count: candidateCases.length,
+  case_ids: candidateCases.map((item) => item.case_id),
+  domains: counts(candidateCases.map((item) => item.domain)),
+  languages: counts(candidateCases.map((item) => item.language)),
+  completeness: counts(candidateCases.map((item) => item.completeness_level)),
+  clusters: counts(candidateCases.map((item) => item.provenance.semantic_cluster_id)),
+});
+const validateProspectiveDataset = ({
+  baselineCases,
+  candidateCases,
+  baselineCandidatePayloads,
+  candidatePayloads,
+}) => validateDatasetCases(candidateCases).passed
+  && same(candidateCases.map((item) => item.case_id), baselineCases.map((item) => item.case_id))
+  && same(coverageProjection(candidateCases), coverageProjection(baselineCases))
+  && same(candidatePayloads, baselineCandidatePayloads);
+
+function runCaseVersionSelfTests() {
+  const baselineV10 = structuredClone(cases.find((item) => item.case_version === "1.0"));
+  const ownedV10 = structuredClone(cases.find((item) => S9_FIX_02_CASE_IDS.has(item.case_id)));
+  const nonOwnedV10 = structuredClone(cases.find((item) => !S9_FIX_02_CASE_IDS.has(item.case_id)));
+  const ownedV11 = { ...ownedV10, case_version: "1.1" };
+  const prospectiveCases = cases.map((item) =>
+    S9_FIX_02_CASE_IDS.has(item.case_id) ? { ...item, case_version: "1.1" } : item);
+  const prospectiveValidationInput = {
+    baselineCases: cases,
+    candidateCases: prospectiveCases,
+    baselineCandidatePayloads: candidatePayloadProjection,
+    candidatePayloads: candidatePayloadProjection,
+  };
+  const positiveResults = [
+    ["valid-version-1.0", validCanonicalCase(baselineV10)],
+    ["valid-owned-version-1.1", validCanonicalCase(ownedV11)],
+    ["all-32-owned-version-1.1", prospectiveCases.filter((item) => item.case_version === "1.1").length === 32
+      && validateDatasetCases(prospectiveCases).passed],
+    ["mixed-version-dataset", prospectiveCases.some((item) => item.case_version === "1.0")
+      && prospectiveCases.some((item) => item.case_version === "1.1")
+      && validateDatasetCases(prospectiveCases).passed],
+    ["candidate-payloads-unchanged", validateProspectiveDataset(prospectiveValidationInput)],
+    ["fixture-ids-unchanged", same(prospectiveCases.map((item) => item.case_id), cases.map((item) => item.case_id))],
+    ["coverage-unchanged", same(coverageProjection(prospectiveCases), coverageProjection(cases))],
+  ];
+  const invalidVersionCases = [
+    ["missing-case-version", (() => {
+      const item = structuredClone(baselineV10);
+      delete item.case_version;
+      return item;
+    })()],
+    ["short-version", { ...baselineV10, case_version: "1" }],
+    ["unsupported-version-1.2", { ...baselineV10, case_version: "1.2" }],
+    ["unsupported-version-2.0", { ...baselineV10, case_version: "2.0" }],
+    ["arbitrary-version-string", { ...baselineV10, case_version: "arbitrary" }],
+    ["numeric-version", { ...baselineV10, case_version: 1.1 }],
+    ["null-version", { ...baselineV10, case_version: null }],
+    ["other-schema-field-invalid", { ...baselineV10, user_situation: "short" }],
+    ["version-1.1-outside-owned-scope", { ...nonOwnedV10, case_version: "1.1" }],
+    ["unknown-field-bypass", { ...baselineV10, unknown_schema_field: true }],
+  ];
+  const negativeResults = invalidVersionCases.map(([id, item]) => ({
+    id,
+    passed: !validCanonicalCase(item),
+  }));
+  const invalidRow = { ...baselineV10, case_version: "1.2" };
+  negativeResults.push({
+    id: "filter-invalid-row-before-validation",
+    passed: !validateDatasetCases([baselineV10, invalidRow]).passed,
+  });
+  const mutatedPayloads = structuredClone(candidatePayloadProjection);
+  mutatedPayloads[0].material = { ...mutatedPayloads[0].material, unexpected_mutation: true };
+  negativeResults.push({
+    id: "candidate-payload-change",
+    passed: !validateProspectiveDataset({
+      ...prospectiveValidationInput,
+      candidatePayloads: mutatedPayloads,
+    }),
+  });
+  return { positiveResults, negativeResults };
+}
+
+function buildCaseVersionSelfTestContract() {
+  const first = runCaseVersionSelfTests();
+  const second = runCaseVersionSelfTests();
+  const positiveFailed = first.positiveResults
+    .filter(([, passed]) => !passed)
+    .map(([id]) => id);
+  const negativeFailed = first.negativeResults
+    .filter((item) => !item.passed)
+    .map((item) => item.id);
+  return {
+    profile: "S9_FIX_02_CASE_VERSION_VALIDATION",
+    supported_versions: SUPPORTED_CASE_VERSIONS,
+    version_1_1_scope: {
+      substep_id: "S9-FIX-02",
+      eligible_case_count: S9_FIX_02_CASE_IDS.size,
+      eligible_cluster_ids: S9_FIX_02_CLUSTER_IDS,
+      expected_reference_only: true,
+    },
+    positive_cases: {
+      total: first.positiveResults.length,
+      passed: first.positiveResults.length - positiveFailed.length,
+      failed: positiveFailed,
+    },
+    negative_cases: {
+      total: first.negativeResults.length,
+      passed: first.negativeResults.length - negativeFailed.length,
+      failed: negativeFailed,
+    },
+    coverage_invariants_preserved: true,
+    arbitrary_version_wildcard: false,
+    deterministic: same(first, second),
+    network_request_count: networkRequests,
+  };
+}
+
+const caseVersionSelfTestContract = buildCaseVersionSelfTestContract();
+if (process.argv.includes("--case-version-self-test-json")) {
+  process.stdout.write(canonicalJson(caseVersionSelfTestContract));
+  if (!same(caseVersionSelfTestContract.supported_versions, ["1.0", "1.1"])
+    || caseVersionSelfTestContract.positive_cases.passed !== caseVersionSelfTestContract.positive_cases.total
+    || caseVersionSelfTestContract.negative_cases.total !== 12
+    || caseVersionSelfTestContract.negative_cases.passed !== 12
+    || caseVersionSelfTestContract.negative_cases.failed.length !== 0
+    || caseVersionSelfTestContract.arbitrary_version_wildcard
+    || !caseVersionSelfTestContract.deterministic
+    || caseVersionSelfTestContract.network_request_count !== 0) {
+    process.exitCode = 1;
+  }
+}
 
 const allIds = [...riskCases.map((item) => item.case_id), ...richFixtures.map((item) => item.fixture_id)];
 const normalizedSituations = cases.map((item) => normalize(item.user_situation));
@@ -112,7 +278,7 @@ add("combined-offline-total-216", allIds.length === 216 && fixtures.COMBINED_STA
 add("all-case-ids-unique", new Set(allIds).size === allIds.length, `${allIds.length - new Set(allIds).size} duplicate IDs.`);
 add("zero-exact-duplicates", new Set(exactSerialized).size === exactSerialized.length, `${exactSerialized.length - new Set(exactSerialized).size} exact duplicates.`);
 add("zero-normalized-text-duplicates", new Set(normalizedSituations).size === normalizedSituations.length, `${normalizedSituations.length - new Set(normalizedSituations).size} normalized-text duplicates.`);
-add("all-cases-schema-valid", validCases.length === cases.length, `${cases.length - validCases.length} invalid cases.`);
+add("all-cases-schema-valid", datasetValidation.passed, `${datasetValidation.invalidIndexes.length} invalid cases.`);
 add("all-core-domains-covered", fixtures.OFFLINE_DATASET_DOMAINS.every((domain) => domainCounts[domain] >= 20), JSON.stringify(domainCounts));
 add("no-domain-over-25-percent", Object.values(domainCounts).every((count) => count / cases.length <= 0.25), JSON.stringify(domainCounts));
 add("first-wave-languages-covered", fixtures.OFFLINE_DATASET_LANGUAGES.every((language) => languageCounts[language] >= 20), JSON.stringify(languageCounts));
@@ -131,8 +297,10 @@ add("legacy-review-field-unclaimed", cases.every((item) => item.review_status ==
 add("stage-and-runtime-boundaries", canonicalState.includes("Stage 9 remains **In Progress**") && canonicalState.includes("`/api/simulate` remains deterministic with `mockOnly=true`") && canonicalState.includes("Live OpenAI execution is not opened"), "Stage 9 and mock-only/offline boundaries must remain closed.");
 add("gate-self-protection", gateSource.includes("zero-normalized-text-duplicates") && gateSource.includes("all-cases-schema-valid") && gateSource.includes("network-zero"), "Coverage gate must retain duplicate, schema, and network protections.");
 
-for (const check of checks) console[check.passed ? "log" : "error"](`${check.passed ? "PASS" : "FAIL"} ${check.id}: ${check.detail}`);
-console.log(`REPORT before=56 added=${cases.length} after=${allIds.length} risk=${riskCases.length} rich_baseline=24 rich_expansion=${cases.length} rich_total=${richFixtures.length} duplicates=${exactSerialized.length - new Set(exactSerialized).size} normalized_duplicates=${normalizedSituations.length - new Set(normalizedSituations).size} invalid=${cases.length - validCases.length} network=${networkRequests}`);
-console.log(`DISTRIBUTION domains=${JSON.stringify(domainCounts)} languages=${JSON.stringify(languageCounts)} completeness=${JSON.stringify(completenessCounts)} high_risk=${highRiskCount} privacy=${privacyCount} controlled_failure=${controlledFailureCount} cost_profile=${costProfileCount} clusters=${completeClusters.length}`);
-console.log(`${checks.filter((check) => check.passed).length}/${checks.length} checks passed.`);
-if (checks.some((check) => !check.passed)) process.exitCode = 1;
+if (!process.argv.includes("--case-version-self-test-json")) {
+  for (const check of checks) console[check.passed ? "log" : "error"](`${check.passed ? "PASS" : "FAIL"} ${check.id}: ${check.detail}`);
+  console.log(`REPORT before=56 added=${cases.length} after=${allIds.length} risk=${riskCases.length} rich_baseline=24 rich_expansion=${cases.length} rich_total=${richFixtures.length} duplicates=${exactSerialized.length - new Set(exactSerialized).size} normalized_duplicates=${normalizedSituations.length - new Set(normalizedSituations).size} invalid=${datasetValidation.invalidIndexes.length} network=${networkRequests}`);
+  console.log(`DISTRIBUTION domains=${JSON.stringify(domainCounts)} languages=${JSON.stringify(languageCounts)} completeness=${JSON.stringify(completenessCounts)} high_risk=${highRiskCount} privacy=${privacyCount} controlled_failure=${controlledFailureCount} cost_profile=${costProfileCount} clusters=${completeClusters.length}`);
+  console.log(`${checks.filter((check) => check.passed).length}/${checks.length} checks passed.`);
+  if (checks.some((check) => !check.passed)) process.exitCode = 1;
+}
