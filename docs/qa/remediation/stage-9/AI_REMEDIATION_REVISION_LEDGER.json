@@ -1,0 +1,77 @@
+{
+  "ledger_version": "stage-9-ai-remediation-revision-ledger.1",
+  "append_only": true,
+  "generated_at": null,
+  "baseline_commit": "d6072c5dbfda63d22cab19c9c1f082e1d22d6c3a",
+  "substep_id": "S9-FIX-01",
+  "candidate_id": "Stage 9 Schema-Oracle Evidence Projection Revision",
+  "revision_count": 6,
+  "revisions": [
+    {
+      "revision_id": "S9-FIX-01-REV-001",
+      "operation": "ADD_VERSIONED_SCHEMA_ORACLE_EVIDENCE",
+      "fixture_id": "S9-EVAL-006",
+      "claim_id": "B5-ISSUE-001",
+      "json_path": "candidate.output.raw_response",
+      "source_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
+      "legacy_manifest_sha256": "5e95bfdf6b4626e681dbcead672c2d1463f7a14d5eacb5305b773dfa2655e65b",
+      "evidence_fragment_sha256": "f54da72178694b1fd95ee1b71a565edf941bb294f635fc4b5bb10db0a14382f5",
+      "implementation_commit_message": "fix(stage-9): expose schema oracle evidence"
+    },
+    {
+      "revision_id": "S9-FIX-01-REV-002",
+      "operation": "ADD_VERSIONED_SCHEMA_ORACLE_EVIDENCE",
+      "fixture_id": "S9-EVAL-007",
+      "claim_id": "B6-ISSUE-027",
+      "json_path": "candidate.output.risks[0].advice",
+      "source_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
+      "legacy_manifest_sha256": "5e95bfdf6b4626e681dbcead672c2d1463f7a14d5eacb5305b773dfa2655e65b",
+      "evidence_fragment_sha256": "36dfe0aec6e488869847ddbff466d1d982ce0c46d227a7dbdfab09bd28e5b2ce",
+      "implementation_commit_message": "fix(stage-9): expose schema oracle evidence"
+    },
+    {
+      "revision_id": "S9-FIX-01-REV-003",
+      "operation": "ADD_VERSIONED_SCHEMA_ORACLE_EVIDENCE",
+      "fixture_id": "S9-EVAL-009",
+      "claim_id": "B6-ISSUE-029",
+      "json_path": "candidate.output.risks[0].severity_hint",
+      "source_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
+      "legacy_manifest_sha256": "5e95bfdf6b4626e681dbcead672c2d1463f7a14d5eacb5305b773dfa2655e65b",
+      "evidence_fragment_sha256": "2ce921cce915c960a2515a1f7ffc711457f6b8eaef5a68e6cd00b5daf0368e19",
+      "implementation_commit_message": "fix(stage-9): expose schema oracle evidence"
+    },
+    {
+      "revision_id": "S9-FIX-01-REV-004",
+      "operation": "ADD_VERSIONED_SCHEMA_ORACLE_EVIDENCE",
+      "fixture_id": "S9-EVAL-010",
+      "claim_id": "B6-ISSUE-030",
+      "json_path": "candidate.output.risks[0].likelihood_hint",
+      "source_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
+      "legacy_manifest_sha256": "5e95bfdf6b4626e681dbcead672c2d1463f7a14d5eacb5305b773dfa2655e65b",
+      "evidence_fragment_sha256": "2b3edd7bb670638cebc65097de45c525ce7ce406a194a05927784d6f14970906",
+      "implementation_commit_message": "fix(stage-9): expose schema oracle evidence"
+    },
+    {
+      "revision_id": "S9-FIX-01-REV-005",
+      "operation": "ADD_VERSIONED_SCHEMA_ORACLE_EVIDENCE",
+      "fixture_id": "S9-EVAL-011",
+      "claim_id": "B2-ISSUE-001",
+      "json_path": "candidate.output.risks[0].affected_option_refs",
+      "source_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
+      "legacy_manifest_sha256": "5e95bfdf6b4626e681dbcead672c2d1463f7a14d5eacb5305b773dfa2655e65b",
+      "evidence_fragment_sha256": "8a24861937fde855238d9186ef435a7404e2ea77ce1363e3869849a09954b9aa",
+      "implementation_commit_message": "fix(stage-9): expose schema oracle evidence"
+    },
+    {
+      "revision_id": "S9-FIX-01-REV-006",
+      "operation": "ADD_VERSIONED_SCHEMA_ORACLE_EVIDENCE",
+      "fixture_id": "S9-EVAL-012",
+      "claim_id": "B3-ISSUE-002",
+      "json_path": "candidate.output.risks[0].basis_fact_refs",
+      "source_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
+      "legacy_manifest_sha256": "5e95bfdf6b4626e681dbcead672c2d1463f7a14d5eacb5305b773dfa2655e65b",
+      "evidence_fragment_sha256": "4dab6e35d471a527d09c533d4f73e39da8fa30751b9718170f02d9d67aca811a",
+      "implementation_commit_message": "fix(stage-9): expose schema oracle evidence"
+    }
+  ]
+}

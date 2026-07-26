@@ -2,16 +2,13 @@
 
 ## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026
 
-The versioned plan assigns all 8 `PLANNED_NOT_STARTED` remediation candidates
-and all 97 actionable claims to nine bounded, one-commit substeps. The
-dependency graph is acyclic: source-rule fixes precede one versioned dataset
-regeneration, which precedes one full post-remediation corpus assessment.
-Historical primary (`216/216`), reinforced (`73/73`), final-adjudication,
-calibration, closure, and legacy manifest artifacts remain byte-identical;
-fixture remediation is still `NONE` and no implementation occurred.
+The first bounded remediation substep, `Stage 9 Schema-Oracle Evidence
+Projection Revision`, is complete. Its versioned sibling manifest exposes the
+exact schema-oracle evidence for six fixture/claim mappings while the legacy
+216-entry manifest, source fixtures, historical review artifacts, schemas,
+validators, and runtime paths remain unchanged. Eight remediation substeps
+remain; the next substep was not executed.
 
-Exactly one implementation-ready candidate is selected: `Stage 9 Schema-Oracle
-Evidence Projection Revision`. It is not implemented in this planning substep.
 Stage 9 remains **In Progress**, release readiness is not declared,
 `/api/simulate` remains `mockOnly=true`, and all runtime boundaries remain
 closed. A release-readiness/runtime-boundary decision remains a separate future

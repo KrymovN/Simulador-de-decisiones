@@ -1,0 +1,329 @@
+{
+  "package_version": "stage-9-post-remediation-manifest.1",
+  "generated_at": null,
+  "baseline_commit": "d6072c5dbfda63d22cab19c9c1f082e1d22d6c3a",
+  "substep_id": "S9-FIX-01",
+  "candidate_id": "Stage 9 Schema-Oracle Evidence Projection Revision",
+  "scope": "Versioned sibling projection only; legacy review evidence and runtime behavior remain unchanged.",
+  "source_integrity": {
+    "legacy_manifest_path": "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json",
+    "legacy_manifest_sha256": "5e95bfdf6b4626e681dbcead672c2d1463f7a14d5eacb5305b773dfa2655e65b",
+    "legacy_manifest_entry_count": 216,
+    "synthetic_fixture_path": "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
+    "synthetic_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b"
+  },
+  "summary": {
+    "schema_oracle_mapping_count": 6,
+    "network_request_count": 0,
+    "runtime_change_count": 0
+  },
+  "schema_oracle_evidence": [
+    {
+      "fixture_id": "S9-EVAL-006",
+      "claim_id": "B5-ISSUE-001",
+      "mutation_type": "unknown_output_field",
+      "json_path": "candidate.output.raw_response",
+      "invalid_value": "forbidden",
+      "comparison_set": {
+        "candidate_container_keys": [
+          "capability",
+          "generation_status",
+          "raw_response",
+          "risks"
+        ],
+        "source_valid_container_keys": [
+          "capability",
+          "generation_status",
+          "risks"
+        ]
+      },
+      "evidence_fragment": {
+        "capability": "candidate_risk_signals_v1",
+        "generation_status": "completed",
+        "raw_response": "forbidden",
+        "risks": [
+          {
+            "affected_option_refs": [
+              "option_1"
+            ],
+            "basis_fact_refs": [
+              "fact_1"
+            ],
+            "category": "financial",
+            "likelihood_hint": "medium",
+            "mechanism": "Un coste recurrente mayor absorbe capacidad presupuestaria.",
+            "severity_hint": "high",
+            "statement": "El coste fijo puede reducir el margen disponible.",
+            "trigger_conditions": [
+              "Si los ingresos tardan más de lo previsto"
+            ],
+            "uncertainty_note": "La demanda futura sigue sin confirmarse."
+          },
+          {
+            "affected_option_refs": [
+              "option_2"
+            ],
+            "basis_fact_refs": [
+              "fact_2"
+            ],
+            "category": "dependency",
+            "likelihood_hint": "unknown",
+            "mechanism": "Una incidencia del proveedor afectaría a la continuidad operativa.",
+            "severity_hint": "medium",
+            "statement": "La dependencia externa puede interrumpir la operación.",
+            "trigger_conditions": [
+              "Si el proveedor reduce su capacidad"
+            ],
+            "uncertainty_note": "No se conoce la resiliencia contractual del proveedor."
+          },
+          {
+            "affected_option_refs": [
+              "option_1",
+              "option_2"
+            ],
+            "basis_fact_refs": [],
+            "category": "information_gap",
+            "likelihood_hint": "unknown",
+            "mechanism": "Una estimación incompleta altera las necesidades de capacidad.",
+            "severity_hint": "medium",
+            "statement": "La demanda incierta puede distorsionar la planificación.",
+            "trigger_conditions": [
+              "Si la demanda real difiere de la estimada"
+            ],
+            "uncertainty_note": "Faltan datos confirmados sobre la demanda."
+          }
+        ]
+      },
+      "evidence_fragment_sha256": "f54da72178694b1fd95ee1b71a565edf941bb294f635fc4b5bb10db0a14382f5",
+      "provenance": {
+        "source_fixture_path": "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
+        "source_fixture_id": "S9-EVAL-006",
+        "source_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
+        "projection_rule": "Exact candidate payload fragment plus a source-derived comparison set; no schema-oracle inference is added."
+      }
+    },
+    {
+      "fixture_id": "S9-EVAL-007",
+      "claim_id": "B6-ISSUE-027",
+      "mutation_type": "unknown_nested_field",
+      "json_path": "candidate.output.risks[0].advice",
+      "invalid_value": "none",
+      "comparison_set": {
+        "candidate_risk_keys": [
+          "advice",
+          "affected_option_refs",
+          "basis_fact_refs",
+          "category",
+          "likelihood_hint",
+          "mechanism",
+          "severity_hint",
+          "statement",
+          "trigger_conditions",
+          "uncertainty_note"
+        ],
+        "source_valid_risk_keys": [
+          "affected_option_refs",
+          "basis_fact_refs",
+          "category",
+          "likelihood_hint",
+          "mechanism",
+          "severity_hint",
+          "statement",
+          "trigger_conditions",
+          "uncertainty_note"
+        ]
+      },
+      "evidence_fragment": {
+        "advice": "none",
+        "affected_option_refs": [
+          "option_1"
+        ],
+        "basis_fact_refs": [
+          "fact_1"
+        ],
+        "category": "financial",
+        "likelihood_hint": "medium",
+        "mechanism": "Un coste recurrente mayor absorbe capacidad presupuestaria.",
+        "severity_hint": "high",
+        "statement": "El coste fijo puede reducir el margen disponible.",
+        "trigger_conditions": [
+          "Si los ingresos tardan más de lo previsto"
+        ],
+        "uncertainty_note": "La demanda futura sigue sin confirmarse."
+      },
+      "evidence_fragment_sha256": "36dfe0aec6e488869847ddbff466d1d982ce0c46d227a7dbdfab09bd28e5b2ce",
+      "provenance": {
+        "source_fixture_path": "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
+        "source_fixture_id": "S9-EVAL-007",
+        "source_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
+        "projection_rule": "Exact candidate payload fragment plus a source-derived comparison set; no schema-oracle inference is added."
+      }
+    },
+    {
+      "fixture_id": "S9-EVAL-009",
+      "claim_id": "B6-ISSUE-029",
+      "mutation_type": "invalid_severity",
+      "json_path": "candidate.output.risks[0].severity_hint",
+      "invalid_value": "critical",
+      "comparison_set": {
+        "candidate_values": [
+          "critical",
+          "medium"
+        ],
+        "source_valid_values": [
+          "high",
+          "medium"
+        ]
+      },
+      "evidence_fragment": {
+        "affected_option_refs": [
+          "option_1"
+        ],
+        "basis_fact_refs": [
+          "fact_1"
+        ],
+        "category": "financial",
+        "likelihood_hint": "medium",
+        "mechanism": "Un coste recurrente mayor absorbe capacidad presupuestaria.",
+        "severity_hint": "critical",
+        "statement": "El coste fijo puede reducir el margen disponible.",
+        "trigger_conditions": [
+          "Si los ingresos tardan más de lo previsto"
+        ],
+        "uncertainty_note": "La demanda futura sigue sin confirmarse."
+      },
+      "evidence_fragment_sha256": "2ce921cce915c960a2515a1f7ffc711457f6b8eaef5a68e6cd00b5daf0368e19",
+      "provenance": {
+        "source_fixture_path": "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
+        "source_fixture_id": "S9-EVAL-009",
+        "source_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
+        "projection_rule": "Exact candidate payload fragment plus a source-derived comparison set; no schema-oracle inference is added."
+      }
+    },
+    {
+      "fixture_id": "S9-EVAL-010",
+      "claim_id": "B6-ISSUE-030",
+      "mutation_type": "invalid_likelihood",
+      "json_path": "candidate.output.risks[0].likelihood_hint",
+      "invalid_value": "certain",
+      "comparison_set": {
+        "candidate_values": [
+          "certain",
+          "unknown"
+        ],
+        "source_valid_values": [
+          "medium",
+          "unknown"
+        ]
+      },
+      "evidence_fragment": {
+        "affected_option_refs": [
+          "option_1"
+        ],
+        "basis_fact_refs": [
+          "fact_1"
+        ],
+        "category": "financial",
+        "likelihood_hint": "certain",
+        "mechanism": "Un coste recurrente mayor absorbe capacidad presupuestaria.",
+        "severity_hint": "high",
+        "statement": "El coste fijo puede reducir el margen disponible.",
+        "trigger_conditions": [
+          "Si los ingresos tardan más de lo previsto"
+        ],
+        "uncertainty_note": "La demanda futura sigue sin confirmarse."
+      },
+      "evidence_fragment_sha256": "2b3edd7bb670638cebc65097de45c525ce7ce406a194a05927784d6f14970906",
+      "provenance": {
+        "source_fixture_path": "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
+        "source_fixture_id": "S9-EVAL-010",
+        "source_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
+        "projection_rule": "Exact candidate payload fragment plus a source-derived comparison set; no schema-oracle inference is added."
+      }
+    },
+    {
+      "fixture_id": "S9-EVAL-011",
+      "claim_id": "B2-ISSUE-001",
+      "mutation_type": "nonexistent_option_ref",
+      "json_path": "candidate.output.risks[0].affected_option_refs",
+      "invalid_value": [
+        "option_9"
+      ],
+      "comparison_set": {
+        "candidate_references": [
+          "option_9"
+        ],
+        "available_source_option_ids": [
+          "option_1",
+          "option_2"
+        ]
+      },
+      "evidence_fragment": {
+        "affected_option_refs": [
+          "option_9"
+        ],
+        "basis_fact_refs": [
+          "fact_1"
+        ],
+        "category": "financial",
+        "likelihood_hint": "medium",
+        "mechanism": "Un coste recurrente mayor absorbe capacidad presupuestaria.",
+        "severity_hint": "high",
+        "statement": "El coste fijo puede reducir el margen disponible.",
+        "trigger_conditions": [
+          "Si los ingresos tardan más de lo previsto"
+        ],
+        "uncertainty_note": "La demanda futura sigue sin confirmarse."
+      },
+      "evidence_fragment_sha256": "8a24861937fde855238d9186ef435a7404e2ea77ce1363e3869849a09954b9aa",
+      "provenance": {
+        "source_fixture_path": "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
+        "source_fixture_id": "S9-EVAL-011",
+        "source_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
+        "projection_rule": "Exact candidate payload fragment plus a source-derived comparison set; no schema-oracle inference is added."
+      }
+    },
+    {
+      "fixture_id": "S9-EVAL-012",
+      "claim_id": "B3-ISSUE-002",
+      "mutation_type": "nonexistent_fact_ref",
+      "json_path": "candidate.output.risks[0].basis_fact_refs",
+      "invalid_value": [
+        "fact_9"
+      ],
+      "comparison_set": {
+        "candidate_references": [
+          "fact_9"
+        ],
+        "available_source_fact_ids": [
+          "fact_1",
+          "fact_2"
+        ]
+      },
+      "evidence_fragment": {
+        "affected_option_refs": [
+          "option_1"
+        ],
+        "basis_fact_refs": [
+          "fact_9"
+        ],
+        "category": "financial",
+        "likelihood_hint": "medium",
+        "mechanism": "Un coste recurrente mayor absorbe capacidad presupuestaria.",
+        "severity_hint": "high",
+        "statement": "El coste fijo puede reducir el margen disponible.",
+        "trigger_conditions": [
+          "Si los ingresos tardan más de lo previsto"
+        ],
+        "uncertainty_note": "La demanda futura sigue sin confirmarse."
+      },
+      "evidence_fragment_sha256": "4dab6e35d471a527d09c533d4f73e39da8fa30751b9718170f02d9d67aca811a",
+      "provenance": {
+        "source_fixture_path": "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
+        "source_fixture_id": "S9-EVAL-012",
+        "source_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
+        "projection_rule": "Exact candidate payload fragment plus a source-derived comparison set; no schema-oracle inference is added."
+      }
+    }
+  ]
+}

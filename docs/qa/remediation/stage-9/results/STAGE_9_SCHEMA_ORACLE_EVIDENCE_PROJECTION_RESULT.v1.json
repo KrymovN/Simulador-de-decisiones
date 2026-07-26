@@ -1,0 +1,79 @@
+{
+  "artifact_version": "stage-9-schema-oracle-evidence-projection-result.1",
+  "generated_at": null,
+  "status": "PASS",
+  "baseline_commit": "d6072c5dbfda63d22cab19c9c1f082e1d22d6c3a",
+  "substep_id": "S9-FIX-01",
+  "candidate_id": "Stage 9 Schema-Oracle Evidence Projection Revision",
+  "implementation_commit_message": "fix(stage-9): expose schema oracle evidence",
+  "schema_oracle_mapping_count": 6,
+  "mappings": [
+    {
+      "fixture_id": "S9-EVAL-006",
+      "claim_id": "B5-ISSUE-001",
+      "json_path": "candidate.output.raw_response",
+      "invalid_value": "forbidden"
+    },
+    {
+      "fixture_id": "S9-EVAL-007",
+      "claim_id": "B6-ISSUE-027",
+      "json_path": "candidate.output.risks[0].advice",
+      "invalid_value": "none"
+    },
+    {
+      "fixture_id": "S9-EVAL-009",
+      "claim_id": "B6-ISSUE-029",
+      "json_path": "candidate.output.risks[0].severity_hint",
+      "invalid_value": "critical"
+    },
+    {
+      "fixture_id": "S9-EVAL-010",
+      "claim_id": "B6-ISSUE-030",
+      "json_path": "candidate.output.risks[0].likelihood_hint",
+      "invalid_value": "certain"
+    },
+    {
+      "fixture_id": "S9-EVAL-011",
+      "claim_id": "B2-ISSUE-001",
+      "json_path": "candidate.output.risks[0].affected_option_refs",
+      "invalid_value": [
+        "option_9"
+      ]
+    },
+    {
+      "fixture_id": "S9-EVAL-012",
+      "claim_id": "B3-ISSUE-002",
+      "json_path": "candidate.output.risks[0].basis_fact_refs",
+      "invalid_value": [
+        "fact_9"
+      ]
+    }
+  ],
+  "verification": {
+    "controlled_double_generation": "PASS",
+    "legacy_manifest_byte_identical": "PASS",
+    "source_fixture_byte_identical": "PASS",
+    "historical_review_artifacts_byte_identical": "PASS",
+    "runtime_ui_api_provider_diff": "NONE",
+    "bounded_diff": "PASS"
+  },
+  "post_remediation_manifest_sha256": "03e09c94629fc3cc92d3054be19b1bad4f6ee7f5d8a277cdb37657fca86b2cf9",
+  "revision_ledger_sha256": "4c896eadf51ebcb206b48c99da0e562fdf3d59c8f387235efc3585bd97e0486f",
+  "legacy_manifest_sha256": "5e95bfdf6b4626e681dbcead672c2d1463f7a14d5eacb5305b773dfa2655e65b",
+  "legacy_manifest_entry_count": 216,
+  "synthetic_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
+  "historical_review_artifact_count": 92,
+  "network_request_count": 0,
+  "mandatory_gates": {
+    "quality:stage-9-schema-oracle-evidence-projection": "PASS",
+    "quality:stage-9-synthetic-risk-evaluation": "PASS",
+    "quality:stage-9-human-review-readiness": "PASS",
+    "quality:stage-9-remediation-revision-integrity": "PASS"
+  },
+  "stage_9_status": "In Progress",
+  "remaining_remediation_substeps": 8,
+  "release_readiness": "NOT_DECLARED",
+  "runtime_integration": "CLOSED",
+  "api_simulate_mock_only": true,
+  "next_substep_executed": false
+}

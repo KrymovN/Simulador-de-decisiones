@@ -1,4 +1,5 @@
 import { createRequire } from "node:module";
+import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import Module from "node:module";
 import { dirname, join } from "node:path";
@@ -38,7 +39,167 @@ Module._load = originalLoad;
 
 export const REVIEW_MANIFEST_PATH = join(root, "docs", "qa", "review", "LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json");
 export const REVIEW_METHODOLOGY_PATH = join(root, "docs", "qa", "LEVIO_STAGE_9_HUMAN_REVIEW_METHODOLOGY.md");
+export const POST_REMEDIATION_MANIFEST_PATH = join(root, "docs", "qa", "remediation", "stage-9", "LEVIO_STAGE_9_POST_REMEDIATION_MANIFEST.json");
+export const REVISION_LEDGER_PATH = join(root, "docs", "qa", "remediation", "stage-9", "AI_REMEDIATION_REVISION_LEDGER.json");
 export const REVIEW_VERDICTS = ["PASS", "PASS_WITH_NOTE", "FAIL_MINOR", "FAIL_MAJOR", "NOT_REVIEWED"];
+export const STAGE_9_REMEDIATION_BASELINE_COMMIT = "d6072c5dbfda63d22cab19c9c1f082e1d22d6c3a";
+export const STAGE_9_SCHEMA_ORACLE_MAPPINGS = [
+  { fixture_id: "S9-EVAL-006", claim_id: "B5-ISSUE-001", mutation_type: "unknown_output_field", json_path: "candidate.output.raw_response", invalid_value: "forbidden" },
+  { fixture_id: "S9-EVAL-007", claim_id: "B6-ISSUE-027", mutation_type: "unknown_nested_field", json_path: "candidate.output.risks[0].advice", invalid_value: "none" },
+  { fixture_id: "S9-EVAL-009", claim_id: "B6-ISSUE-029", mutation_type: "invalid_severity", json_path: "candidate.output.risks[0].severity_hint", invalid_value: "critical" },
+  { fixture_id: "S9-EVAL-010", claim_id: "B6-ISSUE-030", mutation_type: "invalid_likelihood", json_path: "candidate.output.risks[0].likelihood_hint", invalid_value: "certain" },
+  { fixture_id: "S9-EVAL-011", claim_id: "B2-ISSUE-001", mutation_type: "nonexistent_option_ref", json_path: "candidate.output.risks[0].affected_option_refs", invalid_value: ["option_9"] },
+  { fixture_id: "S9-EVAL-012", claim_id: "B3-ISSUE-002", mutation_type: "nonexistent_fact_ref", json_path: "candidate.output.risks[0].basis_fact_refs", invalid_value: ["fact_9"] },
+];
+
+const SYNTHETIC_FIXTURE_PATH = "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts";
+const LEGACY_MANIFEST_PATH = "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json";
+const LEGACY_MANIFEST_SHA256 = "5e95bfdf6b4626e681dbcead672c2d1463f7a14d5eacb5305b773dfa2655e65b";
+const SYNTHETIC_FIXTURE_SHA256 = "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b";
+
+function canonicalize(value) {
+  if (Array.isArray(value)) return value.map(canonicalize);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.keys(value).sort().map((key) => [key, canonicalize(value[key])]));
+  }
+  return value;
+}
+
+function sha256(value) {
+  return createHash("sha256").update(value).digest("hex");
+}
+
+function evidenceFragmentFor(fixture, mapping) {
+  if (mapping.fixture_id === "S9-EVAL-006") return fixture.candidate.output;
+  if (["S9-EVAL-007", "S9-EVAL-009", "S9-EVAL-010", "S9-EVAL-011", "S9-EVAL-012"].includes(mapping.fixture_id)) {
+    return fixture.candidate.output.risks[0];
+  }
+  throw new Error(`Unsupported schema-oracle mapping ${mapping.fixture_id}`);
+}
+
+function comparisonSetFor(fixture, mapping, sourceFixture) {
+  if (mapping.fixture_id === "S9-EVAL-006") {
+    return {
+      candidate_container_keys: Object.keys(fixture.candidate.output).sort(),
+      source_valid_container_keys: Object.keys(sourceFixture.candidate.output).sort(),
+    };
+  }
+  if (mapping.fixture_id === "S9-EVAL-007") {
+    return {
+      candidate_risk_keys: Object.keys(fixture.candidate.output.risks[0]).sort(),
+      source_valid_risk_keys: Object.keys(sourceFixture.candidate.output.risks[0]).sort(),
+    };
+  }
+  if (mapping.fixture_id === "S9-EVAL-009") {
+    return {
+      candidate_values: [...new Set(fixture.candidate.output.risks.map((risk) => risk.severity_hint))].sort(),
+      source_valid_values: [...new Set(sourceFixture.candidate.output.risks.map((risk) => risk.severity_hint))].sort(),
+    };
+  }
+  if (mapping.fixture_id === "S9-EVAL-010") {
+    return {
+      candidate_values: [...new Set(fixture.candidate.output.risks.map((risk) => risk.likelihood_hint))].sort(),
+      source_valid_values: [...new Set(sourceFixture.candidate.output.risks.map((risk) => risk.likelihood_hint))].sort(),
+    };
+  }
+  if (mapping.fixture_id === "S9-EVAL-011") {
+    return {
+      candidate_references: fixture.candidate.output.risks[0].affected_option_refs,
+      available_source_option_ids: fixture.input.options.map((_, index) => `option_${index + 1}`),
+    };
+  }
+  if (mapping.fixture_id === "S9-EVAL-012") {
+    return {
+      candidate_references: fixture.candidate.output.risks[0].basis_fact_refs,
+      available_source_fact_ids: fixture.input.known_facts.map((_, index) => `fact_${index + 1}`),
+    };
+  }
+  throw new Error(`Unsupported schema-oracle mapping ${mapping.fixture_id}`);
+}
+
+function schemaOracleProjectionEntry(mapping, fixturesById, sourceFixture) {
+  const fixture = fixturesById.get(mapping.fixture_id);
+  if (!fixture) throw new Error(`Missing synthetic fixture ${mapping.fixture_id}`);
+  const evidenceFragment = canonicalize(evidenceFragmentFor(fixture, mapping));
+  return {
+    fixture_id: mapping.fixture_id,
+    claim_id: mapping.claim_id,
+    mutation_type: mapping.mutation_type,
+    json_path: mapping.json_path,
+    invalid_value: mapping.invalid_value,
+    comparison_set: comparisonSetFor(fixture, mapping, sourceFixture),
+    evidence_fragment: evidenceFragment,
+    evidence_fragment_sha256: sha256(JSON.stringify(evidenceFragment)),
+    provenance: {
+      source_fixture_path: SYNTHETIC_FIXTURE_PATH,
+      source_fixture_id: mapping.fixture_id,
+      source_fixture_sha256: SYNTHETIC_FIXTURE_SHA256,
+      projection_rule: "Exact candidate payload fragment plus a source-derived comparison set; no schema-oracle inference is added.",
+    },
+  };
+}
+
+export function buildPostRemediationManifest() {
+  const fixturesById = new Map(SYNTHETIC_RISK_EVALUATION_FIXTURES.map((fixture) => [fixture.case_id, fixture]));
+  const sourceFixture = fixturesById.get("S9-EVAL-001");
+  if (!sourceFixture) throw new Error("Missing valid source fixture S9-EVAL-001");
+  const schemaOracleEvidence = STAGE_9_SCHEMA_ORACLE_MAPPINGS.map((mapping) =>
+    schemaOracleProjectionEntry(mapping, fixturesById, sourceFixture));
+
+  return {
+    package_version: "stage-9-post-remediation-manifest.1",
+    generated_at: null,
+    baseline_commit: STAGE_9_REMEDIATION_BASELINE_COMMIT,
+    substep_id: "S9-FIX-01",
+    candidate_id: "Stage 9 Schema-Oracle Evidence Projection Revision",
+    scope: "Versioned sibling projection only; legacy review evidence and runtime behavior remain unchanged.",
+    source_integrity: {
+      legacy_manifest_path: LEGACY_MANIFEST_PATH,
+      legacy_manifest_sha256: LEGACY_MANIFEST_SHA256,
+      legacy_manifest_entry_count: 216,
+      synthetic_fixture_path: SYNTHETIC_FIXTURE_PATH,
+      synthetic_fixture_sha256: SYNTHETIC_FIXTURE_SHA256,
+    },
+    summary: {
+      schema_oracle_mapping_count: schemaOracleEvidence.length,
+      network_request_count: 0,
+      runtime_change_count: 0,
+    },
+    schema_oracle_evidence: schemaOracleEvidence,
+  };
+}
+
+export function serializePostRemediationManifest() {
+  return `${JSON.stringify(buildPostRemediationManifest(), null, 2)}\n`;
+}
+
+export function buildRemediationRevisionLedger() {
+  const manifest = buildPostRemediationManifest();
+  return {
+    ledger_version: "stage-9-ai-remediation-revision-ledger.1",
+    append_only: true,
+    generated_at: null,
+    baseline_commit: STAGE_9_REMEDIATION_BASELINE_COMMIT,
+    substep_id: "S9-FIX-01",
+    candidate_id: manifest.candidate_id,
+    revision_count: manifest.schema_oracle_evidence.length,
+    revisions: manifest.schema_oracle_evidence.map((entry, index) => ({
+      revision_id: `S9-FIX-01-REV-${String(index + 1).padStart(3, "0")}`,
+      operation: "ADD_VERSIONED_SCHEMA_ORACLE_EVIDENCE",
+      fixture_id: entry.fixture_id,
+      claim_id: entry.claim_id,
+      json_path: entry.json_path,
+      source_fixture_sha256: entry.provenance.source_fixture_sha256,
+      legacy_manifest_sha256: manifest.source_integrity.legacy_manifest_sha256,
+      evidence_fragment_sha256: entry.evidence_fragment_sha256,
+      implementation_commit_message: "fix(stage-9): expose schema oracle evidence",
+    })),
+  };
+}
+
+export function serializeRemediationRevisionLedger() {
+  return `${JSON.stringify(buildRemediationRevisionLedger(), null, 2)}\n`;
+}
 
 const pendingReview = () => ({
   verdict: "NOT_REVIEWED",
