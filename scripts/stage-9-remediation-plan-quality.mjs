@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -9,6 +9,7 @@ const baseline = "6b04c405a2a8aaba9e9c3e164413a9d954ee04af";
 const read = (...parts) => readFileSync(join(root, ...parts), "utf8");
 const json = (...parts) => JSON.parse(read(...parts));
 const sha = (value) => createHash("sha256").update(value).digest("hex");
+const same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
 const baselineBuffer = (path) => execFileSync("git", ["show", `${baseline}:${path}`], { cwd: root });
 const checks = [];
 const add = (id, pass, detail) => checks.push({ id, pass: Boolean(pass), detail });
@@ -133,6 +134,203 @@ const diff = [...new Set([...changed, ...untracked])].sort();
 const repositoryPathCollectionValid = [...changed, ...untracked].every((path) =>
   path && !path.startsWith("/") && path === normalizeRepoPath(path) && !path.startsWith(".git/"));
 const exactPlanningDiff = diff.length === allowed.size && diff.every((path) => allowed.has(path));
+const qualityControlProfileAllowed = [
+  "scripts/stage-9-remediation-plan-quality.mjs",
+  "scripts/stage-9-remediation-revision-integrity-quality.mjs",
+].sort();
+const s9Fix02ImplementationAllowlist = [
+  "lib/ai-decision-material/fixtures.ts",
+  "scripts/stage-9-systemic-contradiction-reference-quality.mjs",
+  "package.json",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json",
+  "docs/qa/remediation/stage-9/results/STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_RESULT.v1.json",
+  "PROJECT_CONTEXT.md",
+];
+const s9Fix02ResultArtifact = "docs/qa/remediation/stage-9/results/STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_RESULT.v1.json";
+const s9Fix02StatusHeading = "## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026";
+const revisionIntegrityScriptPath = join(
+  root,
+  "scripts",
+  "stage-9-remediation-revision-integrity-quality.mjs",
+);
+
+function runRevisionIntegritySelfTest() {
+  const result = spawnSync(
+    process.execPath,
+    [revisionIntegrityScriptPath, "--self-test-json"],
+    { cwd: root, encoding: "utf8" },
+  );
+  return {
+    status: result.status,
+    stdout: result.stdout ?? "",
+    stderr: result.stderr ?? "",
+    error: result.error ? String(result.error.message ?? result.error) : null,
+  };
+}
+
+function parseSelfTestContract(run) {
+  if (run.error || run.status !== 0 || run.stderr !== "") return null;
+  try {
+    return JSON.parse(run.stdout);
+  } catch {
+    return null;
+  }
+}
+
+function validSelfTestContract(contract) {
+  return contract?.profile === "S9-FIX-02_PROSPECTIVE_APPEND_ONLY"
+    && contract.positive_profile?.passed === true
+    && contract.negative_cases?.total === 12
+    && contract.negative_cases?.passed === 12
+    && Array.isArray(contract.negative_cases?.failed)
+    && contract.negative_cases.failed.length === 0
+    && same(contract.closed_profile?.supported_substeps, ["S9-FIX-02"])
+    && contract.closed_profile?.future_event_wildcard === false
+    && same(contract.closed_profile?.implementation_allowlist, s9Fix02ImplementationAllowlist)
+    && contract.closed_profile?.result_artifact_path === s9Fix02ResultArtifact
+    && contract.closed_profile?.project_context_section === s9Fix02StatusHeading
+    && contract.baseline_invariants?.s9_fix_01_event_boundary_preserved === true
+    && contract.baseline_invariants?.revision_count === 6
+    && contract.baseline_invariants?.mapping_order_preserved === true
+    && contract.baseline_invariants?.hash_chain_preserved === true
+    && contract.baseline_invariants?.result_integrity_preserved === true
+    && contract.deterministic === true
+    && contract.network_request_count === 0;
+}
+
+function qualityControlProfileSemantics({
+  candidateDiff,
+  selfTestRuns,
+  collectionValid = true,
+  canonicalContractsChanged = false,
+}) {
+  const normalizedCandidateDiff = [...new Set(candidateDiff.map(normalizeRepoPath))].sort();
+  const exactDiff = collectionValid
+    && same(normalizedCandidateDiff, qualityControlProfileAllowed)
+    && candidateDiff.every((path) =>
+      path === normalizeRepoPath(path) && !path.startsWith("/") && !path.startsWith(".git/"));
+  const parsedContracts = selfTestRuns.map(parseSelfTestContract);
+  const selfTestValid = parsedContracts.length === 2
+    && parsedContracts.every(validSelfTestContract)
+    && selfTestRuns[0].stdout === selfTestRuns[1].stdout;
+  return exactDiff && selfTestValid && !canonicalContractsChanged;
+}
+
+const selfTestRuns = [
+  runRevisionIntegritySelfTest(),
+  runRevisionIntegritySelfTest(),
+];
+const actualSelfTestContract = parseSelfTestContract(selfTestRuns[0]);
+const fixtureSelfTestContract = structuredClone(actualSelfTestContract ?? {
+  profile: "S9-FIX-02_PROSPECTIVE_APPEND_ONLY",
+  positive_profile: { passed: true },
+  negative_cases: { total: 12, passed: 12, failed: [] },
+  closed_profile: {
+    supported_substeps: ["S9-FIX-02"],
+    future_event_wildcard: false,
+    implementation_allowlist: s9Fix02ImplementationAllowlist,
+    result_artifact_path: s9Fix02ResultArtifact,
+    project_context_section: s9Fix02StatusHeading,
+  },
+  baseline_invariants: {
+    s9_fix_01_event_boundary_preserved: true,
+    revision_count: 6,
+    mapping_order_preserved: true,
+    hash_chain_preserved: true,
+    result_integrity_preserved: true,
+  },
+  deterministic: true,
+  network_request_count: 0,
+});
+const selfTestRun = (contract = fixtureSelfTestContract, status = 0) => ({
+  status,
+  stdout: `${JSON.stringify(contract, null, 2)}\n`,
+  stderr: "",
+  error: null,
+});
+const mutateSelfTest = (mutator) => {
+  const copy = structuredClone(fixtureSelfTestContract);
+  mutator(copy);
+  return copy;
+};
+const planningProfileNegativeResults = [
+  ["missing-revision-integrity-script", qualityControlProfileSemantics({
+    candidateDiff: qualityControlProfileAllowed.filter((path) =>
+      path !== "scripts/stage-9-remediation-revision-integrity-quality.mjs"),
+    selfTestRuns: [selfTestRun(), selfTestRun()],
+  })],
+  ["missing-planning-gate", qualityControlProfileSemantics({
+    candidateDiff: qualityControlProfileAllowed.filter((path) =>
+      path !== "scripts/stage-9-remediation-plan-quality.mjs"),
+    selfTestRuns: [selfTestRun(), selfTestRun()],
+  })],
+  ["third-tracked-file", qualityControlProfileSemantics({
+    candidateDiff: [...qualityControlProfileAllowed, "third-tracked.file"],
+    selfTestRuns: [selfTestRun(), selfTestRun()],
+  })],
+  ["unrelated-untracked-file", qualityControlProfileSemantics({
+    candidateDiff: [...qualityControlProfileAllowed, "unrelated-untracked.file"],
+    selfTestRuns: [selfTestRun(), selfTestRun()],
+  })],
+  ["malformed-self-test-json", qualityControlProfileSemantics({
+    candidateDiff: qualityControlProfileAllowed,
+    selfTestRuns: [
+      { status: 0, stdout: "{malformed", stderr: "", error: null },
+      selfTestRun(),
+    ],
+  })],
+  ["self-test-nonzero-exit", qualityControlProfileSemantics({
+    candidateDiff: qualityControlProfileAllowed,
+    selfTestRuns: [selfTestRun(fixtureSelfTestContract, 1), selfTestRun()],
+  })],
+  ["positive-profile-false", qualityControlProfileSemantics({
+    candidateDiff: qualityControlProfileAllowed,
+    selfTestRuns: [selfTestRun(mutateSelfTest((value) => {
+      value.positive_profile.passed = false;
+    })), selfTestRun()],
+  })],
+  ["negative-total-not-twelve", [
+    11,
+    13,
+  ].every((total) => !qualityControlProfileSemantics({
+    candidateDiff: qualityControlProfileAllowed,
+    selfTestRuns: [selfTestRun(mutateSelfTest((value) => {
+      value.negative_cases.total = total;
+    })), selfTestRun()],
+  }))],
+  ["negative-passed-less-than-twelve", qualityControlProfileSemantics({
+    candidateDiff: qualityControlProfileAllowed,
+    selfTestRuns: [selfTestRun(mutateSelfTest((value) => {
+      value.negative_cases.passed = 11;
+    })), selfTestRun()],
+  })],
+  ["failed-list-not-empty", qualityControlProfileSemantics({
+    candidateDiff: qualityControlProfileAllowed,
+    selfTestRuns: [selfTestRun(mutateSelfTest((value) => {
+      value.negative_cases.failed = ["forced-failure"];
+    })), selfTestRun()],
+  })],
+  ["future-event-wildcard", qualityControlProfileSemantics({
+    candidateDiff: qualityControlProfileAllowed,
+    selfTestRuns: [selfTestRun(mutateSelfTest((value) => {
+      value.closed_profile.future_event_wildcard = true;
+    })), selfTestRun()],
+  })],
+  ["canonical-contract-change", qualityControlProfileSemantics({
+    candidateDiff: qualityControlProfileAllowed,
+    selfTestRuns: [selfTestRun(), selfTestRun()],
+    canonicalContractsChanged: true,
+  })],
+];
+const planningProfileNegativeChecksPass =
+  planningProfileNegativeResults.length === 12
+  && planningProfileNegativeResults.every(([id, accepted]) =>
+    id === "negative-total-not-twelve" ? accepted === true : accepted === false);
+const exactQualityControlProfile = qualityControlProfileSemantics({
+  candidateDiff: diff,
+  selfTestRuns,
+  collectionValid: repositoryPathCollectionValid,
+}) && planningProfileNegativeChecksPass;
 const contractAlignmentAllowed = [
   "scripts/stage-9-remediation-plan-quality.mjs",
   "docs/qa/remediation/stage-9/STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_SPEC.v1.md",
@@ -269,7 +467,6 @@ const contradictionResultPath = "docs/qa/remediation/stage-9/results/STAGE_9_SYS
 const contradictionStatusHeading = "## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026";
 const contradictionCommitMessage = "fix(stage-9): correct contradiction references";
 const rejectedGenderInterpretation = "Grammatical gender is non-material unless actor, modality, negation, urgency, or risk changes.";
-const same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
 const headSequenceForContradiction = JSON.parse(execFileSync("git", ["show", "HEAD:docs/qa/remediation/stage-9/AI_REMEDIATION_SEQUENCE.v1.json"], { cwd: root, encoding: "utf8" }));
 const headRegistryForContradiction = JSON.parse(execFileSync("git", ["show", "HEAD:docs/qa/remediation/stage-9/AI_REMEDIATION_CANDIDATE_REGISTRY.v2.json"], { cwd: root, encoding: "utf8" }));
 
@@ -379,21 +576,23 @@ const exactContradictionContractAlignmentSemantics =
   && negativeContradictionProfileCasesRejected;
 const boundedDiffProfile = diff.length === 0
   ? "clean-tree"
-  : exactPlanningDiff
-    ? "full-planning"
-    : exactContractAlignmentSemantics
-      ? "schema-oracle-remediation-contract-alignment"
-      : exactFixtureContractAlignmentSemantics
-        ? "schema-oracle-fixture-contract-alignment"
-        : exactContradictionContractAlignmentSemantics
-          ? "systemic-contradiction-remediation-contract-alignment"
-          : "rejected";
+  : exactQualityControlProfile
+    ? "remediation-revision-integrity-quality-control"
+    : exactPlanningDiff
+      ? "full-planning"
+      : exactContractAlignmentSemantics
+        ? "schema-oracle-remediation-contract-alignment"
+        : exactFixtureContractAlignmentSemantics
+          ? "schema-oracle-fixture-contract-alignment"
+          : exactContradictionContractAlignmentSemantics
+            ? "systemic-contradiction-remediation-contract-alignment"
+            : "rejected";
 add(
   "bounded-diff",
   boundedDiffProfile !== "rejected",
   boundedDiffProfile === "rejected"
-    ? `Profile rejected. Repository paths: ${diff.join(", ")}; tracked: ${changed.join(", ")}; untracked: ${untracked.join(", ")}; normalized=${repositoryPathCollectionValid}; contradiction-contract semantic=${contradictionContractSemantics(sequence, registry, contradictionSpecText, diff, repositoryPathCollectionValid)}; negative-cases=${negativeContradictionProfileCasesRejected}.`
-    : `Profile ${boundedDiffProfile} accepted.${boundedDiffProfile === "systemic-contradiction-remediation-contract-alignment" ? ` Repository-backed classifier included tracked and untracked paths: ${diff.join(", ")}. All negative cases rejected.` : ""}`,
+    ? `Profile rejected. Repository paths: ${diff.join(", ")}; tracked: ${changed.join(", ")}; untracked: ${untracked.join(", ")}; normalized=${repositoryPathCollectionValid}; quality-control semantic=${qualityControlProfileSemantics({ candidateDiff: diff, selfTestRuns, collectionValid: repositoryPathCollectionValid })}; machine-self-test=${validSelfTestContract(actualSelfTestContract)}; planning-negative-cases=${planningProfileNegativeChecksPass}; contradiction-contract semantic=${contradictionContractSemantics(sequence, registry, contradictionSpecText, diff, repositoryPathCollectionValid)}; contradiction negative-cases=${negativeContradictionProfileCasesRejected}.`
+    : `Profile ${boundedDiffProfile} accepted.${boundedDiffProfile === "remediation-revision-integrity-quality-control" ? ` Exact two-file quality-control diff: ${diff.join(", ")}. Machine-readable self-test PASS; planning-profile negative checks 12/12.` : boundedDiffProfile === "systemic-contradiction-remediation-contract-alignment" ? ` Repository-backed classifier included tracked and untracked paths: ${diff.join(", ")}. All negative cases rejected.` : ""}`,
 );
 add("network-zero", networkRequests === 0, `${networkRequests} network requests.`);
 
