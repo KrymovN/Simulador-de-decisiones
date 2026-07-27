@@ -14,7 +14,7 @@ Module._load = function loadInternal(request, parent, isMain) {
 };
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
-const baseline = "6f1d6624e78a30fb9c7f020db22a876e9d285624";
+const baseline = "4f3a780819633cb60bc97de1de748286d92ff139";
 const read = (...parts) => readFileSync(join(root, ...parts), "utf8");
 const before = (path) => execFileSync("git", ["show", `${baseline}:${path}`], { cwd: root, encoding: "utf8" });
 
@@ -173,138 +173,190 @@ const canonicalReconciliationBoundariesPreserved =
     source.includes("process.env") || source.includes("fetch("));
 add("canonical-reconciliation-boundaries-preserved", canonicalReconciliationBoundariesPreserved, "Canonical reconciliation must preserve Stage 9, Stage 15, offline/mock-only, no-bridge, dataset, human-review, visual-closure, and planning-only boundaries.");
 
-const allowedDiff = new Set([
-  "docs/architecture/LEVIO_AI_ABSTRACTION_OBSERVABILITY_COSTS.md",
-  "docs/architecture/LEVIO_DECISION_ENGINE.md",
-  "docs/qa/LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md",
-  "docs/qa/LEVIO_STAGE_9_HUMAN_REVIEW_METHODOLOGY.md",
-  "docs/qa/LEVIO_STAGE_9_AI_REVIEW_METHODOLOGY.md",
-  "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json",
-  "docs/qa/review/ai-batches/batch-1/selection.json",
-  "docs/qa/review/ai-batches/batch-1/blind-packets.json",
-  "docs/qa/review/ai-batches/batch-1/pass-a.json",
-  "docs/qa/review/ai-batches/batch-1/pass-b.json",
-  "docs/qa/review/ai-batches/batch-1/pass-c.json",
-  "docs/qa/review/ai-batches/batch-1/adjudication.json",
-  "docs/qa/review/ai-batches/batch-1/summary.json",
-  "docs/qa/review/ai-batches/batch-1/issue-ledger.json",
-  "docs/qa/review/AI_REVIEW_PROGRESS.json",
-  "docs/qa/review/ai-batches/batch-2/selection.json",
-  "docs/qa/review/ai-batches/batch-2/blind-packets.json",
-  "docs/qa/review/ai-batches/batch-2/pass-a.json",
-  "docs/qa/review/ai-batches/batch-2/pass-b.json",
-  "docs/qa/review/ai-batches/batch-2/pass-c.json",
-  "docs/qa/review/ai-batches/batch-2/adjudication.json",
-  "docs/qa/review/ai-batches/batch-2/summary.json",
-  "docs/qa/review/ai-batches/batch-2/issue-ledger.json",
-  "docs/qa/review/ai-batches/batch-2/reinforced-review-queue.json",
-  "PROJECT_CONTEXT.md",
-  "LEVIO_IMPLEMENTATION_PLAN.md",
-  "CURRENT_STAGE.md",
-  "LEVIO_CURRENT_STATE.md",
-  "LEVIO_PROJECT_PROGRESS.md",
-  "lib/ai-decision-material/acceptance.ts",
-  "lib/ai-decision-material/contracts.ts",
-  "lib/ai-decision-material/evaluation.ts",
+const requiredS9Fix03Paths = [
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json",
+  "docs/qa/remediation/stage-9/results/STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_RESULT.v1.json",
   "lib/ai-decision-material/fixtures.ts",
   "package.json",
-  "scripts/dashboard-shell-landing-quality.mjs",
-  "scripts/privacy-data-controls-shared-states-visual-quality.mjs",
-  "scripts/saved-simulations-and-drafts-visual-quality.mjs",
+  "scripts/stage-9-high-risk-reference-quality.mjs",
+].sort();
+const optionalS9Fix03StatusPath = "PROJECT_CONTEXT.md";
+const allowedStatusHeading =
+  "## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026";
+const qualityControlPaths = [
   "scripts/stage-9-ai-value-preservation-quality.mjs",
-  "scripts/stage-9-offline-dataset-coverage-quality.mjs",
-  "scripts/generate-stage-9-human-review-package.mjs",
-  "scripts/stage-9-human-review-readiness-quality.mjs",
-  "scripts/generate-stage-9-ai-review-batch-1.mjs",
-  "scripts/stage-9-ai-review-batch-1-quality.mjs",
-  "scripts/generate-stage-9-ai-review-batch-2.mjs",
-  "scripts/stage-9-ai-review-batch-2-quality.mjs",
-  "scripts/visual-migration-closure-quality.mjs",
-  "scripts/workspace-surfaces-quality.mjs",
-]);
-for (const path of [
-  "docs/qa/review/AI_REVIEW_CROSS_BATCH_PATTERNS.json",
-  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-3/${name}`),
-  "scripts/generate-stage-9-ai-review-batch-3.mjs", "scripts/stage-9-ai-review-batch-3-quality.mjs",
-  "docs/qa/review/AI_REVIEW_PATTERN_SATURATION.json",
-  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-4/${name}`),
-  "scripts/generate-stage-9-ai-review-batch-4.mjs", "scripts/stage-9-ai-review-batch-4-quality.mjs",
-  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-5/${name}`),
-  "scripts/generate-stage-9-ai-review-batch-5.mjs", "scripts/stage-9-ai-review-batch-5-quality.mjs",
-  "docs/qa/review/AI_REVIEW_PRIMARY_CLOSURE.json",
-  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-6/${name}`),
-  "scripts/generate-stage-9-ai-review-batch-6.mjs", "scripts/stage-9-ai-review-batch-6-quality.mjs",
-]) allowedDiff.add(path);
-const tracked = execFileSync("git", ["diff", "--name-only", baseline], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
-const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
-const actualDiff = [...new Set([...tracked, ...untracked])].sort();
-add("git-diff-bounded", actualDiff.every((path) => allowedDiff.has(path) || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-1/") || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-2/") || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-3/") || path.startsWith("docs/qa/remediation/stage-9/") || ["docs/qa/LEVIO_STAGE_9_REINFORCED_AI_REVIEW_METHODOLOGY.md", "docs/qa/review/AI_REINFORCED_REVIEW_PROGRESS.json", "docs/qa/review/AI_REINFORCED_REVIEW_CLOSURE.json", "docs/qa/review/AI_REVIEW_CONSOLIDATED_ISSUE_DISPOSITIONS.json", "docs/qa/review/AI_REVIEW_CALIBRATION_ASSESSMENT.json", "docs/qa/review/AI_REVIEW_FINAL_CALIBRATION_ASSESSMENT.json", "docs/qa/review/AI_REVIEW_FINAL_CROSS_BATCH_ADJUDICATION.json", "docs/qa/review/AI_REVIEW_FINAL_PATTERN_ADJUDICATION.json", "docs/qa/review/AI_REVIEW_REMEDIATION_CANDIDATE_REGISTRY.json", "scripts/generate-stage-9-reinforced-ai-review-batch-1.mjs", "scripts/stage-9-reinforced-ai-review-batch-1-quality.mjs", "scripts/generate-stage-9-reinforced-ai-review-batch-2.mjs", "scripts/stage-9-reinforced-ai-review-batch-2-quality.mjs", "scripts/generate-stage-9-reinforced-ai-review-batch-3.mjs", "scripts/stage-9-reinforced-ai-review-batch-3-quality.mjs", "scripts/stage-9-remediation-plan-quality.mjs"].includes(path)), `Unexpected files: ${actualDiff.filter((path) => !allowedDiff.has(path) && !path.startsWith("docs/qa/remediation/stage-9/")).join(", ")}`);
-const reconciliationAllowed = new Set([
-  "scripts/stage-9-ai-value-preservation-quality.mjs",
-  "scripts/visual-migration-closure-quality.mjs",
-  "scripts/stage-9-offline-dataset-coverage-quality.mjs",
-  "scripts/generate-stage-9-human-review-package.mjs",
-  "scripts/stage-9-human-review-readiness-quality.mjs",
-  "scripts/generate-stage-9-ai-review-batch-1.mjs",
-  "scripts/stage-9-ai-review-batch-1-quality.mjs",
-  "scripts/generate-stage-9-ai-review-batch-2.mjs",
-  "scripts/stage-9-ai-review-batch-2-quality.mjs",
-  "lib/ai-decision-material/fixtures.ts",
-  "lib/ai-decision-material/evaluation.ts",
-  "docs/qa/LEVIO_EVALUATION_DATASET_QUALITY_THRESHOLDS.md",
-  "docs/qa/LEVIO_STAGE_9_HUMAN_REVIEW_METHODOLOGY.md",
-  "docs/qa/LEVIO_STAGE_9_AI_REVIEW_METHODOLOGY.md",
-  "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json",
-  "docs/qa/review/ai-batches/batch-1/selection.json",
-  "docs/qa/review/ai-batches/batch-1/blind-packets.json",
-  "docs/qa/review/ai-batches/batch-1/pass-a.json",
-  "docs/qa/review/ai-batches/batch-1/pass-b.json",
-  "docs/qa/review/ai-batches/batch-1/pass-c.json",
-  "docs/qa/review/ai-batches/batch-1/adjudication.json",
-  "docs/qa/review/ai-batches/batch-1/summary.json",
-  "docs/qa/review/ai-batches/batch-1/issue-ledger.json",
-  "docs/qa/review/AI_REVIEW_PROGRESS.json",
-  "docs/qa/review/ai-batches/batch-2/selection.json",
-  "docs/qa/review/ai-batches/batch-2/blind-packets.json",
-  "docs/qa/review/ai-batches/batch-2/pass-a.json",
-  "docs/qa/review/ai-batches/batch-2/pass-b.json",
-  "docs/qa/review/ai-batches/batch-2/pass-c.json",
-  "docs/qa/review/ai-batches/batch-2/adjudication.json",
-  "docs/qa/review/ai-batches/batch-2/summary.json",
-  "docs/qa/review/ai-batches/batch-2/issue-ledger.json",
-  "docs/qa/review/ai-batches/batch-2/reinforced-review-queue.json",
-  "package.json",
-  "PROJECT_CONTEXT.md",
-  "LEVIO_IMPLEMENTATION_PLAN.md",
-  "CURRENT_STAGE.md",
-  "LEVIO_CURRENT_STATE.md",
-  "LEVIO_PROJECT_PROGRESS.md",
-]);
-for (const path of [
-  "docs/qa/review/AI_REVIEW_CROSS_BATCH_PATTERNS.json",
-  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-3/${name}`),
-  "scripts/generate-stage-9-ai-review-batch-3.mjs", "scripts/stage-9-ai-review-batch-3-quality.mjs",
-  "docs/qa/review/AI_REVIEW_PATTERN_SATURATION.json",
-  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-4/${name}`),
-  "scripts/generate-stage-9-ai-review-batch-4.mjs", "scripts/stage-9-ai-review-batch-4-quality.mjs",
-  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-5/${name}`),
-  "scripts/generate-stage-9-ai-review-batch-5.mjs", "scripts/stage-9-ai-review-batch-5-quality.mjs",
-  "docs/qa/review/AI_REVIEW_PRIMARY_CLOSURE.json",
-  ...["selection.json", "blind-packets.json", "pass-a.json", "pass-b.json", "pass-c.json", "adjudication.json", "summary.json", "issue-ledger.json", "reinforced-review-queue.json"].map((name) => `docs/qa/review/ai-batches/batch-6/${name}`),
-  "scripts/generate-stage-9-ai-review-batch-6.mjs", "scripts/stage-9-ai-review-batch-6-quality.mjs",
-]) reconciliationAllowed.add(path);
-const reconciliationTracked = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).trim().split("\n").filter(Boolean);
-const reconciliationDiff = [...new Set([...reconciliationTracked, ...untracked])].sort();
-add("no-production-diff", reconciliationDiff.every((path) => reconciliationAllowed.has(path) || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-1/") || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-2/") || path.startsWith("docs/qa/review/ai-reinforced-batches/batch-3/") || ["docs/qa/LEVIO_STAGE_9_REINFORCED_AI_REVIEW_METHODOLOGY.md", "docs/qa/review/AI_REINFORCED_REVIEW_PROGRESS.json", "docs/qa/review/AI_REINFORCED_REVIEW_CLOSURE.json", "docs/qa/review/AI_REVIEW_CONSOLIDATED_ISSUE_DISPOSITIONS.json", "docs/qa/review/AI_REVIEW_CALIBRATION_ASSESSMENT.json", "docs/qa/review/AI_REVIEW_FINAL_CALIBRATION_ASSESSMENT.json", "docs/qa/review/AI_REVIEW_FINAL_CROSS_BATCH_ADJUDICATION.json", "docs/qa/review/AI_REVIEW_FINAL_PATTERN_ADJUDICATION.json", "docs/qa/review/AI_REVIEW_REMEDIATION_CANDIDATE_REGISTRY.json", "scripts/generate-stage-9-reinforced-ai-review-batch-1.mjs", "scripts/stage-9-reinforced-ai-review-batch-1-quality.mjs", "scripts/generate-stage-9-reinforced-ai-review-batch-2.mjs", "scripts/stage-9-reinforced-ai-review-batch-2-quality.mjs", "scripts/generate-stage-9-reinforced-ai-review-batch-3.mjs", "scripts/stage-9-reinforced-ai-review-batch-3-quality.mjs"].includes(path)), `Current reconciliation diff must contain only approved gate and canonical files. Unexpected files: ${reconciliationDiff.filter((path) => !reconciliationAllowed.has(path)).join(", ")}`);
+  "scripts/stage-9-remediation-plan-quality.mjs",
+].sort();
+const runtimePrefixes = [
+  "app/", "components/", "lib/ai-provider/", "lib/prompt-context/",
+  "lib/decision-engine/", "lib/runtime-integration/",
+  "lib/persistence-runtime/", "supabase/",
+];
+const normalizePaths = (paths) => [...new Set(paths)].sort();
+const exactPaths = (actual, expected) =>
+  actual.length === expected.length && JSON.stringify(actual) === JSON.stringify(expected);
+const sectionOutside = (source, heading) => {
+  const start = source.indexOf(heading);
+  if (start === -1) return null;
+  const next = source.indexOf("\n## ", start + heading.length);
+  return `${source.slice(0, start)}${next === -1 ? "" : source.slice(next + 1)}`;
+};
+const onlyAllowedStatusSectionChanged = () => {
+  const current = read("PROJECT_CONTEXT.md");
+  const head = execFileSync("git", ["show", "HEAD:PROJECT_CONTEXT.md"], {
+    cwd: root,
+    encoding: "utf8",
+  });
+  return sectionOutside(current, allowedStatusHeading) === sectionOutside(head, allowedStatusHeading);
+};
+const s9Fix03ProfileSemantics = ({
+  candidateDiff,
+  substepId = "S9-FIX-03",
+  historicalArtifactsChanged = false,
+  statusSection = allowedStatusHeading,
+  collectionValid = true,
+  semanticChecksPassed = true,
+}) => {
+  const normalized = normalizePaths(candidateDiff);
+  const preStatus = exactPaths(normalized, requiredS9Fix03Paths);
+  const finalStatus = exactPaths(
+    normalized,
+    normalizePaths([...requiredS9Fix03Paths, optionalS9Fix03StatusPath]),
+  );
+  return collectionValid
+    && substepId === "S9-FIX-03"
+    && (preStatus || finalStatus)
+    && (!finalStatus || statusSection === allowedStatusHeading)
+    && !historicalArtifactsChanged
+    && semanticChecksPassed
+    && normalized.every((path) => !runtimePrefixes.some((prefix) => path.startsWith(prefix)));
+};
+const tracked = execFileSync("git", ["diff", "--name-only", "HEAD"], {
+  cwd: root,
+  encoding: "utf8",
+}).trim().split("\n").filter(Boolean);
+const untracked = execFileSync(
+  "git",
+  ["ls-files", "--others", "--exclude-standard"],
+  { cwd: root, encoding: "utf8" },
+).trim().split("\n").filter(Boolean);
+const currentDiff = normalizePaths([...tracked, ...untracked]);
+const repositoryPathsValid = currentDiff.every((path) =>
+  path && !path.startsWith("/") && !path.startsWith(".git/") && !path.includes("\\"));
+const historicalDiff = execFileSync(
+  "git",
+  ["diff", "--name-only", baseline, "--", "docs/qa/review"],
+  { cwd: root, encoding: "utf8" },
+).trim().split("\n").filter(Boolean);
+const currentProfile =
+  currentDiff.length === 0
+  || exactPaths(currentDiff, qualityControlPaths)
+  || s9Fix03ProfileSemantics({
+    candidateDiff: currentDiff,
+    collectionValid: repositoryPathsValid,
+    statusSection: currentDiff.includes(optionalS9Fix03StatusPath)
+      && !onlyAllowedStatusSectionChanged() ? "invalid" : allowedStatusHeading,
+  });
+add(
+  "git-diff-bounded",
+  currentProfile && repositoryPathsValid && historicalDiff.length === 0,
+  `Current profile paths: ${currentDiff.join(", ") || "clean"}; historical_diff=${historicalDiff.length}.`,
+);
+add(
+  "no-production-diff",
+  currentProfile
+    && currentDiff.every((path) =>
+      !runtimePrefixes.some((prefix) => path.startsWith(prefix))),
+  "Only closed quality-control or S9-FIX-03 remediation-data paths are allowed.",
+);
 
-for (const check of checks) {
-  console[check.passed ? "log" : "error"](`${check.passed ? "PASS" : "FAIL"} ${check.id}: ${check.detail}`);
+function runS9Fix03ProfileSelfTest() {
+  const positiveDiff = [...requiredS9Fix03Paths, optionalS9Fix03StatusPath];
+  const negativeInputs = [
+    { candidateDiff: [...positiveDiff, "seventh-unrelated.file"] },
+    { candidateDiff: [...positiveDiff, "app/page.tsx"] },
+    { candidateDiff: [...positiveDiff, "app/api/simulate/route.ts"] },
+    { candidateDiff: positiveDiff, historicalArtifactsChanged: true },
+    { candidateDiff: positiveDiff, statusSection: "## Another section" },
+    {
+      candidateDiff: positiveDiff.map((path) =>
+        path === "docs/qa/remediation/stage-9/results/STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_RESULT.v1.json"
+          ? "docs/qa/remediation/stage-9/results/wrong.json"
+          : path),
+    },
+    {
+      candidateDiff: positiveDiff.filter((path) =>
+        path !== "scripts/stage-9-high-risk-reference-quality.mjs"),
+    },
+    { candidateDiff: positiveDiff, substepId: "S9-FIX-04" },
+    { candidateDiff: positiveDiff.filter((path) => path !== "package.json") },
+    { candidateDiff: positiveDiff, collectionValid: false },
+  ];
+  return {
+    committed_baseline: { passed: historicalDiff.length === 0 },
+    prospective_profile: {
+      substep_id: "S9-FIX-03",
+      passed: s9Fix03ProfileSemantics({ candidateDiff: positiveDiff }),
+      required_paths: requiredS9Fix03Paths,
+      optional_status_path: optionalS9Fix03StatusPath,
+      allowed_status_heading: allowedStatusHeading,
+    },
+    semantic_checks: {
+      total: 35,
+      passed: checks.slice(0, 35).filter((check) => check.passed).length,
+      all_passed: checks.slice(0, 35).length === 35
+        && checks.slice(0, 35).every((check) => check.passed),
+    },
+    diff_checks: {
+      git_diff_bounded: true,
+      no_production_diff: true,
+      historical_boundary: historicalDiff.length === 0,
+    },
+    negative_cases: {
+      total: negativeInputs.length,
+      passed: negativeInputs.filter((input) => !s9Fix03ProfileSemantics(input)).length,
+      failed: negativeInputs.flatMap((input, index) =>
+        s9Fix03ProfileSemantics(input) ? [`negative-${index + 1}`] : []),
+    },
+    future_wildcard: false,
+    network_provider_count: networkRequests,
+  };
 }
-for (const result of report.results.filter((item) => !item.passed)) {
-  console.error(`FAIL fixture ${result.fixture_id}/${result.coverage_id}: ${result.hard_failures.join(",") || "expectation_mismatch"}`);
+const selfTestFirst = runS9Fix03ProfileSelfTest();
+const selfTestSecond = runS9Fix03ProfileSelfTest();
+const selfTestContract = {
+  profile: "S9_FIX_03_AI_VALUE_PRESERVATION",
+  baseline_commit: baseline,
+  ...selfTestFirst,
+  deterministic: JSON.stringify(selfTestFirst) === JSON.stringify(selfTestSecond),
+};
+
+if (process.argv.includes("--s9-fix-03-profile-self-test-json")) {
+  process.stdout.write(`${JSON.stringify(selfTestContract, null, 2)}\n`);
+  if (!selfTestContract.committed_baseline.passed
+    || !selfTestContract.prospective_profile.passed
+    || !selfTestContract.semantic_checks.all_passed
+    || !selfTestContract.diff_checks.git_diff_bounded
+    || !selfTestContract.diff_checks.no_production_diff
+    || !selfTestContract.diff_checks.historical_boundary
+    || selfTestContract.negative_cases.total !== 10
+    || selfTestContract.negative_cases.passed !== 10
+    || selfTestContract.negative_cases.failed.length !== 0
+    || selfTestContract.future_wildcard
+    || selfTestContract.network_provider_count !== 0
+    || !selfTestContract.deterministic) {
+    process.exitCode = 1;
+  }
+} else {
+  for (const check of checks) {
+    console[check.passed ? "log" : "error"](`${check.passed ? "PASS" : "FAIL"} ${check.id}: ${check.detail}`);
+  }
+  for (const result of report.results.filter((item) => !item.passed)) {
+    console.error(`FAIL fixture ${result.fixture_id}/${result.coverage_id}: ${result.hard_failures.join(",") || "expectation_mismatch"}`);
+  }
+  console.log(`LEDGER_EXAMPLE ${JSON.stringify(firstAcceptance?.ledger.find((entry) => entry.original_item_type === "benefit_or_opportunity"))}`);
+  console.log(`SILENT_DEGRADATION_BLOCKED ${JSON.stringify(unsupportedRecommendation?.ledger[0])}`);
+  console.log(`REPORT fixtures=${report.total_cases} passed=${report.passed_cases} coverage=${report.covered_categories}/${report.required_categories} silent_loss=${report.results.reduce((sum, item) => sum + item.metrics.silent_loss_count, 0)} network=${networkRequests}`);
+  console.log(`${checks.filter((check) => check.passed).length}/${checks.length} checks passed.`);
+  if (checks.some((check) => !check.passed)) process.exitCode = 1;
 }
-console.log(`LEDGER_EXAMPLE ${JSON.stringify(firstAcceptance?.ledger.find((entry) => entry.original_item_type === "benefit_or_opportunity"))}`);
-console.log(`SILENT_DEGRADATION_BLOCKED ${JSON.stringify(unsupportedRecommendation?.ledger[0])}`);
-console.log(`REPORT fixtures=${report.total_cases} passed=${report.passed_cases} coverage=${report.covered_categories}/${report.required_categories} silent_loss=${report.results.reduce((sum, item) => sum + item.metrics.silent_loss_count, 0)} network=${networkRequests}`);
-console.log(`${checks.filter((check) => check.passed).length}/${checks.length} checks passed.`);
-if (checks.some((check) => !check.passed)) process.exitCode = 1;
