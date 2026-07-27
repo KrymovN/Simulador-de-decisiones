@@ -193,6 +193,10 @@ function validSelfTestContract(contract) {
     && contract.committed_baseline?.passed === true
     && contract.prospective_profiles?.["S9-FIX-02"]?.passed === true
     && contract.prospective_profiles?.["S9-FIX-03"]?.passed === true
+    && contract.prospective_profiles?.["S9-FIX-03"]
+      ?.actual_classifier_pre_status_passed === true
+    && contract.prospective_profiles?.["S9-FIX-03"]
+      ?.actual_classifier_post_status_passed === true
     && contract.routing_regressions?.total === 5
     && contract.routing_regressions?.passed === 5
     && Array.isArray(contract.routing_regressions?.failed)
@@ -257,7 +261,11 @@ const fixtureSelfTestContract = structuredClone(actualSelfTestContract ?? {
   committed_baseline: { passed: true },
   prospective_profiles: {
     "S9-FIX-02": { passed: true },
-    "S9-FIX-03": { passed: true },
+    "S9-FIX-03": {
+      passed: true,
+      actual_classifier_pre_status_passed: true,
+      actual_classifier_post_status_passed: true,
+    },
   },
   routing_regressions: { total: 5, passed: 5, failed: [] },
   negative_cases: { total: 28, passed: 28, failed: [] },

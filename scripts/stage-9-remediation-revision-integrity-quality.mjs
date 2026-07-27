@@ -273,6 +273,37 @@ function evaluateLedgerProfile({
   };
 }
 
+function classifyActualChangeSet({
+  candidateLedgerText,
+  changedPaths,
+  s9Fix02Result = null,
+  s9Fix03Result = null,
+  ...profileInput
+}) {
+  const s9Fix03Phase = exactPathSet(changedPaths, S9_FIX_03_PROSPECTIVE_REQUIRED)
+    || exactPathSet(changedPaths, S9_FIX_03_PROSPECTIVE_ALLOWED);
+  const s9Fix02Phase = exactPathSet(changedPaths, S9_FIX_02_PROSPECTIVE_REQUIRED)
+    || exactPathSet(changedPaths, S9_FIX_02_PROSPECTIVE_ALLOWED);
+  const requestedProfile = s9Fix03Phase
+    ? "S9-FIX-03"
+    : s9Fix02Phase
+      ? "S9-FIX-02"
+      : null;
+  const prospectiveResult = requestedProfile === "S9-FIX-03"
+    ? s9Fix03Result
+    : requestedProfile === "S9-FIX-02"
+      ? s9Fix02Result
+      : null;
+
+  return evaluateLedgerProfile({
+    candidateLedgerText,
+    changedPaths,
+    ...profileInput,
+    prospectiveResult,
+    requestedProfile,
+  });
+}
+
 function prospectiveLedger(overrides = {}) {
   const event = { ...EXPECTED_S9_FIX_02_EVENT, ...(overrides.event ?? {}) };
   return {
@@ -393,10 +424,14 @@ function runS9Fix03ProspectiveSelfTests() {
   const baseInput = {
     candidateLedgerText: canonicalJson(prospectiveS9Fix03Ledger()),
     changedPaths: requiredDiff,
-    prospectiveResult: prospectiveS9Fix03Result(),
-    requestedProfile: "S9-FIX-03",
+    s9Fix02Result: prospectiveResult(),
+    s9Fix03Result: prospectiveS9Fix03Result(),
   };
-  const positiveRun = evaluateLedgerProfile(baseInput);
+  const preStatusRun = classifyActualChangeSet(baseInput);
+  const postStatusRun = classifyActualChangeSet({
+    ...baseInput,
+    changedPaths: [...S9_FIX_03_PROSPECTIVE_ALLOWED],
+  });
   const negativeInputs = [
     ["mutated-s9-fix-01-event", {
       ...baseInput,
@@ -440,7 +475,9 @@ function runS9Fix03ProspectiveSelfTests() {
     }],
     ["unknown-substep", {
       ...baseInput,
-      requestedProfile: "S9-FIX-04",
+      candidateLedgerText: canonicalJson(prospectiveS9Fix03Ledger({
+        event: { substep_id: "S9-FIX-04" },
+      })),
     }],
     ["wrong-candidate", {
       ...baseInput,
@@ -466,21 +503,33 @@ function runS9Fix03ProspectiveSelfTests() {
         ledger: { append_only: false },
       })),
     }],
-    ["unrelated-seventh-file", {
-      ...baseInput,
-      changedPaths: [
-        ...S9_FIX_03_PROSPECTIVE_ALLOWED,
-        "unrelated-seventh.file",
-      ],
-    }],
+    ["unrelated-sixth-or-seventh-file", [
+      {
+        ...baseInput,
+        changedPaths: [...requiredDiff, "unrelated-sixth.file"],
+      },
+      {
+        ...baseInput,
+        changedPaths: [
+          ...S9_FIX_03_PROSPECTIVE_ALLOWED,
+          "unrelated-seventh.file",
+        ],
+      },
+    ]],
     ["missing-s9-fix-03-event", {
       ...baseInput,
       candidateLedgerText: committedLedgerText,
     }],
-    ["incomplete-change-set", {
-      ...baseInput,
-      changedPaths: requiredDiff.slice(1),
-    }],
+    ["incomplete-or-context-only-change-set", [
+      {
+        ...baseInput,
+        changedPaths: requiredDiff.slice(1),
+      },
+      {
+        ...baseInput,
+        changedPaths: [projectContextPath],
+      },
+    ]],
     ["historical-artifact-change", {
       ...baseInput,
       protectedArtifactChanged: true,
@@ -495,33 +544,45 @@ function runS9Fix03ProspectiveSelfTests() {
       futureEventWildcard: true,
     }],
   ];
-  const negativeResults = negativeInputs.map(([id, input]) => ({
-    id,
-    passed: !evaluateLedgerProfile(input).accepted,
-  }));
+  const negativeResults = negativeInputs.map(([id, input]) => {
+    const inputs = Array.isArray(input) ? input : [input];
+    return {
+      id,
+      passed: inputs.every((candidate) => !classifyActualChangeSet(candidate).accepted),
+    };
+  });
   return {
-    positivePassed: positiveRun.accepted
-      && positiveRun.mode === "prospective-s9-fix-03",
+    positivePassed: preStatusRun.accepted
+      && preStatusRun.mode === "prospective-s9-fix-03"
+      && postStatusRun.accepted
+      && postStatusRun.mode === "prospective-s9-fix-03",
+    preStatusPassed: preStatusRun.accepted
+      && preStatusRun.mode === "prospective-s9-fix-03",
+    postStatusPassed: postStatusRun.accepted
+      && postStatusRun.mode === "prospective-s9-fix-03",
     negativeResults,
   };
 }
 
 function runRoutingRegressionTests() {
-  const committedBaseline = evaluateLedgerProfile({
+  const resultArtifacts = {
+    s9Fix02Result: prospectiveResult(),
+    s9Fix03Result: prospectiveS9Fix03Result(),
+  };
+  const committedBaseline = classifyActualChangeSet({
     candidateLedgerText: committedLedgerText,
     changedPaths: [],
+    ...resultArtifacts,
   });
-  const s9Fix02 = evaluateLedgerProfile({
+  const s9Fix02 = classifyActualChangeSet({
     candidateLedgerText: committedLedgerText,
     changedPaths: [...S9_FIX_02_PROSPECTIVE_REQUIRED],
-    prospectiveResult: prospectiveResult(),
-    requestedProfile: "S9-FIX-02",
+    ...resultArtifacts,
   });
-  const s9Fix03 = evaluateLedgerProfile({
+  const s9Fix03 = classifyActualChangeSet({
     candidateLedgerText: canonicalJson(prospectiveS9Fix03Ledger()),
     changedPaths: [...S9_FIX_03_PROSPECTIVE_REQUIRED],
-    prospectiveResult: prospectiveS9Fix03Result(),
-    requestedProfile: "S9-FIX-03",
+    ...resultArtifacts,
   });
   const cases = [
     {
@@ -544,10 +605,10 @@ function runRoutingRegressionTests() {
     },
     {
       id: "missing-profile-with-non-clean-diff-rejected",
-      passed: !evaluateLedgerProfile({
+      passed: !classifyActualChangeSet({
         candidateLedgerText: committedLedgerText,
-        changedPaths: [...S9_FIX_02_PROSPECTIVE_REQUIRED],
-        prospectiveResult: prospectiveResult(),
+        changedPaths: S9_FIX_02_PROSPECTIVE_REQUIRED.slice(1),
+        ...resultArtifacts,
       }).accepted,
     },
   ];
@@ -585,7 +646,11 @@ function buildSelfTestContract() {
     },
     prospective_profiles: {
       "S9-FIX-02": { passed: first.positivePassed },
-      "S9-FIX-03": { passed: s9Fix03First.positivePassed },
+      "S9-FIX-03": {
+        passed: s9Fix03First.positivePassed,
+        actual_classifier_pre_status_passed: s9Fix03First.preStatusPassed,
+        actual_classifier_post_status_passed: s9Fix03First.postStatusPassed,
+      },
     },
     routing_regressions: {
       total: routingFirst.length,
@@ -650,6 +715,10 @@ if (process.argv.includes("--self-test-json")) {
   if (!selfTestContract.committed_baseline.passed
     || !selfTestContract.prospective_profiles["S9-FIX-02"].passed
     || !selfTestContract.prospective_profiles["S9-FIX-03"].passed
+    || !selfTestContract.prospective_profiles["S9-FIX-03"]
+      .actual_classifier_pre_status_passed
+    || !selfTestContract.prospective_profiles["S9-FIX-03"]
+      .actual_classifier_post_status_passed
     || selfTestContract.routing_regressions.total !== 5
     || selfTestContract.routing_regressions.passed !== 5
     || selfTestContract.routing_regressions.failed.length !== 0
@@ -679,10 +748,13 @@ if (process.argv.includes("--self-test-json")) {
   const headProjectContext = execFileSync(
     "git", ["show", `HEAD:${projectContextPath}`], { cwd: root, encoding: "utf8" },
   );
-  const prospectiveResultArtifact = existsSync(join(root, s9Fix02ResultPath))
+  const s9Fix02ResultArtifact = existsSync(join(root, s9Fix02ResultPath))
     ? JSON.parse(read(s9Fix02ResultPath))
     : null;
-  const ledgerProfile = evaluateLedgerProfile({
+  const s9Fix03ResultArtifact = existsSync(join(root, s9Fix03ResultPath))
+    ? JSON.parse(read(s9Fix03ResultPath))
+    : null;
+  const ledgerProfile = classifyActualChangeSet({
     candidateLedgerText: ledgerText,
     changedPaths: changed,
     protectedArtifactChanged: protectedWorkingDiff.length > 0,
@@ -690,7 +762,8 @@ if (process.argv.includes("--self-test-json")) {
       headProjectContext,
       read(projectContextPath),
     ),
-    prospectiveResult: prospectiveResultArtifact,
+    s9Fix02Result: s9Fix02ResultArtifact,
+    s9Fix03Result: s9Fix03ResultArtifact,
   });
 
   add(
@@ -748,6 +821,10 @@ if (process.argv.includes("--self-test-json")) {
     selfTestContract.committed_baseline.passed
     && selfTestContract.prospective_profiles["S9-FIX-02"].passed
     && selfTestContract.prospective_profiles["S9-FIX-03"].passed
+    && selfTestContract.prospective_profiles["S9-FIX-03"]
+      .actual_classifier_pre_status_passed
+    && selfTestContract.prospective_profiles["S9-FIX-03"]
+      .actual_classifier_post_status_passed
     && selfTestContract.routing_regressions.total === 5
     && selfTestContract.routing_regressions.passed === 5
     && selfTestContract.routing_regressions.failed.length === 0
