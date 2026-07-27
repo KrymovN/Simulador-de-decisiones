@@ -2,14 +2,16 @@
 
 ## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026
 
-The first bounded remediation substep, `Stage 9 Schema-Oracle Evidence
-Projection Revision`, and the second, `Stage 9 Systemic Contradiction Reference
-Remediation`, are complete. The second fix replaces the blanket contradiction
-reference with source-entailment semantics for the exact 39 owned claims, one
-consolidated partial case, eight clusters, and 32 versioned `1.1` rows while
-preserving historical review evidence, unrelated references, candidate
-payloads, validators, and runtime paths. Seven remediation substeps remain; the
-next substep was not executed.
+The first three bounded remediation substeps are complete: `Stage 9
+Schema-Oracle Evidence Projection Revision`, `Stage 9 Systemic Contradiction
+Reference Remediation`, and `Stage 9 High-Risk Clarification and Refusal
+Reference Remediation`. `S9-FIX-03` is completed and corrects the exact 17
+owned locale rows across five safety clusters: 13 now require information-first
+clarification, and four explicit harmful-intent rows require refusal with
+controlled failure.
+Historical review evidence, 143 unrelated rows, candidate payloads, validators,
+and runtime paths remain unchanged. Six remediation substeps remain; the next
+substep was not executed.
 
 Stage 9 remains **In Progress**, release readiness is not declared,
 `/api/simulate` remains `mockOnly=true`, and all runtime boundaries remain

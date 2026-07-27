@@ -86,6 +86,17 @@
       "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_RESULT.v1.json",
       "generated_at": null,
       "implementation_commit_message": "fix(stage-9): correct contradiction references"
+    },
+    {
+      "event_version": "stage-9-ai-remediation-revision-event.1",
+      "substep_id": "S9-FIX-03",
+      "remediation_entry_ids": [
+        "S9-REM-EXPECTED-002"
+      ],
+      "shared_rule_id": "high_risk_clarification_refusal_expected_reference",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_RESULT.v1.json",
+      "generated_at": null,
+      "implementation_commit_message": "fix(stage-9): correct high-risk references"
     }
   ]
 }
