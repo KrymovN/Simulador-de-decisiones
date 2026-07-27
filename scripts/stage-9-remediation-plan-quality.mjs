@@ -448,6 +448,32 @@ const expectedVersionedClusters = [
   "S9-CLUSTER-032",
   "S9-CLUSTER-036",
 ];
+const expectedS9Fix03VersionedCases = [
+  "S9-CORE-012-ES",
+  "S9-CORE-012-EN",
+  "S9-CORE-012-RU",
+  "S9-CORE-012-ZH",
+  "S9-CORE-036-ZH",
+  "S9-CORE-037-ES",
+  "S9-CORE-037-EN",
+  "S9-CORE-037-RU",
+  "S9-CORE-037-ZH",
+  "S9-CORE-038-ES",
+  "S9-CORE-038-EN",
+  "S9-CORE-038-RU",
+  "S9-CORE-038-ZH",
+  "S9-CORE-040-ES",
+  "S9-CORE-040-EN",
+  "S9-CORE-040-RU",
+  "S9-CORE-040-ZH",
+];
+const expectedS9Fix03VersionedClusters = [
+  "S9-CLUSTER-012",
+  "S9-CLUSTER-036",
+  "S9-CLUSTER-037",
+  "S9-CLUSTER-038",
+  "S9-CLUSTER-040",
+];
 
 function runCoverageCaseVersionSelfTest() {
   const result = spawnSync(
@@ -473,18 +499,37 @@ function parseCoverageSelfTest(run) {
 }
 
 function validCoverageSelfTest(contract) {
-  return contract?.profile === "S9_FIX_02_CASE_VERSION_VALIDATION"
+  return contract?.profile === "S9_FIX_02_AND_S9_FIX_03_CASE_VERSION_VALIDATION"
     && same(contract.supported_versions, ["1.0", "1.1"])
-    && contract.version_1_1_scope?.substep_id === "S9-FIX-02"
-    && contract.version_1_1_scope?.eligible_case_count === 32
-    && same(contract.version_1_1_scope?.eligible_cluster_ids, expectedVersionedClusters)
-    && contract.version_1_1_scope?.expected_reference_only === true
-    && contract.positive_cases?.total === 7
-    && contract.positive_cases?.passed === 7
+    && contract.version_1_1_scopes?.["S9-FIX-02"]?.eligible_case_count === 32
+    && same(
+      contract.version_1_1_scopes?.["S9-FIX-02"]?.eligible_cluster_ids,
+      expectedVersionedClusters,
+    )
+    && contract.version_1_1_scopes?.["S9-FIX-03"]?.eligible_case_count === 17
+    && same(
+      contract.version_1_1_scopes?.["S9-FIX-03"]?.eligible_case_ids,
+      expectedS9Fix03VersionedCases,
+    )
+    && same(
+      contract.version_1_1_scopes?.["S9-FIX-03"]?.eligible_cluster_ids,
+      expectedS9Fix03VersionedClusters,
+    )
+    && contract.committed_baseline?.passed === true
+    && contract.committed_baseline?.case_count === 160
+    && contract.prospective_profiles?.["S9-FIX-02"]?.passed === true
+    && contract.prospective_profiles?.["S9-FIX-02"]?.eligible_case_count === 32
+    && contract.prospective_profiles?.["S9-FIX-03"]?.passed === true
+    && contract.prospective_profiles?.["S9-FIX-03"]?.eligible_case_count === 17
+    && contract.prospective_profiles?.["S9-FIX-03"]?.newly_versioned_case_count === 16
+    && contract.mixed_approved_versions?.passed === true
+    && contract.mixed_approved_versions?.eligible_case_count === 48
+    && contract.positive_cases?.total === 10
+    && contract.positive_cases?.passed === 10
     && Array.isArray(contract.positive_cases?.failed)
     && contract.positive_cases.failed.length === 0
-    && contract.negative_cases?.total === 12
-    && contract.negative_cases?.passed === 12
+    && contract.negative_cases?.total === 14
+    && contract.negative_cases?.passed === 14
     && Array.isArray(contract.negative_cases?.failed)
     && contract.negative_cases.failed.length === 0
     && contract.coverage_invariants_preserved === true
@@ -517,16 +562,27 @@ const coverageSelfTestRuns = [
 ];
 const actualCoverageSelfTestContract = parseCoverageSelfTest(coverageSelfTestRuns[0]);
 const fixtureCoverageSelfTestContract = structuredClone(actualCoverageSelfTestContract ?? {
-  profile: "S9_FIX_02_CASE_VERSION_VALIDATION",
+  profile: "S9_FIX_02_AND_S9_FIX_03_CASE_VERSION_VALIDATION",
   supported_versions: ["1.0", "1.1"],
-  version_1_1_scope: {
-    substep_id: "S9-FIX-02",
-    eligible_case_count: 32,
-    eligible_cluster_ids: expectedVersionedClusters,
-    expected_reference_only: true,
+  version_1_1_scopes: {
+    "S9-FIX-02": {
+      eligible_case_count: 32,
+      eligible_cluster_ids: expectedVersionedClusters,
+    },
+    "S9-FIX-03": {
+      eligible_case_count: 17,
+      eligible_case_ids: expectedS9Fix03VersionedCases,
+      eligible_cluster_ids: expectedS9Fix03VersionedClusters,
+    },
   },
-  positive_cases: { total: 7, passed: 7, failed: [] },
-  negative_cases: { total: 12, passed: 12, failed: [] },
+  committed_baseline: { passed: true, case_count: 160 },
+  prospective_profiles: {
+    "S9-FIX-02": { passed: true, eligible_case_count: 32 },
+    "S9-FIX-03": { passed: true, eligible_case_count: 17, newly_versioned_case_count: 16 },
+  },
+  mixed_approved_versions: { passed: true, eligible_case_count: 48 },
+  positive_cases: { total: 10, passed: 10, failed: [] },
+  negative_cases: { total: 14, passed: 14, failed: [] },
   coverage_invariants_preserved: true,
   arbitrary_version_wildcard: false,
   deterministic: true,
@@ -596,8 +652,21 @@ const coveragePlanningNegativeResults = [
   ["negative-version-tests-missing", !coverageQualityControlProfileSemantics({
     candidateDiff: coverageQualityControlAllowed,
     candidateSelfTestRuns: coverageSelfTestPair(mutateCoverageSelfTest((value) => {
-      value.negative_cases.total = 11;
-      value.negative_cases.passed = 11;
+      value.negative_cases.total = 13;
+      value.negative_cases.passed = 13;
+    })),
+  })],
+  ["s9-fix-03-versioned-scope-weakened", !coverageQualityControlProfileSemantics({
+    candidateDiff: coverageQualityControlAllowed,
+    candidateSelfTestRuns: coverageSelfTestPair(mutateCoverageSelfTest((value) => {
+      value.version_1_1_scopes["S9-FIX-03"].eligible_case_ids.pop();
+      value.version_1_1_scopes["S9-FIX-03"].eligible_case_count = 16;
+    })),
+  })],
+  ["unrelated-versioned-row-accepted", !coverageQualityControlProfileSemantics({
+    candidateDiff: coverageQualityControlAllowed,
+    candidateSelfTestRuns: coverageSelfTestPair(mutateCoverageSelfTest((value) => {
+      value.mixed_approved_versions.eligible_case_count = 49;
     })),
   })],
   ["coverage-invariants-changed", !coverageQualityControlProfileSemantics({
@@ -621,7 +690,7 @@ const coveragePlanningNegativeResults = [
   ].every(Boolean)],
 ];
 const coveragePlanningNegativeChecksPass =
-  coveragePlanningNegativeResults.length === 12
+  coveragePlanningNegativeResults.length === 14
   && coveragePlanningNegativeResults.every(([, rejected]) => rejected);
 const exactCoverageQualityControlProfile = coverageQualityControlProfileSemantics({
   candidateDiff: diff,
@@ -1079,7 +1148,7 @@ add(
   boundedDiffProfile !== "rejected",
   boundedDiffProfile === "rejected"
     ? `Profile rejected. Repository paths: ${diff.join(", ")}; tracked: ${changed.join(", ")}; untracked: ${untracked.join(", ")}; normalized=${repositoryPathCollectionValid}; coverage-quality semantic=${coverageQualityControlProfileSemantics({ candidateDiff: diff, candidateSelfTestRuns: coverageSelfTestRuns, collectionValid: repositoryPathCollectionValid })}; coverage-machine-self-test=${validCoverageSelfTest(actualCoverageSelfTestContract)}; coverage-planning-negative-cases=${coveragePlanningNegativeChecksPass}; revision-quality semantic=${qualityControlProfileSemantics({ candidateDiff: diff, selfTestRuns, collectionValid: repositoryPathCollectionValid })}; revision-machine-self-test=${validSelfTestContract(actualSelfTestContract)}; revision-planning-negative-cases=${planningProfileNegativeChecksPass}; contradiction-contract semantic=${contradictionContractSemantics(sequence, registry, contradictionSpecText, diff, repositoryPathCollectionValid)}; contradiction negative-cases=${negativeContradictionProfileCasesRejected}.`
-    : `Profile ${boundedDiffProfile} accepted.${boundedDiffProfile === "offline-dataset-case-version-quality-control" ? ` Exact two-file coverage-validator diff: ${diff.join(", ")}. Machine-readable case-version self-test PASS; planning-profile negative checks 12/12.` : boundedDiffProfile === "remediation-revision-integrity-quality-control" ? ` Exact two-file quality-control diff: ${diff.join(", ")}. Machine-readable self-test PASS; planning-profile negative checks 20/20.` : boundedDiffProfile === "systemic-contradiction-remediation-contract-alignment" ? ` Repository-backed classifier included tracked and untracked paths: ${diff.join(", ")}. All negative cases rejected.` : boundedDiffProfile === "high-risk-clarification-refusal-remediation-contract-alignment" ? ` Exact four-file S9-FIX-03 contract diff: ${diff.join(", ")}. Planning-profile negative checks 14/14.` : ""}`,
+    : `Profile ${boundedDiffProfile} accepted.${boundedDiffProfile === "offline-dataset-case-version-quality-control" ? ` Exact two-file coverage-validator diff: ${diff.join(", ")}. Machine-readable case-version self-test PASS; planning-profile negative checks 14/14.` : boundedDiffProfile === "remediation-revision-integrity-quality-control" ? ` Exact two-file quality-control diff: ${diff.join(", ")}. Machine-readable self-test PASS; planning-profile negative checks 20/20.` : boundedDiffProfile === "systemic-contradiction-remediation-contract-alignment" ? ` Repository-backed classifier included tracked and untracked paths: ${diff.join(", ")}. All negative cases rejected.` : boundedDiffProfile === "high-risk-clarification-refusal-remediation-contract-alignment" ? ` Exact four-file S9-FIX-03 contract diff: ${diff.join(", ")}. Planning-profile negative checks 14/14.` : ""}`,
 );
 add("network-zero", networkRequests === 0, `${networkRequests} network requests.`);
 
