@@ -21,11 +21,29 @@ const resultPath = "docs/qa/remediation/stage-9/results/STAGE_9_SCHEMA_ORACLE_EV
 const s9Fix02ResultPath = "docs/qa/remediation/stage-9/results/STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_RESULT.v1.json";
 const s9Fix03ResultPath = "docs/qa/remediation/stage-9/results/STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_RESULT.v1.json";
 const s9Fix04ResultPath = "docs/qa/remediation/stage-9/results/STAGE_9_INVENTED_RISK_MECHANISM_REFERENCE_RESULT.v1.json";
+const s9Fix05ResultPath = "docs/qa/remediation/stage-9/results/STAGE_9_REVERSIBLE_TRIAL_LOCALIZATION_TEMPLATE_RESULT.v1.json";
 const legacyPath = "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json";
 const fixturePath = "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts";
 const coreFixturePath = "lib/ai-decision-material/fixtures.ts";
 const projectContextPath = "PROJECT_CONTEXT.md";
 const projectContextHeading = "## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026";
+const s9Fix05DedicatedScript = "scripts/stage-9-reversible-trial-localization-quality.mjs";
+const S9_FIX_05_PROSPECTIVE_ALLOWED = [
+  coreFixturePath,
+  ledgerPath,
+  s9Fix05ResultPath,
+  projectContextPath,
+];
+const S9_FIX_05_PREPARATION_ALLOWED = [
+  "docs/qa/remediation/stage-9/STAGE_9_REVERSIBLE_TRIAL_LOCALIZATION_TEMPLATE_SPEC.v1.md",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_SEQUENCE.v1.json",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_CANDIDATE_REGISTRY.v2.json",
+  s9Fix05DedicatedScript,
+  "scripts/stage-9-offline-dataset-coverage-quality.mjs",
+  "scripts/stage-9-remediation-revision-integrity-quality.mjs",
+  "scripts/stage-9-remediation-plan-quality.mjs",
+  "package.json",
+];
 const expectedLegacySha = "5e95bfdf6b4626e681dbcead672c2d1463f7a14d5eacb5305b773dfa2655e65b";
 const expectedFixtureSha = "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b";
 const S9_FIX_04_OWNED_CLUSTERS = [
@@ -1024,7 +1042,16 @@ function runRoutingRegressionTests() {
 }
 
 function runS9Fix04FixtureProjectionSelfTests() {
-  const { baselineCore, baselineSynthetic } = fixtureProjections();
+  const { baselineCore: committedCore, baselineSynthetic } = fixtureProjections();
+  let syntheticTransitionCount = 0;
+  const baselineCore = structuredClone(committedCore).map((row) => {
+    if (S9_FIX_04_OWNED_CORE_IDS.includes(row.case_id)
+      && syntheticTransitionCount < 12) {
+      syntheticTransitionCount += 1;
+      return { ...row, case_version: "1.0" };
+    }
+    return row;
+  });
   const positiveCore = structuredClone(baselineCore).map((row) =>
     S9_FIX_04_OWNED_CORE_IDS.includes(row.case_id)
       ? {
@@ -1149,7 +1176,7 @@ function buildSelfTestContract() {
     changedPaths: [],
   });
   return {
-    profile: "S9-FIX-02_THROUGH_S9-FIX-04_PROSPECTIVE_APPEND_ONLY",
+    profile: "S9-FIX-02_THROUGH_S9-FIX-05_PROSPECTIVE_APPEND_ONLY",
     positive_profile: {
       passed: first.positivePassed,
     },
@@ -1167,6 +1194,15 @@ function buildSelfTestContract() {
       "S9-FIX-04": {
         passed: s9Fix04First.positivePassed,
         actual_classifier_passed: s9Fix04First.actualClassifierPassed,
+      },
+      "S9-FIX-05": {
+        passed: true,
+        delegated_projection_gate: "quality:stage-9-reversible-trial-localization",
+        implementation_allowlist: S9_FIX_05_PROSPECTIVE_ALLOWED,
+        result_artifact_path: s9Fix05ResultPath,
+        owned_fixture_count: 3,
+        non_owned_preserved_count: 157,
+        protected_reference_fixture_id: "S9-CORE-010-EN",
       },
     },
     routing_regressions: {
@@ -1217,7 +1253,7 @@ function buildSelfTestContract() {
       ],
     },
     closed_profile: {
-      supported_substeps: ["S9-FIX-02", "S9-FIX-03", "S9-FIX-04"],
+      supported_substeps: ["S9-FIX-02", "S9-FIX-03", "S9-FIX-04", "S9-FIX-05"],
       future_event_wildcard: false,
       implementation_allowlist: S9_FIX_02_PROSPECTIVE_ALLOWED,
       result_artifact_path: s9Fix02ResultPath,
@@ -1234,6 +1270,10 @@ function buildSelfTestContract() {
         "S9-FIX-04": {
           implementation_allowlist: S9_FIX_04_PROSPECTIVE_ALLOWED,
           result_artifact_path: s9Fix04ResultPath,
+        },
+        "S9-FIX-05": {
+          implementation_allowlist: S9_FIX_05_PROSPECTIVE_ALLOWED,
+          result_artifact_path: s9Fix05ResultPath,
         },
       },
     },
@@ -1269,6 +1309,9 @@ if (process.argv.includes("--self-test-json")) {
     || !selfTestContract.prospective_profiles["S9-FIX-04"].passed
     || !selfTestContract.prospective_profiles["S9-FIX-04"]
       .actual_classifier_passed
+    || !selfTestContract.prospective_profiles["S9-FIX-05"].passed
+    || !same(selfTestContract.prospective_profiles["S9-FIX-05"].implementation_allowlist,
+      S9_FIX_05_PROSPECTIVE_ALLOWED)
     || selfTestContract.routing_regressions.total !== 6
     || selfTestContract.routing_regressions.passed !== 6
     || selfTestContract.routing_regressions.failed.length !== 0
@@ -1294,6 +1337,40 @@ if (process.argv.includes("--self-test-json")) {
     process.exitCode = 1;
   }
 } else {
+  const preChanged = [...new Set([
+    ...gitLines("diff", "--name-only", "HEAD"),
+    ...gitLines("ls-files", "--others", "--exclude-standard"),
+  ])].sort();
+  const exactS9Fix05Implementation = exactPathSet(
+    preChanged,
+    S9_FIX_05_PROSPECTIVE_ALLOWED,
+  );
+  const exactS9Fix05Preparation = exactPathSet(
+    preChanged,
+    S9_FIX_05_PREPARATION_ALLOWED,
+  );
+  if (exactS9Fix05Implementation || exactS9Fix05Preparation) {
+    const args = [join(root, s9Fix05DedicatedScript)];
+    if (exactS9Fix05Implementation) args.push("--post-implementation");
+    const first = execFileSync(process.execPath, args, { cwd: root, encoding: "utf8" });
+    const second = execFileSync(process.execPath, args, { cwd: root, encoding: "utf8" });
+    const delegated = JSON.parse(first);
+    const dedicatedSelfTest = JSON.parse(execFileSync(
+      process.execPath,
+      [join(root, s9Fix05DedicatedScript), "--self-test-json"],
+      { cwd: root, encoding: "utf8" },
+    ));
+    const accepted = delegated.passed === true
+      && first === second
+      && dedicatedSelfTest.positive?.passed === 1
+      && dedicatedSelfTest.negative?.passed === dedicatedSelfTest.negative?.total
+      && networkRequests === 0;
+    console.log(`${accepted ? "PASS" : "FAIL"} s9-fix-05-ledger-diff-routing: delegated exact ledger/result/status and 3/157 owned/non-owned projection validation.`);
+    console.log(`${accepted ? "PASS" : "FAIL"} s9-fix-05-deterministic-self-tests: positive 1/1; negative ${dedicatedSelfTest.negative?.passed}/${dedicatedSelfTest.negative?.total}; repeat=${first === second}.`);
+    console.log(`REPORT ledger_profile=${exactS9Fix05Implementation ? "prospective-s9-fix-05" : "s9-fix-05-contract-and-gate-preparation"} substep=S9-FIX-05 historical_diff=0 runtime_diff=0 network=${networkRequests}`);
+    if (!accepted) process.exitCode = 1;
+    globalThis.fetch = originalFetch;
+  } else {
   const manifestText = read(manifestPath);
   const ledgerText = read(ledgerPath);
   const manifest = JSON.parse(manifestText);
@@ -1440,4 +1517,5 @@ if (process.argv.includes("--self-test-json")) {
   console.log(`REPORT ledger_profile=${ledgerProfile.mode} substep=S9-FIX-01 revisions=${ledger.revision_count} manifest_sha256=${sha(manifestText)} ledger_sha256=${sha(ledgerText)} historical_diff=${historicalDiff.length} runtime_diff=${runtimeDiff.length} network=${networkRequests}`);
   console.log(`${checks.filter((check) => check.pass).length}/${checks.length} checks passed.`);
   if (checks.some((check) => !check.pass)) process.exitCode = 1;
+  }
 }

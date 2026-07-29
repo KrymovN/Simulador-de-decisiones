@@ -164,6 +164,31 @@ const s9Fix04ImplementationAllowlist = [
   "PROJECT_CONTEXT.md",
 ];
 const s9Fix04ResultArtifact = "docs/qa/remediation/stage-9/results/STAGE_9_INVENTED_RISK_MECHANISM_REFERENCE_RESULT.v1.json";
+const s9Fix05SpecPath = "docs/qa/remediation/stage-9/STAGE_9_REVERSIBLE_TRIAL_LOCALIZATION_TEMPLATE_SPEC.v1.md";
+const s9Fix05ResultArtifact = "docs/qa/remediation/stage-9/results/STAGE_9_REVERSIBLE_TRIAL_LOCALIZATION_TEMPLATE_RESULT.v1.json";
+const s9Fix05DedicatedScriptPath = join(root, "scripts", "stage-9-reversible-trial-localization-quality.mjs");
+const s9Fix05ImplementationAllowlist = [
+  "lib/ai-decision-material/fixtures.ts",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json",
+  s9Fix05ResultArtifact,
+  "PROJECT_CONTEXT.md",
+].sort();
+const s9Fix05PreparationWriteSet = [
+  s9Fix05SpecPath,
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_SEQUENCE.v1.json",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_CANDIDATE_REGISTRY.v2.json",
+  "scripts/stage-9-reversible-trial-localization-quality.mjs",
+  "scripts/stage-9-offline-dataset-coverage-quality.mjs",
+  "scripts/stage-9-remediation-revision-integrity-quality.mjs",
+  "scripts/stage-9-remediation-plan-quality.mjs",
+  "package.json",
+].sort();
+const s9Fix05MandatoryGates = [
+  "quality:stage-9-remediation-plan",
+  "quality:stage-9-reversible-trial-localization",
+  "quality:stage-9-offline-dataset-coverage",
+  "quality:stage-9-remediation-revision-integrity",
+];
 const s9Fix02StatusHeading = "## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026";
 const revisionIntegrityScriptPath = join(
   root,
@@ -195,7 +220,7 @@ function parseSelfTestContract(run) {
 }
 
 function validSelfTestContract(contract) {
-  return contract?.profile === "S9-FIX-02_THROUGH_S9-FIX-04_PROSPECTIVE_APPEND_ONLY"
+  return contract?.profile === "S9-FIX-02_THROUGH_S9-FIX-05_PROSPECTIVE_APPEND_ONLY"
     && contract.positive_profile?.passed === true
     && contract.committed_baseline?.passed === true
     && contract.prospective_profiles?.["S9-FIX-02"]?.passed === true
@@ -207,6 +232,17 @@ function validSelfTestContract(contract) {
     && contract.prospective_profiles?.["S9-FIX-04"]?.passed === true
     && contract.prospective_profiles?.["S9-FIX-04"]
       ?.actual_classifier_passed === true
+    && contract.prospective_profiles?.["S9-FIX-05"]?.passed === true
+    && same(contract.prospective_profiles?.["S9-FIX-05"]?.implementation_allowlist,
+      [
+        "lib/ai-decision-material/fixtures.ts",
+        "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json",
+        "docs/qa/remediation/stage-9/results/STAGE_9_REVERSIBLE_TRIAL_LOCALIZATION_TEMPLATE_RESULT.v1.json",
+        "PROJECT_CONTEXT.md",
+      ])
+    && contract.prospective_profiles?.["S9-FIX-05"]?.owned_fixture_count === 3
+    && contract.prospective_profiles?.["S9-FIX-05"]?.non_owned_preserved_count === 157
+    && contract.prospective_profiles?.["S9-FIX-05"]?.protected_reference_fixture_id === "S9-CORE-010-EN"
     && contract.routing_regressions?.total === 6
     && contract.routing_regressions?.passed === 6
     && Array.isArray(contract.routing_regressions?.failed)
@@ -229,7 +265,7 @@ function validSelfTestContract(contract) {
       ?.non_owned_synthetic_preserved === true
     && contract.s9_fix_04_fixture_projection?.negative_passed === true
     && same(contract.closed_profile?.supported_substeps,
-      ["S9-FIX-02", "S9-FIX-03", "S9-FIX-04"])
+      ["S9-FIX-02", "S9-FIX-03", "S9-FIX-04", "S9-FIX-05"])
     && contract.closed_profile?.future_event_wildcard === false
     && same(contract.closed_profile?.implementation_allowlist, s9Fix02ImplementationAllowlist)
     && contract.closed_profile?.result_artifact_path === s9Fix02ResultArtifact
@@ -252,6 +288,14 @@ function validSelfTestContract(contract) {
     )
     && contract.closed_profile?.prospective_profiles?.["S9-FIX-04"]?.result_artifact_path
       === s9Fix04ResultArtifact
+    && same(
+      contract.closed_profile?.prospective_profiles?.["S9-FIX-05"]?.implementation_allowlist,
+      [
+        "lib/ai-decision-material/fixtures.ts",
+        "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json",
+        "docs/qa/remediation/stage-9/results/STAGE_9_REVERSIBLE_TRIAL_LOCALIZATION_TEMPLATE_RESULT.v1.json",
+        "PROJECT_CONTEXT.md",
+      ])
     && contract.baseline_invariants?.s9_fix_01_event_boundary_preserved === true
     && contract.baseline_invariants?.s9_fix_02_event_boundary_preserved === true
     && contract.baseline_invariants?.s9_fix_03_event_boundary_preserved === true
@@ -597,7 +641,7 @@ function parseCoverageSelfTest(run) {
 }
 
 function validCoverageSelfTest(contract) {
-  return contract?.profile === "S9_FIX_02_THROUGH_S9_FIX_04_CASE_VERSION_VALIDATION"
+  return contract?.profile === "S9_FIX_02_THROUGH_S9_FIX_05_CASE_VERSION_VALIDATION"
     && same(contract.supported_versions, ["1.0", "1.1"])
     && contract.version_1_1_scopes?.["S9-FIX-02"]?.eligible_case_count === 32
     && same(
@@ -635,10 +679,17 @@ function validCoverageSelfTest(contract) {
     && contract.prospective_profiles?.["S9-FIX-04"]?.eligible_case_count === 20
     && contract.prospective_profiles?.["S9-FIX-04"]?.newly_versioned_case_count === 12
     && contract.prospective_profiles?.["S9-FIX-04"]?.already_version_1_1_case_count === 8
+    && contract.version_1_1_scopes?.["S9-FIX-05"]?.eligible_case_count === 3
+    && same(contract.version_1_1_scopes?.["S9-FIX-05"]?.eligible_case_ids,
+      ["S9-CORE-010-ES", "S9-CORE-010-RU", "S9-CORE-010-ZH"])
+    && contract.version_1_1_scopes?.["S9-FIX-05"]?.protected_reference_case_id === "S9-CORE-010-EN"
+    && contract.version_1_1_scopes?.["S9-FIX-05"]?.protected_reference_version === "1.0"
+    && contract.prospective_profiles?.["S9-FIX-05"]?.passed === true
+    && contract.prospective_profiles?.["S9-FIX-05"]?.eligible_case_count === 3
     && contract.mixed_approved_versions?.passed === true
-    && contract.mixed_approved_versions?.eligible_case_count === 60
-    && contract.positive_cases?.total === 12
-    && contract.positive_cases?.passed === 12
+    && contract.mixed_approved_versions?.eligible_case_count === 63
+    && contract.positive_cases?.total === 14
+    && contract.positive_cases?.passed === 14
     && Array.isArray(contract.positive_cases?.failed)
     && contract.positive_cases.failed.length === 0
     && contract.negative_cases?.total === 14
@@ -1778,13 +1829,83 @@ const exactS9Fix04Preparation =
   && validSelfTestContract(actualSelfTestContract)
   && validCoverageSelfTest(actualCoverageSelfTestContract);
 
+function runS9Fix05Gate(post = false) {
+  const result = spawnSync(
+    process.execPath,
+    [s9Fix05DedicatedScriptPath, ...(post ? ["--post-implementation"] : [])],
+    { cwd: root, encoding: "utf8" },
+  );
+  if (result.status !== 0 || result.stderr !== "") return null;
+  try {
+    return { parsed: JSON.parse(result.stdout), stdout: result.stdout };
+  } catch {
+    return null;
+  }
+}
+
+function s9Fix05ContractSemantics(candidateSequence, candidateRegistry) {
+  const sequenceEntry = candidateSequence.sequence.find((row) =>
+    row.substep_id === "S9-FIX-05");
+  const registryEntry = candidateRegistry.candidates.find((row) =>
+    row.candidate_id === "S9-REM-GENERATOR-001");
+  if (!sequenceEntry || !registryEntry) return false;
+  const entries = [sequenceEntry, registryEntry];
+  return entries.every((row) =>
+    row.root_cause === "GENERATOR_TEMPLATE_LOCALIZATION"
+    && row.implementation_specification === s9Fix05SpecPath
+    && row.implementation_status === "IMPLEMENTATION_READY_NOT_STARTED"
+    && row.implementation_executed === false
+    && row.owned_fixture_count === 3
+    && same(row.owned_fixture_ids,
+      ["S9-CORE-010-ES", "S9-CORE-010-RU", "S9-CORE-010-ZH"])
+    && row.protected_reference_fixture_id === "S9-CORE-010-EN"
+    && same([...row.preparation_write_files].sort(), s9Fix05PreparationWriteSet)
+    && same([...(row.allowed_files ?? row.planned_write_files)].sort(),
+      s9Fix05ImplementationAllowlist)
+    && same(row.gates ?? row.required_regression_gates, s9Fix05MandatoryGates)
+    && row.bounded_result_artifact === s9Fix05ResultArtifact
+    && row.canonical_status_update?.section_heading === s9Fix02StatusHeading)
+    && read(...s9Fix05SpecPath.split("/")).includes("Required implementation commit count: exactly one")
+    && !JSON.stringify(entries).includes("canonical Stage 9 status documents");
+}
+
+const s9Fix05ProspectiveRuns = same(diff, s9Fix05PreparationWriteSet)
+  ? [runS9Fix05Gate(), runS9Fix05Gate()]
+  : [];
+const s9Fix05PostRuns = same(diff, s9Fix05ImplementationAllowlist)
+  ? [runS9Fix05Gate(true), runS9Fix05Gate(true)]
+  : [];
+const exactS9Fix05Preparation = same(diff, s9Fix05PreparationWriteSet)
+  && repositoryPathCollectionValid
+  && s9Fix05ContractSemantics(sequence, registry)
+  && s9Fix05ProspectiveRuns.every((run) =>
+    run?.parsed?.passed === true
+    && run.parsed.remediation_completed === false
+    && run.parsed.status === "IMPLEMENTATION_READY_NOT_STARTED")
+  && s9Fix05ProspectiveRuns[0]?.stdout === s9Fix05ProspectiveRuns[1]?.stdout
+  && validSelfTestContract(actualSelfTestContract)
+  && validCoverageSelfTest(actualCoverageSelfTestContract);
+const exactS9Fix05Implementation = same(diff, s9Fix05ImplementationAllowlist)
+  && repositoryPathCollectionValid
+  && s9Fix05ContractSemantics(sequence, registry)
+  && s9Fix05PostRuns.every((run) =>
+    run?.parsed?.passed === true
+    && run.parsed.projection?.owned_count === 3
+    && run.parsed.projection?.non_owned_preserved_count === 157
+    && run.parsed.projection?.protected_english === true)
+  && s9Fix05PostRuns[0]?.stdout === s9Fix05PostRuns[1]?.stdout
+  && validSelfTestContract(actualSelfTestContract)
+  && validCoverageSelfTest(actualCoverageSelfTestContract);
+
 add(
   "remediation-sources-unchanged",
-  fixtureDiff === "" || exactS9Fix04Implementation,
+  fixtureDiff === "" || exactS9Fix04Implementation || exactS9Fix05Implementation,
   fixtureDiff === ""
     ? "Schema/generator/fixture/expected-reference sources and legacy manifest are unchanged."
     : exactS9Fix04Implementation
       ? "Exact S9-FIX-04 profile accepted by owned/non-owned projection: canonical 20/20 owned and 140/140 non-owned; synthetic 1/1 owned and 31/31 non-owned."
+      : exactS9Fix05Implementation
+        ? "Exact S9-FIX-05 profile accepted by owned/non-owned projection: 3/3 owned, protected EN, and 157/157 non-owned."
       : fixtureDiff,
 );
 add(
@@ -1795,6 +1916,10 @@ add(
 
 const boundedDiffProfile = diff.length === 0
   ? "clean-tree"
+  : exactS9Fix05Implementation
+    ? "s9-fix-05-exact-implementation"
+  : exactS9Fix05Preparation
+    ? "s9-fix-05-contract-and-gate-preparation"
   : exactS9Fix04Implementation
     ? "s9-fix-04-exact-implementation"
   : exactS9Fix04Preparation
@@ -1821,7 +1946,7 @@ add(
   boundedDiffProfile !== "rejected",
   boundedDiffProfile === "rejected"
     ? `Profile rejected. Repository paths: ${diff.join(", ")}; tracked: ${changed.join(", ")}; untracked: ${untracked.join(", ")}; normalized=${repositoryPathCollectionValid}; coverage-quality semantic=${coverageQualityControlProfileSemantics({ candidateDiff: diff, candidateSelfTestRuns: coverageSelfTestRuns, collectionValid: repositoryPathCollectionValid })}; coverage-machine-self-test=${validCoverageSelfTest(actualCoverageSelfTestContract)}; ai-value-quality semantic=${aiValueQualityControlProfileSemantics({ candidateDiff: diff, candidateSelfTestRuns: aiValueSelfTestRuns, collectionValid: repositoryPathCollectionValid })}; ai-value-machine-self-test=${validAiValueSelfTest(actualAiValueSelfTestContract)}; revision-quality semantic=${qualityControlProfileSemantics({ candidateDiff: diff, selfTestRuns, collectionValid: repositoryPathCollectionValid })}; revision-machine-self-test=${validSelfTestContract(actualSelfTestContract)}; revision-planning-negative-cases=${planningProfileNegativeChecksPass}; contradiction-contract semantic=${contradictionContractSemantics(sequence, registry, contradictionSpecText, diff, repositoryPathCollectionValid)}; contradiction negative-cases=${negativeContradictionProfileCasesRejected}.`
-    : `Profile ${boundedDiffProfile} accepted.${boundedDiffProfile === "s9-fix-04-exact-implementation" ? ` Exact five-file implementation diff: ${diff.join(", ")}. Ownership 21/21; canonical preservation 140/140; synthetic preservation 31/31; ledger, result, status section, protected boundaries, and deterministic post-gate repeat PASS.` : boundedDiffProfile === "s9-fix-04-contract-and-gate-preparation" ? ` Exact eight-file preparation diff: ${diff.join(", ")}. Ownership 21/21; dedicated prospective gate, case-version profile, ledger profile, protected boundaries, and deterministic repeat PASS.` : boundedDiffProfile === "offline-dataset-case-version-quality-control" ? ` Exact two-file coverage-validator diff: ${diff.join(", ")}. Machine-readable case-version self-test PASS; planning-profile negative checks 14/14.` : boundedDiffProfile === "ai-value-preservation-quality-control" ? ` Exact two-file AI value-preservation diff: ${diff.join(", ")}. Machine-readable S9-FIX-03 profile PASS; planning negative cases rejected.` : boundedDiffProfile === "remediation-revision-integrity-quality-control" ? ` Exact two-file quality-control diff: ${diff.join(", ")}. Machine-readable self-test PASS; planning-profile negative checks 23/23.` : boundedDiffProfile === "systemic-contradiction-remediation-contract-alignment" ? ` Repository-backed classifier included tracked and untracked paths: ${diff.join(", ")}. All negative cases rejected.` : boundedDiffProfile === "high-risk-clarification-refusal-remediation-contract-alignment" ? ` Exact four-file S9-FIX-03 contract diff: ${diff.join(", ")}. Planning-profile negative checks 14/14.` : ""}`,
+    : `Profile ${boundedDiffProfile} accepted.${boundedDiffProfile === "s9-fix-05-exact-implementation" ? ` Exact four-file implementation diff: ${diff.join(", ")}. Ownership 3/3; EN preserved; non-owned 157/157; ledger, result, status, runtime and deterministic repeat PASS.` : boundedDiffProfile === "s9-fix-05-contract-and-gate-preparation" ? ` Exact eight-file preparation diff: ${diff.join(", ")}. Dedicated prospective gate, coverage/revision routing and deterministic repeat PASS.` : boundedDiffProfile === "s9-fix-04-exact-implementation" ? ` Exact five-file implementation diff: ${diff.join(", ")}. Ownership 21/21; canonical preservation 140/140; synthetic preservation 31/31; ledger, result, status section, protected boundaries, and deterministic post-gate repeat PASS.` : boundedDiffProfile === "s9-fix-04-contract-and-gate-preparation" ? ` Exact eight-file preparation diff: ${diff.join(", ")}. Ownership 21/21; dedicated prospective gate, case-version profile, ledger profile, protected boundaries, and deterministic repeat PASS.` : boundedDiffProfile === "offline-dataset-case-version-quality-control" ? ` Exact two-file coverage-validator diff: ${diff.join(", ")}. Machine-readable case-version self-test PASS; planning-profile negative checks 14/14.` : boundedDiffProfile === "ai-value-preservation-quality-control" ? ` Exact two-file AI value-preservation diff: ${diff.join(", ")}. Machine-readable S9-FIX-03 profile PASS; planning negative cases rejected.` : boundedDiffProfile === "remediation-revision-integrity-quality-control" ? ` Exact two-file quality-control diff: ${diff.join(", ")}. Machine-readable self-test PASS; planning-profile negative checks 23/23.` : boundedDiffProfile === "systemic-contradiction-remediation-contract-alignment" ? ` Repository-backed classifier included tracked and untracked paths: ${diff.join(", ")}. All negative cases rejected.` : boundedDiffProfile === "high-risk-clarification-refusal-remediation-contract-alignment" ? ` Exact four-file S9-FIX-03 contract diff: ${diff.join(", ")}. Planning-profile negative checks 14/14.` : ""}`,
 );
 add("network-zero", networkRequests === 0, `${networkRequests} network requests.`);
 
