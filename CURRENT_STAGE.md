@@ -1,5 +1,18 @@
 # CURRENT STAGE
 
+## Stage 9 release readiness/runtime decision contract prepared — 29 July 2026
+
+The remediation sequence is completed `9/9`, and FIX09 assessment status is
+`PASS` over the reconciled `216`-case corpus. Stage 9 remains **In Progress**;
+release readiness is `NOT_DECLARED`; every live runtime boundary is `CLOSED`;
+and `/api/simulate` remains `mockOnly=true`. The non-remediation decision
+contract is prepared without an owner decision, runtime implementation, live
+validation, or provider/network execution. The next action is `Stage 9 Release
+Readiness and Runtime Boundary Decision`, not `S9-FIX-10`. Visual migration
+remaining is `0`.
+
+Earlier Stage 9 sections below remain historical snapshots.
+
 ## Stage 9 remediation plan accepted — implementation not started — 22 July 2026
 
 The versioned remediation registry covers 8 candidates and assigns all 97

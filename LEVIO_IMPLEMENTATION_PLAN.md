@@ -1,5 +1,19 @@
 # LEVIO IMPLEMENTATION PLAN
 
+## Stage 9 release readiness/runtime decision contract prepared — 29 July 2026
+
+Stage 9 remediation is completed `9/9`; the deterministic post-remediation
+assessment of `216` cases is `PASS_WITH_NON_BLOCKING_RESIDUAL_RISKS`. Stage 9
+remains **In Progress**, release readiness remains `NOT_DECLARED`, every live
+runtime boundary remains `CLOSED`, and `/api/simulate` remains
+`mockOnly=true`. The bounded non-remediation decision contract is prepared, but
+no owner decision, live-runtime validation, provider call, or status transition
+has occurred. The next action is `Stage 9 Release Readiness and Runtime Boundary
+Decision`; it is not `S9-FIX-10`. Visual migration remains closed with `0`.
+
+Earlier Stage 9 planning sections below are frozen historical snapshots, not
+current implementation-status authority.
+
 ## Stage 9 bounded remediation sequence — accepted, not implemented — 22 July 2026
 
 The versioned plan maps all 8 candidates and all 97 actionable claims into nine
