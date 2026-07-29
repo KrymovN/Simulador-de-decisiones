@@ -101,9 +101,22 @@ const S9_FIX_03_CLUSTER_IDS = [
   "S9-CLUSTER-038",
   "S9-CLUSTER-040",
 ];
+const S9_FIX_04_CLUSTER_IDS = [
+  "S9-CLUSTER-002",
+  "S9-CLUSTER-014",
+  "S9-CLUSTER-016",
+  "S9-CLUSTER-019",
+  "S9-CLUSTER-024",
+];
+const S9_FIX_04_CASE_IDS = new Set(S9_FIX_04_CLUSTER_IDS.flatMap((clusterId) => {
+  const clusterNumber = clusterId.slice(-3);
+  return ["ES", "EN", "RU", "ZH"].map((language) =>
+    `S9-CORE-${clusterNumber}-${language}`);
+}));
 const APPROVED_VERSION_1_1_CASE_IDS = new Set([
   ...S9_FIX_02_CASE_IDS,
   ...S9_FIX_03_CASE_IDS,
+  ...S9_FIX_04_CASE_IDS,
 ]);
 
 const requiredKeys = [
@@ -175,12 +188,16 @@ function runCaseVersionSelfTests() {
   const fix02V10 = structuredClone(cases.find((item) => S9_FIX_02_CASE_IDS.has(item.case_id)));
   const fix03V10 = structuredClone(cases.find((item) =>
     S9_FIX_03_CASE_IDS.has(item.case_id) && !S9_FIX_02_CASE_IDS.has(item.case_id)));
+  const fix04V10 = structuredClone(cases.find((item) =>
+    S9_FIX_04_CASE_IDS.has(item.case_id) && !S9_FIX_02_CASE_IDS.has(item.case_id)));
   const unrelatedV10 = structuredClone(cases.find((item) =>
     !APPROVED_VERSION_1_1_CASE_IDS.has(item.case_id)));
   const fix02ProspectiveCases = cases.map((item) =>
     S9_FIX_02_CASE_IDS.has(item.case_id) ? { ...item, case_version: "1.1" } : item);
   const fix03ProspectiveCases = cases.map((item) =>
     S9_FIX_03_CASE_IDS.has(item.case_id) ? { ...item, case_version: "1.1" } : item);
+  const fix04ProspectiveCases = cases.map((item) =>
+    S9_FIX_04_CASE_IDS.has(item.case_id) ? { ...item, case_version: "1.1" } : item);
   const mixedApprovedCases = cases.map((item) =>
     APPROVED_VERSION_1_1_CASE_IDS.has(item.case_id) ? { ...item, case_version: "1.1" } : item);
   const prospectiveValidationInput = {
@@ -194,6 +211,7 @@ function runCaseVersionSelfTests() {
     ["valid-version-1.0", validCanonicalCase(baselineV10)],
     ["valid-s9-fix-02-version-1.1", validCanonicalCase({ ...fix02V10, case_version: "1.1" })],
     ["valid-s9-fix-03-version-1.1", validCanonicalCase({ ...fix03V10, case_version: "1.1" })],
+    ["valid-s9-fix-04-version-1.1", validCanonicalCase({ ...fix04V10, case_version: "1.1" })],
     ["all-32-s9-fix-02-version-1.1",
       fix02ProspectiveCases.filter((item) =>
         S9_FIX_02_CASE_IDS.has(item.case_id) && item.case_version === "1.1").length === 32
@@ -202,6 +220,10 @@ function runCaseVersionSelfTests() {
       fix03ProspectiveCases.filter((item) =>
         S9_FIX_03_CASE_IDS.has(item.case_id) && item.case_version === "1.1").length === 17
       && validateDatasetCases(fix03ProspectiveCases).passed],
+    ["all-20-s9-fix-04-version-1.1",
+      fix04ProspectiveCases.filter((item) =>
+        S9_FIX_04_CASE_IDS.has(item.case_id) && item.case_version === "1.1").length === 20
+      && validateDatasetCases(fix04ProspectiveCases).passed],
     ["mixed-version-dataset", mixedApprovedCases.some((item) => item.case_version === "1.0")
       && mixedApprovedCases.some((item) => item.case_version === "1.1")
       && validateDatasetCases(mixedApprovedCases).passed],
@@ -270,7 +292,7 @@ function buildCaseVersionSelfTestContract() {
     .filter((item) => !item.passed)
     .map((item) => item.id);
   return {
-    profile: "S9_FIX_02_AND_S9_FIX_03_CASE_VERSION_VALIDATION",
+    profile: "S9_FIX_02_THROUGH_S9_FIX_04_CASE_VERSION_VALIDATION",
     supported_versions: SUPPORTED_CASE_VERSIONS,
     version_1_1_scopes: {
       "S9-FIX-02": {
@@ -281,6 +303,17 @@ function buildCaseVersionSelfTestContract() {
         eligible_case_count: S9_FIX_03_CASE_IDS.size,
         eligible_case_ids: [...S9_FIX_03_CASE_IDS],
         eligible_cluster_ids: S9_FIX_03_CLUSTER_IDS,
+      },
+      "S9-FIX-04": {
+        eligible_case_count: S9_FIX_04_CASE_IDS.size,
+        eligible_case_ids: [...S9_FIX_04_CASE_IDS],
+        eligible_cluster_ids: S9_FIX_04_CLUSTER_IDS,
+        newly_versioned_case_count: [...S9_FIX_04_CASE_IDS]
+          .filter((caseId) => !S9_FIX_02_CASE_IDS.has(caseId)
+            && !S9_FIX_03_CASE_IDS.has(caseId)).length,
+        already_version_1_1_case_count: [...S9_FIX_04_CASE_IDS]
+          .filter((caseId) => S9_FIX_02_CASE_IDS.has(caseId)
+            || S9_FIX_03_CASE_IDS.has(caseId)).length,
       },
     },
     committed_baseline: {
@@ -299,6 +332,17 @@ function buildCaseVersionSelfTestContract() {
         eligible_case_count: S9_FIX_03_CASE_IDS.size,
         newly_versioned_case_count: [...S9_FIX_03_CASE_IDS]
           .filter((caseId) => !S9_FIX_02_CASE_IDS.has(caseId)).length,
+      },
+      "S9-FIX-04": {
+        passed: validateDatasetCases(cases.map((item) =>
+          S9_FIX_04_CASE_IDS.has(item.case_id) ? { ...item, case_version: "1.1" } : item)).passed,
+        eligible_case_count: S9_FIX_04_CASE_IDS.size,
+        newly_versioned_case_count: [...S9_FIX_04_CASE_IDS]
+          .filter((caseId) => !S9_FIX_02_CASE_IDS.has(caseId)
+            && !S9_FIX_03_CASE_IDS.has(caseId)).length,
+        already_version_1_1_case_count: [...S9_FIX_04_CASE_IDS]
+          .filter((caseId) => S9_FIX_02_CASE_IDS.has(caseId)
+            || S9_FIX_03_CASE_IDS.has(caseId)).length,
       },
     },
     mixed_approved_versions: {
@@ -332,6 +376,7 @@ if (process.argv.includes("--case-version-self-test-json")) {
     || !caseVersionSelfTestContract.committed_baseline.passed
     || !caseVersionSelfTestContract.prospective_profiles["S9-FIX-02"].passed
     || !caseVersionSelfTestContract.prospective_profiles["S9-FIX-03"].passed
+    || !caseVersionSelfTestContract.prospective_profiles["S9-FIX-04"].passed
     || !caseVersionSelfTestContract.mixed_approved_versions.passed
     || caseVersionSelfTestContract.positive_cases.passed !== caseVersionSelfTestContract.positive_cases.total
     || caseVersionSelfTestContract.negative_cases.total !== 14

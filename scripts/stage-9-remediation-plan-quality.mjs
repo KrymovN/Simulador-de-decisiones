@@ -157,6 +157,14 @@ const s9Fix03ImplementationAllowlist = [
   "PROJECT_CONTEXT.md",
 ];
 const s9Fix03ResultArtifact = "docs/qa/remediation/stage-9/results/STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_RESULT.v1.json";
+const s9Fix04ImplementationAllowlist = [
+  "lib/ai-decision-material/fixtures.ts",
+  "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json",
+  "docs/qa/remediation/stage-9/results/STAGE_9_INVENTED_RISK_MECHANISM_REFERENCE_RESULT.v1.json",
+  "PROJECT_CONTEXT.md",
+];
+const s9Fix04ResultArtifact = "docs/qa/remediation/stage-9/results/STAGE_9_INVENTED_RISK_MECHANISM_REFERENCE_RESULT.v1.json";
 const s9Fix02StatusHeading = "## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026";
 const revisionIntegrityScriptPath = join(
   root,
@@ -188,7 +196,7 @@ function parseSelfTestContract(run) {
 }
 
 function validSelfTestContract(contract) {
-  return contract?.profile === "S9-FIX-02_AND_S9-FIX-03_PROSPECTIVE_APPEND_ONLY"
+  return contract?.profile === "S9-FIX-02_THROUGH_S9-FIX-04_PROSPECTIVE_APPEND_ONLY"
     && contract.positive_profile?.passed === true
     && contract.committed_baseline?.passed === true
     && contract.prospective_profiles?.["S9-FIX-02"]?.passed === true
@@ -197,15 +205,19 @@ function validSelfTestContract(contract) {
       ?.actual_classifier_pre_status_passed === true
     && contract.prospective_profiles?.["S9-FIX-03"]
       ?.actual_classifier_post_status_passed === true
-    && contract.routing_regressions?.total === 5
-    && contract.routing_regressions?.passed === 5
+    && contract.prospective_profiles?.["S9-FIX-04"]?.passed === true
+    && contract.prospective_profiles?.["S9-FIX-04"]
+      ?.actual_classifier_passed === true
+    && contract.routing_regressions?.total === 6
+    && contract.routing_regressions?.passed === 6
     && Array.isArray(contract.routing_regressions?.failed)
     && contract.routing_regressions.failed.length === 0
-    && contract.negative_cases?.total === 28
-    && contract.negative_cases?.passed === 28
+    && contract.negative_cases?.total === 41
+    && contract.negative_cases?.passed === 41
     && Array.isArray(contract.negative_cases?.failed)
     && contract.negative_cases.failed.length === 0
-    && same(contract.closed_profile?.supported_substeps, ["S9-FIX-02", "S9-FIX-03"])
+    && same(contract.closed_profile?.supported_substeps,
+      ["S9-FIX-02", "S9-FIX-03", "S9-FIX-04"])
     && contract.closed_profile?.future_event_wildcard === false
     && same(contract.closed_profile?.implementation_allowlist, s9Fix02ImplementationAllowlist)
     && contract.closed_profile?.result_artifact_path === s9Fix02ResultArtifact
@@ -222,8 +234,15 @@ function validSelfTestContract(contract) {
     )
     && contract.closed_profile?.prospective_profiles?.["S9-FIX-03"]?.result_artifact_path
       === s9Fix03ResultArtifact
+    && same(
+      contract.closed_profile?.prospective_profiles?.["S9-FIX-04"]?.implementation_allowlist,
+      s9Fix04ImplementationAllowlist,
+    )
+    && contract.closed_profile?.prospective_profiles?.["S9-FIX-04"]?.result_artifact_path
+      === s9Fix04ResultArtifact
     && contract.baseline_invariants?.s9_fix_01_event_boundary_preserved === true
     && contract.baseline_invariants?.s9_fix_02_event_boundary_preserved === true
+    && contract.baseline_invariants?.s9_fix_03_event_boundary_preserved === true
     && contract.baseline_invariants?.revision_count === 6
     && contract.baseline_invariants?.mapping_order_preserved === true
     && contract.baseline_invariants?.hash_chain_preserved === true
@@ -256,7 +275,7 @@ const selfTestRuns = [
 ];
 const actualSelfTestContract = parseSelfTestContract(selfTestRuns[0]);
 const fixtureSelfTestContract = structuredClone(actualSelfTestContract ?? {
-  profile: "S9-FIX-02_AND_S9-FIX-03_PROSPECTIVE_APPEND_ONLY",
+  profile: "S9-FIX-02_THROUGH_S9-FIX-04_PROSPECTIVE_APPEND_ONLY",
   positive_profile: { passed: true },
   committed_baseline: { passed: true },
   prospective_profiles: {
@@ -266,11 +285,15 @@ const fixtureSelfTestContract = structuredClone(actualSelfTestContract ?? {
       actual_classifier_pre_status_passed: true,
       actual_classifier_post_status_passed: true,
     },
+    "S9-FIX-04": {
+      passed: true,
+      actual_classifier_passed: true,
+    },
   },
-  routing_regressions: { total: 5, passed: 5, failed: [] },
-  negative_cases: { total: 28, passed: 28, failed: [] },
+  routing_regressions: { total: 6, passed: 6, failed: [] },
+  negative_cases: { total: 41, passed: 41, failed: [] },
   closed_profile: {
-    supported_substeps: ["S9-FIX-02", "S9-FIX-03"],
+    supported_substeps: ["S9-FIX-02", "S9-FIX-03", "S9-FIX-04"],
     future_event_wildcard: false,
     implementation_allowlist: s9Fix02ImplementationAllowlist,
     result_artifact_path: s9Fix02ResultArtifact,
@@ -284,11 +307,16 @@ const fixtureSelfTestContract = structuredClone(actualSelfTestContract ?? {
         implementation_allowlist: s9Fix03ImplementationAllowlist,
         result_artifact_path: s9Fix03ResultArtifact,
       },
+      "S9-FIX-04": {
+        implementation_allowlist: s9Fix04ImplementationAllowlist,
+        result_artifact_path: s9Fix04ResultArtifact,
+      },
     },
   },
   baseline_invariants: {
     s9_fix_01_event_boundary_preserved: true,
     s9_fix_02_event_boundary_preserved: true,
+    s9_fix_03_event_boundary_preserved: true,
     revision_count: 6,
     mapping_order_preserved: true,
     hash_chain_preserved: true,
@@ -344,19 +372,19 @@ const planningProfileNegativeResults = [
       value.positive_profile.passed = false;
     })), selfTestRun()],
   })],
-  ["negative-total-not-twenty-eight", [
-    27,
-    29,
+  ["negative-total-not-forty-one", [
+    40,
+    42,
   ].every((total) => !qualityControlProfileSemantics({
     candidateDiff: qualityControlProfileAllowed,
     selfTestRuns: [selfTestRun(mutateSelfTest((value) => {
       value.negative_cases.total = total;
     })), selfTestRun()],
   }))],
-  ["negative-passed-less-than-twenty-eight", qualityControlProfileSemantics({
+  ["negative-passed-less-than-forty-one", qualityControlProfileSemantics({
     candidateDiff: qualityControlProfileAllowed,
     selfTestRuns: [selfTestRun(mutateSelfTest((value) => {
-      value.negative_cases.passed = 27;
+      value.negative_cases.passed = 40;
     })), selfTestRun()],
   })],
   ["failed-list-not-empty", qualityControlProfileSemantics({
@@ -404,7 +432,7 @@ const planningProfileNegativeResults = [
   ["routing-regression-failed", qualityControlProfileSemantics({
     candidateDiff: qualityControlProfileAllowed,
     selfTestRuns: [selfTestRun(mutateSelfTest((value) => {
-      value.routing_regressions.passed = 4;
+      value.routing_regressions.passed = 5;
       value.routing_regressions.failed = ["forced-routing-failure"];
     })), selfTestRun()],
   })],
@@ -431,7 +459,7 @@ const planningProfileNegativeResults = [
 const planningProfileNegativeChecksPass =
   planningProfileNegativeResults.length === 20
   && planningProfileNegativeResults.every(([id, accepted]) =>
-    id === "negative-total-not-twenty-eight" ? accepted === true : accepted === false);
+    id === "negative-total-not-forty-one" ? accepted === true : accepted === false);
 const exactQualityControlProfile = qualityControlProfileSemantics({
   candidateDiff: diff,
   selfTestRuns,
@@ -482,6 +510,19 @@ const expectedS9Fix03VersionedClusters = [
   "S9-CLUSTER-038",
   "S9-CLUSTER-040",
 ];
+const expectedS9Fix04VersionedClusters = [
+  "S9-CLUSTER-002",
+  "S9-CLUSTER-014",
+  "S9-CLUSTER-016",
+  "S9-CLUSTER-019",
+  "S9-CLUSTER-024",
+];
+const expectedS9Fix04VersionedCases = expectedS9Fix04VersionedClusters
+  .flatMap((clusterId) => {
+    const number = clusterId.slice(-3);
+    return ["ES", "EN", "RU", "ZH"].map((language) =>
+      `S9-CORE-${number}-${language}`);
+  });
 
 function runCoverageCaseVersionSelfTest() {
   const result = spawnSync(
@@ -507,7 +548,7 @@ function parseCoverageSelfTest(run) {
 }
 
 function validCoverageSelfTest(contract) {
-  return contract?.profile === "S9_FIX_02_AND_S9_FIX_03_CASE_VERSION_VALIDATION"
+  return contract?.profile === "S9_FIX_02_THROUGH_S9_FIX_04_CASE_VERSION_VALIDATION"
     && same(contract.supported_versions, ["1.0", "1.1"])
     && contract.version_1_1_scopes?.["S9-FIX-02"]?.eligible_case_count === 32
     && same(
@@ -523,6 +564,17 @@ function validCoverageSelfTest(contract) {
       contract.version_1_1_scopes?.["S9-FIX-03"]?.eligible_cluster_ids,
       expectedS9Fix03VersionedClusters,
     )
+    && contract.version_1_1_scopes?.["S9-FIX-04"]?.eligible_case_count === 20
+    && same(
+      contract.version_1_1_scopes?.["S9-FIX-04"]?.eligible_case_ids,
+      expectedS9Fix04VersionedCases,
+    )
+    && same(
+      contract.version_1_1_scopes?.["S9-FIX-04"]?.eligible_cluster_ids,
+      expectedS9Fix04VersionedClusters,
+    )
+    && contract.version_1_1_scopes?.["S9-FIX-04"]?.newly_versioned_case_count === 12
+    && contract.version_1_1_scopes?.["S9-FIX-04"]?.already_version_1_1_case_count === 8
     && contract.committed_baseline?.passed === true
     && contract.committed_baseline?.case_count === 160
     && contract.prospective_profiles?.["S9-FIX-02"]?.passed === true
@@ -530,10 +582,14 @@ function validCoverageSelfTest(contract) {
     && contract.prospective_profiles?.["S9-FIX-03"]?.passed === true
     && contract.prospective_profiles?.["S9-FIX-03"]?.eligible_case_count === 17
     && contract.prospective_profiles?.["S9-FIX-03"]?.newly_versioned_case_count === 16
+    && contract.prospective_profiles?.["S9-FIX-04"]?.passed === true
+    && contract.prospective_profiles?.["S9-FIX-04"]?.eligible_case_count === 20
+    && contract.prospective_profiles?.["S9-FIX-04"]?.newly_versioned_case_count === 12
+    && contract.prospective_profiles?.["S9-FIX-04"]?.already_version_1_1_case_count === 8
     && contract.mixed_approved_versions?.passed === true
-    && contract.mixed_approved_versions?.eligible_case_count === 48
-    && contract.positive_cases?.total === 10
-    && contract.positive_cases?.passed === 10
+    && contract.mixed_approved_versions?.eligible_case_count === 60
+    && contract.positive_cases?.total === 12
+    && contract.positive_cases?.passed === 12
     && Array.isArray(contract.positive_cases?.failed)
     && contract.positive_cases.failed.length === 0
     && contract.negative_cases?.total === 14
@@ -570,7 +626,7 @@ const coverageSelfTestRuns = [
 ];
 const actualCoverageSelfTestContract = parseCoverageSelfTest(coverageSelfTestRuns[0]);
 const fixtureCoverageSelfTestContract = structuredClone(actualCoverageSelfTestContract ?? {
-  profile: "S9_FIX_02_AND_S9_FIX_03_CASE_VERSION_VALIDATION",
+  profile: "S9_FIX_02_THROUGH_S9_FIX_04_CASE_VERSION_VALIDATION",
   supported_versions: ["1.0", "1.1"],
   version_1_1_scopes: {
     "S9-FIX-02": {
@@ -582,14 +638,27 @@ const fixtureCoverageSelfTestContract = structuredClone(actualCoverageSelfTestCo
       eligible_case_ids: expectedS9Fix03VersionedCases,
       eligible_cluster_ids: expectedS9Fix03VersionedClusters,
     },
+    "S9-FIX-04": {
+      eligible_case_count: 20,
+      eligible_case_ids: expectedS9Fix04VersionedCases,
+      eligible_cluster_ids: expectedS9Fix04VersionedClusters,
+      newly_versioned_case_count: 12,
+      already_version_1_1_case_count: 8,
+    },
   },
   committed_baseline: { passed: true, case_count: 160 },
   prospective_profiles: {
     "S9-FIX-02": { passed: true, eligible_case_count: 32 },
     "S9-FIX-03": { passed: true, eligible_case_count: 17, newly_versioned_case_count: 16 },
+    "S9-FIX-04": {
+      passed: true,
+      eligible_case_count: 20,
+      newly_versioned_case_count: 12,
+      already_version_1_1_case_count: 8,
+    },
   },
-  mixed_approved_versions: { passed: true, eligible_case_count: 48 },
-  positive_cases: { total: 10, passed: 10, failed: [] },
+  mixed_approved_versions: { passed: true, eligible_case_count: 60 },
+  positive_cases: { total: 12, passed: 12, failed: [] },
   negative_cases: { total: 14, passed: 14, failed: [] },
   coverage_invariants_preserved: true,
   arbitrary_version_wildcard: false,
@@ -674,7 +743,7 @@ const coveragePlanningNegativeResults = [
   ["unrelated-versioned-row-accepted", !coverageQualityControlProfileSemantics({
     candidateDiff: coverageQualityControlAllowed,
     candidateSelfTestRuns: coverageSelfTestPair(mutateCoverageSelfTest((value) => {
-      value.mixed_approved_versions.eligible_case_count = 49;
+      value.mixed_approved_versions.eligible_case_count = 61;
     })),
   })],
   ["coverage-invariants-changed", !coverageQualityControlProfileSemantics({
@@ -1307,8 +1376,155 @@ const exactHighRiskContractAlignmentSemantics =
   untracked.includes(highRiskSpecPath)
   && highRiskContractSemantics(sequence, registry, highRiskSpecText, diff, repositoryPathCollectionValid)
   && negativeHighRiskProfileCasesRejected;
+
+const s9Fix04SpecPath =
+  "docs/qa/remediation/stage-9/STAGE_9_INVENTED_RISK_MECHANISM_REFERENCE_SPEC.v1.md";
+const s9Fix04SpecText = read(s9Fix04SpecPath);
+const s9Fix04PreparationWriteSet = [
+  s9Fix04SpecPath,
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_SEQUENCE.v1.json",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_CANDIDATE_REGISTRY.v2.json",
+  "scripts/stage-9-risk-entailment-reference-quality.mjs",
+  "scripts/stage-9-offline-dataset-coverage-quality.mjs",
+  "scripts/stage-9-remediation-revision-integrity-quality.mjs",
+  "scripts/stage-9-remediation-plan-quality.mjs",
+  "package.json",
+];
+const s9Fix04OwnedClusters = [
+  "S9-CLUSTER-002",
+  "S9-CLUSTER-014",
+  "S9-CLUSTER-016",
+  "S9-CLUSTER-019",
+  "S9-CLUSTER-024",
+];
+const s9Fix04OwnedFixtures = [
+  "S9-EVAL-002",
+  ...s9Fix04OwnedClusters.flatMap((clusterId) => {
+    const number = clusterId.slice(-3);
+    return ["ES", "EN", "RU", "ZH"].map((language) =>
+      `S9-CORE-${number}-${language}`);
+  }),
+];
+const s9Fix04MandatoryGates = [
+  "quality:stage-9-risk-entailment-reference",
+  "quality:stage-9-synthetic-risk-evaluation",
+  "quality:stage-9-offline-dataset-coverage",
+  "quality:stage-9-remediation-revision-integrity",
+];
+const s9Fix04SourceSymbols = [
+  "SCENARIO_BLUEPRINTS",
+  "CANONICAL_OFFLINE_EVALUATION_CASES",
+  "SYNTHETIC_RISK_EVALUATION_FIXTURES",
+];
+const s9Fix04StatusHeading =
+  "## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026";
+const s9Fix04GatePath = join(
+  root,
+  "scripts",
+  "stage-9-risk-entailment-reference-quality.mjs",
+);
+
+function runS9Fix04ProspectiveGate() {
+  const result = spawnSync(
+    process.execPath,
+    [s9Fix04GatePath, "--prospective-json"],
+    { cwd: root, encoding: "utf8" },
+  );
+  return {
+    status: result.status,
+    stdout: result.stdout ?? "",
+    stderr: result.stderr ?? "",
+    error: result.error ? String(result.error.message ?? result.error) : null,
+  };
+}
+
+function parseS9Fix04ProspectiveGate(run) {
+  if (run.error || run.status !== 0 || run.stderr !== "") return null;
+  try {
+    return JSON.parse(run.stdout);
+  } catch {
+    return null;
+  }
+}
+
+function validS9Fix04ProspectiveGate(contract) {
+  return contract?.profile === "S9_FIX_04_RISK_ENTAILMENT_PROSPECTIVE"
+    && contract.substep_id === "S9-FIX-04"
+    && contract.candidate_id === "S9-REM-EXPECTED-003"
+    && contract.owned_fixture_count === 21
+    && same(contract.owned_fixture_ids, s9Fix04OwnedFixtures)
+    && same(contract.preparation_write_set, s9Fix04PreparationWriteSet)
+    && same(contract.future_implementation_write_set, s9Fix04ImplementationAllowlist)
+    && contract.result_artifact_path === s9Fix04ResultArtifact
+    && contract.status_heading === s9Fix04StatusHeading
+    && Object.values(contract.checks ?? {}).every(Boolean)
+    && contract.passed === true
+    && contract.network_provider_execution_count === 0;
+}
+
+function s9Fix04ContractSemantics(candidateSequence, candidateRegistry) {
+  const candidateSubstep = candidateSequence.sequence.find((row) =>
+    row.substep_id === "S9-FIX-04");
+  const candidateEntry = candidateRegistry.candidates.find((row) =>
+    row.candidate_id === "S9-REM-EXPECTED-003");
+  if (!candidateSubstep || !candidateEntry) return false;
+  const entries = [candidateSubstep, candidateEntry];
+  return entries.every((row) =>
+    row.implementation_specification === s9Fix04SpecPath
+    && row.root_cause === "EXPECTED_RISK_MECHANISM_NOT_SOURCE_ENTAILED"
+    && row.implementation_status === "IMPLEMENTATION_READY_NOT_STARTED"
+    && row.implementation_executed === false
+    && row.owned_fixture_count === 21
+    && same(row.owned_fixture_ids, s9Fix04OwnedFixtures)
+    && row.owned_cluster_count === 5
+    && same(row.owned_cluster_ids, s9Fix04OwnedClusters)
+    && same(row.implementation_source_symbols, s9Fix04SourceSymbols)
+    && same(row.preparation_write_files, s9Fix04PreparationWriteSet)
+    && same(row.allowed_files ?? row.planned_write_files,
+      s9Fix04ImplementationAllowlist)
+    && same(row.gates ?? row.required_regression_gates, s9Fix04MandatoryGates)
+    && row.bounded_result_artifact === s9Fix04ResultArtifact
+    && row.canonical_status_update?.file_path === "PROJECT_CONTEXT.md"
+    && row.canonical_status_update?.section_heading === s9Fix04StatusHeading
+    && row.shared_rule_id === "risk_mechanism_requires_source_entailment"
+    && row.case_version_profile?.eligible_case_count === 20
+    && row.case_version_profile?.newly_versioned_case_count === 12
+    && row.case_version_profile?.already_version_1_1_case_count === 8)
+    && candidateSubstep.commit_message
+      === "fix(stage-9): align risk references with source"
+    && candidateEntry.implementation_commit_message
+      === "fix(stage-9): align risk references with source"
+    && !JSON.stringify(entries).includes("canonical Stage 9 status documents")
+    && s9Fix04SpecText.includes("Required implementation commit count: exactly one")
+    && s9Fix04OwnedFixtures.every((id) => s9Fix04SpecText.includes(`\`${id}\``))
+    && s9Fix04PreparationWriteSet.every((path) =>
+      s9Fix04SpecText.includes(`\`${path}\``))
+    && s9Fix04ImplementationAllowlist.every((path) =>
+      s9Fix04SpecText.includes(`\`${path}\``))
+    && s9Fix04MandatoryGates.every((gate) =>
+      s9Fix04SpecText.includes(`\`${gate}\``));
+}
+
+const s9Fix04ProspectiveRuns = [
+  runS9Fix04ProspectiveGate(),
+  runS9Fix04ProspectiveGate(),
+];
+const s9Fix04ProspectiveContract =
+  parseS9Fix04ProspectiveGate(s9Fix04ProspectiveRuns[0]);
+const exactS9Fix04Preparation =
+  same([...diff].sort(), [...s9Fix04PreparationWriteSet].sort())
+  && repositoryPathCollectionValid
+  && s9Fix04ContractSemantics(sequence, registry)
+  && s9Fix04ProspectiveRuns.every((run) =>
+    validS9Fix04ProspectiveGate(parseS9Fix04ProspectiveGate(run)))
+  && s9Fix04ProspectiveRuns[0].stdout === s9Fix04ProspectiveRuns[1].stdout
+  && validSelfTestContract(actualSelfTestContract)
+  && validCoverageSelfTest(actualCoverageSelfTestContract);
+
 const boundedDiffProfile = diff.length === 0
   ? "clean-tree"
+  : exactS9Fix04Preparation
+    ? "s9-fix-04-contract-and-gate-preparation"
   : exactCoverageQualityControlProfile
     ? "offline-dataset-case-version-quality-control"
     : exactAiValueQualityControlProfile
@@ -1331,7 +1547,7 @@ add(
   boundedDiffProfile !== "rejected",
   boundedDiffProfile === "rejected"
     ? `Profile rejected. Repository paths: ${diff.join(", ")}; tracked: ${changed.join(", ")}; untracked: ${untracked.join(", ")}; normalized=${repositoryPathCollectionValid}; coverage-quality semantic=${coverageQualityControlProfileSemantics({ candidateDiff: diff, candidateSelfTestRuns: coverageSelfTestRuns, collectionValid: repositoryPathCollectionValid })}; coverage-machine-self-test=${validCoverageSelfTest(actualCoverageSelfTestContract)}; ai-value-quality semantic=${aiValueQualityControlProfileSemantics({ candidateDiff: diff, candidateSelfTestRuns: aiValueSelfTestRuns, collectionValid: repositoryPathCollectionValid })}; ai-value-machine-self-test=${validAiValueSelfTest(actualAiValueSelfTestContract)}; revision-quality semantic=${qualityControlProfileSemantics({ candidateDiff: diff, selfTestRuns, collectionValid: repositoryPathCollectionValid })}; revision-machine-self-test=${validSelfTestContract(actualSelfTestContract)}; revision-planning-negative-cases=${planningProfileNegativeChecksPass}; contradiction-contract semantic=${contradictionContractSemantics(sequence, registry, contradictionSpecText, diff, repositoryPathCollectionValid)}; contradiction negative-cases=${negativeContradictionProfileCasesRejected}.`
-    : `Profile ${boundedDiffProfile} accepted.${boundedDiffProfile === "offline-dataset-case-version-quality-control" ? ` Exact two-file coverage-validator diff: ${diff.join(", ")}. Machine-readable case-version self-test PASS; planning-profile negative checks 14/14.` : boundedDiffProfile === "ai-value-preservation-quality-control" ? ` Exact two-file AI value-preservation diff: ${diff.join(", ")}. Machine-readable S9-FIX-03 profile PASS; planning negative cases rejected.` : boundedDiffProfile === "remediation-revision-integrity-quality-control" ? ` Exact two-file quality-control diff: ${diff.join(", ")}. Machine-readable self-test PASS; planning-profile negative checks 20/20.` : boundedDiffProfile === "systemic-contradiction-remediation-contract-alignment" ? ` Repository-backed classifier included tracked and untracked paths: ${diff.join(", ")}. All negative cases rejected.` : boundedDiffProfile === "high-risk-clarification-refusal-remediation-contract-alignment" ? ` Exact four-file S9-FIX-03 contract diff: ${diff.join(", ")}. Planning-profile negative checks 14/14.` : ""}`,
+    : `Profile ${boundedDiffProfile} accepted.${boundedDiffProfile === "s9-fix-04-contract-and-gate-preparation" ? ` Exact eight-file preparation diff: ${diff.join(", ")}. Ownership 21/21; dedicated prospective gate, case-version profile, ledger profile, protected boundaries, and deterministic repeat PASS.` : boundedDiffProfile === "offline-dataset-case-version-quality-control" ? ` Exact two-file coverage-validator diff: ${diff.join(", ")}. Machine-readable case-version self-test PASS; planning-profile negative checks 14/14.` : boundedDiffProfile === "ai-value-preservation-quality-control" ? ` Exact two-file AI value-preservation diff: ${diff.join(", ")}. Machine-readable S9-FIX-03 profile PASS; planning negative cases rejected.` : boundedDiffProfile === "remediation-revision-integrity-quality-control" ? ` Exact two-file quality-control diff: ${diff.join(", ")}. Machine-readable self-test PASS; planning-profile negative checks 20/20.` : boundedDiffProfile === "systemic-contradiction-remediation-contract-alignment" ? ` Repository-backed classifier included tracked and untracked paths: ${diff.join(", ")}. All negative cases rejected.` : boundedDiffProfile === "high-risk-clarification-refusal-remediation-contract-alignment" ? ` Exact four-file S9-FIX-03 contract diff: ${diff.join(", ")}. Planning-profile negative checks 14/14.` : ""}`,
 );
 add("network-zero", networkRequests === 0, `${networkRequests} network requests.`);
 

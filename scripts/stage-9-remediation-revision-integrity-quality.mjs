@@ -16,6 +16,7 @@ const ledgerPath = "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.j
 const resultPath = "docs/qa/remediation/stage-9/results/STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_RESULT.v1.json";
 const s9Fix02ResultPath = "docs/qa/remediation/stage-9/results/STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_RESULT.v1.json";
 const s9Fix03ResultPath = "docs/qa/remediation/stage-9/results/STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_RESULT.v1.json";
+const s9Fix04ResultPath = "docs/qa/remediation/stage-9/results/STAGE_9_INVENTED_RISK_MECHANISM_REFERENCE_RESULT.v1.json";
 const legacyPath = "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json";
 const fixturePath = "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts";
 const projectContextPath = "PROJECT_CONTEXT.md";
@@ -47,6 +48,14 @@ const S9_FIX_03_PROSPECTIVE_ALLOWED = [
 ];
 const S9_FIX_03_PROSPECTIVE_REQUIRED = S9_FIX_03_PROSPECTIVE_ALLOWED
   .filter((path) => path !== projectContextPath);
+const S9_FIX_04_PROSPECTIVE_ALLOWED = [
+  "lib/ai-decision-material/fixtures.ts",
+  "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
+  ledgerPath,
+  s9Fix04ResultPath,
+  projectContextPath,
+];
+const S9_FIX_04_PROSPECTIVE_REQUIRED = [...S9_FIX_04_PROSPECTIVE_ALLOWED];
 const EXPECTED_S9_FIX_02_EVENT = {
   event_version: "stage-9-ai-remediation-revision-event.1",
   substep_id: "S9-FIX-02",
@@ -64,6 +73,15 @@ const EXPECTED_S9_FIX_03_EVENT = {
   result_artifact_path: s9Fix03ResultPath,
   generated_at: null,
   implementation_commit_message: "fix(stage-9): correct high-risk references",
+};
+const EXPECTED_S9_FIX_04_EVENT = {
+  event_version: "stage-9-ai-remediation-revision-event.1",
+  substep_id: "S9-FIX-04",
+  remediation_entry_ids: ["S9-REM-EXPECTED-003"],
+  shared_rule_id: "risk_mechanism_requires_source_entailment",
+  result_artifact_path: s9Fix04ResultPath,
+  generated_at: null,
+  implementation_commit_message: "fix(stage-9): align risk references with source",
 };
 
 const read = (path) => readFileSync(join(root, path), "utf8");
@@ -128,6 +146,14 @@ function validateS9Fix03Result(candidateResult) {
     && candidateResult.candidate_id === "S9-REM-EXPECTED-002";
 }
 
+function validateS9Fix04Result(candidateResult) {
+  return candidateResult
+    && candidateResult.substep_id === "S9-FIX-04"
+    && candidateResult.candidate_id === "S9-REM-EXPECTED-003"
+    && candidateResult.owned_fixture_count === 21
+    && candidateResult.owned_cluster_count === 5;
+}
+
 function evaluateLedgerProfile({
   candidateLedgerText,
   changedPaths,
@@ -162,8 +188,8 @@ function evaluateLedgerProfile({
       && changedPaths.every((path) =>
         path === normalizeRepoPath(path) && !path.startsWith("/") && !path.startsWith(".git/"));
   };
-  const supportedProfileRequested =
-    requestedProfile === "S9-FIX-02" || requestedProfile === "S9-FIX-03";
+  const supportedProfileRequested = ["S9-FIX-02", "S9-FIX-03", "S9-FIX-04"]
+    .includes(requestedProfile);
   if (requestedProfile !== null && !supportedProfileRequested) {
     return {
       accepted: false,
@@ -174,10 +200,15 @@ function evaluateLedgerProfile({
     };
   }
 
-  const inferredProfile = requestedProfile
-    ?? (appendedEvents.length === 2 && appendedEvents[1]?.substep_id === "S9-FIX-03"
-      ? "S9-FIX-03"
-      : null);
+  const inferredProfile = candidateLedgerText === committedLedgerText
+    && requestedProfile === null
+    ? null
+    : requestedProfile
+      ?? (appendedEvents.length === 3 && appendedEvents[2]?.substep_id === "S9-FIX-04"
+        ? "S9-FIX-04"
+        : appendedEvents.length === 2 && appendedEvents[1]?.substep_id === "S9-FIX-03"
+          ? "S9-FIX-03"
+          : null);
 
   if (inferredProfile === "S9-FIX-02") {
     const eventValid = appendedEvents.length === 1
@@ -231,6 +262,38 @@ function evaluateLedgerProfile({
     };
   }
 
+  if (inferredProfile === "S9-FIX-04") {
+    const eventValid = appendedEvents.length === 3
+      && same(appendedEvents[0], EXPECTED_S9_FIX_02_EVENT)
+      && same(appendedEvents[1], EXPECTED_S9_FIX_03_EVENT)
+      && same(appendedEvents[2], EXPECTED_S9_FIX_04_EVENT);
+    const orderValid = orderedEvents.length === 4
+      && canonicalJson(orderedEvents[0]) === baselineLedgerText
+      && same(orderedEvents[1], EXPECTED_S9_FIX_02_EVENT)
+      && same(orderedEvents[2], EXPECTED_S9_FIX_03_EVENT)
+      && same(orderedEvents[3], EXPECTED_S9_FIX_04_EVENT);
+    const accepted = boundaryPreserved
+      && deterministicSerialization
+      && same(Object.keys(candidateLedger), prospectiveLedgerKeys)
+      && eventValid
+      && orderValid
+      && pathsValidFor(S9_FIX_04_PROSPECTIVE_ALLOWED, S9_FIX_04_PROSPECTIVE_REQUIRED)
+      && contextValid
+      && !protectedArtifactChanged
+      && !futureEventWildcard
+      && validateS9Fix04Result(prospectiveResult);
+    return {
+      accepted,
+      mode: accepted ? "prospective-s9-fix-04" : "rejected",
+      boundaryPreserved,
+      s9Fix02EventBoundaryPreserved:
+        same(appendedEvents[0], EXPECTED_S9_FIX_02_EVENT),
+      s9Fix03EventBoundaryPreserved:
+        same(appendedEvents[1], EXPECTED_S9_FIX_03_EVENT),
+      deterministicSerialization,
+    };
+  }
+
   const qualityControlDiffAccepted = changedPaths.length === 0
     || exactPathSet(changedPaths, QUALITY_CONTROL_ALLOWED);
   if (candidateLedgerText === committedLedgerText) {
@@ -278,22 +341,29 @@ function classifyActualChangeSet({
   changedPaths,
   s9Fix02Result = null,
   s9Fix03Result = null,
+  s9Fix04Result = null,
   ...profileInput
 }) {
+  const s9Fix04Phase = exactPathSet(changedPaths, S9_FIX_04_PROSPECTIVE_REQUIRED)
+    || exactPathSet(changedPaths, S9_FIX_04_PROSPECTIVE_ALLOWED);
   const s9Fix03Phase = exactPathSet(changedPaths, S9_FIX_03_PROSPECTIVE_REQUIRED)
     || exactPathSet(changedPaths, S9_FIX_03_PROSPECTIVE_ALLOWED);
   const s9Fix02Phase = exactPathSet(changedPaths, S9_FIX_02_PROSPECTIVE_REQUIRED)
     || exactPathSet(changedPaths, S9_FIX_02_PROSPECTIVE_ALLOWED);
-  const requestedProfile = s9Fix03Phase
-    ? "S9-FIX-03"
-    : s9Fix02Phase
-      ? "S9-FIX-02"
-      : null;
-  const prospectiveResult = requestedProfile === "S9-FIX-03"
-    ? s9Fix03Result
-    : requestedProfile === "S9-FIX-02"
-      ? s9Fix02Result
-      : null;
+  const requestedProfile = s9Fix04Phase
+    ? "S9-FIX-04"
+    : s9Fix03Phase
+      ? "S9-FIX-03"
+      : s9Fix02Phase
+        ? "S9-FIX-02"
+        : null;
+  const prospectiveResult = requestedProfile === "S9-FIX-04"
+    ? s9Fix04Result
+    : requestedProfile === "S9-FIX-03"
+      ? s9Fix03Result
+      : requestedProfile === "S9-FIX-02"
+        ? s9Fix02Result
+        : null;
 
   return evaluateLedgerProfile({
     candidateLedgerText,
@@ -337,6 +407,29 @@ function prospectiveS9Fix03Result(overrides = {}) {
   return {
     substep_id: "S9-FIX-03",
     candidate_id: "S9-REM-EXPECTED-002",
+    ...overrides,
+  };
+}
+
+function prospectiveS9Fix04Ledger(overrides = {}) {
+  const event = { ...EXPECTED_S9_FIX_04_EVENT, ...(overrides.event ?? {}) };
+  return {
+    ...structuredClone(baselineLedger),
+    appended_events: overrides.events ?? [
+      structuredClone(EXPECTED_S9_FIX_02_EVENT),
+      structuredClone(EXPECTED_S9_FIX_03_EVENT),
+      event,
+    ],
+    ...(overrides.ledger ?? {}),
+  };
+}
+
+function prospectiveS9Fix04Result(overrides = {}) {
+  return {
+    substep_id: "S9-FIX-04",
+    candidate_id: "S9-REM-EXPECTED-003",
+    owned_fixture_count: 21,
+    owned_cluster_count: 5,
     ...overrides,
   };
 }
@@ -518,7 +611,7 @@ function runS9Fix03ProspectiveSelfTests() {
     ]],
     ["missing-s9-fix-03-event", {
       ...baseInput,
-      candidateLedgerText: committedLedgerText,
+      candidateLedgerText: canonicalJson(prospectiveLedger()),
     }],
     ["incomplete-or-context-only-change-set", [
       {
@@ -564,10 +657,113 @@ function runS9Fix03ProspectiveSelfTests() {
   };
 }
 
+function runS9Fix04ProspectiveSelfTests() {
+  const requiredDiff = [...S9_FIX_04_PROSPECTIVE_REQUIRED];
+  const baseInput = {
+    candidateLedgerText: canonicalJson(prospectiveS9Fix04Ledger()),
+    changedPaths: requiredDiff,
+    s9Fix02Result: prospectiveResult(),
+    s9Fix03Result: prospectiveS9Fix03Result(),
+    s9Fix04Result: prospectiveS9Fix04Result(),
+  };
+  const positiveRun = classifyActualChangeSet(baseInput);
+  const negativeInputs = [
+    ["mutated-s9-fix-01-boundary", {
+      ...baseInput,
+      candidateLedgerText: canonicalJson(prospectiveS9Fix04Ledger({
+        ledger: {
+          revisions: baselineLedger.revisions.map((row, index) =>
+            index === 0 ? { ...row, claim_id: "MUTATED" } : row),
+        },
+      })),
+    }],
+    ["mutated-s9-fix-02-event", {
+      ...baseInput,
+      candidateLedgerText: canonicalJson(prospectiveS9Fix04Ledger({
+        events: [
+          { ...EXPECTED_S9_FIX_02_EVENT, shared_rule_id: "MUTATED" },
+          EXPECTED_S9_FIX_03_EVENT,
+          EXPECTED_S9_FIX_04_EVENT,
+        ],
+      })),
+    }],
+    ["mutated-s9-fix-03-event", {
+      ...baseInput,
+      candidateLedgerText: canonicalJson(prospectiveS9Fix04Ledger({
+        events: [
+          EXPECTED_S9_FIX_02_EVENT,
+          { ...EXPECTED_S9_FIX_03_EVENT, shared_rule_id: "MUTATED" },
+          EXPECTED_S9_FIX_04_EVENT,
+        ],
+      })),
+    }],
+    ["missing-predecessor-event", {
+      ...baseInput,
+      candidateLedgerText: canonicalJson(prospectiveS9Fix04Ledger({
+        events: [EXPECTED_S9_FIX_02_EVENT, EXPECTED_S9_FIX_04_EVENT],
+      })),
+    }],
+    ["wrong-s9-fix-04-candidate", {
+      ...baseInput,
+      candidateLedgerText: canonicalJson(prospectiveS9Fix04Ledger({
+        event: { remediation_entry_ids: ["S9-REM-EXPECTED-002"] },
+      })),
+    }],
+    ["wrong-s9-fix-04-result-path", {
+      ...baseInput,
+      candidateLedgerText: canonicalJson(prospectiveS9Fix04Ledger({
+        event: { result_artifact_path: s9Fix03ResultPath },
+      })),
+    }],
+    ["wrong-shared-rule", {
+      ...baseInput,
+      candidateLedgerText: canonicalJson(prospectiveS9Fix04Ledger({
+        event: { shared_rule_id: "future_wildcard" },
+      })),
+    }],
+    ["incomplete-change-set", {
+      ...baseInput,
+      changedPaths: requiredDiff.slice(1),
+    }],
+    ["unrelated-file", {
+      ...baseInput,
+      changedPaths: [...requiredDiff, "unrelated.file"],
+    }],
+    ["historical-artifact-change", {
+      ...baseInput,
+      protectedArtifactChanged: true,
+    }],
+    ["outside-project-context-section", {
+      ...baseInput,
+      projectContextSectionValid: false,
+    }],
+    ["invalid-result-schema", {
+      ...baseInput,
+      s9Fix04Result: prospectiveS9Fix04Result({ owned_fixture_count: 20 }),
+    }],
+    ["future-event-wildcard", {
+      ...baseInput,
+      futureEventWildcard: true,
+    }],
+  ];
+  const negativeResults = negativeInputs.map(([id, input]) => ({
+    id,
+    passed: !classifyActualChangeSet(input).accepted,
+  }));
+  return {
+    positivePassed: positiveRun.accepted
+      && positiveRun.mode === "prospective-s9-fix-04",
+    actualClassifierPassed: positiveRun.accepted
+      && positiveRun.mode === "prospective-s9-fix-04",
+    negativeResults,
+  };
+}
+
 function runRoutingRegressionTests() {
   const resultArtifacts = {
     s9Fix02Result: prospectiveResult(),
     s9Fix03Result: prospectiveS9Fix03Result(),
+    s9Fix04Result: prospectiveS9Fix04Result(),
   };
   const committedBaseline = classifyActualChangeSet({
     candidateLedgerText: committedLedgerText,
@@ -584,6 +780,11 @@ function runRoutingRegressionTests() {
     changedPaths: [...S9_FIX_03_PROSPECTIVE_REQUIRED],
     ...resultArtifacts,
   });
+  const s9Fix04 = classifyActualChangeSet({
+    candidateLedgerText: canonicalJson(prospectiveS9Fix04Ledger()),
+    changedPaths: [...S9_FIX_04_PROSPECTIVE_REQUIRED],
+    ...resultArtifacts,
+  });
   const cases = [
     {
       id: "clean-committed-ledger-routes-baseline",
@@ -591,8 +792,8 @@ function runRoutingRegressionTests() {
         && committedBaseline.mode === "committed-baseline-s9-fix-02",
     },
     {
-      id: "byte-identical-ledger-plus-s9-fix-02-diff-routes-prospective",
-      passed: s9Fix02.accepted && s9Fix02.mode === "prospective-s9-fix-02",
+      id: "completed-s9-fix-02-replay-rejected",
+      passed: !s9Fix02.accepted,
     },
     {
       id: "explicit-s9-fix-02-never-routes-baseline",
@@ -602,6 +803,11 @@ function runRoutingRegressionTests() {
       id: "explicit-s9-fix-03-never-routes-baseline",
       passed: s9Fix03.accepted
         && s9Fix03.mode === "prospective-s9-fix-03",
+    },
+    {
+      id: "explicit-s9-fix-04-never-routes-baseline",
+      passed: s9Fix04.accepted
+        && s9Fix04.mode === "prospective-s9-fix-04",
     },
     {
       id: "missing-profile-with-non-clean-diff-rejected",
@@ -620,12 +826,17 @@ function buildSelfTestContract() {
   const second = runProspectiveSelfTests();
   const s9Fix03First = runS9Fix03ProspectiveSelfTests();
   const s9Fix03Second = runS9Fix03ProspectiveSelfTests();
+  const s9Fix04First = runS9Fix04ProspectiveSelfTests();
+  const s9Fix04Second = runS9Fix04ProspectiveSelfTests();
   const routingFirst = runRoutingRegressionTests();
   const routingSecond = runRoutingRegressionTests();
   const s9Fix02Failed = first.negativeResults
     .filter((test) => !test.passed)
     .map((test) => test.id);
   const s9Fix03Failed = s9Fix03First.negativeResults
+    .filter((test) => !test.passed)
+    .map((test) => test.id);
+  const s9Fix04Failed = s9Fix04First.negativeResults
     .filter((test) => !test.passed)
     .map((test) => test.id);
   const routingFailed = routingFirst
@@ -636,7 +847,7 @@ function buildSelfTestContract() {
     changedPaths: [],
   });
   return {
-    profile: "S9-FIX-02_AND_S9-FIX-03_PROSPECTIVE_APPEND_ONLY",
+    profile: "S9-FIX-02_THROUGH_S9-FIX-04_PROSPECTIVE_APPEND_ONLY",
     positive_profile: {
       passed: first.positivePassed,
     },
@@ -650,6 +861,10 @@ function buildSelfTestContract() {
         passed: s9Fix03First.positivePassed,
         actual_classifier_pre_status_passed: s9Fix03First.preStatusPassed,
         actual_classifier_post_status_passed: s9Fix03First.postStatusPassed,
+      },
+      "S9-FIX-04": {
+        passed: s9Fix04First.positivePassed,
+        actual_classifier_passed: s9Fix04First.actualClassifierPassed,
       },
     },
     routing_regressions: {
@@ -667,17 +882,25 @@ function buildSelfTestContract() {
       passed: s9Fix03First.negativeResults.length - s9Fix03Failed.length,
       failed: s9Fix03Failed,
     },
+    s9_fix_04_negative_cases: {
+      total: s9Fix04First.negativeResults.length,
+      passed: s9Fix04First.negativeResults.length - s9Fix04Failed.length,
+      failed: s9Fix04Failed,
+    },
     negative_cases: {
-      total: first.negativeResults.length + s9Fix03First.negativeResults.length,
+      total: first.negativeResults.length + s9Fix03First.negativeResults.length
+        + s9Fix04First.negativeResults.length,
       passed: first.negativeResults.length + s9Fix03First.negativeResults.length
-        - s9Fix02Failed.length - s9Fix03Failed.length,
+        + s9Fix04First.negativeResults.length
+        - s9Fix02Failed.length - s9Fix03Failed.length - s9Fix04Failed.length,
       failed: [
         ...s9Fix02Failed.map((id) => `S9-FIX-02:${id}`),
         ...s9Fix03Failed.map((id) => `S9-FIX-03:${id}`),
+        ...s9Fix04Failed.map((id) => `S9-FIX-04:${id}`),
       ],
     },
     closed_profile: {
-      supported_substeps: ["S9-FIX-02", "S9-FIX-03"],
+      supported_substeps: ["S9-FIX-02", "S9-FIX-03", "S9-FIX-04"],
       future_event_wildcard: false,
       implementation_allowlist: S9_FIX_02_PROSPECTIVE_ALLOWED,
       result_artifact_path: s9Fix02ResultPath,
@@ -691,11 +914,16 @@ function buildSelfTestContract() {
           implementation_allowlist: S9_FIX_03_PROSPECTIVE_ALLOWED,
           result_artifact_path: s9Fix03ResultPath,
         },
+        "S9-FIX-04": {
+          implementation_allowlist: S9_FIX_04_PROSPECTIVE_ALLOWED,
+          result_artifact_path: s9Fix04ResultPath,
+        },
       },
     },
     baseline_invariants: {
       s9_fix_01_event_boundary_preserved: true,
       s9_fix_02_event_boundary_preserved: true,
+      s9_fix_03_event_boundary_preserved: true,
       revision_count: 6,
       mapping_order_preserved: true,
       hash_chain_preserved: true,
@@ -703,6 +931,7 @@ function buildSelfTestContract() {
     },
     deterministic: same(first, second)
       && same(s9Fix03First, s9Fix03Second)
+      && same(s9Fix04First, s9Fix04Second)
       && same(routingFirst, routingSecond),
     network_request_count: networkRequests,
   };
@@ -719,11 +948,14 @@ if (process.argv.includes("--self-test-json")) {
       .actual_classifier_pre_status_passed
     || !selfTestContract.prospective_profiles["S9-FIX-03"]
       .actual_classifier_post_status_passed
-    || selfTestContract.routing_regressions.total !== 5
-    || selfTestContract.routing_regressions.passed !== 5
+    || !selfTestContract.prospective_profiles["S9-FIX-04"].passed
+    || !selfTestContract.prospective_profiles["S9-FIX-04"]
+      .actual_classifier_passed
+    || selfTestContract.routing_regressions.total !== 6
+    || selfTestContract.routing_regressions.passed !== 6
     || selfTestContract.routing_regressions.failed.length !== 0
-    || selfTestContract.negative_cases.total !== 28
-    || selfTestContract.negative_cases.passed !== 28
+    || selfTestContract.negative_cases.total !== 41
+    || selfTestContract.negative_cases.passed !== 41
     || selfTestContract.negative_cases.failed.length !== 0
     || !selfTestContract.deterministic
     || selfTestContract.network_request_count !== 0) {
@@ -754,6 +986,9 @@ if (process.argv.includes("--self-test-json")) {
   const s9Fix03ResultArtifact = existsSync(join(root, s9Fix03ResultPath))
     ? JSON.parse(read(s9Fix03ResultPath))
     : null;
+  const s9Fix04ResultArtifact = existsSync(join(root, s9Fix04ResultPath))
+    ? JSON.parse(read(s9Fix04ResultPath))
+    : null;
   const ledgerProfile = classifyActualChangeSet({
     candidateLedgerText: ledgerText,
     changedPaths: changed,
@@ -764,6 +999,7 @@ if (process.argv.includes("--self-test-json")) {
     ),
     s9Fix02Result: s9Fix02ResultArtifact,
     s9Fix03Result: s9Fix03ResultArtifact,
+    s9Fix04Result: s9Fix04ResultArtifact,
   });
 
   add(
@@ -825,14 +1061,17 @@ if (process.argv.includes("--self-test-json")) {
       .actual_classifier_pre_status_passed
     && selfTestContract.prospective_profiles["S9-FIX-03"]
       .actual_classifier_post_status_passed
-    && selfTestContract.routing_regressions.total === 5
-    && selfTestContract.routing_regressions.passed === 5
+    && selfTestContract.prospective_profiles["S9-FIX-04"].passed
+    && selfTestContract.prospective_profiles["S9-FIX-04"]
+      .actual_classifier_passed
+    && selfTestContract.routing_regressions.total === 6
+    && selfTestContract.routing_regressions.passed === 6
     && selfTestContract.routing_regressions.failed.length === 0
-    && selfTestContract.negative_cases.total === 28
-    && selfTestContract.negative_cases.passed === 28
+    && selfTestContract.negative_cases.total === 41
+    && selfTestContract.negative_cases.passed === 41
     && selfTestContract.negative_cases.failed.length === 0
     && selfTestContract.deterministic,
-  "Committed baseline and prospective S9-FIX-02/S9-FIX-03 PASS; routing 5/5; negative cases 28/28; deterministic JSON contract.");
+  "Committed baseline and prospective S9-FIX-02/S9-FIX-03/S9-FIX-04 PASS; routing 6/6; negative cases 41/41; deterministic JSON contract.");
   add("network-zero", networkRequests === 0
     && manifest.summary.network_request_count === 0
     && result.network_request_count === 0, `${networkRequests} network requests.`);

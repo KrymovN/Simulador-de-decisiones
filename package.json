@@ -39,6 +39,7 @@
     "quality:stage-9-human-review-readiness": "node scripts/stage-9-human-review-readiness-quality.mjs",
     "quality:stage-9-schema-oracle-evidence-projection": "node scripts/stage-9-schema-oracle-evidence-projection-quality.mjs",
     "quality:stage-9-remediation-revision-integrity": "node scripts/stage-9-remediation-revision-integrity-quality.mjs",
+    "quality:stage-9-risk-entailment-reference": "node scripts/stage-9-risk-entailment-reference-quality.mjs",
     "generate:stage-9-ai-review-batch-1": "node scripts/generate-stage-9-ai-review-batch-1.mjs",
     "quality:stage-9-ai-review-batch-1": "node scripts/stage-9-ai-review-batch-1-quality.mjs",
     "generate:stage-9-ai-review-batch-2": "node scripts/generate-stage-9-ai-review-batch-2.mjs",
