@@ -1,0 +1,134 @@
+{
+  "artifact_version": "stage-9-versioned-dataset-regeneration-reconciliation-result.1",
+  "status": "PASS",
+  "substep_id": "S9-FIX-08",
+  "kind": "integration_regeneration",
+  "implementation_commit_message": "test(stage-9): reconcile remediated dataset revisions",
+  "source_commit": "ab8125e4d186dbab3ecc3df17ed4a12eba2bae5a",
+  "source_counts": {
+    "canonical_core": 160,
+    "synthetic_risk": 32,
+    "rich_decision_material": 184,
+    "combined_offline_population": 216,
+    "legacy_frozen_manifest_entries": 216
+  },
+  "version_distribution": {
+    "1.1": 63,
+    "1.0": 97
+  },
+  "manifest_path": "docs/qa/remediation/stage-9/LEVIO_STAGE_9_POST_REMEDIATION_MANIFEST.json",
+  "manifest_sha256": "7748be17e5f3ead5791aea4b65fd72f98c2187db83a10bf9d172aebd61f26d64",
+  "reconciliation_path": "docs/qa/remediation/stage-9/STAGE_9_ACTIONABLE_CLAIM_RECONCILIATION.v1.json",
+  "reconciliation_sha256": "76d19477cef3757ca7b322f7bf84dfb47031c1a75a6a9a52fa74dad294987f41",
+  "actionable_claim_reconciliation": "97/97",
+  "unresolved_claim_count": 0,
+  "rejected_claims_preserved": 4,
+  "completed_revision_evidence": [
+    {
+      "substep_id": "S9-FIX-01",
+      "implementation_commit": "6b04c405a2a8aaba9e9c3e164413a9d954ee04af",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_RESULT.v1.json",
+      "result_artifact_sha256": "e4edca1b4263c78bca83974f4e7c6bc741279036554ad6b649bdaec82a3598f5"
+    },
+    {
+      "substep_id": "S9-FIX-02",
+      "implementation_commit": "18c8d6bffa422c46f4439b6b93c1076fc98a375c",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_RESULT.v1.json",
+      "result_artifact_sha256": "71386d5bac38dcd1edd2056e8bf6b42a3c2963287b187cd53f9b1ac180b32590"
+    },
+    {
+      "substep_id": "S9-FIX-03",
+      "implementation_commit": "82073c46d2f4568875bdbf51310ae75e35118de7",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_RESULT.v1.json",
+      "result_artifact_sha256": "a615a2c3d6ef69258e136b48e74eb2f9da996c93b7a7f72497713d4e8c84ce29"
+    },
+    {
+      "substep_id": "S9-FIX-04",
+      "implementation_commit": "700d4ab1e562a211e73f2d3e59eb1ce232ff98aa",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_INVENTED_RISK_MECHANISM_REFERENCE_RESULT.v1.json",
+      "result_artifact_sha256": "8b65463ff7cc72fcc5cde3cdb10a26306f164a3702cb972aa9f49d986cfb4922"
+    },
+    {
+      "substep_id": "S9-FIX-05",
+      "implementation_commit": "8fcf95241aa4ff5424a88b0c773771d5735b590d",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_REVERSIBLE_TRIAL_LOCALIZATION_TEMPLATE_RESULT.v1.json",
+      "result_artifact_sha256": "6ebe5b9ebc8084fccd1899688af3be96b0669894182017f9946a29b381f43a2c"
+    },
+    {
+      "substep_id": "S9-FIX-06",
+      "implementation_commit": "2aa1cbb7dbff338fc434f8a72710af69affde3a7",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_006_SILENT_LOSS_RESULT.v1.json",
+      "result_artifact_sha256": "f340b74ae433dc7109dff4765b762a84192a4e2f2e61aeb2cd38022358c7a625"
+    },
+    {
+      "substep_id": "S9-FIX-07",
+      "implementation_commit": "ab8125e4d186dbab3ecc3df17ed4a12eba2bae5a",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_013_PRIVACY_REVIEW_REFERENCE_RESULT.v1.json",
+      "result_artifact_sha256": "aace5ce65ff3753791d6d5bd3dfad708365030cf235f63ec3400a4866a870587"
+    }
+  ],
+  "ledger_append": {
+    "event_version": "stage-9-ai-remediation-revision-event.1",
+    "substep_id": "S9-FIX-08",
+    "kind": "integration_regeneration",
+    "prerequisites": [
+      "S9-FIX-01",
+      "S9-FIX-02",
+      "S9-FIX-03",
+      "S9-FIX-04",
+      "S9-FIX-05",
+      "S9-FIX-06",
+      "S9-FIX-07"
+    ],
+    "canonical_input_sha256": {
+      "lib/ai-decision-material/fixtures.ts": "52992383ec89674b8678cfac0c038a0057cb71729685526e0c1a755c2aa598fd",
+      "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts": "68f4e3a144a6ce34c467fe24645bdfdbf2a5311eed9e9b70d1665131d0ad90a3",
+      "docs/qa/review/AI_REVIEW_CONSOLIDATED_ISSUE_DISPOSITIONS.json": "ce6c2439d5d3ade88902fdce93269da58ff5e905f0c25d6cc7b66291399621a8",
+      "docs/qa/remediation/stage-9/AI_REMEDIATION_CANDIDATE_REGISTRY.v2.json": "d650f7669c5e3ab5b85c2986a0c2817929b4680d85bc0b500f8e2110bebae324"
+    },
+    "generated_output_paths": [
+      "docs/qa/remediation/stage-9/LEVIO_STAGE_9_POST_REMEDIATION_MANIFEST.json",
+      "docs/qa/remediation/stage-9/STAGE_9_ACTIONABLE_CLAIM_RECONCILIATION.v1.json"
+    ],
+    "complete_manifest_sha256": "7748be17e5f3ead5791aea4b65fd72f98c2187db83a10bf9d172aebd61f26d64",
+    "reconciliation_artifact_sha256": "76d19477cef3757ca7b322f7bf84dfb47031c1a75a6a9a52fa74dad294987f41",
+    "actionable_claim_reconciliation": "97/97",
+    "unresolved_claim_count": 0,
+    "rejected_claims_preserved": 4,
+    "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_VERSIONED_DATASET_REGENERATION_RECONCILIATION_RESULT.v1.json",
+    "validation_status": "PASS",
+    "generated_at": null,
+    "implementation_commit_message": "test(stage-9): reconcile remediated dataset revisions"
+  },
+  "execution_write_set": [
+    "PROJECT_CONTEXT.md",
+    "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json",
+    "docs/qa/remediation/stage-9/LEVIO_STAGE_9_POST_REMEDIATION_MANIFEST.json",
+    "docs/qa/remediation/stage-9/STAGE_9_ACTIONABLE_CLAIM_RECONCILIATION.v1.json",
+    "docs/qa/remediation/stage-9/results/STAGE_9_VERSIONED_DATASET_REGENERATION_RECONCILIATION_RESULT.v1.json"
+  ],
+  "project_context_boundary": {
+    "section_heading": "## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026",
+    "completed_remediation": "8/9",
+    "remaining_remediation": "1/9",
+    "next_substep": "S9-FIX-09",
+    "stage_9_status": "In Progress",
+    "release_readiness": "NOT_DECLARED",
+    "runtime_boundaries": "CLOSED",
+    "api_simulate_mock_only": true,
+    "visual_migration_remaining": 0
+  },
+  "mandatory_gates": [
+    "quality:stage-9-remediation-plan",
+    "quality:stage-9-post-remediation-regeneration",
+    "quality:stage-9-remediation-revision-integrity",
+    "quality:stage-9-schema-oracle-evidence-projection",
+    "quality:stage-9-human-review-readiness",
+    "quality:stage-9-risk-entailment-reference",
+    "quality:stage-9-offline-dataset-coverage"
+  ],
+  "deterministic_serialization": true,
+  "historical_evidence_unchanged": true,
+  "runtime_api_ui_provider_persistence": "UNCHANGED",
+  "network_provider_execution_count": 0
+}

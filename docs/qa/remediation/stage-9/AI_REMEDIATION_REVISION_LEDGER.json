@@ -200,6 +200,39 @@
       "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_013_PRIVACY_REVIEW_REFERENCE_RESULT.v1.json",
       "generated_at": null,
       "implementation_commit_message": "fix(stage-9): clarify MATERIAL-013 privacy references"
+    },
+    {
+      "event_version": "stage-9-ai-remediation-revision-event.1",
+      "substep_id": "S9-FIX-08",
+      "kind": "integration_regeneration",
+      "prerequisites": [
+        "S9-FIX-01",
+        "S9-FIX-02",
+        "S9-FIX-03",
+        "S9-FIX-04",
+        "S9-FIX-05",
+        "S9-FIX-06",
+        "S9-FIX-07"
+      ],
+      "canonical_input_sha256": {
+        "lib/ai-decision-material/fixtures.ts": "52992383ec89674b8678cfac0c038a0057cb71729685526e0c1a755c2aa598fd",
+        "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts": "68f4e3a144a6ce34c467fe24645bdfdbf2a5311eed9e9b70d1665131d0ad90a3",
+        "docs/qa/review/AI_REVIEW_CONSOLIDATED_ISSUE_DISPOSITIONS.json": "ce6c2439d5d3ade88902fdce93269da58ff5e905f0c25d6cc7b66291399621a8",
+        "docs/qa/remediation/stage-9/AI_REMEDIATION_CANDIDATE_REGISTRY.v2.json": "d650f7669c5e3ab5b85c2986a0c2817929b4680d85bc0b500f8e2110bebae324"
+      },
+      "generated_output_paths": [
+        "docs/qa/remediation/stage-9/LEVIO_STAGE_9_POST_REMEDIATION_MANIFEST.json",
+        "docs/qa/remediation/stage-9/STAGE_9_ACTIONABLE_CLAIM_RECONCILIATION.v1.json"
+      ],
+      "complete_manifest_sha256": "7748be17e5f3ead5791aea4b65fd72f98c2187db83a10bf9d172aebd61f26d64",
+      "reconciliation_artifact_sha256": "76d19477cef3757ca7b322f7bf84dfb47031c1a75a6a9a52fa74dad294987f41",
+      "actionable_claim_reconciliation": "97/97",
+      "unresolved_claim_count": 0,
+      "rejected_claims_preserved": 4,
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_VERSIONED_DATASET_REGENERATION_RECONCILIATION_RESULT.v1.json",
+      "validation_status": "PASS",
+      "generated_at": null,
+      "implementation_commit_message": "test(stage-9): reconcile remediated dataset revisions"
     }
   ]
 }

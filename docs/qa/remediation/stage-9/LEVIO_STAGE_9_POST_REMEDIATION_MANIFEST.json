@@ -1,329 +1,2360 @@
 {
-  "package_version": "stage-9-post-remediation-manifest.1",
+  "package_version": "stage-9-post-remediation-manifest.2",
   "generated_at": null,
-  "baseline_commit": "d6072c5dbfda63d22cab19c9c1f082e1d22d6c3a",
-  "substep_id": "S9-FIX-01",
-  "candidate_id": "Stage 9 Schema-Oracle Evidence Projection Revision",
-  "scope": "Versioned sibling projection only; legacy review evidence and runtime behavior remain unchanged.",
-  "source_integrity": {
-    "legacy_manifest_path": "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json",
-    "legacy_manifest_sha256": "5e95bfdf6b4626e681dbcead672c2d1463f7a14d5eacb5305b773dfa2655e65b",
-    "legacy_manifest_entry_count": 216,
-    "synthetic_fixture_path": "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
-    "synthetic_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b"
+  "substep_id": "S9-FIX-08",
+  "kind": "integration_regeneration",
+  "canonical_source_commit": "ab8125e4d186dbab3ecc3df17ed4a12eba2bae5a",
+  "source_counts": {
+    "canonical_core": 160,
+    "synthetic_risk": 32,
+    "rich_decision_material": 184,
+    "combined_offline_population": 216,
+    "legacy_frozen_manifest_entries": 216
   },
-  "summary": {
-    "schema_oracle_mapping_count": 6,
-    "network_request_count": 0,
-    "runtime_change_count": 0
+  "version_distribution": {
+    "1.1": 63,
+    "1.0": 97
   },
-  "schema_oracle_evidence": [
+  "preservation": {
+    "stable_ids": true,
+    "non_owned_synthetic_preserved": 31,
+    "non_owned_rich_preserved": 183,
+    "historical_evidence_immutable": true
+  },
+  "source_families": [
     {
-      "fixture_id": "S9-EVAL-006",
-      "claim_id": "B5-ISSUE-001",
-      "mutation_type": "unknown_output_field",
-      "json_path": "candidate.output.raw_response",
-      "invalid_value": "forbidden",
-      "comparison_set": {
-        "candidate_container_keys": [
-          "capability",
-          "generation_status",
-          "raw_response",
-          "risks"
-        ],
-        "source_valid_container_keys": [
-          "capability",
-          "generation_status",
-          "risks"
-        ]
-      },
-      "evidence_fragment": {
-        "capability": "candidate_risk_signals_v1",
-        "generation_status": "completed",
-        "raw_response": "forbidden",
-        "risks": [
-          {
-            "affected_option_refs": [
-              "option_1"
-            ],
-            "basis_fact_refs": [
-              "fact_1"
-            ],
-            "category": "financial",
-            "likelihood_hint": "medium",
-            "mechanism": "Un coste recurrente mayor absorbe capacidad presupuestaria.",
-            "severity_hint": "high",
-            "statement": "El coste fijo puede reducir el margen disponible.",
-            "trigger_conditions": [
-              "Si los ingresos tardan más de lo previsto"
-            ],
-            "uncertainty_note": "La demanda futura sigue sin confirmarse."
-          },
-          {
-            "affected_option_refs": [
-              "option_2"
-            ],
-            "basis_fact_refs": [
-              "fact_2"
-            ],
-            "category": "dependency",
-            "likelihood_hint": "unknown",
-            "mechanism": "Una incidencia del proveedor afectaría a la continuidad operativa.",
-            "severity_hint": "medium",
-            "statement": "La dependencia externa puede interrumpir la operación.",
-            "trigger_conditions": [
-              "Si el proveedor reduce su capacidad"
-            ],
-            "uncertainty_note": "No se conoce la resiliencia contractual del proveedor."
-          },
-          {
-            "affected_option_refs": [
-              "option_1",
-              "option_2"
-            ],
-            "basis_fact_refs": [],
-            "category": "information_gap",
-            "likelihood_hint": "unknown",
-            "mechanism": "Una estimación incompleta altera las necesidades de capacidad.",
-            "severity_hint": "medium",
-            "statement": "La demanda incierta puede distorsionar la planificación.",
-            "trigger_conditions": [
-              "Si la demanda real difiere de la estimada"
-            ],
-            "uncertainty_note": "Faltan datos confirmados sobre la demanda."
-          }
-        ]
-      },
-      "evidence_fragment_sha256": "f54da72178694b1fd95ee1b71a565edf941bb294f635fc4b5bb10db0a14382f5",
-      "provenance": {
-        "source_fixture_path": "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
-        "source_fixture_id": "S9-EVAL-006",
-        "source_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
-        "projection_rule": "Exact candidate payload fragment plus a source-derived comparison set; no schema-oracle inference is added."
-      }
-    },
-    {
-      "fixture_id": "S9-EVAL-007",
-      "claim_id": "B6-ISSUE-027",
-      "mutation_type": "unknown_nested_field",
-      "json_path": "candidate.output.risks[0].advice",
-      "invalid_value": "none",
-      "comparison_set": {
-        "candidate_risk_keys": [
-          "advice",
-          "affected_option_refs",
-          "basis_fact_refs",
-          "category",
-          "likelihood_hint",
-          "mechanism",
-          "severity_hint",
-          "statement",
-          "trigger_conditions",
-          "uncertainty_note"
-        ],
-        "source_valid_risk_keys": [
-          "affected_option_refs",
-          "basis_fact_refs",
-          "category",
-          "likelihood_hint",
-          "mechanism",
-          "severity_hint",
-          "statement",
-          "trigger_conditions",
-          "uncertainty_note"
-        ]
-      },
-      "evidence_fragment": {
-        "advice": "none",
-        "affected_option_refs": [
-          "option_1"
-        ],
-        "basis_fact_refs": [
-          "fact_1"
-        ],
-        "category": "financial",
-        "likelihood_hint": "medium",
-        "mechanism": "Un coste recurrente mayor absorbe capacidad presupuestaria.",
-        "severity_hint": "high",
-        "statement": "El coste fijo puede reducir el margen disponible.",
-        "trigger_conditions": [
-          "Si los ingresos tardan más de lo previsto"
-        ],
-        "uncertainty_note": "La demanda futura sigue sin confirmarse."
-      },
-      "evidence_fragment_sha256": "36dfe0aec6e488869847ddbff466d1d982ce0c46d227a7dbdfab09bd28e5b2ce",
-      "provenance": {
-        "source_fixture_path": "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
-        "source_fixture_id": "S9-EVAL-007",
-        "source_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
-        "projection_rule": "Exact candidate payload fragment plus a source-derived comparison set; no schema-oracle inference is added."
-      }
-    },
-    {
-      "fixture_id": "S9-EVAL-009",
-      "claim_id": "B6-ISSUE-029",
-      "mutation_type": "invalid_severity",
-      "json_path": "candidate.output.risks[0].severity_hint",
-      "invalid_value": "critical",
-      "comparison_set": {
-        "candidate_values": [
-          "critical",
-          "medium"
-        ],
-        "source_valid_values": [
-          "high",
-          "medium"
-        ]
-      },
-      "evidence_fragment": {
-        "affected_option_refs": [
-          "option_1"
-        ],
-        "basis_fact_refs": [
-          "fact_1"
-        ],
-        "category": "financial",
-        "likelihood_hint": "medium",
-        "mechanism": "Un coste recurrente mayor absorbe capacidad presupuestaria.",
-        "severity_hint": "critical",
-        "statement": "El coste fijo puede reducir el margen disponible.",
-        "trigger_conditions": [
-          "Si los ingresos tardan más de lo previsto"
-        ],
-        "uncertainty_note": "La demanda futura sigue sin confirmarse."
-      },
-      "evidence_fragment_sha256": "2ce921cce915c960a2515a1f7ffc711457f6b8eaef5a68e6cd00b5daf0368e19",
-      "provenance": {
-        "source_fixture_path": "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
-        "source_fixture_id": "S9-EVAL-009",
-        "source_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
-        "projection_rule": "Exact candidate payload fragment plus a source-derived comparison set; no schema-oracle inference is added."
-      }
-    },
-    {
-      "fixture_id": "S9-EVAL-010",
-      "claim_id": "B6-ISSUE-030",
-      "mutation_type": "invalid_likelihood",
-      "json_path": "candidate.output.risks[0].likelihood_hint",
-      "invalid_value": "certain",
-      "comparison_set": {
-        "candidate_values": [
-          "certain",
-          "unknown"
-        ],
-        "source_valid_values": [
-          "medium",
-          "unknown"
-        ]
-      },
-      "evidence_fragment": {
-        "affected_option_refs": [
-          "option_1"
-        ],
-        "basis_fact_refs": [
-          "fact_1"
-        ],
-        "category": "financial",
-        "likelihood_hint": "certain",
-        "mechanism": "Un coste recurrente mayor absorbe capacidad presupuestaria.",
-        "severity_hint": "high",
-        "statement": "El coste fijo puede reducir el margen disponible.",
-        "trigger_conditions": [
-          "Si los ingresos tardan más de lo previsto"
-        ],
-        "uncertainty_note": "La demanda futura sigue sin confirmarse."
-      },
-      "evidence_fragment_sha256": "2b3edd7bb670638cebc65097de45c525ce7ce406a194a05927784d6f14970906",
-      "provenance": {
-        "source_fixture_path": "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
-        "source_fixture_id": "S9-EVAL-010",
-        "source_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
-        "projection_rule": "Exact candidate payload fragment plus a source-derived comparison set; no schema-oracle inference is added."
-      }
-    },
-    {
-      "fixture_id": "S9-EVAL-011",
-      "claim_id": "B2-ISSUE-001",
-      "mutation_type": "nonexistent_option_ref",
-      "json_path": "candidate.output.risks[0].affected_option_refs",
-      "invalid_value": [
-        "option_9"
+      "family": "canonical_core",
+      "source_path": "lib/ai-decision-material/fixtures.ts",
+      "source_symbol": "CANONICAL_OFFLINE_EVALUATION_CASES",
+      "source_file_sha256": "52992383ec89674b8678cfac0c038a0057cb71729685526e0c1a755c2aa598fd",
+      "count": 160,
+      "ordered_ids": [
+        "S9-CORE-001-ES",
+        "S9-CORE-001-EN",
+        "S9-CORE-001-RU",
+        "S9-CORE-001-ZH",
+        "S9-CORE-002-ES",
+        "S9-CORE-002-EN",
+        "S9-CORE-002-RU",
+        "S9-CORE-002-ZH",
+        "S9-CORE-003-ES",
+        "S9-CORE-003-EN",
+        "S9-CORE-003-RU",
+        "S9-CORE-003-ZH",
+        "S9-CORE-004-ES",
+        "S9-CORE-004-EN",
+        "S9-CORE-004-RU",
+        "S9-CORE-004-ZH",
+        "S9-CORE-005-ES",
+        "S9-CORE-005-EN",
+        "S9-CORE-005-RU",
+        "S9-CORE-005-ZH",
+        "S9-CORE-006-ES",
+        "S9-CORE-006-EN",
+        "S9-CORE-006-RU",
+        "S9-CORE-006-ZH",
+        "S9-CORE-007-ES",
+        "S9-CORE-007-EN",
+        "S9-CORE-007-RU",
+        "S9-CORE-007-ZH",
+        "S9-CORE-008-ES",
+        "S9-CORE-008-EN",
+        "S9-CORE-008-RU",
+        "S9-CORE-008-ZH",
+        "S9-CORE-009-ES",
+        "S9-CORE-009-EN",
+        "S9-CORE-009-RU",
+        "S9-CORE-009-ZH",
+        "S9-CORE-010-ES",
+        "S9-CORE-010-EN",
+        "S9-CORE-010-RU",
+        "S9-CORE-010-ZH",
+        "S9-CORE-011-ES",
+        "S9-CORE-011-EN",
+        "S9-CORE-011-RU",
+        "S9-CORE-011-ZH",
+        "S9-CORE-012-ES",
+        "S9-CORE-012-EN",
+        "S9-CORE-012-RU",
+        "S9-CORE-012-ZH",
+        "S9-CORE-013-ES",
+        "S9-CORE-013-EN",
+        "S9-CORE-013-RU",
+        "S9-CORE-013-ZH",
+        "S9-CORE-014-ES",
+        "S9-CORE-014-EN",
+        "S9-CORE-014-RU",
+        "S9-CORE-014-ZH",
+        "S9-CORE-015-ES",
+        "S9-CORE-015-EN",
+        "S9-CORE-015-RU",
+        "S9-CORE-015-ZH",
+        "S9-CORE-016-ES",
+        "S9-CORE-016-EN",
+        "S9-CORE-016-RU",
+        "S9-CORE-016-ZH",
+        "S9-CORE-017-ES",
+        "S9-CORE-017-EN",
+        "S9-CORE-017-RU",
+        "S9-CORE-017-ZH",
+        "S9-CORE-018-ES",
+        "S9-CORE-018-EN",
+        "S9-CORE-018-RU",
+        "S9-CORE-018-ZH",
+        "S9-CORE-019-ES",
+        "S9-CORE-019-EN",
+        "S9-CORE-019-RU",
+        "S9-CORE-019-ZH",
+        "S9-CORE-020-ES",
+        "S9-CORE-020-EN",
+        "S9-CORE-020-RU",
+        "S9-CORE-020-ZH",
+        "S9-CORE-021-ES",
+        "S9-CORE-021-EN",
+        "S9-CORE-021-RU",
+        "S9-CORE-021-ZH",
+        "S9-CORE-022-ES",
+        "S9-CORE-022-EN",
+        "S9-CORE-022-RU",
+        "S9-CORE-022-ZH",
+        "S9-CORE-023-ES",
+        "S9-CORE-023-EN",
+        "S9-CORE-023-RU",
+        "S9-CORE-023-ZH",
+        "S9-CORE-024-ES",
+        "S9-CORE-024-EN",
+        "S9-CORE-024-RU",
+        "S9-CORE-024-ZH",
+        "S9-CORE-025-ES",
+        "S9-CORE-025-EN",
+        "S9-CORE-025-RU",
+        "S9-CORE-025-ZH",
+        "S9-CORE-026-ES",
+        "S9-CORE-026-EN",
+        "S9-CORE-026-RU",
+        "S9-CORE-026-ZH",
+        "S9-CORE-027-ES",
+        "S9-CORE-027-EN",
+        "S9-CORE-027-RU",
+        "S9-CORE-027-ZH",
+        "S9-CORE-028-ES",
+        "S9-CORE-028-EN",
+        "S9-CORE-028-RU",
+        "S9-CORE-028-ZH",
+        "S9-CORE-029-ES",
+        "S9-CORE-029-EN",
+        "S9-CORE-029-RU",
+        "S9-CORE-029-ZH",
+        "S9-CORE-030-ES",
+        "S9-CORE-030-EN",
+        "S9-CORE-030-RU",
+        "S9-CORE-030-ZH",
+        "S9-CORE-031-ES",
+        "S9-CORE-031-EN",
+        "S9-CORE-031-RU",
+        "S9-CORE-031-ZH",
+        "S9-CORE-032-ES",
+        "S9-CORE-032-EN",
+        "S9-CORE-032-RU",
+        "S9-CORE-032-ZH",
+        "S9-CORE-033-ES",
+        "S9-CORE-033-EN",
+        "S9-CORE-033-RU",
+        "S9-CORE-033-ZH",
+        "S9-CORE-034-ES",
+        "S9-CORE-034-EN",
+        "S9-CORE-034-RU",
+        "S9-CORE-034-ZH",
+        "S9-CORE-035-ES",
+        "S9-CORE-035-EN",
+        "S9-CORE-035-RU",
+        "S9-CORE-035-ZH",
+        "S9-CORE-036-ES",
+        "S9-CORE-036-EN",
+        "S9-CORE-036-RU",
+        "S9-CORE-036-ZH",
+        "S9-CORE-037-ES",
+        "S9-CORE-037-EN",
+        "S9-CORE-037-RU",
+        "S9-CORE-037-ZH",
+        "S9-CORE-038-ES",
+        "S9-CORE-038-EN",
+        "S9-CORE-038-RU",
+        "S9-CORE-038-ZH",
+        "S9-CORE-039-ES",
+        "S9-CORE-039-EN",
+        "S9-CORE-039-RU",
+        "S9-CORE-039-ZH",
+        "S9-CORE-040-ES",
+        "S9-CORE-040-EN",
+        "S9-CORE-040-RU",
+        "S9-CORE-040-ZH"
       ],
-      "comparison_set": {
-        "candidate_references": [
-          "option_9"
-        ],
-        "available_source_option_ids": [
-          "option_1",
-          "option_2"
-        ]
-      },
-      "evidence_fragment": {
-        "affected_option_refs": [
-          "option_9"
-        ],
-        "basis_fact_refs": [
-          "fact_1"
-        ],
-        "category": "financial",
-        "likelihood_hint": "medium",
-        "mechanism": "Un coste recurrente mayor absorbe capacidad presupuestaria.",
-        "severity_hint": "high",
-        "statement": "El coste fijo puede reducir el margen disponible.",
-        "trigger_conditions": [
-          "Si los ingresos tardan más de lo previsto"
-        ],
-        "uncertainty_note": "La demanda futura sigue sin confirmarse."
-      },
-      "evidence_fragment_sha256": "8a24861937fde855238d9186ef435a7404e2ea77ce1363e3869849a09954b9aa",
-      "provenance": {
-        "source_fixture_path": "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
-        "source_fixture_id": "S9-EVAL-011",
-        "source_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
-        "projection_rule": "Exact candidate payload fragment plus a source-derived comparison set; no schema-oracle inference is added."
-      }
+      "ordered_row_sha256": [
+        {
+          "id": "S9-CORE-001-ES",
+          "sha256": "a3cca429b2c1f59df4101ba7eca1ee369822f0166cde05d16d62ae57f9942e90"
+        },
+        {
+          "id": "S9-CORE-001-EN",
+          "sha256": "3ceee5f10db0ee4c75e42176ba256b7d6715d7a303a2347447a00419822f3c43"
+        },
+        {
+          "id": "S9-CORE-001-RU",
+          "sha256": "2a60ab4430ee23088d7c72a402c25ede45e5269bdeb63f351ace844525924242"
+        },
+        {
+          "id": "S9-CORE-001-ZH",
+          "sha256": "63209ed0c9acb639ac7e32b66884b2726a6ef48b60015b3bbb30a27edfb4d0d7"
+        },
+        {
+          "id": "S9-CORE-002-ES",
+          "sha256": "9cd153ab03e345d3dcae16beb1262a4f22ba10cd04f279ea486bf3af27dde32b"
+        },
+        {
+          "id": "S9-CORE-002-EN",
+          "sha256": "0227fa1815a93e9cb1d4facb911b5be1a2a762d1b6f16f62f68b0067dafb46f0"
+        },
+        {
+          "id": "S9-CORE-002-RU",
+          "sha256": "bc0f0b9b48b25a386539d4675acd56380481c71f07d28c5a8acb3204e04dd28d"
+        },
+        {
+          "id": "S9-CORE-002-ZH",
+          "sha256": "17afed8448822708e1c9323543fc5ddbd7f8c87fad772e7326ca790e4def52f9"
+        },
+        {
+          "id": "S9-CORE-003-ES",
+          "sha256": "5d20e5d84165fcbf232a66aac5ff7a743d2394f361cc2d8cde4a3aada2ce8d42"
+        },
+        {
+          "id": "S9-CORE-003-EN",
+          "sha256": "21a06962dc47bf68db6090a88e6e91ff9758e889ec5929c9ccf09125de806ff3"
+        },
+        {
+          "id": "S9-CORE-003-RU",
+          "sha256": "a044495b39d286751f3a1c942e92e1fd1f28c4be9c72946be068e8f4f3018585"
+        },
+        {
+          "id": "S9-CORE-003-ZH",
+          "sha256": "19ec6f7575fcb80ae0c17ab7042eb6ca48d178078f89026fb63cf9ca837c39cf"
+        },
+        {
+          "id": "S9-CORE-004-ES",
+          "sha256": "d66222f04eb58b71e595ff688ccc4195964349a5d320b2507d7b856ad2cb056c"
+        },
+        {
+          "id": "S9-CORE-004-EN",
+          "sha256": "15663b895f42f763230d936202e65bac07ced833aed8f7ca46fd2eaa3c86ec5c"
+        },
+        {
+          "id": "S9-CORE-004-RU",
+          "sha256": "7e9837572bb30f6dc40ef56e4672ba78bbedd255978f29bb4bde6154a37313ee"
+        },
+        {
+          "id": "S9-CORE-004-ZH",
+          "sha256": "1a3c4a1471e199ff254ba0214dd90ef7e5ed5cd76f58919f6b584bb90402d100"
+        },
+        {
+          "id": "S9-CORE-005-ES",
+          "sha256": "db1f022c5017dd01f8d83eb0b961a62f5fdf9009e7670f6265e7e9c422f296d3"
+        },
+        {
+          "id": "S9-CORE-005-EN",
+          "sha256": "738fba3096ac6d87203f47edd09c16b305545d75b6a9bfca9067c4c43ab5c751"
+        },
+        {
+          "id": "S9-CORE-005-RU",
+          "sha256": "ffeb36c6ba1b449d94cbadabc8fb5616d7b7afbb0db98ed560af0b7806d72cb6"
+        },
+        {
+          "id": "S9-CORE-005-ZH",
+          "sha256": "c2cd1104865a1f257d89f2165dfaeb143be0f8f954e4be05b2ff2a14075efcd1"
+        },
+        {
+          "id": "S9-CORE-006-ES",
+          "sha256": "cd2d0426bcd31210292f4cc3072def9bf96a9126d01b4b450924f9347cd05cd2"
+        },
+        {
+          "id": "S9-CORE-006-EN",
+          "sha256": "9a35d7f760297a76297c872525f55a0f854fceea9fc55b4c6bcbd899be5cef11"
+        },
+        {
+          "id": "S9-CORE-006-RU",
+          "sha256": "be46ea1c88dcf5255e1705b3f04afb054c4833b539c06e18af67149020180a6a"
+        },
+        {
+          "id": "S9-CORE-006-ZH",
+          "sha256": "4ce6a2b5458be261764e292b59ecfded5d85d0bbee49c23764bfd7eac19b127c"
+        },
+        {
+          "id": "S9-CORE-007-ES",
+          "sha256": "61a656560b758dbfe0ae5d31b0736025643ae8ca9a2206a55cf3b01f3f1906a0"
+        },
+        {
+          "id": "S9-CORE-007-EN",
+          "sha256": "ed9730103da7e0e6182932eaa3ba23ce9fc93991c1a53b92756c9165392a0865"
+        },
+        {
+          "id": "S9-CORE-007-RU",
+          "sha256": "a3c6e06f831ab4691da849e8535904e5142f5596305e6244634d2328ffc10b45"
+        },
+        {
+          "id": "S9-CORE-007-ZH",
+          "sha256": "05710ba9c68de3edc797ebf428b26f948a326012b16bd0166561b1a034c9a730"
+        },
+        {
+          "id": "S9-CORE-008-ES",
+          "sha256": "9f646f3e4da89f77cf7ed01a9f61cee4e4dbdb96693148228d6f0d32ff863271"
+        },
+        {
+          "id": "S9-CORE-008-EN",
+          "sha256": "8acde848d92e8febc48fbc9e8cfcfc2cf591fc9204120b8001e105607f7bc3fd"
+        },
+        {
+          "id": "S9-CORE-008-RU",
+          "sha256": "8823e6c632ff97497c5a14807a3baf81c3db07b284e05cebe763345226b3b443"
+        },
+        {
+          "id": "S9-CORE-008-ZH",
+          "sha256": "2a528ae7786885c5c186fb66c6a7cda17e176948b39fae6d96cb644b847f6834"
+        },
+        {
+          "id": "S9-CORE-009-ES",
+          "sha256": "788bcb074ad530ff95f65fab01a74101f162d1eebdb56ba64f1bf6ba0967a278"
+        },
+        {
+          "id": "S9-CORE-009-EN",
+          "sha256": "eb7cc30d71710d173d7932b2acd2e93fcdde6a890b90cd8ded685cb4b1359fd5"
+        },
+        {
+          "id": "S9-CORE-009-RU",
+          "sha256": "747eb059841e4b9b96821703e2bbbef506d1a8f3ce1b3be58c520a2528fdc9ae"
+        },
+        {
+          "id": "S9-CORE-009-ZH",
+          "sha256": "ea0abaa126fd65297e669dfd45923b68d570cab7f7c5f1e77e9ff98f6034bd37"
+        },
+        {
+          "id": "S9-CORE-010-ES",
+          "sha256": "de5eb8db68ed394852f108fcec65e4accd0fbada1fe346506012e373b37658c5"
+        },
+        {
+          "id": "S9-CORE-010-EN",
+          "sha256": "c4b4929867a0d285d66f8f58d62e3aa608386471902822db42b98d8d9733cc5f"
+        },
+        {
+          "id": "S9-CORE-010-RU",
+          "sha256": "73125d620fd34fe7d2bdc37f22e30216452988145b3dc937ce175e64a10e3f34"
+        },
+        {
+          "id": "S9-CORE-010-ZH",
+          "sha256": "4354b61d8e9bc32d81c1d7b97eb8015be7e61923a3e43ebc332ec674d0c1a9f0"
+        },
+        {
+          "id": "S9-CORE-011-ES",
+          "sha256": "af8c026ff87eeec3c50d65f0233cd5281894823a8f2147225d6f0a82274ea603"
+        },
+        {
+          "id": "S9-CORE-011-EN",
+          "sha256": "47c295efa4a3abbb9a9d941f675c072e3c44d793a133efe7f87fef909dcafc42"
+        },
+        {
+          "id": "S9-CORE-011-RU",
+          "sha256": "8ba3af280abfedd1a8dd0302e8bfb772f969d7f0abff8ef9e6022e682e4708be"
+        },
+        {
+          "id": "S9-CORE-011-ZH",
+          "sha256": "8e3fac562d468c17847033967c0cfc24acf431049e52890065326d82704a13c5"
+        },
+        {
+          "id": "S9-CORE-012-ES",
+          "sha256": "c02b016ec0038b712dbb2a8246caeccf4a80f0294c487a84175703fe3154d7c5"
+        },
+        {
+          "id": "S9-CORE-012-EN",
+          "sha256": "62443b73b42eccdded721f638d409e1c8cffaff1c9247f3c80b1d2900f9fa4d1"
+        },
+        {
+          "id": "S9-CORE-012-RU",
+          "sha256": "e8259f860dddfadf4f7d72c24dfec14453ad0ee5b8411a1adbe61e83a165f227"
+        },
+        {
+          "id": "S9-CORE-012-ZH",
+          "sha256": "42d1add8e6228d6eca9bf48234858c16ad1ac81d0e3a588b73bf1802506d1aca"
+        },
+        {
+          "id": "S9-CORE-013-ES",
+          "sha256": "b0b5dc0e0f4d60dae902db8fd9befe7da468c0bc301e01325c86639aad828ed5"
+        },
+        {
+          "id": "S9-CORE-013-EN",
+          "sha256": "f749191f0a9bb9257626c023094b192521907def84e882e400744a0caa456aba"
+        },
+        {
+          "id": "S9-CORE-013-RU",
+          "sha256": "2881f2aace9304ce89a86ee907657e04b9b831ec091f96ab116ec3428482e515"
+        },
+        {
+          "id": "S9-CORE-013-ZH",
+          "sha256": "4429934469f99075a081405321c53c3b61e016e70a8673173263bcdadcac087b"
+        },
+        {
+          "id": "S9-CORE-014-ES",
+          "sha256": "06b2e941f24c4011caad14b6b1425b57812a9408dae21389638bc72b2d606fcc"
+        },
+        {
+          "id": "S9-CORE-014-EN",
+          "sha256": "859baf27a11438b3666315416b73d2ec10669928dcc79b8bc0bf470dd058b5ee"
+        },
+        {
+          "id": "S9-CORE-014-RU",
+          "sha256": "71d6f408240dc4837be98f3e4f5842363f9b4f3e3730361b9e4cf0c6ed3b37a8"
+        },
+        {
+          "id": "S9-CORE-014-ZH",
+          "sha256": "8597ca13b9c062c382acffd0ba3bfe72b863ba1d8088872a3897006a407e5307"
+        },
+        {
+          "id": "S9-CORE-015-ES",
+          "sha256": "e255b9052237056df41f59e8a17096dbec5bdb9c344ec66d392c8e2b7647cf5b"
+        },
+        {
+          "id": "S9-CORE-015-EN",
+          "sha256": "caa709072f28507c0996e0e2e1cb33a6d3eda329029bbe641451198856f3b118"
+        },
+        {
+          "id": "S9-CORE-015-RU",
+          "sha256": "d66c25b1a391853e31fb011a697174ae856b35ca0e9062854ed51685787e0610"
+        },
+        {
+          "id": "S9-CORE-015-ZH",
+          "sha256": "fb0d248460dcb4203f33510549a80b2f74e41b8517276931983c8f6a33122d06"
+        },
+        {
+          "id": "S9-CORE-016-ES",
+          "sha256": "01318b0be2260860275b2813db93619729652f1b8308058c26fcba61aaf33dfb"
+        },
+        {
+          "id": "S9-CORE-016-EN",
+          "sha256": "e582df9867a61333b193ac129434a3759c1934605328880a4df2fd29640c9547"
+        },
+        {
+          "id": "S9-CORE-016-RU",
+          "sha256": "09b230db1f986397406fc970a1483a76882bb58d7e7f705611881dc76250220e"
+        },
+        {
+          "id": "S9-CORE-016-ZH",
+          "sha256": "0cef9ce6a90a2db1023b1fd8b269cfcd8a103028a60f07cad8b65a623610d934"
+        },
+        {
+          "id": "S9-CORE-017-ES",
+          "sha256": "f1c76b58ab233524d7c3aea50b00890818a4d3e4eaf7d0c0bddd8f70fa69e4c4"
+        },
+        {
+          "id": "S9-CORE-017-EN",
+          "sha256": "780fa61c32f237a90eaf4083cfca5b9d81365effca3dda3027243a627141b282"
+        },
+        {
+          "id": "S9-CORE-017-RU",
+          "sha256": "4109c96805e83235754c481ca3f98ce6cc719bc52982d312276de412c9bdef6e"
+        },
+        {
+          "id": "S9-CORE-017-ZH",
+          "sha256": "596d01b874df66b433915f80b43144589054eda0f5ad46325553f9cf27d8dc16"
+        },
+        {
+          "id": "S9-CORE-018-ES",
+          "sha256": "bc3f6c73c7b2ba1fefdb3f0c3a2144ef2e507f6b466bf39ab81a5c1a88130f2c"
+        },
+        {
+          "id": "S9-CORE-018-EN",
+          "sha256": "585ab5c69a895f117901f04e042274be887f6b216de2086f4570a2d2ec947c93"
+        },
+        {
+          "id": "S9-CORE-018-RU",
+          "sha256": "d0cf30a6f57397925568cb2b2811cbb9e2d43aba7d372c0e4cf7692bff3fbba8"
+        },
+        {
+          "id": "S9-CORE-018-ZH",
+          "sha256": "a7586ac44f6dc0fcbfe19c5c6d4a97051c4c19b7990b29d5e7b61eaaff3d0757"
+        },
+        {
+          "id": "S9-CORE-019-ES",
+          "sha256": "2d972ac2d3258c5a766ccc95d0e77475906a61fa7d1aebb24eef400af4370fcc"
+        },
+        {
+          "id": "S9-CORE-019-EN",
+          "sha256": "af76487e07c2bee00f6b6c3b9221c114ada3a201d2f4377dc653ef1edafc9bf6"
+        },
+        {
+          "id": "S9-CORE-019-RU",
+          "sha256": "4bc1f86a2e2e5b026b6cb979971c71d2455edd8de36da6cb42d9c9ce6c2d02a3"
+        },
+        {
+          "id": "S9-CORE-019-ZH",
+          "sha256": "420d7fd86f62c2f699d6baead47d76e1b34af2bf0d1282d5065a74285f62cd90"
+        },
+        {
+          "id": "S9-CORE-020-ES",
+          "sha256": "816ce268fe45b3419049ba33ed70ebc957b3f4f957678bb1ec99759fae23e79f"
+        },
+        {
+          "id": "S9-CORE-020-EN",
+          "sha256": "209fce1210c3f47fd7429c4e45e3eebce920b08dfa9f80d4ca2fdc6e5734c350"
+        },
+        {
+          "id": "S9-CORE-020-RU",
+          "sha256": "bdd816dee9608e9e112110178b1419bef9bd3ffd67c2c44ba30292110888f7a1"
+        },
+        {
+          "id": "S9-CORE-020-ZH",
+          "sha256": "d0c508fe5ee8171d626bc8095a30565473af5dffd016752bfdd5212e3baab21c"
+        },
+        {
+          "id": "S9-CORE-021-ES",
+          "sha256": "93f46964077ef880cef2d7eda6bf49bd171b3d4e70e88669dc81513682c26b19"
+        },
+        {
+          "id": "S9-CORE-021-EN",
+          "sha256": "eff90bd020dd8120625491ca13743cb6c532bf2d73cf79a4889e2aa8a1fd8c6a"
+        },
+        {
+          "id": "S9-CORE-021-RU",
+          "sha256": "5bd9064d6fc9a5320520913d79b3c7170042af814f5c425cb14eb1c2366e59bd"
+        },
+        {
+          "id": "S9-CORE-021-ZH",
+          "sha256": "5d224c0f900a9a560abfd538998686a7022cc6b29c41618792de3d7d41df5488"
+        },
+        {
+          "id": "S9-CORE-022-ES",
+          "sha256": "53ce94f6079ce029e9f431ba9b41f5063808c050220de27fec39915b518275d5"
+        },
+        {
+          "id": "S9-CORE-022-EN",
+          "sha256": "965db123825a75df2ad863808c18be71422549e1ec472714fc11c6b75eedc0de"
+        },
+        {
+          "id": "S9-CORE-022-RU",
+          "sha256": "1dacfbcf89395345720c6a8812db3b0cf322532fd7126a605452e0b0069a7924"
+        },
+        {
+          "id": "S9-CORE-022-ZH",
+          "sha256": "b10c248dca3dbea3ae4833b1dc01c1f572c5f09a2ace2debee5e00fd15d5a081"
+        },
+        {
+          "id": "S9-CORE-023-ES",
+          "sha256": "9e17315463898f47adfec75cd578c7b47db29bc6bbeb30672bd7073722bbf125"
+        },
+        {
+          "id": "S9-CORE-023-EN",
+          "sha256": "d6fdcd67dba745fe3ea06285b4e340d7050d6ea0097b19f67cdea40bd56640ff"
+        },
+        {
+          "id": "S9-CORE-023-RU",
+          "sha256": "5e24173b1244814989c7dbdc885b3e533a8125ac6a37822c154fdae53d964b10"
+        },
+        {
+          "id": "S9-CORE-023-ZH",
+          "sha256": "4ac0efa7bdafe3f287569b7a048dd8fe71607951ea6d1fb893507c71d0a46407"
+        },
+        {
+          "id": "S9-CORE-024-ES",
+          "sha256": "24adf8ce29ae82ff4a86246754dd421ca23fa76de7c1d924094d09b983f470f6"
+        },
+        {
+          "id": "S9-CORE-024-EN",
+          "sha256": "5b231214d684fa64a2e2676a76195357c5d0e4a31d0d35d5315f6cec5f2a9db6"
+        },
+        {
+          "id": "S9-CORE-024-RU",
+          "sha256": "21700fa704471c312dcb0b173fb01261c652ce24791b7ce021e2b1b219a146f1"
+        },
+        {
+          "id": "S9-CORE-024-ZH",
+          "sha256": "d88ef8081b346c050558059ea45491af9d3ee70885128062337a249e479fe1e5"
+        },
+        {
+          "id": "S9-CORE-025-ES",
+          "sha256": "aa3069c50cc8bed99186959e30e4e73f4938dbfb6c38f30d1b9ae95a728d5273"
+        },
+        {
+          "id": "S9-CORE-025-EN",
+          "sha256": "8d635484833538f527863e6d2c7ba7e6a4ed93cedffeebe6b4de7699f4f42bf1"
+        },
+        {
+          "id": "S9-CORE-025-RU",
+          "sha256": "278b71b8dc2d3536072405a89a211c12e3a01edde2d8481d093e95c40cdedf80"
+        },
+        {
+          "id": "S9-CORE-025-ZH",
+          "sha256": "e63437d2336b32363af939f959dc00fb17a2b729c53b6c347abeb659da169e98"
+        },
+        {
+          "id": "S9-CORE-026-ES",
+          "sha256": "4e5c6942d515606f06d086adec5375e5e61b6a648baebfce44416c4ee1670f1e"
+        },
+        {
+          "id": "S9-CORE-026-EN",
+          "sha256": "e7281212f654663c25a61f2f5a6f3a7387b4b19f62cfba363912a7eed6a49d56"
+        },
+        {
+          "id": "S9-CORE-026-RU",
+          "sha256": "fd6db772a0ecc5900cbed6d7c433c2ee756a9c43cc735afee05fe5ea97616f00"
+        },
+        {
+          "id": "S9-CORE-026-ZH",
+          "sha256": "c5d4cca0af21525362c1a873672c90de3cb914671184fdb704c0c96345ec9033"
+        },
+        {
+          "id": "S9-CORE-027-ES",
+          "sha256": "971c016953e146d0cea57dc8602bac528a06cb21832ec5242efbbac4d8ac13cd"
+        },
+        {
+          "id": "S9-CORE-027-EN",
+          "sha256": "a95fd0dbafcd178f479a1f64c30d5a52108dee4a63ffcf4f584e51bbcb51e8f3"
+        },
+        {
+          "id": "S9-CORE-027-RU",
+          "sha256": "6b627996579d2b98f2f84f9ad16462ce4b70d954840e0a6aec922f7d22d12eaa"
+        },
+        {
+          "id": "S9-CORE-027-ZH",
+          "sha256": "e66d20bfade7c302ef2bffc42dfabd5b6a1a450e0613f3e05b0cffe5d6a640de"
+        },
+        {
+          "id": "S9-CORE-028-ES",
+          "sha256": "cfaae3ae8ecf4a6bb873a8dc3fa4e2fb14ae098e62d119f07814508b3693fbc3"
+        },
+        {
+          "id": "S9-CORE-028-EN",
+          "sha256": "d400caff6235a23f84ae4cf70726564da1df152c19869fc3b7a3b3b24eacd089"
+        },
+        {
+          "id": "S9-CORE-028-RU",
+          "sha256": "509b8b5ff6523a0459bbf5fa21572a2e09d9fddfb65dc8a2433eaef40f9e49e3"
+        },
+        {
+          "id": "S9-CORE-028-ZH",
+          "sha256": "7af6702b6cd1035ca0289fd74213a8fa6f25db4854af901cd2b9b989b0548075"
+        },
+        {
+          "id": "S9-CORE-029-ES",
+          "sha256": "29b1648fa02206e56009354a960bdd0033b8727b5fd0b434cb56a5b04ba18c27"
+        },
+        {
+          "id": "S9-CORE-029-EN",
+          "sha256": "705d435e22d4ce0086ed9edc37148c32feebd78019f0916a57800edb379a7693"
+        },
+        {
+          "id": "S9-CORE-029-RU",
+          "sha256": "689050f810d6633961507d89f93c04b590fedc93c0415ba4e26146cc38f93386"
+        },
+        {
+          "id": "S9-CORE-029-ZH",
+          "sha256": "f67ea3bcd49ec031c5f74c401d2ce9184dd36f4c8e7adfbc11720091b66c350b"
+        },
+        {
+          "id": "S9-CORE-030-ES",
+          "sha256": "4dede30446aab450b6ddf5d524c928556990e2a4aef217bea65b47b21d8d8ea9"
+        },
+        {
+          "id": "S9-CORE-030-EN",
+          "sha256": "a676034f3efce6deec47956915087799a76fa2a204f54db72b3451aa5ee6c8c7"
+        },
+        {
+          "id": "S9-CORE-030-RU",
+          "sha256": "d842424243e662c3c2f711c351c8eb8c1f468cd1921687c0c080ccc50ac882ca"
+        },
+        {
+          "id": "S9-CORE-030-ZH",
+          "sha256": "b1b5306c75d3d8ec078beef17983f30150c50a84ec62f1b9d258fdb7a4ce73b5"
+        },
+        {
+          "id": "S9-CORE-031-ES",
+          "sha256": "eb67a040cd5663b225050dbcde3e469efafb0e7e33becb0956b181532ddf544e"
+        },
+        {
+          "id": "S9-CORE-031-EN",
+          "sha256": "7fbc11846f7e7ed3a593aac429456e0629588382c4a8447bac7fc868ed59fd3c"
+        },
+        {
+          "id": "S9-CORE-031-RU",
+          "sha256": "2ce879b92a26d17c56267ede19b5354d53019794f5d4f7cfffa5559725b4663e"
+        },
+        {
+          "id": "S9-CORE-031-ZH",
+          "sha256": "6194a76fceccd211a0dd2aaf855e93c63620f8cb4ac4fdef177734828ac47a75"
+        },
+        {
+          "id": "S9-CORE-032-ES",
+          "sha256": "bef5de035580b974340b9300727eaf21fd05e82857276e5041e8224bfafecab8"
+        },
+        {
+          "id": "S9-CORE-032-EN",
+          "sha256": "ef0c8ea619458c3119ab7e1b754966a8e7e4392e3d96e713153f29d0c20f0945"
+        },
+        {
+          "id": "S9-CORE-032-RU",
+          "sha256": "19821400812e25921c6d9a77c75e8f03679b74a784f2836f38911b25daf840aa"
+        },
+        {
+          "id": "S9-CORE-032-ZH",
+          "sha256": "a52fa8e8156302aa24a07bcd3627f3745d96b580f0af9a5b65c3055bebf4359e"
+        },
+        {
+          "id": "S9-CORE-033-ES",
+          "sha256": "0a64745dd477822cbc914055277ea94eba6377d90fca0b570003d0c2032df8ef"
+        },
+        {
+          "id": "S9-CORE-033-EN",
+          "sha256": "2d9b589ab4af0e9f0959c7f583e0cd07fe2cc1183e3225ac4aaa51fd55b2ef6d"
+        },
+        {
+          "id": "S9-CORE-033-RU",
+          "sha256": "1a5d02742c1eaf907a7329b94fcc674626425ca9634e86c791df1da4742bcae2"
+        },
+        {
+          "id": "S9-CORE-033-ZH",
+          "sha256": "7a43e346aa0a2a18728beab71f8c41df620fa89de6322b21415f9d2f650c77bb"
+        },
+        {
+          "id": "S9-CORE-034-ES",
+          "sha256": "e3d9b37baa774029d118eb94a747eb48f5f49bc9467d7046b3d45b8b99e0224e"
+        },
+        {
+          "id": "S9-CORE-034-EN",
+          "sha256": "2c402b9e8816d09040c4f6ea4e78eb8d2fed48d5fdab7ac5caaf2de0da83953e"
+        },
+        {
+          "id": "S9-CORE-034-RU",
+          "sha256": "88563673e77af431417e6de33d7e9fda8d3af50508ee6dd0067cf6c8a46e11d1"
+        },
+        {
+          "id": "S9-CORE-034-ZH",
+          "sha256": "3b4dd50483485e9d074b1b7dab8fc8d6bc6ccb44f9c0282231e2233bf238f9f0"
+        },
+        {
+          "id": "S9-CORE-035-ES",
+          "sha256": "1142eef22efb6c73ce9409dcb002272e7c3708766c6e1b95cad30ef3226150ce"
+        },
+        {
+          "id": "S9-CORE-035-EN",
+          "sha256": "0a9c62bc84c05cc5b6db7b8dc42a90bc167c65108e6c1d1b94778bdd84816a25"
+        },
+        {
+          "id": "S9-CORE-035-RU",
+          "sha256": "49591aa445510bd47eacd38ad8cb5c37d64c9f3b2af2deec84356387094c43ee"
+        },
+        {
+          "id": "S9-CORE-035-ZH",
+          "sha256": "1f5bbbad4c1097d30d2a773460f2631ec9b880f9ad93035637f5602c267f14c7"
+        },
+        {
+          "id": "S9-CORE-036-ES",
+          "sha256": "0922800fb3ed57a8933ce07fe24379742b8db7d01997a0a89c2c440414ae6965"
+        },
+        {
+          "id": "S9-CORE-036-EN",
+          "sha256": "3955cd930311907dce3e0ae2a693484a90c75f8baffb032f9f345adf39ab825a"
+        },
+        {
+          "id": "S9-CORE-036-RU",
+          "sha256": "9bf3ea60b286bad831218b442aa8d02e7a26ce6d336f2e7ed3d7314a64efb4fe"
+        },
+        {
+          "id": "S9-CORE-036-ZH",
+          "sha256": "b0d5e3a7d30aaf99a5fa1f3e40f3de3eea2d9b9cf9946b42ce781b8bcc95469d"
+        },
+        {
+          "id": "S9-CORE-037-ES",
+          "sha256": "8d35363e71f03034a6c6844f1c69b333396c1af2c2de02fddbd82e628770bd53"
+        },
+        {
+          "id": "S9-CORE-037-EN",
+          "sha256": "cb7626fa003ff014d88a1330c8c43648a83801461a486a08b87c7f3d0ad26db7"
+        },
+        {
+          "id": "S9-CORE-037-RU",
+          "sha256": "3c939ac28d485231c21a14f11f66334b6e05138b3e7ace2cbcf8137a4bce6f1f"
+        },
+        {
+          "id": "S9-CORE-037-ZH",
+          "sha256": "80b971945a35f6d25556c08f2519abad833b5f876b40525205fe6afa03818604"
+        },
+        {
+          "id": "S9-CORE-038-ES",
+          "sha256": "5002ed5ea209de943a380adc790ba088cb7c5e44a5c21e74f95fde4bcf1cefd0"
+        },
+        {
+          "id": "S9-CORE-038-EN",
+          "sha256": "2cda7d500f153d53e133a7334122aebb747b14aae29ba35829d0113fb6ee34af"
+        },
+        {
+          "id": "S9-CORE-038-RU",
+          "sha256": "ad85dd93e11cda075535698fea01704b42807eaebaa9cb2ccce4ccecd52b1449"
+        },
+        {
+          "id": "S9-CORE-038-ZH",
+          "sha256": "263136a9d2cd8cd6be4e094b8b655ea6c92f140a51df693e6a017428707a2f62"
+        },
+        {
+          "id": "S9-CORE-039-ES",
+          "sha256": "f326868f530dab1d84401b51343c265bbda1363521045255cf306034fc1cffa2"
+        },
+        {
+          "id": "S9-CORE-039-EN",
+          "sha256": "e41a3ccb50e26a18010ceb8e64d8e7bac89da17f94167be478e7386313720b67"
+        },
+        {
+          "id": "S9-CORE-039-RU",
+          "sha256": "e4aec0bc0f2caa0269fbc8de1757febea2f0c3cc1a9bbf5d2acde1f2ec8811a2"
+        },
+        {
+          "id": "S9-CORE-039-ZH",
+          "sha256": "aca8037f4bf463f3ecec4209f65400e51255ac67b9d3ef0f616aaca93550b24d"
+        },
+        {
+          "id": "S9-CORE-040-ES",
+          "sha256": "6d625e5a0b1f42064dd69a4cb4fb48dc42f9423254c287db161b128cf19454f7"
+        },
+        {
+          "id": "S9-CORE-040-EN",
+          "sha256": "6f7c9c26f5ac352260e2fdc5f89994628a11a883e3a50008d49b48456be61249"
+        },
+        {
+          "id": "S9-CORE-040-RU",
+          "sha256": "ed0ecfdbd56c78507aab3a800278f6e8f872767ef2221bf06f3ea4c86cd3df0b"
+        },
+        {
+          "id": "S9-CORE-040-ZH",
+          "sha256": "17d78651d67694e44e67ec58d0a9762fcebd226b809c310f95bb4b217fe439ec"
+        }
+      ],
+      "projection_sha256": "bb5c7f9ced01e3e1de43d07c969da48b449cc72827fd3f6a0f38880acec9b0eb"
     },
     {
-      "fixture_id": "S9-EVAL-012",
-      "claim_id": "B3-ISSUE-002",
-      "mutation_type": "nonexistent_fact_ref",
-      "json_path": "candidate.output.risks[0].basis_fact_refs",
-      "invalid_value": [
-        "fact_9"
+      "family": "synthetic_risk",
+      "source_path": "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
+      "source_symbol": "SYNTHETIC_RISK_EVALUATION_FIXTURES",
+      "source_file_sha256": "68f4e3a144a6ce34c467fe24645bdfdbf2a5311eed9e9b70d1665131d0ad90a3",
+      "count": 32,
+      "ordered_ids": [
+        "S9-EVAL-001",
+        "S9-EVAL-002",
+        "S9-EVAL-003",
+        "S9-EVAL-004",
+        "S9-EVAL-005",
+        "S9-EVAL-006",
+        "S9-EVAL-007",
+        "S9-EVAL-008",
+        "S9-EVAL-009",
+        "S9-EVAL-010",
+        "S9-EVAL-011",
+        "S9-EVAL-012",
+        "S9-EVAL-013",
+        "S9-EVAL-014",
+        "S9-EVAL-015",
+        "S9-EVAL-016",
+        "S9-EVAL-017",
+        "S9-EVAL-018",
+        "S9-EVAL-019",
+        "S9-EVAL-020",
+        "S9-EVAL-021",
+        "S9-EVAL-022",
+        "S9-EVAL-023",
+        "S9-EVAL-024",
+        "S9-EVAL-025",
+        "S9-EVAL-026",
+        "S9-EVAL-027",
+        "S9-EVAL-028",
+        "S9-EVAL-029",
+        "S9-EVAL-030",
+        "S9-EVAL-031",
+        "S9-EVAL-032"
       ],
-      "comparison_set": {
-        "candidate_references": [
-          "fact_9"
-        ],
-        "available_source_fact_ids": [
-          "fact_1",
-          "fact_2"
-        ]
-      },
-      "evidence_fragment": {
-        "affected_option_refs": [
-          "option_1"
-        ],
-        "basis_fact_refs": [
-          "fact_9"
-        ],
-        "category": "financial",
-        "likelihood_hint": "medium",
-        "mechanism": "Un coste recurrente mayor absorbe capacidad presupuestaria.",
-        "severity_hint": "high",
-        "statement": "El coste fijo puede reducir el margen disponible.",
-        "trigger_conditions": [
-          "Si los ingresos tardan más de lo previsto"
-        ],
-        "uncertainty_note": "La demanda futura sigue sin confirmarse."
-      },
-      "evidence_fragment_sha256": "4dab6e35d471a527d09c533d4f73e39da8fa30751b9718170f02d9d67aca811a",
-      "provenance": {
-        "source_fixture_path": "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
-        "source_fixture_id": "S9-EVAL-012",
-        "source_fixture_sha256": "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b",
-        "projection_rule": "Exact candidate payload fragment plus a source-derived comparison set; no schema-oracle inference is added."
-      }
+      "ordered_row_sha256": [
+        {
+          "id": "S9-EVAL-001",
+          "sha256": "577e57d50cd6e821e6a5eb56ea055e0a656d8f9f838c65a8d2daeea0d1363f98"
+        },
+        {
+          "id": "S9-EVAL-002",
+          "sha256": "a421265c751c3d584cfebb3c3109eef351205a3e894d61292ae406fb431d3ecc"
+        },
+        {
+          "id": "S9-EVAL-003",
+          "sha256": "27ecbe644685d6396ea6058cbcc1e236814e6df2df82c31b989d99e7cddf3322"
+        },
+        {
+          "id": "S9-EVAL-004",
+          "sha256": "7474f1513fe5acabf2af7c52dfe5c05015e0741e6fa2d3431900bcf8250397fe"
+        },
+        {
+          "id": "S9-EVAL-005",
+          "sha256": "e4c7b7c316abeacf656b29ca2b98725cf56e08f9c8f1b7e080bd0facf744d672"
+        },
+        {
+          "id": "S9-EVAL-006",
+          "sha256": "cace917448877ebffc251ef53ce28b5525ddc9f74b4246063a9536eaad6e6bb7"
+        },
+        {
+          "id": "S9-EVAL-007",
+          "sha256": "9a5002597f6ef1a724c1fd8e0386a8a56ef53c78f9e0103f65220bcb918c0d8f"
+        },
+        {
+          "id": "S9-EVAL-008",
+          "sha256": "c0639739d8afc35292f5ce4718c1d05d37aa69cb324d9365aa458c15c71ad36a"
+        },
+        {
+          "id": "S9-EVAL-009",
+          "sha256": "aa02c7679628f37047699ff64a8120ddb44ba6683130105390e3cf2959e16904"
+        },
+        {
+          "id": "S9-EVAL-010",
+          "sha256": "176aa93017ee20cb9c24136b0baad3653479b89b01adff3620c630f5553fedff"
+        },
+        {
+          "id": "S9-EVAL-011",
+          "sha256": "b6eba24f0e6b4c4d29442dee1df0021a128d9283cda9b486f998cd0f680effbd"
+        },
+        {
+          "id": "S9-EVAL-012",
+          "sha256": "99391468de67490eb45b113b27f8e834b05f46536756f96f7944606c2eb314e5"
+        },
+        {
+          "id": "S9-EVAL-013",
+          "sha256": "b7eab38a25e39174e88dd2015fdb0ff30a60ed4fb4b72e2ce06903d4a472f2e2"
+        },
+        {
+          "id": "S9-EVAL-014",
+          "sha256": "bf1ab0821b8e54d624671bb51d00ea5f1a4c19548c5132576673040a6e22699a"
+        },
+        {
+          "id": "S9-EVAL-015",
+          "sha256": "93ae8459f9585f59e568061a66a9a594ea867e32047d256cad3f01a5afd189b8"
+        },
+        {
+          "id": "S9-EVAL-016",
+          "sha256": "f69714dddfd99977c92937a899cd44a678386ed0f4259e1ba1cff9e36c6fff66"
+        },
+        {
+          "id": "S9-EVAL-017",
+          "sha256": "f8e0b959741d4539ae7542a627a267b093cdcba109fa112f27d9408292ec03fb"
+        },
+        {
+          "id": "S9-EVAL-018",
+          "sha256": "1b8bfde0fbd5176757fe7b65b43227224981ad7f07538d763e7a6e6c926a240f"
+        },
+        {
+          "id": "S9-EVAL-019",
+          "sha256": "edecd253aaed96408fd355be9cfa3d58d9103eb7359e03d5bf8a1bfc69cab956"
+        },
+        {
+          "id": "S9-EVAL-020",
+          "sha256": "8a0d9e86098b3ba27bd641a1ab16f35d2a7d70dd35db930957e575ea2dcc2574"
+        },
+        {
+          "id": "S9-EVAL-021",
+          "sha256": "96d4aec425c3205f3f9003a316b13255a850bfdb034733eed8cb49b2bcb5b392"
+        },
+        {
+          "id": "S9-EVAL-022",
+          "sha256": "00ed411393141fee7ca2bb7f6a93ffd8a0092653732a19ae80d9fe3a77788519"
+        },
+        {
+          "id": "S9-EVAL-023",
+          "sha256": "1d4599972ad995d50b850e620cd043eafcc0dee281413323484360116e120ef7"
+        },
+        {
+          "id": "S9-EVAL-024",
+          "sha256": "ea08cab555e9ee073cb31ade0ed0f7698ba00a58ac00ef098fb278fd4a9f62f1"
+        },
+        {
+          "id": "S9-EVAL-025",
+          "sha256": "e27324418844d316c0605067f73aaf4c4ea5317e2bd39f20f2780ce5f9748e96"
+        },
+        {
+          "id": "S9-EVAL-026",
+          "sha256": "76576b215086b19290ee5df9f38ee9218ea120e9599011d391f77bcd5873bd32"
+        },
+        {
+          "id": "S9-EVAL-027",
+          "sha256": "82fb26c1b6939040e676f94abdf1d77d7506c594e071bca5536a7b5fbef495c0"
+        },
+        {
+          "id": "S9-EVAL-028",
+          "sha256": "283d8fb482b3ae8d084a326af8d82cf3a23a9452c81349fd6369d0c091dc4ba2"
+        },
+        {
+          "id": "S9-EVAL-029",
+          "sha256": "c5bab11a39f394dc96b5eaaa7f0a4d55660daa4447162cdeef9e895e2ccaa66f"
+        },
+        {
+          "id": "S9-EVAL-030",
+          "sha256": "c00579715afd8b3fdd75e3cc803985737c556f7db0be731259f809034cf2890e"
+        },
+        {
+          "id": "S9-EVAL-031",
+          "sha256": "a7bd00b886695f2587026282079221365a956a39612e48d67fc322ca3d5bdfb2"
+        },
+        {
+          "id": "S9-EVAL-032",
+          "sha256": "a7abdbb36462244f3231e10bedf1809132b8e3735e1a343f1a072ef5cb04bb70"
+        }
+      ],
+      "projection_sha256": "b2a08f0f4b7a9046f3a8c51313279fef06849e08c73be4a8db26ac1324ac7a20"
+    },
+    {
+      "family": "rich_decision_material",
+      "source_path": "lib/ai-decision-material/fixtures.ts",
+      "source_symbol": "RICH_DECISION_MATERIAL_FIXTURES",
+      "source_file_sha256": "52992383ec89674b8678cfac0c038a0057cb71729685526e0c1a755c2aa598fd",
+      "count": 184,
+      "ordered_ids": [
+        "S9-MATERIAL-001",
+        "S9-MATERIAL-002",
+        "S9-MATERIAL-003",
+        "S9-MATERIAL-004",
+        "S9-MATERIAL-005",
+        "S9-MATERIAL-006",
+        "S9-MATERIAL-007",
+        "S9-MATERIAL-008",
+        "S9-MATERIAL-009",
+        "S9-MATERIAL-010",
+        "S9-MATERIAL-011",
+        "S9-MATERIAL-012",
+        "S9-MATERIAL-013",
+        "S9-MATERIAL-014",
+        "S9-MATERIAL-015",
+        "S9-MATERIAL-016",
+        "S9-MATERIAL-017",
+        "S9-MATERIAL-018",
+        "S9-MATERIAL-019",
+        "S9-MATERIAL-020",
+        "S9-MATERIAL-021",
+        "S9-MATERIAL-022",
+        "S9-MATERIAL-023",
+        "S9-MATERIAL-024",
+        "S9-CORE-001-ES",
+        "S9-CORE-001-EN",
+        "S9-CORE-001-RU",
+        "S9-CORE-001-ZH",
+        "S9-CORE-002-ES",
+        "S9-CORE-002-EN",
+        "S9-CORE-002-RU",
+        "S9-CORE-002-ZH",
+        "S9-CORE-003-ES",
+        "S9-CORE-003-EN",
+        "S9-CORE-003-RU",
+        "S9-CORE-003-ZH",
+        "S9-CORE-004-ES",
+        "S9-CORE-004-EN",
+        "S9-CORE-004-RU",
+        "S9-CORE-004-ZH",
+        "S9-CORE-005-ES",
+        "S9-CORE-005-EN",
+        "S9-CORE-005-RU",
+        "S9-CORE-005-ZH",
+        "S9-CORE-006-ES",
+        "S9-CORE-006-EN",
+        "S9-CORE-006-RU",
+        "S9-CORE-006-ZH",
+        "S9-CORE-007-ES",
+        "S9-CORE-007-EN",
+        "S9-CORE-007-RU",
+        "S9-CORE-007-ZH",
+        "S9-CORE-008-ES",
+        "S9-CORE-008-EN",
+        "S9-CORE-008-RU",
+        "S9-CORE-008-ZH",
+        "S9-CORE-009-ES",
+        "S9-CORE-009-EN",
+        "S9-CORE-009-RU",
+        "S9-CORE-009-ZH",
+        "S9-CORE-010-ES",
+        "S9-CORE-010-EN",
+        "S9-CORE-010-RU",
+        "S9-CORE-010-ZH",
+        "S9-CORE-011-ES",
+        "S9-CORE-011-EN",
+        "S9-CORE-011-RU",
+        "S9-CORE-011-ZH",
+        "S9-CORE-012-ES",
+        "S9-CORE-012-EN",
+        "S9-CORE-012-RU",
+        "S9-CORE-012-ZH",
+        "S9-CORE-013-ES",
+        "S9-CORE-013-EN",
+        "S9-CORE-013-RU",
+        "S9-CORE-013-ZH",
+        "S9-CORE-014-ES",
+        "S9-CORE-014-EN",
+        "S9-CORE-014-RU",
+        "S9-CORE-014-ZH",
+        "S9-CORE-015-ES",
+        "S9-CORE-015-EN",
+        "S9-CORE-015-RU",
+        "S9-CORE-015-ZH",
+        "S9-CORE-016-ES",
+        "S9-CORE-016-EN",
+        "S9-CORE-016-RU",
+        "S9-CORE-016-ZH",
+        "S9-CORE-017-ES",
+        "S9-CORE-017-EN",
+        "S9-CORE-017-RU",
+        "S9-CORE-017-ZH",
+        "S9-CORE-018-ES",
+        "S9-CORE-018-EN",
+        "S9-CORE-018-RU",
+        "S9-CORE-018-ZH",
+        "S9-CORE-019-ES",
+        "S9-CORE-019-EN",
+        "S9-CORE-019-RU",
+        "S9-CORE-019-ZH",
+        "S9-CORE-020-ES",
+        "S9-CORE-020-EN",
+        "S9-CORE-020-RU",
+        "S9-CORE-020-ZH",
+        "S9-CORE-021-ES",
+        "S9-CORE-021-EN",
+        "S9-CORE-021-RU",
+        "S9-CORE-021-ZH",
+        "S9-CORE-022-ES",
+        "S9-CORE-022-EN",
+        "S9-CORE-022-RU",
+        "S9-CORE-022-ZH",
+        "S9-CORE-023-ES",
+        "S9-CORE-023-EN",
+        "S9-CORE-023-RU",
+        "S9-CORE-023-ZH",
+        "S9-CORE-024-ES",
+        "S9-CORE-024-EN",
+        "S9-CORE-024-RU",
+        "S9-CORE-024-ZH",
+        "S9-CORE-025-ES",
+        "S9-CORE-025-EN",
+        "S9-CORE-025-RU",
+        "S9-CORE-025-ZH",
+        "S9-CORE-026-ES",
+        "S9-CORE-026-EN",
+        "S9-CORE-026-RU",
+        "S9-CORE-026-ZH",
+        "S9-CORE-027-ES",
+        "S9-CORE-027-EN",
+        "S9-CORE-027-RU",
+        "S9-CORE-027-ZH",
+        "S9-CORE-028-ES",
+        "S9-CORE-028-EN",
+        "S9-CORE-028-RU",
+        "S9-CORE-028-ZH",
+        "S9-CORE-029-ES",
+        "S9-CORE-029-EN",
+        "S9-CORE-029-RU",
+        "S9-CORE-029-ZH",
+        "S9-CORE-030-ES",
+        "S9-CORE-030-EN",
+        "S9-CORE-030-RU",
+        "S9-CORE-030-ZH",
+        "S9-CORE-031-ES",
+        "S9-CORE-031-EN",
+        "S9-CORE-031-RU",
+        "S9-CORE-031-ZH",
+        "S9-CORE-032-ES",
+        "S9-CORE-032-EN",
+        "S9-CORE-032-RU",
+        "S9-CORE-032-ZH",
+        "S9-CORE-033-ES",
+        "S9-CORE-033-EN",
+        "S9-CORE-033-RU",
+        "S9-CORE-033-ZH",
+        "S9-CORE-034-ES",
+        "S9-CORE-034-EN",
+        "S9-CORE-034-RU",
+        "S9-CORE-034-ZH",
+        "S9-CORE-035-ES",
+        "S9-CORE-035-EN",
+        "S9-CORE-035-RU",
+        "S9-CORE-035-ZH",
+        "S9-CORE-036-ES",
+        "S9-CORE-036-EN",
+        "S9-CORE-036-RU",
+        "S9-CORE-036-ZH",
+        "S9-CORE-037-ES",
+        "S9-CORE-037-EN",
+        "S9-CORE-037-RU",
+        "S9-CORE-037-ZH",
+        "S9-CORE-038-ES",
+        "S9-CORE-038-EN",
+        "S9-CORE-038-RU",
+        "S9-CORE-038-ZH",
+        "S9-CORE-039-ES",
+        "S9-CORE-039-EN",
+        "S9-CORE-039-RU",
+        "S9-CORE-039-ZH",
+        "S9-CORE-040-ES",
+        "S9-CORE-040-EN",
+        "S9-CORE-040-RU",
+        "S9-CORE-040-ZH"
+      ],
+      "ordered_row_sha256": [
+        {
+          "id": "S9-MATERIAL-001",
+          "sha256": "60e3623a0c729fc1da43901e052904bb4e71a4cafdf06f2edd9a48232ce0a08a"
+        },
+        {
+          "id": "S9-MATERIAL-002",
+          "sha256": "c56a207939aa6889fd6241dcc528308a49d006b3c7767489df7f3113027ada97"
+        },
+        {
+          "id": "S9-MATERIAL-003",
+          "sha256": "d521aad55db4eb8ad273fcb4ad08af99fd6d356f548cd5e450dbd98dfc3156ca"
+        },
+        {
+          "id": "S9-MATERIAL-004",
+          "sha256": "05b8134908fc53691b015656f1b90df43b5c3fc89f570daa30c3bd39491e6464"
+        },
+        {
+          "id": "S9-MATERIAL-005",
+          "sha256": "c3a950b34b00198e28604e28c7a9386b83ee126a262e8a0b92def4ca1fedc7a1"
+        },
+        {
+          "id": "S9-MATERIAL-006",
+          "sha256": "4288fdb9ed932e5daa961e214e87288f0e4ee3d880d3386de31c02031ea49709"
+        },
+        {
+          "id": "S9-MATERIAL-007",
+          "sha256": "8d4c4cc15355d9ab2dca5a19d29138e0573d28238861d3cd5abfb0f7cce4fca9"
+        },
+        {
+          "id": "S9-MATERIAL-008",
+          "sha256": "f0412bcf802145e334644f51f49c988bdbbfb3d8932c8a3ebcb44230128fe8cf"
+        },
+        {
+          "id": "S9-MATERIAL-009",
+          "sha256": "331f72a10f9ded61af09bb6f489a6bea1a2ae77ec0fd20bad3820b533d578bf1"
+        },
+        {
+          "id": "S9-MATERIAL-010",
+          "sha256": "d4ef9d18691059a2c763d2aa3abda0c9eb7512a047901c533303edb2ecdff7f0"
+        },
+        {
+          "id": "S9-MATERIAL-011",
+          "sha256": "568955dce4596eba261a2a7dfee045efc039e5c3e7f1b2d237bb19f11b0fa2fe"
+        },
+        {
+          "id": "S9-MATERIAL-012",
+          "sha256": "b8739f7be002b8f16a9a6b90f8b51f1e8980164a81d86651bc093cf2092d4143"
+        },
+        {
+          "id": "S9-MATERIAL-013",
+          "sha256": "f82671ef78b09e48de682454a3bd1b1285891edb0c41bf2c767414af1c76904a"
+        },
+        {
+          "id": "S9-MATERIAL-014",
+          "sha256": "9099601309b77e88120940a113d8d26a58a23c23a0e2ef7f583668d0b0ba5da9"
+        },
+        {
+          "id": "S9-MATERIAL-015",
+          "sha256": "5d3bd63a37d76c3dd95282046874c8caebc33a2bee911275b97038e410d41a2a"
+        },
+        {
+          "id": "S9-MATERIAL-016",
+          "sha256": "b5eb4b65a2be04794a087f47b22873c87e436edf6836717a94322e66fe8f9af5"
+        },
+        {
+          "id": "S9-MATERIAL-017",
+          "sha256": "1931cdc26210a0d478cd22ffe9ba24d2af655e6c47b9e20158d5c991bd56b1ba"
+        },
+        {
+          "id": "S9-MATERIAL-018",
+          "sha256": "a92d0d37789767cb7ed216a8c204304d24e1a332a1b6ba34af651241456116ba"
+        },
+        {
+          "id": "S9-MATERIAL-019",
+          "sha256": "e4ed2791d04d3dbb9cdc2ec3c73d25b420abcbe1f8baaf04377fe7baebd232a2"
+        },
+        {
+          "id": "S9-MATERIAL-020",
+          "sha256": "414789f6badacfc0162f009b8f765e32a08884fa6d416dfb154abcc1ab5d2de9"
+        },
+        {
+          "id": "S9-MATERIAL-021",
+          "sha256": "86f20a9d224da19dda6c21dae12613fa65eaa88724b4358de3b35d2f8e78faa0"
+        },
+        {
+          "id": "S9-MATERIAL-022",
+          "sha256": "1eeb06aa63d814255bf5b893655be24f07df9a3b3d994575f029a5f9451ea2ab"
+        },
+        {
+          "id": "S9-MATERIAL-023",
+          "sha256": "81dcf547159761444f2f38597d54da41489033b97ef7c7c85a29983279222e5a"
+        },
+        {
+          "id": "S9-MATERIAL-024",
+          "sha256": "2deff00d19cb0c1cf792c9f2aa64bdf8a679549b10c161b6b330e9d53d3b9b48"
+        },
+        {
+          "id": "S9-CORE-001-ES",
+          "sha256": "b13a0896d9d85accb3c095059c3c85008c4f42b02828e2d5b12a90e754de3b0e"
+        },
+        {
+          "id": "S9-CORE-001-EN",
+          "sha256": "d21c99e99ab353fa26f4fda6b9c95f8b7e2b0e5278db1001fbb56d9a85417fc9"
+        },
+        {
+          "id": "S9-CORE-001-RU",
+          "sha256": "e991bbf54c80952fe3dd9807d6a1b8678f83149491ae94f1f7f39eda3cc89ba8"
+        },
+        {
+          "id": "S9-CORE-001-ZH",
+          "sha256": "f06d100dcf9718d35f1db5305c93cd614b7163ef9e5a5c60b8feb7940581440f"
+        },
+        {
+          "id": "S9-CORE-002-ES",
+          "sha256": "6ccd0e3016a22677694b657b41dd3883a0d0ec3cf71c965029b4202988814e3e"
+        },
+        {
+          "id": "S9-CORE-002-EN",
+          "sha256": "6ec3307c8fd98cea4f864467d4155ed0f55ff58e0755c9918d8094474888852d"
+        },
+        {
+          "id": "S9-CORE-002-RU",
+          "sha256": "9b289141fb6d723c9eca91a301bfd4e51a2d38a2a3c6843fdc0dc19e6f37b743"
+        },
+        {
+          "id": "S9-CORE-002-ZH",
+          "sha256": "5ccbe6160068b5848f84abcdbca2d863e7e1627475610eb1e27ececce61916aa"
+        },
+        {
+          "id": "S9-CORE-003-ES",
+          "sha256": "c69d683aa8a3b1723dd68a0af3f4292e7e36d54ffb2ca228efbfb61d2def2689"
+        },
+        {
+          "id": "S9-CORE-003-EN",
+          "sha256": "848fa0493700323e840c2be5091591cb47cabd0581ade8d9fb9759612c947271"
+        },
+        {
+          "id": "S9-CORE-003-RU",
+          "sha256": "e91fec1c9f66660b76360938b34a1574b67dc1dddfe96cf6f272abea97cbfd9f"
+        },
+        {
+          "id": "S9-CORE-003-ZH",
+          "sha256": "3e83fbb57190ad01d04ec5642db3be69e4cf5076b2848862fd315643cff4fead"
+        },
+        {
+          "id": "S9-CORE-004-ES",
+          "sha256": "55063eeec2d7dac3f63579b33eae260038840e2fb0fc62b504f1a18daedb2387"
+        },
+        {
+          "id": "S9-CORE-004-EN",
+          "sha256": "593796d70d1c051f25938a0db964d175183adc930c4486a45ba6a995e41ef717"
+        },
+        {
+          "id": "S9-CORE-004-RU",
+          "sha256": "111f5e4cd78f794790ddc1ab37a6f954b05e526799a3bf8e23ccaabd61a2086c"
+        },
+        {
+          "id": "S9-CORE-004-ZH",
+          "sha256": "865733ff6dbc04d6938306b42aea0fffa2b2f4a5ac0f74e78a5798b3fead5a33"
+        },
+        {
+          "id": "S9-CORE-005-ES",
+          "sha256": "d2c79241f7c8d571c5081abe900f3fdf3d44a892db9f0d7249b63f2a0e75d25a"
+        },
+        {
+          "id": "S9-CORE-005-EN",
+          "sha256": "be2a38d48928116c0b67371d9fe19cf56318323842c650100e3e752e473f9ed9"
+        },
+        {
+          "id": "S9-CORE-005-RU",
+          "sha256": "c12c9db4858ecc0d094d82ce928b0efc9d624cee276e45db1ceef6e57c617ae3"
+        },
+        {
+          "id": "S9-CORE-005-ZH",
+          "sha256": "86bb2e258217b3750d02f0a1e361d390a03e45aa5e9c7d53ba00072265d7b9ee"
+        },
+        {
+          "id": "S9-CORE-006-ES",
+          "sha256": "48bbe3ad45ec970b47abf2de09a061697603c4b855c227c274a9f00d2edfedca"
+        },
+        {
+          "id": "S9-CORE-006-EN",
+          "sha256": "bba025fb3c3368bf9111e7df5487d2bbc36596f4652f9f004b01f1ce5bdcef40"
+        },
+        {
+          "id": "S9-CORE-006-RU",
+          "sha256": "7bf448cf579eb7278f1e45c4ff7e8a3446c068f1e6815cfee765ccb75c438c55"
+        },
+        {
+          "id": "S9-CORE-006-ZH",
+          "sha256": "cf7b40d297a5b5bb44bc3e1f16a20e51f98856e8ae658bb2687993c491c93b2d"
+        },
+        {
+          "id": "S9-CORE-007-ES",
+          "sha256": "41298a1dd36f555b3bffd17fb4de003ccd9b562825f1a079a28752146683033a"
+        },
+        {
+          "id": "S9-CORE-007-EN",
+          "sha256": "2725df58e371dc526ea5f14fda7dfaa243810636377c1c7c2fe87759e57b7959"
+        },
+        {
+          "id": "S9-CORE-007-RU",
+          "sha256": "e2ff6296845a2aa7cdc0ecde768da1501eb529b7a80d76beb528cc5d04fd68be"
+        },
+        {
+          "id": "S9-CORE-007-ZH",
+          "sha256": "95da2ad97aef7230d1141d0e21ee232279d8fff8253e888eeeee193d4eed0108"
+        },
+        {
+          "id": "S9-CORE-008-ES",
+          "sha256": "9971d2c83e19db23ab3700d97690c5b7c9308a33636ad3b2e3cda15b5bb0f0f8"
+        },
+        {
+          "id": "S9-CORE-008-EN",
+          "sha256": "2fef01da5005c41005deeaa3bac6254c71e945066e22f2527b1586ae6ff830f8"
+        },
+        {
+          "id": "S9-CORE-008-RU",
+          "sha256": "641c7181c62a3e57945af8848fc430ff743df4f30e59c2262c098c90e2291a8f"
+        },
+        {
+          "id": "S9-CORE-008-ZH",
+          "sha256": "b00ded5cf12a1a7f030ab9874122b600d1acd191dc6f137852902a4af1fc79f6"
+        },
+        {
+          "id": "S9-CORE-009-ES",
+          "sha256": "4739230b7e4ae7fe9285acdef7f0c415ff0c202106251eada47fedc3a75673ac"
+        },
+        {
+          "id": "S9-CORE-009-EN",
+          "sha256": "f2b0fd01a6628cf4065fe6e94d7063929a9ec877b053c8e04e59e463ef14c130"
+        },
+        {
+          "id": "S9-CORE-009-RU",
+          "sha256": "977e8232257237e2a96b47b7bdf8d502be9b7b5f355f616697e6020eb0d6fc96"
+        },
+        {
+          "id": "S9-CORE-009-ZH",
+          "sha256": "05a51eaae5d851d6d92e97c456636cd1623767b65a57bef0aee66fd6e6ec5863"
+        },
+        {
+          "id": "S9-CORE-010-ES",
+          "sha256": "e852758f957a4acbb09a9569e4033798d0bb141be57cbaba7ea367f746575625"
+        },
+        {
+          "id": "S9-CORE-010-EN",
+          "sha256": "56d628a54c07fedfd6a7e4644e6d4323d5a48496d6d44d84dd3cfe030f26c0d1"
+        },
+        {
+          "id": "S9-CORE-010-RU",
+          "sha256": "9f7acd564a83fb303b2e3e50fcdda56d0bc49cddf036c03d0e461c40c674e7c7"
+        },
+        {
+          "id": "S9-CORE-010-ZH",
+          "sha256": "8755ed4f1132296ce6c1daac2fcd15881937d3804199a4af50ac34d5fbe79fd6"
+        },
+        {
+          "id": "S9-CORE-011-ES",
+          "sha256": "0c383b875f1fa4cab5af9528033dc79b3b597909b66f362435269f6df0d1a25b"
+        },
+        {
+          "id": "S9-CORE-011-EN",
+          "sha256": "213cc708616c72e06962fd6785bc15fa8c85f81f9546e8a60d551cc3e2f38159"
+        },
+        {
+          "id": "S9-CORE-011-RU",
+          "sha256": "052b5b0d187eb096b54c7de191f8b5a97f1c444545c66fd1eefbaebafad060f9"
+        },
+        {
+          "id": "S9-CORE-011-ZH",
+          "sha256": "c6eb379b999089f102acc8114d365df522689f5a81488429c2b29ca1ab201fad"
+        },
+        {
+          "id": "S9-CORE-012-ES",
+          "sha256": "e39942f77475696819a5f81382026c872e143adade7814fbc1418cb52beedca4"
+        },
+        {
+          "id": "S9-CORE-012-EN",
+          "sha256": "fec09b4732c9b4f262b0c0e9545d9a9255758377ea8b313bb63c871070ccd8ea"
+        },
+        {
+          "id": "S9-CORE-012-RU",
+          "sha256": "45b26a64116d3f111470474cd7db54c03df345883fa7be1512b8934257db6280"
+        },
+        {
+          "id": "S9-CORE-012-ZH",
+          "sha256": "713a7f40710654b8f59a6aca1b2603f7443bf2deebe53952d45811afbf0c8161"
+        },
+        {
+          "id": "S9-CORE-013-ES",
+          "sha256": "eb9f94f600e4c397ab347157be3cb382adb66b5653aa4fa39d4837680b812981"
+        },
+        {
+          "id": "S9-CORE-013-EN",
+          "sha256": "1112e85b19191fb7d692a6c6b52e2a06af9925cceeaa51aaf99b625591b2eb46"
+        },
+        {
+          "id": "S9-CORE-013-RU",
+          "sha256": "24f6e159df31f9511f9aadb37f5e80623bf3f2771b0b41ad14c7c80dc99e2e28"
+        },
+        {
+          "id": "S9-CORE-013-ZH",
+          "sha256": "7fcf5c39aaf026404ca5d615fa38d52911ad6059b38c29edd5a4690ea7e7da3a"
+        },
+        {
+          "id": "S9-CORE-014-ES",
+          "sha256": "6f89f5a5c8cc12b1445d8155c9b3dfd8a6676d10e9f758a4a06f29f8c78c3225"
+        },
+        {
+          "id": "S9-CORE-014-EN",
+          "sha256": "4e980644e9727e961ea63bce5b0fbd2af1b8ae4877097db4dcf91839e08178ee"
+        },
+        {
+          "id": "S9-CORE-014-RU",
+          "sha256": "add92fa679b13aff64be7b0404f55e300a9d4a440c29d2e792ce81b86cb3f933"
+        },
+        {
+          "id": "S9-CORE-014-ZH",
+          "sha256": "c8d652941aa1d22d0f8681f991d571193852caeca2fceb016ad62b77c110933d"
+        },
+        {
+          "id": "S9-CORE-015-ES",
+          "sha256": "fe23b318209e4a1f4fd77ed93bb4cb8183d6225a47a127abe705df12fe7fba29"
+        },
+        {
+          "id": "S9-CORE-015-EN",
+          "sha256": "b3eea6a2843fc1a3c706780e62449d21acd9e1778024bb5444ef1ee6b3c165f1"
+        },
+        {
+          "id": "S9-CORE-015-RU",
+          "sha256": "07f2f0925476549ddcc20b5fcee78a674d300b247f6bce3a38b46a22f6f5b58a"
+        },
+        {
+          "id": "S9-CORE-015-ZH",
+          "sha256": "affe93db2788462890f4ddeaf9a1af23ac53f1b71ee7142c16e30a3156989e96"
+        },
+        {
+          "id": "S9-CORE-016-ES",
+          "sha256": "25da2df34c9af652f66f4009c5557dc31800f354b1029e0ae148acdefc5d4d8b"
+        },
+        {
+          "id": "S9-CORE-016-EN",
+          "sha256": "78cb9e2ab2069259bd0ecc35712fd91b8519f41729078429b35618bbf1b9c0c0"
+        },
+        {
+          "id": "S9-CORE-016-RU",
+          "sha256": "6c732a96abe796e6df67b10d63a9e87ffcccad04fac32164ef89e009ba589287"
+        },
+        {
+          "id": "S9-CORE-016-ZH",
+          "sha256": "2877def9396ab0b1f6b5dad70813156768b4f4cd5493416f6b98597d8d273b05"
+        },
+        {
+          "id": "S9-CORE-017-ES",
+          "sha256": "7616881866656966f1e4566f00e8cbd86b671b9b099cf79a08462da18ad1fe5a"
+        },
+        {
+          "id": "S9-CORE-017-EN",
+          "sha256": "ba5d2a7d58e11ae593f946d18fad3bc7d0ebf9a3fc559b2631a42359e1bd24af"
+        },
+        {
+          "id": "S9-CORE-017-RU",
+          "sha256": "b4f488eef53aa34451f0eb3949f292b8536db86db6676fed84aefd8195478f92"
+        },
+        {
+          "id": "S9-CORE-017-ZH",
+          "sha256": "ee0d27d44f291a6c203e7d9e548a66566786775b172679bfb029d3f38d965490"
+        },
+        {
+          "id": "S9-CORE-018-ES",
+          "sha256": "239068625c8dce7c0fdb986364fb684d120c7b823a2587b998e416906ae009ac"
+        },
+        {
+          "id": "S9-CORE-018-EN",
+          "sha256": "50af2c41f29c0e9145c8bfe86bd2e795ef452922e1995c21acb60dc1b57cb1b5"
+        },
+        {
+          "id": "S9-CORE-018-RU",
+          "sha256": "f74bcae2f544ceda7a224d7c6d65789f32afb05e93d531365294e6f8a791b523"
+        },
+        {
+          "id": "S9-CORE-018-ZH",
+          "sha256": "e9de12ff20a1bfee43f25a77d6b69a38797aca987494a02865a86b1d8398790a"
+        },
+        {
+          "id": "S9-CORE-019-ES",
+          "sha256": "652e84f19c297ddcf9b1e623b318876b31f48cbf7440d16a9c08050f22b081fc"
+        },
+        {
+          "id": "S9-CORE-019-EN",
+          "sha256": "a8d00610605776ca7e288418165b96acfe7618d378ba243e0b07957e405bfe36"
+        },
+        {
+          "id": "S9-CORE-019-RU",
+          "sha256": "05ffc6b0823909074bd82d4f3ecde911b406591265114aaaecb85879e290ec60"
+        },
+        {
+          "id": "S9-CORE-019-ZH",
+          "sha256": "d8e57f872d3cf5d0569e8822dbde1e5598f4c435a190df465b254442b032666d"
+        },
+        {
+          "id": "S9-CORE-020-ES",
+          "sha256": "d57acb3bfd477966011c6d5cbf6e02fcbd1c4f0773b46077919f95b0deb5f578"
+        },
+        {
+          "id": "S9-CORE-020-EN",
+          "sha256": "f0d0c622e788ce962c25da05f90357f1c58198a0c34055018527990e16c6577a"
+        },
+        {
+          "id": "S9-CORE-020-RU",
+          "sha256": "2ee04a6942fbb3e1b875f75763df996d50fd89f50cf0d949ffd28b29a7ccfcbc"
+        },
+        {
+          "id": "S9-CORE-020-ZH",
+          "sha256": "1305dbee4ff6de141515d042e0a7b51d03914002d81a5e556530535097c69315"
+        },
+        {
+          "id": "S9-CORE-021-ES",
+          "sha256": "8eae59bb4e226dfbd7f14e9d6e6da142dd181e252cd2b74840fd021f57a51fd3"
+        },
+        {
+          "id": "S9-CORE-021-EN",
+          "sha256": "939c6caaae047c52d3e269aab385870b31712e8c7fb1fe410c668b9feb07934c"
+        },
+        {
+          "id": "S9-CORE-021-RU",
+          "sha256": "ee2445b1bb38c91bf1ea00299f61a7fa189faf6ec020737ab9903932e2502954"
+        },
+        {
+          "id": "S9-CORE-021-ZH",
+          "sha256": "f2477600a37fa20b02bf78f3f95aaba20d194f7aa85b7b31ef23abb3d2ff1768"
+        },
+        {
+          "id": "S9-CORE-022-ES",
+          "sha256": "ebd8913a6dad424b1f31552300e2de6b72ad3156df581dd8fe7cecf457312477"
+        },
+        {
+          "id": "S9-CORE-022-EN",
+          "sha256": "7df23259230efac0558f1b0508dfe0e9b845bf9fcca0bfa028a9ea797da58d7d"
+        },
+        {
+          "id": "S9-CORE-022-RU",
+          "sha256": "ec5fed7e796cec14ef518c2d9670170bdd2a1fccd024a7511ce535abc1f95097"
+        },
+        {
+          "id": "S9-CORE-022-ZH",
+          "sha256": "2674fa4b20d36f8c7796ff5fe7175b40c915cb0b7928432368bca5ce9362b82c"
+        },
+        {
+          "id": "S9-CORE-023-ES",
+          "sha256": "2d853ef95dc4d77214ed781ed9007a78d17d4daa4c35cbed4c16286f9822c8f8"
+        },
+        {
+          "id": "S9-CORE-023-EN",
+          "sha256": "dda61bc51a02d81a4971e459da7fc8ebc581e0b6f4b8b0f0a37a42bdb6d84ded"
+        },
+        {
+          "id": "S9-CORE-023-RU",
+          "sha256": "e7eea5a56e0339b70ab8d9497e5559f51ba0e3bd1776297432d7c57119f94213"
+        },
+        {
+          "id": "S9-CORE-023-ZH",
+          "sha256": "865b5d2844f7313eda4852e40f6ff877367fcfa68217f2cf10fed4111e25414a"
+        },
+        {
+          "id": "S9-CORE-024-ES",
+          "sha256": "3f0e795d2889ae7c35af52943cfcd294d8267d668ef21702fdede9d7168fdf17"
+        },
+        {
+          "id": "S9-CORE-024-EN",
+          "sha256": "8d6a432b7d31d91e0a19f2471c26605dbcff94f1706a21b05afbf33b97d2de96"
+        },
+        {
+          "id": "S9-CORE-024-RU",
+          "sha256": "d50cc32f102f2c7ab9aea739a6e915be1685510dda1efa5e20e9d6a8a25ed802"
+        },
+        {
+          "id": "S9-CORE-024-ZH",
+          "sha256": "acddc2356d2df10d781f614ceae0e68515ae2883ab403d752b177df1136cc161"
+        },
+        {
+          "id": "S9-CORE-025-ES",
+          "sha256": "0a76bf13eae8053a2e3e5c2e0dec13ae751990507ed6266c47e8499a3fe81e08"
+        },
+        {
+          "id": "S9-CORE-025-EN",
+          "sha256": "c77e87c4bc7215b6b206da8b08e181c7c6724b867e2b7de63a409d8ae363a2d3"
+        },
+        {
+          "id": "S9-CORE-025-RU",
+          "sha256": "ec00bf2e7dfc2dc5cadefc75bc11e721cdc74140fcc806d8367f4d348bbfd248"
+        },
+        {
+          "id": "S9-CORE-025-ZH",
+          "sha256": "7d8462c6084cb52fd8589c266b9d24b214698589de1945b937b483976bb3c8a6"
+        },
+        {
+          "id": "S9-CORE-026-ES",
+          "sha256": "12890d7d8e4f03d1a9e462a6fa8115a7f569f306f51a1c2f0624b945fd07e861"
+        },
+        {
+          "id": "S9-CORE-026-EN",
+          "sha256": "11abd95c42dc9ad9eb8333c5a144a55bef731995b1aa94d62e6a2c62cb58a104"
+        },
+        {
+          "id": "S9-CORE-026-RU",
+          "sha256": "201d56098b1e1118e03e5168cd549d6b4904b74fd14617f3029f0201827c92f9"
+        },
+        {
+          "id": "S9-CORE-026-ZH",
+          "sha256": "b1a1c8443a640c1a050bc832497bd152a7b6163278f2e8ffd1dcf1dd6d451bbe"
+        },
+        {
+          "id": "S9-CORE-027-ES",
+          "sha256": "d1700345846bc55c5ff1b60cc1d283c047cd9d3ceaf4992edee61af9abfa6aa9"
+        },
+        {
+          "id": "S9-CORE-027-EN",
+          "sha256": "db90a21fc8ae8dbb72e978356fa98d74d1aef8ed3de09ac5fdc63b757554eb78"
+        },
+        {
+          "id": "S9-CORE-027-RU",
+          "sha256": "f89b630b2c296bff16e22d53b58517c23e2d712f4c29fd14d5961bbe9e690043"
+        },
+        {
+          "id": "S9-CORE-027-ZH",
+          "sha256": "a29cb897c767bfa1f180f67b57b1e8c7b8574d9457ef5231b21100ef9eb0b2e9"
+        },
+        {
+          "id": "S9-CORE-028-ES",
+          "sha256": "0a0f6986a2154fe66797cd1352971d48bd6dba4df5e0ec2fce72f7b4ec594d1e"
+        },
+        {
+          "id": "S9-CORE-028-EN",
+          "sha256": "5593f61f9d3ef504822d268d1ae5e4e0a8d48d607902eaf280a25581b8bbf211"
+        },
+        {
+          "id": "S9-CORE-028-RU",
+          "sha256": "aad0dafb5e7fbc18f8982f4735c41295895cb4568600f49cda2a2491b20fcb8d"
+        },
+        {
+          "id": "S9-CORE-028-ZH",
+          "sha256": "1cb365dbf0c12fa7f63dafd4455a3d0b8972844728126e0a53163632b06e2558"
+        },
+        {
+          "id": "S9-CORE-029-ES",
+          "sha256": "9651104f3c3a136cfd5d9ff9bc27fd9f363452a9545c589bbd929a804a2faa31"
+        },
+        {
+          "id": "S9-CORE-029-EN",
+          "sha256": "ca37fb9fd97a539ba9a46c18fadb251fafab921cc8f5bdde4639bb9eae8888f3"
+        },
+        {
+          "id": "S9-CORE-029-RU",
+          "sha256": "cea6bcd21528223c4be389b7cb579432d15be0251c309027bd52ee67c5fd8f1c"
+        },
+        {
+          "id": "S9-CORE-029-ZH",
+          "sha256": "5720d889af4b7b52bfe7667730a6f118f86e256756b41c65dadc7534ab7cd5f1"
+        },
+        {
+          "id": "S9-CORE-030-ES",
+          "sha256": "deee0fb8247e9ebb52e2ee7b343bf6e31a948f3eb3e5e166fe56d568515153df"
+        },
+        {
+          "id": "S9-CORE-030-EN",
+          "sha256": "cc98ac99bbf18f90a480bf323450f63fc0814ab634f8b6383c0f4173498b1214"
+        },
+        {
+          "id": "S9-CORE-030-RU",
+          "sha256": "c0aa9e0e8f52388c9939a209e052e763beae59bb5fe639e69bbb0c9cd54c1f1b"
+        },
+        {
+          "id": "S9-CORE-030-ZH",
+          "sha256": "7ee9a7faf096eb8e16904a0d87097f1d5dbc0c05a7c1b882f857341a365b734d"
+        },
+        {
+          "id": "S9-CORE-031-ES",
+          "sha256": "d559eab5ac298cc968d5fac381a6c54803a197fcd0d695c4fb70ad2c12da15eb"
+        },
+        {
+          "id": "S9-CORE-031-EN",
+          "sha256": "5dcc165fcd213152b3d2577113a92ed07a52bd8d05354289aa3ff09273c21b20"
+        },
+        {
+          "id": "S9-CORE-031-RU",
+          "sha256": "410efec778f4c82a181c6c91e2ded4836cc64c98200a99d52d31be8e5cad3189"
+        },
+        {
+          "id": "S9-CORE-031-ZH",
+          "sha256": "6a510aa0218ac1c20ee45ddfceb04f809336193fc368ba92b8ffd74938d70023"
+        },
+        {
+          "id": "S9-CORE-032-ES",
+          "sha256": "62cc82d3c5a4bb4da53aeeeb11d8f47111334331dcd838a9e471c0335c1c561d"
+        },
+        {
+          "id": "S9-CORE-032-EN",
+          "sha256": "617ef7134abbf09fcfe49881c8e48a9d32abf934b0c71de09dcf4eed9677a5f7"
+        },
+        {
+          "id": "S9-CORE-032-RU",
+          "sha256": "644ff3db223a186c0bbffca60b0509187c0f4a5081f40d207efb8b8d7e2405d5"
+        },
+        {
+          "id": "S9-CORE-032-ZH",
+          "sha256": "8e39dc1d901a454ca7776e00aef5df06b6d1439dad0a62d5cec20f0f803c22ea"
+        },
+        {
+          "id": "S9-CORE-033-ES",
+          "sha256": "06bd2079585341eebd4c14a232871a91729cb47bd1bbe730072487a4814fd58d"
+        },
+        {
+          "id": "S9-CORE-033-EN",
+          "sha256": "172477caae4e856f1063e74c8a22fd99c386a28b23428c92df6542d3687bd1c0"
+        },
+        {
+          "id": "S9-CORE-033-RU",
+          "sha256": "c6515baec55e9c5d8d6e54faf69d4cd18e7b0342df8f036cbbaed571fe76799e"
+        },
+        {
+          "id": "S9-CORE-033-ZH",
+          "sha256": "e08cdb9916c7dfac460f560290e20c101bbfada35bb2c6e5d7f0ff956b02c3e5"
+        },
+        {
+          "id": "S9-CORE-034-ES",
+          "sha256": "d36aab2d7aa77067c896f83087931fc69a61ac8aa2c5a8a56e16c33e85da3e76"
+        },
+        {
+          "id": "S9-CORE-034-EN",
+          "sha256": "c3e5b70eef0bbfad40d6564e669ff363a65eb831123bdf6c8db0ffcb082463c0"
+        },
+        {
+          "id": "S9-CORE-034-RU",
+          "sha256": "09ae36063cbf294c5b515026f709b8a4f1ea3bfacb1d919e45b1d3f113d8ed77"
+        },
+        {
+          "id": "S9-CORE-034-ZH",
+          "sha256": "22c89374cef189bba843eee433bfa0f1587446a559cfe810035640b05f8a77df"
+        },
+        {
+          "id": "S9-CORE-035-ES",
+          "sha256": "e1efb0dddfd9c3b2d2eeac39de1899120a3072cd5bf1d260f7acc767553755f3"
+        },
+        {
+          "id": "S9-CORE-035-EN",
+          "sha256": "97339206872b5d8f8a44ace5a464986656e8f8be2b1a86414941b06c502ad7bb"
+        },
+        {
+          "id": "S9-CORE-035-RU",
+          "sha256": "b4ca91525b4233f4f065cbb784931c5132a20464d2c2525f417bf646858ef0ab"
+        },
+        {
+          "id": "S9-CORE-035-ZH",
+          "sha256": "f1b78fc723f5f64b0f828101b39ac85308a1391f93db29616ae4124ed15c5775"
+        },
+        {
+          "id": "S9-CORE-036-ES",
+          "sha256": "b080ce31a910f420414b284b58c68d02e2282f67191f6f21c2be340750ee33c3"
+        },
+        {
+          "id": "S9-CORE-036-EN",
+          "sha256": "7655280876ac864ac92d8f45b451256a319269ff0557b95cfabd942d02d1dc5b"
+        },
+        {
+          "id": "S9-CORE-036-RU",
+          "sha256": "3e6291bf1b51ac96c1c89c8461d89477b6b73e7f2a431c924a8d7aaf427f96c3"
+        },
+        {
+          "id": "S9-CORE-036-ZH",
+          "sha256": "a19e64830fe2733e85daad51945ed4efe90b8cac5b6ec7e8141b14310a967d23"
+        },
+        {
+          "id": "S9-CORE-037-ES",
+          "sha256": "591f5c0d32940c3c7b060eb8ad1f5db464395b8c6fd5110788590f07cea897b4"
+        },
+        {
+          "id": "S9-CORE-037-EN",
+          "sha256": "c3a5848eae5a01752459c04386722e16004ec3cd77e8b029059137409972486b"
+        },
+        {
+          "id": "S9-CORE-037-RU",
+          "sha256": "efd012758bdabbce8e1f89cc4fb75a96304e305489d436ca5fe974144161758b"
+        },
+        {
+          "id": "S9-CORE-037-ZH",
+          "sha256": "f6cf7d869aebadf8e8c13fe9bddf988f7bfcc8ee7cc8dbc292b65608a41d2559"
+        },
+        {
+          "id": "S9-CORE-038-ES",
+          "sha256": "e2e747c8d029159be8de656acbc0b57572ed45a288ed4c8143b28f49c1082cae"
+        },
+        {
+          "id": "S9-CORE-038-EN",
+          "sha256": "dd3cb52703b27fe458ea575b75855938b56af93d556943fa688655b0856f9952"
+        },
+        {
+          "id": "S9-CORE-038-RU",
+          "sha256": "1db5f2277fbe4deacc4e13af3c5d2f319f708a32abb76d9a9ee71261f629e1da"
+        },
+        {
+          "id": "S9-CORE-038-ZH",
+          "sha256": "499e1a34317bace0562774be4f1c5942562e989ea853c6a383e5dade3d8d8cf6"
+        },
+        {
+          "id": "S9-CORE-039-ES",
+          "sha256": "6ef850c51a4369b39e2f22a55542b5fec2223f17b1828d30bccfeb422c1134b7"
+        },
+        {
+          "id": "S9-CORE-039-EN",
+          "sha256": "3541b59a942b958e9fb4e0c1e2f1509550e47976b2c5aaf58401ee36c193f9ca"
+        },
+        {
+          "id": "S9-CORE-039-RU",
+          "sha256": "74d48e522c6024996a8e39ebdc0aba8970be0de55f3defbfd1984fc033702296"
+        },
+        {
+          "id": "S9-CORE-039-ZH",
+          "sha256": "7cd93ffadf40591b0e3513bd57750dd75eceb0d6d705ca9fd601702ed97923ff"
+        },
+        {
+          "id": "S9-CORE-040-ES",
+          "sha256": "cdd1d4a0c69d61a7191302960bded495849de51bb0fe2376492bec170f41ca5f"
+        },
+        {
+          "id": "S9-CORE-040-EN",
+          "sha256": "a7b084bf5b462a7caca2085bbf846b03bfffac569a0d1c9ac2e08050e548850e"
+        },
+        {
+          "id": "S9-CORE-040-RU",
+          "sha256": "c611ea3bc66001e9a595da86e64d72d1acb96016f40388b0d5b8e12373d95853"
+        },
+        {
+          "id": "S9-CORE-040-ZH",
+          "sha256": "44f18a8743eab12f8fc5d3cbb5e15368cfde6386f749ecc5b52f3147d95d247c"
+        }
+      ],
+      "projection_sha256": "662d0eaf7ec61bc52b438b16cef9193a2521b866c68d2737c763dc6f3df25427"
     }
-  ]
+  ],
+  "completed_revision_evidence": [
+    {
+      "substep_id": "S9-FIX-01",
+      "implementation_commit": "6b04c405a2a8aaba9e9c3e164413a9d954ee04af",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_RESULT.v1.json",
+      "result_artifact_sha256": "e4edca1b4263c78bca83974f4e7c6bc741279036554ad6b649bdaec82a3598f5"
+    },
+    {
+      "substep_id": "S9-FIX-02",
+      "implementation_commit": "18c8d6bffa422c46f4439b6b93c1076fc98a375c",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_RESULT.v1.json",
+      "result_artifact_sha256": "71386d5bac38dcd1edd2056e8bf6b42a3c2963287b187cd53f9b1ac180b32590"
+    },
+    {
+      "substep_id": "S9-FIX-03",
+      "implementation_commit": "82073c46d2f4568875bdbf51310ae75e35118de7",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_RESULT.v1.json",
+      "result_artifact_sha256": "a615a2c3d6ef69258e136b48e74eb2f9da996c93b7a7f72497713d4e8c84ce29"
+    },
+    {
+      "substep_id": "S9-FIX-04",
+      "implementation_commit": "700d4ab1e562a211e73f2d3e59eb1ce232ff98aa",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_INVENTED_RISK_MECHANISM_REFERENCE_RESULT.v1.json",
+      "result_artifact_sha256": "8b65463ff7cc72fcc5cde3cdb10a26306f164a3702cb972aa9f49d986cfb4922"
+    },
+    {
+      "substep_id": "S9-FIX-05",
+      "implementation_commit": "8fcf95241aa4ff5424a88b0c773771d5735b590d",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_REVERSIBLE_TRIAL_LOCALIZATION_TEMPLATE_RESULT.v1.json",
+      "result_artifact_sha256": "6ebe5b9ebc8084fccd1899688af3be96b0669894182017f9946a29b381f43a2c"
+    },
+    {
+      "substep_id": "S9-FIX-06",
+      "implementation_commit": "2aa1cbb7dbff338fc434f8a72710af69affde3a7",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_006_SILENT_LOSS_RESULT.v1.json",
+      "result_artifact_sha256": "f340b74ae433dc7109dff4765b762a84192a4e2f2e61aeb2cd38022358c7a625"
+    },
+    {
+      "substep_id": "S9-FIX-07",
+      "implementation_commit": "ab8125e4d186dbab3ecc3df17ed4a12eba2bae5a",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_013_PRIVACY_REVIEW_REFERENCE_RESULT.v1.json",
+      "result_artifact_sha256": "aace5ce65ff3753791d6d5bd3dfad708365030cf235f63ec3400a4866a870587"
+    }
+  ],
+  "frozen_historical_evidence": [
+    {
+      "path": "docs/qa/review/AI_REINFORCED_REVIEW_CLOSURE.json",
+      "sha256": "66560570268ff3a44f5edb8785efe9d90f990969a6de78ce17cfba93baddcddc"
+    },
+    {
+      "path": "docs/qa/review/AI_REINFORCED_REVIEW_PROGRESS.json",
+      "sha256": "a867d5a6c504b72ae3f4f7974cc91613142adbed0a5fed30b6e43c3c78297277"
+    },
+    {
+      "path": "docs/qa/review/AI_REVIEW_CALIBRATION_ASSESSMENT.json",
+      "sha256": "aba0208006c899de48872b45090f0d56e42c52b1f4dfc67712555de76eb7aa0f"
+    },
+    {
+      "path": "docs/qa/review/AI_REVIEW_CONSOLIDATED_ISSUE_DISPOSITIONS.json",
+      "sha256": "ce6c2439d5d3ade88902fdce93269da58ff5e905f0c25d6cc7b66291399621a8"
+    },
+    {
+      "path": "docs/qa/review/AI_REVIEW_CROSS_BATCH_PATTERNS.json",
+      "sha256": "960e4dc1247dc08275055ef73768c793fde58c1878172b545d8e1025b89730bb"
+    },
+    {
+      "path": "docs/qa/review/AI_REVIEW_FINAL_CALIBRATION_ASSESSMENT.json",
+      "sha256": "aba0208006c899de48872b45090f0d56e42c52b1f4dfc67712555de76eb7aa0f"
+    },
+    {
+      "path": "docs/qa/review/AI_REVIEW_FINAL_CROSS_BATCH_ADJUDICATION.json",
+      "sha256": "2046f03381effee9724cdb81670829b2d5810a2dd6ed4e472decbacf0c519edd"
+    },
+    {
+      "path": "docs/qa/review/AI_REVIEW_FINAL_PATTERN_ADJUDICATION.json",
+      "sha256": "a6d3f406f7be3983c26d651c62811f757e3f684ff4ab7ce3acf73a86a1569bd9"
+    },
+    {
+      "path": "docs/qa/review/AI_REVIEW_PATTERN_SATURATION.json",
+      "sha256": "649609bea224f160c90d4201fe772c2c3f1a0b7706ed14c63602b5531933ba69"
+    },
+    {
+      "path": "docs/qa/review/AI_REVIEW_PRIMARY_CLOSURE.json",
+      "sha256": "ca6f07296e13c3811ab4d5b217b19fac30e29d381e762de41a2f8bc54abea4c8"
+    },
+    {
+      "path": "docs/qa/review/AI_REVIEW_PROGRESS.json",
+      "sha256": "08107b906742c51d7f11b32f620c85634dc772a5384f7c9f9c5d0a0d77cd467f"
+    },
+    {
+      "path": "docs/qa/review/AI_REVIEW_REMEDIATION_CANDIDATE_REGISTRY.json",
+      "sha256": "b4d885c5877895d2a98d065c23a63edcc6cd92e59b50f05992af4add41ce5d47"
+    },
+    {
+      "path": "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json",
+      "sha256": "5e95bfdf6b4626e681dbcead672c2d1463f7a14d5eacb5305b773dfa2655e65b"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-1/adjudication.json",
+      "sha256": "2610cbb4e374a39b1c5f93c66359c134d566304534a238a3f45f2067109c5480"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-1/blind-packets.json",
+      "sha256": "3619d62825ce02ba582755f54199963c154f3d3a5a77a76006ccbb71455fc415"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-1/issue-ledger.json",
+      "sha256": "503e8d78f9b4a8e8856bba9afea0ef0440785488523543000b14f32e2eaeb4fb"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-1/pass-a.json",
+      "sha256": "d6870e7dfe0923c8d4e7d40cb877efca751fabd0e15f5d52509876cf3fde07b8"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-1/pass-b.json",
+      "sha256": "e1b8dfa236c517c4dcc3b6ec2b7482835c83d06ca145f69099f0ddc2c744b594"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-1/pass-c.json",
+      "sha256": "cce3dd63765c9f99874b398e18596e1c567daaa8833f78f784c6320bf085c3bf"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-1/selection.json",
+      "sha256": "167bdd0f779e72842ed198a87281ec9389fb0d28d6c4fc1dfbe9aa476d3b7279"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-1/summary.json",
+      "sha256": "b2303b4a8f10c17081e7fc04d49d4e1568d1ea4b922c4c33e0bc5f2465a90604"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-2/adjudication.json",
+      "sha256": "4181b2f2e7b386ee0d4118841c306db1b9644e6481deea84aee16af4aa21265a"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-2/blind-packets.json",
+      "sha256": "049c241fed5978e17f19ce22cbd6b54e4ac0b4ba4532e7f45b1388eec8c1cf80"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-2/issue-ledger.json",
+      "sha256": "b36c4ccf38ee515cb03f20d7e8a5c1190eb057fdcd63ebc83cb5700e2e1372b0"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-2/pass-a.json",
+      "sha256": "3a7c1ab61aebce78afed27261c1362341ec0a66f5ab1befd6388780e4248644c"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-2/pass-b.json",
+      "sha256": "bb1bbeaa3897a60d5e906626fd26df4febf5065920a2a22e1770d287be9e9021"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-2/pass-c.json",
+      "sha256": "468fc69ad80a7507e06b0d4a2b99e78f1c37479bcf7a07ce8bc04c63af084aab"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-2/reinforced-review-queue.json",
+      "sha256": "f8ecac6d2772451dbddbeb60277214158866b09dd88f6abcac2bdc9e6c455d48"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-2/selection.json",
+      "sha256": "e9849f38c816e829c7d3cd834e309d216173d565d71e4f04eae33064bec655ff"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-2/summary.json",
+      "sha256": "10aa3165f5ebcfd344c7b60c981ac7b91ed789dae131b729cd5afb2e2774f492"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-3/adjudication.json",
+      "sha256": "596c8712965b6e19ef84346bd892919fae78350c8336dfff23ddf88aa1c47969"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-3/blind-packets.json",
+      "sha256": "87da4117478da27503db85aeeaa9573534af2e54b79c5abfc816630a40a75ce0"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-3/issue-ledger.json",
+      "sha256": "e08de090b1134bb375959be267542277abf7fed91a6deb0fed0595262e5a8707"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-3/pass-a.json",
+      "sha256": "0f2af5bc8617e909c7ce4191d635fdfc20e8b2ac1a9fa20ce0b9a66cad27bb0a"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-3/pass-b.json",
+      "sha256": "a802c224241fb863f5478f3933831bbb88d973ad2aeed34fcd7f1f96ac6a5760"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-3/pass-c.json",
+      "sha256": "1f6baabf34a12e463a89a57b39af9d1da2c228f2d6e29fb512d64d0a3064de91"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-3/reinforced-review-queue.json",
+      "sha256": "f8cf3306756247e6804345b64bb21028fd2a099cd5e0e65072933d2f9fe65ed0"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-3/selection.json",
+      "sha256": "4fd1219a91cf78a4db54699ca6fe3c2e359fb6ae619ba6f091b40d1b5d6a8234"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-3/summary.json",
+      "sha256": "0096f1336e2d2b4c9c317ee7d4a92eb31acdaa574a79cd69fda1c9817c6c20d6"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-4/adjudication.json",
+      "sha256": "9c8cb3bd45411a83c4b41e357703181d291627296c68961d2e4e6028f08bbbd8"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-4/blind-packets.json",
+      "sha256": "05475313ff9fb9c48a8112bb8037cb1ca93a37e47fd59a043dcfb3a863b3263a"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-4/issue-ledger.json",
+      "sha256": "9c70f051ee8c7d3ea2f3d76030bda210227c50fe166883ab053652692b5fade7"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-4/pass-a.json",
+      "sha256": "1b637167cba6380a844bd0115cd9e8a7b9e3a6edb31a7f2c0f6f09d52ecf1327"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-4/pass-b.json",
+      "sha256": "1149e156e2f7cf5f2dd739f3318d7109029fb48f21f13d9e3d19d930ffabf5ba"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-4/pass-c.json",
+      "sha256": "a18f58367ac9ad5e91190213f2073b948d34ee27d9589cfdf03eb4ff45d6b10e"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-4/reinforced-review-queue.json",
+      "sha256": "12b3909e6a7a94c844c89a4154b7c34be0b0d20994fc2b3cebc5f02253ddb9c2"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-4/selection.json",
+      "sha256": "a339b02a72f7db72eb59add1fe462b6cea196c85906871b97e153f340861a897"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-4/summary.json",
+      "sha256": "522d7994eef0c8de13aee6882b314c99ad5ec64da6fee1741af9942fc8d97560"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-5/adjudication.json",
+      "sha256": "51c3df99cf2b1edd605085afc943e9414522f9206027ea01a137793711b08a2c"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-5/blind-packets.json",
+      "sha256": "3135363856b74cbc8ca812947b656715f956d3a17e9bb1b2a81070a80b6d0f23"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-5/issue-ledger.json",
+      "sha256": "17b389eb5e5d18d1a563b1cf5ba30a8c2f94c2cfd3d9677f53691e6f6b4c3b6f"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-5/pass-a.json",
+      "sha256": "304245e5fabf6f8aaf274ec47437073021cdafeccbfe530a56e0206bc0e930b0"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-5/pass-b.json",
+      "sha256": "b178a3fe991506c17debfac4691a7bcdc3d43708ca117aeba7e5664402fee058"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-5/pass-c.json",
+      "sha256": "619ebbb920e4dbf8c3ca644939a0c8e6790d1ccca0ef10f42b7d0cc4da81492e"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-5/reinforced-review-queue.json",
+      "sha256": "aa82e0f3798ec60552dbae263cafeff72800670e058a3a6fa12ec68014b4333a"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-5/selection.json",
+      "sha256": "de7beb7c065a2f35dd66532a8df16c8d9eadfbde90403ed364e55a1b8e3b460a"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-5/summary.json",
+      "sha256": "ef26ab3f9e6aaf9529c4e11cc27fae88d7e8e07332cc801f8354d50c1f1919cd"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-6/adjudication.json",
+      "sha256": "b71a74793ff321b512ff303d8df2a36f20092a57f7e444c1369823686021d785"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-6/blind-packets.json",
+      "sha256": "0fbcc760b70314c70e46146f88f66f1cecc914d70fa7fda8e3b4e98f293489fc"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-6/issue-ledger.json",
+      "sha256": "393581b486c371b81eff3efe1edd6e87a03cc1646155eefc1c6dda78ae40b434"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-6/pass-a.json",
+      "sha256": "1882dfea7a65623cdff5ec4ea0220225efe4e0084fc1d8e356d78c739bac73b9"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-6/pass-b.json",
+      "sha256": "abd5757ca2b3a5b3765b416b31da7285862f1578ce9c7d3df8dfbc37815f84e4"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-6/pass-c.json",
+      "sha256": "fe5f088cccec5d7e446be8d9ff6b93d74adbd2723163208f832d7ddf2ba86ce5"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-6/reinforced-review-queue.json",
+      "sha256": "f2cf19dd611c152271a7bd58b80f11317de15b142466bf9dd02cbb3bc1333eca"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-6/selection.json",
+      "sha256": "bf3b7fcfa4dbdfab1bb9d6295a43a4c1a9ea9498a0c9710114559abe629a8c12"
+    },
+    {
+      "path": "docs/qa/review/ai-batches/batch-6/summary.json",
+      "sha256": "9baa9880c51c6b675a78e0474a0fc54e4729584c547860d9d992bdfb999e99e7"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-1/adjudication.json",
+      "sha256": "e46f38648b90e71c3191948765df6d1d26c1d828fb348a5a27d9b92bb5f4c2fb"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-1/blind-packets.json",
+      "sha256": "7c9549ea52d2b6a87fa9d1dcb038118c5316485435a2d42940787d11be884522"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-1/final-adjudication-queue.json",
+      "sha256": "6dbeb3ffd601a43a281995ec4615c7d343f3784ed6d36a8621b38c42997e81d7"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-1/issue-dispositions.json",
+      "sha256": "df1f4079f6ed2d7b70b13c4e18c3bd2385cd3b1f9771145d911453fd61bbbf38"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-1/pass-r1.json",
+      "sha256": "371ede69d927f561c9ad84431418114e819ac938f4ecdf70b60f0f2b2d283dac"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-1/pass-r2.json",
+      "sha256": "0d5077e69e10ea127d90c55bb56f61617ebf4695187765ee2d9476457244f78a"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-1/pass-r3.json",
+      "sha256": "d8213369449f6c2263ef462c82e5ce797bbe524e6ffec0d5d66e6aff7b560870"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-1/selection.json",
+      "sha256": "0ef9337697425c59c68aa4205315d8acae53c8e38ac234bb4703271ca2cecff8"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-1/summary.json",
+      "sha256": "e61964dd77485252139583ec174c7b7c474ebcf85363e1f10e3f3762162939b6"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-2/adjudication.json",
+      "sha256": "2970725d9815bcd94cf13e110a4f3482843efff122185cb8afe8ab0ccd9f61b1"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-2/blind-packets.json",
+      "sha256": "80230be0756e11b54b685a0fee86e0e762cab62211358867d04da89538c1f17c"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-2/final-adjudication-queue.json",
+      "sha256": "328f5ca7ec2e73920b7c71d609989412e7c79df9d1b8bb28cd8d50dc2c80958d"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-2/issue-dispositions.json",
+      "sha256": "2b72eea048145cfe2f6fcbf0f55cabe1db800004a8904c7d63da2aaa1595b436"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-2/pass-r1.json",
+      "sha256": "123594b5e63f924e39e61dfd069168e355df3b55c6b18e17133ae06d2b97e6c0"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-2/pass-r2.json",
+      "sha256": "eedc49854fa2efb265f0896a2a6a3e7d59c65687c87440680ee0f65eba2e9383"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-2/pass-r3.json",
+      "sha256": "18ba4032733afb28915d7f3b9b1bda54189b0b61435e3d687d453bf73c4dd268"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-2/selection.json",
+      "sha256": "93c837eefd00eecbaea3b2918088f56fe591e23b9483e4b70b53bb6c4394cb24"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-2/summary.json",
+      "sha256": "fab719b71bd4eee0703eb0e4e509e5f7294aa85de51056ec71d1464153a1afd2"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-3/adjudication.json",
+      "sha256": "e1935fbbd1f9fb17e2a03505af62ad3eb7732252971eb257db11f402c5c177b5"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-3/blind-packets.json",
+      "sha256": "c5bc636f1ca9043ab1d295719c2af9762c10325adb69f40b15b15a191dd01457"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-3/issue-dispositions.json",
+      "sha256": "738def708fe5c92c854d6f2744a77cdd727c38bf2ce0837e4607fc22311a8905"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-3/pass-r1.json",
+      "sha256": "1f090a0cb5dde8be68d9e568c8e55d86b9fa4381f72e52ea9f5dfa7e82ad47ae"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-3/pass-r2.json",
+      "sha256": "8e2dfa3776d6aa27f51e9f6b043043c5a84cc44840ecac63c689135522d0d542"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-3/pass-r3.json",
+      "sha256": "554c3de1574e6547361f364dbd9164f3d4f13df828aa8d12d92447dfffc94644"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-3/selection.json",
+      "sha256": "4f6c47a500de8058c29b2510c130bffbb6a275e412c98f14d31cb8b0c7767d0b"
+    },
+    {
+      "path": "docs/qa/review/ai-reinforced-batches/batch-3/summary.json",
+      "sha256": "539d28c9e49c8b26634da393a13f3e9730aea5c10f8b838bd578e5f2436a5cec"
+    }
+  ],
+  "reconciliation_path": "docs/qa/remediation/stage-9/STAGE_9_ACTIONABLE_CLAIM_RECONCILIATION.v1.json",
+  "reconciliation_projection_sha256": "7c207d81e340cb3a9a826596d7b6aa439bb9232e790563b30f165ec3e0d977f5",
+  "network_provider_execution_count": 0,
+  "runtime_api_ui_provider_persistence": "UNCHANGED"
 }
