@@ -2,12 +2,17 @@
 
 ## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026
 
-The first six bounded remediation substeps are complete: `Stage 9
+The first seven bounded remediation substeps are complete: `Stage 9
 Schema-Oracle Evidence Projection Revision`, `Stage 9 Systemic Contradiction
 Reference Remediation`, and `Stage 9 High-Risk Clarification and Refusal
 Reference Remediation`, followed by `Stage 9 Invented Risk-Mechanism Reference
 Remediation`, `Stage 9 Reversible-Trial Localization Template Remediation`, and
-`S9-FIX-06` MATERIAL-006 Silent-Loss Fixture Revision.
+`S9-FIX-06` MATERIAL-006 Silent-Loss Fixture Revision, followed by `S9-FIX-07`
+MATERIAL-013 Privacy Review-Reference Clarification.
+`S9-FIX-07` is completed for exactly `1/1` owned fixture reference,
+`S9-MATERIAL-013`; future review display uses `[REDACTED_EMAIL]` and
+`personal_email_identifier` while the frozen source and historical evidence
+remain unchanged.
 `S9-FIX-06` is completed for exactly `1/1` owned rich fixture,
 `S9-MATERIAL-006`; its accepted normalized unknown is represented by one
 explicit future-composition item while runtime acceptance remains unchanged.
@@ -21,8 +26,8 @@ eight rows retain their existing version `1.1`.
 The three localized rows transition from version `1.0` to `1.1`; protected
 English row `S9-CORE-010-EN` retains version `1.0`. Historical review evidence,
 183 non-owned rich fixtures, 157 non-owned canonical rows, 32 synthetic rows,
-validators, and runtime paths remain unchanged. Completed remediation is `6/9`;
-remaining remediation is `3/9`; the next canonical substep is `S9-FIX-07`.
+validators, and runtime paths remain unchanged. Completed remediation is `7/9`;
+remaining remediation is `2/9`; the next canonical substep is `S9-FIX-08`.
 
 Stage 9 remains **In Progress**, release readiness is not declared,
 `/api/simulate` remains `mockOnly=true`, and all runtime boundaries remain

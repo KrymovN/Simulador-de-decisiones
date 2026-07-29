@@ -59,6 +59,17 @@ For each blind packet, independently record:
 The reviewer must distinguish absent information from negative facts and must
 not invent expected behavior from a technical case name.
 
+### Privacy-safe evidence display
+
+Future review artifacts must not unnecessarily reproduce personal identifiers.
+Email identifiers use the display token `[REDACTED_EMAIL]` and the
+machine category `personal_email_identifier`. A structural evidence reference retains
+`fixture_id`, `issue_id`, `evidence_pointer`, and
+`source_fixture_sha256`. Authorized forensic inspection may follow that
+hash-bound reference to frozen source evidence; ordinary review display must
+not repeat the identifier. Purpose-written synthetic identifiers follow the
+same display-safety rule. Frozen historical artifacts are not rewritten.
+
 ## 4. Comparative semantic validation — Pass B
 
 Compare the source, declared expectations, and frozen blind reconstruction for:

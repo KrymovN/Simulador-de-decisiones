@@ -41,6 +41,16 @@ The four passes use separate declared roles and context manifests. No pass may
 claim human review or external model/provider execution; the process is an
 offline repository-grounded AI review.
 
+### Privacy-safe reinforced evidence references
+
+Reinforced review display uses `[REDACTED_EMAIL]` for an email
+identifier and `personal_email_identifier` as its machine category. Evidence remains
+traceable through `fixture_id`, `issue_id`, `evidence_pointer`, and
+`source_fixture_sha256`. Authorized forensic inspection may follow the frozen
+hash-bound source reference, while ordinary R1/R2/R3/R4 display must not
+reproduce the identifier. Synthetic identifiers receive the same protection,
+and frozen primary or reinforced artifacts remain immutable.
+
 ## Adjudication contract
 
 Allowed reinforced outcomes are `REINFORCED_PASS`,

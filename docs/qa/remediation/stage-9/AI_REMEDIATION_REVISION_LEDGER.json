@@ -167,6 +167,39 @@
       "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_006_SILENT_LOSS_RESULT.v1.json",
       "generated_at": null,
       "implementation_commit_message": "fix(stage-9): preserve MATERIAL-006 accepted unknown"
+    },
+    {
+      "event_version": "stage-9-ai-remediation-revision-event.1",
+      "substep_id": "S9-FIX-07",
+      "remediation_entry_ids": [
+        "S9-REM-FIXTURE-002"
+      ],
+      "issue_ids": [
+        "B1-ISSUE-006"
+      ],
+      "root_cause": "REVIEW_METHODOLOGY",
+      "shared_rule_id": "privacy_review_display_redacts_identifiers_preserves_hash_bound_reference",
+      "fixture_reference_ids": [
+        "S9-MATERIAL-013"
+      ],
+      "frozen_source_fixture_sha256": "e4983e9ad8ca0c2ee5fe8d046bfe562c05f5ad050528267169dcfc608687026b",
+      "methodology_paths": [
+        "docs/qa/LEVIO_STAGE_9_AI_REVIEW_METHODOLOGY.md",
+        "docs/qa/LEVIO_STAGE_9_REINFORCED_AI_REVIEW_METHODOLOGY.md"
+      ],
+      "addendum_path": "docs/qa/remediation/stage-9/MATERIAL_013_PRIVACY_REFERENCE_ADDENDUM.md",
+      "display_representation": "[REDACTED_EMAIL]",
+      "machine_category": "personal_email_identifier",
+      "structural_reference_fields": [
+        "fixture_id",
+        "issue_id",
+        "evidence_pointer",
+        "source_fixture_sha256"
+      ],
+      "historical_evidence_immutable": true,
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_013_PRIVACY_REVIEW_REFERENCE_RESULT.v1.json",
+      "generated_at": null,
+      "implementation_commit_message": "fix(stage-9): clarify MATERIAL-013 privacy references"
     }
   ]
 }
