@@ -2,11 +2,15 @@
 
 ## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026
 
-The first five bounded remediation substeps are complete: `Stage 9
+The first six bounded remediation substeps are complete: `Stage 9
 Schema-Oracle Evidence Projection Revision`, `Stage 9 Systemic Contradiction
 Reference Remediation`, and `Stage 9 High-Risk Clarification and Refusal
 Reference Remediation`, followed by `Stage 9 Invented Risk-Mechanism Reference
-Remediation` and `Stage 9 Reversible-Trial Localization Template Remediation`.
+Remediation`, `Stage 9 Reversible-Trial Localization Template Remediation`, and
+`S9-FIX-06` MATERIAL-006 Silent-Loss Fixture Revision.
+`S9-FIX-06` is completed for exactly `1/1` owned rich fixture,
+`S9-MATERIAL-006`; its accepted normalized unknown is represented by one
+explicit future-composition item while runtime acceptance remains unchanged.
 `S9-FIX-05` is completed for exactly `3/3` owned locale rows:
 `S9-CORE-010-ES`, `S9-CORE-010-RU`, and `S9-CORE-010-ZH`.
 `S9-FIX-04` remains completed for the exact 21 owned fixtures: 20
@@ -16,9 +20,9 @@ references; 12 canonical rows transition from version `1.0` to `1.1`, while
 eight rows retain their existing version `1.1`.
 The three localized rows transition from version `1.0` to `1.1`; protected
 English row `S9-CORE-010-EN` retains version `1.0`. Historical review evidence,
-157 non-owned canonical rows, 32 synthetic rows, validators, and runtime paths
-remain unchanged. Completed remediation is `5/9`; remaining remediation is
-`4/9`; the next canonical substep is `S9-FIX-06`.
+183 non-owned rich fixtures, 157 non-owned canonical rows, 32 synthetic rows,
+validators, and runtime paths remain unchanged. Completed remediation is `6/9`;
+remaining remediation is `3/9`; the next canonical substep is `S9-FIX-07`.
 
 Stage 9 remains **In Progress**, release readiness is not declared,
 `/api/simulate` remains `mockOnly=true`, and all runtime boundaries remain

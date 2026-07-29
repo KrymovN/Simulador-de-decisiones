@@ -143,6 +143,30 @@
       "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_REVERSIBLE_TRIAL_LOCALIZATION_TEMPLATE_RESULT.v1.json",
       "generated_at": null,
       "implementation_commit_message": "fix(stage-9): localize reversible trial template"
+    },
+    {
+      "event_version": "stage-9-ai-remediation-revision-event.1",
+      "substep_id": "S9-FIX-06",
+      "remediation_entry_ids": [
+        "S9-REM-FIXTURE-001"
+      ],
+      "issue_ids": [
+        "B3-ISSUE-004"
+      ],
+      "shared_rule_id": "accepted_normalized_unknown_requires_future_composition",
+      "owned_fixture_ids": [
+        "S9-MATERIAL-006"
+      ],
+      "affected_json_paths": [
+        "RICH_DECISION_MATERIAL_FIXTURES[S9-MATERIAL-006].future_composition"
+      ],
+      "old_projection_sha256": "49ebb871f26f032d69edee3c8cd670dc7fe9e6b0dbc2becbd85c1852a47982e0",
+      "new_projection_sha256": "fe7ddf3acd20aed9ddc7d6d1a62efd91346958759faa7a716ecb91769f4529c0",
+      "runtime_acceptance_preserved": true,
+      "normalized_unknown": "La capacidad futura no está confirmada.",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_006_SILENT_LOSS_RESULT.v1.json",
+      "generated_at": null,
+      "implementation_commit_message": "fix(stage-9): preserve MATERIAL-006 accepted unknown"
     }
   ]
 }

@@ -1,0 +1,128 @@
+{
+  "artifact_version": "stage-9-material-006-silent-loss-result.1",
+  "status": "PASS",
+  "substep_id": "S9-FIX-06",
+  "candidate_id": "S9-REM-FIXTURE-001",
+  "issue_id": "B3-ISSUE-004",
+  "root_cause": "ISOLATED_FIXTURE_EXPECTATION_SILENT_LOSS",
+  "shared_rule_id": "accepted_normalized_unknown_requires_future_composition",
+  "implementation_commit_message": "fix(stage-9): preserve MATERIAL-006 accepted unknown",
+  "owned_fixture_id": "S9-MATERIAL-006",
+  "normalized_unknown": "La capacidad futura no está confirmada.",
+  "stable_source_reference": {
+    "symbol": "normalizationItem",
+    "expression": "normalizationItem.candidate_id",
+    "generated_candidate_id_evidence": "candidate_565"
+  },
+  "before_future_composition": {
+    "items": [],
+    "contains_raw_provider_answer": false,
+    "personal_data_scope_opened": false
+  },
+  "after_future_composition": {
+    "items": [
+      {
+        "composition_item_id": "composition_1",
+        "source_candidate_ids": [
+          "candidate_565"
+        ],
+        "transformations": [
+          "epistemic_classification",
+          "traceability"
+        ],
+        "authority": "decision_engine"
+      }
+    ],
+    "contains_raw_provider_answer": false,
+    "personal_data_scope_opened": false
+  },
+  "transformations": [
+    "epistemic_classification",
+    "traceability"
+  ],
+  "authority": "decision_engine",
+  "contains_raw_provider_answer": false,
+  "personal_data_scope_opened": false,
+  "affected_json_paths": [
+    "RICH_DECISION_MATERIAL_FIXTURES[S9-MATERIAL-006].future_composition"
+  ],
+  "old_projection_sha256": "49ebb871f26f032d69edee3c8cd670dc7fe9e6b0dbc2becbd85c1852a47982e0",
+  "new_projection_sha256": "fe7ddf3acd20aed9ddc7d6d1a62efd91346958759faa7a716ecb91769f4529c0",
+  "owned_count": 1,
+  "non_owned_preserved_count": 183,
+  "runtime_acceptance_before": {
+    "status": "accepted",
+    "accepted_count": 1,
+    "candidate_id": "candidate_565",
+    "item_type": "unknown",
+    "normalized_content": "La capacidad futura no está confirmada.",
+    "disposition": "accepted_with_normalization",
+    "reason": "normalized_whitespace",
+    "traceability_marker": "trace_candidate_candidate_565_1",
+    "silent_loss_count": 0,
+    "uncertainty_preserved": true,
+    "hard_failures": []
+  },
+  "runtime_acceptance_after": {
+    "status": "accepted",
+    "accepted_count": 1,
+    "candidate_id": "candidate_565",
+    "item_type": "unknown",
+    "normalized_content": "La capacidad futura no está confirmada.",
+    "disposition": "accepted_with_normalization",
+    "reason": "normalized_whitespace",
+    "traceability_marker": "trace_candidate_candidate_565_1",
+    "silent_loss_count": 0,
+    "uncertainty_preserved": true,
+    "hard_failures": []
+  },
+  "ledger_append": {
+    "event_version": "stage-9-ai-remediation-revision-event.1",
+    "substep_id": "S9-FIX-06",
+    "remediation_entry_ids": [
+      "S9-REM-FIXTURE-001"
+    ],
+    "issue_ids": [
+      "B3-ISSUE-004"
+    ],
+    "shared_rule_id": "accepted_normalized_unknown_requires_future_composition",
+    "owned_fixture_ids": [
+      "S9-MATERIAL-006"
+    ],
+    "affected_json_paths": [
+      "RICH_DECISION_MATERIAL_FIXTURES[S9-MATERIAL-006].future_composition"
+    ],
+    "old_projection_sha256": "49ebb871f26f032d69edee3c8cd670dc7fe9e6b0dbc2becbd85c1852a47982e0",
+    "new_projection_sha256": "fe7ddf3acd20aed9ddc7d6d1a62efd91346958759faa7a716ecb91769f4529c0",
+    "runtime_acceptance_preserved": true,
+    "normalized_unknown": "La capacidad futura no está confirmada.",
+    "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_006_SILENT_LOSS_RESULT.v1.json",
+    "generated_at": null,
+    "implementation_commit_message": "fix(stage-9): preserve MATERIAL-006 accepted unknown"
+  },
+  "implementation_write_set": [
+    "PROJECT_CONTEXT.md",
+    "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json",
+    "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_006_SILENT_LOSS_RESULT.v1.json",
+    "lib/ai-decision-material/fixtures.ts"
+  ],
+  "project_context_boundary": {
+    "section_heading": "## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026",
+    "completed_remediation": "6/9",
+    "remaining_remediation": "3/9",
+    "next_substep": "S9-FIX-07",
+    "stage_9_status": "In Progress",
+    "release_readiness": "NOT_DECLARED"
+  },
+  "mandatory_gates": [
+    "quality:stage-9-remediation-plan",
+    "quality:stage-9-material-006-silent-loss",
+    "quality:stage-9-ai-value-preservation",
+    "quality:stage-9-remediation-revision-integrity",
+    "quality:stage-9-offline-dataset-coverage"
+  ],
+  "historical_artifacts": "UNCHANGED",
+  "runtime_boundaries": "CLOSED",
+  "network_provider_execution_count": 0,
+  "visual_migration_remaining": 0
+}

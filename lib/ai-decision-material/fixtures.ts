@@ -458,9 +458,14 @@ export const RICH_DECISION_MATERIAL_FIXTURES: RichDecisionMaterialFixture[] = [
   fixture("S9-MATERIAL-005", "dependencies_reversibility_clarification", material([wideItems[6], wideItems[12], wideItems[14]]), accepted(3), {
     future_composition: composition([wideItems[6].candidate_id, wideItems[12].candidate_id, wideItems[14].candidate_id], ["dependency_identification", "reversibility_classification", "clarification_identification", "traceability"]),
   }),
-  fixture("S9-MATERIAL-006", "normalization", single(item("unknown", "  La capacidad futura   no está confirmada.  ")), {
-    status: "accepted", dispositions: ["accepted_with_normalization"], reasons: ["normalized_whitespace"], accepted_count: 1,
-  }),
+  (() => {
+    const normalizationItem = item("unknown", "  La capacidad futura   no está confirmada.  ");
+    return fixture("S9-MATERIAL-006", "normalization", single(normalizationItem), {
+      status: "accepted", dispositions: ["accepted_with_normalization"], reasons: ["normalized_whitespace"], accepted_count: 1,
+    }, {
+      future_composition: composition([normalizationItem.candidate_id], ["epistemic_classification", "traceability"]),
+    });
+  })(),
   fixture("S9-MATERIAL-007", "duplicate_merge", material([duplicateFirst, duplicateSecond]), {
     status: "accepted", dispositions: ["accepted", "merged_as_duplicate"], reasons: ["accepted_valid", "duplicate_semantic_content"], accepted_count: 1,
   }),
