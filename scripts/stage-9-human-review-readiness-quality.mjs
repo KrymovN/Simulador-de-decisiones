@@ -7,6 +7,10 @@ import {
   preparationWriteSet as s9Fix08PreparationWriteSet,
 } from "./generate-stage-9-post-remediation-package.mjs";
 import {
+  executionWriteSet as s9Fix09ExecutionWriteSet,
+  preparationWriteSet as s9Fix09PreparationWriteSet,
+} from "./stage-9-post-remediation-corpus-assessment-quality.mjs";
+import {
   REVIEW_MANIFEST_PATH,
   REVIEW_METHODOLOGY_PATH,
   REVIEW_VERDICTS,
@@ -15,6 +19,28 @@ import {
 } from "./generate-stage-9-human-review-package.mjs";
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
+routeS9Fix09Profile();
+function routeS9Fix09Profile() {
+  const paths = [...new Set([
+    ...execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).split("\n").filter(Boolean),
+    ...execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).split("\n").filter(Boolean),
+  ])].sort();
+  const samePaths = (expected) => JSON.stringify(paths) === JSON.stringify([...expected].sort());
+  if (!samePaths(s9Fix09ExecutionWriteSet) && !samePaths(s9Fix09PreparationWriteSet)) return;
+  try {
+    const output = execFileSync(process.execPath, [
+      join(root, "scripts/stage-9-post-remediation-corpus-assessment-quality.mjs"),
+      ...(samePaths(s9Fix09ExecutionWriteSet) ? ["--post-assessment"] : []),
+    ], { cwd: root, encoding: "utf8" });
+    const contract = JSON.parse(output);
+    if (!contract.passed) throw new Error("delegated FIX09 contract failed");
+    process.stdout.write(output);
+    process.exit(0);
+  } catch (error) {
+    console.error(`FAIL s9-fix-09-human-review-routing: ${error.message}`);
+    process.exit(1);
+  }
+}
 routeS9Fix08Profile();
 function routeS9Fix08Profile() {
   const paths = [...new Set([
