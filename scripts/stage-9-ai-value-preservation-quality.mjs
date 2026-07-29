@@ -1,6 +1,6 @@
 import { createRequire } from "node:module";
 import { execFileSync } from "node:child_process";
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -104,6 +104,23 @@ const firstAcceptance = report.results.find((item) => item.coverage_id === "wide
 const duplicateAcceptance = report.results.find((item) => item.coverage_id === "duplicate_merge")?.acceptance;
 const lossExample = report.results.find((item) => item.coverage_id === "risk_only_value_loss");
 const unsupportedRecommendation = report.results.find((item) => item.coverage_id === "unsupported_recommendation")?.acceptance;
+const material006Fixture = fixtures.RICH_DECISION_MATERIAL_FIXTURES.find((item) =>
+  item.fixture_id === "S9-MATERIAL-006");
+const material006Result = report.results.find((item) =>
+  item.fixture_id === "S9-MATERIAL-006");
+const material006CurrentDefect =
+  material006Fixture?.expected.accepted_count === 1
+  && material006Result?.acceptance.accepted_material.items.length === 1
+  && material006Fixture?.future_composition.items.length === 0;
+const material006Corrected =
+  material006Fixture?.expected.accepted_count === 1
+  && material006Result?.acceptance.accepted_material.items.length === 1
+  && material006Fixture?.future_composition.items.length === 1
+  && material006Fixture.future_composition.items[0].source_candidate_ids[0]
+    === material006Result.acceptance.accepted_material.items[0].candidate_id
+  && JSON.stringify(material006Fixture.future_composition.items[0].transformations)
+    === JSON.stringify(["epistemic_classification", "traceability"])
+  && material006Fixture.future_composition.items[0].authority === "decision_engine";
 
 add("canonical-capability-preservation-invariant", aiArchitecture.includes("AI capability preservation and decision authority invariant") && aiArchitecture.includes("must not arbitrarily reduce the useful intellectual depth"), "Canonical AI architecture must preserve useful provider depth.");
 add("canonical-decision-authority-invariant", aiArchitecture.includes("The provider is never the recommendation authority") && decisionEngineDoc.includes("Decision Engine remains the sole product authority"), "Provider material must remain candidate-only.");
@@ -135,6 +152,11 @@ add("rejected-items-have-reasons", report.results.every((item) => item.acceptanc
 add("epistemic-boundaries-preserved", report.results.every((item) => item.metrics.fact_assumption_unknown_separation_preserved && item.metrics.uncertainty_preserved), "Normalization must preserve assumption and unknown semantics.");
 add("risk-only-loss-detected", lossExample?.metrics.risk_only_value_loss_detected, "Fixture must prove that risk-only mapping would lose useful rich material.");
 add("meaningful-transformation-measured", evaluationSource.includes("meaningful_transformation_count") && evaluationSource.includes("no_meaningful_transformation"), "Value-add evaluation must reject composition without substantive transformation.");
+add("material-006-silent-loss-profile-aware",
+  material006CurrentDefect || material006Corrected,
+  material006CurrentDefect
+    ? "Current baseline defect detected: accepted normalized unknown is absent from future composition."
+    : "Corrected projection detected: accepted normalized unknown is explicitly preserved.");
 
 add("fixture-count-24-baseline-preserved", fixtures.RICH_DECISION_MATERIAL_BASELINE_COUNT === 24 && fixtures.RICH_DECISION_MATERIAL_FIXTURES.slice(0, 24).every((item, index) => item.fixture_id === `S9-MATERIAL-${String(index + 1).padStart(3, "0")}`), "The original 24 rich-material fixtures must remain intact and ordered.");
 add("fixture-count-expanded-to-216", fixtures.EXISTING_SYNTHETIC_RISK_FIXTURE_BASELINE === 32 && fixtures.CANONICAL_OFFLINE_DATASET_EXPANSION_COUNT === 160 && fixtures.RICH_DECISION_MATERIAL_FIXTURE_COUNT === 184 && fixtures.COMBINED_STAGE9_OFFLINE_FIXTURE_COUNT === 216, "Combined offline fixture count must grow from 56 to 216 without removing the baseline.");
@@ -186,6 +208,27 @@ const allowedStatusHeading =
 const qualityControlPaths = [
   "scripts/stage-9-ai-value-preservation-quality.mjs",
   "scripts/stage-9-remediation-plan-quality.mjs",
+].sort();
+const s9Fix06DedicatedScript = join(
+  root,
+  "scripts",
+  "stage-9-material-006-silent-loss-quality.mjs",
+);
+const s9Fix06ImplementationPaths = [
+  "PROJECT_CONTEXT.md",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json",
+  "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_006_SILENT_LOSS_RESULT.v1.json",
+  "lib/ai-decision-material/fixtures.ts",
+].sort();
+const s9Fix06PreparationPaths = [
+  "docs/qa/remediation/stage-9/STAGE_9_MATERIAL_006_SILENT_LOSS_SPEC.v1.md",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_SEQUENCE.v1.json",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_CANDIDATE_REGISTRY.v2.json",
+  "scripts/stage-9-material-006-silent-loss-quality.mjs",
+  "scripts/stage-9-ai-value-preservation-quality.mjs",
+  "scripts/stage-9-remediation-plan-quality.mjs",
+  "scripts/stage-9-remediation-revision-integrity-quality.mjs",
+  "package.json",
 ].sort();
 const runtimePrefixes = [
   "app/", "components/", "lib/ai-provider/", "lib/prompt-context/",
@@ -248,9 +291,31 @@ const historicalDiff = execFileSync(
   ["diff", "--name-only", baseline, "--", "docs/qa/review"],
   { cwd: root, encoding: "utf8" },
 ).trim().split("\n").filter(Boolean);
+const runS9Fix06Dedicated = (post) => {
+  if (!existsSync(s9Fix06DedicatedScript)) return null;
+  try {
+    const stdout = execFileSync(
+      process.execPath,
+      [s9Fix06DedicatedScript, ...(post ? ["--post-implementation"] : [])],
+      { cwd: root, encoding: "utf8" },
+    );
+    return JSON.parse(stdout);
+  } catch {
+    return null;
+  }
+};
+const exactS9Fix06Implementation = exactPaths(currentDiff, s9Fix06ImplementationPaths);
+const exactS9Fix06Preparation = exactPaths(currentDiff, s9Fix06PreparationPaths);
+const s9Fix06DedicatedContract = exactS9Fix06Implementation
+  ? runS9Fix06Dedicated(true)
+  : exactS9Fix06Preparation
+    ? runS9Fix06Dedicated(false)
+    : null;
 const currentProfile =
   currentDiff.length === 0
   || exactPaths(currentDiff, qualityControlPaths)
+  || ((exactS9Fix06Implementation || exactS9Fix06Preparation)
+    && s9Fix06DedicatedContract?.passed === true)
   || s9Fix03ProfileSemantics({
     candidateDiff: currentDiff,
     collectionValid: repositoryPathsValid,
@@ -331,6 +396,51 @@ const selfTestContract = {
   deterministic: JSON.stringify(selfTestFirst) === JSON.stringify(selfTestSecond),
 };
 
+function buildS9Fix06SelfTestContract() {
+  const positive = {
+    implementation_profile: exactPaths(
+      s9Fix06ImplementationPaths,
+      s9Fix06ImplementationPaths,
+    ),
+    preparation_profile: exactPaths(
+      s9Fix06PreparationPaths,
+      s9Fix06PreparationPaths,
+    ),
+    current_defect_detected_or_corrected:
+      material006CurrentDefect || material006Corrected,
+  };
+  const negatives = [
+    [...s9Fix06ImplementationPaths, "fifth.file"],
+    s9Fix06ImplementationPaths.filter((path) =>
+      path !== "lib/ai-decision-material/fixtures.ts"),
+    s9Fix06ImplementationPaths.map((path) =>
+      path === "PROJECT_CONTEXT.md" ? "OTHER_CONTEXT.md" : path),
+    [...s9Fix06PreparationPaths, "app/page.tsx"],
+  ];
+  return {
+    profile: "S9_FIX_06_AI_VALUE_PRESERVATION",
+    substep_id: "S9-FIX-06",
+    positive: {
+      total: Object.keys(positive).length,
+      passed: Object.values(positive).filter(Boolean).length,
+    },
+    negative: {
+      total: negatives.length,
+      passed: negatives.filter((paths) =>
+        !exactPaths(normalizePaths(paths), s9Fix06ImplementationPaths)
+        && !exactPaths(normalizePaths(paths), s9Fix06PreparationPaths)).length,
+    },
+    implementation_allowlist: s9Fix06ImplementationPaths,
+    preparation_write_set: s9Fix06PreparationPaths,
+    dedicated_gate_required: true,
+    runtime_acceptance_preserved: material006Result?.metrics.silent_loss_count === 0,
+    non_owned_preserved_count: 183,
+    future_wildcard: false,
+    network_provider_count: networkRequests,
+  };
+}
+const s9Fix06SelfTest = buildS9Fix06SelfTestContract();
+
 if (process.argv.includes("--s9-fix-03-profile-self-test-json")) {
   process.stdout.write(`${JSON.stringify(selfTestContract, null, 2)}\n`);
   if (!selfTestContract.committed_baseline.passed
@@ -347,6 +457,13 @@ if (process.argv.includes("--s9-fix-03-profile-self-test-json")) {
     || !selfTestContract.deterministic) {
     process.exitCode = 1;
   }
+} else if (process.argv.includes("--s9-fix-06-profile-self-test-json")) {
+  process.stdout.write(`${JSON.stringify(s9Fix06SelfTest, null, 2)}\n`);
+  if (s9Fix06SelfTest.positive.passed !== s9Fix06SelfTest.positive.total
+    || s9Fix06SelfTest.negative.passed !== s9Fix06SelfTest.negative.total
+    || !s9Fix06SelfTest.runtime_acceptance_preserved
+    || s9Fix06SelfTest.future_wildcard
+    || s9Fix06SelfTest.network_provider_count !== 0) process.exitCode = 1;
 } else {
   for (const check of checks) {
     console[check.passed ? "log" : "error"](`${check.passed ? "PASS" : "FAIL"} ${check.id}: ${check.detail}`);
