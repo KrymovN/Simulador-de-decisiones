@@ -1,0 +1,1511 @@
+{
+  "artifact_version": "stage-9-post-remediation-corpus-assessment.1",
+  "generated_at": null,
+  "status": "PASS",
+  "substep_id": "S9-FIX-09",
+  "kind": "full_corpus_assessment",
+  "prerequisite": "S9-FIX-08",
+  "input_inventory": [
+    {
+      "path": "docs/qa/remediation/stage-9/LEVIO_STAGE_9_POST_REMEDIATION_MANIFEST.json",
+      "sha256": "7748be17e5f3ead5791aea4b65fd72f98c2187db83a10bf9d172aebd61f26d64"
+    },
+    {
+      "path": "docs/qa/remediation/stage-9/STAGE_9_ACTIONABLE_CLAIM_RECONCILIATION.v1.json",
+      "sha256": "76d19477cef3757ca7b322f7bf84dfb47031c1a75a6a9a52fa74dad294987f41"
+    },
+    {
+      "path": "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json",
+      "sha256": "c270af428ee4978e2cb064f96047bc7666fe86cf67ea624d2b37f765caa1e11d"
+    },
+    {
+      "path": "docs/qa/remediation/stage-9/results/STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_RESULT.v1.json",
+      "sha256": "e4edca1b4263c78bca83974f4e7c6bc741279036554ad6b649bdaec82a3598f5"
+    },
+    {
+      "path": "docs/qa/remediation/stage-9/results/STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_RESULT.v1.json",
+      "sha256": "71386d5bac38dcd1edd2056e8bf6b42a3c2963287b187cd53f9b1ac180b32590"
+    },
+    {
+      "path": "docs/qa/remediation/stage-9/results/STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_RESULT.v1.json",
+      "sha256": "a615a2c3d6ef69258e136b48e74eb2f9da996c93b7a7f72497713d4e8c84ce29"
+    },
+    {
+      "path": "docs/qa/remediation/stage-9/results/STAGE_9_INVENTED_RISK_MECHANISM_REFERENCE_RESULT.v1.json",
+      "sha256": "8b65463ff7cc72fcc5cde3cdb10a26306f164a3702cb972aa9f49d986cfb4922"
+    },
+    {
+      "path": "docs/qa/remediation/stage-9/results/STAGE_9_REVERSIBLE_TRIAL_LOCALIZATION_TEMPLATE_RESULT.v1.json",
+      "sha256": "6ebe5b9ebc8084fccd1899688af3be96b0669894182017f9946a29b381f43a2c"
+    },
+    {
+      "path": "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_006_SILENT_LOSS_RESULT.v1.json",
+      "sha256": "f340b74ae433dc7109dff4765b762a84192a4e2f2e61aeb2cd38022358c7a625"
+    },
+    {
+      "path": "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_013_PRIVACY_REVIEW_REFERENCE_RESULT.v1.json",
+      "sha256": "aace5ce65ff3753791d6d5bd3dfad708365030cf235f63ec3400a4866a870587"
+    },
+    {
+      "path": "docs/qa/remediation/stage-9/results/STAGE_9_VERSIONED_DATASET_REGENERATION_RECONCILIATION_RESULT.v1.json",
+      "sha256": "a7f6de93796b6a575132434b9504e8e98631a10dce08bc768945c66739f8de4b"
+    },
+    {
+      "path": "docs/qa/review/AI_REVIEW_CONSOLIDATED_ISSUE_DISPOSITIONS.json",
+      "sha256": "ce6c2439d5d3ade88902fdce93269da58ff5e905f0c25d6cc7b66291399621a8"
+    },
+    {
+      "path": "docs/qa/review/AI_REINFORCED_REVIEW_CLOSURE.json",
+      "sha256": "66560570268ff3a44f5edb8785efe9d90f990969a6de78ce17cfba93baddcddc"
+    }
+  ],
+  "population": {
+    "canonical_core": 160,
+    "synthetic_risk": 32,
+    "rich_decision_material": 184,
+    "combined_offline_population": 216,
+    "combined_unique_id_count": 216,
+    "version_distribution": {
+      "1.1": 63,
+      "1.0": 97
+    }
+  },
+  "evidence_model": {
+    "version": "deterministic-offline-evidence-closure.1",
+    "canonical_fixture_source_mode": "HASH_BOUND_VIA_FIX08_MANIFEST",
+    "historical_review_mode": "IMMUTABLE_REFERENCE_ONLY",
+    "historical_pass_replay": "PROHIBITED",
+    "new_human_ai_review_count": 0,
+    "provider_network_execution_count": 0
+  },
+  "finding_schema": {
+    "version": "stage-9-post-remediation-finding.1",
+    "severity_enum": [
+      "INFO",
+      "LOW",
+      "MEDIUM",
+      "HIGH",
+      "CRITICAL"
+    ],
+    "status_enum": [
+      "OPEN",
+      "RESOLVED",
+      "ACCEPTED_BOUNDARY",
+      "REJECTED"
+    ],
+    "high_critical_are_blocking": true
+  },
+  "residual_risk_taxonomy": [
+    "HISTORICAL_REVIEW_LIMITATION",
+    "OFFLINE_EVIDENCE_BOUNDARY",
+    "RELEASE_RUNTIME_UNASSESSED",
+    "ACCEPTED_VERSION_BASELINE"
+  ],
+  "closure_verdict_enum": [
+    "PASS_NO_RESIDUAL_RISKS",
+    "PASS_WITH_NON_BLOCKING_RESIDUAL_RISKS",
+    "FAIL_BLOCKING_FINDINGS"
+  ],
+  "readiness_recommendation_enum": [
+    "RECOMMEND_SEPARATE_RELEASE_READINESS_DECISION",
+    "DEFER_SEPARATE_RELEASE_READINESS_DECISION",
+    "DO_NOT_PROCEED_TO_RELEASE_READINESS_DECISION"
+  ],
+  "dimension_coverage": [
+    {
+      "dimension_id": "SCHEMA_CORRECTNESS",
+      "population_scope": "synthetic_risk",
+      "expected_count": 32,
+      "covered_count": 32,
+      "input_evidence": [
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_RESULT.v1.json",
+          "sha256": "e4edca1b4263c78bca83974f4e7c6bc741279036554ad6b649bdaec82a3598f5"
+        }
+      ],
+      "checks": [
+        "schema-oracle evidence is exposed",
+        "synthetic rows retain stable IDs"
+      ],
+      "pass_criteria": "covered_count equals expected_count and every cited bounded result is PASS",
+      "allowed_findings": [
+        "new deterministic finding",
+        "accepted non-blocking boundary"
+      ],
+      "blocking_conditions": [
+        "coverage shortfall",
+        "unbound evidence",
+        "open HIGH or CRITICAL finding"
+      ],
+      "status": "PASS",
+      "evidence_sha256": "31b15787e001dd22328562aa0ad78bf84f25b84be5b120050a7cc2646281c67d"
+    },
+    {
+      "dimension_id": "COVERAGE_PROVENANCE_INTEGRITY",
+      "population_scope": "combined_offline_population",
+      "expected_count": 216,
+      "covered_count": 216,
+      "input_evidence": [
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_VERSIONED_DATASET_REGENERATION_RECONCILIATION_RESULT.v1.json",
+          "sha256": "a7f6de93796b6a575132434b9504e8e98631a10dce08bc768945c66739f8de4b"
+        }
+      ],
+      "checks": [
+        "complete manifest covers 216 unique IDs",
+        "all rows are hash-bound"
+      ],
+      "pass_criteria": "covered_count equals expected_count and every cited bounded result is PASS",
+      "allowed_findings": [
+        "new deterministic finding",
+        "accepted non-blocking boundary"
+      ],
+      "blocking_conditions": [
+        "coverage shortfall",
+        "unbound evidence",
+        "open HIGH or CRITICAL finding"
+      ],
+      "status": "PASS",
+      "evidence_sha256": "a9139338c50f1e46f65829a43bc322018d003e543380afe14c743d97d1ecd36b"
+    },
+    {
+      "dimension_id": "MULTILINGUAL_SEMANTIC_CONSISTENCY",
+      "population_scope": "canonical_core",
+      "expected_count": 160,
+      "covered_count": 160,
+      "input_evidence": [
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_RESULT.v1.json",
+          "sha256": "71386d5bac38dcd1edd2056e8bf6b42a3c2963287b187cd53f9b1ac180b32590"
+        },
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_RESULT.v1.json",
+          "sha256": "a615a2c3d6ef69258e136b48e74eb2f9da996c93b7a7f72497713d4e8c84ce29"
+        },
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_REVERSIBLE_TRIAL_LOCALIZATION_TEMPLATE_RESULT.v1.json",
+          "sha256": "6ebe5b9ebc8084fccd1899688af3be96b0669894182017f9946a29b381f43a2c"
+        }
+      ],
+      "checks": [
+        "four-locale canonical coverage is complete",
+        "targeted locale revisions pass"
+      ],
+      "pass_criteria": "covered_count equals expected_count and every cited bounded result is PASS",
+      "allowed_findings": [
+        "new deterministic finding",
+        "accepted non-blocking boundary"
+      ],
+      "blocking_conditions": [
+        "coverage shortfall",
+        "unbound evidence",
+        "open HIGH or CRITICAL finding"
+      ],
+      "status": "PASS",
+      "evidence_sha256": "48b4d85a1a3f06e8f4cedae76e4b60f7127f478e2179055f552e7caa275c000e"
+    },
+    {
+      "dimension_id": "CONTRADICTION_HANDLING",
+      "population_scope": "canonical_core",
+      "expected_count": 160,
+      "covered_count": 160,
+      "input_evidence": [
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_RESULT.v1.json",
+          "sha256": "71386d5bac38dcd1edd2056e8bf6b42a3c2963287b187cd53f9b1ac180b32590"
+        }
+      ],
+      "checks": [
+        "contradiction references use remediated source rule"
+      ],
+      "pass_criteria": "covered_count equals expected_count and every cited bounded result is PASS",
+      "allowed_findings": [
+        "new deterministic finding",
+        "accepted non-blocking boundary"
+      ],
+      "blocking_conditions": [
+        "coverage shortfall",
+        "unbound evidence",
+        "open HIGH or CRITICAL finding"
+      ],
+      "status": "PASS",
+      "evidence_sha256": "cd1337cdf15ff246a3272f41a4972a0fc621b826eb1ef3a673f4851802dc7fe4"
+    },
+    {
+      "dimension_id": "RISK_SOURCE_ENTAILMENT",
+      "population_scope": "combined_offline_population",
+      "expected_count": 216,
+      "covered_count": 216,
+      "input_evidence": [
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_INVENTED_RISK_MECHANISM_REFERENCE_RESULT.v1.json",
+          "sha256": "8b65463ff7cc72fcc5cde3cdb10a26306f164a3702cb972aa9f49d986cfb4922"
+        }
+      ],
+      "checks": [
+        "targeted risk references entail their source evidence"
+      ],
+      "pass_criteria": "covered_count equals expected_count and every cited bounded result is PASS",
+      "allowed_findings": [
+        "new deterministic finding",
+        "accepted non-blocking boundary"
+      ],
+      "blocking_conditions": [
+        "coverage shortfall",
+        "unbound evidence",
+        "open HIGH or CRITICAL finding"
+      ],
+      "status": "PASS",
+      "evidence_sha256": "fd11d755cc14d6667357b07509010c51ac71d3844af86f061ffd5e1449f36ca5"
+    },
+    {
+      "dimension_id": "CLARIFICATION_REFUSAL_BEHAVIOR",
+      "population_scope": "canonical_core",
+      "expected_count": 160,
+      "covered_count": 160,
+      "input_evidence": [
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_RESULT.v1.json",
+          "sha256": "a615a2c3d6ef69258e136b48e74eb2f9da996c93b7a7f72497713d4e8c84ce29"
+        }
+      ],
+      "checks": [
+        "clarification/refusal targeted evidence passes"
+      ],
+      "pass_criteria": "covered_count equals expected_count and every cited bounded result is PASS",
+      "allowed_findings": [
+        "new deterministic finding",
+        "accepted non-blocking boundary"
+      ],
+      "blocking_conditions": [
+        "coverage shortfall",
+        "unbound evidence",
+        "open HIGH or CRITICAL finding"
+      ],
+      "status": "PASS",
+      "evidence_sha256": "aa60166c7b299cc20b7e3205865ab72898714a3167eaae21471ab6370f9c1943"
+    },
+    {
+      "dimension_id": "LOCALIZATION_EQUIVALENCE",
+      "population_scope": "canonical_core",
+      "expected_count": 160,
+      "covered_count": 160,
+      "input_evidence": [
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_RESULT.v1.json",
+          "sha256": "71386d5bac38dcd1edd2056e8bf6b42a3c2963287b187cd53f9b1ac180b32590"
+        },
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_REVERSIBLE_TRIAL_LOCALIZATION_TEMPLATE_RESULT.v1.json",
+          "sha256": "6ebe5b9ebc8084fccd1899688af3be96b0669894182017f9946a29b381f43a2c"
+        }
+      ],
+      "checks": [
+        "localized template and cluster evidence pass"
+      ],
+      "pass_criteria": "covered_count equals expected_count and every cited bounded result is PASS",
+      "allowed_findings": [
+        "new deterministic finding",
+        "accepted non-blocking boundary"
+      ],
+      "blocking_conditions": [
+        "coverage shortfall",
+        "unbound evidence",
+        "open HIGH or CRITICAL finding"
+      ],
+      "status": "PASS",
+      "evidence_sha256": "b25cd0aaa96861a188371b5c55cd93000e57f19e219eca0b3755dd3c9121ae0b"
+    },
+    {
+      "dimension_id": "RICH_VALUE_PRESERVATION",
+      "population_scope": "rich_decision_material",
+      "expected_count": 184,
+      "covered_count": 184,
+      "input_evidence": [
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_006_SILENT_LOSS_RESULT.v1.json",
+          "sha256": "f340b74ae433dc7109dff4765b762a84192a4e2f2e61aeb2cd38022358c7a625"
+        }
+      ],
+      "checks": [
+        "accepted normalized unknown is preserved",
+        "183 non-owned rows remain stable"
+      ],
+      "pass_criteria": "covered_count equals expected_count and every cited bounded result is PASS",
+      "allowed_findings": [
+        "new deterministic finding",
+        "accepted non-blocking boundary"
+      ],
+      "blocking_conditions": [
+        "coverage shortfall",
+        "unbound evidence",
+        "open HIGH or CRITICAL finding"
+      ],
+      "status": "PASS",
+      "evidence_sha256": "e630b5e402ca28351627dff816d6111e91eef972455b0cc13176cf88f9f86c14"
+    },
+    {
+      "dimension_id": "PRIVACY_REVIEW_REFERENCE_SAFETY",
+      "population_scope": "combined_offline_population",
+      "expected_count": 216,
+      "covered_count": 216,
+      "input_evidence": [
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_013_PRIVACY_REVIEW_REFERENCE_RESULT.v1.json",
+          "sha256": "aace5ce65ff3753791d6d5bd3dfad708365030cf235f63ec3400a4866a870587"
+        }
+      ],
+      "checks": [
+        "future evidence display is redacted and hash-bound"
+      ],
+      "pass_criteria": "covered_count equals expected_count and every cited bounded result is PASS",
+      "allowed_findings": [
+        "new deterministic finding",
+        "accepted non-blocking boundary"
+      ],
+      "blocking_conditions": [
+        "coverage shortfall",
+        "unbound evidence",
+        "open HIGH or CRITICAL finding"
+      ],
+      "status": "PASS",
+      "evidence_sha256": "d2a0296942c89651d14f15e81bfc8bd8ad8139113676a2c0ae8126808b13b9f7"
+    },
+    {
+      "dimension_id": "REVISION_VERSION_INTEGRITY",
+      "population_scope": "combined_offline_population",
+      "expected_count": 216,
+      "covered_count": 216,
+      "input_evidence": [
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_VERSIONED_DATASET_REGENERATION_RECONCILIATION_RESULT.v1.json",
+          "sha256": "a7f6de93796b6a575132434b9504e8e98631a10dce08bc768945c66739f8de4b"
+        }
+      ],
+      "checks": [
+        "version distribution is 63/97",
+        "ledger is append-only"
+      ],
+      "pass_criteria": "covered_count equals expected_count and every cited bounded result is PASS",
+      "allowed_findings": [
+        "new deterministic finding",
+        "accepted non-blocking boundary"
+      ],
+      "blocking_conditions": [
+        "coverage shortfall",
+        "unbound evidence",
+        "open HIGH or CRITICAL finding"
+      ],
+      "status": "PASS",
+      "evidence_sha256": "a8811106c3f7121669ebadab39a0559347d1cfdb9cbbb45f1417d0039393273c"
+    },
+    {
+      "dimension_id": "RECONCILIATION_CLOSURE",
+      "population_scope": "actionable_claims",
+      "expected_count": 97,
+      "covered_count": 97,
+      "input_evidence": [
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_VERSIONED_DATASET_REGENERATION_RECONCILIATION_RESULT.v1.json",
+          "sha256": "a7f6de93796b6a575132434b9504e8e98631a10dce08bc768945c66739f8de4b"
+        }
+      ],
+      "checks": [
+        "97 actionable mappings pass",
+        "technical unresolved is zero",
+        "four rejected claims are preserved"
+      ],
+      "pass_criteria": "covered_count equals expected_count and every cited bounded result is PASS",
+      "allowed_findings": [
+        "new deterministic finding",
+        "accepted non-blocking boundary"
+      ],
+      "blocking_conditions": [
+        "coverage shortfall",
+        "unbound evidence",
+        "open HIGH or CRITICAL finding"
+      ],
+      "status": "PASS",
+      "evidence_sha256": "78d01b5856ae5e4293c1e2ed9becb03bed492369637bec724156b97f20a92d96"
+    },
+    {
+      "dimension_id": "DETERMINISTIC_SERIALIZATION",
+      "population_scope": "combined_offline_population",
+      "expected_count": 216,
+      "covered_count": 216,
+      "input_evidence": [
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_VERSIONED_DATASET_REGENERATION_RECONCILIATION_RESULT.v1.json",
+          "sha256": "a7f6de93796b6a575132434b9504e8e98631a10dce08bc768945c66739f8de4b"
+        }
+      ],
+      "checks": [
+        "inputs and ordered projections are SHA-256 bound"
+      ],
+      "pass_criteria": "covered_count equals expected_count and every cited bounded result is PASS",
+      "allowed_findings": [
+        "new deterministic finding",
+        "accepted non-blocking boundary"
+      ],
+      "blocking_conditions": [
+        "coverage shortfall",
+        "unbound evidence",
+        "open HIGH or CRITICAL finding"
+      ],
+      "status": "PASS",
+      "evidence_sha256": "0b450cc14a02378c76fb85b3ab265ef9fb3d601ff283dc638d98ce0919d229c1"
+    },
+    {
+      "dimension_id": "RESIDUAL_FINDINGS",
+      "population_scope": "combined_offline_population",
+      "expected_count": 216,
+      "covered_count": 216,
+      "input_evidence": [
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_RESULT.v1.json",
+          "sha256": "e4edca1b4263c78bca83974f4e7c6bc741279036554ad6b649bdaec82a3598f5"
+        },
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_RESULT.v1.json",
+          "sha256": "71386d5bac38dcd1edd2056e8bf6b42a3c2963287b187cd53f9b1ac180b32590"
+        },
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_RESULT.v1.json",
+          "sha256": "a615a2c3d6ef69258e136b48e74eb2f9da996c93b7a7f72497713d4e8c84ce29"
+        },
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_INVENTED_RISK_MECHANISM_REFERENCE_RESULT.v1.json",
+          "sha256": "8b65463ff7cc72fcc5cde3cdb10a26306f164a3702cb972aa9f49d986cfb4922"
+        },
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_REVERSIBLE_TRIAL_LOCALIZATION_TEMPLATE_RESULT.v1.json",
+          "sha256": "6ebe5b9ebc8084fccd1899688af3be96b0669894182017f9946a29b381f43a2c"
+        },
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_006_SILENT_LOSS_RESULT.v1.json",
+          "sha256": "f340b74ae433dc7109dff4765b762a84192a4e2f2e61aeb2cd38022358c7a625"
+        },
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_013_PRIVACY_REVIEW_REFERENCE_RESULT.v1.json",
+          "sha256": "aace5ce65ff3753791d6d5bd3dfad708365030cf235f63ec3400a4866a870587"
+        },
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_VERSIONED_DATASET_REGENERATION_RECONCILIATION_RESULT.v1.json",
+          "sha256": "a7f6de93796b6a575132434b9504e8e98631a10dce08bc768945c66739f8de4b"
+        }
+      ],
+      "checks": [
+        "new unresolved findings are zero",
+        "accepted residual boundaries are explicit"
+      ],
+      "pass_criteria": "covered_count equals expected_count and every cited bounded result is PASS",
+      "allowed_findings": [
+        "new deterministic finding",
+        "accepted non-blocking boundary"
+      ],
+      "blocking_conditions": [
+        "coverage shortfall",
+        "unbound evidence",
+        "open HIGH or CRITICAL finding"
+      ],
+      "status": "PASS",
+      "evidence_sha256": "0a9d70cc31122883f5f9f916055449315c4f9122061d72baaf3fde638d350bfa"
+    }
+  ],
+  "before_after_disposition_matrix": [
+    {
+      "primary_issue_id": "B6-ISSUE-027",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-01",
+      "terminal_mapping_category": "SCHEMA_ORACLE_PROJECTION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "267f656f3fe4b6772bc481f5412d2d7da003f6c08c7a5681bd119024c7e387a0"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-029",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-01",
+      "terminal_mapping_category": "SCHEMA_ORACLE_PROJECTION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "f17f3fe6957ddcc995b551c1fc25684c0985ec37f3f258789d751882c7f14e24"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-030",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-01",
+      "terminal_mapping_category": "SCHEMA_ORACLE_PROJECTION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "3358220a88b365350e295e0f572bcc013cc6d0f4b34dccb33241ddbaa912f193"
+    },
+    {
+      "primary_issue_id": "B5-ISSUE-001",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-01",
+      "terminal_mapping_category": "SCHEMA_ORACLE_PROJECTION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "0ea6db2cf2c8a626b4d8f8950c313722330727b5adaa7d08452963afbea137d2"
+    },
+    {
+      "primary_issue_id": "B2-ISSUE-001",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-01",
+      "terminal_mapping_category": "SCHEMA_ORACLE_PROJECTION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "2f954a59e604e3dbaefc8f07442d295f0783b8ac2df6d60f8eb226b08d85452c"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-002",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-01",
+      "terminal_mapping_category": "SCHEMA_ORACLE_PROJECTION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "a3cc6549bc3bf39bcba9600cef65d7e8d0773ba2347b0af662cf19a44667b337"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-033",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "fe17d02b500849f05cfe2ef3b59fa86583d0a73734bbd3559009ae43a743072c"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-034",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "ab0e3b2e4f573a2bc6a83ed9e4bc25003b1fb7b6fec0d07099b6c24fe6af9a9f"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-022",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "4e9062e5a778c257e8646fe5fe73d8133031e3091e69fe9bccadde5f907c44b4"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-024",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "0c3985b606fd2a7f138b5b81f92ea18b71da04b17eacc1142d7c3e3187a7913d"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-019",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "17ecb2db279fbc59482d85514a614f17ee789c4755cbd84e80297a7c4cf3e9f4"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-021",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "a497b81060667d909374a5d68c3ec72839a1f5583810548ab4d5d15f06e2578a"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-025",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "331d124a5471f4a27c125304a33cb9ea9d0ce6a4810954e8773e3a9a286d1e96"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-027",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "84a427103637ff557824d5eba9f628800853c731ba4410a25592a6b53b116b99"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-028",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "d2ae648ac7534ceae704dcc89d133fdceeb523755f19bce88bc7e3c603eab2a9"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-030",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "6ed0df6db40d1a2b178982d8c6537902a577bade6ab5756509f0af77d58037c0"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-017",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "7fa64c5a0c3f3993ebf858456549c0e3dbfe01babfd01c357488068e14349486"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-018",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "c1243608a993d773a6177de2322b78ba4fc5d5876dda00a43ce456bcfad2663d"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-015",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "9299d5518567ea18955be85a1b352221f5d73ce89d26f8c725c6e05d42a1aed6"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-016",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "2067365cae61b0ed98313496aac8a212f8851aa4cc6bfafbd405db3569e669e8"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-019",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "65eff02bb06bd6af3f0d2db6be088c0e33b0b8a356318f6d19538beb81b016a0"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-020",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "67afd8467e748396b5f0fabf4d7aebeddf27f284ca1e460944dfd47892a1137c"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-011",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "8b947062245af03e41b2e6d4bb1a06b23e3c0e129fd5e0bc74b00c0eeb9b3724"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-012",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "c25f63562051223d59d3d408a8120c2883555987bec59bbbd5fd062e4a074a86"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-013",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "eac38615ba911ac444aefd3fb091dad20ad62b23b667307b53712e9fd05cba51"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-014",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "77bdb9522ee805e93d28e8194fe712f37da8a158d0a63e46c5ebb832b9d5145c"
+    },
+    {
+      "primary_issue_id": "B4-ISSUE-002",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "0615ee896fb4368fbc23ef29382dd593ad1ebbcfbaad29e1b48ebc0f5b4435d3"
+    },
+    {
+      "primary_issue_id": "B4-ISSUE-003",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "4ce4a9f34eb80b2c4b1d1520ae1d5a0d6517b64170646c4aa537f2bf120bd7af"
+    },
+    {
+      "primary_issue_id": "B4-ISSUE-004",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "d0b2d6da1da52d9680be9ad9b84c005304e8ac81c3910733bf07f67c028fdea1"
+    },
+    {
+      "primary_issue_id": "B4-ISSUE-005",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "a32f55c8ccb125a80c73ec98ea2a3a26b3bee29d948c31004503d1c808262726"
+    },
+    {
+      "primary_issue_id": "B4-ISSUE-007",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "0b76a1054f7e50360793ff16db37033cda2570a76661ccc625bdbf7a2dc9d694"
+    },
+    {
+      "primary_issue_id": "B4-ISSUE-008",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "8e79a499b67398072118c8c2ac3df97a7062ca3653b22b11e308fe4fb7a0af91"
+    },
+    {
+      "primary_issue_id": "B4-ISSUE-009",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "ca9b5cb3aab196074aa647a6fc35b67aa588ad13360890fef324b5aff83f115e"
+    },
+    {
+      "primary_issue_id": "B5-ISSUE-013",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "94150730cc6f7f84a3195bddd5c7ef95fc0ec4146677ce48388abbc7b98d5c34"
+    },
+    {
+      "primary_issue_id": "B5-ISSUE-014",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "105c9ce5c1347661bd8d9c14bd0c36032a0155e9f94db39912d9591f1f75268a"
+    },
+    {
+      "primary_issue_id": "B5-ISSUE-015",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "570143041ee171bf7d4b09d577c346b8799e3ea12de1f07a875f96e7f11e7f27"
+    },
+    {
+      "primary_issue_id": "B5-ISSUE-016",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "5954c523533855b87a1d0b7c369e7888ad3a768096ebe16f1f30fff60e98b4e6"
+    },
+    {
+      "primary_issue_id": "B5-ISSUE-017",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "d2d9ea5f0e1649c1daf1ba8cffede409f5e3a6f287af7d846339580f727dc6c6"
+    },
+    {
+      "primary_issue_id": "B5-ISSUE-018",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "1c17e9472fe1a76db1329ec2444231133260cfdee4805efe1077672245251055"
+    },
+    {
+      "primary_issue_id": "B5-ISSUE-019",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "6520495917ac74f81cb7a689c837a220bf1c1d82ece0ca558ef33ad1382d47d6"
+    },
+    {
+      "primary_issue_id": "B5-ISSUE-020",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "4cedc18f861c639fc0c354bf6af12cd886e2c22062246b69d40fc51ac115edc3"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-007",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "3bfba06c716a8f6ba734d5accc1f0274cc9f541b4ec95a35e16d50c04adbff80"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-009",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "72ef77d930a2cd31ee533ab2715996b178f313ffa6e5025f4c1d9a0b22556bfa"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-011",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "2ae65bbb1567874633e4a95a05b6f0da15f371ddb4ffbd7649935d15c4da509b"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-013",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "99207982f716bfb26b55c0a420b8a6f80bfbc0037d9eed435ad70ffa3d1418c8"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-021",
+      "before_disposition": "PARTIALLY_CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "9d8e0a5b22f96320254427e8c20052f8ec44316848512d31a38c4c2f073be221"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-022",
+      "before_disposition": "PARTIALLY_CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "a2dd29bd0e7b7aacbf65a70f90c4a11efffbf2eab74592e1952285b923fbd9ef"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-023",
+      "before_disposition": "PARTIALLY_CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "92f60b053b40e2600401f72dfbdcb28f1e7e8237d9054d0a37f7901dae11c492"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-024",
+      "before_disposition": "PARTIALLY_CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "7222ca8577b71ac9d23a3f5edfade80561f312aadb566ff3b767f8078ef248ab"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-025",
+      "before_disposition": "PARTIALLY_CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "bcd557de611460d4cf51e84dac754c8fde35d4bd0880f1b390b36973c8e25f12"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-026",
+      "before_disposition": "PARTIALLY_CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "32f0b3ef6b3dff4036198ae2d48e7abd7e4ed3a55e21dfb3eb22d7711e4718e9"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-036",
+      "before_disposition": "PARTIALLY_CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "d9c9f8aecc05d1b11208c71b21c81ab765eeb302749252110525ac1fd19f8844"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-037",
+      "before_disposition": "PARTIALLY_CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "09d1214c0dd3e151df7bb605926c4b569e555f5c426d9ead9d44ce81e2344c03"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-035",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "5afc5b50427ae7ce8d22cb0d896cdcb24d41d492ecb6a8b6f65abe95641bdd0a"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-028",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "851a614d07d78959507804099e32a0bc391c177157ddfd4a9a21e22e14dbedff"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-027",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "3794677f04674d4b494b003445b0cdad71a1b31abed8e575c29a6c2c09327008"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-029",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "eadb84c2958bc98409a14fdbbd3af821ddd5154e3d762d98d6221ddbd1d15c36"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-030",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "4cacddc734be7bbe1d827cc3db7f8dda7f21b0207ae9e2786b0b202e069dd2a7"
+    },
+    {
+      "primary_issue_id": "B2-ISSUE-025",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "2fd80d3f44fbd8c62d6199a0587c58f2e7c067f9865eafab52523c8feb4e744a"
+    },
+    {
+      "primary_issue_id": "B2-ISSUE-026",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "e4eb6de7546a4133e81f3f74c3a2074435eaedec4d6fd8f39d7ad512988261e9"
+    },
+    {
+      "primary_issue_id": "B2-ISSUE-023",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "6209602ed6662ff6fdb0e343cf4ea65aae48afa2fb97822bf75d4b9bab093964"
+    },
+    {
+      "primary_issue_id": "B2-ISSUE-024",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "9a65b35682be7261c570e75d4b8a5b909698bee50af5fab1f4ba187607077e55"
+    },
+    {
+      "primary_issue_id": "B2-ISSUE-027",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "4bf61ee740378b4d5fda5e716021af5f549642717bff41a2fa33f64a82e6cf49"
+    },
+    {
+      "primary_issue_id": "B2-ISSUE-028",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "33b6922f8c2cea9d0afe22c3ab1712830fc0f1ab4ca1793bfff731589d97ead9"
+    },
+    {
+      "primary_issue_id": "B2-ISSUE-029",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "57c419b82f65c136dc518e3ff6473980e9669ec6bde50643c438739c5bd725b4"
+    },
+    {
+      "primary_issue_id": "B2-ISSUE-030",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "86adb80df666c16280567a81ebf41ef3616d709c381ca8d258a21a90e7d296ce"
+    },
+    {
+      "primary_issue_id": "B2-ISSUE-016",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "ec430a6c16577b25d4378b9887d0ce1aa19fc59a3966af48df7cb58e062a951a"
+    },
+    {
+      "primary_issue_id": "B2-ISSUE-015",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "608940588642fde670984c1a189d4e0422a0361b8178dc18a8750ab730330b81"
+    },
+    {
+      "primary_issue_id": "B2-ISSUE-017",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "5dd65005b39864b33a11e091da5c9d50a4b12ea3b298bb8b15279a4d03baeb07"
+    },
+    {
+      "primary_issue_id": "B2-ISSUE-018",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-03",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "49ca19298f98e6560bd21b0a0e52e03642455ca6783f6053a50dda03b5505df2"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-016",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "78ad4a89b6910212b3077a09f84842a49c9b89304787f0625fee74f8bae3549f"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-015",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "cbb2dec9677135e0ea2eda5aaa273dc41adf460aaeafa4766419223cd5a9864e"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-017",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "ef0e6a4b689ba9c0fdffca36cafb9e115954f62ad511ab53f7e7e9054e400d6f"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-018",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "ea0f73b86046c42e3853d8c54fa18d9fb46b02f267b0b6f80b1d1c6de042ced5"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-001",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "356fd029ccf175d8f3fac1a78b129689c4f7df15985c259229d97d37ed901a39"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-008",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "c2850412d72e0f48cc15b1e4dcde17e5f186f6baf75f335edf673d6df3f8e5f1"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-007",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "1077aa9447707e4725a7583603d74069f55dcc095b78ef9872debb455943b670"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-009",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "5387f65604f12b36f8a8c3292d27e53db1284b0b555971cfe3f80d1c48b23733"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-010",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "2c211692602d432eb47160c4bca3c10548013513fba8cd1658f403d79223b89a"
+    },
+    {
+      "primary_issue_id": "B5-ISSUE-010",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "361bb290a2c636d90bbfbb9d757861aadfbaf06baa27b9e9b2ebfa884987f6a5"
+    },
+    {
+      "primary_issue_id": "B5-ISSUE-009",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "c2f8645cdd01775ef15a1b0886168e33bf507b472ea711532d62d64619429f3e"
+    },
+    {
+      "primary_issue_id": "B5-ISSUE-011",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "7d6a701c7ff539a8a5f3fb2edee4ae486d39356f50e369acc09b09705c602db1"
+    },
+    {
+      "primary_issue_id": "B5-ISSUE-012",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "41fbe0177b9c078247f4c5dfb6c4dee8b7a215e2cf9c50f543de011a9fa867a2"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-008",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "8f0097ab44d39f304b73f9555df28a3e18e656e3fd848654704742612a9bb01f"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-010",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "b1e8a4ee6653d6d9cb47abb03e28dc4b4001bc25a478d0581fed786f55abcf39"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-012",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "df06aa3a00e60fb6cbca50270428832b4b4a5d926e1e95f4a4627c55c32ae02f"
+    },
+    {
+      "primary_issue_id": "B6-ISSUE-014",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "a1c04313dc9bd5f9bfe8d36c6ba1bbfb55961655e580441a6d9b1dab1045d41d"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-023",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "cc8831b9c99cd489250eba95cc109de6ba3ec753ebda10a09dcab55494b24855"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-020",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "bd730c91651d87f3277e88e95fb1f1e974b939fca6aac35e2d0a085d646c1ee6"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-026",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "55805f01b59bcc9351f4730908ea11893c2edf192406162865acce955af745a0"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-029",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-04",
+      "terminal_mapping_category": "REFERENCE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "3fed16a1739301f681c84eda784f3c352cf1db40374f664be9f0275250fe4ff0"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-011",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-05",
+      "terminal_mapping_category": "FIXTURE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "098db5ea48b2914bf7d1c17a1fe46c1f1ea1ede216445d60b2db3a13987aaf5d"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-014",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-05",
+      "terminal_mapping_category": "FIXTURE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "9b5593706bed70c952a681f6b2d5b5881ac334b93cb5f51370bda6d0b8dfc776"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-016",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-05",
+      "terminal_mapping_category": "FIXTURE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "bc01a9fc7353620550b36fd5c3a1f880953bf64e856d13f9771a2e89ff197c7b"
+    },
+    {
+      "primary_issue_id": "B4-ISSUE-006",
+      "before_disposition": "PARTIALLY_CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-02",
+      "terminal_mapping_category": "VALIDATION_ONLY",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "5c77f909e1144e6d6e81eee21062a71a8abb9e04d4cfe5f8d28798a27a30a2f4"
+    },
+    {
+      "primary_issue_id": "B3-ISSUE-004",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-06",
+      "terminal_mapping_category": "FIXTURE_REVISION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "2d5e69ed6e4e0b1a1dba426b65a21fa6aa6fd63c321a5c7e4d0b2b811856e187"
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-006",
+      "before_disposition": "CONFIRMED",
+      "remediation_owner_substep_id": "S9-FIX-07",
+      "terminal_mapping_category": "METHODOLOGY_CLARIFICATION",
+      "terminal_validation_status": "PASS",
+      "post_assessment_status": "PASS",
+      "evidence_sha256": "cc336f6390365452c74bf7b0691217ca52aba0b38ccd615e5b2347ae83fb2f19"
+    }
+  ],
+  "rejected_claims_preserved": [
+    {
+      "primary_issue_id": "B1-ISSUE-012",
+      "consolidated_status": "REJECTED",
+      "source_evidence_path": "docs/qa/review/AI_REVIEW_CONSOLIDATED_ISSUE_DISPOSITIONS.json#dispositions[primary_issue_id=B1-ISSUE-012]",
+      "source_evidence_sha256": "acba117ca3020e64e34d089ee872b83d7972e971621849d22c7ca27103d01e28",
+      "preserved_unchanged": true
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-010",
+      "consolidated_status": "REJECTED",
+      "source_evidence_path": "docs/qa/review/AI_REVIEW_CONSOLIDATED_ISSUE_DISPOSITIONS.json#dispositions[primary_issue_id=B1-ISSUE-010]",
+      "source_evidence_sha256": "b102deda3a32f081eb409be469b2c3b1f9cced02d0f5d3a601ef55a91ce62c4a",
+      "preserved_unchanged": true
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-013",
+      "consolidated_status": "REJECTED",
+      "source_evidence_path": "docs/qa/review/AI_REVIEW_CONSOLIDATED_ISSUE_DISPOSITIONS.json#dispositions[primary_issue_id=B1-ISSUE-013]",
+      "source_evidence_sha256": "a45adcb1fec4b7735741dc097ac79964d91f92850f96a5017d79f42717988578",
+      "preserved_unchanged": true
+    },
+    {
+      "primary_issue_id": "B1-ISSUE-015",
+      "consolidated_status": "REJECTED",
+      "source_evidence_path": "docs/qa/review/AI_REVIEW_CONSOLIDATED_ISSUE_DISPOSITIONS.json#dispositions[primary_issue_id=B1-ISSUE-015]",
+      "source_evidence_sha256": "a5f3faf32ba11747607b95944d896fe892db3b0af7f8286989cae331bbfdbb38",
+      "preserved_unchanged": true
+    }
+  ],
+  "findings": [],
+  "residual_risks": [
+    {
+      "residual_risk_id": "S9-RISK-001",
+      "category": "HISTORICAL_REVIEW_LIMITATION",
+      "severity": "LOW",
+      "blocking": false,
+      "status": "ACCEPTED_BOUNDARY",
+      "rationale": "Frozen historical reviews remain model- and reviewer-bounded reference evidence.",
+      "evidence": [
+        {
+          "path": "docs/qa/review/AI_REINFORCED_REVIEW_CLOSURE.json",
+          "sha256": "66560570268ff3a44f5edb8785efe9d90f990969a6de78ce17cfba93baddcddc"
+        }
+      ],
+      "recommended_next_action": "Evaluate only in the separate release-readiness/runtime-boundary decision.",
+      "evidence_sha256": "4c016b8c867b39d5ba4b099ab1fb792593dd5176c270bc2d5eb0fe69696f1335"
+    },
+    {
+      "residual_risk_id": "S9-RISK-002",
+      "category": "OFFLINE_EVIDENCE_BOUNDARY",
+      "severity": "INFO",
+      "blocking": false,
+      "status": "ACCEPTED_BOUNDARY",
+      "rationale": "Assessment validates offline corpus evidence and does not execute a live provider.",
+      "evidence": [
+        {
+          "path": "docs/qa/remediation/stage-9/LEVIO_STAGE_9_POST_REMEDIATION_MANIFEST.json",
+          "sha256": "7748be17e5f3ead5791aea4b65fd72f98c2187db83a10bf9d172aebd61f26d64"
+        }
+      ],
+      "recommended_next_action": "Evaluate only in the separate release-readiness/runtime-boundary decision.",
+      "evidence_sha256": "de253d242655c6607188e2b167d7acb7e192261a20c43ede6cc141a25dc82a68"
+    },
+    {
+      "residual_risk_id": "S9-RISK-003",
+      "category": "RELEASE_RUNTIME_UNASSESSED",
+      "severity": "INFO",
+      "blocking": false,
+      "status": "ACCEPTED_BOUNDARY",
+      "rationale": "Release readiness and runtime opening remain a separate decision.",
+      "evidence": [
+        {
+          "path": "docs/qa/remediation/stage-9/results/STAGE_9_VERSIONED_DATASET_REGENERATION_RECONCILIATION_RESULT.v1.json",
+          "sha256": "a7f6de93796b6a575132434b9504e8e98631a10dce08bc768945c66739f8de4b"
+        }
+      ],
+      "recommended_next_action": "Evaluate only in the separate release-readiness/runtime-boundary decision.",
+      "evidence_sha256": "1467cc3f2e26eb8333c242a1c568fa519c06bc8330331f11a0e9c97d3373bac8"
+    },
+    {
+      "residual_risk_id": "S9-RISK-004",
+      "category": "ACCEPTED_VERSION_BASELINE",
+      "severity": "INFO",
+      "blocking": false,
+      "status": "ACCEPTED_BOUNDARY",
+      "rationale": "Ninety-seven version 1.0 cases are accepted canonical baselines, not defects.",
+      "evidence": [
+        {
+          "path": "docs/qa/remediation/stage-9/LEVIO_STAGE_9_POST_REMEDIATION_MANIFEST.json",
+          "sha256": "7748be17e5f3ead5791aea4b65fd72f98c2187db83a10bf9d172aebd61f26d64"
+        }
+      ],
+      "recommended_next_action": "Evaluate only in the separate release-readiness/runtime-boundary decision.",
+      "evidence_sha256": "3e889861cf240e155c85a5d1c63d4b18d9ef4b5fbe608ddd92d3daa4b61aafc5"
+    }
+  ],
+  "aggregation": {
+    "assessed_population": 216,
+    "dimensions_total": 13,
+    "dimensions_passed": 13,
+    "actionable_claims_confirmed": 97,
+    "technical_mapping_unresolved": 0,
+    "new_findings_total": 0,
+    "new_unresolved_findings": 0,
+    "blocking_findings": 0,
+    "open_findings": 0,
+    "non_blocking_residual_risks": 4,
+    "rejected_claims_preserved": 4
+  },
+  "closure_verdict": "PASS_WITH_NON_BLOCKING_RESIDUAL_RISKS",
+  "readiness_recommendation": "RECOMMEND_SEPARATE_RELEASE_READINESS_DECISION",
+  "release_readiness": "NOT_DECLARED",
+  "runtime_boundaries": "CLOSED",
+  "api_simulate_mock_only": true,
+  "stage_9_status": "In Progress",
+  "remediation_sequence": "9/9_COMPLETED",
+  "next_action": "Stage 9 Release Readiness and Runtime Boundary Decision",
+  "next_action_is_remediation_substep": false,
+  "visual_migration_remaining": 0,
+  "network_provider_execution_count": 0
+}

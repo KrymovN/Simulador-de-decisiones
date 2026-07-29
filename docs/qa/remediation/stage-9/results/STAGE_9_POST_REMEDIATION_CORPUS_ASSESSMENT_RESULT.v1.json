@@ -1,0 +1,165 @@
+{
+  "artifact_version": "stage-9-post-remediation-corpus-assessment-result.1",
+  "status": "PASS",
+  "substep_id": "S9-FIX-09",
+  "kind": "full_corpus_assessment",
+  "implementation_commit_message": "test(stage-9): assess post-remediation corpus",
+  "prerequisite": "S9-FIX-08",
+  "assessment_path": "docs/qa/remediation/stage-9/STAGE_9_POST_REMEDIATION_CORPUS_ASSESSMENT.v1.json",
+  "assessment_sha256": "b7718d79bad2e9c87839b23067e4b7b176596658097424d7ad9c7760c5172228",
+  "population": {
+    "canonical_core": 160,
+    "synthetic_risk": 32,
+    "rich_decision_material": 184,
+    "combined_offline_population": 216,
+    "combined_unique_id_count": 216,
+    "version_distribution": {
+      "1.1": 63,
+      "1.0": 97
+    }
+  },
+  "assessment_dimensions": [
+    "SCHEMA_CORRECTNESS",
+    "COVERAGE_PROVENANCE_INTEGRITY",
+    "MULTILINGUAL_SEMANTIC_CONSISTENCY",
+    "CONTRADICTION_HANDLING",
+    "RISK_SOURCE_ENTAILMENT",
+    "CLARIFICATION_REFUSAL_BEHAVIOR",
+    "LOCALIZATION_EQUIVALENCE",
+    "RICH_VALUE_PRESERVATION",
+    "PRIVACY_REVIEW_REFERENCE_SAFETY",
+    "REVISION_VERSION_INTEGRITY",
+    "RECONCILIATION_CLOSURE",
+    "DETERMINISTIC_SERIALIZATION",
+    "RESIDUAL_FINDINGS"
+  ],
+  "findings": {
+    "assessed_population": 216,
+    "dimensions_total": 13,
+    "dimensions_passed": 13,
+    "actionable_claims_confirmed": 97,
+    "technical_mapping_unresolved": 0,
+    "new_findings_total": 0,
+    "new_unresolved_findings": 0,
+    "blocking_findings": 0,
+    "open_findings": 0,
+    "non_blocking_residual_risks": 4,
+    "rejected_claims_preserved": 4
+  },
+  "residual_risk_taxonomy": [
+    "HISTORICAL_REVIEW_LIMITATION",
+    "OFFLINE_EVIDENCE_BOUNDARY",
+    "RELEASE_RUNTIME_UNASSESSED",
+    "ACCEPTED_VERSION_BASELINE"
+  ],
+  "closure_verdict": "PASS_WITH_NON_BLOCKING_RESIDUAL_RISKS",
+  "readiness_recommendation": "RECOMMEND_SEPARATE_RELEASE_READINESS_DECISION",
+  "ledger_append": {
+    "event_version": "stage-9-ai-remediation-revision-event.1",
+    "substep_id": "S9-FIX-09",
+    "kind": "full_corpus_assessment",
+    "prerequisites": [
+      "S9-FIX-08"
+    ],
+    "input_sha256": {
+      "docs/qa/remediation/stage-9/LEVIO_STAGE_9_POST_REMEDIATION_MANIFEST.json": "7748be17e5f3ead5791aea4b65fd72f98c2187db83a10bf9d172aebd61f26d64",
+      "docs/qa/remediation/stage-9/STAGE_9_ACTIONABLE_CLAIM_RECONCILIATION.v1.json": "76d19477cef3757ca7b322f7bf84dfb47031c1a75a6a9a52fa74dad294987f41",
+      "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json": "c270af428ee4978e2cb064f96047bc7666fe86cf67ea624d2b37f765caa1e11d",
+      "docs/qa/remediation/stage-9/results/STAGE_9_SCHEMA_ORACLE_EVIDENCE_PROJECTION_RESULT.v1.json": "e4edca1b4263c78bca83974f4e7c6bc741279036554ad6b649bdaec82a3598f5",
+      "docs/qa/remediation/stage-9/results/STAGE_9_SYSTEMIC_CONTRADICTION_REFERENCE_RESULT.v1.json": "71386d5bac38dcd1edd2056e8bf6b42a3c2963287b187cd53f9b1ac180b32590",
+      "docs/qa/remediation/stage-9/results/STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_RESULT.v1.json": "a615a2c3d6ef69258e136b48e74eb2f9da996c93b7a7f72497713d4e8c84ce29",
+      "docs/qa/remediation/stage-9/results/STAGE_9_INVENTED_RISK_MECHANISM_REFERENCE_RESULT.v1.json": "8b65463ff7cc72fcc5cde3cdb10a26306f164a3702cb972aa9f49d986cfb4922",
+      "docs/qa/remediation/stage-9/results/STAGE_9_REVERSIBLE_TRIAL_LOCALIZATION_TEMPLATE_RESULT.v1.json": "6ebe5b9ebc8084fccd1899688af3be96b0669894182017f9946a29b381f43a2c",
+      "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_006_SILENT_LOSS_RESULT.v1.json": "f340b74ae433dc7109dff4765b762a84192a4e2f2e61aeb2cd38022358c7a625",
+      "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_013_PRIVACY_REVIEW_REFERENCE_RESULT.v1.json": "aace5ce65ff3753791d6d5bd3dfad708365030cf235f63ec3400a4866a870587",
+      "docs/qa/remediation/stage-9/results/STAGE_9_VERSIONED_DATASET_REGENERATION_RECONCILIATION_RESULT.v1.json": "a7f6de93796b6a575132434b9504e8e98631a10dce08bc768945c66739f8de4b",
+      "docs/qa/review/AI_REVIEW_CONSOLIDATED_ISSUE_DISPOSITIONS.json": "ce6c2439d5d3ade88902fdce93269da58ff5e905f0c25d6cc7b66291399621a8",
+      "docs/qa/review/AI_REINFORCED_REVIEW_CLOSURE.json": "66560570268ff3a44f5edb8785efe9d90f990969a6de78ce17cfba93baddcddc"
+    },
+    "population": 216,
+    "assessment_dimensions": [
+      "SCHEMA_CORRECTNESS",
+      "COVERAGE_PROVENANCE_INTEGRITY",
+      "MULTILINGUAL_SEMANTIC_CONSISTENCY",
+      "CONTRADICTION_HANDLING",
+      "RISK_SOURCE_ENTAILMENT",
+      "CLARIFICATION_REFUSAL_BEHAVIOR",
+      "LOCALIZATION_EQUIVALENCE",
+      "RICH_VALUE_PRESERVATION",
+      "PRIVACY_REVIEW_REFERENCE_SAFETY",
+      "REVISION_VERSION_INTEGRITY",
+      "RECONCILIATION_CLOSURE",
+      "DETERMINISTIC_SERIALIZATION",
+      "RESIDUAL_FINDINGS"
+    ],
+    "assessment_output_paths": [
+      "docs/qa/remediation/stage-9/STAGE_9_POST_REMEDIATION_CORPUS_ASSESSMENT.v1.json"
+    ],
+    "assessment_output_sha256": {
+      "docs/qa/remediation/stage-9/STAGE_9_POST_REMEDIATION_CORPUS_ASSESSMENT.v1.json": "b7718d79bad2e9c87839b23067e4b7b176596658097424d7ad9c7760c5172228"
+    },
+    "finding_counts": {
+      "total": 0,
+      "unresolved": 0,
+      "blocking": 0,
+      "open": 0
+    },
+    "residual_risk_counts": {
+      "total": 4,
+      "blocking": 0,
+      "non_blocking": 4
+    },
+    "closure_verdict": "PASS_WITH_NON_BLOCKING_RESIDUAL_RISKS",
+    "readiness_recommendation": "RECOMMEND_SEPARATE_RELEASE_READINESS_DECISION",
+    "release_readiness": "NOT_DECLARED",
+    "runtime_boundaries": "CLOSED",
+    "api_simulate_mock_only": true,
+    "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_POST_REMEDIATION_CORPUS_ASSESSMENT_RESULT.v1.json",
+    "validation_status": "PASS",
+    "generated_at": null,
+    "implementation_commit_message": "test(stage-9): assess post-remediation corpus"
+  },
+  "execution_write_set": [
+    "docs/qa/remediation/stage-9/STAGE_9_POST_REMEDIATION_CORPUS_ASSESSMENT.v1.json",
+    "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json",
+    "docs/qa/remediation/stage-9/results/STAGE_9_POST_REMEDIATION_CORPUS_ASSESSMENT_RESULT.v1.json",
+    "PROJECT_CONTEXT.md"
+  ],
+  "project_context_boundary": {
+    "section_heading": "## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026",
+    "completed_remediation": "9/9",
+    "remaining_remediation": "0/9",
+    "remediation_sequence": "COMPLETED",
+    "stage_9_status": "In Progress",
+    "release_readiness": "NOT_DECLARED",
+    "runtime_boundaries": "CLOSED",
+    "api_simulate_mock_only": true,
+    "next_action": "Stage 9 Release Readiness and Runtime Boundary Decision",
+    "next_action_is_s9_fix_10": false,
+    "visual_migration_remaining": 0
+  },
+  "mandatory_gates": [
+    "quality:stage-9-remediation-plan",
+    "quality:stage-9-post-remediation-corpus-assessment",
+    "quality:stage-9-remediation-revision-integrity",
+    "quality:stage-9-human-review-readiness",
+    "quality:stage-9-offline-dataset-coverage",
+    "quality:stage-9-schema-oracle-evidence-projection",
+    "quality:stage-9-risk-entailment-reference",
+    "quality:stage-9-ai-value-preservation"
+  ],
+  "lint_build_decision": {
+    "status": "EXCLUDED_FROM_FIX09_CLOSURE",
+    "rationale": "Application lint/build do not validate the JSON/status-only assessment execution diff; syntax and the enumerable assessment gates cover changed preparation code."
+  },
+  "deterministic_serialization": {
+    "recursively_sorted_hash_inputs": true,
+    "generated_at": null,
+    "byte_identical_repeat_required": true
+  },
+  "historical_evidence_unchanged": true,
+  "fixture_sources_unchanged": true,
+  "fix08_manifest_reconciliation_unchanged": true,
+  "runtime_api_ui_provider_persistence": "UNCHANGED",
+  "network_provider_execution_count": 0
+}

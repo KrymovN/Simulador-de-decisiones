@@ -2,7 +2,7 @@
 
 ## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026
 
-The first eight bounded remediation substeps are complete: `Stage 9
+All nine bounded remediation substeps are complete: `Stage 9
 Schema-Oracle Evidence Projection Revision`, `Stage 9 Systemic Contradiction
 Reference Remediation`, and `Stage 9 High-Risk Clarification and Refusal
 Reference Remediation`, followed by `Stage 9 Invented Risk-Mechanism Reference
@@ -26,10 +26,12 @@ eight rows retain their existing version `1.1`.
 The three localized rows transition from version `1.0` to `1.1`; protected
 English row `S9-CORE-010-EN` retains version `1.0`. Historical review evidence,
 183 non-owned rich fixtures, 157 non-owned canonical rows, 32 synthetic rows,
-validators, and runtime paths remain unchanged. Completed remediation is `8/9`;
-remaining remediation is `1/9`; the next canonical substep is `S9-FIX-09`.
+validators, and runtime paths remain unchanged. Completed remediation is `9/9`;
+remaining remediation is `0/9`; the remediation sequence is complete; the next action is `Stage 9 Release Readiness and Runtime Boundary Decision`, which is not a remediation substep or `S9-FIX-10`.
 
 `S9-FIX-08` completes deterministic versioned dataset regeneration and `97/97` actionable-claim reconciliation with zero unresolved claims. The reconciled technical package is the bounded input for future `S9-FIX-09`; no semantic corpus reassessment or release-readiness decision is performed here.
+
+`S9-FIX-09` completes one deterministic offline assessment of the reconciled `216`-entry corpus. Closure is `PASS_WITH_NON_BLOCKING_RESIDUAL_RISKS`; new unresolved and blocking findings are zero. This assessment recommends only the separate release-readiness/runtime-boundary decision and does not declare release readiness.
 
 Stage 9 remains **In Progress**, release readiness is not declared,
 `/api/simulate` remains `mockOnly=true`, and all runtime boundaries remain
