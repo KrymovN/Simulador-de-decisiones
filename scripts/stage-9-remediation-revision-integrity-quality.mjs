@@ -1,6 +1,8 @@
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
+import { createRequire } from "node:module";
 import { existsSync, readFileSync } from "node:fs";
+import Module from "node:module";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -10,6 +12,8 @@ import {
   serializeRemediationRevisionLedger,
 } from "./generate-stage-9-human-review-package.mjs";
 
+const require = createRequire(import.meta.url);
+const ts = require("typescript");
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const manifestPath = "docs/qa/remediation/stage-9/LEVIO_STAGE_9_POST_REMEDIATION_MANIFEST.json";
 const ledgerPath = "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json";
@@ -19,10 +23,24 @@ const s9Fix03ResultPath = "docs/qa/remediation/stage-9/results/STAGE_9_HIGH_RISK
 const s9Fix04ResultPath = "docs/qa/remediation/stage-9/results/STAGE_9_INVENTED_RISK_MECHANISM_REFERENCE_RESULT.v1.json";
 const legacyPath = "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json";
 const fixturePath = "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts";
+const coreFixturePath = "lib/ai-decision-material/fixtures.ts";
 const projectContextPath = "PROJECT_CONTEXT.md";
 const projectContextHeading = "## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026";
 const expectedLegacySha = "5e95bfdf6b4626e681dbcead672c2d1463f7a14d5eacb5305b773dfa2655e65b";
 const expectedFixtureSha = "150c99e1184c46af31c92f789c05b07559f2d45a7546072d6822751c58477f7b";
+const S9_FIX_04_OWNED_CLUSTERS = [
+  "S9-CLUSTER-002",
+  "S9-CLUSTER-014",
+  "S9-CLUSTER-016",
+  "S9-CLUSTER-019",
+  "S9-CLUSTER-024",
+];
+const S9_FIX_04_OWNED_CORE_IDS = S9_FIX_04_OWNED_CLUSTERS.flatMap((clusterId) => {
+  const number = clusterId.slice(-3);
+  return ["ES", "EN", "RU", "ZH"].map((language) =>
+    `S9-CORE-${number}-${language}`);
+});
+const S9_FIX_04_OWNED_SYNTHETIC_ID = "S9-EVAL-002";
 
 const QUALITY_CONTROL_ALLOWED = [
   "scripts/stage-9-remediation-plan-quality.mjs",
@@ -100,6 +118,187 @@ globalThis.fetch = async () => {
   networkRequests += 1;
   throw new Error("Network access is forbidden by the Stage 9 remediation revision integrity gate.");
 };
+
+function compileTypeScriptModule(path, source, label) {
+  const filename = join(root, path);
+  const output = ts.transpileModule(source, {
+    fileName: filename,
+    compilerOptions: {
+      esModuleInterop: true,
+      module: ts.ModuleKind.CommonJS,
+      moduleResolution: ts.ModuleKind.NodeJs,
+      target: ts.ScriptTarget.ES2022,
+    },
+  });
+  const module = new Module(`${filename}.${label}`);
+  module.filename = filename;
+  module.paths = Module._nodeModulePaths(dirname(filename));
+  const previousLoad = Module._load;
+  const previousExtension = require.extensions[".ts"];
+  Module._load = function loadInternal(request, parent, isMain) {
+    if (request === "server-only") return {};
+    return previousLoad.call(this, request, parent, isMain);
+  };
+  require.extensions[".ts"] = function loadTypeScriptDependency(dependency, dependencyPath) {
+    const dependencySource = readFileSync(dependencyPath, "utf8");
+    const dependencyOutput = ts.transpileModule(dependencySource, {
+      fileName: dependencyPath,
+      compilerOptions: {
+        esModuleInterop: true,
+        module: ts.ModuleKind.CommonJS,
+        moduleResolution: ts.ModuleKind.NodeJs,
+        target: ts.ScriptTarget.ES2022,
+      },
+    });
+    dependency._compile(dependencyOutput.outputText, dependencyPath);
+  };
+  try {
+    module._compile(output.outputText, filename);
+  } finally {
+    Module._load = previousLoad;
+    if (previousExtension) require.extensions[".ts"] = previousExtension;
+    else delete require.extensions[".ts"];
+  }
+  return module.exports;
+}
+
+function headSource(path) {
+  return execFileSync("git", ["show", `HEAD:${path}`], {
+    cwd: root,
+    encoding: "utf8",
+  });
+}
+
+function fixtureProjections() {
+  const baselineCore = compileTypeScriptModule(
+    coreFixturePath,
+    headSource(coreFixturePath),
+    "revision-integrity-baseline-core",
+  ).CANONICAL_OFFLINE_EVALUATION_CASES;
+  const currentCore = compileTypeScriptModule(
+    coreFixturePath,
+    read(coreFixturePath),
+    "revision-integrity-current-core",
+  ).CANONICAL_OFFLINE_EVALUATION_CASES;
+  const baselineSynthetic = compileTypeScriptModule(
+    fixturePath,
+    headSource(fixturePath),
+    "revision-integrity-baseline-synthetic",
+  ).SYNTHETIC_RISK_EVALUATION_FIXTURES;
+  const currentSynthetic = compileTypeScriptModule(
+    fixturePath,
+    read(fixturePath),
+    "revision-integrity-current-synthetic",
+  ).SYNTHETIC_RISK_EVALUATION_FIXTURES;
+  return { baselineCore, currentCore, baselineSynthetic, currentSynthetic };
+}
+
+const without = (value, keys) => Object.fromEntries(
+  Object.entries(value).filter(([key]) => !keys.includes(key)),
+);
+
+function validateS9Fix04FixtureProjection({
+  baselineCore,
+  currentCore,
+  baselineSynthetic,
+  currentSynthetic,
+}) {
+  const baselineCoreById = new Map(baselineCore.map((row) => [row.case_id, row]));
+  const currentCoreById = new Map(currentCore.map((row) => [row.case_id, row]));
+  const baselineSyntheticById = new Map(
+    baselineSynthetic.map((row) => [row.case_id, row]),
+  );
+  const currentSyntheticById = new Map(
+    currentSynthetic.map((row) => [row.case_id, row]),
+  );
+  const ownedCoreChangedExactly = S9_FIX_04_OWNED_CORE_IDS.every((id) => {
+    const baseline = baselineCoreById.get(id);
+    const current = currentCoreById.get(id);
+    return baseline && current
+      && current.case_version === "1.1"
+      && !same(current.expected_risk_behavior, baseline.expected_risk_behavior)
+      && same(
+        without(current, ["case_version", "expected_risk_behavior"]),
+        without(baseline, ["case_version", "expected_risk_behavior"]),
+      );
+  });
+  const transitionCount = S9_FIX_04_OWNED_CORE_IDS.filter((id) =>
+    baselineCoreById.get(id)?.case_version === "1.0"
+    && currentCoreById.get(id)?.case_version === "1.1").length;
+  const retainedVersionCount = S9_FIX_04_OWNED_CORE_IDS.filter((id) =>
+    baselineCoreById.get(id)?.case_version === "1.1"
+    && currentCoreById.get(id)?.case_version === "1.1").length;
+  const nonOwnedCorePreserved = currentCore.length === baselineCore.length
+    && currentCore.every((row) =>
+      S9_FIX_04_OWNED_CORE_IDS.includes(row.case_id)
+      || same(row, baselineCoreById.get(row.case_id)));
+
+  const baselineOwnedSynthetic =
+    baselineSyntheticById.get(S9_FIX_04_OWNED_SYNTHETIC_ID);
+  const currentOwnedSynthetic =
+    currentSyntheticById.get(S9_FIX_04_OWNED_SYNTHETIC_ID);
+  const currentRisks = currentOwnedSynthetic?.candidate?.output?.risks;
+  const baselineRisks = baselineOwnedSynthetic?.candidate?.output?.risks;
+  const ownedSyntheticChangedExactly = baselineOwnedSynthetic
+    && currentOwnedSynthetic
+    && same(
+      without(currentOwnedSynthetic, ["candidate"]),
+      without(baselineOwnedSynthetic, ["candidate"]),
+    )
+    && same(
+      without(currentOwnedSynthetic.candidate.output, ["risks"]),
+      without(baselineOwnedSynthetic.candidate.output, ["risks"]),
+    )
+    && Array.isArray(currentRisks)
+    && currentRisks.length === 3
+    && currentRisks.every((risk) =>
+      Array.isArray(risk.basis_fact_refs) && risk.basis_fact_refs.length === 0)
+    && !same(currentRisks, baselineRisks);
+  const nonOwnedSyntheticPreserved =
+    currentSynthetic.length === baselineSynthetic.length
+    && currentSynthetic.every((row) =>
+      row.case_id === S9_FIX_04_OWNED_SYNTHETIC_ID
+      || same(row, baselineSyntheticById.get(row.case_id)));
+  const syntheticIdsPreserved = currentSynthetic.length === 32
+    && baselineSynthetic.length === 32
+    && new Set(currentSynthetic.map((row) => row.case_id)).size === 32
+    && same(
+      currentSynthetic.map((row) => row.case_id),
+      baselineSynthetic.map((row) => row.case_id),
+    );
+
+  return {
+    valid: ownedCoreChangedExactly
+      && transitionCount === 12
+      && retainedVersionCount === 8
+      && nonOwnedCorePreserved
+      && ownedSyntheticChangedExactly
+      && nonOwnedSyntheticPreserved
+      && syntheticIdsPreserved,
+    ownedCoreCount: S9_FIX_04_OWNED_CORE_IDS.filter((id) =>
+      currentCoreById.has(id)).length,
+    transitionCount,
+    retainedVersionCount,
+    ownedSyntheticChangedExactly: Boolean(ownedSyntheticChangedExactly),
+    nonOwnedCoreCount: currentCore.filter((row) =>
+      !S9_FIX_04_OWNED_CORE_IDS.includes(row.case_id)).length,
+    nonOwnedCorePreserved,
+    nonOwnedSyntheticCount: currentSynthetic.filter((row) =>
+      row.case_id !== S9_FIX_04_OWNED_SYNTHETIC_ID).length,
+    nonOwnedSyntheticPreserved,
+    syntheticIdsPreserved,
+  };
+}
+
+function fixtureSourceIntegrityForProfile({
+  mode,
+  wholeFileHashPreserved,
+  projection,
+}) {
+  return mode === "prospective-s9-fix-04"
+    ? projection.valid
+    : wholeFileHashPreserved;
+}
 
 const baselineLedgerText = serializeRemediationRevisionLedger();
 const baselineLedger = JSON.parse(baselineLedgerText);
@@ -295,7 +494,10 @@ function evaluateLedgerProfile({
   }
 
   const qualityControlDiffAccepted = changedPaths.length === 0
-    || exactPathSet(changedPaths, QUALITY_CONTROL_ALLOWED);
+    || exactPathSet(changedPaths, QUALITY_CONTROL_ALLOWED)
+    || exactPathSet(changedPaths, [
+      "scripts/stage-9-remediation-revision-integrity-quality.mjs",
+    ]);
   if (candidateLedgerText === committedLedgerText) {
     const accepted = boundaryPreserved
       && deterministicSerialization
@@ -821,6 +1023,104 @@ function runRoutingRegressionTests() {
   return cases;
 }
 
+function runS9Fix04FixtureProjectionSelfTests() {
+  const { baselineCore, baselineSynthetic } = fixtureProjections();
+  const positiveCore = structuredClone(baselineCore).map((row) =>
+    S9_FIX_04_OWNED_CORE_IDS.includes(row.case_id)
+      ? {
+          ...row,
+          case_version: "1.1",
+          expected_risk_behavior: [
+            ...row.expected_risk_behavior,
+            "s9_fix_04_projection_self_test",
+          ],
+        }
+      : row);
+  const positiveSynthetic = structuredClone(baselineSynthetic).map((row) =>
+    row.case_id === S9_FIX_04_OWNED_SYNTHETIC_ID
+      ? {
+          ...row,
+          candidate: {
+            ...row.candidate,
+            output: {
+              ...row.candidate.output,
+              risks: row.candidate.output.risks.map((risk, index) => ({
+                ...risk,
+                statement: `${risk.statement} S9-FIX-04-${index + 1}`,
+                basis_fact_refs: [],
+              })),
+            },
+          },
+        }
+      : row);
+  const input = {
+    baselineCore,
+    currentCore: positiveCore,
+    baselineSynthetic,
+    currentSynthetic: positiveSynthetic,
+  };
+  const positive = validateS9Fix04FixtureProjection(input);
+  const secondSyntheticIndex = positiveSynthetic.findIndex((row) =>
+    row.case_id !== S9_FIX_04_OWNED_SYNTHETIC_ID);
+  const nonOwnedSyntheticChanged = structuredClone(positiveSynthetic);
+  nonOwnedSyntheticChanged[secondSyntheticIndex].expected_disposition = "MUTATED";
+  const nonOwnedFieldChanged = structuredClone(positiveSynthetic);
+  const ownedSyntheticIndex = nonOwnedFieldChanged.findIndex((row) =>
+    row.case_id === S9_FIX_04_OWNED_SYNTHETIC_ID);
+  nonOwnedFieldChanged[ownedSyntheticIndex].input.objective = "MUTATED";
+  const broadReplacement = structuredClone(positiveSynthetic).map((row) => ({
+    ...row,
+    source_document: "MUTATED",
+  }));
+  const wrongVersionProfile = structuredClone(positiveCore);
+  const transitionedIndex = wrongVersionProfile.findIndex((row) =>
+    S9_FIX_04_OWNED_CORE_IDS.includes(row.case_id)
+    && baselineCore.find((baseline) =>
+      baseline.case_id === row.case_id)?.case_version === "1.0");
+  wrongVersionProfile[transitionedIndex].case_version = "1.0";
+  const negativeCases = {
+    owned_change_outside_s9_fix_04_profile: !fixtureSourceIntegrityForProfile({
+      mode: "committed-baseline-s9-fix-02",
+      wholeFileHashPreserved: false,
+      projection: positive,
+    }),
+    second_synthetic_fixture_changed:
+      !validateS9Fix04FixtureProjection({
+        ...input,
+        currentSynthetic: nonOwnedSyntheticChanged,
+      }).valid,
+    non_owned_field_inside_owned_synthetic_changed:
+      !validateS9Fix04FixtureProjection({
+        ...input,
+        currentSynthetic: nonOwnedFieldChanged,
+      }).valid,
+    broad_whole_file_replacement:
+      !validateS9Fix04FixtureProjection({
+        ...input,
+        currentSynthetic: broadReplacement,
+      }).valid,
+    wrong_case_version_profile:
+      !validateS9Fix04FixtureProjection({
+        ...input,
+        currentCore: wrongVersionProfile,
+      }).valid,
+  };
+  return {
+    positivePassed: positive.valid
+      && positive.ownedCoreCount === 20
+      && positive.transitionCount === 12
+      && positive.retainedVersionCount === 8
+      && positive.nonOwnedCoreCount === 140
+      && positive.nonOwnedCorePreserved
+      && positive.ownedSyntheticChangedExactly
+      && positive.nonOwnedSyntheticCount === 31
+      && positive.nonOwnedSyntheticPreserved,
+    positive,
+    negativeCases,
+    negativePassed: Object.values(negativeCases).every(Boolean),
+  };
+}
+
 function buildSelfTestContract() {
   const first = runProspectiveSelfTests();
   const second = runProspectiveSelfTests();
@@ -830,6 +1130,8 @@ function buildSelfTestContract() {
   const s9Fix04Second = runS9Fix04ProspectiveSelfTests();
   const routingFirst = runRoutingRegressionTests();
   const routingSecond = runRoutingRegressionTests();
+  const projectionFirst = runS9Fix04FixtureProjectionSelfTests();
+  const projectionSecond = runS9Fix04FixtureProjectionSelfTests();
   const s9Fix02Failed = first.negativeResults
     .filter((test) => !test.passed)
     .map((test) => test.id);
@@ -887,6 +1189,21 @@ function buildSelfTestContract() {
       passed: s9Fix04First.negativeResults.length - s9Fix04Failed.length,
       failed: s9Fix04Failed,
     },
+    s9_fix_04_fixture_projection: {
+      positive_passed: projectionFirst.positivePassed,
+      owned_core_count: projectionFirst.positive.ownedCoreCount,
+      version_transitions_1_0_to_1_1: projectionFirst.positive.transitionCount,
+      retained_version_1_1: projectionFirst.positive.retainedVersionCount,
+      non_owned_core_count: projectionFirst.positive.nonOwnedCoreCount,
+      non_owned_core_preserved: projectionFirst.positive.nonOwnedCorePreserved,
+      owned_synthetic_changed_exactly:
+        projectionFirst.positive.ownedSyntheticChangedExactly,
+      non_owned_synthetic_count: projectionFirst.positive.nonOwnedSyntheticCount,
+      non_owned_synthetic_preserved:
+        projectionFirst.positive.nonOwnedSyntheticPreserved,
+      negative_cases: projectionFirst.negativeCases,
+      negative_passed: projectionFirst.negativePassed,
+    },
     negative_cases: {
       total: first.negativeResults.length + s9Fix03First.negativeResults.length
         + s9Fix04First.negativeResults.length,
@@ -932,7 +1249,8 @@ function buildSelfTestContract() {
     deterministic: same(first, second)
       && same(s9Fix03First, s9Fix03Second)
       && same(s9Fix04First, s9Fix04Second)
-      && same(routingFirst, routingSecond),
+      && same(routingFirst, routingSecond)
+      && same(projectionFirst, projectionSecond),
     network_request_count: networkRequests,
   };
 }
@@ -957,6 +1275,20 @@ if (process.argv.includes("--self-test-json")) {
     || selfTestContract.negative_cases.total !== 41
     || selfTestContract.negative_cases.passed !== 41
     || selfTestContract.negative_cases.failed.length !== 0
+    || !selfTestContract.s9_fix_04_fixture_projection.positive_passed
+    || selfTestContract.s9_fix_04_fixture_projection.owned_core_count !== 20
+    || selfTestContract.s9_fix_04_fixture_projection
+      .version_transitions_1_0_to_1_1 !== 12
+    || selfTestContract.s9_fix_04_fixture_projection.retained_version_1_1 !== 8
+    || selfTestContract.s9_fix_04_fixture_projection.non_owned_core_count !== 140
+    || !selfTestContract.s9_fix_04_fixture_projection.non_owned_core_preserved
+    || !selfTestContract.s9_fix_04_fixture_projection
+      .owned_synthetic_changed_exactly
+    || selfTestContract.s9_fix_04_fixture_projection
+      .non_owned_synthetic_count !== 31
+    || !selfTestContract.s9_fix_04_fixture_projection
+      .non_owned_synthetic_preserved
+    || !selfTestContract.s9_fix_04_fixture_projection.negative_passed
     || !selfTestContract.deterministic
     || selfTestContract.network_request_count !== 0) {
     process.exitCode = 1;
@@ -1001,6 +1333,16 @@ if (process.argv.includes("--self-test-json")) {
     s9Fix03Result: s9Fix03ResultArtifact,
     s9Fix04Result: s9Fix04ResultArtifact,
   });
+  const actualFixtureProjection = validateS9Fix04FixtureProjection(
+    fixtureProjections(),
+  );
+  const wholeSyntheticFixtureHashPreserved =
+    sha(readFileSync(join(root, fixturePath))) === expectedFixtureSha;
+  const syntheticFixtureIntegrity = fixtureSourceIntegrityForProfile({
+    mode: ledgerProfile.mode,
+    wholeFileHashPreserved: wholeSyntheticFixtureHashPreserved,
+    projection: actualFixtureProjection,
+  });
 
   add(
     "generated-artifact-integrity",
@@ -1031,19 +1373,30 @@ if (process.argv.includes("--self-test-json")) {
       && revision.legacy_manifest_sha256 === manifest.source_integrity.legacy_manifest_sha256;
   }), "All six ledger revisions point to the exact manifest evidence and immutable source hashes.");
   add("immutable-source-hashes", sha(readFileSync(join(root, legacyPath))) === expectedLegacySha
-    && sha(readFileSync(join(root, fixturePath))) === expectedFixtureSha
+    && syntheticFixtureIntegrity
     && ledger.revisions.every((revision) =>
       revision.legacy_manifest_sha256 === expectedLegacySha
-      && revision.source_fixture_sha256 === expectedFixtureSha), `legacy=${expectedLegacySha} fixture=${expectedFixtureSha}`);
+      && revision.source_fixture_sha256 === expectedFixtureSha),
+  `legacy=${expectedLegacySha} historical_fixture=${expectedFixtureSha} mode=${ledgerProfile.mode} ${ledgerProfile.mode === "prospective-s9-fix-04" ? `owned_synthetic=${actualFixtureProjection.ownedSyntheticChangedExactly ? "1/1" : "FAILED"} non_owned_synthetic=${actualFixtureProjection.nonOwnedSyntheticPreserved ? "31/31" : "FAILED"}` : `whole_file_hash=${wholeSyntheticFixtureHashPreserved ? "PASS" : "FAIL"}`}`);
   add("single-commit-contract", ledger.substep_id === "S9-FIX-01"
     && ledger.candidate_id === "Stage 9 Schema-Oracle Evidence Projection Revision"
     && ledger.revisions.every((revision) => revision.implementation_commit_message === "fix(stage-9): expose schema oracle evidence"), "Every S9-FIX-01 revision remains inside its original bounded commit.");
 
-  const historicalDiff = gitLines("diff", "--name-only", STAGE_9_REMEDIATION_BASELINE_COMMIT, "--", "docs/qa/review", fixturePath);
+  const historicalDiff = gitLines("diff", "--name-only",
+    STAGE_9_REMEDIATION_BASELINE_COMMIT, "--", "docs/qa/review");
   const runtimeDiff = gitLines("diff", "--name-only", STAGE_9_REMEDIATION_BASELINE_COMMIT, "--",
     "app", "components", "supabase", "lib/ai-provider", "lib/prompt-context", "lib/decision-engine",
     "lib/runtime-integration", "lib/persistence-runtime");
-  add("historical-and-fixture-immutability", historicalDiff.length === 0, historicalDiff.join(", ") || "No historical-review or fixture-source diff.");
+  add("historical-and-fixture-immutability",
+    historicalDiff.length === 0 && syntheticFixtureIntegrity,
+    historicalDiff.join(", ")
+      || `Historical review unchanged; fixture mode=${ledgerProfile.mode}; ${ledgerProfile.mode === "prospective-s9-fix-04" ? `non-owned synthetic=${actualFixtureProjection.nonOwnedSyntheticPreserved ? "31/31" : "FAILED"}` : `whole-file hash=${wholeSyntheticFixtureHashPreserved ? "PASS" : "FAIL"}`}.`);
+  add("s9-fix-04-owned-non-owned-projection",
+    ledgerProfile.mode !== "prospective-s9-fix-04"
+      || actualFixtureProjection.valid,
+    ledgerProfile.mode === "prospective-s9-fix-04"
+      ? `owned_core=${actualFixtureProjection.ownedCoreCount}/20 transitions=${actualFixtureProjection.transitionCount}/12 retained_1_1=${actualFixtureProjection.retainedVersionCount}/8 non_owned_core=${actualFixtureProjection.nonOwnedCorePreserved ? `${actualFixtureProjection.nonOwnedCoreCount}/140` : "FAILED"} owned_synthetic=${actualFixtureProjection.ownedSyntheticChangedExactly ? "1/1" : "FAILED"} non_owned_synthetic=${actualFixtureProjection.nonOwnedSyntheticPreserved ? `${actualFixtureProjection.nonOwnedSyntheticCount}/31` : "FAILED"}`
+      : `Not applicable to ${ledgerProfile.mode}; whole-file hash protection remains active.`);
   add("runtime-immutability", runtimeDiff.length === 0, runtimeDiff.join(", ") || "No runtime/UI/API/provider/auth/persistence diff.");
   add("exact-bounded-diff", ledgerProfile.accepted, `Mode: ${ledgerProfile.mode}; Changed: ${changed.join(", ") || "none"}`);
   add("result-integrity", result.status === "PASS"
@@ -1070,8 +1423,10 @@ if (process.argv.includes("--self-test-json")) {
     && selfTestContract.negative_cases.total === 41
     && selfTestContract.negative_cases.passed === 41
     && selfTestContract.negative_cases.failed.length === 0
+    && selfTestContract.s9_fix_04_fixture_projection.positive_passed
+    && selfTestContract.s9_fix_04_fixture_projection.negative_passed
     && selfTestContract.deterministic,
-  "Committed baseline and prospective S9-FIX-02/S9-FIX-03/S9-FIX-04 PASS; routing 6/6; negative cases 41/41; deterministic JSON contract.");
+  "Committed baseline and prospective S9-FIX-02/S9-FIX-03/S9-FIX-04 PASS; routing 6/6; ledger/profile negative cases 41/41; S9-FIX-04 fixture projection positive and negative cases PASS; deterministic JSON contract.");
   add("network-zero", networkRequests === 0
     && manifest.summary.network_request_count === 0
     && result.network_request_count === 0, `${networkRequests} network requests.`);

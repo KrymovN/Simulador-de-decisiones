@@ -96,7 +96,6 @@ add("closure-preserved", closure.closure_verdict === "REINFORCED_AI_REVIEW_COMPL
 
 const fixtureDiff = execFileSync("git", ["diff", "--name-only", "HEAD", "--", "lib/ai-quality", "lib/ai-decision-material", "docs/qa/review/LEVIO_STAGE_9_HUMAN_REVIEW_MANIFEST.json", "scripts/generate-stage-9-human-review-package.mjs"], { cwd: root, encoding: "utf8" }).trim();
 const runtimeDiff = execFileSync("git", ["diff", "--name-only", baseline, "--", "app", "components", "supabase", "lib/ai-provider", "lib/prompt-context", "lib/decision-engine", "lib/runtime-integration", "lib/persistence-runtime"], { cwd: root, encoding: "utf8" }).trim();
-add("remediation-sources-unchanged", fixtureDiff === "", fixtureDiff || "Schema/generator/fixture/expected-reference sources and legacy manifest are unchanged.");
 add("runtime-ui-api-unchanged", runtimeDiff === "", runtimeDiff || "Runtime/UI/API/provider/persistence boundaries are unchanged.");
 add("mock-only", read("app", "api", "simulate", "route.ts").includes("mockOnly: true"), "/api/simulate remains mockOnly=true.");
 
@@ -216,6 +215,19 @@ function validSelfTestContract(contract) {
     && contract.negative_cases?.passed === 41
     && Array.isArray(contract.negative_cases?.failed)
     && contract.negative_cases.failed.length === 0
+    && contract.s9_fix_04_fixture_projection?.positive_passed === true
+    && contract.s9_fix_04_fixture_projection?.owned_core_count === 20
+    && contract.s9_fix_04_fixture_projection
+      ?.version_transitions_1_0_to_1_1 === 12
+    && contract.s9_fix_04_fixture_projection?.retained_version_1_1 === 8
+    && contract.s9_fix_04_fixture_projection?.non_owned_core_count === 140
+    && contract.s9_fix_04_fixture_projection?.non_owned_core_preserved === true
+    && contract.s9_fix_04_fixture_projection
+      ?.owned_synthetic_changed_exactly === true
+    && contract.s9_fix_04_fixture_projection?.non_owned_synthetic_count === 31
+    && contract.s9_fix_04_fixture_projection
+      ?.non_owned_synthetic_preserved === true
+    && contract.s9_fix_04_fixture_projection?.negative_passed === true
     && same(contract.closed_profile?.supported_substeps,
       ["S9-FIX-02", "S9-FIX-03", "S9-FIX-04"])
     && contract.closed_profile?.future_event_wildcard === false
@@ -292,6 +304,25 @@ const fixtureSelfTestContract = structuredClone(actualSelfTestContract ?? {
   },
   routing_regressions: { total: 6, passed: 6, failed: [] },
   negative_cases: { total: 41, passed: 41, failed: [] },
+  s9_fix_04_fixture_projection: {
+    positive_passed: true,
+    owned_core_count: 20,
+    version_transitions_1_0_to_1_1: 12,
+    retained_version_1_1: 8,
+    non_owned_core_count: 140,
+    non_owned_core_preserved: true,
+    owned_synthetic_changed_exactly: true,
+    non_owned_synthetic_count: 31,
+    non_owned_synthetic_preserved: true,
+    negative_cases: {
+      owned_change_outside_s9_fix_04_profile: true,
+      second_synthetic_fixture_changed: true,
+      non_owned_field_inside_owned_synthetic_changed: true,
+      broad_whole_file_replacement: true,
+      wrong_case_version_profile: true,
+    },
+    negative_passed: true,
+  },
   closed_profile: {
     supported_substeps: ["S9-FIX-02", "S9-FIX-03", "S9-FIX-04"],
     future_event_wildcard: false,
@@ -455,9 +486,27 @@ const planningProfileNegativeResults = [
       value.baseline_invariants.s9_fix_02_event_boundary_preserved = false;
     })), selfTestRun()],
   })],
+  ["s9-fix-04-non-owned-synthetic-weakened", qualityControlProfileSemantics({
+    candidateDiff: qualityControlProfileAllowed,
+    selfTestRuns: [selfTestRun(mutateSelfTest((value) => {
+      value.s9_fix_04_fixture_projection.non_owned_synthetic_preserved = false;
+    })), selfTestRun()],
+  })],
+  ["s9-fix-04-version-profile-weakened", qualityControlProfileSemantics({
+    candidateDiff: qualityControlProfileAllowed,
+    selfTestRuns: [selfTestRun(mutateSelfTest((value) => {
+      value.s9_fix_04_fixture_projection.version_transitions_1_0_to_1_1 = 11;
+    })), selfTestRun()],
+  })],
+  ["s9-fix-04-projection-negatives-weakened", qualityControlProfileSemantics({
+    candidateDiff: qualityControlProfileAllowed,
+    selfTestRuns: [selfTestRun(mutateSelfTest((value) => {
+      value.s9_fix_04_fixture_projection.negative_passed = false;
+    })), selfTestRun()],
+  })],
 ];
 const planningProfileNegativeChecksPass =
-  planningProfileNegativeResults.length === 20
+  planningProfileNegativeResults.length === 23
   && planningProfileNegativeResults.every(([id, accepted]) =>
     id === "negative-total-not-forty-one" ? accepted === true : accepted === false);
 const exactQualityControlProfile = qualityControlProfileSemantics({
@@ -1462,6 +1511,200 @@ function validS9Fix04ProspectiveGate(contract) {
     && contract.network_provider_execution_count === 0;
 }
 
+const s9Fix04PostCheckIds = [
+  "exact_future_diff",
+  "ownership_21_of_21",
+  "owned_core_source_entailment",
+  "owned_synthetic_source_entailment",
+  "unrelated_core_preserved",
+  "unrelated_synthetic_preserved",
+  "ledger_append_profile",
+  "result_schema",
+  "status_section_only",
+  "protected_paths_unchanged",
+  "network_provider_zero",
+];
+
+function runS9Fix04PostGate() {
+  const result = spawnSync(
+    process.execPath,
+    [s9Fix04GatePath, "--post-implementation", "--prospective-json"],
+    { cwd: root, encoding: "utf8" },
+  );
+  return {
+    status: result.status,
+    stdout: result.stdout ?? "",
+    stderr: result.stderr ?? "",
+    error: result.error ? String(result.error.message ?? result.error) : null,
+  };
+}
+
+function validS9Fix04PostGate(contract) {
+  return contract?.profile === "S9_FIX_04_RISK_ENTAILMENT_POST_IMPLEMENTATION"
+    && contract.substep_id === "S9-FIX-04"
+    && contract.owned_fixture_count === 21
+    && same(Object.keys(contract.checks ?? {}), s9Fix04PostCheckIds)
+    && Object.values(contract.checks ?? {}).every((value) => value === true)
+    && contract.passed === true
+    && contract.network_provider_execution_count === 0;
+}
+
+function s9Fix04ImplementationProfileSemantics({
+  candidateDiff,
+  postGateRuns,
+  collectionValid = true,
+  requestedProfile = "S9-FIX-04",
+}) {
+  const normalizedCandidateDiff =
+    [...new Set(candidateDiff.map(normalizeRepoPath))].sort();
+  const exactDiff = collectionValid
+    && same(normalizedCandidateDiff, [...s9Fix04ImplementationAllowlist].sort())
+    && candidateDiff.every((path) =>
+      path === normalizeRepoPath(path)
+      && !path.startsWith("/")
+      && !path.startsWith(".git/"));
+  const parsedContracts = postGateRuns.map(parseS9Fix04ProspectiveGate);
+  const postContractValid = parsedContracts.length === 2
+    && parsedContracts.every(validS9Fix04PostGate)
+    && postGateRuns[0].stdout === postGateRuns[1].stdout;
+  return requestedProfile === "S9-FIX-04"
+    && exactDiff
+    && postContractValid;
+}
+
+const s9Fix04PostFixtureContract = {
+  profile: "S9_FIX_04_RISK_ENTAILMENT_POST_IMPLEMENTATION",
+  substep_id: "S9-FIX-04",
+  owned_fixture_count: 21,
+  checks: Object.fromEntries(s9Fix04PostCheckIds.map((id) => [id, true])),
+  passed: true,
+  network_provider_execution_count: 0,
+};
+const s9Fix04PostFixtureRun = (contract = s9Fix04PostFixtureContract) => ({
+  status: 0,
+  stdout: `${JSON.stringify(contract, null, 2)}\n`,
+  stderr: "",
+  error: null,
+});
+const mutateS9Fix04PostFixture = (mutator) => {
+  const copy = structuredClone(s9Fix04PostFixtureContract);
+  mutator(copy);
+  return copy;
+};
+const s9Fix04ImplementationPositiveSelfTest =
+  s9Fix04ImplementationProfileSemantics({
+    candidateDiff: s9Fix04ImplementationAllowlist,
+    postGateRuns: [
+      s9Fix04PostFixtureRun(),
+      s9Fix04PostFixtureRun(),
+    ],
+  });
+const s9Fix04ImplementationNegativeSelfTests = [
+  ["sixth-file", s9Fix04ImplementationProfileSemantics({
+    candidateDiff: [...s9Fix04ImplementationAllowlist, "sixth.file"],
+    postGateRuns: [s9Fix04PostFixtureRun(), s9Fix04PostFixtureRun()],
+  })],
+  ["non-owned-canonical-row", s9Fix04ImplementationProfileSemantics({
+    candidateDiff: s9Fix04ImplementationAllowlist,
+    postGateRuns: [
+      s9Fix04PostFixtureRun(mutateS9Fix04PostFixture((value) => {
+        value.checks.unrelated_core_preserved = false;
+      })),
+      s9Fix04PostFixtureRun(),
+    ],
+  })],
+  ["second-synthetic-fixture", s9Fix04ImplementationProfileSemantics({
+    candidateDiff: s9Fix04ImplementationAllowlist,
+    postGateRuns: [
+      s9Fix04PostFixtureRun(mutateS9Fix04PostFixture((value) => {
+        value.checks.unrelated_synthetic_preserved = false;
+      })),
+      s9Fix04PostFixtureRun(),
+    ],
+  })],
+  ["non-owned-field-inside-s9-eval-002", s9Fix04ImplementationProfileSemantics({
+    candidateDiff: s9Fix04ImplementationAllowlist,
+    postGateRuns: [
+      s9Fix04PostFixtureRun(mutateS9Fix04PostFixture((value) => {
+        value.checks.owned_synthetic_source_entailment = false;
+      })),
+      s9Fix04PostFixtureRun(),
+    ],
+  })],
+  ["project-context-other-section", s9Fix04ImplementationProfileSemantics({
+    candidateDiff: s9Fix04ImplementationAllowlist,
+    postGateRuns: [
+      s9Fix04PostFixtureRun(mutateS9Fix04PostFixture((value) => {
+        value.checks.status_section_only = false;
+      })),
+      s9Fix04PostFixtureRun(),
+    ],
+  })],
+  ["wrong-result-path", s9Fix04ImplementationProfileSemantics({
+    candidateDiff: s9Fix04ImplementationAllowlist.map((path) =>
+      path === s9Fix04ResultArtifact ? "wrong/result.json" : path),
+    postGateRuns: [s9Fix04PostFixtureRun(), s9Fix04PostFixtureRun()],
+  })],
+  ["existing-ledger-event-mutated", s9Fix04ImplementationProfileSemantics({
+    candidateDiff: s9Fix04ImplementationAllowlist,
+    postGateRuns: [
+      s9Fix04PostFixtureRun(mutateS9Fix04PostFixture((value) => {
+        value.checks.ledger_append_profile = false;
+      })),
+      s9Fix04PostFixtureRun(),
+    ],
+  })],
+  ["more-than-one-new-ledger-event", s9Fix04ImplementationProfileSemantics({
+    candidateDiff: s9Fix04ImplementationAllowlist,
+    postGateRuns: [
+      s9Fix04PostFixtureRun(mutateS9Fix04PostFixture((value) => {
+        value.checks.ledger_append_profile = false;
+      })),
+      s9Fix04PostFixtureRun(),
+    ],
+  })],
+  ["wrong-version-profile", s9Fix04ImplementationProfileSemantics({
+    candidateDiff: s9Fix04ImplementationAllowlist,
+    postGateRuns: [
+      s9Fix04PostFixtureRun(mutateS9Fix04PostFixture((value) => {
+        value.checks.owned_core_source_entailment = false;
+      })),
+      s9Fix04PostFixtureRun(),
+    ],
+  })],
+  ["canonical-contract-file-changed", [
+    "docs/qa/remediation/stage-9/STAGE_9_INVENTED_RISK_MECHANISM_REFERENCE_SPEC.v1.md",
+    "docs/qa/remediation/stage-9/AI_REMEDIATION_SEQUENCE.v1.json",
+    "docs/qa/remediation/stage-9/AI_REMEDIATION_CANDIDATE_REGISTRY.v2.json",
+    "docs/qa/remediation/stage-9/AI_REMEDIATION_DEPENDENCY_GRAPH.v1.json",
+  ].every((path) => !s9Fix04ImplementationProfileSemantics({
+    candidateDiff: [...s9Fix04ImplementationAllowlist, path],
+    postGateRuns: [s9Fix04PostFixtureRun(), s9Fix04PostFixtureRun()],
+  }))],
+  ["broad-fixture-replacement", s9Fix04ImplementationProfileSemantics({
+    candidateDiff: s9Fix04ImplementationAllowlist,
+    postGateRuns: [
+      s9Fix04PostFixtureRun(mutateS9Fix04PostFixture((value) => {
+        value.checks.unrelated_core_preserved = false;
+        value.checks.unrelated_synthetic_preserved = false;
+      })),
+      s9Fix04PostFixtureRun(),
+    ],
+  })],
+  ["permissions-used-by-other-profile", s9Fix04ImplementationProfileSemantics({
+    candidateDiff: s9Fix04ImplementationAllowlist,
+    postGateRuns: [s9Fix04PostFixtureRun(), s9Fix04PostFixtureRun()],
+    requestedProfile: "S9-FIX-05",
+  })],
+];
+const s9Fix04ImplementationSelfTestsPass =
+  s9Fix04ImplementationPositiveSelfTest
+  && s9Fix04ImplementationNegativeSelfTests.length === 12
+  && s9Fix04ImplementationNegativeSelfTests.every(([id, accepted]) =>
+    id === "canonical-contract-file-changed"
+      ? accepted === true
+      : accepted === false);
+
 function s9Fix04ContractSemantics(candidateSequence, candidateRegistry) {
   const candidateSubstep = candidateSequence.sequence.find((row) =>
     row.substep_id === "S9-FIX-04");
@@ -1511,6 +1754,20 @@ const s9Fix04ProspectiveRuns = [
 ];
 const s9Fix04ProspectiveContract =
   parseS9Fix04ProspectiveGate(s9Fix04ProspectiveRuns[0]);
+const s9Fix04PostRuns =
+  same([...diff].sort(), [...s9Fix04ImplementationAllowlist].sort())
+    ? [runS9Fix04PostGate(), runS9Fix04PostGate()]
+    : [];
+const exactS9Fix04Implementation =
+  s9Fix04ImplementationProfileSemantics({
+    candidateDiff: diff,
+    postGateRuns: s9Fix04PostRuns,
+    collectionValid: repositoryPathCollectionValid,
+  })
+  && s9Fix04ImplementationSelfTestsPass
+  && s9Fix04ContractSemantics(sequence, registry)
+  && validSelfTestContract(actualSelfTestContract)
+  && validCoverageSelfTest(actualCoverageSelfTestContract);
 const exactS9Fix04Preparation =
   same([...diff].sort(), [...s9Fix04PreparationWriteSet].sort())
   && repositoryPathCollectionValid
@@ -1521,8 +1778,25 @@ const exactS9Fix04Preparation =
   && validSelfTestContract(actualSelfTestContract)
   && validCoverageSelfTest(actualCoverageSelfTestContract);
 
+add(
+  "remediation-sources-unchanged",
+  fixtureDiff === "" || exactS9Fix04Implementation,
+  fixtureDiff === ""
+    ? "Schema/generator/fixture/expected-reference sources and legacy manifest are unchanged."
+    : exactS9Fix04Implementation
+      ? "Exact S9-FIX-04 profile accepted by owned/non-owned projection: canonical 20/20 owned and 140/140 non-owned; synthetic 1/1 owned and 31/31 non-owned."
+      : fixtureDiff,
+);
+add(
+  "s9-fix-04-implementation-profile-self-tests",
+  s9Fix04ImplementationSelfTestsPass,
+  `Positive 1/1; negative ${s9Fix04ImplementationNegativeSelfTests.filter(([id, accepted]) => id === "canonical-contract-file-changed" ? accepted === true : accepted === false).length}/${s9Fix04ImplementationNegativeSelfTests.length}; deterministic exact-profile contract.`,
+);
+
 const boundedDiffProfile = diff.length === 0
   ? "clean-tree"
+  : exactS9Fix04Implementation
+    ? "s9-fix-04-exact-implementation"
   : exactS9Fix04Preparation
     ? "s9-fix-04-contract-and-gate-preparation"
   : exactCoverageQualityControlProfile
@@ -1547,7 +1821,7 @@ add(
   boundedDiffProfile !== "rejected",
   boundedDiffProfile === "rejected"
     ? `Profile rejected. Repository paths: ${diff.join(", ")}; tracked: ${changed.join(", ")}; untracked: ${untracked.join(", ")}; normalized=${repositoryPathCollectionValid}; coverage-quality semantic=${coverageQualityControlProfileSemantics({ candidateDiff: diff, candidateSelfTestRuns: coverageSelfTestRuns, collectionValid: repositoryPathCollectionValid })}; coverage-machine-self-test=${validCoverageSelfTest(actualCoverageSelfTestContract)}; ai-value-quality semantic=${aiValueQualityControlProfileSemantics({ candidateDiff: diff, candidateSelfTestRuns: aiValueSelfTestRuns, collectionValid: repositoryPathCollectionValid })}; ai-value-machine-self-test=${validAiValueSelfTest(actualAiValueSelfTestContract)}; revision-quality semantic=${qualityControlProfileSemantics({ candidateDiff: diff, selfTestRuns, collectionValid: repositoryPathCollectionValid })}; revision-machine-self-test=${validSelfTestContract(actualSelfTestContract)}; revision-planning-negative-cases=${planningProfileNegativeChecksPass}; contradiction-contract semantic=${contradictionContractSemantics(sequence, registry, contradictionSpecText, diff, repositoryPathCollectionValid)}; contradiction negative-cases=${negativeContradictionProfileCasesRejected}.`
-    : `Profile ${boundedDiffProfile} accepted.${boundedDiffProfile === "s9-fix-04-contract-and-gate-preparation" ? ` Exact eight-file preparation diff: ${diff.join(", ")}. Ownership 21/21; dedicated prospective gate, case-version profile, ledger profile, protected boundaries, and deterministic repeat PASS.` : boundedDiffProfile === "offline-dataset-case-version-quality-control" ? ` Exact two-file coverage-validator diff: ${diff.join(", ")}. Machine-readable case-version self-test PASS; planning-profile negative checks 14/14.` : boundedDiffProfile === "ai-value-preservation-quality-control" ? ` Exact two-file AI value-preservation diff: ${diff.join(", ")}. Machine-readable S9-FIX-03 profile PASS; planning negative cases rejected.` : boundedDiffProfile === "remediation-revision-integrity-quality-control" ? ` Exact two-file quality-control diff: ${diff.join(", ")}. Machine-readable self-test PASS; planning-profile negative checks 20/20.` : boundedDiffProfile === "systemic-contradiction-remediation-contract-alignment" ? ` Repository-backed classifier included tracked and untracked paths: ${diff.join(", ")}. All negative cases rejected.` : boundedDiffProfile === "high-risk-clarification-refusal-remediation-contract-alignment" ? ` Exact four-file S9-FIX-03 contract diff: ${diff.join(", ")}. Planning-profile negative checks 14/14.` : ""}`,
+    : `Profile ${boundedDiffProfile} accepted.${boundedDiffProfile === "s9-fix-04-exact-implementation" ? ` Exact five-file implementation diff: ${diff.join(", ")}. Ownership 21/21; canonical preservation 140/140; synthetic preservation 31/31; ledger, result, status section, protected boundaries, and deterministic post-gate repeat PASS.` : boundedDiffProfile === "s9-fix-04-contract-and-gate-preparation" ? ` Exact eight-file preparation diff: ${diff.join(", ")}. Ownership 21/21; dedicated prospective gate, case-version profile, ledger profile, protected boundaries, and deterministic repeat PASS.` : boundedDiffProfile === "offline-dataset-case-version-quality-control" ? ` Exact two-file coverage-validator diff: ${diff.join(", ")}. Machine-readable case-version self-test PASS; planning-profile negative checks 14/14.` : boundedDiffProfile === "ai-value-preservation-quality-control" ? ` Exact two-file AI value-preservation diff: ${diff.join(", ")}. Machine-readable S9-FIX-03 profile PASS; planning negative cases rejected.` : boundedDiffProfile === "remediation-revision-integrity-quality-control" ? ` Exact two-file quality-control diff: ${diff.join(", ")}. Machine-readable self-test PASS; planning-profile negative checks 23/23.` : boundedDiffProfile === "systemic-contradiction-remediation-contract-alignment" ? ` Repository-backed classifier included tracked and untracked paths: ${diff.join(", ")}. All negative cases rejected.` : boundedDiffProfile === "high-risk-clarification-refusal-remediation-contract-alignment" ? ` Exact four-file S9-FIX-03 contract diff: ${diff.join(", ")}. Planning-profile negative checks 14/14.` : ""}`,
 );
 add("network-zero", networkRequests === 0, `${networkRequests} network requests.`);
 
