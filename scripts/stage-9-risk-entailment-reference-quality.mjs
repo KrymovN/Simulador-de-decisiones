@@ -4,10 +4,36 @@ import { readFileSync } from "node:fs";
 import Module from "node:module";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  executionWriteSet as s9Fix08ExecutionWriteSet,
+  preparationWriteSet as s9Fix08PreparationWriteSet,
+} from "./generate-stage-9-post-remediation-package.mjs";
 
 const require = createRequire(import.meta.url);
 const ts = require("typescript");
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
+routeS9Fix08Profile();
+function routeS9Fix08Profile() {
+  const paths = [...new Set([
+    ...execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).split("\n").filter(Boolean),
+    ...execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).split("\n").filter(Boolean),
+  ])].sort();
+  const samePaths = (expected) => JSON.stringify(paths) === JSON.stringify([...expected].sort());
+  if (!samePaths(s9Fix08ExecutionWriteSet) && !samePaths(s9Fix08PreparationWriteSet)) return;
+  try {
+    const output = execFileSync(process.execPath, [
+      join(root, "scripts/stage-9-post-remediation-regeneration-quality.mjs"),
+      ...(samePaths(s9Fix08ExecutionWriteSet) ? ["--post-regeneration"] : []),
+    ], { cwd: root, encoding: "utf8" });
+    const contract = JSON.parse(output);
+    if (!contract.passed) throw new Error("delegated FIX08 contract failed");
+    process.stdout.write(output);
+    process.exit(0);
+  } catch (error) {
+    console.error(`FAIL s9-fix-08-risk-entailment-routing: ${error.message}`);
+    process.exit(1);
+  }
+}
 const read = (path) => readFileSync(join(root, path), "utf8");
 const json = (path) => JSON.parse(read(path));
 const same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
