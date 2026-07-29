@@ -1,0 +1,147 @@
+{
+  "artifact_version": "stage-9-invented-risk-mechanism-reference-result.1",
+  "generated_at": null,
+  "status": "PASS",
+  "baseline_commit": "0f844611a013355de88dd80858426f5e69a0aafb",
+  "substep_id": "S9-FIX-04",
+  "candidate_id": "S9-REM-EXPECTED-003",
+  "implementation_commit_message": "fix(stage-9): align risk references with source",
+  "owned_fixture_count": 21,
+  "owned_fixture_ids": [
+    "S9-EVAL-002",
+    "S9-CORE-002-ES",
+    "S9-CORE-002-EN",
+    "S9-CORE-002-RU",
+    "S9-CORE-002-ZH",
+    "S9-CORE-014-ES",
+    "S9-CORE-014-EN",
+    "S9-CORE-014-RU",
+    "S9-CORE-014-ZH",
+    "S9-CORE-016-ES",
+    "S9-CORE-016-EN",
+    "S9-CORE-016-RU",
+    "S9-CORE-016-ZH",
+    "S9-CORE-019-ES",
+    "S9-CORE-019-EN",
+    "S9-CORE-019-RU",
+    "S9-CORE-019-ZH",
+    "S9-CORE-024-ES",
+    "S9-CORE-024-EN",
+    "S9-CORE-024-RU",
+    "S9-CORE-024-ZH"
+  ],
+  "owned_core_fixture_count": 20,
+  "owned_synthetic_fixture_count": 1,
+  "owned_cluster_count": 5,
+  "owned_cluster_ids": [
+    "S9-CLUSTER-002",
+    "S9-CLUSTER-014",
+    "S9-CLUSTER-016",
+    "S9-CLUSTER-019",
+    "S9-CLUSTER-024"
+  ],
+  "source_entailment": {
+    "S9-EVAL-002": {
+      "supported_uncertainties": [
+        "demand",
+        "operational_capacity",
+        "final_cost"
+      ],
+      "basis_fact_refs_empty": true
+    },
+    "S9-CLUSTER-002": {
+      "removed": [
+        "location_dependency",
+        "retention_risk"
+      ],
+      "supported_risks": [
+        "change_probability_uncertainty"
+      ]
+    },
+    "S9-CLUSTER-014": {
+      "removed": [
+        "rate_reset"
+      ],
+      "supported_risks": [
+        "total_cost",
+        "early_repayment_terms_uncertainty"
+      ]
+    },
+    "S9-CLUSTER-016": {
+      "removed": [
+        "mobility_loss"
+      ],
+      "supported_risks": [
+        "rate_exposure",
+        "maintenance_budget_uncertainty"
+      ]
+    },
+    "S9-CLUSTER-019": {
+      "removed": [
+        "double_housing_cost"
+      ],
+      "supported_risks": [
+        "return_housing_option_uncertainty",
+        "reversibility_loss"
+      ]
+    },
+    "S9-CLUSTER-024": {
+      "removed": [
+        "nonrefundable_cost"
+      ],
+      "supported_risks": [
+        "permit_delay",
+        "decision_date_uncertainty"
+      ]
+    }
+  },
+  "case_version_profile": {
+    "transitions_1_0_to_1_1": 12,
+    "retained_1_1": 8,
+    "synthetic_ledgered_revision": 1
+  },
+  "preservation": {
+    "non_owned_core_unchanged": 140,
+    "non_owned_synthetic_unchanged": 31,
+    "synthetic_fixture_count": 32,
+    "synthetic_ids_unchanged": true,
+    "candidate_payload_outside_s9_eval_002_risks_unchanged": true,
+    "source_fields_unchanged": true,
+    "historical_artifacts_unchanged": true,
+    "runtime_api_ui_unchanged": true
+  },
+  "before_projection_sha256": {
+    "owned_core": "84ad76a9fc9974e5284af9777ac363a8e2998729dae7303d3b95ad06109c52ce",
+    "owned_synthetic": "658040284136a4f75d28b977ed34d81bfb67531e17c5801504606243354543e5",
+    "non_owned_core": "2fddf24e5f312cc3c6244611385695f62cb4c162f45630e622c842bd9db63f81",
+    "non_owned_synthetic": "39250374d0a52e18d0eb8bd7cdc018d8283abe94fcdb24c3e7a1b56f57c722ca"
+  },
+  "after_projection_sha256": {
+    "owned_core": "1ac995b96076c05407695d532d3867c878695022cfcd27f61ecedcaaae745cc5",
+    "owned_synthetic": "3f118e9cb89fb991425450f5ab06d0322d581627292fa818089b53b3b0134728",
+    "non_owned_core": "2fddf24e5f312cc3c6244611385695f62cb4c162f45630e622c842bd9db63f81",
+    "non_owned_synthetic": "39250374d0a52e18d0eb8bd7cdc018d8283abe94fcdb24c3e7a1b56f57c722ca"
+  },
+  "mandatory_gates": {
+    "quality:stage-9-risk-entailment-reference": "PASS",
+    "quality:stage-9-synthetic-risk-evaluation": "PASS",
+    "quality:stage-9-offline-dataset-coverage": "PASS",
+    "quality:stage-9-remediation-revision-integrity": "PASS"
+  },
+  "ledger_append": {
+    "event_count": 1,
+    "substep_id": "S9-FIX-04",
+    "append_only": true
+  },
+  "status_boundary": {
+    "stage_9_status": "In Progress",
+    "completed_remediation": 4,
+    "remaining_remediation": 5,
+    "next_substep": "S9-FIX-05"
+  },
+  "network_provider_execution_count": 0,
+  "stage_9_status": "In Progress",
+  "release_readiness": "NOT_DECLARED",
+  "runtime_boundaries": "CLOSED",
+  "visual_migration_remaining": 0
+}

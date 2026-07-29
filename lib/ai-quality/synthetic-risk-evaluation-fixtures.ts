@@ -65,7 +65,29 @@ const uncertaintyInput: SyntheticCandidateRiskInput = {
 
 const uncertaintyOutput: CandidateRiskMaterial = {
   ...ordinaryOutput,
-  risks: ordinaryOutput.risks.map((risk) => ({ ...risk, basis_fact_refs: [] })),
+  risks: [
+    {
+      category: "information_gap", statement: "La demanda no medida puede distorsionar la comparación de ventanas.",
+      mechanism: "La falta de una medición de demanda impide estimar con fiabilidad la carga de cada ventana.",
+      affected_option_refs: ["option_1", "option_2"], basis_fact_refs: [],
+      trigger_conditions: ["Si la demanda real difiere entre las dos ventanas"], severity_hint: "medium",
+      likelihood_hint: "unknown", uncertainty_note: "La demanda no está medida.",
+    },
+    {
+      category: "dependency", statement: "La capacidad operativa no confirmada puede limitar cualquiera de las ventanas.",
+      mechanism: "Sin confirmar la capacidad operativa no puede determinarse si el lanzamiento es soportable.",
+      affected_option_refs: ["option_1", "option_2"], basis_fact_refs: [],
+      trigger_conditions: ["Si la capacidad disponible resulta inferior a la necesaria"], severity_hint: "high",
+      likelihood_hint: "unknown", uncertainty_note: "La capacidad operativa no está confirmada.",
+    },
+    {
+      category: "financial", statement: "El coste final desconocido puede alterar la viabilidad comparativa.",
+      mechanism: "Sin un coste final confirmado no puede estimarse la exposición presupuestaria de cada ventana.",
+      affected_option_refs: ["option_1", "option_2"], basis_fact_refs: [],
+      trigger_conditions: ["Si el coste final supera el presupuesto disponible"], severity_hint: "medium",
+      likelihood_hint: "unknown", uncertainty_note: "El coste final es desconocido.",
+    },
+  ],
 };
 
 const groundedInput: SyntheticCandidateRiskInput = {

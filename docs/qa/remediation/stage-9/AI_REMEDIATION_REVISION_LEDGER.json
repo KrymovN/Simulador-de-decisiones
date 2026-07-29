@@ -97,6 +97,17 @@
       "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_HIGH_RISK_CLARIFICATION_REFUSAL_RESULT.v1.json",
       "generated_at": null,
       "implementation_commit_message": "fix(stage-9): correct high-risk references"
+    },
+    {
+      "event_version": "stage-9-ai-remediation-revision-event.1",
+      "substep_id": "S9-FIX-04",
+      "remediation_entry_ids": [
+        "S9-REM-EXPECTED-003"
+      ],
+      "shared_rule_id": "risk_mechanism_requires_source_entailment",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_INVENTED_RISK_MECHANISM_REFERENCE_RESULT.v1.json",
+      "generated_at": null,
+      "implementation_commit_message": "fix(stage-9): align risk references with source"
     }
   ]
 }
