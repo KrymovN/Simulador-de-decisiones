@@ -1,0 +1,123 @@
+{
+  "artifact_version": "stage-9-reversible-trial-localization-template-result.1",
+  "status": "PASS",
+  "substep_id": "S9-FIX-05",
+  "candidate_id": "S9-REM-GENERATOR-001",
+  "root_cause": "GENERATOR_TEMPLATE_LOCALIZATION",
+  "shared_rule_id": "reversible_trial_localization_preserves_bounded_reversibility",
+  "implementation_commit_message": "fix(stage-9): localize reversible trial template",
+  "owned_fixture_ids": [
+    "S9-CORE-010-ES",
+    "S9-CORE-010-RU",
+    "S9-CORE-010-ZH"
+  ],
+  "protected_english_reference": {
+    "fixture_id": "S9-CORE-010-EN",
+    "text": "A fictional student compares a semester abroad, a local program, and a short reversible trial.",
+    "case_version": "1.0",
+    "status": "UNCHANGED"
+  },
+  "locale_projections": [
+    {
+      "fixture_id": "S9-CORE-010-ES",
+      "before": "Una estudiante ficticia compara semestre internacional, programa local y prueba corta reversible.",
+      "after": "Una estudiante ficticia compara un semestre internacional, un programa local y una estancia académica breve de prueba que permite volver a la opción anterior."
+    },
+    {
+      "fixture_id": "S9-CORE-010-RU",
+      "before": "Вымышленный студент сравнивает семестр за рубежом, местную программу и короткую обратимую пробу.",
+      "after": "Вымышленный студент сравнивает семестр за рубежом, местную программу и короткий пробный учебный период с возможностью вернуться к прежнему варианту."
+    },
+    {
+      "fixture_id": "S9-CORE-010-ZH",
+      "before": "一名虚构学生比较海外学期、本地项目和短期可逆试读。",
+      "after": "一名虚构学生比较海外学期、本地项目和保留回到原方案选择的短期试学。"
+    }
+  ],
+  "semantic_equivalence_assertions": [
+    "BOUNDED_TRIAL_STUDY_PERIOD",
+    "RETURN_TO_PRIOR_OPTION_REMAINS_POSSIBLE",
+    "NO_ABSOLUTE_RISK_FREE_PROMISE",
+    "NO_NEW_FACTS_CONDITIONS_OR_ELIGIBILITY"
+  ],
+  "gender_interpretation": "REJECTED_UNCHANGED",
+  "case_version_transitions": [
+    {
+      "fixture_id": "S9-CORE-010-ES",
+      "from": "1.0",
+      "to": "1.1"
+    },
+    {
+      "fixture_id": "S9-CORE-010-RU",
+      "from": "1.0",
+      "to": "1.1"
+    },
+    {
+      "fixture_id": "S9-CORE-010-ZH",
+      "from": "1.0",
+      "to": "1.1"
+    }
+  ],
+  "owned_count": 3,
+  "non_owned_preserved_count": 157,
+  "ledger_append": {
+    "event_version": "stage-9-ai-remediation-revision-event.1",
+    "substep_id": "S9-FIX-05",
+    "remediation_entry_ids": [
+      "S9-REM-GENERATOR-001"
+    ],
+    "shared_rule_id": "reversible_trial_localization_preserves_bounded_reversibility",
+    "owned_fixture_ids": [
+      "S9-CORE-010-ES",
+      "S9-CORE-010-RU",
+      "S9-CORE-010-ZH"
+    ],
+    "case_version_transitions": [
+      {
+        "fixture_id": "S9-CORE-010-ES",
+        "from": "1.0",
+        "to": "1.1"
+      },
+      {
+        "fixture_id": "S9-CORE-010-RU",
+        "from": "1.0",
+        "to": "1.1"
+      },
+      {
+        "fixture_id": "S9-CORE-010-ZH",
+        "from": "1.0",
+        "to": "1.1"
+      }
+    ],
+    "protected_reference_fixture_id": "S9-CORE-010-EN",
+    "multilingual_equivalence": "EN_REFERENCE_PRESERVED",
+    "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_REVERSIBLE_TRIAL_LOCALIZATION_TEMPLATE_RESULT.v1.json",
+    "generated_at": null,
+    "implementation_commit_message": "fix(stage-9): localize reversible trial template"
+  },
+  "implementation_write_set": [
+    "PROJECT_CONTEXT.md",
+    "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json",
+    "docs/qa/remediation/stage-9/results/STAGE_9_REVERSIBLE_TRIAL_LOCALIZATION_TEMPLATE_RESULT.v1.json",
+    "lib/ai-decision-material/fixtures.ts"
+  ],
+  "project_context_boundary": {
+    "section_heading": "## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026",
+    "completed_remediation": "5/9",
+    "remaining_remediation": "4/9",
+    "next_substep": "S9-FIX-06",
+    "stage_9_status": "In Progress",
+    "release_readiness": "NOT_DECLARED"
+  },
+  "mandatory_gates": [
+    "quality:stage-9-remediation-plan",
+    "quality:stage-9-reversible-trial-localization",
+    "quality:stage-9-offline-dataset-coverage",
+    "quality:stage-9-remediation-revision-integrity"
+  ],
+  "projection_sha256": "17cfc1b0426643b3db6edcbbc00d2d05ec6385c19eec5389422fb135d85dfbf6",
+  "historical_artifacts": "UNCHANGED",
+  "runtime_boundaries": "CLOSED",
+  "network_provider_execution_count": 0,
+  "visual_migration_remaining": 0
+}

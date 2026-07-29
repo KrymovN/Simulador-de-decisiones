@@ -108,6 +108,41 @@
       "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_INVENTED_RISK_MECHANISM_REFERENCE_RESULT.v1.json",
       "generated_at": null,
       "implementation_commit_message": "fix(stage-9): align risk references with source"
+    },
+    {
+      "event_version": "stage-9-ai-remediation-revision-event.1",
+      "substep_id": "S9-FIX-05",
+      "remediation_entry_ids": [
+        "S9-REM-GENERATOR-001"
+      ],
+      "shared_rule_id": "reversible_trial_localization_preserves_bounded_reversibility",
+      "owned_fixture_ids": [
+        "S9-CORE-010-ES",
+        "S9-CORE-010-RU",
+        "S9-CORE-010-ZH"
+      ],
+      "case_version_transitions": [
+        {
+          "fixture_id": "S9-CORE-010-ES",
+          "from": "1.0",
+          "to": "1.1"
+        },
+        {
+          "fixture_id": "S9-CORE-010-RU",
+          "from": "1.0",
+          "to": "1.1"
+        },
+        {
+          "fixture_id": "S9-CORE-010-ZH",
+          "from": "1.0",
+          "to": "1.1"
+        }
+      ],
+      "protected_reference_fixture_id": "S9-CORE-010-EN",
+      "multilingual_equivalence": "EN_REFERENCE_PRESERVED",
+      "result_artifact_path": "docs/qa/remediation/stage-9/results/STAGE_9_REVERSIBLE_TRIAL_LOCALIZATION_TEMPLATE_RESULT.v1.json",
+      "generated_at": null,
+      "implementation_commit_message": "fix(stage-9): localize reversible trial template"
     }
   ]
 }
