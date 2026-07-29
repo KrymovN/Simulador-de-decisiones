@@ -41,6 +41,7 @@
     "quality:stage-9-remediation-revision-integrity": "node scripts/stage-9-remediation-revision-integrity-quality.mjs",
     "quality:stage-9-reversible-trial-localization": "node scripts/stage-9-reversible-trial-localization-quality.mjs",
     "quality:stage-9-material-006-silent-loss": "node scripts/stage-9-material-006-silent-loss-quality.mjs",
+    "quality:stage-9-material-013-privacy-reference": "node scripts/stage-9-material-013-privacy-reference-quality.mjs",
     "quality:stage-9-risk-entailment-reference": "node scripts/stage-9-risk-entailment-reference-quality.mjs",
     "generate:stage-9-ai-review-batch-1": "node scripts/generate-stage-9-ai-review-batch-1.mjs",
     "quality:stage-9-ai-review-batch-1": "node scripts/stage-9-ai-review-batch-1-quality.mjs",

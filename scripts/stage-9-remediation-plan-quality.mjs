@@ -215,6 +215,34 @@ const s9Fix06MandatoryGates = [
   "quality:stage-9-remediation-revision-integrity",
   "quality:stage-9-offline-dataset-coverage",
 ];
+const s9Fix07SpecPath = "docs/qa/remediation/stage-9/STAGE_9_MATERIAL_013_PRIVACY_REVIEW_REFERENCE_SPEC.v1.md";
+const s9Fix07ResultArtifact = "docs/qa/remediation/stage-9/results/STAGE_9_MATERIAL_013_PRIVACY_REVIEW_REFERENCE_RESULT.v1.json";
+const s9Fix07DedicatedScriptPath = join(root, "scripts", "stage-9-material-013-privacy-reference-quality.mjs");
+const humanReviewReadinessScriptPath = join(root, "scripts", "stage-9-human-review-readiness-quality.mjs");
+const s9Fix07ImplementationAllowlist = [
+  "docs/qa/LEVIO_STAGE_9_AI_REVIEW_METHODOLOGY.md",
+  "docs/qa/LEVIO_STAGE_9_REINFORCED_AI_REVIEW_METHODOLOGY.md",
+  "docs/qa/remediation/stage-9/MATERIAL_013_PRIVACY_REFERENCE_ADDENDUM.md",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_REVISION_LEDGER.json",
+  s9Fix07ResultArtifact,
+  "PROJECT_CONTEXT.md",
+].sort();
+const s9Fix07PreparationWriteSet = [
+  s9Fix07SpecPath,
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_SEQUENCE.v1.json",
+  "docs/qa/remediation/stage-9/AI_REMEDIATION_CANDIDATE_REGISTRY.v2.json",
+  "scripts/stage-9-material-013-privacy-reference-quality.mjs",
+  "scripts/stage-9-human-review-readiness-quality.mjs",
+  "scripts/stage-9-remediation-plan-quality.mjs",
+  "scripts/stage-9-remediation-revision-integrity-quality.mjs",
+  "package.json",
+].sort();
+const s9Fix07MandatoryGates = [
+  "quality:stage-9-remediation-plan",
+  "quality:stage-9-material-013-privacy-reference",
+  "quality:stage-9-human-review-readiness",
+  "quality:stage-9-remediation-revision-integrity",
+];
 const s9Fix02StatusHeading = "## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026";
 const revisionIntegrityScriptPath = join(
   root,
@@ -246,7 +274,7 @@ function parseSelfTestContract(run) {
 }
 
 function validSelfTestContract(contract) {
-  return contract?.profile === "S9-FIX-02_THROUGH_S9-FIX-06_PROSPECTIVE_APPEND_ONLY"
+  return contract?.profile === "S9-FIX-02_THROUGH_S9-FIX-07_PROSPECTIVE_APPEND_ONLY"
     && contract.positive_profile?.passed === true
     && contract.committed_baseline?.passed === true
     && contract.prospective_profiles?.["S9-FIX-02"]?.passed === true
@@ -276,6 +304,14 @@ function validSelfTestContract(contract) {
       === s9Fix06ResultArtifact
     && contract.prospective_profiles?.["S9-FIX-06"]?.owned_fixture_count === 1
     && contract.prospective_profiles?.["S9-FIX-06"]?.non_owned_preserved_count === 183
+    && contract.prospective_profiles?.["S9-FIX-07"]?.passed === true
+    && same(contract.prospective_profiles?.["S9-FIX-07"]?.implementation_allowlist,
+      s9Fix07ImplementationAllowlist)
+    && contract.prospective_profiles?.["S9-FIX-07"]?.result_artifact_path
+      === s9Fix07ResultArtifact
+    && contract.prospective_profiles?.["S9-FIX-07"]?.owned_fixture_count === 1
+    && contract.prospective_profiles?.["S9-FIX-07"]?.preserved_fixture_count === 184
+    && contract.prospective_profiles?.["S9-FIX-07"]?.root_cause === "REVIEW_METHODOLOGY"
     && contract.routing_regressions?.total === 6
     && contract.routing_regressions?.passed === 6
     && Array.isArray(contract.routing_regressions?.failed)
@@ -298,7 +334,7 @@ function validSelfTestContract(contract) {
       ?.non_owned_synthetic_preserved === true
     && contract.s9_fix_04_fixture_projection?.negative_passed === true
     && same(contract.closed_profile?.supported_substeps,
-      ["S9-FIX-02", "S9-FIX-03", "S9-FIX-04", "S9-FIX-05", "S9-FIX-06"])
+      ["S9-FIX-02", "S9-FIX-03", "S9-FIX-04", "S9-FIX-05", "S9-FIX-06", "S9-FIX-07"])
     && contract.closed_profile?.future_event_wildcard === false
     && same(contract.closed_profile?.implementation_allowlist, s9Fix02ImplementationAllowlist)
     && contract.closed_profile?.result_artifact_path === s9Fix02ResultArtifact
@@ -334,6 +370,11 @@ function validSelfTestContract(contract) {
       s9Fix06ImplementationAllowlist)
     && contract.closed_profile?.prospective_profiles?.["S9-FIX-06"]?.result_artifact_path
       === s9Fix06ResultArtifact
+    && same(
+      contract.closed_profile?.prospective_profiles?.["S9-FIX-07"]?.implementation_allowlist,
+      s9Fix07ImplementationAllowlist)
+    && contract.closed_profile?.prospective_profiles?.["S9-FIX-07"]?.result_artifact_path
+      === s9Fix07ResultArtifact
     && contract.baseline_invariants?.s9_fix_01_event_boundary_preserved === true
     && contract.baseline_invariants?.s9_fix_02_event_boundary_preserved === true
     && contract.baseline_invariants?.s9_fix_03_event_boundary_preserved === true
@@ -2050,10 +2091,136 @@ const exactS9Fix06Implementation = same(diff, s9Fix06ImplementationAllowlist)
   && validS9Fix06AiValueProfile
   && validCoverageSelfTest(actualCoverageSelfTestContract);
 
+function runJsonGate(scriptPath, args = []) {
+  const result = spawnSync(process.execPath, [scriptPath, ...args], {
+    cwd: root,
+    encoding: "utf8",
+  });
+  if (result.status !== 0 || result.stderr !== "") return null;
+  try {
+    return { parsed: JSON.parse(result.stdout), stdout: result.stdout };
+  } catch {
+    return null;
+  }
+}
+
+function runTextGate(scriptPath, args = []) {
+  const result = spawnSync(process.execPath, [scriptPath, ...args], {
+    cwd: root,
+    encoding: "utf8",
+  });
+  return {
+    status: result.status,
+    stdout: result.stdout ?? "",
+    stderr: result.stderr ?? "",
+  };
+}
+
+function validS9Fix07HumanSelfTest(contract) {
+  return contract?.profile === "S9_FIX_07_HUMAN_REVIEW_READINESS"
+    && contract.positive?.total === 2
+    && contract.positive?.passed === 2
+    && contract.negative?.total === 5
+    && contract.negative?.passed === 5
+    && same(contract.implementation_write_set, s9Fix07ImplementationAllowlist)
+    && same(contract.preparation_write_set, s9Fix07PreparationWriteSet)
+    && contract.future_wildcard === false
+    && contract.network_request_count === 0
+    && contract.deterministic === true;
+}
+
+function s9Fix07ContractSemantics(candidateSequence, candidateRegistry) {
+  const sequenceEntry = candidateSequence.sequence.find((row) =>
+    row.substep_id === "S9-FIX-07");
+  const registryEntry = candidateRegistry.candidates.find((row) =>
+    row.candidate_id === "S9-REM-FIXTURE-002");
+  if (!sequenceEntry || !registryEntry) return false;
+  const entries = [sequenceEntry, registryEntry];
+  return entries.every((row) =>
+    row.root_cause === "REVIEW_METHODOLOGY"
+    && row.implementation_specification === s9Fix07SpecPath
+    && row.implementation_status === "IMPLEMENTATION_READY_NOT_STARTED"
+    && row.implementation_executed === false
+    && row.owned_fixture_count === 1
+    && same(row.owned_fixture_ids, ["S9-MATERIAL-013"])
+    && row.display_representation === "[REDACTED_EMAIL]"
+    && row.machine_category === "personal_email_identifier"
+    && same(row.structural_reference_fields,
+      ["fixture_id", "issue_id", "evidence_pointer", "source_fixture_sha256"])
+    && row.frozen_source_fixture_sha256
+      === "e4983e9ad8ca0c2ee5fe8d046bfe562c05f5ad050528267169dcfc608687026b"
+    && same([...row.preparation_write_files].sort(), s9Fix07PreparationWriteSet)
+    && same([...(row.allowed_files ?? row.planned_write_files)].sort(),
+      s9Fix07ImplementationAllowlist)
+    && same(row.gates ?? row.required_regression_gates, s9Fix07MandatoryGates)
+    && row.bounded_result_artifact === s9Fix07ResultArtifact
+    && row.canonical_status_update?.section_heading === s9Fix02StatusHeading)
+    && sequenceEntry.commit_message
+      === "fix(stage-9): clarify MATERIAL-013 privacy references"
+    && registryEntry.implementation_commit_message
+      === "fix(stage-9): clarify MATERIAL-013 privacy references"
+    && read(...s9Fix07SpecPath.split("/")).includes("Required implementation commit count: exactly one")
+    && !JSON.stringify(entries).includes("canonical Stage 9 status documents");
+}
+
+const s9Fix07ProspectiveRuns = same(diff, s9Fix07PreparationWriteSet)
+  ? [
+      runJsonGate(s9Fix07DedicatedScriptPath),
+      runJsonGate(s9Fix07DedicatedScriptPath),
+    ]
+  : [];
+const s9Fix07PostRuns = same(diff, s9Fix07ImplementationAllowlist)
+  ? [
+      runJsonGate(s9Fix07DedicatedScriptPath, ["--post-implementation"]),
+      runJsonGate(s9Fix07DedicatedScriptPath, ["--post-implementation"]),
+    ]
+  : [];
+const s9Fix07HumanSelfTestRuns = [
+  runJsonGate(humanReviewReadinessScriptPath, ["--s9-fix-07-profile-self-test-json"]),
+  runJsonGate(humanReviewReadinessScriptPath, ["--s9-fix-07-profile-self-test-json"]),
+];
+const validS9Fix07HumanProfile = s9Fix07HumanSelfTestRuns.every((run) =>
+  validS9Fix07HumanSelfTest(run?.parsed))
+  && s9Fix07HumanSelfTestRuns[0]?.stdout === s9Fix07HumanSelfTestRuns[1]?.stdout;
+const s9Fix07HumanPostRuns = same(diff, s9Fix07ImplementationAllowlist)
+  ? [
+      runTextGate(humanReviewReadinessScriptPath),
+      runTextGate(humanReviewReadinessScriptPath),
+    ]
+  : [];
+const exactS9Fix07Preparation = same(diff, s9Fix07PreparationWriteSet)
+  && repositoryPathCollectionValid
+  && s9Fix07ContractSemantics(sequence, registry)
+  && s9Fix07ProspectiveRuns.every((run) =>
+    run?.parsed?.passed === true
+    && run.parsed.remediation_completed === false
+    && run.parsed.status === "IMPLEMENTATION_READY_NOT_STARTED"
+    && run.parsed.ownership === "1/1"
+    && run.parsed.fixture_preservation === "184/184")
+  && s9Fix07ProspectiveRuns[0]?.stdout === s9Fix07ProspectiveRuns[1]?.stdout
+  && validS9Fix07HumanProfile
+  && validSelfTestContract(actualSelfTestContract);
+const exactS9Fix07Implementation = same(diff, s9Fix07ImplementationAllowlist)
+  && repositoryPathCollectionValid
+  && s9Fix07ContractSemantics(sequence, registry)
+  && s9Fix07PostRuns.every((run) =>
+    run?.parsed?.passed === true
+    && run.parsed.fixture_preservation === "184/184"
+    && run.parsed.checks?.redaction_and_category_exact === true
+    && run.parsed.checks?.raw_identifier_absent === true)
+  && s9Fix07PostRuns[0]?.stdout === s9Fix07PostRuns[1]?.stdout
+  && s9Fix07HumanPostRuns.every((run) =>
+    run?.status === 0
+    && run.stderr === ""
+    && run.stdout.includes("29/29 checks passed."))
+  && s9Fix07HumanPostRuns[0]?.stdout === s9Fix07HumanPostRuns[1]?.stdout
+  && validS9Fix07HumanProfile
+  && validSelfTestContract(actualSelfTestContract);
+
 add(
   "remediation-sources-unchanged",
   fixtureDiff === "" || exactS9Fix04Implementation || exactS9Fix05Implementation
-    || exactS9Fix06Implementation,
+    || exactS9Fix06Implementation || exactS9Fix07Implementation,
   fixtureDiff === ""
     ? "Schema/generator/fixture/expected-reference sources and legacy manifest are unchanged."
     : exactS9Fix04Implementation
@@ -2062,6 +2229,8 @@ add(
         ? "Exact S9-FIX-05 profile accepted by owned/non-owned projection: 3/3 owned, protected EN, and 157/157 non-owned."
       : exactS9Fix06Implementation
         ? "Exact S9-FIX-06 profile accepted by owned/non-owned projection: 1/1 owned and 183/183 non-owned; runtime acceptance preserved."
+      : exactS9Fix07Implementation
+        ? "Exact S9-FIX-07 profile accepted: methodology-only privacy reference clarification and 184/184 fixtures preserved."
       : fixtureDiff,
 );
 add(
@@ -2072,6 +2241,10 @@ add(
 
 const boundedDiffProfile = diff.length === 0
   ? "clean-tree"
+  : exactS9Fix07Implementation
+    ? "s9-fix-07-exact-implementation"
+  : exactS9Fix07Preparation
+    ? "s9-fix-07-contract-and-gate-preparation"
   : exactS9Fix06Implementation
     ? "s9-fix-06-exact-implementation"
   : exactS9Fix06Preparation
@@ -2106,7 +2279,7 @@ add(
   boundedDiffProfile !== "rejected",
   boundedDiffProfile === "rejected"
     ? `Profile rejected. Repository paths: ${diff.join(", ")}; tracked: ${changed.join(", ")}; untracked: ${untracked.join(", ")}; normalized=${repositoryPathCollectionValid}; coverage-quality semantic=${coverageQualityControlProfileSemantics({ candidateDiff: diff, candidateSelfTestRuns: coverageSelfTestRuns, collectionValid: repositoryPathCollectionValid })}; coverage-machine-self-test=${validCoverageSelfTest(actualCoverageSelfTestContract)}; ai-value-quality semantic=${aiValueQualityControlProfileSemantics({ candidateDiff: diff, candidateSelfTestRuns: aiValueSelfTestRuns, collectionValid: repositoryPathCollectionValid })}; ai-value-machine-self-test=${validAiValueSelfTest(actualAiValueSelfTestContract)}; revision-quality semantic=${qualityControlProfileSemantics({ candidateDiff: diff, selfTestRuns, collectionValid: repositoryPathCollectionValid })}; revision-machine-self-test=${validSelfTestContract(actualSelfTestContract)}; revision-planning-negative-cases=${planningProfileNegativeChecksPass}; contradiction-contract semantic=${contradictionContractSemantics(sequence, registry, contradictionSpecText, diff, repositoryPathCollectionValid)}; contradiction negative-cases=${negativeContradictionProfileCasesRejected}.`
-    : `Profile ${boundedDiffProfile} accepted.${boundedDiffProfile === "s9-fix-06-exact-implementation" ? ` Exact four-file implementation diff: ${diff.join(", ")}. Ownership 1/1; non-owned 183/183; ledger, result, status, runtime and deterministic repeat PASS.` : boundedDiffProfile === "s9-fix-06-contract-and-gate-preparation" ? ` Exact eight-file preparation diff: ${diff.join(", ")}. Dedicated prospective gate, AI-value/revision/coverage routing and deterministic repeat PASS.` : boundedDiffProfile === "s9-fix-05-exact-implementation" ? ` Exact four-file implementation diff: ${diff.join(", ")}. Ownership 3/3; EN preserved; non-owned 157/157; ledger, result, status, runtime and deterministic repeat PASS.` : boundedDiffProfile === "s9-fix-05-contract-and-gate-preparation" ? ` Exact eight-file preparation diff: ${diff.join(", ")}. Dedicated prospective gate, coverage/revision routing and deterministic repeat PASS.` : boundedDiffProfile === "s9-fix-04-exact-implementation" ? ` Exact five-file implementation diff: ${diff.join(", ")}. Ownership 21/21; canonical preservation 140/140; synthetic preservation 31/31; ledger, result, status section, protected boundaries, and deterministic post-gate repeat PASS.` : boundedDiffProfile === "s9-fix-04-contract-and-gate-preparation" ? ` Exact eight-file preparation diff: ${diff.join(", ")}. Ownership 21/21; dedicated prospective gate, case-version profile, ledger profile, protected boundaries, and deterministic repeat PASS.` : boundedDiffProfile === "offline-dataset-case-version-quality-control" ? ` Exact two-file coverage-validator diff: ${diff.join(", ")}. Machine-readable case-version self-test PASS; planning-profile negative checks 14/14.` : boundedDiffProfile === "ai-value-preservation-quality-control" ? ` Exact two-file AI value-preservation diff: ${diff.join(", ")}. Machine-readable S9-FIX-03 profile PASS; planning negative cases rejected.` : boundedDiffProfile === "remediation-revision-integrity-quality-control" ? ` Exact two-file quality-control diff: ${diff.join(", ")}. Machine-readable self-test PASS; planning-profile negative checks 23/23.` : boundedDiffProfile === "systemic-contradiction-remediation-contract-alignment" ? ` Repository-backed classifier included tracked and untracked paths: ${diff.join(", ")}. All negative cases rejected.` : boundedDiffProfile === "high-risk-clarification-refusal-remediation-contract-alignment" ? ` Exact four-file S9-FIX-03 contract diff: ${diff.join(", ")}. Planning-profile negative checks 14/14.` : ""}`,
+    : `Profile ${boundedDiffProfile} accepted.${boundedDiffProfile === "s9-fix-07-exact-implementation" ? ` Exact six-file implementation diff: ${diff.join(", ")}. Methodology, addendum, ledger, result and status; 184/184 fixtures preserved; deterministic union PASS.` : boundedDiffProfile === "s9-fix-07-contract-and-gate-preparation" ? ` Exact eight-file preparation diff: ${diff.join(", ")}. Dedicated prospective, human-review and revision routing with deterministic repeat PASS.` : boundedDiffProfile === "s9-fix-06-exact-implementation" ? ` Exact four-file implementation diff: ${diff.join(", ")}. Ownership 1/1; non-owned 183/183; ledger, result, status, runtime and deterministic repeat PASS.` : boundedDiffProfile === "s9-fix-06-contract-and-gate-preparation" ? ` Exact eight-file preparation diff: ${diff.join(", ")}. Dedicated prospective gate, AI-value/revision/coverage routing and deterministic repeat PASS.` : boundedDiffProfile === "s9-fix-05-exact-implementation" ? ` Exact four-file implementation diff: ${diff.join(", ")}. Ownership 3/3; EN preserved; non-owned 157/157; ledger, result, status, runtime and deterministic repeat PASS.` : boundedDiffProfile === "s9-fix-05-contract-and-gate-preparation" ? ` Exact eight-file preparation diff: ${diff.join(", ")}. Dedicated prospective gate, coverage/revision routing and deterministic repeat PASS.` : boundedDiffProfile === "s9-fix-04-exact-implementation" ? ` Exact five-file implementation diff: ${diff.join(", ")}. Ownership 21/21; canonical preservation 140/140; synthetic preservation 31/31; ledger, result, status section, protected boundaries, and deterministic post-gate repeat PASS.` : boundedDiffProfile === "s9-fix-04-contract-and-gate-preparation" ? ` Exact eight-file preparation diff: ${diff.join(", ")}. Ownership 21/21; dedicated prospective gate, case-version profile, ledger profile, protected boundaries, and deterministic repeat PASS.` : boundedDiffProfile === "offline-dataset-case-version-quality-control" ? ` Exact two-file coverage-validator diff: ${diff.join(", ")}. Machine-readable case-version self-test PASS; planning-profile negative checks 14/14.` : boundedDiffProfile === "ai-value-preservation-quality-control" ? ` Exact two-file AI value-preservation diff: ${diff.join(", ")}. Machine-readable S9-FIX-03 profile PASS; planning negative cases rejected.` : boundedDiffProfile === "remediation-revision-integrity-quality-control" ? ` Exact two-file quality-control diff: ${diff.join(", ")}. Machine-readable self-test PASS; planning-profile negative checks 23/23.` : boundedDiffProfile === "systemic-contradiction-remediation-contract-alignment" ? ` Repository-backed classifier included tracked and untracked paths: ${diff.join(", ")}. All negative cases rejected.` : boundedDiffProfile === "high-risk-clarification-refusal-remediation-contract-alignment" ? ` Exact four-file S9-FIX-03 contract diff: ${diff.join(", ")}. Planning-profile negative checks 14/14.` : ""}`,
 );
 add("network-zero", networkRequests === 0, `${networkRequests} network requests.`);
 
