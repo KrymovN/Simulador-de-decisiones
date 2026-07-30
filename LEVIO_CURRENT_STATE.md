@@ -1,17 +1,17 @@
 # LEVIO CURRENT STATE
 
-## Stage 9 release readiness/runtime decision contract prepared — 29 July 2026
+## Stage 9 deferred release/runtime decision recorded — 30 July 2026
 
-Current factual status is remediation completed `9/9`, FIX09 `PASS`, Stage 9
-**In Progress**, release readiness `NOT_DECLARED`, all live runtime boundaries
-`CLOSED`, and `/api/simulate mockOnly=true`. Decision-contract preparation is
-complete, but the decision itself is not executed and no residual risk is
-accepted on behalf of `project_owner`. No runtime, API, UI, persistence,
-provider, or network boundary changed. The next action is `Stage 9 Release
-Readiness and Runtime Boundary Decision`; no `S9-FIX-10` exists. Visual
+The prepared decision contract now has an explicit `project_owner` `APPROVED`
+deferred decision. Remediation remains completed `9/9` with `0/9` remaining;
+Stage 9 remains **In Progress**; release readiness remains `NOT_DECLARED`; all
+11 runtime boundaries remain `CLOSED`; and `/api/simulate` remains
+`mockOnly=true`. The four residual risks are documented but not resolved or
+used to justify a positive verdict; `RELEASE_RUNTIME_UNASSESSED` directly
+requires defer. Network/provider executions, requests, and cost are `0`. The
+next technical action is `Stage 9 Bounded Runtime-Readiness Evidence
+Preparation`; it does not start automatically and is not `S9-FIX-10`. Visual
 migration remaining is `0`.
-
-Earlier planning-state sections below are frozen historical context.
 
 ## Stage 9 remediation planning state — 22 July 2026
 

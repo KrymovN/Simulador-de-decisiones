@@ -33,10 +33,16 @@ remaining remediation is `0/9`; the remediation sequence is complete; the next a
 
 `S9-FIX-09` completes one deterministic offline assessment of the reconciled `216`-entry corpus. Closure is `PASS_WITH_NON_BLOCKING_RESIDUAL_RISKS`; new unresolved and blocking findings are zero. This assessment recommends only the separate release-readiness/runtime-boundary decision and does not declare release readiness.
 
+The `project_owner`-approved decision records `DEFERRED_PENDING_RUNTIME_EVIDENCE`: remediation remains completed `9/9` with `0/9` remaining, Stage 9 remains `In Progress`, release readiness remains `NOT_DECLARED`, every runtime boundary remains `CLOSED`, and `/api/simulate` remains `mockOnly=true`. The four residual risks remain explicit and not resolved; `RELEASE_RUNTIME_UNASSESSED` directly requires deferral. Network/provider executions, provider requests, and provider cost are `0`. The next technical action is `Stage 9 Bounded Runtime-Readiness Evidence Preparation`; it does not start automatically and is not `S9-FIX-10`.
+
 Stage 9 remains **In Progress**, release readiness is not declared,
 `/api/simulate` remains `mockOnly=true`, and all runtime boundaries remain
-closed. A release-readiness/runtime-boundary decision remains a separate future
-planning candidate. Visual migration remains fully closed with 0 remaining
+closed. The `project_owner`-approved decision records
+`DEFERRED_PENDING_RUNTIME_EVIDENCE` without accepting the four residual risks
+as resolved or opening any runtime boundary. Network/provider execution and
+provider cost remain `0`. The next technical action is `Stage 9 Bounded
+Runtime-Readiness Evidence Preparation`; it does not start automatically and is
+not `S9-FIX-10`. Visual migration remains fully closed with 0 remaining
 substeps.
 
 ## Stage 9 reinforced AI review and final adjudication complete — 22 July 2026

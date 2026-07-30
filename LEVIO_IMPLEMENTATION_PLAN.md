@@ -1,18 +1,16 @@
 # LEVIO IMPLEMENTATION PLAN
 
-## Stage 9 release readiness/runtime decision contract prepared — 29 July 2026
+## Stage 9 deferred release/runtime decision recorded — 30 July 2026
 
-Stage 9 remediation is completed `9/9`; the deterministic post-remediation
-assessment of `216` cases is `PASS_WITH_NON_BLOCKING_RESIDUAL_RISKS`. Stage 9
-remains **In Progress**, release readiness remains `NOT_DECLARED`, every live
-runtime boundary remains `CLOSED`, and `/api/simulate` remains
-`mockOnly=true`. The bounded non-remediation decision contract is prepared, but
-no owner decision, live-runtime validation, provider call, or status transition
-has occurred. The next action is `Stage 9 Release Readiness and Runtime Boundary
-Decision`; it is not `S9-FIX-10`. Visual migration remains closed with `0`.
-
-Earlier Stage 9 planning sections below are frozen historical snapshots, not
-current implementation-status authority.
+The prepared contract is now exercised by an explicit `project_owner`
+`APPROVED` decision: `DEFERRED_PENDING_RUNTIME_EVIDENCE`. Remediation remains
+completed `9/9` with `0/9` remaining; Stage 9 remains **In Progress**; release
+readiness remains `NOT_DECLARED`; all 11 runtime boundaries remain `CLOSED`;
+and `/api/simulate` remains `mockOnly=true`. The four residual risks remain
+documented and unresolved, with `RELEASE_RUNTIME_UNASSESSED` requiring defer.
+Network/provider executions, requests, and cost are `0`. The next technical
+action is `Stage 9 Bounded Runtime-Readiness Evidence Preparation`; it does not
+start automatically and is not `S9-FIX-10`. Visual migration remaining is `0`.
 
 ## Stage 9 bounded remediation sequence — accepted, not implemented — 22 July 2026
 
