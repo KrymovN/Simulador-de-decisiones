@@ -1,0 +1,315 @@
+{
+  "artifact_version": "stage-9-bounded-live-provider-validation-execution-manifest.1",
+  "authorization": {
+    "consumption_event": "FIRST_ATTEMPTED_PROVIDER_NETWORK_REQUEST",
+    "decision_date": "2026-07-31",
+    "decision_path": "docs/qa/stage-9/STAGE_9_BOUNDED_LIVE_PROVIDER_VALIDATION_AUTHORIZATION_DECISION.v1.md",
+    "decision_sha256": "bded19f3d3f63a203aa911fb25edd6915338d91be4475bafac4a59d415c26554",
+    "pre_request_abort_consumes_authorization": false,
+    "repeat_execution_requires_new_owner_decision": true,
+    "state": "AUTHORIZED_FOR_ONE_BOUNDED_LIVE_PROVIDER_VALIDATION_RUN",
+    "terminal_after_pass_or_fail": true
+  },
+  "canonical_state": {
+    "api_simulate_mock_only": true,
+    "api_simulate_sha256": "9b29fdbfbcb78d539abca6a9dcc9bdbfaa5b396a6d8b514d9850eb93d1c94d11",
+    "release_readiness": "NOT_DECLARED",
+    "runtime_boundaries_closed": 11,
+    "runtime_boundaries_total": 11,
+    "stage_9": "In Progress"
+  },
+  "cost_policy": {
+    "input_usd_per_million_tokens": 2.5,
+    "max_total_cost_usd": 0.03,
+    "output_usd_per_million_tokens": 15,
+    "unknown_actual_cost_is_failure_after_provider_request": true,
+    "worst_allowed_token_budget_cost_usd": 0.0255
+  },
+  "evidence_output_files": [
+    "docs/qa/stage-9/live-evidence/STAGE_9_BOUNDED_LIVE_PROVIDER_VALIDATION_EVIDENCE.v1.json",
+    "docs/qa/stage-9/results/STAGE_9_BOUNDED_LIVE_PROVIDER_VALIDATION_RESULT.v1.json"
+  ],
+  "evidence_schema": {
+    "additional_properties_allowed": false,
+    "evidence_artifact": {
+      "artifact_version": "stage-9-bounded-live-provider-validation-evidence.1",
+      "nested_required_fields": {
+        "authorization": [
+          "consumption_state",
+          "decision_path",
+          "decision_sha256",
+          "state"
+        ],
+        "configuration": [
+          "background",
+          "cost_ceiling_usd",
+          "fixture_ids",
+          "max_input_tokens",
+          "max_local_payload_characters",
+          "max_output_tokens",
+          "max_provider_requests",
+          "max_total_tokens",
+          "model",
+          "provider",
+          "retries",
+          "store",
+          "stream",
+          "timeouts_ms",
+          "tools_enabled"
+        ],
+        "execution": [
+          "api_key_access_count",
+          "credential_available",
+          "network_execution_count",
+          "provider_execution_count",
+          "provider_request_count",
+          "retry_count",
+          "status"
+        ],
+        "identity": [
+          "run_id"
+        ],
+        "privacy": [
+          "no_auth_or_supabase_data",
+          "no_persistence",
+          "no_raw_input_or_output",
+          "no_real_user_data",
+          "redaction_passed",
+          "secret_scan_passed"
+        ],
+        "repository_state": [
+          "api_simulate_mock_only",
+          "api_simulate_sha256",
+          "release_readiness",
+          "runtime_boundaries_closed",
+          "runtime_boundaries_total",
+          "stage_9"
+        ],
+        "usage": [
+          "actual_cost_usd",
+          "cost_calculation",
+          "cost_ceiling_compliant",
+          "input_tokens",
+          "output_tokens",
+          "total_tokens",
+          "usage_observed"
+        ],
+        "validation": [
+          "adapter_result",
+          "decision_engine_integrity_gate",
+          "decision_engine_path_mode",
+          "error_category",
+          "fixture_hash_valid",
+          "grounding_valid",
+          "provider_material_composed",
+          "safety_valid",
+          "schema_valid",
+          "semantic_valid",
+          "structured_output_compatible"
+        ]
+      },
+      "request_item_allowed_fields": [
+        "accepted",
+        "attempted",
+        "elapsed_ms",
+        "error_category",
+        "operation",
+        "outcome",
+        "request_index"
+      ],
+      "required_top_level_fields": [
+        "artifact_version",
+        "authorization",
+        "configuration",
+        "execution",
+        "generated_at",
+        "identity",
+        "privacy",
+        "repository_state",
+        "requests",
+        "usage",
+        "validation"
+      ]
+    },
+    "nullable_observation_fields": [
+      "actual_cost_usd",
+      "error_category",
+      "input_tokens",
+      "output_tokens",
+      "total_tokens"
+    ],
+    "prohibited_fields": [
+      "absolute_path",
+      "api_key",
+      "chain_of_thought",
+      "environment_value",
+      "headers",
+      "personal_data",
+      "provider_request_id",
+      "provider_response_id",
+      "raw_input",
+      "raw_instructions",
+      "raw_output",
+      "raw_prompt",
+      "raw_provider_request",
+      "raw_provider_response",
+      "secret",
+      "secret_placeholder",
+      "timestamp",
+      "user_account_session_identifier"
+    ],
+    "required_redaction_fields": [
+      "no_raw_input_or_output",
+      "no_real_user_data",
+      "redaction_passed",
+      "secret_scan_passed"
+    ],
+    "result_artifact": {
+      "artifact_version": "stage-9-bounded-live-provider-validation-result.1",
+      "required_fields": [
+        "artifact_version",
+        "authorization_consumption_state",
+        "dedicated_gate",
+        "decision_engine_integrity_gate",
+        "evidence_path",
+        "evidence_sha256",
+        "generated_at",
+        "git_diff_cached_check",
+        "git_diff_check",
+        "negative_self_tests",
+        "provider_cost_usd",
+        "provider_execution_count",
+        "provider_request_count",
+        "runtime_write_set",
+        "secret_scan",
+        "status"
+      ],
+      "status_enum": [
+        "BOUNDED_RUNTIME_VALIDATION_PASS",
+        "BOUNDED_RUNTIME_VALIDATION_FAIL",
+        "ABORTED_BEFORE_PROVIDER_EXECUTION"
+      ]
+    }
+  },
+  "fixture": {
+    "classification": "synthetic_non_personal",
+    "fixture_ids": [
+      "S9-EVAL-001"
+    ],
+    "fixture_input_sha256": "b6798ac3fc7aba896e7d8706de66ecc0c29142363aee9af26f6a1acf644a6dfd",
+    "source_case_ids": [
+      "EVAL-001"
+    ],
+    "source_path": "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
+    "source_sha256": "68f4e3a144a6ce34c467fe24645bdfdbf2a5311eed9e9b70d1665131d0ad90a3",
+    "version": "stage-9-candidate-risk-synthetic-evaluation.1"
+  },
+  "generated_at": null,
+  "network_policy": {
+    "all_other_destinations_denied": true,
+    "allowed_destinations": [
+      {
+        "host": "api.openai.com",
+        "method": "POST",
+        "path": "/v1/responses/input_tokens",
+        "port": 443,
+        "protocol": "https"
+      },
+      {
+        "host": "api.openai.com",
+        "method": "POST",
+        "path": "/v1/responses",
+        "port": 443,
+        "protocol": "https"
+      }
+    ],
+    "redirects_allowed": false
+  },
+  "one_run_identifier_policy": {
+    "random_identifiers_allowed": false,
+    "run_id": "S9-BLPV-RUN-001",
+    "wall_clock_timestamp_allowed": false
+  },
+  "provider_configuration": {
+    "adapter_path": "lib/ai-provider/openai-synthetic-risk-adapter.server.ts",
+    "adapter_sha256": "5c478f0a814b11ecfce2e9ae9eb7b7fb288560562da7ed28662d0ed1da5d2eef",
+    "background": false,
+    "capability": "candidate_risk_signals_v1",
+    "core_adapter_path": "lib/ai-provider/openai-synthetic-risk-adapter.ts",
+    "core_adapter_sha256": "4450f0190219fc875669146c6bfa575882b70fe010682e437b9ab62c9f5802a6",
+    "decision_engine_path_mode": "INTEGRITY_GATE_ONLY_NO_PROVIDER_COMPOSITION",
+    "decision_engine_source_path": "lib/decision-engine/simulation-pipeline-runner.ts",
+    "decision_engine_source_sha256": "2d5cd2585be44c57b5e8f367428720d37b0cd63e65f333d2adb0f1b71c67ed19",
+    "max_input_tokens": 3000,
+    "max_local_payload_characters": 16000,
+    "max_output_tokens": 1200,
+    "max_provider_requests": 2,
+    "max_total_tokens": 4200,
+    "model": "gpt-5.6-terra",
+    "provider": "OpenAI Responses API",
+    "retries": 0,
+    "server_only": true,
+    "store": false,
+    "stream": false,
+    "timeouts_ms": {
+      "generation": 30000,
+      "input_count": 5000,
+      "overall": 35000
+    },
+    "tools_enabled": false
+  },
+  "repository_checks": [
+    "exact_runtime_two_file_write_allowlist",
+    "no_unrelated_modified_deleted_or_untracked_files",
+    "git_diff_check",
+    "git_diff_cached_check",
+    "secret_and_prohibited_field_scan",
+    "adapter_fixture_decision_engine_route_hashes",
+    "api_simulate_mock_only_true",
+    "runtime_boundaries_11_of_11_closed",
+    "stage_9_in_progress",
+    "release_readiness_not_declared"
+  ],
+  "required_gate_commands": [
+    "npm run quality:simulation-pipeline-runner",
+    "npm run quality:stage-9-bounded-live-provider-validation-contract"
+  ],
+  "runtime_write_allowlist": [
+    "docs/qa/stage-9/live-evidence/STAGE_9_BOUNDED_LIVE_PROVIDER_VALIDATION_EVIDENCE.v1.json",
+    "docs/qa/stage-9/results/STAGE_9_BOUNDED_LIVE_PROVIDER_VALIDATION_RESULT.v1.json"
+  ],
+  "schema_version": "stage-9-bounded-live-provider-validation-executable-contract.1",
+  "specification_binding": {
+    "path": "docs/qa/stage-9/STAGE_9_BOUNDED_LIVE_PROVIDER_VALIDATION_EXECUTION_SPEC.v1.md",
+    "sha256": "9fafd63c2fbbe304b4b9f8f25d05927b45dc65bfb510cca988d24b74b175e73a"
+  },
+  "verdict_rules": {
+    "aborted": [
+      "no_provider_request_attempted",
+      "provider_and_network_counts_zero",
+      "provider_cost_zero",
+      "authorization_unconsumed"
+    ],
+    "fail": [
+      "provider_error_or_timeout_or_refusal_or_incomplete",
+      "request_or_token_or_cost_limit_failure",
+      "actual_cost_unknown_after_provider_request",
+      "schema_grounding_safety_or_semantic_failure",
+      "adapter_or_decision_engine_integrity_failure",
+      "privacy_redaction_secret_or_evidence_failure",
+      "runtime_or_repository_closed_state_failure"
+    ],
+    "pass": [
+      "authorization_consumed_once",
+      "existing_server_adapter_used",
+      "one_or_two_allowlisted_requests",
+      "zero_retries",
+      "strict_structured_output_valid",
+      "schema_grounding_safety_semantics_valid",
+      "usage_observed_and_cost_within_ceiling",
+      "decision_engine_integrity_pass_without_provider_composition",
+      "complete_redacted_evidence",
+      "runtime_and_repository_closed_state_preserved"
+    ]
+  }
+}
