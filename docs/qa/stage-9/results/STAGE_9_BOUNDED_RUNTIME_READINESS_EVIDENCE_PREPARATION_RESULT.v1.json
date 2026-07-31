@@ -1,0 +1,29 @@
+{
+  "all_runtime_boundaries_closed": true,
+  "api_key_access_count": 0,
+  "api_simulate_mock_only": true,
+  "artifact_version": "stage-9-bounded-runtime-readiness-evidence-preparation-result.1",
+  "authorization_state": "NOT_AUTHORIZED",
+  "deterministic_serialization": true,
+  "execution_write_set": [
+    "docs/qa/stage-9/STAGE_9_BOUNDED_RUNTIME_READINESS_EVIDENCE_SPEC.v1.md",
+    "docs/qa/stage-9/STAGE_9_BOUNDED_RUNTIME_READINESS_EVIDENCE_MANIFEST.v1.json",
+    "docs/qa/stage-9/results/STAGE_9_BOUNDED_RUNTIME_READINESS_EVIDENCE_PREPARATION_RESULT.v1.json",
+    "scripts/stage-9-bounded-runtime-readiness-evidence-quality.mjs",
+    "package.json"
+  ],
+  "generated_at": null,
+  "git_diff_check": "PASS",
+  "manifest_schema_valid": true,
+  "manifest_sha256": "860c6510c81f0b3ff64a0c1c9c4eb7ef8c82e2445702f5d92de391482fcfb8f9",
+  "negative_self_tests": "PASS",
+  "network_execution_count": 0,
+  "positive_self_tests": "PASS",
+  "provider_cost_usd": 0,
+  "provider_execution_count": 0,
+  "provider_request_count": 0,
+  "runtime_source_diff_outside_write_set": 0,
+  "specification_complete": true,
+  "specification_sha256": "5391949dbe79fffb6b5dafd123751aa278b9b9eccf014333ee2837629b4f0ffd",
+  "status": "PASS"
+}

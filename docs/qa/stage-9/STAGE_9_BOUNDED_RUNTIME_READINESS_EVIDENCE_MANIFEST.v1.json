@@ -1,0 +1,205 @@
+{
+  "allowed_evidence_fields": [
+    "approval_artifact_sha256",
+    "actual_cost_usd",
+    "elapsed_ms",
+    "error_category",
+    "fixture_id",
+    "fixture_sha256",
+    "input_tokens",
+    "kill_switch_verified",
+    "model",
+    "output_tokens",
+    "privacy_configuration",
+    "provider_request_accepted",
+    "provider_request_count",
+    "rollback_verified",
+    "schema_name",
+    "schema_valid",
+    "status",
+    "store",
+    "structured_output_compatible",
+    "tools_enabled",
+    "total_tokens"
+  ],
+  "artifact_version": "stage-9-bounded-runtime-readiness-evidence-manifest.1",
+  "authorization": {
+    "authority_role": "project_owner",
+    "owner_approval_artifact_required": true,
+    "state": "NOT_AUTHORIZED"
+  },
+  "candidate_adapter_sha256": {
+    "lib/ai-provider/openai-synthetic-risk-adapter.server.ts": "5c478f0a814b11ecfce2e9ae9eb7b7fb288560562da7ed28662d0ed1da5d2eef",
+    "lib/ai-provider/openai-synthetic-risk-adapter.ts": "4450f0190219fc875669146c6bfa575882b70fe010682e437b9ab62c9f5802a6"
+  },
+  "current_commit": "0a2c22ff07434cf1269859d0b9b8dbd1c364b0f0",
+  "current_decision_artifacts_sha256": {
+    "docs/qa/stage-9/STAGE_9_RELEASE_READINESS_RUNTIME_BOUNDARY_DECISION.v1.json": "52faf418654566ce066b87a9177ae417feb3a4424b5a172958bbbb77d274625f",
+    "docs/qa/stage-9/results/STAGE_9_RELEASE_READINESS_RUNTIME_BOUNDARY_DECISION_RESULT.v1.json": "fc99e63aee513444707f65d9832ed8e1ce6c648e3688e600555701712f87e3d5"
+  },
+  "current_state": {
+    "api_simulate_mock_only": true,
+    "provider_cost_usd": 0,
+    "provider_executions": 0,
+    "provider_requests": 0,
+    "release_readiness": "NOT_DECLARED",
+    "runtime_boundaries": "CLOSED",
+    "stage_9": "In Progress"
+  },
+  "execution_ceiling": {
+    "max_bounded_validation_executions": 1,
+    "max_provider_requests": 2,
+    "max_total_provider_cost_usd": 0.03,
+    "overall_timeout_ms": 35000
+  },
+  "future_provider_configuration": {
+    "background": false,
+    "capability": "candidate_risk_signals_v1",
+    "exact_model_allowlist": [
+      "gpt-5.6-terra"
+    ],
+    "retries": 0,
+    "server_only": true,
+    "store": false,
+    "stream": false,
+    "tools_enabled": false
+  },
+  "generated_at": null,
+  "kill_switch_and_rollback": {
+    "abort_state": "NO_FURTHER_REQUESTS_SWITCH_DISABLED_CREDENTIAL_REMOVED_BOUNDARIES_CLOSED",
+    "api_simulate_mock_only_after_every_verdict": true,
+    "kill_switch": "STOP_INVOCATION_AND_DISABLE_LEVIO_REAL_AI_DEV_ENABLED",
+    "pre_run_state": "ALL_11_RUNTIME_BOUNDARIES_CLOSED_MOCK_ONLY_TRUE_ZERO_EXECUTION_REQUESTS_COST",
+    "rollback_state": "PRE_RUN_CLOSED_STATE_RESTORED_NO_PRODUCT_RUNTIME_SOURCE_CHANGE",
+    "runtime_remains_closed_pending_separate_decision": true
+  },
+  "preparation_identity": {
+    "kind": "offline_evidence_contract_preparation",
+    "name": "Stage 9 Bounded Runtime-Readiness Evidence Preparation"
+  },
+  "privacy_assertions": {
+    "api_key_access_count": 0,
+    "client_bundle_secret_allowed": false,
+    "network_execution_count": 0,
+    "no_auth_expansion": true,
+    "no_background_execution": true,
+    "no_persistence": true,
+    "no_personal_data": true,
+    "no_production_deployment": true,
+    "no_public_api_integration": true,
+    "no_supabase_coupling": true,
+    "no_ui_integration": true,
+    "no_user_traffic": true,
+    "synthetic_non_personal_only": true
+  },
+  "prohibited_fields": [
+    "absolute_path",
+    "api_key",
+    "chain_of_thought",
+    "environment_value",
+    "personal_data",
+    "provider_request_id",
+    "provider_response_id",
+    "raw_input",
+    "raw_instructions",
+    "raw_prompt",
+    "raw_provider_request",
+    "raw_provider_response",
+    "secret",
+    "secret_placeholder",
+    "timestamp",
+    "user_account_session_identifier"
+  ],
+  "required_future_evidence": [
+    "separate_owner_approval_binding",
+    "provider_request_accepted",
+    "exact_model_compatibility",
+    "structured_output_compatibility",
+    "schema_validation",
+    "grounding_safety_semantic_validation",
+    "latency_and_timeout",
+    "token_usage",
+    "actual_cost",
+    "error_normalization",
+    "privacy_configuration",
+    "tools_absent",
+    "retries_absent",
+    "request_count",
+    "no_persistence",
+    "no_ui_or_public_api_exposure",
+    "no_auth_or_supabase_coupling",
+    "kill_switch_availability",
+    "rollback_readiness",
+    "final_closed_state"
+  ],
+  "rules": {
+    "blocked": [
+      "owner_approval_absent_or_unbound",
+      "credentials_or_configuration_unavailable",
+      "fixture_or_hash_unprovable",
+      "model_or_configuration_not_allowlisted",
+      "synthetic_non_personal_status_unprovable",
+      "request_or_cost_limit_unenforceable",
+      "required_evidence_capture_unavailable",
+      "pre_run_closed_state_unprovable"
+    ],
+    "fail": [
+      "invalid_structured_output",
+      "schema_mismatch",
+      "timeout",
+      "unexpected_provider_error",
+      "missing_evidence",
+      "cost_above_ceiling",
+      "request_count_above_ceiling",
+      "model_mismatch",
+      "fixture_mismatch",
+      "grounding_safety_semantic_or_privacy_failure",
+      "closed_state_not_restored"
+    ],
+    "immediate_abort": [
+      "api_key_exposure",
+      "personal_data_detection",
+      "unauthorized_model",
+      "tools_enabled",
+      "retries_enabled",
+      "persistence_attempt",
+      "public_route_coupling",
+      "ui_coupling",
+      "auth_or_supabase_coupling",
+      "runtime_boundary_opening",
+      "request_or_cost_limit_unprovable"
+    ],
+    "pass": [
+      "separate_owner_approval_bound",
+      "exact_model_allowlisted",
+      "all_inputs_synthetic_non_personal_and_hashed",
+      "provider_requests_within_ceiling",
+      "cost_within_ceiling",
+      "structured_output_and_schema_valid",
+      "grounding_safety_semantic_validation_pass",
+      "tools_disabled",
+      "retries_zero",
+      "store_false",
+      "no_runtime_boundary_leakage",
+      "no_public_behavior_change",
+      "evidence_complete",
+      "final_closed_state_proven"
+    ]
+  },
+  "schema_version": "stage-9-bounded-runtime-readiness-evidence-contract.1",
+  "selected_synthetic_fixtures": [
+    {
+      "classification": "synthetic_non_personal",
+      "expected_input_schema": "SyntheticCandidateRiskInput",
+      "expected_output_schema": "levio_candidate_risk_signals_v1",
+      "expected_validation_behavior": "ACCEPT_INPUT_THEN_VALIDATE_STRICT_SCHEMA_GROUNDING_SAFETY_SEMANTICS",
+      "fixture_id": "S9-EVAL-001",
+      "fixture_input_sha256": "b6798ac3fc7aba896e7d8706de66ecc0c29142363aee9af26f6a1acf644a6dfd",
+      "proof_of_non_personal_synthetic_status": "REPOSITORY_OWNED_FICTIONAL_COMPANY_AND_LOCATIONS_NO_USER_ACCOUNT_CONTACT_AUTH_OR_BILLING_DATA",
+      "source_case_id": "EVAL-001",
+      "source_path": "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts",
+      "source_sha256": "68f4e3a144a6ce34c467fe24645bdfdbf2a5311eed9e9b70d1665131d0ad90a3",
+      "version": "stage-9-candidate-risk-synthetic-evaluation.1"
+    }
+  ]
+}
