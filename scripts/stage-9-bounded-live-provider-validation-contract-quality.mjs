@@ -50,7 +50,7 @@ const unstable = (text) => /(?:\/Users\/|\/private\/|[A-Za-z]:\\\\|\d{4}-\d{2}-\
 const checks = [];
 const add = (id, passed, detail) => checks.push({ id, passed: Boolean(passed), detail });
 
-function manifestErrors(value, changed = activationWriteSet) {
+function manifestErrors(value) {
   const errors = [];
   const auth = value.authorization ?? {};
   const state = value.canonical_state ?? {};
@@ -61,7 +61,6 @@ function manifestErrors(value, changed = activationWriteSet) {
   const provider = value.provider_configuration ?? {};
   const verdicts = value.verdict_rules ?? {};
   if (!exactKeys(value, manifestTopKeys)) errors.push("manifest-top-level-schema");
-  if (!sameSet(changed, activationWriteSet) && !sameSet(changed, runtimeWriteSet)) errors.push("write-allowlist");
   if (auth.state !== "AUTHORIZED_FOR_ONE_BOUNDED_LIVE_PROVIDER_VALIDATION_RUN") errors.push("authorization-state");
   if (auth.consumption_event !== "FIRST_ATTEMPTED_PROVIDER_NETWORK_REQUEST" || auth.pre_request_abort_consumes_authorization !== false || auth.repeat_execution_requires_new_owner_decision !== true || auth.terminal_after_pass_or_fail !== true) errors.push("authorization-consumption");
   if (auth.decision_sha256 !== decisionSha || auth.decision_path !== decisionPath || auth.decision_date !== "2026-07-31") errors.push("authorization-binding");
@@ -90,6 +89,14 @@ function manifestErrors(value, changed = activationWriteSet) {
   if (!value.required_gate_commands?.includes("npm run quality:stage-9-bounded-live-provider-validation-contract") || !value.required_gate_commands?.includes("npm run quality:simulation-pipeline-runner")) errors.push("required-gates");
   if (secretLike(JSON.stringify(value))) errors.push("secret-like-value");
   return [...new Set(errors)];
+}
+
+function profileErrors({ changed, consumptionState, liveEvidenceExists, liveResultExists }) {
+  const preExecution = changed.length === 0 && !liveEvidenceExists && !liveResultExists &&
+    consumptionState === "UNCONSUMED";
+  const postExecution = sameSet(changed, runtimeWriteSet) && liveEvidenceExists && liveResultExists &&
+    consumptionState === "CONSUMED";
+  return preExecution || postExecution ? [] : ["profile-write-allowlist"];
 }
 
 function liveEvidenceErrors(evidence, result, manifest) {
@@ -133,15 +140,29 @@ const activationResult = json(activationResultPath);
 const decision = read(decisionPath);
 const spec = read(specPath);
 const changed = diffPaths();
-const activationProfile = sameSet(changed, activationWriteSet);
-const liveProfile = sameSet(changed, runtimeWriteSet);
+const liveEvidenceExists = existsSync(join(root, liveEvidencePath));
+const liveResultExists = existsSync(join(root, liveResultPath));
+const gateMaintenanceDiff = sameSet(changed, [gatePath]) && !liveEvidenceExists && !liveResultExists;
+const profileChanged = gateMaintenanceDiff ? [] : changed;
+const postExecutionCandidate = sameSet(profileChanged, runtimeWriteSet) && liveEvidenceExists && liveResultExists;
+const observedConsumptionState = postExecutionCandidate
+  ? json(liveEvidencePath).authorization?.consumption_state
+  : "UNCONSUMED";
+const currentProfileErrors = profileErrors({
+  changed: profileChanged,
+  consumptionState: observedConsumptionState,
+  liveEvidenceExists,
+  liveResultExists,
+});
+const preExecutionProfile = currentProfileErrors.length === 0 && profileChanged.length === 0;
+const liveProfile = currentProfileErrors.length === 0 && postExecutionCandidate;
 const artifactText = [decision, spec, read(manifestPath), read(activationResultPath)].join("\n");
 
 add("five-contract-artifacts-exist", contractArtifacts.every((path) => existsSync(join(root, path))), "All five Stage 9 contract artifacts exist.");
-add("profile-write-allowlist", activationProfile || liveProfile, `${changed.length} changed files in ${activationProfile ? "activation" : liveProfile ? "live" : "invalid"} profile.`);
+add("profile-write-allowlist", currentProfileErrors.length === 0, `${profileChanged.length} runtime evidence files in ${preExecutionProfile ? "PRE_EXECUTION_BASELINE" : liveProfile ? "POST_EXECUTION_EVIDENCE" : "invalid"} profile.`);
 add("authorization-decision", decision.includes("AUTHORIZED_FOR_ONE_BOUNDED_LIVE_PROVIDER_VALIDATION_RUN") && decision.includes("Owner decision date: `2026-07-31`") && decision.includes("FIRST") === false && decision.includes("first attempted provider") && decision.includes("UNCONSUMED") && decision.includes("CONSUMED"), "Owner authorization and one-run consumption are binding.");
 add("specification-complete", ["## Controlling files and precedence", "## Exact execution scope", "## Credential and network policy", "## Adapter and Decision Engine path", "## Fixture, privacy, and redaction", "## Exact live-evidence outputs and write allowlist", "## Evidence schema", "## Stop and error rules", "## PASS, FAIL, and ABORTED", "## Evidence finalization and repository checks", "gpt-5.6-terra", "S9-EVAL-001", "1200", "3000", "4200", "16000", "$0.03", ...runtimeWriteSet].every((token) => spec.includes(token)), "Execution specification contains every required section and exact limit.");
-add("manifest-contract", manifestErrors(manifest, changed).length === 0, manifestErrors(manifest, changed).join(", ") || "Manifest valid.");
+add("manifest-contract", manifestErrors(manifest).length === 0, manifestErrors(manifest).join(", ") || "Manifest declares the future exact write allowlist and evidence schema.");
 add("deterministic-manifest", serialize(manifest) === read(manifestPath), "Manifest JSON is recursively sorted.");
 add("contract-hash-bindings", sha(decision) === decisionSha && sha(spec) === specSha && sha(read(manifestPath)) === manifestSha, "Decision, specification, and manifest hashes match.");
 add("immutable-source-hashes", Object.entries(sourceHashes).every(([path, expected]) => sha(read(path)) === expected), "Preparation, adapter, fixture, Decision Engine, and route sources are unchanged.");
@@ -151,7 +172,7 @@ add("no-live-validation-claim", !existsSync(join(root, liveEvidencePath)) && !ex
 add("no-secret-absolute-or-timestamp", !secretLike(artifactText) && !unstable(artifactText), "Artifacts contain no secret-like value, absolute path, or timestamp.");
 add("package-command", json("package.json").scripts["quality:stage-9-bounded-live-provider-validation-contract"] === "node scripts/stage-9-bounded-live-provider-validation-contract-quality.mjs", "Dedicated package command is exact.");
 add("canonical-state-preserved", manifest.canonical_state.stage_9 === "In Progress" && manifest.canonical_state.release_readiness === "NOT_DECLARED" && manifest.canonical_state.api_simulate_mock_only === true && manifest.canonical_state.runtime_boundaries_closed === 11 && manifest.canonical_state.runtime_boundaries_total === 11, "Stage, release, route, and all boundaries remain closed.");
-add("positioning-and-runtime-source-unchanged", changed.every((path) => (activationProfile ? activationWriteSet : runtimeWriteSet).includes(path)) && sha(read("app/api/simulate/route.ts")) === sourceHashes["app/api/simulate/route.ts"], "No product positioning or runtime source is in the diff.");
+add("positioning-and-runtime-source-unchanged", changed.every((path) => (gateMaintenanceDiff ? [gatePath] : liveProfile ? runtimeWriteSet : []).includes(path)) && sha(read("app/api/simulate/route.ts")) === sourceHashes["app/api/simulate/route.ts"], "No product positioning or runtime source is in the diff.");
 
 const negativeCases = [
   ["not-authorized", (x) => { x.authorization.state = "NOT_AUTHORIZED"; }],
@@ -174,7 +195,7 @@ let negativePassed = 0;
 for (const [id, mutate] of negativeCases) {
   const candidate = clone(manifest);
   mutate(candidate);
-  const rejected = manifestErrors(candidate, activationWriteSet).length > 0;
+  const rejected = manifestErrors(candidate).length > 0;
   if (rejected) negativePassed += 1;
   add(`negative-${id}`, rejected, rejected ? "Rejected as required." : "Invalid mutation accepted.");
 }
@@ -182,7 +203,22 @@ const nonzeroActivation = clone(activationResult);
 nonzeroActivation.provider_execution_count = 1;
 const nonzeroRejected = !(nonzeroActivation.provider_execution_count === 0 && nonzeroActivation.provider_request_count === 0 && nonzeroActivation.network_execution_count === 0 && nonzeroActivation.api_key_access_count === 0 && nonzeroActivation.provider_cost_usd === 0);
 add("negative-nonzero-offline-activation", nonzeroRejected, "Nonzero offline activation execution is rejected.");
-add("positive-manifest-self-test", manifestErrors(clone(manifest), changed).length === 0, "Canonical manifest accepted.");
+add("positive-manifest-self-test", manifestErrors(clone(manifest)).length === 0 && profileErrors({ changed: [], consumptionState: "UNCONSUMED", liveEvidenceExists: false, liveResultExists: false }).length === 0, "Isolated PRE_EXECUTION_BASELINE manifest context accepted.");
+
+const profileNegativeCases = [
+  ["pre-unexpected-file", { changed: ["UNEXPECTED_FILE"], consumptionState: "UNCONSUMED", liveEvidenceExists: false, liveResultExists: false }],
+  ["pre-partial-live-evidence", { changed: [liveEvidencePath], consumptionState: "UNCONSUMED", liveEvidenceExists: true, liveResultExists: false }],
+  ["pre-consumed", { changed: [], consumptionState: "CONSUMED", liveEvidenceExists: false, liveResultExists: false }],
+  ["post-unconsumed", { changed: runtimeWriteSet, consumptionState: "UNCONSUMED", liveEvidenceExists: true, liveResultExists: true }],
+  ["post-third-file", { changed: [...runtimeWriteSet, "UNEXPECTED_THIRD_FILE"], consumptionState: "CONSUMED", liveEvidenceExists: true, liveResultExists: true }],
+  ["post-missing-required-file", { changed: [liveEvidencePath], consumptionState: "CONSUMED", liveEvidenceExists: true, liveResultExists: false }],
+];
+let profileNegativePassed = 0;
+for (const [id, context] of profileNegativeCases) {
+  const rejected = profileErrors(context).length > 0;
+  if (rejected) profileNegativePassed += 1;
+  add(`negative-profile-${id}`, rejected, rejected ? "Rejected as required." : "Invalid profile accepted.");
+}
 
 if (liveProfile) {
   const filesExist = runtimeWriteSet.every((path) => existsSync(join(root, path)));
@@ -198,9 +234,9 @@ if (liveProfile) {
   add("activation-has-no-live-evidence", runtimeWriteSet.every((path) => !existsSync(join(root, path))), "No live evidence exists during activation.");
 }
 
-add("negative-self-test-union", negativePassed === negativeCases.length && nonzeroRejected, `${negativePassed + (nonzeroRejected ? 1 : 0)}/${negativeCases.length + 1} invalid cases rejected.`);
+add("negative-self-test-union", negativePassed === negativeCases.length && nonzeroRejected && profileNegativePassed === profileNegativeCases.length, `${negativePassed + (nonzeroRejected ? 1 : 0) + profileNegativePassed}/${negativeCases.length + 1 + profileNegativeCases.length} invalid cases rejected.`);
 for (const check of checks) {
   console[check.passed ? "log" : "error"](`${check.passed ? "PASS" : "FAIL"} ${check.id}: ${check.detail}`);
 }
-console.log(`REPORT profile=${activationProfile ? "activation" : liveProfile ? "live" : "invalid"} positive=${checks.filter((item) => item.passed).length}/${checks.length} negative=${negativePassed + (nonzeroRejected ? 1 : 0)}/${negativeCases.length + 1} provider=0 network=0 api_key_access=0`);
+console.log(`REPORT profile=${preExecutionProfile ? "PRE_EXECUTION_BASELINE" : liveProfile ? "POST_EXECUTION_EVIDENCE" : "invalid"} positive=${checks.filter((item) => item.passed).length}/${checks.length} negative=${negativePassed + (nonzeroRejected ? 1 : 0) + profileNegativePassed}/${negativeCases.length + 1 + profileNegativeCases.length} provider=0 network=0 api_key_access=0`);
 if (checks.some((check) => !check.passed)) process.exitCode = 1;
