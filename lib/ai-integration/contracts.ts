@@ -1,6 +1,11 @@
 import type { AIProviderBoundaryResult } from "../ai-provider/contracts";
 import type { AiQualityBoundaryEvaluationResult } from "../ai-quality/contracts";
-import type { PromptContextBoundaryResult } from "../prompt-context/contracts";
+import type { DecisionContext, SafetyBoundary } from "../decision-engine/types";
+import type {
+  PromptContextBoundaryResult,
+  PromptContextInput,
+  PromptContextOutput,
+} from "../prompt-context/contracts";
 
 export const AI_INTEGRATION_PREFLIGHT_CONTRACTS_VERSION =
   "5.4A-controlled-ai-integration-preflight-contracts-foundation.1" as const;
@@ -26,6 +31,9 @@ export const AI_INTEGRATION_DRY_RUN_VERSION =
 export const AI_INTEGRATION_DRY_RUN_MODE =
   "controlled_ai_integration_dry_run_execution_foundation_only" as const;
 
+export const DECISION_ENGINE_PROMPT_CONTEXT_BRIDGE_VERSION =
+  "stage-9-decision-engine-prompt-context-runtime-bridge.1" as const;
+
 export type AIIntegrationPreflightContractsVersion =
   typeof AI_INTEGRATION_PREFLIGHT_CONTRACTS_VERSION;
 
@@ -47,6 +55,9 @@ export type AIIntegrationBoundaryCompositionMode =
 export type AIIntegrationDryRunVersion = typeof AI_INTEGRATION_DRY_RUN_VERSION;
 
 export type AIIntegrationDryRunMode = typeof AI_INTEGRATION_DRY_RUN_MODE;
+
+export type DecisionEnginePromptContextBridgeVersion =
+  typeof DECISION_ENGINE_PROMPT_CONTEXT_BRIDGE_VERSION;
 
 export type AIIntegrationPreflightOperation =
   "controlled_ai_integration_preflight";
@@ -475,5 +486,110 @@ export type AIIntegrationValidationResult = {
     total: number;
     passed: number;
     failed: number;
+  };
+};
+
+export type DecisionEnginePromptContextBridgeLocale = "en" | "es" | "ru";
+
+export type DecisionEnginePromptContextBridgeRequest = {
+  bridgeId: string;
+  submittedAt: string;
+  locale: DecisionEnginePromptContextBridgeLocale;
+  decisionContext: DecisionContext;
+  safety?: SafetyBoundary;
+};
+
+export type DecisionEnginePromptContextBridgeErrorCode =
+  | "bridge_request_missing"
+  | "bridge_id_missing"
+  | "bridge_timestamp_invalid"
+  | "bridge_locale_invalid"
+  | "unsafe_runtime_field_rejected"
+  | "unknown_top_level_field_rejected"
+  | "decision_context_missing"
+  | "decision_context_invalid"
+  | "objective_missing"
+  | "options_missing"
+  | "constraints_missing"
+  | "tradeoff_context_missing"
+  | "prompt_context_boundary_blocked"
+  | "prompt_context_output_invalid";
+
+export type DecisionEnginePromptContextBridgeError = {
+  code: DecisionEnginePromptContextBridgeErrorCode;
+  message: string;
+  recoverable: false;
+  promptContextErrorCode?: string;
+};
+
+export type DecisionEnginePromptContextBridgeEvidence = {
+  deterministicOnly: true;
+  serverOnly: true;
+  decisionEngineContractUsed: true;
+  promptContextRuntimeUsed: boolean;
+  promptContextBoundaryUsed: boolean;
+  objectivePreserved: boolean;
+  goalsPreserved: boolean;
+  optionsPreserved: boolean;
+  constraintsPreserved: boolean;
+  assumptionsPreserved: boolean;
+  tradeoffsPreserved: boolean;
+  uncertaintiesPreserved: boolean;
+  scenarioSeedsPreserved: boolean;
+  decisionCriteriaPreserved: boolean;
+  localePreserved: boolean;
+  safetyMarkersPreserved: boolean;
+  modelCallExecuted: false;
+  providerExecutionCompleted: false;
+  networkExecutionCount: 0;
+  apiKeyAccessCount: 0;
+  environmentAccessCount: 0;
+  apiRouteIntegrated: false;
+  uiIntegrated: false;
+  persistenceIntegrated: false;
+};
+
+export type DecisionEnginePromptContextBridgeResult =
+  | {
+      status: "ready";
+      execution: "decision_engine_prompt_context_bridge_only";
+      version: DecisionEnginePromptContextBridgeVersion;
+      bridgeId: string;
+      promptContextInput: PromptContextInput;
+      promptContextOutput: PromptContextOutput;
+      promptContextBoundary: Extract<PromptContextBoundaryResult, { status: "ready" }>;
+      evidence: DecisionEnginePromptContextBridgeEvidence;
+    }
+  | {
+      status: "blocked";
+      execution: "none";
+      version: DecisionEnginePromptContextBridgeVersion;
+      bridgeId?: string;
+      error: DecisionEnginePromptContextBridgeError;
+      promptContextBoundary?: PromptContextBoundaryResult;
+      evidence: DecisionEnginePromptContextBridgeEvidence;
+    };
+
+export type DecisionEnginePromptContextBridgeValidationCase = {
+  caseId: string;
+  kind: "positive" | "negative";
+  passed: boolean;
+  expectedStatus: DecisionEnginePromptContextBridgeResult["status"];
+  actualStatus: DecisionEnginePromptContextBridgeResult["status"];
+  expectedErrorCode?: DecisionEnginePromptContextBridgeErrorCode;
+  actualErrorCode?: DecisionEnginePromptContextBridgeErrorCode;
+  issues: string[];
+};
+
+export type DecisionEnginePromptContextBridgeValidationResult = {
+  passed: boolean;
+  failed: boolean;
+  cases: DecisionEnginePromptContextBridgeValidationCase[];
+  summary: {
+    total: number;
+    passed: number;
+    failed: number;
+    positive: number;
+    negative: number;
   };
 };

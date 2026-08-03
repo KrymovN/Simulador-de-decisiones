@@ -6,3 +6,5 @@ export * from "./boundary-composition";
 export * from "./boundary-composition-validation";
 export * from "./dry-run";
 export * from "./dry-run-validation";
+export * from "./decision-engine-prompt-context-bridge";
+export * from "./decision-engine-prompt-context-bridge.validation";
