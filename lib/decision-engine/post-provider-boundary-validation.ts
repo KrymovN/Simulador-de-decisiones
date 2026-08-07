@@ -115,6 +115,10 @@ function bridgeRequest(): DecisionEnginePromptContextBridgeRequest {
   };
 }
 
+export function validPostProviderBridgeRequest(): DecisionEnginePromptContextBridgeRequest {
+  return bridgeRequest();
+}
+
 function candidate(overrides: Partial<CandidateDecisionMaterialItem> = {}): CandidateDecisionMaterialItem {
   return {
     candidate_id: "candidate_risk_launch",

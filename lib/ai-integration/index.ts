@@ -8,3 +8,5 @@ export * from "./dry-run";
 export * from "./dry-run-validation";
 export * from "./decision-engine-prompt-context-bridge";
 export * from "./decision-engine-prompt-context-bridge.validation";
+export * from "./production-decision-simulation-orchestrator";
+export * from "./production-decision-simulation-orchestrator.validation";
