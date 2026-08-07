@@ -103,10 +103,12 @@ function profileErrors({
   networkExecutionCount,
   apiKeyAccessCount,
   providerCostUsd,
+  evidenceArtifactsExact = true,
 }) {
   const preExecution = changed.length === 0 && !liveEvidenceExists && !liveResultExists &&
     consumptionState === "UNCONSUMED";
-  const exactEvidencePair = sameSet(changed, runtimeWriteSet) && liveEvidenceExists && liveResultExists;
+  const exactEvidencePair = evidenceArtifactsExact && liveEvidenceExists && liveResultExists &&
+    (changed.length === 0 || sameSet(changed, runtimeWriteSet));
   const retryablePreExecutionAbort = exactEvidencePair &&
     consumptionState === "UNCONSUMED" &&
     executionStatus === "ABORTED" &&
@@ -167,9 +169,24 @@ const spec = read(specPath);
 const changed = diffPaths();
 const liveEvidenceExists = existsSync(join(root, liveEvidencePath));
 const liveResultExists = existsSync(join(root, liveResultPath));
+const stage9LiveEvidenceArtifacts = gitLines(
+  "ls-files",
+  "--cached",
+  "--others",
+  "--exclude-standard",
+  "--",
+  "docs/qa/stage-9/live-evidence",
+  "docs/qa/stage-9/results",
+).filter((path) =>
+  path.startsWith("docs/qa/stage-9/live-evidence/") ||
+  (path.startsWith("docs/qa/stage-9/results/STAGE_9_BOUNDED_LIVE_PROVIDER_VALIDATION_") &&
+    path !== activationResultPath)
+);
+const evidenceArtifactsExact = sameSet(stage9LiveEvidenceArtifacts, runtimeWriteSet);
 const gateMaintenanceDiff = changed.includes(gatePath);
 const profileChanged = gateMaintenanceDiff ? changed.filter((path) => path !== gatePath) : changed;
-const evidencePairCandidate = sameSet(profileChanged, runtimeWriteSet) && liveEvidenceExists && liveResultExists;
+const evidencePairCandidate = evidenceArtifactsExact && liveEvidenceExists && liveResultExists &&
+  (profileChanged.length === 0 || sameSet(profileChanged, runtimeWriteSet));
 const observedEvidence = evidencePairCandidate ? json(liveEvidencePath) : null;
 const observedResult = evidencePairCandidate ? json(liveResultPath) : null;
 const observedConsumptionState = observedEvidence?.authorization?.consumption_state ?? "UNCONSUMED";
@@ -185,8 +202,10 @@ const currentProfileErrors = profileErrors({
   networkExecutionCount: observedEvidence?.execution?.network_execution_count,
   apiKeyAccessCount: observedEvidence?.execution?.api_key_access_count,
   providerCostUsd: observedEvidence?.usage?.actual_cost_usd,
+  evidenceArtifactsExact,
 });
-const preExecutionProfile = currentProfileErrors.length === 0 && profileChanged.length === 0;
+const preExecutionProfile = currentProfileErrors.length === 0 && profileChanged.length === 0 &&
+  !liveEvidenceExists && !liveResultExists;
 const retryableAbortProfile = currentProfileErrors.length === 0 && evidencePairCandidate &&
   observedConsumptionState === "UNCONSUMED";
 const liveProfile = currentProfileErrors.length === 0 && evidencePairCandidate;
@@ -253,6 +272,7 @@ const retryableAbortProfileContext = {
   providerCostUsd: 0,
 };
 add("positive-retryable-pre-execution-abort", profileErrors(retryableAbortProfileContext).length === 0, "Exact zero-request ABORTED evidence remains UNCONSUMED and retryable.");
+add("positive-committed-retryable-pre-execution-abort", profileErrors({ ...retryableAbortProfileContext, changed: [] }).length === 0, "Committed zero-request ABORTED evidence remains a valid retryable baseline on clean HEAD.");
 
 const profileNegativeCases = [
   ["pre-unexpected-file", { changed: ["UNEXPECTED_FILE"], consumptionState: "UNCONSUMED", liveEvidenceExists: false, liveResultExists: false }],
@@ -266,6 +286,7 @@ const profileNegativeCases = [
   ["abort-consumed", { ...retryableAbortProfileContext, consumptionState: "CONSUMED" }],
   ["abort-wrong-result", { ...retryableAbortProfileContext, resultStatus: "BOUNDED_RUNTIME_VALIDATION_PASS" }],
   ["abort-extra-file", { ...retryableAbortProfileContext, changed: [...runtimeWriteSet, "UNEXPECTED_THIRD_FILE"] }],
+  ["abort-unknown-committed-evidence", { ...retryableAbortProfileContext, changed: [], evidenceArtifactsExact: false }],
   ["post-third-file", { changed: [...runtimeWriteSet, "UNEXPECTED_THIRD_FILE"], consumptionState: "CONSUMED", liveEvidenceExists: true, liveResultExists: true }],
   ["post-missing-required-file", { changed: [liveEvidencePath], consumptionState: "CONSUMED", liveEvidenceExists: true, liveResultExists: false }],
 ];
