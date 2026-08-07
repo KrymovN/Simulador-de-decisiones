@@ -1,0 +1,84 @@
+{
+  "artifact_version": "stage-9-bounded-live-provider-validation-evidence.1",
+  "authorization": {
+    "consumption_state": "UNCONSUMED",
+    "decision_path": "docs/qa/stage-9/STAGE_9_BOUNDED_LIVE_PROVIDER_VALIDATION_AUTHORIZATION_DECISION.v1.md",
+    "decision_sha256": "bded19f3d3f63a203aa911fb25edd6915338d91be4475bafac4a59d415c26554",
+    "state": "AUTHORIZED_FOR_ONE_BOUNDED_LIVE_PROVIDER_VALIDATION_RUN"
+  },
+  "configuration": {
+    "background": false,
+    "cost_ceiling_usd": 0.03,
+    "fixture_ids": [
+      "S9-EVAL-001"
+    ],
+    "max_input_tokens": 3000,
+    "max_local_payload_characters": 16000,
+    "max_output_tokens": 1200,
+    "max_provider_requests": 2,
+    "max_total_tokens": 4200,
+    "model": "gpt-5.6-terra",
+    "provider": "OpenAI Responses API",
+    "retries": 0,
+    "store": false,
+    "stream": false,
+    "timeouts_ms": {
+      "generation": 30000,
+      "input_count": 5000,
+      "overall": 35000
+    },
+    "tools_enabled": false
+  },
+  "execution": {
+    "api_key_access_count": 0,
+    "credential_available": false,
+    "network_execution_count": 0,
+    "provider_execution_count": 0,
+    "provider_request_count": 0,
+    "retry_count": 0,
+    "status": "ABORTED"
+  },
+  "generated_at": null,
+  "identity": {
+    "run_id": "S9-BLPV-RUN-001"
+  },
+  "privacy": {
+    "no_auth_or_supabase_data": true,
+    "no_persistence": true,
+    "no_raw_input_or_output": true,
+    "no_real_user_data": true,
+    "redaction_passed": true,
+    "secret_scan_passed": true
+  },
+  "repository_state": {
+    "api_simulate_mock_only": true,
+    "api_simulate_sha256": "9b29fdbfbcb78d539abca6a9dcc9bdbfaa5b396a6d8b514d9850eb93d1c94d11",
+    "release_readiness": "NOT_DECLARED",
+    "runtime_boundaries_closed": 11,
+    "runtime_boundaries_total": 11,
+    "stage_9": "In Progress"
+  },
+  "requests": [],
+  "usage": {
+    "actual_cost_usd": 0,
+    "cost_calculation": "NOT_APPLICABLE_NO_PROVIDER_REQUEST",
+    "cost_ceiling_compliant": true,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "total_tokens": 0,
+    "usage_observed": false
+  },
+  "validation": {
+    "adapter_result": "NOT_EXECUTED",
+    "decision_engine_integrity_gate": "PASS",
+    "decision_engine_path_mode": "INTEGRITY_GATE_ONLY_NO_PROVIDER_COMPOSITION",
+    "error_category": "credentials_unavailable",
+    "fixture_hash_valid": true,
+    "grounding_valid": false,
+    "provider_material_composed": false,
+    "safety_valid": false,
+    "schema_valid": false,
+    "semantic_valid": false,
+    "structured_output_compatible": false
+  }
+}
