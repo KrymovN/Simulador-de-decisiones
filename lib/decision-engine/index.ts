@@ -11,6 +11,8 @@ export * from "./internal-runtime-adapter-contracts";
 export * from "./internal-runtime-adapter-validation";
 export * from "./orchestrator";
 export * from "./pipeline";
+export * from "./post-provider-boundary";
+export * from "./post-provider-boundary-validation";
 export * from "./recommendations";
 export * from "./risks";
 export * from "./runtime-validation";

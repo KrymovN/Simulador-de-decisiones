@@ -68,17 +68,24 @@ const secretOrReasoningPatterns = [
 ] as const;
 
 const recommendationPatterns = [
-  /\b(?:I recommend|recommended option|best option|optimal option)\b/i,
-  /\b(?:recomiendo|opci[oó]n recomendada|mejor opci[oó]n|opci[oó]n [oó]ptima)\b/i,
+  /\b(?:I recommend|recommended option|best option|optimal option|preferred option|right choice)\b/i,
+  /\b(?:recomiendo|opci[oó]n recomendada|mejor opci[oó]n|opci[oó]n [oó]ptima|opci[oó]n preferida|opci[oó]n correcta)\b/i,
+  /(?:я рекомендую|рекомендую|лучший вариант|оптимальный вариант|предпочтительный вариант|правильный выбор)/iu,
+  /(?:我建议|最佳选项|最优选项|正确选择)/u,
 ] as const;
 
 const imperativePatterns = [
   /^(?:choose|select|do|buy|accept|reject|elige|escoge|compra|acepta|rechaza)\b/i,
   /\b(?:you must|you should|debes|deber[ií]as)\b/i,
+  /^(?:выберите|выбери|сделайте|сделай|купите|купи|примите|прими|отклоните|отклони)(?:\s|[,:;.!?])/iu,
+  /(?:вы должны|вам следует|тебе следует|нужно выбрать)/iu,
+  /(?:你应该|你必须|请选择)/u,
 ] as const;
 
 const certaintyPatterns = [
   /\b(?:guaranteed|certain outcome|will definitely|garantizado|sin ninguna duda|ocurrir[aá] con certeza)\b/i,
+  /(?:гарантированно|гарантированный результат|точный результат|определ[её]нно произойд[её]т)/iu,
+  /(?:保证结果|必然会发生|百分之百)/u,
   /\b\d{1,3}(?:[.,]\d+)?\s*%\s+(?:probability|chance|probabilidad|posibilidad)\b/i,
 ] as const;
 
