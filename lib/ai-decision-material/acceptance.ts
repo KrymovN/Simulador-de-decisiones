@@ -6,6 +6,7 @@ import {
   CANDIDATE_DECISION_MATERIAL_MODE,
   DECISION_MATERIAL_ITEM_TYPES,
   type AcceptedDecisionMaterial,
+  type CandidateDecisionMaterial,
   type CandidateDecisionMaterialItem,
   type DecisionMaterialAcceptanceContext,
   type DecisionMaterialAcceptanceResult,
@@ -230,6 +231,52 @@ function semanticRejectionReason(content: string): SemanticPreservationReason | 
   if (matchesAny(content, imperativePatterns)) return "imperative_instruction_forbidden";
   if (matchesAny(content, certaintyPatterns)) return "unsupported_certainty_forbidden";
   return undefined;
+}
+
+export type CandidateDecisionMaterialContractInspection = {
+  schemaValid: boolean;
+  safetyValid: boolean;
+  issue?: SemanticPreservationReason;
+};
+
+export function inspectCandidateDecisionMaterialContract(
+  input: unknown,
+): CandidateDecisionMaterialContractInspection {
+  if (!record(input) || !exactKeys(input, MATERIAL_KEYS) || !Array.isArray(input.items)) {
+    return { schemaValid: false, safetyValid: false, issue: "critical_contract_failure" };
+  }
+  if (
+    input.capability !== CANDIDATE_DECISION_MATERIAL_CAPABILITY ||
+    input.contract_version !== CANDIDATE_DECISION_MATERIAL_CONTRACT_VERSION ||
+    input.generation_status !== "completed" ||
+    input.classification !== "synthetic_non_personal"
+  ) {
+    return { schemaValid: false, safetyValid: false, issue: "capability_version_invalid" };
+  }
+  if (input.items.length > MAX_ITEMS) {
+    return { schemaValid: false, safetyValid: false, issue: "excessive_item_count" };
+  }
+
+  const candidateIds = new Set<string>();
+  for (const item of input.items) {
+    const issue = preliminaryReason(item);
+    if (issue) return { schemaValid: false, safetyValid: false, issue };
+    const candidate = item as CandidateDecisionMaterialItem;
+    if (candidateIds.has(candidate.candidate_id)) {
+      return { schemaValid: false, safetyValid: false, issue: "schema_invalid" };
+    }
+    candidateIds.add(candidate.candidate_id);
+    const safetyIssue = semanticRejectionReason(candidate.content);
+    if (safetyIssue) return { schemaValid: true, safetyValid: false, issue: safetyIssue };
+  }
+
+  return { schemaValid: true, safetyValid: true };
+}
+
+export function candidateDecisionMaterialHasValidContract(
+  input: unknown,
+): input is CandidateDecisionMaterial {
+  return inspectCandidateDecisionMaterialContract(input).schemaValid;
 }
 
 function semanticDisposition(reason: SemanticPreservationReason) {
