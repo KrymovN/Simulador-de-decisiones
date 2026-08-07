@@ -13,6 +13,8 @@ export * from "./orchestrator";
 export * from "./pipeline";
 export * from "./post-provider-boundary";
 export * from "./post-provider-boundary-validation";
+export * from "./post-provider-simulation-composition";
+export * from "./post-provider-simulation-composition-validation";
 export * from "./recommendations";
 export * from "./risks";
 export * from "./runtime-validation";

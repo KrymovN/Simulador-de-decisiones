@@ -72,6 +72,7 @@
     "quality:stage-9-decision-engine-prompt-context-bridge": "node scripts/stage-9-decision-engine-prompt-context-bridge-quality.mjs",
     "quality:stage-9-openai-decision-material-adapter": "node scripts/stage-9-openai-decision-material-adapter-quality.mjs",
     "quality:stage-9-post-provider-decision-engine-boundary": "node scripts/stage-9-post-provider-decision-engine-boundary-quality.mjs",
+    "quality:stage-9-post-provider-simulation-composition": "node scripts/stage-9-post-provider-simulation-composition-quality.mjs",
     "quality:block-b-auth-action-boundary": "node scripts/block-b-auth-action-boundary-quality.mjs",
     "quality:block-b-email-flow": "node scripts/block-b-email-flow-quality.mjs",
     "quality:block-b-session-lifecycle": "node scripts/block-b-session-lifecycle-quality.mjs",

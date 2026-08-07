@@ -151,6 +151,10 @@ function request(candidateMaterial: unknown = material()): Record<string, unknow
   };
 }
 
+export function validPostProviderDecisionEngineResult(): PostProviderDecisionEngineBoundaryResult {
+  return composePostProviderDecisionMaterial(request());
+}
+
 function clone<T>(value: T): T {
   return structuredClone(value);
 }
@@ -217,6 +221,8 @@ export function runPostProviderDecisionEngineBoundaryValidation(): PostProviderD
         result.controlledMaterial.items[0].optionIds[0] === "option_launch" &&
         result.controlledMaterial.items[0].scenarioOptionIds[0] === "option_launch" &&
         result.controlledMaterial.items[0].authority === "decision_engine" &&
+        result.simulationSource.decisionContext.decisionId === "decision_post_provider" &&
+        result.simulationSource.requestId === "stage_9_post_provider_bridge" &&
         !result.controlledMaterial.finalRecommendationProduced &&
         !result.controlledMaterial.providerMetadataIncluded,
       issue: "Validated material was not composed under Decision Engine authority.",

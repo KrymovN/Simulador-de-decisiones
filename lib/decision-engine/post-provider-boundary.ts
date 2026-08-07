@@ -14,7 +14,7 @@ import {
 } from "../ai-decision-material/contracts";
 import { bridgeDecisionEngineToPromptContext } from "../ai-integration/decision-engine-prompt-context-bridge";
 import type { DecisionEnginePromptContextBridgeRequest } from "../ai-integration/contracts";
-import type { DecisionContext, EntityId } from "./types";
+import type { DecisionContext, EntityId, SafetyBoundary } from "./types";
 
 export const POST_PROVIDER_DECISION_ENGINE_BOUNDARY_VERSION =
   "stage-9-post-provider-decision-engine-boundary.1" as const;
@@ -65,6 +65,16 @@ export type DecisionEngineControlledMaterial = {
   providerMetadataIncluded: false;
 };
 
+export type DecisionEngineSimulationSource = {
+  requestId: string;
+  generatedAt: string;
+  inputLanguage: "en" | "es" | "ru";
+  requestedOutputLanguage: "en" | "es" | "ru";
+  decisionContext: DecisionContext;
+  safety?: SafetyBoundary;
+  safetyContextComplete: boolean;
+};
+
 export type PostProviderDecisionEngineEvidence = {
   serverOnly: true;
   deterministicOnly: true;
@@ -92,6 +102,7 @@ export type PostProviderDecisionEngineBoundaryResult =
       outcome: "accepted" | "accepted_with_rejections";
       acceptance: DecisionMaterialAcceptanceResult;
       controlledMaterial: DecisionEngineControlledMaterial;
+      simulationSource: DecisionEngineSimulationSource;
       compositionEvidence: DecisionCompositionEvidence;
       evidence: PostProviderDecisionEngineEvidence;
     }
@@ -416,6 +427,15 @@ export function composePostProviderDecisionMaterial(
       items,
       finalRecommendationProduced: false,
       providerMetadataIncluded: false,
+    },
+    simulationSource: {
+      requestId: request.bridgeId,
+      generatedAt: request.submittedAt,
+      inputLanguage: request.locale,
+      requestedOutputLanguage: request.locale,
+      decisionContext: structuredClone(context),
+      ...(request.safety ? { safety: structuredClone(request.safety) } : {}),
+      safetyContextComplete: request.safety !== undefined,
     },
     compositionEvidence,
     evidence: boundaryEvidence(completedEvidence),
