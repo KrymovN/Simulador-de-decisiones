@@ -1,7 +1,7 @@
 {
   "artifact_version": "stage-9-bounded-live-provider-validation-evidence.1",
   "authorization": {
-    "consumption_state": "UNCONSUMED",
+    "consumption_state": "CONSUMED",
     "decision_path": "docs/qa/stage-9/STAGE_9_BOUNDED_LIVE_PROVIDER_VALIDATION_AUTHORIZATION_DECISION.v1.md",
     "decision_sha256": "bded19f3d3f63a203aa911fb25edd6915338d91be4475bafac4a59d415c26554",
     "state": "AUTHORIZED_FOR_ONE_BOUNDED_LIVE_PROVIDER_VALIDATION_RUN"
@@ -30,13 +30,13 @@
     "tools_enabled": false
   },
   "execution": {
-    "api_key_access_count": 0,
-    "credential_available": false,
-    "network_execution_count": 0,
-    "provider_execution_count": 0,
-    "provider_request_count": 0,
+    "api_key_access_count": 1,
+    "credential_available": true,
+    "network_execution_count": 1,
+    "provider_execution_count": 1,
+    "provider_request_count": 1,
     "retry_count": 0,
-    "status": "ABORTED"
+    "status": "FAIL"
   },
   "generated_at": null,
   "identity": {
@@ -58,23 +58,41 @@
     "runtime_boundaries_total": 11,
     "stage_9": "In Progress"
   },
-  "requests": [],
+  "requests": [
+    {
+      "accepted": false,
+      "attempted": true,
+      "elapsed_ms": 1055,
+      "error_category": "provider_unknown_failure",
+      "operation": "POST /v1/responses/input_tokens",
+      "outcome": "provider_error",
+      "request_index": 1
+    }
+  ],
   "usage": {
-    "actual_cost_usd": 0,
-    "cost_calculation": "NOT_APPLICABLE_NO_PROVIDER_REQUEST",
-    "cost_ceiling_compliant": true,
-    "input_tokens": 0,
-    "output_tokens": 0,
-    "total_tokens": 0,
+    "actual_cost_usd": null,
+    "cost_calculation": "UNAVAILABLE_AFTER_PROVIDER_ERROR",
+    "cost_ceiling_compliant": false,
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
     "usage_observed": false
   },
   "validation": {
-    "adapter_result": "NOT_EXECUTED",
+    "adapter_result": "FAIL",
     "decision_engine_integrity_gate": "PASS",
     "decision_engine_path_mode": "INTEGRITY_GATE_ONLY_NO_PROVIDER_COMPOSITION",
-    "error_category": "credentials_unavailable",
+    "error_category": "provider_unknown_failure",
     "fixture_hash_valid": true,
     "grounding_valid": false,
+    "provider_error_metadata": {
+      "captured": false,
+      "code": null,
+      "http_status": 400,
+      "message": null,
+      "param": null,
+      "type": null
+    },
     "provider_material_composed": false,
     "safety_valid": false,
     "schema_valid": false,

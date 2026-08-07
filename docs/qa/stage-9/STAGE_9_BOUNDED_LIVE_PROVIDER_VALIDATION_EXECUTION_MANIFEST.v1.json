@@ -101,6 +101,7 @@
           "error_category",
           "fixture_hash_valid",
           "grounding_valid",
+          "provider_error_metadata",
           "provider_material_composed",
           "safety_valid",
           "schema_valid",
@@ -108,6 +109,14 @@
           "structured_output_compatible"
         ]
       },
+      "provider_error_metadata_allowed_fields": [
+        "captured",
+        "code",
+        "http_status",
+        "message",
+        "param",
+        "type"
+      ],
       "request_item_allowed_fields": [
         "accepted",
         "attempted",
@@ -232,11 +241,11 @@
   },
   "provider_configuration": {
     "adapter_path": "lib/ai-provider/openai-synthetic-risk-adapter.server.ts",
-    "adapter_sha256": "5c478f0a814b11ecfce2e9ae9eb7b7fb288560562da7ed28662d0ed1da5d2eef",
+    "adapter_sha256": "38a1cec5bfa2b7e86722d442a24983513acc0b7be4fb85b6097bdec2d3977f3f",
     "background": false,
     "capability": "candidate_risk_signals_v1",
     "core_adapter_path": "lib/ai-provider/openai-synthetic-risk-adapter.ts",
-    "core_adapter_sha256": "4450f0190219fc875669146c6bfa575882b70fe010682e437b9ab62c9f5802a6",
+    "core_adapter_sha256": "a1db527042cb610773644a1762fc8c098b43804c2b7fe0901939614432968275",
     "decision_engine_path_mode": "INTEGRITY_GATE_ONLY_NO_PROVIDER_COMPOSITION",
     "decision_engine_source_path": "lib/decision-engine/simulation-pipeline-runner.ts",
     "decision_engine_source_sha256": "2d5cd2585be44c57b5e8f367428720d37b0cd63e65f333d2adb0f1b71c67ed19",

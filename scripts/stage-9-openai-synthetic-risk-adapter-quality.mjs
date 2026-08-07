@@ -29,6 +29,17 @@ const index = read("lib", "ai-provider", "index.ts");
 const route = read("app", "api", "simulate", "route.ts");
 const home = read("components", "HomeSimulator.tsx");
 const packageJson = read("package.json");
+const serverOnlyPath = require.resolve("server-only");
+require.cache[serverOnlyPath] = {
+  id: serverOnlyPath,
+  filename: serverOnlyPath,
+  loaded: true,
+  exports: {},
+  children: [],
+  paths: [],
+};
+const OpenAI = require("openai").default;
+const serverAdapter = require(join(root, "lib", "ai-provider", "openai-synthetic-risk-adapter.server.ts"));
 const validation = require(join(root, "lib", "ai-provider", "openai-synthetic-risk-adapter-validation.ts"));
 const result = await validation.runStage9OpenAISyntheticRiskAdapterValidation();
 const checks = [...result.cases];
@@ -45,6 +56,39 @@ add("existing-ai-provider-regression", providerRegression.passed && !providerReg
 add("existing-prompt-context-regression", promptRegression.passed && !promptRegression.failed, "Existing Prompt Context regression must pass.");
 add("existing-ai-quality-regression", qualityRegression.passed && !qualityRegression.failed, "Existing AI Quality regression must pass.");
 add("existing-ai-integration-regressions", [integrationContracts, integrationRuntime, integrationComposition, integrationDryRun].every((item) => item.passed && !item.failed), "Existing AI Integration regressions must pass.");
+
+let offlineNetworkRequests = 0;
+const originalFetch = globalThis.fetch;
+globalThis.fetch = async () => {
+  offlineNetworkRequests += 1;
+  throw new Error("Offline test network access is forbidden.");
+};
+const syntheticSecret = "sk-SYNTHETICSECRET123456";
+const badRequest = new OpenAI.BadRequestError(
+  400,
+  {
+    type: "invalid_request_error",
+    code: "invalid_value",
+    param: "text.format.schema",
+    message: `Invalid schema credential=${syntheticSecret}`,
+    raw_body: { forbidden: true },
+  },
+  undefined,
+  new Headers({ Authorization: "Bearer SYNTHETIC_HEADER_VALUE", "x-request-id": "synthetic-request-id" }),
+);
+const normalizedBadRequest = serverAdapter.normalizedProviderFailure(badRequest);
+const normalizedBadRequestText = JSON.stringify(normalizedBadRequest);
+add("bad-request-normalized", normalizedBadRequest.category === "provider_bad_request", "HTTP 400 must remain a controlled provider failure.");
+add("bad-request-safe-metadata", normalizedBadRequest.providerErrorMetadata?.httpStatus === 400 && normalizedBadRequest.providerErrorMetadata.type === "invalid_request_error" && normalizedBadRequest.providerErrorMetadata.code === "invalid_value" && normalizedBadRequest.providerErrorMetadata.param === "text.format.schema" && normalizedBadRequest.providerErrorMetadata.message?.includes("[REDACTED]"), "Safe HTTP 400 metadata must be preserved.");
+add("bad-request-secret-redacted", !normalizedBadRequestText.includes(syntheticSecret) && !normalizedBadRequestText.includes("SYNTHETIC_HEADER_VALUE"), "Secrets and authorization values must not survive normalization.");
+add("bad-request-raw-data-excluded", !normalizedBadRequestText.includes("raw_body") && !normalizedBadRequestText.includes("headers") && !normalizedBadRequestText.includes("request-id"), "Raw bodies, headers, and request IDs must not be projected.");
+const missingMetadata = serverAdapter.normalizedProviderFailure(new OpenAI.BadRequestError(400, {}, undefined, new Headers()));
+add("bad-request-missing-metadata-safe", missingMetadata.category === "provider_bad_request" && missingMetadata.providerErrorMetadata?.httpStatus === 400 && missingMetadata.providerErrorMetadata.type === null && missingMetadata.providerErrorMetadata.code === null && missingMetadata.providerErrorMetadata.param === null, "Missing provider metadata must normalize to explicit nulls.");
+add("existing-timeout-normalization-preserved", serverAdapter.normalizedProviderFailure(new OpenAI.APIConnectionTimeoutError()).category === "provider_timeout");
+add("existing-auth-normalization-preserved", serverAdapter.normalizedProviderFailure(new OpenAI.AuthenticationError(401, {}, undefined, new Headers())).category === "provider_authentication_failed");
+add("existing-rate-limit-normalization-preserved", serverAdapter.normalizedProviderFailure(new OpenAI.RateLimitError(429, {}, undefined, new Headers())).category === "provider_rate_limited");
+globalThis.fetch = originalFetch;
+add("offline-provider-network-requests-zero", offlineNetworkRequests === 0, "Targeted diagnostics tests must perform zero provider/network requests.");
 
 add("server-only-marker", server.startsWith('import "server-only";'), "SDK adapter must be marked server-only.");
 add("sdk-only-in-server-adapter", server.includes('from "openai"') && !core.includes('from "openai"'), "OpenAI SDK types/imports must stay in the server adapter.");

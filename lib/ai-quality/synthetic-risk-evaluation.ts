@@ -137,7 +137,7 @@ const CONTROLLED_ERROR_CATEGORIES: SyntheticRiskErrorCategory[] = [
   "input_contract_invalid", "forbidden_data_detected", "input_limit_exceeded", "cost_limit_exceeded",
   "provider_timeout", "provider_rate_limited", "provider_unavailable", "provider_authentication_failed",
   "provider_refused", "provider_incomplete", "provider_schema_invalid", "provider_semantic_validation_failed",
-  "provider_response_invalid", "provider_unknown_failure",
+  "provider_response_invalid", "provider_bad_request", "provider_unknown_failure",
 ];
 const EVALUATION_FAILURE_CATEGORIES: EvaluationFailureCategory[] = [
   ...CONTROLLED_ERROR_CATEGORIES,
@@ -207,9 +207,17 @@ function normalizedResult(value: unknown):
   }
   if (!exactKeys(value, ["status", "capability", "model", "error", "elapsedMs"]) ||
     value.capability !== CANDIDATE_RISK_SIGNALS_CAPABILITY || value.model !== OPENAI_SYNTHETIC_RISK_MODEL ||
-    !record(value.error) || !exactKeys(value.error, ["category", "message"]) ||
+    !record(value.error) ||
+    !["category,message", "category,message,providerErrorMetadata"].includes(Object.keys(value.error).sort().join(",")) ||
     typeof value.error.category !== "string" || !CONTROLLED_ERROR_CATEGORIES.includes(value.error.category as SyntheticRiskErrorCategory) ||
     typeof value.error.message !== "string" || typeof value.elapsedMs !== "number") return { valid: false };
+  if ("providerErrorMetadata" in value.error) {
+    const metadata = value.error.providerErrorMetadata;
+    if (!record(metadata) || !exactKeys(metadata, ["httpStatus", "type", "code", "param", "message"]) ||
+      metadata.httpStatus !== 400 ||
+      ![metadata.type, metadata.code, metadata.param, metadata.message].every((item) => item === null || typeof item === "string") ||
+      value.error.category !== "provider_bad_request") return { valid: false };
+  }
   return { valid: true, disposition: "reject", category: value.error.category as EvaluationFailureCategory };
 }
 

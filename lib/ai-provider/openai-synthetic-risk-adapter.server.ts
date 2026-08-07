@@ -5,6 +5,7 @@ import OpenAI from "openai";
 import {
   OPENAI_SYNTHETIC_RISK_MODEL,
   SyntheticRiskTransportFailure,
+  boundedProviderBadRequestMetadata,
   executeSyntheticCandidateRiskSignals,
   type SyntheticRiskExecutionResult,
   type SyntheticRiskProviderRequest,
@@ -30,7 +31,7 @@ function responseRequest(request: SyntheticRiskProviderRequest) {
   };
 }
 
-function normalizedProviderFailure(error: unknown): SyntheticRiskTransportFailure {
+export function normalizedProviderFailure(error: unknown): SyntheticRiskTransportFailure {
   if (error instanceof OpenAI.APIConnectionTimeoutError) {
     return new SyntheticRiskTransportFailure("provider_timeout");
   }
@@ -42,6 +43,18 @@ function normalizedProviderFailure(error: unknown): SyntheticRiskTransportFailur
   }
   if (error instanceof OpenAI.APIConnectionError) {
     return new SyntheticRiskTransportFailure("provider_unavailable");
+  }
+  if (error instanceof OpenAI.BadRequestError) {
+    return new SyntheticRiskTransportFailure(
+      "provider_bad_request",
+      boundedProviderBadRequestMetadata({
+        status: error.status,
+        type: error.type,
+        code: error.code,
+        param: error.param,
+        message: error.message,
+      }),
+    );
   }
   if (error instanceof OpenAI.APIError && error.status != null && error.status >= 500) {
     return new SyntheticRiskTransportFailure("provider_unavailable");

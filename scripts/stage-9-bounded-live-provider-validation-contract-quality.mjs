@@ -10,6 +10,15 @@ const specPath = "docs/qa/stage-9/STAGE_9_BOUNDED_LIVE_PROVIDER_VALIDATION_EXECU
 const manifestPath = "docs/qa/stage-9/STAGE_9_BOUNDED_LIVE_PROVIDER_VALIDATION_EXECUTION_MANIFEST.v1.json";
 const activationResultPath = "docs/qa/stage-9/results/STAGE_9_BOUNDED_LIVE_PROVIDER_VALIDATION_CONTRACT_ACTIVATION_RESULT.v1.json";
 const gatePath = "scripts/stage-9-bounded-live-provider-validation-contract-quality.mjs";
+const diagnosticsMaintenancePaths = [
+  "docs/qa/stage-9/STAGE_9_BOUNDED_LIVE_PROVIDER_VALIDATION_EXECUTION_MANIFEST.v1.json",
+  "lib/ai-provider/openai-synthetic-risk-adapter.server.ts",
+  "lib/ai-provider/openai-synthetic-risk-adapter-validation.ts",
+  "lib/ai-provider/openai-synthetic-risk-adapter.ts",
+  "lib/ai-quality/synthetic-risk-evaluation.ts",
+  "scripts/stage-9-openai-synthetic-risk-adapter-quality.mjs",
+  gatePath,
+];
 const liveEvidencePath = "docs/qa/stage-9/live-evidence/STAGE_9_BOUNDED_LIVE_PROVIDER_VALIDATION_EVIDENCE.v1.json";
 const liveResultPath = "docs/qa/stage-9/results/STAGE_9_BOUNDED_LIVE_PROVIDER_VALIDATION_RESULT.v1.json";
 const activationWriteSet = [decisionPath, specPath, manifestPath, activationResultPath, gatePath, "package.json"];
@@ -20,14 +29,15 @@ const sourceHashes = {
   "docs/qa/stage-9/STAGE_9_BOUNDED_RUNTIME_READINESS_EVIDENCE_MANIFEST.v1.json": "860c6510c81f0b3ff64a0c1c9c4eb7ef8c82e2445702f5d92de391482fcfb8f9",
   "docs/qa/stage-9/STAGE_9_BOUNDED_RUNTIME_READINESS_EVIDENCE_SPEC.v1.md": "5391949dbe79fffb6b5dafd123751aa278b9b9eccf014333ee2837629b4f0ffd",
   "docs/qa/stage-9/results/STAGE_9_BOUNDED_RUNTIME_READINESS_EVIDENCE_PREPARATION_RESULT.v1.json": "5823116faa89786161d5b575479f5c70df73ed09c6f7c5160229397682cfe6a6",
-  "lib/ai-provider/openai-synthetic-risk-adapter.server.ts": "5c478f0a814b11ecfce2e9ae9eb7b7fb288560562da7ed28662d0ed1da5d2eef",
-  "lib/ai-provider/openai-synthetic-risk-adapter.ts": "4450f0190219fc875669146c6bfa575882b70fe010682e437b9ab62c9f5802a6",
+  "lib/ai-provider/openai-synthetic-risk-adapter.server.ts": "38a1cec5bfa2b7e86722d442a24983513acc0b7be4fb85b6097bdec2d3977f3f",
+  "lib/ai-provider/openai-synthetic-risk-adapter.ts": "a1db527042cb610773644a1762fc8c098b43804c2b7fe0901939614432968275",
   "lib/ai-quality/synthetic-risk-evaluation-fixtures.ts": "68f4e3a144a6ce34c467fe24645bdfdbf2a5311eed9e9b70d1665131d0ad90a3",
   "lib/decision-engine/simulation-pipeline-runner.ts": "2d5cd2585be44c57b5e8f367428720d37b0cd63e65f333d2adb0f1b71c67ed19",
 };
 const decisionSha = "bded19f3d3f63a203aa911fb25edd6915338d91be4475bafac4a59d415c26554";
 const specSha = "9fafd63c2fbbe304b4b9f8f25d05927b45dc65bfb510cca988d24b74b175e73a";
-const manifestSha = "6ed9d25700e7778708f13af994e60fd78826a1a83f2f430292f3419fc4dd8ef4";
+const manifestSha = "6e856716816da1735f2089ebb04763ad02faae883b24b08b3f21edb11b3e4f02";
+const activationManifestSha = "6ed9d25700e7778708f13af994e60fd78826a1a83f2f430292f3419fc4dd8ef4";
 const manifestTopKeys = ["artifact_version", "authorization", "canonical_state", "cost_policy", "evidence_output_files", "evidence_schema", "fixture", "generated_at", "network_policy", "one_run_identifier_policy", "provider_configuration", "repository_checks", "required_gate_commands", "runtime_write_allowlist", "schema_version", "specification_binding", "verdict_rules"];
 const evidenceTopKeys = ["artifact_version", "authorization", "configuration", "execution", "generated_at", "identity", "privacy", "repository_state", "requests", "usage", "validation"];
 const resultKeys = ["artifact_version", "authorization_consumption_state", "dedicated_gate", "decision_engine_integrity_gate", "evidence_path", "evidence_sha256", "generated_at", "git_diff_cached_check", "git_diff_check", "negative_self_tests", "provider_cost_usd", "provider_execution_count", "provider_request_count", "runtime_write_set", "secret_scan", "status"];
@@ -81,6 +91,7 @@ function manifestErrors(value) {
   if (!schema.evidence_artifact || !schema.result_artifact || schema.additional_properties_allowed !== false) errors.push("evidence-schema");
   if (!sameSet(schema.evidence_artifact?.required_top_level_fields ?? [], evidenceTopKeys)) errors.push("evidence-top-level-fields");
   if (!schema.evidence_artifact?.nested_required_fields || Object.keys(schema.evidence_artifact.nested_required_fields).length !== 8 || !schema.evidence_artifact.request_item_allowed_fields?.length) errors.push("evidence-nested-schema");
+  if (!sameSet(schema.evidence_artifact?.provider_error_metadata_allowed_fields ?? [], ["captured", "code", "http_status", "message", "param", "type"])) errors.push("provider-error-metadata-schema");
   if (!sameSet(schema.result_artifact?.required_fields ?? [], resultKeys) || schema.result_artifact?.status_enum?.length !== 3) errors.push("result-schema");
   if (!schema.required_redaction_fields?.length || !schema.prohibited_fields?.includes("api_key") || !schema.prohibited_fields?.includes("raw_provider_response")) errors.push("redaction-schema");
   if (!["pass", "fail", "aborted"].every((key) => Array.isArray(verdicts[key]) && verdicts[key].length > 0)) errors.push("verdict-rules");
@@ -143,6 +154,18 @@ function liveEvidenceErrors(evidence, result, manifest) {
   if (evidence.configuration?.model !== "gpt-5.6-terra" || evidence.configuration?.provider !== "OpenAI Responses API" || evidence.configuration?.max_output_tokens !== 1200 || evidence.configuration?.retries !== 0 || evidence.configuration?.store !== false || evidence.configuration?.tools_enabled !== false) errors.push("live-configuration");
   if (evidence.repository_state?.stage_9 !== "In Progress" || evidence.repository_state?.release_readiness !== "NOT_DECLARED" || evidence.repository_state?.api_simulate_mock_only !== true || evidence.repository_state?.runtime_boundaries_closed !== 11 || evidence.repository_state?.runtime_boundaries_total !== 11) errors.push("live-closed-state");
   if (evidence.validation?.decision_engine_path_mode !== "INTEGRITY_GATE_ONLY_NO_PROVIDER_COMPOSITION" || evidence.validation?.provider_material_composed !== false) errors.push("live-decision-engine-boundary");
+  const providerErrorMetadata = evidence.validation?.provider_error_metadata;
+  if (providerErrorMetadata !== null) {
+    if (!exactKeys(providerErrorMetadata, manifest.evidence_schema.evidence_artifact.provider_error_metadata_allowed_fields)) errors.push("live-provider-error-metadata-schema");
+    else {
+      const optionalStringsValid = [providerErrorMetadata.type, providerErrorMetadata.code, providerErrorMetadata.param, providerErrorMetadata.message]
+        .every((item) => item === null || typeof item === "string");
+      if (typeof providerErrorMetadata.captured !== "boolean" || providerErrorMetadata.http_status !== 400 || !optionalStringsValid) errors.push("live-provider-error-metadata-values");
+      if (providerErrorMetadata.captured === true && evidence.validation?.error_category !== "provider_bad_request") errors.push("live-provider-error-metadata-category");
+      if (providerErrorMetadata.captured === false && [providerErrorMetadata.type, providerErrorMetadata.code, providerErrorMetadata.param, providerErrorMetadata.message].some((item) => item !== null)) errors.push("live-provider-error-metadata-unpreserved-values");
+      if (secretLike(JSON.stringify(providerErrorMetadata)) || Object.keys(providerErrorMetadata).some((key) => /header|body|request.?id/i.test(key))) errors.push("live-provider-error-metadata-secret-or-raw");
+    }
+  }
   if (!Object.values(evidence.privacy ?? {}).every((item) => item === true)) errors.push("live-privacy-redaction");
   if (execution.status === "PASS") {
     if (execution.provider_execution_count !== 1 || execution.provider_request_count !== 2 || execution.api_key_access_count !== 1 || evidence.authorization.consumption_state !== "CONSUMED") errors.push("live-pass-execution");
@@ -183,8 +206,8 @@ const stage9LiveEvidenceArtifacts = gitLines(
     path !== activationResultPath)
 );
 const evidenceArtifactsExact = sameSet(stage9LiveEvidenceArtifacts, runtimeWriteSet);
-const gateMaintenanceDiff = changed.includes(gatePath);
-const profileChanged = gateMaintenanceDiff ? changed.filter((path) => path !== gatePath) : changed;
+const maintenanceDiff = changed.filter((path) => diagnosticsMaintenancePaths.includes(path));
+const profileChanged = changed.filter((path) => !diagnosticsMaintenancePaths.includes(path));
 const evidencePairCandidate = evidenceArtifactsExact && liveEvidenceExists && liveResultExists &&
   (profileChanged.length === 0 || sameSet(profileChanged, runtimeWriteSet));
 const observedEvidence = evidencePairCandidate ? json(liveEvidencePath) : null;
@@ -209,6 +232,11 @@ const preExecutionProfile = currentProfileErrors.length === 0 && profileChanged.
 const retryableAbortProfile = currentProfileErrors.length === 0 && evidencePairCandidate &&
   observedConsumptionState === "UNCONSUMED";
 const liveProfile = currentProfileErrors.length === 0 && evidencePairCandidate;
+const successfulLiveValidationClaim = observedResult?.status === "BOUNDED_RUNTIME_VALIDATION_PASS";
+const successfulLiveExecution = observedEvidence?.execution?.status === "PASS";
+const liveValidationClaimConsistent = liveProfile
+  ? successfulLiveValidationClaim === successfulLiveExecution
+  : !successfulLiveValidationClaim;
 const artifactText = [decision, spec, read(manifestPath), read(activationResultPath)].join("\n");
 
 add("five-contract-artifacts-exist", contractArtifacts.every((path) => existsSync(join(root, path))), "All five Stage 9 contract artifacts exist.");
@@ -219,13 +247,13 @@ add("manifest-contract", manifestErrors(manifest).length === 0, manifestErrors(m
 add("deterministic-manifest", serialize(manifest) === read(manifestPath), "Manifest JSON is recursively sorted.");
 add("contract-hash-bindings", sha(decision) === decisionSha && sha(spec) === specSha && sha(read(manifestPath)) === manifestSha, "Decision, specification, and manifest hashes match.");
 add("immutable-source-hashes", Object.entries(sourceHashes).every(([path, expected]) => sha(read(path)) === expected), "Preparation, adapter, fixture, Decision Engine, and route sources are unchanged.");
-add("activation-result", activationResult.status === "PASS" && activationResult.starting_commit === "806c86fc8b4c08a0171fd09e41d5d7a869faf944" && activationResult.authorization_state === "AUTHORIZED_FOR_ONE_BOUNDED_LIVE_PROVIDER_VALIDATION_RUN" && activationResult.final_disposition === "EXECUTABLE_CONTRACT_READY_PENDING_LIVE_PROVIDER_EXECUTION" && activationResult.provider_execution_count === 0 && activationResult.provider_request_count === 0 && activationResult.network_execution_count === 0 && activationResult.api_key_access_count === 0 && activationResult.provider_cost_usd === 0 && activationResult.runtime_boundaries_closed === 11 && activationResult.runtime_boundaries_total === 11 && activationResult.stage_9 === "In Progress" && activationResult.release_readiness === "NOT_DECLARED" && activationResult.api_simulate_mock_only === true && activationResult.mock_only === true && activationResult.specification_sha256 === specSha && activationResult.manifest_sha256 === manifestSha && sameSet(activationResult.execution_write_set, activationWriteSet), "Offline activation result is complete and execution-free.");
+add("activation-result", activationResult.status === "PASS" && activationResult.starting_commit === "806c86fc8b4c08a0171fd09e41d5d7a869faf944" && activationResult.authorization_state === "AUTHORIZED_FOR_ONE_BOUNDED_LIVE_PROVIDER_VALIDATION_RUN" && activationResult.final_disposition === "EXECUTABLE_CONTRACT_READY_PENDING_LIVE_PROVIDER_EXECUTION" && activationResult.provider_execution_count === 0 && activationResult.provider_request_count === 0 && activationResult.network_execution_count === 0 && activationResult.api_key_access_count === 0 && activationResult.provider_cost_usd === 0 && activationResult.runtime_boundaries_closed === 11 && activationResult.runtime_boundaries_total === 11 && activationResult.stage_9 === "In Progress" && activationResult.release_readiness === "NOT_DECLARED" && activationResult.api_simulate_mock_only === true && activationResult.mock_only === true && activationResult.specification_sha256 === specSha && activationResult.manifest_sha256 === activationManifestSha && sameSet(activationResult.execution_write_set, activationWriteSet), "Historical offline activation result remains bound to its original execution-free manifest.");
 add("deterministic-activation-result", serialize(activationResult) === read(activationResultPath), "Activation result JSON is recursively sorted.");
-add("no-live-validation-claim", (preExecutionProfile || retryableAbortProfile) && !artifactText.includes("provider validation already completed") && activationResult.provider_execution_count === 0 && activationResult.final_disposition.endsWith("PENDING_LIVE_PROVIDER_EXECUTION"), "No completed live-validation claim exists.");
+add("no-live-validation-claim", liveValidationClaimConsistent && !artifactText.includes("provider validation already completed") && activationResult.provider_execution_count === 0 && activationResult.final_disposition.endsWith("PENDING_LIVE_PROVIDER_EXECUTION"), "Live-validation success is claimed only by a matching successful post-execution result; failed evidence remains failed.");
 add("no-secret-absolute-or-timestamp", !secretLike(artifactText) && !unstable(artifactText), "Artifacts contain no secret-like value, absolute path, or timestamp.");
 add("package-command", json("package.json").scripts["quality:stage-9-bounded-live-provider-validation-contract"] === "node scripts/stage-9-bounded-live-provider-validation-contract-quality.mjs", "Dedicated package command is exact.");
 add("canonical-state-preserved", manifest.canonical_state.stage_9 === "In Progress" && manifest.canonical_state.release_readiness === "NOT_DECLARED" && manifest.canonical_state.api_simulate_mock_only === true && manifest.canonical_state.runtime_boundaries_closed === 11 && manifest.canonical_state.runtime_boundaries_total === 11, "Stage, release, route, and all boundaries remain closed.");
-add("positioning-and-runtime-source-unchanged", changed.every((path) => [...(gateMaintenanceDiff ? [gatePath] : []), ...(liveProfile ? runtimeWriteSet : [])].includes(path)) && sha(read("app/api/simulate/route.ts")) === sourceHashes["app/api/simulate/route.ts"], "No product positioning or runtime source is in the diff.");
+add("positioning-and-runtime-source-unchanged", maintenanceDiff.length <= diagnosticsMaintenancePaths.length && changed.every((path) => [...diagnosticsMaintenancePaths, ...(liveProfile ? runtimeWriteSet : [])].includes(path)) && sha(read("app/api/simulate/route.ts")) === sourceHashes["app/api/simulate/route.ts"], "Only bounded diagnostics/validator maintenance and exact runtime evidence are in the diff.");
 
 const negativeCases = [
   ["not-authorized", (x) => { x.authorization.state = "NOT_AUTHORIZED"; }],
@@ -297,6 +325,9 @@ for (const [id, context] of profileNegativeCases) {
   add(`negative-profile-${id}`, rejected, rejected ? "Rejected as required." : "Invalid profile accepted.");
 }
 
+let liveEvidenceNegativePassed = 0;
+let liveEvidenceNegativeTotal = 0;
+
 if (liveProfile) {
   const filesExist = runtimeWriteSet.every((path) => existsSync(join(root, path)));
   add("live-evidence-files-exist", filesExist, "Both exact live-evidence files must exist.");
@@ -306,14 +337,33 @@ if (liveProfile) {
     const liveErrors = liveEvidenceErrors(evidence, result, manifest);
     add("nonzero-bounded-live-evidence-profile", liveErrors.length === 0, liveErrors.join(", ") || "Live evidence valid.");
     add("deterministic-live-evidence", serialize(evidence) === read(liveEvidencePath) && serialize(result) === read(liveResultPath), "Live evidence JSON is recursively sorted.");
+    const liveNegativeCases = [
+      ["false-pass", (evidenceCandidate, resultCandidate) => { resultCandidate.status = "BOUNDED_RUNTIME_VALIDATION_PASS"; }],
+      ["unconsumed-after-request", (evidenceCandidate) => { evidenceCandidate.authorization.consumption_state = "UNCONSUMED"; }],
+      ["request-count-mismatch", (evidenceCandidate) => { evidenceCandidate.execution.provider_request_count = 2; }],
+      ["wrong-evidence-hash", (evidenceCandidate, resultCandidate) => { resultCandidate.evidence_sha256 = "0".repeat(64); }],
+      ["runtime-open", (evidenceCandidate) => { evidenceCandidate.repository_state.runtime_boundaries_closed = 10; }],
+      ["captured-metadata-with-unknown-category", (evidenceCandidate) => { evidenceCandidate.validation.provider_error_metadata.captured = true; }],
+      ["secret-in-provider-message", (evidenceCandidate) => { evidenceCandidate.validation.provider_error_metadata.message = "sk-SYNTHETICSECRET123456"; }],
+      ["raw-provider-metadata-field", (evidenceCandidate) => { evidenceCandidate.validation.provider_error_metadata.raw_body = "forbidden"; }],
+    ];
+    liveEvidenceNegativeTotal = liveNegativeCases.length;
+    for (const [id, mutate] of liveNegativeCases) {
+      const evidenceCandidate = clone(evidence);
+      const resultCandidate = clone(result);
+      mutate(evidenceCandidate, resultCandidate);
+      const rejected = liveEvidenceErrors(evidenceCandidate, resultCandidate, manifest).length > 0;
+      if (rejected) liveEvidenceNegativePassed += 1;
+      add(`negative-live-${id}`, rejected, rejected ? "Rejected as required." : "Invalid live evidence accepted.");
+    }
   }
 } else {
   add("activation-has-no-live-evidence", runtimeWriteSet.every((path) => !existsSync(join(root, path))), "No live evidence exists during activation.");
 }
 
-add("negative-self-test-union", negativePassed === negativeCases.length && nonzeroRejected && profileNegativePassed === profileNegativeCases.length, `${negativePassed + (nonzeroRejected ? 1 : 0) + profileNegativePassed}/${negativeCases.length + 1 + profileNegativeCases.length} invalid cases rejected.`);
+add("negative-self-test-union", negativePassed === negativeCases.length && nonzeroRejected && profileNegativePassed === profileNegativeCases.length && liveEvidenceNegativePassed === liveEvidenceNegativeTotal, `${negativePassed + (nonzeroRejected ? 1 : 0) + profileNegativePassed + liveEvidenceNegativePassed}/${negativeCases.length + 1 + profileNegativeCases.length + liveEvidenceNegativeTotal} invalid cases rejected.`);
 for (const check of checks) {
   console[check.passed ? "log" : "error"](`${check.passed ? "PASS" : "FAIL"} ${check.id}: ${check.detail}`);
 }
-console.log(`REPORT profile=${preExecutionProfile ? "PRE_EXECUTION_BASELINE" : retryableAbortProfile ? "RETRYABLE_PRE_EXECUTION_ABORT" : liveProfile ? "POST_EXECUTION_EVIDENCE" : "invalid"} positive=${checks.filter((item) => item.passed).length}/${checks.length} negative=${negativePassed + (nonzeroRejected ? 1 : 0) + profileNegativePassed}/${negativeCases.length + 1 + profileNegativeCases.length} provider=0 network=0 api_key_access=0`);
+console.log(`REPORT profile=${preExecutionProfile ? "PRE_EXECUTION_BASELINE" : retryableAbortProfile ? "RETRYABLE_PRE_EXECUTION_ABORT" : liveProfile ? "POST_EXECUTION_EVIDENCE" : "invalid"} positive=${checks.filter((item) => item.passed).length}/${checks.length} negative=${negativePassed + (nonzeroRejected ? 1 : 0) + profileNegativePassed + liveEvidenceNegativePassed}/${negativeCases.length + 1 + profileNegativeCases.length + liveEvidenceNegativeTotal} provider=0 network=0 api_key_access=0`);
 if (checks.some((check) => !check.passed)) process.exitCode = 1;

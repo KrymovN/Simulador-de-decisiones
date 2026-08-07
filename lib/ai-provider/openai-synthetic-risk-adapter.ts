@@ -102,6 +102,7 @@ export type SyntheticRiskErrorCategory =
   | "provider_rate_limited"
   | "provider_unavailable"
   | "provider_authentication_failed"
+  | "provider_bad_request"
   | "provider_refused"
   | "provider_incomplete"
   | "provider_schema_invalid"
@@ -114,6 +115,14 @@ export type SyntheticRiskUsage = {
   outputTokens: number;
   totalTokens: number;
   calculatedCostUsd: number;
+};
+
+export type SyntheticRiskProviderErrorMetadata = {
+  httpStatus: 400;
+  type: string | null;
+  code: string | null;
+  param: string | null;
+  message: string | null;
 };
 
 export type SyntheticRiskExecutionResult =
@@ -137,6 +146,7 @@ export type SyntheticRiskExecutionResult =
       error: {
         category: SyntheticRiskErrorCategory;
         message: string;
+        providerErrorMetadata?: SyntheticRiskProviderErrorMetadata;
       };
       elapsedMs: number;
     };
@@ -184,12 +194,52 @@ export type SyntheticRiskExecutionConfig = {
 
 export class SyntheticRiskTransportFailure extends Error {
   readonly category: SyntheticRiskErrorCategory;
+  readonly providerErrorMetadata: SyntheticRiskProviderErrorMetadata | undefined;
 
-  constructor(category: SyntheticRiskErrorCategory) {
+  constructor(
+    category: SyntheticRiskErrorCategory,
+    providerErrorMetadata?: SyntheticRiskProviderErrorMetadata,
+  ) {
     super("Provider transport failed.");
     this.name = "SyntheticRiskTransportFailure";
     this.category = category;
+    this.providerErrorMetadata = providerErrorMetadata;
   }
+}
+
+function sanitiseProviderMetadataToken(value: unknown): string | null {
+  if (typeof value !== "string" || value.length < 1 || value.length > 160) return null;
+  return /^[A-Za-z0-9_.\[\]-]+$/.test(value) ? value : null;
+}
+
+function sanitiseProviderMessage(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const sanitized = value
+    .replace(/[\u0000-\u001f\u007f]+/g, " ")
+    .replace(/\bBearer\s+\S+/gi, "Bearer [REDACTED]")
+    .replace(/\bsk-[A-Za-z0-9_-]{8,}\b/g, "[REDACTED]")
+    .replace(/\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\b/g, "[REDACTED]")
+    .replace(/\b(?:authorization|api[_ -]?key)\s*[:=]\s*\S+/gi, "credential=[REDACTED]")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 500);
+  return sanitized || null;
+}
+
+export function boundedProviderBadRequestMetadata(value: {
+  status: 400;
+  type?: unknown;
+  code?: unknown;
+  param?: unknown;
+  message?: unknown;
+}): SyntheticRiskProviderErrorMetadata {
+  return {
+    httpStatus: 400,
+    type: sanitiseProviderMetadataToken(value.type),
+    code: sanitiseProviderMetadataToken(value.code),
+    param: sanitiseProviderMetadataToken(value.param),
+    message: sanitiseProviderMessage(value.message),
+  };
 }
 
 export const CANDIDATE_RISK_OUTPUT_SCHEMA: Record<string, unknown> = {
@@ -500,6 +550,7 @@ function failure(
   status: "blocked" | "failed",
   category: SyntheticRiskErrorCategory,
   elapsedMs: number,
+  providerErrorMetadata?: SyntheticRiskProviderErrorMetadata,
 ): SyntheticRiskExecutionResult {
   const messages: Record<SyntheticRiskErrorCategory, string> = {
     provider_disabled: "The synthetic AI provider boundary is disabled.",
@@ -514,6 +565,7 @@ function failure(
     provider_rate_limited: "The provider rate limited the request.",
     provider_unavailable: "The provider is unavailable.",
     provider_authentication_failed: "Provider authentication failed.",
+    provider_bad_request: "The provider rejected the request.",
     provider_refused: "The provider refused the request.",
     provider_incomplete: "The provider response was incomplete.",
     provider_schema_invalid: "The provider response did not match the schema.",
@@ -525,15 +577,27 @@ function failure(
     status,
     capability: CANDIDATE_RISK_SIGNALS_CAPABILITY,
     model: OPENAI_SYNTHETIC_RISK_MODEL,
-    error: { category, message: messages[category] },
+    error: {
+      category,
+      message: messages[category],
+      ...(providerErrorMetadata ? { providerErrorMetadata } : {}),
+    },
     elapsedMs,
   };
 }
 
-function transportCategory(error: unknown): SyntheticRiskErrorCategory {
+function transportFailure(error: unknown): {
+  category: SyntheticRiskErrorCategory;
+  providerErrorMetadata?: SyntheticRiskProviderErrorMetadata;
+} {
   return error instanceof SyntheticRiskTransportFailure
-    ? error.category
-    : "provider_unknown_failure";
+    ? {
+        category: error.category,
+        ...(error.providerErrorMetadata
+          ? { providerErrorMetadata: error.providerErrorMetadata }
+          : {}),
+      }
+    : { category: "provider_unknown_failure" };
 }
 
 export async function executeSyntheticCandidateRiskSignals(
@@ -563,7 +627,8 @@ export async function executeSyntheticCandidateRiskSignals(
       Math.min(OPENAI_SYNTHETIC_RISK_LIMITS.tokenCountTimeoutMs, OPENAI_SYNTHETIC_RISK_LIMITS.overallTimeoutMs - elapsed()),
     );
   } catch (error) {
-    return failure("failed", transportCategory(error), elapsed());
+    const normalized = transportFailure(error);
+    return failure("failed", normalized.category, elapsed(), normalized.providerErrorMetadata);
   }
   if (!Number.isInteger(countedInputTokens) || countedInputTokens < 0) return failure("failed", "provider_response_invalid", elapsed());
   if (countedInputTokens > OPENAI_SYNTHETIC_RISK_LIMITS.maxInputTokens || countedInputTokens + OPENAI_SYNTHETIC_RISK_LIMITS.maxOutputTokens > OPENAI_SYNTHETIC_RISK_LIMITS.maxTotalTokens) {
@@ -579,7 +644,8 @@ export async function executeSyntheticCandidateRiskSignals(
       Math.min(OPENAI_SYNTHETIC_RISK_LIMITS.generationTimeoutMs, remainingMs),
     );
   } catch (error) {
-    return failure("failed", transportCategory(error), elapsed());
+    const normalized = transportFailure(error);
+    return failure("failed", normalized.category, elapsed(), normalized.providerErrorMetadata);
   }
   if (generated.status === "refused") return failure("failed", "provider_refused", elapsed());
   if (generated.status === "incomplete") return failure("failed", "provider_incomplete", elapsed());

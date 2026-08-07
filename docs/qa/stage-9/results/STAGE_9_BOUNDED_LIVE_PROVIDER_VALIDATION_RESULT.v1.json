@@ -1,21 +1,21 @@
 {
   "artifact_version": "stage-9-bounded-live-provider-validation-result.1",
-  "authorization_consumption_state": "UNCONSUMED",
+  "authorization_consumption_state": "CONSUMED",
   "decision_engine_integrity_gate": "PASS",
   "dedicated_gate": "SELF_VALIDATING_CURRENT_INVOCATION",
   "evidence_path": "docs/qa/stage-9/live-evidence/STAGE_9_BOUNDED_LIVE_PROVIDER_VALIDATION_EVIDENCE.v1.json",
-  "evidence_sha256": "bf07eada5c4c65e0f9b49ae9931e9fc40bafb79e16bab7ef62f82e9d3d09c15c",
+  "evidence_sha256": "e611e0c7cf3e1e40dc417bdfa35be9dc09d2699dc95e54086bf3fcef0fe79ae0",
   "generated_at": null,
   "git_diff_cached_check": "PASS",
   "git_diff_check": "PASS",
   "negative_self_tests": "PASS",
-  "provider_cost_usd": 0,
-  "provider_execution_count": 0,
-  "provider_request_count": 0,
+  "provider_cost_usd": null,
+  "provider_execution_count": 1,
+  "provider_request_count": 1,
   "runtime_write_set": [
     "docs/qa/stage-9/live-evidence/STAGE_9_BOUNDED_LIVE_PROVIDER_VALIDATION_EVIDENCE.v1.json",
     "docs/qa/stage-9/results/STAGE_9_BOUNDED_LIVE_PROVIDER_VALIDATION_RESULT.v1.json"
   ],
   "secret_scan": "PASS",
-  "status": "ABORTED_BEFORE_PROVIDER_EXECUTION"
+  "status": "BOUNDED_RUNTIME_VALIDATION_FAIL"
 }

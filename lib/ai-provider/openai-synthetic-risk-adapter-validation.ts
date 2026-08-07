@@ -86,9 +86,9 @@ export function validCandidateRiskMaterial(): CandidateRiskMaterial {
 
 type MockOptions = {
   count?: number;
-  countFailure?: string;
+  countFailure?: string | SyntheticRiskTransportFailure;
   generation?: SyntheticRiskTransportGeneration;
-  generationFailure?: string;
+  generationFailure?: string | SyntheticRiskTransportFailure;
 };
 
 function mockTransport(options: MockOptions = {}) {
@@ -102,14 +102,18 @@ function mockTransport(options: MockOptions = {}) {
       countCalls += 1;
       countRequest = request;
       events.push("count");
-      if (options.countFailure) throw new SyntheticRiskTransportFailure(options.countFailure as never);
+      if (options.countFailure) throw options.countFailure instanceof SyntheticRiskTransportFailure
+        ? options.countFailure
+        : new SyntheticRiskTransportFailure(options.countFailure as never);
       return options.count ?? 600;
     },
     async generate(request) {
       generationCalls += 1;
       generationRequest = request;
       events.push("generate");
-      if (options.generationFailure) throw new SyntheticRiskTransportFailure(options.generationFailure as never);
+      if (options.generationFailure) throw options.generationFailure instanceof SyntheticRiskTransportFailure
+        ? options.generationFailure
+        : new SyntheticRiskTransportFailure(options.generationFailure as never);
       return options.generation ?? {
         status: "completed",
         outputText: JSON.stringify(validCandidateRiskMaterial()),
@@ -191,6 +195,15 @@ export async function runStage9OpenAISyntheticRiskAdapterValidation(): Promise<S
   add("rate-limit-normalized", category(rateLimit.result) === "provider_rate_limited");
   const auth = await execute(syntheticRiskFixture(), {}, mockTransport({ countFailure: "provider_authentication_failed" }));
   add("authentication-normalized", category(auth.result) === "provider_authentication_failed");
+  const badRequestFailure = new SyntheticRiskTransportFailure("provider_bad_request", {
+    httpStatus: 400,
+    type: "invalid_request_error",
+    code: "invalid_value",
+    param: "text.format.schema",
+    message: "400 Invalid schema.",
+  });
+  const badRequest = await execute(syntheticRiskFixture(), {}, mockTransport({ countFailure: badRequestFailure }));
+  add("bad-request-controlled-result", badRequest.result.status === "failed" && badRequest.result.error.category === "provider_bad_request" && badRequest.result.error.providerErrorMetadata?.httpStatus === 400 && badRequest.mock.stats().generationCalls === 0);
   const refusal = await execute(syntheticRiskFixture(), {}, mockTransport({ generation: { status: "refused" } }));
   add("refusal-normalized", category(refusal.result) === "provider_refused");
   const incomplete = await execute(syntheticRiskFixture(), {}, mockTransport({ generation: { status: "incomplete" } }));
