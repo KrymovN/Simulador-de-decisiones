@@ -3,19 +3,64 @@ import "server-only";
 import OpenAI from "openai";
 
 import {
-  OPENAI_SYNTHETIC_RISK_MODEL,
+  DecisionMaterialTransportFailure,
+  type DecisionMaterialProviderRequest,
+  type DecisionMaterialTransport,
+} from "./openai-decision-material-adapter";
+import {
   SyntheticRiskTransportFailure,
   boundedProviderBadRequestMetadata,
   executeSyntheticCandidateRiskSignals,
   type SyntheticRiskExecutionResult,
   type SyntheticRiskProviderRequest,
-  type SyntheticRiskTransport,
-  type SyntheticRiskTransportGeneration,
 } from "./openai-synthetic-risk-adapter";
 
-function responseRequest(request: SyntheticRiskProviderRequest) {
+type OpenAIResponsesProviderRequest = {
+  model: string;
+  instructions: string;
+  input: string;
+  reasoningEffort: "low";
+  schemaName: string;
+  schema: Record<string, unknown>;
+  strict: true;
+  tools: [];
+  maxOutputTokens: number;
+};
+
+type OpenAIResponsesTransportGeneration =
+  | {
+      status: "completed";
+      outputText: string;
+      usage: { inputTokens: number; outputTokens: number; totalTokens: number };
+    }
+  | { status: "refused" }
+  | { status: "incomplete" };
+
+type OpenAIResponsesTransport<TRequest extends OpenAIResponsesProviderRequest> = {
+  countInput(request: TRequest, timeoutMs: number): Promise<number>;
+  generate(
+    request: TRequest,
+    timeoutMs: number,
+  ): Promise<OpenAIResponsesTransportGeneration>;
+};
+
+type OpenAIProviderFailureCategory =
+  | "provider_timeout"
+  | "provider_authentication_failed"
+  | "provider_rate_limited"
+  | "provider_unavailable"
+  | "provider_bad_request"
+  | "provider_response_invalid"
+  | "provider_unknown_failure";
+
+type OpenAIProviderFailureFactory = (
+  category: OpenAIProviderFailureCategory,
+  providerErrorMetadata?: ReturnType<typeof boundedProviderBadRequestMetadata>,
+) => Error;
+
+function responseRequest(request: OpenAIResponsesProviderRequest) {
   return {
-    model: OPENAI_SYNTHETIC_RISK_MODEL,
+    model: request.model,
     instructions: request.instructions,
     input: request.input,
     reasoning: { effort: request.reasoningEffort },
@@ -31,21 +76,24 @@ function responseRequest(request: SyntheticRiskProviderRequest) {
   };
 }
 
-export function normalizedProviderFailure(error: unknown): SyntheticRiskTransportFailure {
+function normalizeOpenAIProviderFailure(
+  error: unknown,
+  failure: OpenAIProviderFailureFactory,
+): Error {
   if (error instanceof OpenAI.APIConnectionTimeoutError) {
-    return new SyntheticRiskTransportFailure("provider_timeout");
+    return failure("provider_timeout");
   }
   if (error instanceof OpenAI.AuthenticationError) {
-    return new SyntheticRiskTransportFailure("provider_authentication_failed");
+    return failure("provider_authentication_failed");
   }
   if (error instanceof OpenAI.RateLimitError) {
-    return new SyntheticRiskTransportFailure("provider_rate_limited");
+    return failure("provider_rate_limited");
   }
   if (error instanceof OpenAI.APIConnectionError) {
-    return new SyntheticRiskTransportFailure("provider_unavailable");
+    return failure("provider_unavailable");
   }
   if (error instanceof OpenAI.BadRequestError) {
-    return new SyntheticRiskTransportFailure(
+    return failure(
       "provider_bad_request",
       boundedProviderBadRequestMetadata({
         status: error.status,
@@ -57,9 +105,19 @@ export function normalizedProviderFailure(error: unknown): SyntheticRiskTranspor
     );
   }
   if (error instanceof OpenAI.APIError && error.status != null && error.status >= 500) {
-    return new SyntheticRiskTransportFailure("provider_unavailable");
+    return failure("provider_unavailable");
   }
-  return new SyntheticRiskTransportFailure("provider_unknown_failure");
+  return failure("provider_unknown_failure");
+}
+
+const syntheticRiskFailure: OpenAIProviderFailureFactory = (category, metadata) =>
+  new SyntheticRiskTransportFailure(category, metadata);
+
+const decisionMaterialFailure: OpenAIProviderFailureFactory = (category, metadata) =>
+  new DecisionMaterialTransportFailure(category, metadata);
+
+export function normalizedProviderFailure(error: unknown): SyntheticRiskTransportFailure {
+  return normalizeOpenAIProviderFailure(error, syntheticRiskFailure) as SyntheticRiskTransportFailure;
 }
 
 function responseWasRefused(response: OpenAI.Responses.Response): boolean {
@@ -69,7 +127,13 @@ function responseWasRefused(response: OpenAI.Responses.Response): boolean {
   );
 }
 
-function createOpenAITransport(apiKey: string): SyntheticRiskTransport {
+/** Existing server-only OpenAI Responses transport shared by bounded adapters. */
+function createOpenAITransport<
+  TRequest extends OpenAIResponsesProviderRequest = SyntheticRiskProviderRequest,
+>(
+  apiKey: string,
+  failure: OpenAIProviderFailureFactory = syntheticRiskFailure,
+): OpenAIResponsesTransport<TRequest> {
   const client = new OpenAI({
     apiKey,
     maxRetries: 0,
@@ -84,11 +148,11 @@ function createOpenAITransport(apiKey: string): SyntheticRiskTransport {
         );
         return counted.input_tokens;
       } catch (error) {
-        throw normalizedProviderFailure(error);
+        throw normalizeOpenAIProviderFailure(error, failure);
       }
     },
 
-    async generate(request, timeoutMs): Promise<SyntheticRiskTransportGeneration> {
+    async generate(request, timeoutMs): Promise<OpenAIResponsesTransportGeneration> {
       try {
         const response = await client.responses.create(
           {
@@ -103,7 +167,7 @@ function createOpenAITransport(apiKey: string): SyntheticRiskTransport {
         if (responseWasRefused(response)) return { status: "refused" };
         if (response.status !== "completed") return { status: "incomplete" };
         if (!response.usage || typeof response.output_text !== "string") {
-          throw new SyntheticRiskTransportFailure("provider_response_invalid");
+          throw failure("provider_response_invalid");
         }
         return {
           status: "completed",
@@ -115,24 +179,49 @@ function createOpenAITransport(apiKey: string): SyntheticRiskTransport {
           },
         };
       } catch (error) {
-        if (error instanceof SyntheticRiskTransportFailure) throw error;
-        throw normalizedProviderFailure(error);
+        if (
+          error instanceof SyntheticRiskTransportFailure ||
+          error instanceof DecisionMaterialTransportFailure
+        ) throw error;
+        throw normalizeOpenAIProviderFailure(error, failure);
       }
     },
+  };
+}
+
+export function createOpenAIDecisionMaterialTransport(
+  apiKey: string,
+): DecisionMaterialTransport {
+  return createOpenAITransport<DecisionMaterialProviderRequest>(
+    apiKey,
+    decisionMaterialFailure,
+  );
+}
+
+export function readOpenAIEnvironmentConfiguration(): {
+  LEVIO_REAL_AI_DEV_ENABLED?: string;
+  LEVIO_AI_PROVIDER?: string;
+  OPENAI_API_KEY?: string;
+} {
+  return {
+    LEVIO_REAL_AI_DEV_ENABLED: process.env.LEVIO_REAL_AI_DEV_ENABLED,
+    LEVIO_AI_PROVIDER: process.env.LEVIO_AI_PROVIDER,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   };
 }
 
 export async function executeOpenAISyntheticCandidateRiskSignalsManually(
   repositoryOwnedFixture: unknown,
 ): Promise<SyntheticRiskExecutionResult> {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const environment = readOpenAIEnvironmentConfiguration();
+  const apiKey = environment.OPENAI_API_KEY;
   return executeSyntheticCandidateRiskSignals(repositoryOwnedFixture, {
-    enabled: process.env.LEVIO_REAL_AI_DEV_ENABLED === "true",
+    enabled: environment.LEVIO_REAL_AI_DEV_ENABLED === "true",
     apiKeyAvailable: Boolean(apiKey),
-    provider: process.env.LEVIO_AI_PROVIDER,
+    provider: environment.LEVIO_AI_PROVIDER,
     manualDevInvocation: true,
     transport: apiKey
-      ? createOpenAITransport(apiKey)
+      ? createOpenAITransport<SyntheticRiskProviderRequest>(apiKey)
       : {
           countInput: async () => {
             throw new SyntheticRiskTransportFailure("credentials_unavailable");

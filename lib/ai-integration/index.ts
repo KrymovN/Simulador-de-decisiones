@@ -10,3 +10,10 @@ export * from "./decision-engine-prompt-context-bridge";
 export * from "./decision-engine-prompt-context-bridge.validation";
 export * from "./production-decision-simulation-orchestrator";
 export * from "./production-decision-simulation-orchestrator.validation";
+export {
+  createProductionDecisionSimulationCompositionRoot,
+} from "./production-decision-simulation-composition-root.server";
+export type {
+  ProductionDecisionSimulationCompositionRoot,
+  ProductionDecisionSimulationCompositionRootBinding,
+} from "./production-decision-simulation-composition-root.server";
