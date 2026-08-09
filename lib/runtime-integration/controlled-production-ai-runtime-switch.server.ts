@@ -1,11 +1,19 @@
 import "server-only";
 
 import type { DecisionEnginePromptContextBridgeRequest } from "../ai-integration/contracts";
+import { AsyncLocalStorage } from "node:async_hooks";
 import {
   bindProductionDecisionSimulationCompositionRoot,
   type OpenAIDecisionMaterialTransportFactory,
   type ProductionDecisionSimulationCompositionRoot,
 } from "../ai-integration/production-decision-simulation-composition-root.server";
+import {
+  calculateDecisionMaterialCost,
+  DecisionMaterialTransportFailure,
+  type DecisionMaterialProviderRequest,
+  type DecisionMaterialTransport,
+  type DecisionMaterialTransportGeneration,
+} from "../ai-provider/openai-decision-material-adapter";
 import {
   createOpenAIDecisionMaterialTransport,
   readOpenAIEnvironmentConfiguration,
@@ -14,6 +22,9 @@ import type { DecisionContext } from "../decision-engine/types";
 import {
   CONTROLLED_SIMULATOR_SWITCH_MODE,
   CONTROLLED_SIMULATOR_SWITCH_VERSION,
+  CONTROLLED_PRODUCTION_AI_OPERATIONAL_EVENT_VERSION,
+  type ControlledProductionAiOperationalEvent,
+  type ControlledProductionAiOperationalObserver,
   type ControlledProductionAiEvidence,
   type ControlledProductionAiFailureCode,
   type ControlledProductionAiFailureResult,
@@ -50,6 +61,16 @@ export type ControlledProductionAiRuntimeEnvironment = Readonly<
 
 export type ControlledProductionAiRuntimeClock = () => string;
 
+export type ControlledProductionAiOperationalOptions = {
+  observer?: ControlledProductionAiOperationalObserver;
+  now?: () => number;
+};
+
+type OperationalExecutionContext = {
+  requestId: string;
+  rollbackState: ControlledProductionAiOperationalEvent["rollbackState"];
+};
+
 function record(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -68,6 +89,42 @@ function safeRequestId(value: unknown): string {
 
 function boundedOrchestrationId(value: string): boolean {
   return /^[a-z0-9][a-z0-9_-]{2,47}$/i.test(value);
+}
+
+function operationalRequestId(value: unknown): string {
+  const candidate = safeRequestId(value);
+  return boundedOrchestrationId(candidate)
+    ? candidate
+    : "invalid_controlled_switch_request";
+}
+
+function normalizedTransportFailure(error: unknown): string {
+  return error instanceof DecisionMaterialTransportFailure
+    ? error.category
+    : "provider_unknown_failure";
+}
+
+function safeUsage(generation: DecisionMaterialTransportGeneration):
+  ControlledProductionAiOperationalEvent["usage"] | undefined {
+  if (generation.status !== "completed") return undefined;
+  const { inputTokens, outputTokens, totalTokens } = generation.usage;
+  if (
+    !Number.isSafeInteger(inputTokens) || inputTokens < 0 ||
+    !Number.isSafeInteger(outputTokens) || outputTokens < 0 ||
+    !Number.isSafeInteger(totalTokens) || totalTokens !== inputTokens + outputTokens
+  ) return undefined;
+  return {
+    inputTokens,
+    outputTokens,
+    totalTokens,
+    calculatedCostUsd: calculateDecisionMaterialCost(inputTokens, outputTokens),
+  };
+}
+
+export function writeControlledProductionAiOperationalEvent(
+  event: ControlledProductionAiOperationalEvent,
+): void {
+  console.info("[levio:production-ai-runtime]", JSON.stringify(event));
 }
 
 function aiEvidence(
@@ -139,38 +196,214 @@ export function bindControlledProductionAiRuntimeSwitch(
   environment: ControlledProductionAiRuntimeEnvironment,
   transportFactory: OpenAIDecisionMaterialTransportFactory,
   clock: ControlledProductionAiRuntimeClock,
+  operational: ControlledProductionAiOperationalOptions = {},
 ): ControlledProductionAiRuntimeSwitch {
+  const now = operational.now ?? Date.now;
+  const executionStorage = new AsyncLocalStorage<OperationalExecutionContext>();
+  const rollbackState: ControlledProductionAiOperationalEvent["rollbackState"] =
+    environment.LEVIO_REAL_AI_DEV_ENABLED === "true" ? "available" : "active";
+  const occurredAt = () => {
+    try {
+      return clock();
+    } catch {
+      return "1970-01-01T00:00:00.000Z";
+    }
+  };
+  const emit = (
+    event: Omit<
+      ControlledProductionAiOperationalEvent,
+      "eventVersion" | "occurredAt" | "sensitiveDataIncluded"
+    >,
+  ) => {
+    if (!operational.observer) return;
+    try {
+      operational.observer({
+        eventVersion: CONTROLLED_PRODUCTION_AI_OPERATIONAL_EVENT_VERSION,
+        occurredAt: occurredAt(),
+        ...event,
+        sensitiveDataIncluded: false,
+      });
+    } catch {
+      // Operational evidence must never alter controlled runtime behaviour.
+    }
+  };
+  const observedTransportFactory: OpenAIDecisionMaterialTransportFactory = (apiKey) => {
+    const transport = transportFactory(apiKey);
+    const observedTransport: DecisionMaterialTransport = {
+      async countInput(
+        request: DecisionMaterialProviderRequest,
+        timeoutMs: number,
+      ): Promise<number> {
+        const startedAt = now();
+        try {
+          const inputTokens = await transport.countInput(request, timeoutMs);
+          const context = executionStorage.getStore();
+          if (context) {
+            emit({
+              event: "provider_operation_completed",
+              requestId: context.requestId,
+              runtimePath: "production_ai",
+              status: "completed",
+              latencyMs: Math.max(0, now() - startedAt),
+              providerOperation: "input_token_count",
+              usage: Number.isSafeInteger(inputTokens) && inputTokens >= 0
+                ? {
+                    inputTokens,
+                    outputTokens: 0,
+                    totalTokens: inputTokens,
+                    calculatedCostUsd: calculateDecisionMaterialCost(inputTokens, 0),
+                  }
+                : undefined,
+              fallbackState: "not_used",
+              rollbackState: context.rollbackState,
+            });
+          }
+          return inputTokens;
+        } catch (error) {
+          const context = executionStorage.getStore();
+          if (context) {
+            emit({
+              event: "provider_operation_failed",
+              requestId: context.requestId,
+              runtimePath: "production_ai",
+              status: "failed",
+              latencyMs: Math.max(0, now() - startedAt),
+              providerOperation: "input_token_count",
+              failureCategory: normalizedTransportFailure(error),
+              fallbackState: "fail_closed",
+              rollbackState: context.rollbackState,
+            });
+          }
+          throw error;
+        }
+      },
+      async generate(
+        request: DecisionMaterialProviderRequest,
+        timeoutMs: number,
+      ): Promise<DecisionMaterialTransportGeneration> {
+        const startedAt = now();
+        try {
+          const generation = await transport.generate(request, timeoutMs);
+          const context = executionStorage.getStore();
+          if (context) {
+            const failureCategory = generation.status === "refused"
+              ? "provider_refused"
+              : generation.status === "incomplete"
+                ? "provider_incomplete"
+                : undefined;
+            emit({
+              event: failureCategory
+                ? "provider_operation_failed"
+                : "provider_operation_completed",
+              requestId: context.requestId,
+              runtimePath: "production_ai",
+              status: failureCategory ? "failed" : "completed",
+              latencyMs: Math.max(0, now() - startedAt),
+              providerOperation: "generation",
+              ...(safeUsage(generation) ? { usage: safeUsage(generation) } : {}),
+              ...(failureCategory ? { failureCategory } : {}),
+              fallbackState: failureCategory ? "fail_closed" : "not_used",
+              rollbackState: context.rollbackState,
+            });
+          }
+          return generation;
+        } catch (error) {
+          const context = executionStorage.getStore();
+          if (context) {
+            emit({
+              event: "provider_operation_failed",
+              requestId: context.requestId,
+              runtimePath: "production_ai",
+              status: "failed",
+              latencyMs: Math.max(0, now() - startedAt),
+              providerOperation: "generation",
+              failureCategory: normalizedTransportFailure(error),
+              fallbackState: "fail_closed",
+              rollbackState: context.rollbackState,
+            });
+          }
+          throw error;
+        }
+      },
+    };
+    return observedTransport;
+  };
   const safeEnvironment = readOpenAIEnvironmentConfiguration(environment);
   const compositionRoot: ProductionDecisionSimulationCompositionRoot =
     bindProductionDecisionSimulationCompositionRoot(
       safeEnvironment,
-      transportFactory,
+      observedTransportFactory,
     );
 
   return {
     serverOnly: true,
     async execute(value) {
+      const executionStartedAt = now();
+      const requestId = operationalRequestId(value);
       if (!exactRuntimeRequest(value)) {
-        return runControlledSimulatorRuntimeSwitch(
+        const invalid = runControlledSimulatorRuntimeSwitch(
           { requestId: safeRequestId(value) },
           {},
         );
+        emit({
+          event: "runtime_selected",
+          requestId,
+          runtimePath: "controlled_failure",
+          status: "failed",
+          latencyMs: Math.max(0, now() - executionStartedAt),
+          failureCategory: "invalid_switch_request",
+          fallbackState: "fail_closed",
+          rollbackState,
+        });
+        return invalid;
       }
 
       const deterministic = runControlledSimulatorRuntimeSwitch(value, {});
-      if (deterministic.selectedPath === "controlled_failure") return deterministic;
+      if (deterministic.selectedPath === "controlled_failure") {
+        emit({
+          event: "runtime_selected",
+          requestId,
+          runtimePath: "controlled_failure",
+          status: "failed",
+          latencyMs: Math.max(0, now() - executionStartedAt),
+          failureCategory: deterministic.failure.code,
+          fallbackState: "fail_closed",
+          rollbackState,
+        });
+        return deterministic;
+      }
 
       if (compositionRoot.binding.status === "blocked") {
         if (compositionRoot.binding.error.code === "runtime_disabled") {
+          emit({
+            event: "runtime_selected",
+            requestId,
+            runtimePath: "deterministic_mock",
+            status: "selected",
+            latencyMs: Math.max(0, now() - executionStartedAt),
+            fallbackState: "not_used",
+            rollbackState: "active",
+          });
           return deterministic;
         }
-        return aiFailure({
+        const failure = aiFailure({
           requestId: deterministic.requestId,
           code: "production_ai_configuration_invalid",
           sourceCode: compositionRoot.binding.error.code,
           message: "Production AI server configuration is unavailable.",
           compositionRootUsed: false,
         });
+        emit({
+          event: "runtime_selected",
+          requestId,
+          runtimePath: "controlled_failure",
+          status: "failed",
+          latencyMs: Math.max(0, now() - executionStartedAt),
+          failureCategory: compositionRoot.binding.error.code,
+          fallbackState: "fail_closed",
+          rollbackState,
+        });
+        return failure;
       }
 
       if (!validateControlledSimulatorSwitchRequest(value)) return deterministic;
@@ -178,40 +411,98 @@ export function bindControlledProductionAiRuntimeSwitch(
       try {
         canonicalBridgeRequest = bridgeRequest(value, clock());
       } catch {
-        return aiFailure({
+        const failure = aiFailure({
           requestId: value.requestId,
           code: "production_ai_input_invalid",
           sourceCode: "internal_input_construction_failed",
           message: "Canonical internal AI runtime input is invalid.",
           compositionRootUsed: false,
         });
+        emit({
+          event: "runtime_selected",
+          requestId,
+          runtimePath: "controlled_failure",
+          status: "failed",
+          latencyMs: Math.max(0, now() - executionStartedAt),
+          failureCategory: "internal_input_construction_failed",
+          fallbackState: "fail_closed",
+          rollbackState,
+        });
+        return failure;
       }
       if (!canonicalBridgeRequest) {
-        return aiFailure({
+        const sourceCode = value.context
+          ? "orchestration_id_invalid"
+          : "decision_context_missing";
+        const failure = aiFailure({
           requestId: value.requestId,
           code: "production_ai_input_invalid",
-          sourceCode: value.context ? "orchestration_id_invalid" : "decision_context_missing",
+          sourceCode,
           message: "Canonical internal AI runtime input is invalid.",
           compositionRootUsed: false,
         });
+        emit({
+          event: "runtime_selected",
+          requestId,
+          runtimePath: "controlled_failure",
+          status: "failed",
+          latencyMs: Math.max(0, now() - executionStartedAt),
+          failureCategory: sourceCode,
+          fallbackState: "fail_closed",
+          rollbackState,
+        });
+        return failure;
       }
 
+      emit({
+        event: "runtime_selected",
+        requestId,
+        runtimePath: "production_ai",
+        status: "selected",
+        latencyMs: Math.max(0, now() - executionStartedAt),
+        fallbackState: "not_used",
+        rollbackState,
+      });
+      emit({
+        event: "orchestration_started",
+        requestId,
+        runtimePath: "production_ai",
+        status: "started",
+        latencyMs: 0,
+        fallbackState: "not_used",
+        rollbackState,
+      });
       try {
-        const orchestration = await compositionRoot.execute({
-          orchestrationId: value.requestId,
-          bridgeRequest: canonicalBridgeRequest,
-        });
+        const orchestration = await executionStorage.run(
+          { requestId, rollbackState },
+          () => compositionRoot.execute({
+            orchestrationId: value.requestId,
+            bridgeRequest: canonicalBridgeRequest,
+          }),
+        );
         if (orchestration.status !== "completed") {
-          return aiFailure({
+          const sourceCode = orchestration.error.sourceCode ?? orchestration.error.code;
+          const failure = aiFailure({
             requestId: value.requestId,
             code: "production_ai_execution_failed",
-            sourceCode: orchestration.error.sourceCode ?? orchestration.error.code,
+            sourceCode,
             message: "Production AI orchestration failed closed.",
             compositionRootUsed: true,
           });
+          emit({
+            event: "orchestration_failed",
+            requestId,
+            runtimePath: "production_ai",
+            status: "failed",
+            latencyMs: Math.max(0, now() - executionStartedAt),
+            failureCategory: sourceCode,
+            fallbackState: "fail_closed",
+            rollbackState,
+          });
+          return failure;
         }
 
-        return {
+        const completed = {
           switchVersion: CONTROLLED_SIMULATOR_SWITCH_VERSION,
           mode: CONTROLLED_SIMULATOR_SWITCH_MODE,
           requestId: value.requestId,
@@ -221,15 +512,36 @@ export function bindControlledProductionAiRuntimeSwitch(
           response: orchestration.response,
           fallback: { used: false },
           evidence: aiEvidence(true, true),
-        };
+        } as const;
+        emit({
+          event: "orchestration_completed",
+          requestId,
+          runtimePath: "production_ai",
+          status: "completed",
+          latencyMs: Math.max(0, now() - executionStartedAt),
+          fallbackState: "not_used",
+          rollbackState,
+        });
+        return completed;
       } catch {
-        return aiFailure({
+        const failure = aiFailure({
           requestId: value.requestId,
           code: "production_ai_execution_failed",
           sourceCode: "controlled_internal_error",
           message: "Production AI orchestration failed closed.",
           compositionRootUsed: true,
         });
+        emit({
+          event: "orchestration_failed",
+          requestId,
+          runtimePath: "production_ai",
+          status: "failed",
+          latencyMs: Math.max(0, now() - executionStartedAt),
+          failureCategory: "controlled_internal_error",
+          fallbackState: "fail_closed",
+          rollbackState,
+        });
+        return failure;
       }
     },
   };
@@ -241,6 +553,10 @@ export function createControlledProductionAiRuntimeSwitch():
     process.env,
     createOpenAIDecisionMaterialTransport,
     () => new Date().toISOString(),
+    {
+      observer: writeControlledProductionAiOperationalEvent,
+      now: Date.now,
+    },
   );
 }
 

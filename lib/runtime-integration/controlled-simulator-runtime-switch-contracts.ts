@@ -168,6 +168,41 @@ export type ControlledServerRuntimeSelectionResult =
   | ControlledProductionAiV2Result
   | ControlledProductionAiFailureResult;
 
+export const CONTROLLED_PRODUCTION_AI_OPERATIONAL_EVENT_VERSION = "1.0" as const;
+
+export type ControlledProductionAiOperationalEventName =
+  | "runtime_selected"
+  | "orchestration_started"
+  | "orchestration_completed"
+  | "orchestration_failed"
+  | "provider_operation_completed"
+  | "provider_operation_failed";
+
+export type ControlledProductionAiOperationalEvent = {
+  eventVersion: typeof CONTROLLED_PRODUCTION_AI_OPERATIONAL_EVENT_VERSION;
+  event: ControlledProductionAiOperationalEventName;
+  occurredAt: string;
+  requestId: string;
+  runtimePath: "deterministic_mock" | "production_ai" | "controlled_failure";
+  status: "selected" | "started" | "completed" | "failed";
+  latencyMs: number;
+  providerOperation?: "input_token_count" | "generation";
+  usage?: {
+    inputTokens: number;
+    outputTokens: number;
+    totalTokens: number;
+    calculatedCostUsd: number;
+  };
+  failureCategory?: string;
+  fallbackState: "not_used" | "fail_closed";
+  rollbackState: "active" | "available";
+  sensitiveDataIncluded: false;
+};
+
+export type ControlledProductionAiOperationalObserver = (
+  event: ControlledProductionAiOperationalEvent,
+) => void;
+
 export type ControlledSimulatorSwitchValidationCaseResult = {
   caseId: string;
   title: string;

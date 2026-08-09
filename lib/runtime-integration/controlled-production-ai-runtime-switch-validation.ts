@@ -17,6 +17,8 @@ import {
 import {
   CONTROLLED_SIMULATOR_SWITCH_MODE,
   CONTROLLED_SIMULATOR_SWITCH_VERSION,
+  type ControlledProductionAiOperationalEvent,
+  type ControlledProductionAiOperationalObserver,
   type ControlledServerRuntimeSelectionResult,
   type ControlledSimulatorSwitchRequest,
 } from "./controlled-simulator-runtime-switch-contracts";
@@ -89,9 +91,12 @@ function runtime(
   environment: ControlledProductionAiRuntimeEnvironment,
   fake = fakeTransport(),
   throwDuringCreation = false,
+  observer?: ControlledProductionAiOperationalObserver,
 ) {
   let factoryCalls = 0;
   let receivedKey: string | undefined;
+  let currentTime = 1000;
+  const events: ControlledProductionAiOperationalEvent[] = [];
   const bound = bindControlledProductionAiRuntimeSwitch(
     environment,
     (apiKey) => {
@@ -101,10 +106,18 @@ function runtime(
       return fake.transport;
     },
     () => "2026-08-09T00:00:00.000Z",
+    {
+      observer: observer ?? ((event) => events.push(event)),
+      now: () => {
+        currentTime += 5;
+        return currentTime;
+      },
+    },
   );
   return {
     bound,
     fake,
+    events,
     stats: () => ({ factoryCalls, receivedKey }),
   };
 }
@@ -216,6 +229,43 @@ export async function runControlledProductionAiRuntimeSwitchValidation():
   const invalidSchemaRuntime = runtime(enabledEnvironment.environment, invalidSchemaFake);
   const invalidSchema = await invalidSchemaRuntime.bound.execute(request());
 
+  const observerFailureRuntime = runtime(
+    enabledEnvironment.environment,
+    fakeTransport(),
+    false,
+    () => {
+      throw new Error("operational sink unavailable");
+    },
+  );
+  const observerFailure = await observerFailureRuntime.bound.execute(request());
+
+  const rollbackValues: Record<string, string | undefined> = {
+    LEVIO_REAL_AI_DEV_ENABLED: "true",
+    LEVIO_AI_PROVIDER: "openai",
+    OPENAI_API_KEY: "rollback-key-must-not-leak",
+  };
+  const rollbackEnvironment = observedEnvironment(rollbackValues);
+  const rollbackEnabledRuntime = runtime(rollbackEnvironment.environment);
+  const beforeRollback = await rollbackEnabledRuntime.bound.execute(request());
+  const credentialReadsBeforeRollback = rollbackEnvironment.credentialReads();
+  rollbackValues.LEVIO_REAL_AI_DEV_ENABLED = "false";
+  const rollbackRuntime = runtime(rollbackEnvironment.environment);
+  const rolledBack = await rollbackRuntime.bound.execute(request());
+
+  const completedProviderEvents = enabledRuntime.events.filter((event) =>
+    event.event === "provider_operation_completed"
+  );
+  const generationEvent = completedProviderEvents.find((event) =>
+    event.providerOperation === "generation"
+  );
+  const serializedOperationalEvidence = JSON.stringify(enabledRuntime.events);
+  const unavailableProviderFailureEvent = unavailableRuntime.events.find((event) =>
+    event.event === "provider_operation_failed"
+  );
+  const unavailableOrchestrationFailureEvent = unavailableRuntime.events.find((event) =>
+    event.event === "orchestration_failed"
+  );
+
   const cases = [
     validationCase({
       caseId: "disabled_default_selects_existing_mock_path",
@@ -322,6 +372,77 @@ export async function runControlledProductionAiRuntimeSwitchValidation():
         failureSource(invalidSchema) === "provider_schema_invalid" &&
         invalidSchema.fallback.used === false,
       issue: "Invalid provider material escaped controlled orchestration failure.",
+    }),
+    validationCase({
+      caseId: "operational_evidence_covers_selection_orchestration_and_provider",
+      kind: "positive",
+      passed: [
+        "runtime_selected",
+        "orchestration_started",
+        "provider_operation_completed",
+        "orchestration_completed",
+      ].every((eventName) => enabledRuntime.events.some((event) => event.event === eventName)) &&
+        completedProviderEvents.length === 2 &&
+        enabledRuntime.events.every((event) =>
+          event.sensitiveDataIncluded === false &&
+          event.latencyMs >= 0 &&
+          event.rollbackState === "available"
+        ),
+      issue: "Operational evidence did not cover the controlled runtime lifecycle.",
+    }),
+    validationCase({
+      caseId: "operational_usage_and_cost_are_normalized",
+      kind: "positive",
+      passed: generationEvent?.usage?.inputTokens === 1200 &&
+        generationEvent.usage.outputTokens === 700 &&
+        generationEvent.usage.totalTokens === 1900 &&
+        generationEvent.usage.calculatedCostUsd === 0.0108,
+      issue: "Provider token usage or calculated cost was not normalized safely.",
+    }),
+    validationCase({
+      caseId: "operational_evidence_excludes_sensitive_and_raw_content",
+      kind: "negative",
+      passed: !serializedOperationalEvidence.includes("offline-runtime-key") &&
+        !serializedOperationalEvidence.includes("Authorization") &&
+        !serializedOperationalEvidence.includes(request().input) &&
+        !serializedOperationalEvidence.includes("outputText") &&
+        !serializedOperationalEvidence.includes("apiKey"),
+      issue: "Operational evidence included credentials, request content, or raw output.",
+    }),
+    validationCase({
+      caseId: "provider_failure_records_controlled_fail_closed_state",
+      kind: "negative",
+      passed: unavailableProviderFailureEvent?.failureCategory === "provider_unavailable" &&
+        unavailableProviderFailureEvent.fallbackState === "fail_closed" &&
+        unavailableOrchestrationFailureEvent?.failureCategory === "provider_unavailable" &&
+        unavailableOrchestrationFailureEvent.fallbackState === "fail_closed" &&
+        unavailableOrchestrationFailureEvent.rollbackState === "available",
+      issue: "Provider failure operational evidence did not preserve fail-closed semantics.",
+    }),
+    validationCase({
+      caseId: "server_switch_rollback_restores_mock_without_credentials_or_provider",
+      kind: "positive",
+      passed: beforeRollback.selectedPath === "controlled_production_ai_v2" &&
+        rolledBack.selectedPath === "public_mock_v1" &&
+        credentialReadsBeforeRollback > 0 &&
+        rollbackEnvironment.credentialReads() === credentialReadsBeforeRollback &&
+        rollbackRuntime.stats().factoryCalls === 0 &&
+        rollbackRuntime.fake.stats().countCalls === 0 &&
+        rollbackRuntime.fake.stats().generationCalls === 0 &&
+        rollbackRuntime.events.some((event) =>
+          event.event === "runtime_selected" &&
+          event.runtimePath === "deterministic_mock" &&
+          event.rollbackState === "active"
+        ),
+      issue: "Existing server switch did not provide credential-free deterministic rollback.",
+    }),
+    validationCase({
+      caseId: "operational_sink_failure_does_not_change_runtime_result",
+      kind: "negative",
+      passed: observerFailure.selectedPath === "controlled_production_ai_v2" &&
+        observerFailureRuntime.fake.stats().countCalls === 1 &&
+        observerFailureRuntime.fake.stats().generationCalls === 1,
+      issue: "Operational sink failure changed the controlled runtime outcome.",
     }),
   ];
   const passed = cases.filter((item) => item.passed).length;
