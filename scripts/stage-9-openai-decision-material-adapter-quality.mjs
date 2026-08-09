@@ -57,9 +57,11 @@ const add = (id, passed, detail) => checks.push({ id, passed: Boolean(passed), d
 const providerRegression = require(join(root, "lib", "ai-provider", "runtime-qa-regression.ts")).runAIProviderStage51Regression();
 const promptRegression = require(join(root, "lib", "prompt-context", "runtime-qa-regression.ts")).runPromptContextStage52Regression();
 const bridgeRegression = require(join(root, "lib", "ai-integration", "decision-engine-prompt-context-bridge.validation.ts")).runDecisionEnginePromptContextBridgeValidation();
+const postProviderRegression = require(join(root, "lib", "decision-engine", "post-provider-boundary-validation.ts")).runPostProviderDecisionEngineBoundaryValidation();
 add("existing-provider-abstraction-pass", providerRegression.passed && !providerRegression.failed, "Existing provider abstraction must remain valid.");
 add("existing-prompt-context-pass", promptRegression.passed && !promptRegression.failed, "Existing Prompt Context contracts/runtime/boundary must remain valid.");
 add("existing-decision-prompt-bridge-pass", bridgeRegression.passed && !bridgeRegression.failed, "Existing Decision Engine to Prompt Context bridge must remain valid.");
+add("existing-post-provider-decision-engine-pass", postProviderRegression.passed && !postProviderRegression.failed, "Post-provider Decision Engine authority must remain valid.");
 
 const changed = [
   ...execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).split("\n"),
@@ -84,6 +86,8 @@ add("canonical-prompt-context-used", adapter.includes('from "../prompt-context/v
 add("existing-provider-abstraction-used", adapter.includes("createAIProviderAdapter") && adapter.includes("createAIProviderRuntimeSelection") && adapter.includes("createAIProviderBoundary"), "Adapter must pass through the existing provider abstraction.");
 add("canonical-material-contract-used", adapter.includes('from "../ai-decision-material/contracts"') && adapter.includes("candidateDecisionMaterialHasValidContract"), "Adapter must use candidate_decision_material_v1 and its canonical validator.");
 add("strict-output-schema", adapter.includes('schemaName: "levio_candidate_decision_material_v1"') && adapter.includes("additionalProperties: false") && adapter.includes("strict: true"), "Provider request must require strict Structured Outputs.");
+add("provider-schema-compatible-array-keywords", !adapter.includes("uniqueItems") && validationSource.includes("provider-schema-excludes-unsupported-unique-items"), "Provider-facing Structured Outputs schema must exclude unsupported uniqueItems keywords.");
+add("local-reference-uniqueness-preserved", acceptance.includes("new Set(value).size === value.length") && validationSource.includes("duplicate-option-references-rejected-locally"), "Duplicate option references must remain locally rejected after provider schema compatibility normalization.");
 add("fixed-provider-model", adapter.includes('OPENAI_DECISION_MATERIAL_PROVIDER = "openai"') && adapter.includes('OPENAI_DECISION_MATERIAL_MODEL = "gpt-5.6-terra"'), "Provider and model must be internal fixed configuration.");
 add("no-client-runtime-override", adapter.includes("hasForbiddenRuntimeField") && validationSource.includes("client-provider-model-key-rejected"), "Client provider/model/key controls must fail closed.");
 add("controlled-schema-safety-grounding", adapter.includes("provider_schema_invalid") && adapter.includes("provider_safety_invalid") && adapter.includes("provider_grounding_invalid"), "Provider output must pass schema, safety, and reference grounding validation.");

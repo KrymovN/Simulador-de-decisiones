@@ -367,19 +367,16 @@ export const CANDIDATE_DECISION_MATERIAL_OUTPUT_SCHEMA: Record<string, unknown> 
           option_refs: {
             type: "array",
             maxItems: 16,
-            uniqueItems: true,
             items: { type: "string", pattern: "^[A-Za-z0-9][A-Za-z0-9_-]{2,79}$" },
           },
           scenario_refs: {
             type: "array",
             maxItems: 16,
-            uniqueItems: true,
             items: { type: "string", pattern: "^[A-Za-z0-9][A-Za-z0-9_-]{2,79}$" },
           },
           criterion_refs: {
             type: "array",
             maxItems: 16,
-            uniqueItems: true,
             items: { type: "string", pattern: "^[A-Za-z0-9][A-Za-z0-9_-]{2,79}$" },
           },
           authority: { type: "string", const: "candidate_only" },

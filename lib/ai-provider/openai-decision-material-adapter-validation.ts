@@ -201,11 +201,13 @@ export async function runStage9OpenAIDecisionMaterialAdapterValidation(): Promis
   add("fixed-provider-model", "positive", request.model === OPENAI_DECISION_MATERIAL_MODEL);
   add("canonical-output-contract", "positive", request.schemaName === "levio_candidate_decision_material_v1" && JSON.stringify(request.schema).includes(CANDIDATE_DECISION_MATERIAL_CAPABILITY));
   add("strict-structured-output", "positive", request.strict === true && CANDIDATE_DECISION_MATERIAL_OUTPUT_SCHEMA.additionalProperties === false);
+  add("provider-schema-excludes-unsupported-unique-items", "positive", !JSON.stringify(request.schema).includes('"uniqueItems"'));
   add("request-is-stateless", "positive", request.store === false && request.stream === false && request.background === false && request.tools.length === 0);
   add("context-is-minimized", "positive", !Object.hasOwn(serialized, "evidence") && !Object.hasOwn(serialized, "inputId") && !Object.hasOwn(serialized, "outputId"));
 
   const successful = await execute(context);
   add("candidate-material-returned", "positive", successful.result.status === "completed" && successful.result.candidateMaterial.capability === CANDIDATE_DECISION_MATERIAL_CAPABILITY);
+  add("unique-option-references-accepted", "positive", successful.result.status === "completed" && successful.result.candidateMaterial.items.every((item) => new Set(item.option_refs).size === item.option_refs.length));
   add("provider-abstraction-evidenced", "positive", successful.result.status === "completed" && successful.result.metadata.providerAbstractionUsed);
   add("prompt-context-validation-evidenced", "positive", successful.result.status === "completed" && successful.result.metadata.promptContextValidated);
   add("token-count-before-generation", "positive", successful.mock.events.join(",") === "count,generate");
@@ -276,6 +278,20 @@ export async function runStage9OpenAIDecisionMaterialAdapterValidation(): Promis
     generation: { status: "completed", outputText: JSON.stringify(badRef), usage: { inputTokens: 1200, outputTokens: 900, totalTokens: 2100 } },
   }));
   add("ungrounded-reference-rejected", "negative", category(ungrounded.result) === "provider_grounding_invalid");
+  const duplicateOptionRef = validCandidateDecisionMaterial();
+  duplicateOptionRef.items[0].option_refs = ["option_1", "option_1"];
+  const duplicateOptionRefResult = await execute(context, {}, mockTransport({
+    generation: {
+      status: "completed",
+      outputText: JSON.stringify(duplicateOptionRef),
+      usage: { inputTokens: 1200, outputTokens: 900, totalTokens: 2100 },
+    },
+  }));
+  add(
+    "duplicate-option-references-rejected-locally",
+    "negative",
+    category(duplicateOptionRefResult.result) === "provider_schema_invalid",
+  );
   const unsafe = validCandidateDecisionMaterial();
   unsafe.items[0].content = "Recomiendo elegir la mejor opción.";
   const unsafeResult = await execute(context, {}, mockTransport({
