@@ -75,6 +75,7 @@
     "quality:stage-9-post-provider-simulation-composition": "node scripts/stage-9-post-provider-simulation-composition-quality.mjs",
     "quality:stage-9-production-decision-simulation-orchestrator": "node scripts/stage-9-production-decision-simulation-orchestrator-quality.mjs",
     "quality:stage-9-production-decision-simulation-composition-root": "node scripts/stage-9-production-decision-simulation-composition-root-quality.mjs",
+    "quality:stage-9-controlled-production-ai-runtime-switch": "node scripts/stage-9-controlled-production-ai-runtime-switch-quality.mjs",
     "quality:block-b-auth-action-boundary": "node scripts/block-b-auth-action-boundary-quality.mjs",
     "quality:block-b-email-flow": "node scripts/block-b-email-flow-quality.mjs",
     "quality:block-b-session-lifecycle": "node scripts/block-b-session-lifecycle-quality.mjs",

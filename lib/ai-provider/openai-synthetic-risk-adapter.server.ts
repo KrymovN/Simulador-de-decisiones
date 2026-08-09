@@ -4,6 +4,7 @@ import OpenAI from "openai";
 
 import {
   DecisionMaterialTransportFailure,
+  OPENAI_DECISION_MATERIAL_PROVIDER,
   type DecisionMaterialProviderRequest,
   type DecisionMaterialTransport,
 } from "./openai-decision-material-adapter";
@@ -198,15 +199,41 @@ export function createOpenAIDecisionMaterialTransport(
   );
 }
 
-export function readOpenAIEnvironmentConfiguration(): {
+export function readOpenAIEnvironmentConfiguration(
+  environment?: Readonly<Record<string, string | undefined>>,
+): {
   LEVIO_REAL_AI_DEV_ENABLED?: string;
   LEVIO_AI_PROVIDER?: string;
   OPENAI_API_KEY?: string;
 } {
+  const source = environment ?? {
+    get LEVIO_REAL_AI_DEV_ENABLED() {
+      return process.env.LEVIO_REAL_AI_DEV_ENABLED;
+    },
+    get LEVIO_AI_PROVIDER() {
+      return process.env.LEVIO_AI_PROVIDER;
+    },
+    get OPENAI_API_KEY() {
+      return process.env.OPENAI_API_KEY;
+    },
+  };
+  const enabled = source.LEVIO_REAL_AI_DEV_ENABLED;
+  if (enabled !== "true") {
+    return { LEVIO_REAL_AI_DEV_ENABLED: enabled };
+  }
+
+  const provider = source.LEVIO_AI_PROVIDER;
+  if (provider !== OPENAI_DECISION_MATERIAL_PROVIDER) {
+    return {
+      LEVIO_REAL_AI_DEV_ENABLED: enabled,
+      LEVIO_AI_PROVIDER: provider,
+    };
+  }
+
   return {
-    LEVIO_REAL_AI_DEV_ENABLED: process.env.LEVIO_REAL_AI_DEV_ENABLED,
-    LEVIO_AI_PROVIDER: process.env.LEVIO_AI_PROVIDER,
-    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    LEVIO_REAL_AI_DEV_ENABLED: enabled,
+    LEVIO_AI_PROVIDER: provider,
+    OPENAI_API_KEY: source.OPENAI_API_KEY,
   };
 }
 

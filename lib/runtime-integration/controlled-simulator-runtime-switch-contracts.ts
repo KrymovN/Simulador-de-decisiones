@@ -113,6 +113,61 @@ export type ControlledSimulatorSwitchResult =
   | ControlledSimulatorV2Result
   | ControlledSimulatorFailureResult;
 
+export type ControlledProductionAiFailureCode =
+  | "production_ai_input_invalid"
+  | "production_ai_configuration_invalid"
+  | "production_ai_execution_failed";
+
+export type ControlledProductionAiEvidence = {
+  serverOnly: true;
+  denyByDefault: true;
+  existingControlledSwitchUsed: true;
+  productionCompositionRootUsed: boolean;
+  decisionEngineAuthorityPreserved: boolean;
+  clientRuntimeSelectionAllowed: false;
+  providerControlledByServer: true;
+  modelControlledByAdapter: true;
+  credentialsExposed: false;
+  directProviderToSimulatorAllowed: false;
+  publicApiContractChanged: false;
+  publicUiChanged: false;
+  persistenceUsed: false;
+};
+
+export type ControlledProductionAiV2Result = {
+  switchVersion: ControlledSimulatorSwitchVersion;
+  mode: ControlledSimulatorSwitchMode;
+  requestId: string;
+  selectedPath: "controlled_production_ai_v2";
+  selectedContract: "SimulationResponseV2Draft";
+  runtimeSource: "production_ai";
+  response: SimulationResponseV2Draft;
+  fallback: { used: false };
+  evidence: ControlledProductionAiEvidence;
+};
+
+export type ControlledProductionAiFailureResult = {
+  switchVersion: ControlledSimulatorSwitchVersion;
+  mode: ControlledSimulatorSwitchMode;
+  requestId: string;
+  selectedPath: "controlled_failure";
+  selectedContract: "none";
+  runtimeSource: "production_ai";
+  failure: {
+    code: ControlledProductionAiFailureCode;
+    message: string;
+    retryable: false;
+    sourceCode?: string;
+  };
+  fallback: { used: false };
+  evidence: ControlledProductionAiEvidence;
+};
+
+export type ControlledServerRuntimeSelectionResult =
+  | ControlledSimulatorSwitchResult
+  | ControlledProductionAiV2Result
+  | ControlledProductionAiFailureResult;
+
 export type ControlledSimulatorSwitchValidationCaseResult = {
   caseId: string;
   title: string;
