@@ -4,6 +4,7 @@ import type { DecisionContext, SafetyBoundary } from "../decision-engine/types";
 import type {
   PromptContextBoundaryResult,
   PromptContextInput,
+  PromptContextLocale,
   PromptContextOutput,
 } from "../prompt-context/contracts";
 
@@ -489,7 +490,7 @@ export type AIIntegrationValidationResult = {
   };
 };
 
-export type DecisionEnginePromptContextBridgeLocale = "en" | "es" | "ru";
+export type DecisionEnginePromptContextBridgeLocale = PromptContextLocale;
 
 export type DecisionEnginePromptContextBridgeRequest = {
   bridgeId: string;

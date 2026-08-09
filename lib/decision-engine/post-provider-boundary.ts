@@ -13,7 +13,10 @@ import {
   type ValueAddTransformation,
 } from "../ai-decision-material/contracts";
 import { bridgeDecisionEngineToPromptContext } from "../ai-integration/decision-engine-prompt-context-bridge";
-import type { DecisionEnginePromptContextBridgeRequest } from "../ai-integration/contracts";
+import type {
+  DecisionEnginePromptContextBridgeLocale,
+  DecisionEnginePromptContextBridgeRequest,
+} from "../ai-integration/contracts";
 import type { DecisionContext, EntityId, SafetyBoundary } from "./types";
 
 export const POST_PROVIDER_DECISION_ENGINE_BOUNDARY_VERSION =
@@ -68,8 +71,8 @@ export type DecisionEngineControlledMaterial = {
 export type DecisionEngineSimulationSource = {
   requestId: string;
   generatedAt: string;
-  inputLanguage: "en" | "es" | "ru";
-  requestedOutputLanguage: "en" | "es" | "ru";
+  inputLanguage: DecisionEnginePromptContextBridgeLocale;
+  requestedOutputLanguage: DecisionEnginePromptContextBridgeLocale;
   decisionContext: DecisionContext;
   safety?: SafetyBoundary;
   safetyContextComplete: boolean;

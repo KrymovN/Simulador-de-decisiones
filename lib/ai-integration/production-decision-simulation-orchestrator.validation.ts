@@ -52,16 +52,20 @@ type MockTransportOptions = {
 function mockTransport(options: MockTransportOptions = {}) {
   let countCalls = 0;
   let generationCalls = 0;
+  let countRequest: DecisionMaterialProviderRequest | undefined;
+  let generationRequest: DecisionMaterialProviderRequest | undefined;
   const events: string[] = [];
   const transport: DecisionMaterialTransport = {
-    async countInput(_request: DecisionMaterialProviderRequest) {
+    async countInput(request: DecisionMaterialProviderRequest) {
       countCalls += 1;
+      countRequest = request;
       events.push("provider_count_input");
       if (options.countFailure) throw options.countFailure;
       return options.count ?? 1200;
     },
-    async generate(_request: DecisionMaterialProviderRequest) {
+    async generate(request: DecisionMaterialProviderRequest) {
       generationCalls += 1;
+      generationRequest = request;
       events.push("provider_generate");
       if (options.generationFailure) throw options.generationFailure;
       return options.generation ?? {
@@ -74,7 +78,7 @@ function mockTransport(options: MockTransportOptions = {}) {
   return {
     transport,
     events,
-    stats: () => ({ countCalls, generationCalls }),
+    stats: () => ({ countCalls, generationCalls, countRequest, generationRequest }),
   };
 }
 
@@ -83,6 +87,42 @@ function request(): Record<string, unknown> {
     orchestrationId: "stage9_ai_flow",
     bridgeRequest: validPostProviderBridgeRequest(),
   };
+}
+
+function zhCandidateDecisionMaterial(): CandidateDecisionMaterial {
+  const value = structuredClone(validCandidateDecisionMaterial());
+  value.items[0].content = "北方方案以较低固定成本支持渐进增长。";
+  value.items[1].content = "外部依赖会影响快速增长情景。";
+  return value;
+}
+
+function zhRequest(): Record<string, unknown> {
+  const value = structuredClone(request());
+  value.orchestrationId = "stage9_ai_flow_zh";
+  const bridge = value.bridgeRequest as ReturnType<typeof validPostProviderBridgeRequest>;
+  bridge.bridgeId = "stage9_ai_flow_zh_bridge";
+  bridge.locale = "zh";
+  bridge.decisionContext.decisionId = "decision_post_provider_zh";
+  bridge.decisionContext.statement = "合成团队应启动有限试点，还是等待更多证据？";
+  bridge.decisionContext.goals[0].description = "在学习过程中保持决策可逆。";
+  if (bridge.decisionContext.goals[0].successCriteria.status === "known") {
+    bridge.decisionContext.goals[0].successCriteria.value = ["限制下行风险", "保留学习机会"];
+  }
+  bridge.decisionContext.options[0].label = "启动有限试点";
+  bridge.decisionContext.options[0].description = "使用小规模合成样本群。";
+  bridge.decisionContext.options[1].label = "等待更多证据";
+  bridge.decisionContext.options[1].description = "在衡量合成需求期间推迟启动。";
+  bridge.decisionContext.constraints[0].description = "保持在合成预算范围内。";
+  bridge.safety = {
+    domain: "general",
+    level: "standard",
+    recommendationAllowed: true,
+    requiredNotices: [],
+    requiredEscalations: [],
+    prohibitedOutputs: ["保证合成结果"],
+    rationale: "这是一个可逆的合成决策。",
+  };
+  return value;
 }
 
 function dependencies(mock = mockTransport()): Record<string, unknown> {
@@ -154,6 +194,14 @@ export async function runProductionDecisionSimulationOrchestratorValidation(): P
   const happyMock = mockTransport();
   const happy = await executeProductionDecisionSimulationFlow(request(), dependencies(happyMock));
   const repeated = await executeProductionDecisionSimulationFlow(request(), dependencies(mockTransport()));
+  const zhMock = mockTransport({
+    generation: {
+      status: "completed",
+      outputText: JSON.stringify(zhCandidateDecisionMaterial()),
+      usage: { inputTokens: 1200, outputTokens: 700, totalTokens: 1900 },
+    },
+  });
+  const zh = await executeProductionDecisionSimulationFlow(zhRequest(), dependencies(zhMock));
 
   const invalidBridgeRequest = request();
   const bridge = invalidBridgeRequest.bridgeRequest as ReturnType<typeof validPostProviderBridgeRequest>;
@@ -255,6 +303,30 @@ export async function runProductionDecisionSimulationOrchestratorValidation(): P
         !JSON.stringify(result.response).toLowerCase().includes("gpt-") &&
         result.evidence.providerMetadataReturned === false,
       issue: "Provider-specific metadata leaked into the product draft.",
+    }),
+    validationCase({
+      caseId: "zh_locale_completes_full_offline_production_flow",
+      kind: "positive",
+      result: zh,
+      passed: (result) => {
+        const stats = zhMock.stats();
+        return result.status === "completed" &&
+          result.response.language.input === "zh" &&
+          result.response.language.output === "zh" &&
+          result.response.decision.statement === "合成团队应启动有限试点，还是等待更多证据？" &&
+          JSON.stringify(result.response).includes("北方方案以较低固定成本支持渐进增长。") &&
+          stages(result) === [
+            "decision_prompt_context:completed",
+            "provider_adapter:completed",
+            "post_provider_decision_engine:completed",
+            "simulation_composition:completed",
+          ].join(",") &&
+          stats.countCalls === 1 && stats.generationCalls === 1 &&
+          Boolean(stats.countRequest?.input.includes("合成团队应启动有限试点")) &&
+          Boolean(stats.generationRequest?.input.includes("等待更多证据")) &&
+          stats.generationRequest?.instructions.includes("natural language of the supplied context") === true;
+      },
+      issue: "Chinese locale was substituted, lost, or rejected before SimulationResponseV2Draft.",
     }),
     validationCase({
       caseId: "missing_request_fails_closed",

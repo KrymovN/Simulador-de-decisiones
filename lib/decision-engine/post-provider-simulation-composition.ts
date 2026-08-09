@@ -2,6 +2,7 @@ import "server-only";
 
 import { DECISION_MATERIAL_ITEM_TYPES, VALUE_ADD_TRANSFORMATIONS } from "../ai-decision-material/contracts";
 import { bridgeDecisionEngineToPromptContext } from "../ai-integration/decision-engine-prompt-context-bridge";
+import { PROMPT_CONTEXT_LOCALES } from "../prompt-context/contracts";
 import type { SimulationResponseV2Draft } from "./contracts";
 import {
   POST_PROVIDER_DECISION_ENGINE_BOUNDARY_VERSION,
@@ -143,7 +144,7 @@ function simulationSourceIsValid(value: unknown): value is DecisionEngineSimulat
     !nonEmptyString(value.requestId) ||
     !nonEmptyString(value.generatedAt) ||
     !Number.isFinite(Date.parse(value.generatedAt)) ||
-    !["en", "es", "ru"].includes(value.inputLanguage as string) ||
+    !PROMPT_CONTEXT_LOCALES.includes(value.inputLanguage as never) ||
     value.requestedOutputLanguage !== value.inputLanguage ||
     typeof value.safetyContextComplete !== "boolean" ||
     !record(value.decisionContext)

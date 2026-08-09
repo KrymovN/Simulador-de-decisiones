@@ -16,12 +16,17 @@ export const PROMPT_CONTEXT_BOUNDARY_VERSION =
 export const PROMPT_CONTEXT_BOUNDARY_MODE =
   "prompt_context_boundary_facade_foundation_only" as const;
 
+export const PROMPT_CONTEXT_LOCALES = ["en", "es", "ru", "zh"] as const;
+
+export type PromptContextLocale = (typeof PROMPT_CONTEXT_LOCALES)[number];
+
 export type PromptContextErrorCode =
   | "contract_disabled"
   | "input_missing"
   | "output_missing"
   | "input_id_missing"
   | "timestamp_invalid"
+  | "locale_invalid"
   | "decision_frame_missing"
   | "decision_simulation_framing_missing"
   | "risk_boundary_invalid"
@@ -111,7 +116,7 @@ export type PromptContextForbiddenClientFields = {
 export type PromptContextInput = {
   inputId: string;
   submittedAt: string;
-  locale: "en" | "es" | "ru";
+  locale: PromptContextLocale;
   decisionFrame: PromptContextDecisionFrame;
   policy: PromptContextPolicy;
   riskBoundary: PromptContextRiskBoundary;

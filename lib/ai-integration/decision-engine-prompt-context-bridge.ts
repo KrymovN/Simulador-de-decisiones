@@ -12,10 +12,11 @@ import type {
   Stakeholder,
 } from "../decision-engine/types";
 import { createPromptContextBoundary } from "../prompt-context/boundary";
-import type {
-  PromptContextDecisionFrame,
-  PromptContextInput,
-  PromptContextOutput,
+import {
+  PROMPT_CONTEXT_LOCALES,
+  type PromptContextDecisionFrame,
+  type PromptContextInput,
+  type PromptContextOutput,
 } from "../prompt-context/contracts";
 import { createPromptContextRuntime } from "../prompt-context/runtime";
 import {
@@ -54,7 +55,6 @@ const CONTEXT_KEYS = [
 ] as const;
 
 const UNSAFE_FIELD_PATTERN = /^(?:provider|providerId|providerPayload|model|modelId|apiKey|credential|credentials|secret|env|environment|network|networkDestination|rawPrompt|systemPrompt|userSystemPrompt|providerExecution|modelCall)$/i;
-const LOCALES = ["en", "es", "ru"] as const;
 const DECISION_TYPES = [
   "binary",
   "comparative",
@@ -372,8 +372,8 @@ export function bridgeDecisionEngineToPromptContext(
   if (!nonEmptyString(value.submittedAt) || !Number.isFinite(Date.parse(value.submittedAt))) {
     return blocked({ bridgeId, code: "bridge_timestamp_invalid", message: "Bridge request requires a valid submittedAt timestamp." });
   }
-  if (!LOCALES.includes(value.locale as never)) {
-    return blocked({ bridgeId, code: "bridge_locale_invalid", message: "Bridge locale must be en, es, or ru." });
+  if (!PROMPT_CONTEXT_LOCALES.includes(value.locale as never)) {
+    return blocked({ bridgeId, code: "bridge_locale_invalid", message: "Bridge locale must be en, es, ru, or zh." });
   }
   if (!value.decisionContext) {
     return blocked({ bridgeId, code: "decision_context_missing", message: "Bridge request requires a Decision Context." });

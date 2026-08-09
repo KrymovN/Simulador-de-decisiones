@@ -1,4 +1,5 @@
 import {
+  PROMPT_CONTEXT_LOCALES,
   PROMPT_CONTEXT_CONTRACTS_MODE,
   PROMPT_CONTEXT_CONTRACTS_VERSION,
   type PromptContextContract,
@@ -254,6 +255,13 @@ export function validatePromptContextInput(
     );
   }
 
+  if (!PROMPT_CONTEXT_LOCALES.includes(input.locale as never)) {
+    return blocked(
+      "locale_invalid",
+      "Prompt Context locale must be en, es, ru, or zh.",
+    );
+  }
+
   if (!frameIsPresent(input.decisionFrame)) {
     return blocked(
       "decision_frame_missing",
@@ -492,6 +500,23 @@ export function runPromptContextContractsValidation(): PromptContextContractsVal
       caseId: "valid_input_passes",
       result: contract.validateInput(input()),
       expectedStatus: "valid",
+    }),
+    validationCase({
+      caseId: "zh_input_passes",
+      result: contract.validateInput(input({ locale: "zh" })),
+      expectedStatus: "valid",
+    }),
+    validationCase({
+      caseId: "unsupported_locale_blocks",
+      result: contract.validateInput(input({ locale: "de" as PromptContextInput["locale"] })),
+      expectedStatus: "blocked",
+      expectedErrorCode: "locale_invalid",
+    }),
+    validationCase({
+      caseId: "malformed_locale_blocks",
+      result: contract.validateInput(input({ locale: "" as PromptContextInput["locale"] })),
+      expectedStatus: "blocked",
+      expectedErrorCode: "locale_invalid",
     }),
     validationCase({
       caseId: "raw_chat_messages_block",

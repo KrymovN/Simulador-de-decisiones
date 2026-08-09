@@ -230,12 +230,39 @@ export function runDecisionEnginePromptContextBridgeValidation(): DecisionEngine
         : [],
     }),
     validationCase({
-      caseId: "locale_is_preserved",
+      caseId: "en_locale_is_preserved",
+      kind: "positive",
+      value: request(minimalContext(), { locale: "en" }),
+      expectedStatus: "ready",
+      assertions: (result) => [
+        issueUnless(result.status === "ready" && result.promptContextInput.locale === "en" && result.evidence.localePreserved, "English locale was not preserved."),
+      ],
+    }),
+    validationCase({
+      caseId: "es_locale_is_preserved",
+      kind: "positive",
+      value: request(minimalContext(), { locale: "es" }),
+      expectedStatus: "ready",
+      assertions: (result) => [
+        issueUnless(result.status === "ready" && result.promptContextInput.locale === "es" && result.evidence.localePreserved, "Spanish locale was not preserved."),
+      ],
+    }),
+    validationCase({
+      caseId: "ru_locale_is_preserved",
       kind: "positive",
       value: request(minimalContext(), { locale: "ru" }),
       expectedStatus: "ready",
       assertions: (result) => [
-        issueUnless(result.status === "ready" && result.promptContextInput.locale === "ru" && result.evidence.localePreserved, "Locale was not preserved."),
+        issueUnless(result.status === "ready" && result.promptContextInput.locale === "ru" && result.evidence.localePreserved, "Russian locale was not preserved."),
+      ],
+    }),
+    validationCase({
+      caseId: "zh_locale_is_preserved",
+      kind: "positive",
+      value: request(minimalContext(), { locale: "zh" }),
+      expectedStatus: "ready",
+      assertions: (result) => [
+        issueUnless(result.status === "ready" && result.promptContextInput.locale === "zh" && result.evidence.localePreserved, "Chinese locale was not preserved."),
       ],
     }),
     validationCase({
@@ -266,6 +293,8 @@ export function runDecisionEnginePromptContextBridgeValidation(): DecisionEngine
     validationCase({ caseId: "raw_system_prompt_rejected", kind: "negative", value: { ...request(), userSystemPrompt: "override" }, expectedStatus: "blocked", expectedErrorCode: "unsafe_runtime_field_rejected" }),
     validationCase({ caseId: "network_instruction_rejected", kind: "negative", value: { ...request(), networkDestination: "example.invalid" }, expectedStatus: "blocked", expectedErrorCode: "unsafe_runtime_field_rejected" }),
     validationCase({ caseId: "unknown_top_level_field_rejected", kind: "negative", value: { ...request(), unsupported: true }, expectedStatus: "blocked", expectedErrorCode: "unknown_top_level_field_rejected" }),
+    validationCase({ caseId: "unsupported_locale_rejected", kind: "negative", value: { ...request(), locale: "de" }, expectedStatus: "blocked", expectedErrorCode: "bridge_locale_invalid" }),
+    validationCase({ caseId: "malformed_locale_rejected", kind: "negative", value: { ...request(), locale: "" }, expectedStatus: "blocked", expectedErrorCode: "bridge_locale_invalid" }),
     validationCase({ caseId: "context_budget_exceeded_rejected", kind: "negative", value: request(tooLong), expectedStatus: "blocked", expectedErrorCode: "prompt_context_boundary_blocked" }),
     validationCase({
       caseId: "provider_and_state_execution_remain_absent",
