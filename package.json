@@ -71,6 +71,7 @@
     "quality:stage-9-bounded-live-provider-validation-contract": "node scripts/stage-9-bounded-live-provider-validation-contract-quality.mjs",
     "quality:stage-9-decision-engine-prompt-context-bridge": "node scripts/stage-9-decision-engine-prompt-context-bridge-quality.mjs",
     "quality:stage-9-openai-decision-material-adapter": "node scripts/stage-9-openai-decision-material-adapter-quality.mjs",
+    "quality:stage-9-canonical-provider-evaluation-boundary": "node scripts/stage-9-canonical-provider-evaluation-boundary-quality.mjs",
     "quality:stage-9-post-provider-decision-engine-boundary": "node scripts/stage-9-post-provider-decision-engine-boundary-quality.mjs",
     "quality:stage-9-post-provider-simulation-composition": "node scripts/stage-9-post-provider-simulation-composition-quality.mjs",
     "quality:stage-9-production-decision-simulation-orchestrator": "node scripts/stage-9-production-decision-simulation-orchestrator-quality.mjs",

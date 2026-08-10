@@ -398,13 +398,14 @@ export const CANDIDATE_DECISION_MATERIAL_PROVIDER_INSTRUCTIONS = [
   "Use the natural language of the supplied context and return only JSON matching the strict schema.",
 ].join(" ");
 
-export function buildDecisionMaterialProviderRequest(
-  input: PromptContextOutput,
+export function buildCandidateDecisionMaterialProviderRequest(
+  input: string,
+  instructions: string,
 ): DecisionMaterialProviderRequest {
   return {
     model: OPENAI_DECISION_MATERIAL_MODEL,
-    instructions: CANDIDATE_DECISION_MATERIAL_PROVIDER_INSTRUCTIONS,
-    input: JSON.stringify(providerContext(input)),
+    instructions,
+    input,
     reasoningEffort: "low",
     schemaName: "levio_candidate_decision_material_v1",
     schema: CANDIDATE_DECISION_MATERIAL_OUTPUT_SCHEMA,
@@ -415,6 +416,15 @@ export function buildDecisionMaterialProviderRequest(
     tools: [],
     maxOutputTokens: OPENAI_DECISION_MATERIAL_LIMITS.maxOutputTokens,
   };
+}
+
+export function buildDecisionMaterialProviderRequest(
+  input: PromptContextOutput,
+): DecisionMaterialProviderRequest {
+  return buildCandidateDecisionMaterialProviderRequest(
+    JSON.stringify(providerContext(input)),
+    CANDIDATE_DECISION_MATERIAL_PROVIDER_INSTRUCTIONS,
+  );
 }
 
 function providerBoundaryPreflight(input: PromptContextOutput, requestedAt: string): boolean {
