@@ -10,9 +10,15 @@ import {
   CANDIDATE_DECISION_MATERIAL_CAPABILITY,
   CANDIDATE_DECISION_MATERIAL_CONTRACT_VERSION,
 } from "./contracts";
+import {
+  CANONICAL_PROVIDER_EVALUATION_TAXONOMY_REGISTRY,
+  buildCanonicalProviderEvaluationTaskProfile,
+  type CanonicalProviderEvaluationTaskProfile,
+  type CanonicalProviderEvaluationTaxonomyRegistry,
+} from "../ai-quality/canonical-provider-evaluation-taxonomy";
 
 export const CANONICAL_PROVIDER_EVALUATION_INPUT_VERSION =
-  "canonical-provider-evaluation-input.1" as const;
+  "canonical-provider-evaluation-input.2" as const;
 
 const CASE_KEYS = [
   "case_id", "case_version", "language", "domain", "decision_type",
@@ -52,6 +58,8 @@ export type CanonicalProviderEvaluationInputV1 = {
   domain: CanonicalOfflineEvaluationCase["domain"];
   decision_type: CanonicalOfflineEvaluationCase["decision_type"];
   completeness_level: CanonicalOfflineEvaluationCase["completeness_level"];
+  evaluation_task_profile: CanonicalProviderEvaluationTaskProfile;
+  global_taxonomy: CanonicalProviderEvaluationTaxonomyRegistry;
   input: {
     user_situation: string;
     user_intent: string;
@@ -154,6 +162,8 @@ export function compileCanonicalProviderEvaluationInput(
       domain: value.domain,
       decision_type: value.decision_type,
       completeness_level: value.completeness_level,
+      evaluation_task_profile: buildCanonicalProviderEvaluationTaskProfile(value),
+      global_taxonomy: CANONICAL_PROVIDER_EVALUATION_TAXONOMY_REGISTRY,
       input: {
         user_situation: value.user_situation,
         user_intent: value.user_intent,

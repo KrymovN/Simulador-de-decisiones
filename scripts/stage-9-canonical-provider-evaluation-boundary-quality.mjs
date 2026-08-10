@@ -30,6 +30,8 @@ const read = (...parts) => readFileSync(join(root, ...parts), "utf8");
 const inputSource = read("lib", "ai-decision-material", "canonical-provider-evaluation-input.ts");
 const boundarySource = read("lib", "ai-quality", "canonical-provider-evaluation.ts");
 const validationSource = read("lib", "ai-quality", "canonical-provider-evaluation-validation.ts");
+const taxonomySource = read("lib", "ai-quality", "canonical-provider-evaluation-taxonomy.ts");
+const resultSource = read("lib", "ai-quality", "canonical-provider-evaluation-result.ts");
 const adapterSource = read("lib", "ai-provider", "openai-decision-material-adapter.ts");
 const routeSource = read("app", "api", "simulate", "route.ts");
 
@@ -54,6 +56,8 @@ globalThis.fetch = async () => {
 };
 const fixtures = require(join(root, "lib", "ai-decision-material", "fixtures.ts"));
 const evaluation = require(join(root, "lib", "ai-quality", "canonical-provider-evaluation.ts"));
+const evaluationResult = require(join(root, "lib", "ai-quality", "canonical-provider-evaluation-result.ts"));
+const evaluationTaxonomy = require(join(root, "lib", "ai-quality", "canonical-provider-evaluation-taxonomy.ts"));
 const validation = require(join(root, "lib", "ai-quality", "canonical-provider-evaluation-validation.ts"));
 const result = await validation.runCanonicalProviderEvaluationBoundaryValidation();
 globalThis.fetch = originalFetch;
@@ -63,11 +67,17 @@ add("validation-suite-pass", result.passed, "Evaluation boundary validation suit
 add("network-operations-zero", networkOperations === 0 && result.networkOperations === 0, `${networkOperations} network operations observed.`);
 add("frozen-core-size-unchanged", fixtures.CANONICAL_OFFLINE_EVALUATION_CASES.length === 160, "Frozen canonical core must remain 160 cases.");
 add("all-frozen-cases-compile", fixtures.CANONICAL_OFFLINE_EVALUATION_CASES.every((item) => evaluation.buildCanonicalProviderEvaluationRequest(item).status === "ready"), "Every frozen core case must compile without production semantics.");
-add("server-only-boundary", inputSource.startsWith('import "server-only";') && boundarySource.startsWith('import "server-only";'), "Evaluation input and boundary must be server-only.");
+add("server-only-boundary", [inputSource, boundarySource, taxonomySource, resultSource].every((source) => source.startsWith('import "server-only";')), "Evaluation contracts and boundary must be server-only.");
 add("no-decision-context-or-prompt-context", !/DecisionContext|PromptContext|decision-context|prompt-context/.test(inputSource + boundarySource), "Evaluation boundary must not create production DecisionContext or PromptContext.");
-add("no-openai-sdk-or-env", !/from\s+["']openai["']|OPENAI_API_KEY|process\.env|createOpenAIDecisionMaterialTransport/.test(inputSource + boundarySource + validationSource), "Evaluation boundary must not access SDK, credentials, env, or live transport.");
-add("shared-provider-request-contract", boundarySource.includes("buildCandidateDecisionMaterialProviderRequest") && adapterSource.includes("buildCandidateDecisionMaterialProviderRequest"), "Provider schema/request controls must be reused from the existing adapter.");
+add("no-openai-sdk-or-env", !/from\s+["']openai["']|OPENAI_API_KEY|process\.env|createOpenAIDecisionMaterialTransport/.test(inputSource + boundarySource + validationSource + taxonomySource + resultSource), "Evaluation boundary must not access SDK, credentials, env, or live transport.");
+add("shared-provider-controls-production-schema-isolated", boundarySource.includes("buildCandidateDecisionMaterialProviderRequest") && resultSource.includes("CANDIDATE_DECISION_MATERIAL_OUTPUT_SCHEMA") && resultSource.includes("levio_canonical_provider_evaluation_result_v1") && adapterSource.includes("levio_candidate_decision_material_v1"), "Evaluation result must reuse provider controls and embed, not change, the production candidate schema.");
 add("oracle-exclusion-explicit", inputSource.includes("CANONICAL_PROVIDER_EVALUATION_ORACLE_KEYS") && boundarySource.includes("requestContainsOracle"), "Oracle exclusion must be explicit and executable.");
+add("global-taxonomy-derived-from-frozen-core", taxonomySource.includes("CANONICAL_OFFLINE_EVALUATION_CASES.flatMap") && inputSource.includes("CANONICAL_PROVIDER_EVALUATION_TAXONOMY_REGISTRY"), "Global taxonomy must be deterministic and derived from the frozen core.");
+add("exact-id-matcher-no-free-text-judge", resultSource.includes("matchCanonicalProviderEvaluationOracle") && !/embedding|fuzzy|semanticSimilarity|judgeModel/i.test(resultSource), "Matcher must compare canonical IDs without network or fuzzy model judging.");
+const schemaText = JSON.stringify(evaluationResult.CANONICAL_PROVIDER_EVALUATION_RESULT_SCHEMA);
+const forbiddenSchemaKeywords = ["uniqueItems", "allOf", "not", "dependentRequired", "dependentSchemas", "if", "then", "else"];
+add("evaluation-result-schema-provider-compatible-keywords", forbiddenSchemaKeywords.every((keyword) => !schemaText.includes(`\"${keyword}\"`)), "Evaluation-only provider schema must exclude unsupported Structured Outputs keywords.");
+add("evaluation-result-schema-object-root", evaluationResult.CANONICAL_PROVIDER_EVALUATION_RESULT_SCHEMA.type === "object" && !Object.hasOwn(evaluationResult.CANONICAL_PROVIDER_EVALUATION_RESULT_SCHEMA, "anyOf"), "Evaluation result schema must retain an object root.");
 add("fake-only-transport", boundarySource.includes('kind: "deterministic_fake_provider"') && !boundarySource.includes("DecisionMaterialTransportFailure"), "Current execution boundary must accept only the bounded fake transport contract.");
 add("public-route-remains-mock-only", routeSource.includes("mockOnly: true") && !routeSource.toLowerCase().includes("openai"), "Public API must remain mock-only and OpenAI-free.");
 
@@ -91,6 +101,9 @@ const report = {
   total_checks: checks.length,
   network_operations: networkOperations,
   frozen_core_cases: fixtures.CANONICAL_OFFLINE_EVALUATION_CASES.length,
+  taxonomy_counts: Object.fromEntries(Object.entries(
+    evaluationTaxonomy.CANONICAL_PROVIDER_EVALUATION_TAXONOMY,
+  ).map(([category, concepts]) => [category, concepts.length])),
   failed,
 };
 console.log(JSON.stringify(report, null, 2));
