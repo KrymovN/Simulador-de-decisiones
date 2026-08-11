@@ -27,11 +27,14 @@ import {
 import {
   CANONICAL_PROVIDER_EVALUATION_RESULT_SCHEMA,
   CANONICAL_PROVIDER_EVALUATION_SCHEMA_NAME,
+  CANONICAL_PROVIDER_EFFECTIVE_CONTRACT_INSTRUCTIONS,
+  inspectCanonicalProviderCandidateGrounding,
   matchCanonicalProviderEvaluationOracle,
   validateCanonicalProviderEvaluationResult,
   type CanonicalProviderEvaluationOracleMatch,
   type CanonicalProviderAnnotationInvalidDiagnostic,
   type CanonicalProviderEvaluationResultV1,
+  type CanonicalProviderPreMatcherDiagnostic,
 } from "./canonical-provider-evaluation-result";
 
 export const CANONICAL_PROVIDER_EVALUATION_BOUNDARY_VERSION =
@@ -70,6 +73,7 @@ export const CANONICAL_PROVIDER_EVALUATION_INSTRUCTIONS = [
   "Consider a no-action, defer, or information-first path when the input and its completeness or gaps justify it.",
   "Select only globally allowed language-neutral concept identifiers that are actually supported by your candidate material or structured execution outcome; never enumerate an inapplicable concept.",
   "Ground candidate-material annotations in existing candidate IDs and allowed source references.",
+  ...CANONICAL_PROVIDER_EFFECTIVE_CONTRACT_INSTRUCTIONS,
   ...CANONICAL_PROVIDER_ANNOTATION_RULES,
   "Do not answer the user, recommend or choose an option, give imperative advice, or claim final authority.",
   "Preserve completeness, uncertainty, facts, assumptions, and gaps without semantic enrichment or invented evidence references.",
@@ -167,29 +171,11 @@ export type CanonicalProviderEvaluationOfflineResult =
       fakeTransportOperations: number;
       networkOperations: 0;
       annotationDiagnostic?: CanonicalProviderAnnotationInvalidDiagnostic;
+      preMatcherDiagnostic?: CanonicalProviderPreMatcherDiagnostic;
     };
 
 function record(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
-}
-
-function candidateIsGrounded(
-  material: CandidateDecisionMaterial,
-  input: CanonicalProviderEvaluationInputV1,
-): boolean {
-  const sourceRefs = new Set(input.allowed_refs.source_refs);
-  const gapRefs = new Set([
-    ...input.input.critical_gaps.map((item) => item.source_ref),
-    ...input.input.important_gaps.map((item) => item.source_ref),
-  ]);
-  return material.items.every((item) =>
-    sourceRefs.has(item.provenance.source_ref) &&
-    item.option_refs.length === 0 &&
-    item.scenario_refs.length === 0 &&
-    item.criterion_refs.length === 0 &&
-    (item.evidence !== "provider_inference" || item.provenance.source_ref === "provider_inference") &&
-    (item.evidence !== "unknown" || item.provenance.source_ref === "unknown" || gapRefs.has(item.provenance.source_ref))
-  );
 }
 
 function requestContainsOracle(providerRequest: CanonicalProviderEvaluationProviderRequest): boolean {
@@ -210,6 +196,7 @@ function blocked(
   category: OfflineEvaluationFailureCategory,
   fakeTransportOperations: number,
   annotationDiagnostic?: CanonicalProviderAnnotationInvalidDiagnostic,
+  preMatcherDiagnostic?: CanonicalProviderPreMatcherDiagnostic,
 ): CanonicalProviderEvaluationOfflineResult {
   return {
     status: "blocked",
@@ -217,6 +204,7 @@ function blocked(
     fakeTransportOperations,
     networkOperations: 0,
     ...(annotationDiagnostic ? { annotationDiagnostic } : {}),
+    ...(preMatcherDiagnostic ? { preMatcherDiagnostic } : {}),
   };
 }
 
@@ -322,6 +310,7 @@ export async function runCanonicalProviderEvaluationOffline(
       validatedResult.category,
       fakeTransportOperations,
       validatedResult.annotationDiagnostic,
+      validatedResult.preMatcherDiagnostic,
     );
   }
   const candidate = validatedResult.result.candidate_material;
@@ -331,8 +320,17 @@ export async function runCanonicalProviderEvaluationOffline(
     }
     const inspection = inspectCandidateDecisionMaterialContract(candidate);
     if (!inspection.safetyValid) return blocked("candidate_safety_invalid", fakeTransportOperations);
-    if (!candidateIsGrounded(candidate, built.request.compiledInput)) {
-      return blocked("candidate_grounding_invalid", fakeTransportOperations);
+    const grounding = inspectCanonicalProviderCandidateGrounding(
+      candidate,
+      built.request.compiledInput,
+    );
+    if (!grounding.valid) {
+      return blocked(
+        "candidate_grounding_invalid",
+        fakeTransportOperations,
+        undefined,
+        grounding.diagnostic ?? undefined,
+      );
     }
   }
   const usage = generated.usage;

@@ -23,6 +23,11 @@ import {
 import {
   CANONICAL_PROVIDER_EVALUATION_RESULT_VERSION,
   CANONICAL_PROVIDER_EVALUATION_RESULT_SCHEMA,
+  CANONICAL_PROVIDER_ANNOTATION_GROUNDING_INVARIANTS,
+  CANONICAL_PROVIDER_CANDIDATE_GROUNDING_INVARIANTS,
+  CANONICAL_PROVIDER_EFFECTIVE_CONTRACT_INSTRUCTIONS,
+  CANONICAL_PROVIDER_PRE_MATCHER_DIAGNOSTIC_MAX_ISSUES,
+  inspectCanonicalProviderCandidateGrounding,
   matchCanonicalProviderEvaluationOracle,
   validateCanonicalProviderEvaluationResult,
   type CanonicalProviderEvaluationAnnotation,
@@ -293,6 +298,19 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
   add("evaluation-result-schema-used", built.request.providerRequest.schemaName ===
     "levio_canonical_provider_evaluation_result_v1" && built.request.providerRequest.strict === true);
   const serializedSchema = JSON.stringify(CANONICAL_PROVIDER_EVALUATION_RESULT_SCHEMA);
+  const resultSchema = CANONICAL_PROVIDER_EVALUATION_RESULT_SCHEMA as {
+    properties: {
+      candidate_material: {
+        anyOf: Array<{
+          properties?: {
+            items?: { items?: { properties?: Record<string, { maxItems?: number }> } };
+          };
+        }>;
+      };
+    };
+  };
+  const evaluationCandidateProperties = resultSchema.properties.candidate_material.anyOf[0]
+    .properties?.items?.items?.properties;
   add("annotation-uniqueness-provider-facing", serializedSchema.includes(
     "Each concept_id may appear at most once",
   ) && serializedSchema.includes("no duplicate value is allowed") &&
@@ -300,6 +318,27 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
   add("annotation-runtime-rules-provider-facing", CANONICAL_PROVIDER_ANNOTATION_RULES.length === 12 &&
     CANONICAL_PROVIDER_ANNOTATION_RULES.every((rule) =>
       built.request.providerRequest.instructions.includes(rule)));
+  add("effective-contract-invariants-provider-facing",
+    CANONICAL_PROVIDER_EFFECTIVE_CONTRACT_INSTRUCTIONS.every((instruction) =>
+      built.request.providerRequest.instructions.includes(instruction)) &&
+    Object.values(CANONICAL_PROVIDER_CANDIDATE_GROUNDING_INVARIANTS).every(
+      (invariant) => built.request.providerRequest.instructions.includes(
+        invariant.providerInstruction,
+      ),
+    ) && Object.values(CANONICAL_PROVIDER_ANNOTATION_GROUNDING_INVARIANTS).every(
+      (invariant) => built.request.providerRequest.instructions.includes(
+        invariant.providerInstruction,
+      ),
+    ));
+  add("evaluation-candidate-reference-arrays-schema-empty",
+    evaluationCandidateProperties?.option_refs?.maxItems === 0 &&
+    evaluationCandidateProperties?.scenario_refs?.maxItems === 0 &&
+    evaluationCandidateProperties?.criterion_refs?.maxItems === 0);
+  add("runtime-refinements-described-with-supported-schema",
+    serializedSchema.includes("candidate_id values must be unique") &&
+    serializedSchema.includes("Non-whitespace candidate content") &&
+    serializedSchema.includes("outcome.kind=candidate_material") &&
+    !serializedSchema.includes('"uniqueItems"'));
   add("evaluation-output-limit-is-4000", built.request.providerRequest.maxOutputTokens === 4000 &&
     CANONICAL_PROVIDER_EVALUATION_LIMITS.maxOutputTokens === 4000 &&
     built.request.providerRequest.reasoningEffort === "low");
@@ -317,6 +356,66 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
   add("fake-complete-result-valid", validatedComplete.status === "valid");
   add("deterministic-exact-oracle-match", validatedComplete.status === "valid" &&
     matchCanonicalProviderEvaluationOracle(validatedComplete.result, sourceOracle).passed);
+
+  const groundingCode = (material: CandidateDecisionMaterial) =>
+    inspectCanonicalProviderCandidateGrounding(material, compiled.input)
+      .diagnostic?.issues[0]?.code;
+  const validGroundingCandidate = standardCandidate([]);
+  add("candidate-grounding-allowed-provenance", inspectCanonicalProviderCandidateGrounding(
+    validGroundingCandidate,
+    compiled.input,
+  ).valid);
+  const disallowedProvenance = structuredClone(validGroundingCandidate);
+  disallowedProvenance.items[0].provenance.source_ref = "invented_source";
+  add("candidate-grounding-disallowed-provenance-diagnostic",
+    groundingCode(disallowedProvenance) === "source_ref_not_allowed");
+  const providerInferenceCorrect = structuredClone(validGroundingCandidate);
+  providerInferenceCorrect.items[0].evidence = "provider_inference";
+  providerInferenceCorrect.items[0].provenance.source_ref = "provider_inference";
+  add("candidate-grounding-provider-inference-correct", inspectCanonicalProviderCandidateGrounding(
+    providerInferenceCorrect,
+    compiled.input,
+  ).valid);
+  const providerInferenceWrong = structuredClone(providerInferenceCorrect);
+  providerInferenceWrong.items[0].provenance.source_ref = "fact_1";
+  add("candidate-grounding-provider-inference-mismatch-diagnostic",
+    groundingCode(providerInferenceWrong) === "provider_inference_source_ref_mismatch");
+  const unknownCorrect = structuredClone(validGroundingCandidate);
+  unknownCorrect.items[0].evidence = "unknown";
+  unknownCorrect.items[0].provenance.source_ref = "unknown";
+  add("candidate-grounding-unknown-correct", inspectCanonicalProviderCandidateGrounding(
+    unknownCorrect,
+    compiled.input,
+  ).valid);
+  const unknownWrong = structuredClone(unknownCorrect);
+  unknownWrong.items[0].provenance.source_ref = "fact_1";
+  add("candidate-grounding-unknown-mismatch-diagnostic",
+    groundingCode(unknownWrong) === "unknown_source_ref_mismatch");
+  for (const [field, expectedCode] of [
+    ["option_refs", "option_refs_must_be_empty"],
+    ["scenario_refs", "scenario_refs_must_be_empty"],
+    ["criterion_refs", "criterion_refs_must_be_empty"],
+  ] as const) {
+    const nonEmptyReferences = structuredClone(validGroundingCandidate);
+    nonEmptyReferences.items[0][field] = ["bounded_reference_1"];
+    add(`candidate-grounding-${field}-diagnostic`,
+      groundingCode(nonEmptyReferences) === expectedCode);
+  }
+  const manyGroundingIssues = structuredClone(validGroundingCandidate);
+  manyGroundingIssues.items = Array.from({ length: 12 }, (_, index) => ({
+    ...structuredClone(validGroundingCandidate.items[0]),
+    candidate_id: `bounded_candidate_${index + 1}`,
+    provenance: { source: "provider_candidate", source_ref: `invented_source_${index + 1}` },
+    option_refs: ["bounded_reference_1"],
+  }));
+  const boundedGrounding = inspectCanonicalProviderCandidateGrounding(
+    manyGroundingIssues,
+    compiled.input,
+  );
+  add("candidate-grounding-diagnostic-hard-bound", !boundedGrounding.valid &&
+    boundedGrounding.diagnostic?.issues.length ===
+      CANONICAL_PROVIDER_PRE_MATCHER_DIAGNOSTIC_MAX_ISSUES &&
+    boundedGrounding.diagnostic.truncated);
   const missing = structuredClone(fakeComplete);
   missing.evaluation_annotations.risk = missing.evaluation_annotations.risk.slice(1);
   add("missing-concept-deterministic-fail", validateCanonicalProviderEvaluationResult(missing, compiled.input).status === "valid" &&
@@ -330,18 +429,106 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
   );
   add("invalid-taxonomy-id-fails-closed", invalidTaxonomyValidation.status === "invalid" &&
     invalidTaxonomyValidation.annotationDiagnostic?.reason === "concept_id_invalid");
+  const duplicateMaterialCandidateId = structuredClone(fakeComplete);
+  if (duplicateMaterialCandidateId.candidate_material) {
+    duplicateMaterialCandidateId.candidate_material.items[1].candidate_id =
+      duplicateMaterialCandidateId.candidate_material.items[0].candidate_id;
+  }
+  const duplicateMaterialCandidateValidation = validateCanonicalProviderEvaluationResult(
+    duplicateMaterialCandidateId,
+    compiled.input,
+  );
+  add("result-contract-duplicate-candidate-id-diagnostic",
+    duplicateMaterialCandidateValidation.status === "invalid" &&
+    duplicateMaterialCandidateValidation.category === "evaluation_result_contract_invalid" &&
+    duplicateMaterialCandidateValidation.preMatcherDiagnostic?.issues[0]?.code ===
+      "duplicate_candidate_id");
+  const whitespaceContent = structuredClone(fakeComplete);
+  if (whitespaceContent.candidate_material) {
+    whitespaceContent.candidate_material.items[0].content = "   ";
+  }
+  const whitespaceContentValidation = validateCanonicalProviderEvaluationResult(
+    whitespaceContent,
+    compiled.input,
+  );
+  add("result-contract-whitespace-content-diagnostic",
+    whitespaceContentValidation.status === "invalid" &&
+    whitespaceContentValidation.preMatcherDiagnostic?.issues[0]?.code ===
+      "candidate_content_whitespace_only" &&
+    whitespaceContentValidation.preMatcherDiagnostic.issues[0].receivedLength === 3);
+  const duplicateCandidateReference = structuredClone(fakeComplete);
+  if (duplicateCandidateReference.candidate_material) {
+    duplicateCandidateReference.candidate_material.items[0].option_refs = [
+      "option_reference_1", "option_reference_1",
+    ];
+  }
+  const duplicateCandidateReferenceValidation = validateCanonicalProviderEvaluationResult(
+    duplicateCandidateReference,
+    compiled.input,
+  );
+  add("result-contract-duplicate-reference-diagnostic",
+    duplicateCandidateReferenceValidation.status === "invalid" &&
+    duplicateCandidateReferenceValidation.preMatcherDiagnostic?.issues[0]?.code ===
+      "duplicate_reference_identifier");
+  const unsafeContent = structuredClone(fakeComplete);
+  const unsafeContentSentinel = "I recommend the best option.";
+  if (unsafeContent.candidate_material) {
+    unsafeContent.candidate_material.items[0].content = unsafeContentSentinel;
+  }
+  const unsafeContentValidation = validateCanonicalProviderEvaluationResult(
+    unsafeContent,
+    compiled.input,
+  );
+  add("result-contract-safety-diagnostic-excludes-content",
+    unsafeContentValidation.status === "invalid" &&
+    unsafeContentValidation.preMatcherDiagnostic?.issues[0]?.code ===
+      "direct_recommendation_forbidden" &&
+    !JSON.stringify(unsafeContentValidation.preMatcherDiagnostic).includes(unsafeContentSentinel));
+  const invalidOutcomeRelationship = structuredClone(fakeComplete);
+  invalidOutcomeRelationship.outcome = {
+    kind: "candidate_material",
+    v2_status: "CANNOT_RECOMMEND",
+  };
+  const invalidOutcomeValidation = validateCanonicalProviderEvaluationResult(
+    invalidOutcomeRelationship,
+    compiled.input,
+  );
+  add("outcome-cross-field-diagnostic",
+    invalidOutcomeValidation.status === "invalid" &&
+    invalidOutcomeValidation.category === "evaluation_outcome_invalid" &&
+    invalidOutcomeValidation.preMatcherDiagnostic?.issues[0]?.code ===
+      "candidate_material_v2_status_mismatch");
   const inventedRef = structuredClone(fakeComplete);
   inventedRef.evaluation_annotations.risk[0].candidate_ids = ["invented_candidate"];
-  add("invented-candidate-ref-fails-closed", validateCanonicalProviderEvaluationResult(
+  const inventedRefValidation = validateCanonicalProviderEvaluationResult(
     inventedRef,
     compiled.input,
-  ).status === "invalid");
+  );
+  add("invented-candidate-ref-fails-closed", inventedRefValidation.status === "invalid" &&
+    inventedRefValidation.category === "evaluation_annotation_grounding_invalid" &&
+    inventedRefValidation.preMatcherDiagnostic?.issues[0]?.code ===
+      "annotation_candidate_id_not_found");
   const inventedSourceRef = structuredClone(fakeComplete);
   inventedSourceRef.evaluation_annotations.risk[0].source_refs = ["invented_source"];
-  add("invented-source-ref-fails-closed", validateCanonicalProviderEvaluationResult(
+  const inventedSourceRefValidation = validateCanonicalProviderEvaluationResult(
     inventedSourceRef,
     compiled.input,
-  ).status === "invalid");
+  );
+  add("invented-source-ref-fails-closed", inventedSourceRefValidation.status === "invalid" &&
+    inventedSourceRefValidation.category === "evaluation_annotation_grounding_invalid" &&
+    inventedSourceRefValidation.preMatcherDiagnostic?.issues[0]?.code ===
+      "annotation_source_ref_not_allowed");
+  const annotationProvenanceMismatch = structuredClone(fakeComplete);
+  annotationProvenanceMismatch.evaluation_annotations.risk[0].source_refs = ["fact_1"];
+  const annotationProvenanceValidation = validateCanonicalProviderEvaluationResult(
+    annotationProvenanceMismatch,
+    compiled.input,
+  );
+  add("annotation-source-candidate-provenance-diagnostic",
+    annotationProvenanceValidation.status === "invalid" &&
+    annotationProvenanceValidation.category === "evaluation_annotation_grounding_invalid" &&
+    annotationProvenanceValidation.preMatcherDiagnostic?.issues[0]?.code ===
+      "annotation_source_ref_not_in_selected_candidate_provenance");
   const riskTypeMismatch = structuredClone(fakeComplete);
   riskTypeMismatch.evaluation_annotations.risk[0].candidate_ids = ["evaluation_option_1"];
   const riskTypeMismatchValidation = validateCanonicalProviderEvaluationResult(
@@ -603,6 +790,69 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
     !JSON.stringify(offlineAnnotationInvalid.annotationDiagnostic).includes(
       riskTypeMismatch.candidate_material?.items[0].content ?? "candidate-content-sentinel",
     ) && !JSON.stringify(offlineAnnotationInvalid.annotationDiagnostic).includes("reasoning"));
+
+  const candidateGroundingFailure = structuredClone(fakeComplete);
+  if (candidateGroundingFailure.candidate_material) {
+    candidateGroundingFailure.candidate_material.items[0].option_refs = ["bounded_reference_1"];
+  }
+  const offlineCandidateGrounding = await runCanonicalProviderEvaluationOffline(source, {
+    kind: "deterministic_fake_provider",
+    async countInput() { return 800; },
+    async generate() {
+      return {
+        status: "completed",
+        outputText: JSON.stringify(candidateGroundingFailure),
+        usage: { inputTokens: 800, outputTokens: 700, totalTokens: 1500 },
+      };
+    },
+  });
+  add("candidate-grounding-field-diagnostic-propagates",
+    offlineCandidateGrounding.status === "blocked" &&
+    offlineCandidateGrounding.category === "candidate_grounding_invalid" &&
+    offlineCandidateGrounding.preMatcherDiagnostic?.issues[0]?.code ===
+      "option_refs_must_be_empty" &&
+    offlineCandidateGrounding.preMatcherDiagnostic.issues[0].path.endsWith("option_refs"));
+
+  const offlineResultContract = await runCanonicalProviderEvaluationOffline(source, {
+    kind: "deterministic_fake_provider",
+    async countInput() { return 800; },
+    async generate() {
+      return {
+        status: "completed",
+        outputText: JSON.stringify(whitespaceContent),
+        usage: { inputTokens: 800, outputTokens: 700, totalTokens: 1500 },
+      };
+    },
+  });
+  add("result-contract-field-diagnostic-propagates",
+    offlineResultContract.status === "blocked" &&
+    offlineResultContract.category === "evaluation_result_contract_invalid" &&
+    offlineResultContract.preMatcherDiagnostic?.issues[0]?.code ===
+      "candidate_content_whitespace_only");
+
+  const offlineAnnotationGrounding = await runCanonicalProviderEvaluationOffline(source, {
+    kind: "deterministic_fake_provider",
+    async countInput() { return 800; },
+    async generate() {
+      return {
+        status: "completed",
+        outputText: JSON.stringify(annotationProvenanceMismatch),
+        usage: { inputTokens: 800, outputTokens: 700, totalTokens: 1500 },
+      };
+    },
+  });
+  add("annotation-grounding-field-diagnostic-propagates",
+    offlineAnnotationGrounding.status === "blocked" &&
+    offlineAnnotationGrounding.category === "evaluation_annotation_grounding_invalid" &&
+    offlineAnnotationGrounding.preMatcherDiagnostic?.issues[0]?.code ===
+      "annotation_source_ref_not_in_selected_candidate_provenance");
+  add("pre-matcher-diagnostics-exclude-natural-language-content", [
+    offlineCandidateGrounding,
+    offlineResultContract,
+    offlineAnnotationGrounding,
+  ].every((result) => !JSON.stringify(
+    result.status === "blocked" ? result.preMatcherDiagnostic : null,
+  ).includes(fakeComplete.candidate_material?.items[0].content ?? "candidate-content-sentinel")));
 
   const noCacheOffline = await runCanonicalProviderEvaluationOffline(source, {
     kind: "deterministic_fake_provider",
