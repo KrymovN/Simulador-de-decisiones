@@ -5,6 +5,7 @@ import OpenAI from "openai";
 import {
   DecisionMaterialTransportFailure,
   OPENAI_DECISION_MATERIAL_PROVIDER,
+  calculateDecisionMaterialCostEvidence,
   type DecisionMaterialProviderIncompleteOperationalMetadata,
   type DecisionMaterialProviderRequest,
   type DecisionMaterialTransport,
@@ -33,7 +34,12 @@ type OpenAIResponsesTransportGeneration =
   | {
       status: "completed";
       outputText: string;
-      usage: { inputTokens: number; outputTokens: number; totalTokens: number };
+      usage: {
+        inputTokens: number;
+        cachedInputTokens: number | null;
+        outputTokens: number;
+        totalTokens: number;
+      };
     }
   | { status: "refused" }
   | {
@@ -162,6 +168,11 @@ export function projectOpenAIIncompleteResponseMetadata(
     ? response.output_text.length
     : 0;
   const usage = response.usage;
+  const inputTokens = usage ? nonNegativeInteger(usage.input_tokens) : null;
+  const cachedInputTokens = usage
+    ? nonNegativeInteger(usage.input_tokens_details?.cached_tokens)
+    : null;
+  const outputTokens = usage ? nonNegativeInteger(usage.output_tokens) : null;
   const outputItems = response.output.slice(0, 64).map((item) => ({
     type: boundedMetadataToken(item.type),
     status: "status" in item ? boundedMetadataToken(item.status) : null,
@@ -186,12 +197,15 @@ export function projectOpenAIIncompleteResponseMetadata(
     maxOutputTokens: nonNegativeInteger(response.max_output_tokens),
     usage: usage
       ? {
-          inputTokens: nonNegativeInteger(usage.input_tokens),
-          cachedInputTokens: nonNegativeInteger(usage.input_tokens_details?.cached_tokens),
-          outputTokens: nonNegativeInteger(usage.output_tokens),
+          inputTokens,
+          cachedInputTokens,
+          outputTokens,
           reasoningTokens: nonNegativeInteger(usage.output_tokens_details?.reasoning_tokens),
           totalTokens: nonNegativeInteger(usage.total_tokens),
         }
+      : null,
+    costEvidence: inputTokens !== null && outputTokens !== null
+      ? calculateDecisionMaterialCostEvidence(inputTokens, cachedInputTokens, outputTokens)
       : null,
     visibleOutputPresent: visibleOutputLength > 0,
     visibleOutputLength,
@@ -253,6 +267,7 @@ function createOpenAITransport<
           outputText: response.output_text,
           usage: {
             inputTokens: response.usage.input_tokens,
+            cachedInputTokens: response.usage.input_tokens_details?.cached_tokens ?? null,
             outputTokens: response.usage.output_tokens,
             totalTokens: response.usage.total_tokens,
           },

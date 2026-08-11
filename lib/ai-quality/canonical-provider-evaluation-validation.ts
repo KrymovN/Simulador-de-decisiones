@@ -22,6 +22,7 @@ import {
 } from "./canonical-provider-evaluation-taxonomy";
 import {
   CANONICAL_PROVIDER_EVALUATION_RESULT_VERSION,
+  CANONICAL_PROVIDER_EVALUATION_RESULT_SCHEMA,
   matchCanonicalProviderEvaluationOracle,
   validateCanonicalProviderEvaluationResult,
   type CanonicalProviderEvaluationAnnotation,
@@ -30,6 +31,8 @@ import {
 } from "./canonical-provider-evaluation-result";
 import {
   buildCanonicalProviderEvaluationRequest,
+  CANONICAL_PROVIDER_ANNOTATION_RULES,
+  CANONICAL_PROVIDER_EVALUATION_LIMITS,
   runCanonicalProviderEvaluationOffline,
   type CanonicalProviderEvaluationProviderRequest,
 } from "./canonical-provider-evaluation";
@@ -289,6 +292,18 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
     JSON.stringify(changedBuilt.request.providerRequest.schema) === JSON.stringify(built.request.providerRequest.schema));
   add("evaluation-result-schema-used", built.request.providerRequest.schemaName ===
     "levio_canonical_provider_evaluation_result_v1" && built.request.providerRequest.strict === true);
+  const serializedSchema = JSON.stringify(CANONICAL_PROVIDER_EVALUATION_RESULT_SCHEMA);
+  add("annotation-uniqueness-provider-facing", serializedSchema.includes(
+    "Each concept_id may appear at most once",
+  ) && serializedSchema.includes("no duplicate value is allowed") &&
+    !serializedSchema.includes('"uniqueItems"'));
+  add("annotation-runtime-rules-provider-facing", CANONICAL_PROVIDER_ANNOTATION_RULES.length === 12 &&
+    CANONICAL_PROVIDER_ANNOTATION_RULES.every((rule) =>
+      built.request.providerRequest.instructions.includes(rule)));
+  add("evaluation-output-limit-is-4000", built.request.providerRequest.maxOutputTokens === 4000 &&
+    CANONICAL_PROVIDER_EVALUATION_LIMITS.maxOutputTokens === 4000 &&
+    built.request.providerRequest.reasoningEffort === "low");
+  add("evaluation-conservative-ceiling-is-006", CANONICAL_PROVIDER_EVALUATION_LIMITS.maxCostUsd === 0.06);
   add("production-provider-controls-reused", built.request.providerRequest.model === "gpt-5.6-terra" &&
     built.request.providerRequest.store === false && built.request.providerRequest.tools.length === 0);
   add("evaluation-only-evidence", built.request.evidence.decisionContextBuilt === false &&
@@ -309,10 +324,12 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
 
   const invalidTaxonomy = structuredClone(fakeComplete);
   invalidTaxonomy.evaluation_annotations.risk[0].concept_id = "not_in_canonical_taxonomy";
-  add("invalid-taxonomy-id-fails-closed", validateCanonicalProviderEvaluationResult(
+  const invalidTaxonomyValidation = validateCanonicalProviderEvaluationResult(
     invalidTaxonomy,
     compiled.input,
-  ).status === "invalid");
+  );
+  add("invalid-taxonomy-id-fails-closed", invalidTaxonomyValidation.status === "invalid" &&
+    invalidTaxonomyValidation.annotationDiagnostic?.reason === "concept_id_invalid");
   const inventedRef = structuredClone(fakeComplete);
   inventedRef.evaluation_annotations.risk[0].candidate_ids = ["invented_candidate"];
   add("invented-candidate-ref-fails-closed", validateCanonicalProviderEvaluationResult(
@@ -327,20 +344,198 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
   ).status === "invalid");
   const riskTypeMismatch = structuredClone(fakeComplete);
   riskTypeMismatch.evaluation_annotations.risk[0].candidate_ids = ["evaluation_option_1"];
-  add("risk-annotation-type-mismatch-fails-closed", validateCanonicalProviderEvaluationResult(
+  const riskTypeMismatchValidation = validateCanonicalProviderEvaluationResult(
     riskTypeMismatch,
     compiled.input,
-  ).status === "invalid");
+  );
+  add("risk-annotation-type-mismatch-fails-closed", riskTypeMismatchValidation.status === "invalid" &&
+    riskTypeMismatchValidation.annotationDiagnostic?.reason === "risk_candidate_type_incompatible" &&
+    riskTypeMismatchValidation.annotationDiagnostic.actualCandidateItemTypes.join(",") === "option");
+  const duplicateCandidate = structuredClone(fakeComplete);
+  duplicateCandidate.evaluation_annotations.risk[0].candidate_ids = [
+    duplicateCandidate.evaluation_annotations.risk[0].candidate_ids[0],
+    duplicateCandidate.evaluation_annotations.risk[0].candidate_ids[0],
+  ];
+  const duplicateCandidateValidation = validateCanonicalProviderEvaluationResult(
+    duplicateCandidate,
+    compiled.input,
+  );
+  add("duplicate-candidate-diagnostic", duplicateCandidateValidation.status === "invalid" &&
+    duplicateCandidateValidation.annotationDiagnostic?.reason === "duplicate_candidate_id");
+  const duplicateSource = structuredClone(fakeComplete);
+  duplicateSource.evaluation_annotations.risk[0].source_refs = [
+    "provider_inference", "provider_inference",
+  ];
+  const duplicateSourceValidation = validateCanonicalProviderEvaluationResult(
+    duplicateSource,
+    compiled.input,
+  );
+  add("duplicate-source-diagnostic", duplicateSourceValidation.status === "invalid" &&
+    duplicateSourceValidation.annotationDiagnostic?.reason === "duplicate_source_ref");
+  const duplicateConcept = structuredClone(fakeComplete);
+  duplicateConcept.evaluation_annotations.risk.push(
+    structuredClone(duplicateConcept.evaluation_annotations.risk[0]),
+  );
+  const duplicateConceptValidation = validateCanonicalProviderEvaluationResult(
+    duplicateConcept,
+    compiled.input,
+  );
+  add("duplicate-concept-diagnostic", duplicateConceptValidation.status === "invalid" &&
+    duplicateConceptValidation.annotationDiagnostic?.reason === "duplicate_concept_id");
+  const emptyCandidateGrounding = structuredClone(fakeComplete);
+  emptyCandidateGrounding.evaluation_annotations.risk[0].candidate_ids = [];
+  emptyCandidateGrounding.evaluation_annotations.risk[0].source_refs = [];
+  const emptyCandidateValidation = validateCanonicalProviderEvaluationResult(
+    emptyCandidateGrounding,
+    compiled.input,
+  );
+  add("candidate-material-references-diagnostic", emptyCandidateValidation.status === "invalid" &&
+    emptyCandidateValidation.annotationDiagnostic?.reason === "candidate_material_references_empty");
+  const executionReferences = structuredClone(fakeComplete);
+  executionReferences.evaluation_annotations.v2_status[0].candidate_ids = ["evaluation_option_1"];
+  executionReferences.evaluation_annotations.v2_status[0].source_refs = ["provider_inference"];
+  const executionReferencesValidation = validateCanonicalProviderEvaluationResult(
+    executionReferences,
+    compiled.input,
+  );
+  add("execution-outcome-empty-references-diagnostic", executionReferencesValidation.status === "invalid" &&
+    executionReferencesValidation.annotationDiagnostic?.reason ===
+      "execution_outcome_references_not_empty");
+  const invalidEvidenceKind = structuredClone(fakeComplete) as unknown as Record<string, unknown>;
+  const invalidEvidenceAnnotations = invalidEvidenceKind.evaluation_annotations as
+    CanonicalProviderEvaluationResultV1["evaluation_annotations"];
+  (invalidEvidenceAnnotations.risk[0] as unknown as Record<string, unknown>).evidence_kind =
+    "unsupported_evidence";
+  const invalidEvidenceValidation = validateCanonicalProviderEvaluationResult(
+    invalidEvidenceKind,
+    compiled.input,
+  );
+  add("invalid-evidence-kind-diagnostic", invalidEvidenceValidation.status === "invalid" &&
+    invalidEvidenceValidation.annotationDiagnostic?.reason === "evidence_kind_invalid");
+  const v2Mismatch = structuredClone(fakeComplete);
+  const alternateV2Status = CANONICAL_PROVIDER_EVALUATION_TAXONOMY.v2_status.find(
+    (concept) => concept !== v2Mismatch.outcome.v2_status,
+  );
+  if (alternateV2Status) {
+    v2Mismatch.evaluation_annotations.v2_status[0].concept_id = alternateV2Status;
+  }
+  const v2MismatchValidation = validateCanonicalProviderEvaluationResult(v2Mismatch, compiled.input);
+  add("v2-outcome-mismatch-diagnostic", alternateV2Status !== undefined &&
+    v2MismatchValidation.status === "invalid" &&
+    v2MismatchValidation.annotationDiagnostic?.reason === "v2_status_outcome_mismatch");
+  const riskExecutionOutcome = structuredClone(fakeComplete);
+  riskExecutionOutcome.evaluation_annotations.risk[0] = {
+    ...riskExecutionOutcome.evaluation_annotations.risk[0],
+    evidence_kind: "execution_outcome",
+    candidate_ids: [],
+    source_refs: [],
+  };
+  const riskExecutionValidation = validateCanonicalProviderEvaluationResult(
+    riskExecutionOutcome,
+    compiled.input,
+  );
+  add("risk-execution-outcome-diagnostic", riskExecutionValidation.status === "invalid" &&
+    riskExecutionValidation.annotationDiagnostic?.reason === "risk_execution_outcome_incompatible");
+  const v2CandidateMaterial = structuredClone(fakeComplete);
+  v2CandidateMaterial.evaluation_annotations.v2_status[0] = {
+    ...v2CandidateMaterial.evaluation_annotations.v2_status[0],
+    evidence_kind: "candidate_material",
+    candidate_ids: ["evaluation_option_1"],
+    source_refs: ["provider_inference"],
+  };
+  const v2CandidateValidation = validateCanonicalProviderEvaluationResult(
+    v2CandidateMaterial,
+    compiled.input,
+  );
+  add("v2-candidate-material-diagnostic", v2CandidateValidation.status === "invalid" &&
+    v2CandidateValidation.annotationDiagnostic?.reason === "v2_status_candidate_material_forbidden");
   const scenarioEvidenceIncomplete = structuredClone(fakeComplete);
   const compareAnnotation = scenarioEvidenceIncomplete.evaluation_annotations.scenario.find(
     (annotation) => annotation.concept_id.startsWith("compare_"),
   );
   if (compareAnnotation) compareAnnotation.candidate_ids = ["evaluation_option_1", "evaluation_option_2"];
-  add("scenario-path-requires-consequence-evidence", compareAnnotation !== undefined &&
-    validateCanonicalProviderEvaluationResult(
+  const scenarioEvidenceValidation = validateCanonicalProviderEvaluationResult(
       scenarioEvidenceIncomplete,
       compiled.input,
-    ).status === "invalid");
+    );
+  add("scenario-path-requires-consequence-evidence", compareAnnotation !== undefined &&
+    scenarioEvidenceValidation.status === "invalid" &&
+    scenarioEvidenceValidation.annotationDiagnostic?.reason === "scenario_compare_consequence_missing");
+  const scenarioCompareExecution = structuredClone(fakeComplete);
+  const scenarioCompareExecutionAnnotation = scenarioCompareExecution.evaluation_annotations.scenario.find(
+    (annotation) => annotation.concept_id.startsWith("compare_"),
+  );
+  if (scenarioCompareExecutionAnnotation) {
+    scenarioCompareExecutionAnnotation.evidence_kind = "execution_outcome";
+    scenarioCompareExecutionAnnotation.candidate_ids = [];
+    scenarioCompareExecutionAnnotation.source_refs = [];
+  }
+  const scenarioCompareExecutionValidation = validateCanonicalProviderEvaluationResult(
+    scenarioCompareExecution,
+    compiled.input,
+  );
+  add("scenario-compare-evidence-diagnostic", scenarioCompareExecutionAnnotation !== undefined &&
+    scenarioCompareExecutionValidation.status === "invalid" &&
+    scenarioCompareExecutionValidation.annotationDiagnostic?.reason ===
+      "scenario_compare_requires_candidate_material");
+  const scenarioOptionCount = structuredClone(fakeComplete);
+  const scenarioOptionCountAnnotation = scenarioOptionCount.evaluation_annotations.scenario.find(
+    (annotation) => annotation.concept_id.startsWith("compare_"),
+  );
+  if (scenarioOptionCountAnnotation) {
+    scenarioOptionCountAnnotation.candidate_ids = [
+      "evaluation_option_1", "evaluation_short_term_1",
+    ];
+  }
+  const scenarioOptionCountValidation = validateCanonicalProviderEvaluationResult(
+    scenarioOptionCount,
+    compiled.input,
+  );
+  add("scenario-compare-option-count-diagnostic", scenarioOptionCountAnnotation !== undefined &&
+    scenarioOptionCountValidation.status === "invalid" &&
+    scenarioOptionCountValidation.annotationDiagnostic?.reason ===
+      "scenario_compare_option_count_insufficient");
+  const askConcept = CANONICAL_PROVIDER_EVALUATION_TAXONOMY.clarification.find(
+    (concept) => concept.startsWith("ask_"),
+  );
+  const clarificationTypeMissing = structuredClone(fakeComplete);
+  if (askConcept) {
+    clarificationTypeMissing.evaluation_annotations.clarification = [{
+      concept_id: askConcept,
+      evidence_kind: "candidate_material",
+      candidate_ids: ["evaluation_option_1"],
+      source_refs: ["provider_inference"],
+    }];
+  }
+  const clarificationTypeValidation = validateCanonicalProviderEvaluationResult(
+    clarificationTypeMissing,
+    compiled.input,
+  );
+  add("clarification-item-type-diagnostic", askConcept !== undefined &&
+    clarificationTypeValidation.status === "invalid" &&
+    clarificationTypeValidation.annotationDiagnostic?.reason ===
+      "clarification_candidate_type_missing");
+  const informationFirstConcept = CANONICAL_PROVIDER_EVALUATION_TAXONOMY.scenario.find(
+    (concept) => concept === "include_information_first_path" ||
+      concept === "include_no_action_or_information_first_path",
+  );
+  const informationFirstGrounding = structuredClone(fakeComplete);
+  if (informationFirstConcept) {
+    informationFirstGrounding.evaluation_annotations.scenario = [{
+      concept_id: informationFirstConcept,
+      evidence_kind: "candidate_material",
+      candidate_ids: ["evaluation_short_term_1"],
+      source_refs: ["provider_inference"],
+    }];
+  }
+  const informationFirstValidation = validateCanonicalProviderEvaluationResult(
+    informationFirstGrounding,
+    compiled.input,
+  );
+  add("information-first-grounding-diagnostic", informationFirstConcept !== undefined &&
+    informationFirstValidation.status === "invalid" &&
+    informationFirstValidation.annotationDiagnostic?.reason ===
+      "information_first_grounding_missing");
   const invalidCategory = structuredClone(fakeComplete) as unknown as Record<string, unknown>;
   (invalidCategory.evaluation_annotations as Record<string, unknown>).unexpected = [];
   add("invalid-category-fails-closed", validateCanonicalProviderEvaluationResult(
@@ -369,7 +564,7 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
       return {
         status: "completed",
         outputText: JSON.stringify(fakeComplete),
-        usage: { inputTokens: 800, outputTokens: 700, totalTokens: 1500 },
+        usage: { inputTokens: 800, cachedInputTokens: 600, outputTokens: 700, totalTokens: 1500 },
       };
     },
   });
@@ -382,6 +577,49 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
     offline.evidence.oracleReadAfterProviderResult);
   add("offline-network-operations-zero", offline.status === "completed" &&
     offline.evidence.networkOperations === 0);
+  add("completed-usage-preserves-cached-tokens", offline.status === "completed" &&
+    offline.usage.cachedInputTokens === 600);
+  add("conservative-and-cache-adjusted-cost-separated", offline.status === "completed" &&
+    offline.usage.conservativeUncachedCostUsd === 0.01 &&
+    offline.usage.cacheAdjustedCalculatedCostUsd === 0.00892 &&
+    offline.usage.cacheAdjustedFallbackToConservative === false &&
+    offline.usage.calculatedCostUsd === offline.usage.cacheAdjustedCalculatedCostUsd);
+
+  const offlineAnnotationInvalid = await runCanonicalProviderEvaluationOffline(source, {
+    kind: "deterministic_fake_provider",
+    async countInput() { return 800; },
+    async generate() {
+      return {
+        status: "completed",
+        outputText: JSON.stringify(riskTypeMismatch),
+        usage: { inputTokens: 800, outputTokens: 700, totalTokens: 1500 },
+      };
+    },
+  });
+  add("annotation-diagnostic-propagates", offlineAnnotationInvalid.status === "blocked" &&
+    offlineAnnotationInvalid.category === "evaluation_annotation_invalid" &&
+    offlineAnnotationInvalid.annotationDiagnostic?.reason === "risk_candidate_type_incompatible");
+  add("annotation-diagnostic-excludes-raw-output", offlineAnnotationInvalid.status === "blocked" &&
+    !JSON.stringify(offlineAnnotationInvalid.annotationDiagnostic).includes(
+      riskTypeMismatch.candidate_material?.items[0].content ?? "candidate-content-sentinel",
+    ) && !JSON.stringify(offlineAnnotationInvalid.annotationDiagnostic).includes("reasoning"));
+
+  const noCacheOffline = await runCanonicalProviderEvaluationOffline(source, {
+    kind: "deterministic_fake_provider",
+    async countInput() { return 800; },
+    async generate() {
+      return {
+        status: "completed",
+        outputText: JSON.stringify(fakeComplete),
+        usage: { inputTokens: 800, outputTokens: 700, totalTokens: 1500 },
+      };
+    },
+  });
+  add("missing-cache-usage-falls-back-conservatively", noCacheOffline.status === "completed" &&
+    noCacheOffline.usage.cachedInputTokens === null &&
+    noCacheOffline.usage.cacheAdjustedFallbackToConservative &&
+    noCacheOffline.usage.cacheAdjustedCalculatedCostUsd ===
+      noCacheOffline.usage.conservativeUncachedCostUsd);
 
   const malformed = await runCanonicalProviderEvaluationOffline(source, {
     kind: "deterministic_fake_provider",

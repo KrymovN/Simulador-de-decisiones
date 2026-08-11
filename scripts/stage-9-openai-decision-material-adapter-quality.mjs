@@ -318,6 +318,10 @@ const allowedWriteSet = new Set([
   "lib/ai-provider/openai-decision-material-adapter.ts",
   "lib/ai-provider/openai-decision-material-adapter-validation.ts",
   "lib/ai-provider/openai-synthetic-risk-adapter.server.ts",
+  "lib/ai-quality/canonical-provider-evaluation-result.ts",
+  "lib/ai-quality/canonical-provider-evaluation.ts",
+  "lib/ai-quality/canonical-provider-evaluation-validation.ts",
+  "scripts/stage-9-canonical-provider-evaluation-boundary-quality.mjs",
   "scripts/stage-9-openai-decision-material-adapter-quality.mjs",
   "scripts/stage-9-openai-synthetic-risk-adapter-quality.mjs",
   "package.json",
@@ -340,6 +344,7 @@ add("fixed-provider-model", adapter.includes('OPENAI_DECISION_MATERIAL_PROVIDER 
 add("no-client-runtime-override", adapter.includes("hasForbiddenRuntimeField") && validationSource.includes("client-provider-model-key-rejected"), "Client provider/model/key controls must fail closed.");
 add("controlled-schema-safety-grounding", adapter.includes("provider_schema_invalid") && adapter.includes("provider_safety_invalid") && adapter.includes("provider_grounding_invalid"), "Provider output must pass schema, safety, and reference grounding validation.");
 add("bounded-cost-and-operations", adapter.includes("maxProviderRequests: 2") && adapter.includes("maxCostUsd: 0.05") && adapter.includes("calculateDecisionMaterialCost"), "Cost and provider-operation budgets must be explicit.");
+add("cache-aware-cost-evidence", adapter.includes("cachedInputUsdPerMillion: 0.2") && adapter.includes("conservativeUncachedCostUsd") && adapter.includes("cacheAdjustedCalculatedCostUsd") && validationSource.includes("cached-token-cost-evidence-separated"), "Completed usage must preserve cached tokens and separate conservative from cache-adjusted calculated cost.");
 add("no-new-credential-egress-executor", !adapter.includes("process.env") && !adapter.includes('from "openai"') && !adapter.includes("fetch("), "This substep must not add credential reads, SDK execution, or direct egress.");
 add("transport-seam-only", adapter.includes("DecisionMaterialTransport") && adapter.includes("config.transport.countInput") && adapter.includes("config.transport.generate"), "Provider operations must remain behind the injected server-only transport seam.");
 add("no-barrel-export", !providerIndex.includes("openai-decision-material-adapter"), "Live-capable adapter code must not be exported through the shared provider barrel.");

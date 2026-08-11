@@ -118,6 +118,9 @@ add("incomplete-reason-preserved", incompleteMetadata.responseStatus === "incomp
 add("incomplete-usage-preserved", incompleteMetadata.usage?.inputTokens === 3432 &&
   incompleteMetadata.usage.cachedInputTokens === 128 && incompleteMetadata.usage.outputTokens === 2500 &&
   incompleteMetadata.usage.reasoningTokens === 1700 && incompleteMetadata.usage.totalTokens === 5932);
+add("incomplete-cost-evidence-separated", incompleteMetadata.costEvidence?.conservativeUncachedCostUsd === 0.036864 &&
+  incompleteMetadata.costEvidence.cacheAdjustedCalculatedCostUsd === 0.0366336 &&
+  incompleteMetadata.costEvidence.cacheAdjustedFallbackToConservative === false);
 add("incomplete-response-identity-preserved", incompleteMetadata.responseId === "resp_stage9_incomplete" &&
   incompleteMetadata.responseModel === "gpt-5.6-terra" && incompleteMetadata.serviceTier === "default" &&
   incompleteMetadata.maxOutputTokens === 2500);
@@ -140,6 +143,7 @@ const missingIncompleteMetadata = serverAdapter.projectOpenAIIncompleteResponseM
 });
 add("incomplete-optional-metadata-safe", missingIncompleteMetadata.incompleteReason === null &&
   missingIncompleteMetadata.providerError === null && missingIncompleteMetadata.usage === null &&
+  missingIncompleteMetadata.costEvidence === null &&
   missingIncompleteMetadata.maxOutputTokens === null && missingIncompleteMetadata.serviceTier === null &&
   missingIncompleteMetadata.visibleOutputPresent === false && missingIncompleteMetadata.outputItems.length === 0);
 globalThis.fetch = originalFetch;
@@ -150,6 +154,7 @@ add("sdk-only-in-server-adapter", server.includes('from "openai"') && !core.incl
 add("automatic-retries-disabled", server.includes("maxRetries: 0") && (server.match(/maxRetries: 0/g) ?? []).length >= 3, "Client and both requests must disable automatic retries.");
 add("completed-transport-success-path-preserved", server.includes('if (response.status !== "completed")') &&
   server.includes("outputText: response.output_text") && server.includes("inputTokens: response.usage.input_tokens") &&
+  server.includes("cachedInputTokens: response.usage.input_tokens_details?.cached_tokens ?? null") &&
   server.includes("outputTokens: response.usage.output_tokens") && server.includes("totalTokens: response.usage.total_tokens"),
 "Completed Responses transport projection must remain unchanged.");
 add("no-raw-logging", !core.includes("console.") && !server.includes("console."), "Adapter must not log raw or controlled payloads automatically.");

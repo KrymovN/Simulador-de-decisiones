@@ -34,6 +34,7 @@ export const OPENAI_DECISION_MATERIAL_LIMITS = {
   maxTotalTokens: 8500,
   maxCostUsd: 0.05,
   inputUsdPerMillion: 2,
+  cachedInputUsdPerMillion: 0.2,
   outputUsdPerMillion: 12,
   tokenCountTimeoutMs: 5000,
   generationTimeoutMs: 30000,
@@ -124,6 +125,7 @@ export type DecisionMaterialProviderIncompleteOperationalMetadata = {
     reasoningTokens: number | null;
     totalTokens: number | null;
   } | null;
+  costEvidence: DecisionMaterialCostEvidence | null;
   visibleOutputPresent: boolean;
   visibleOutputLength: number;
   outputItemCount: number;
@@ -154,7 +156,12 @@ export type DecisionMaterialTransportGeneration =
   | {
       status: "completed";
       outputText: string;
-      usage: { inputTokens: number; outputTokens: number; totalTokens: number };
+      usage: {
+        inputTokens: number;
+        cachedInputTokens?: number | null;
+        outputTokens: number;
+        totalTokens: number;
+      };
     }
   | { status: "refused" }
   | {
@@ -181,9 +188,19 @@ export type DecisionMaterialAdapterExecutionConfig = {
 
 export type DecisionMaterialUsage = {
   inputTokens: number;
+  cachedInputTokens: number | null;
   outputTokens: number;
   totalTokens: number;
+  conservativeUncachedCostUsd: number;
+  cacheAdjustedCalculatedCostUsd: number;
+  cacheAdjustedFallbackToConservative: boolean;
   calculatedCostUsd: number;
+};
+
+export type DecisionMaterialCostEvidence = {
+  conservativeUncachedCostUsd: number;
+  cacheAdjustedCalculatedCostUsd: number;
+  cacheAdjustedFallbackToConservative: boolean;
 };
 
 export type DecisionMaterialAdapterResult =
@@ -522,6 +539,34 @@ export function calculateDecisionMaterialCost(inputTokens: number, outputTokens:
   ).toFixed(8));
 }
 
+export function calculateDecisionMaterialCostEvidence(
+  inputTokens: number,
+  cachedInputTokens: number | null | undefined,
+  outputTokens: number,
+): DecisionMaterialCostEvidence {
+  const conservativeUncachedCostUsd = calculateDecisionMaterialCost(inputTokens, outputTokens);
+  const cacheReported = cachedInputTokens !== null && cachedInputTokens !== undefined;
+  if (
+    cacheReported &&
+    (!Number.isInteger(cachedInputTokens) || cachedInputTokens < 0 || cachedInputTokens > inputTokens)
+  ) {
+    throw new RangeError("cachedInputTokens must be an integer between zero and inputTokens.");
+  }
+  const normalizedCachedInputTokens = cacheReported ? cachedInputTokens : 0;
+  const cacheAdjustedCalculatedCostUsd = Number((
+    (inputTokens - normalizedCachedInputTokens) *
+      OPENAI_DECISION_MATERIAL_LIMITS.inputUsdPerMillion / 1_000_000 +
+    normalizedCachedInputTokens *
+      OPENAI_DECISION_MATERIAL_LIMITS.cachedInputUsdPerMillion / 1_000_000 +
+    outputTokens * OPENAI_DECISION_MATERIAL_LIMITS.outputUsdPerMillion / 1_000_000
+  ).toFixed(8));
+  return {
+    conservativeUncachedCostUsd,
+    cacheAdjustedCalculatedCostUsd,
+    cacheAdjustedFallbackToConservative: !cacheReported,
+  };
+}
+
 function failed(
   status: "blocked" | "failed",
   category: DecisionMaterialAdapterErrorCategory,
@@ -678,11 +723,17 @@ export async function executeCandidateDecisionMaterial(
     return failed("failed", "provider_grounding_invalid", providerRequests, elapsed());
   }
   const usage = generated.usage;
+  const cachedInputTokens = usage.cachedInputTokens ?? null;
   if (
     !Number.isInteger(usage.inputTokens) ||
     !Number.isInteger(usage.outputTokens) ||
     !Number.isInteger(usage.totalTokens) ||
     usage.inputTokens < 0 ||
+    (cachedInputTokens !== null && (
+      !Number.isInteger(cachedInputTokens) ||
+      cachedInputTokens < 0 ||
+      cachedInputTokens > usage.inputTokens
+    )) ||
     usage.outputTokens < 0 ||
     usage.totalTokens !== usage.inputTokens + usage.outputTokens ||
     usage.inputTokens > OPENAI_DECISION_MATERIAL_LIMITS.maxInputTokens ||
@@ -691,8 +742,12 @@ export async function executeCandidateDecisionMaterial(
   ) {
     return failed("failed", "provider_response_invalid", providerRequests, elapsed());
   }
-  const calculatedCostUsd = calculateDecisionMaterialCost(usage.inputTokens, usage.outputTokens);
-  if (calculatedCostUsd > OPENAI_DECISION_MATERIAL_LIMITS.maxCostUsd) {
+  const costEvidence = calculateDecisionMaterialCostEvidence(
+    usage.inputTokens,
+    cachedInputTokens,
+    usage.outputTokens,
+  );
+  if (costEvidence.conservativeUncachedCostUsd > OPENAI_DECISION_MATERIAL_LIMITS.maxCostUsd) {
     return failed("failed", "cost_limit_exceeded", providerRequests, elapsed());
   }
   return {
@@ -701,7 +756,14 @@ export async function executeCandidateDecisionMaterial(
     provider: OPENAI_DECISION_MATERIAL_PROVIDER,
     model: OPENAI_DECISION_MATERIAL_MODEL,
     candidateMaterial: parsed,
-    usage: { ...usage, calculatedCostUsd },
+    usage: {
+      inputTokens: usage.inputTokens,
+      cachedInputTokens,
+      outputTokens: usage.outputTokens,
+      totalTokens: usage.totalTokens,
+      ...costEvidence,
+      calculatedCostUsd: costEvidence.cacheAdjustedCalculatedCostUsd,
+    },
     elapsedMs: elapsed(),
     metadata: {
       serverOnly: true,

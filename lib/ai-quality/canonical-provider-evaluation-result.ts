@@ -60,6 +60,44 @@ export type CanonicalProviderEvaluationResultV1 = {
   };
 };
 
+export const CANONICAL_PROVIDER_ANNOTATION_INVALID_REASONS = [
+  "evaluation_annotations_object_invalid",
+  "annotation_category_not_array",
+  "annotation_object_invalid",
+  "annotation_fields_invalid",
+  "concept_id_invalid",
+  "evidence_kind_invalid",
+  "candidate_ids_invalid",
+  "source_refs_invalid",
+  "duplicate_candidate_id",
+  "duplicate_source_ref",
+  "duplicate_concept_id",
+  "execution_outcome_references_not_empty",
+  "v2_status_outcome_mismatch",
+  "scenario_compare_requires_candidate_material",
+  "risk_execution_outcome_incompatible",
+  "candidate_material_references_empty",
+  "risk_candidate_type_incompatible",
+  "clarification_candidate_type_missing",
+  "scenario_compare_option_count_insufficient",
+  "scenario_compare_consequence_missing",
+  "information_first_grounding_missing",
+  "v2_status_candidate_material_forbidden",
+] as const;
+
+export type CanonicalProviderAnnotationInvalidReason =
+  (typeof CANONICAL_PROVIDER_ANNOTATION_INVALID_REASONS)[number];
+
+export type CanonicalProviderAnnotationInvalidDiagnostic = {
+  reason: CanonicalProviderAnnotationInvalidReason;
+  annotationCategory: CanonicalProviderEvaluationCategory | null;
+  conceptId: string | null;
+  evidenceKind: "candidate_material" | "execution_outcome" | null;
+  candidateIdCount: number | null;
+  sourceRefCount: number | null;
+  actualCandidateItemTypes: DecisionMaterialItemType[];
+};
+
 export type CanonicalProviderEvaluationResultValidation =
   | { status: "valid"; result: CanonicalProviderEvaluationResultV1 }
   | {
@@ -69,6 +107,7 @@ export type CanonicalProviderEvaluationResultValidation =
         | "evaluation_annotation_invalid"
         | "evaluation_annotation_grounding_invalid"
         | "evaluation_outcome_invalid";
+      annotationDiagnostic?: CanonicalProviderAnnotationInvalidDiagnostic;
     };
 
 export type CanonicalProviderEvaluationOracleMatch = {
@@ -84,6 +123,7 @@ export type CanonicalProviderEvaluationOracleMatch = {
 
 const annotationSchema = (category: CanonicalProviderEvaluationCategory) => ({
   type: "array",
+  description: "Each concept_id may appear at most once in this category.",
   maxItems: CANONICAL_PROVIDER_EVALUATION_TAXONOMY[category].length,
   items: {
     type: "object",
@@ -92,19 +132,23 @@ const annotationSchema = (category: CanonicalProviderEvaluationCategory) => ({
     properties: {
       concept_id: {
         type: "string",
+        description: "Select a concept only once within its annotation category.",
         enum: [...CANONICAL_PROVIDER_EVALUATION_TAXONOMY[category]],
       },
       evidence_kind: {
         type: "string",
+        description: "candidate_material requires non-empty grounded candidate_ids and source_refs. execution_outcome requires both arrays to be empty.",
         enum: ["candidate_material", "execution_outcome"],
       },
       candidate_ids: {
         type: "array",
+        description: "Unique existing candidate IDs only; no duplicate value is allowed.",
         maxItems: 24,
         items: { type: "string", pattern: "^[A-Za-z0-9][A-Za-z0-9_-]{2,79}$" },
       },
       source_refs: {
         type: "array",
+        description: "Unique allowed source references only; no duplicate value is allowed.",
         maxItems: 24,
         items: { type: "string", pattern: "^[A-Za-z0-9][A-Za-z0-9_-]{2,79}$" },
       },
@@ -131,6 +175,7 @@ export const CANONICAL_PROVIDER_EVALUATION_RESULT_SCHEMA: Record<string, unknown
     },
     evaluation_annotations: {
       type: "object",
+      description: "Annotation relations must follow the evaluation instructions, including category-specific evidence and candidate-item-type requirements.",
       additionalProperties: false,
       required: [...CANONICAL_PROVIDER_EVALUATION_CATEGORIES],
       properties: Object.fromEntries(
@@ -208,45 +253,97 @@ function itemTypes(
   ));
 }
 
-function annotationCategoryCompatible(
+function annotationCompatibilityFailure(
   category: CanonicalProviderEvaluationCategory,
   annotation: CanonicalProviderEvaluationAnnotation,
   outcome: CanonicalProviderEvaluationResultV1["outcome"],
   candidateById: Map<string, CandidateDecisionMaterialItem>,
-): boolean {
+): CanonicalProviderAnnotationInvalidReason | null {
   if (annotation.evidence_kind === "execution_outcome") {
-    if (annotation.candidate_ids.length > 0 || annotation.source_refs.length > 0) return false;
-    if (category === "v2_status") return annotation.concept_id === outcome.v2_status;
-    if (category === "scenario" && annotation.concept_id.startsWith("compare_")) return false;
-    if (category === "risk" && outcome.kind !== "safe_refusal" && outcome.kind !== "controlled_failure") {
-      return false;
+    if (annotation.candidate_ids.length > 0 || annotation.source_refs.length > 0) {
+      return "execution_outcome_references_not_empty";
     }
-    return true;
+    if (category === "v2_status") {
+      return annotation.concept_id === outcome.v2_status ? null : "v2_status_outcome_mismatch";
+    }
+    if (category === "scenario" && annotation.concept_id.startsWith("compare_")) {
+      return "scenario_compare_requires_candidate_material";
+    }
+    if (category === "risk" && outcome.kind !== "safe_refusal" && outcome.kind !== "controlled_failure") {
+      return "risk_execution_outcome_incompatible";
+    }
+    return null;
   }
 
-  if (annotation.candidate_ids.length === 0 || annotation.source_refs.length === 0) return false;
+  if (annotation.candidate_ids.length === 0 || annotation.source_refs.length === 0) {
+    return "candidate_material_references_empty";
+  }
   const types = itemTypes(annotation.candidate_ids, candidateById);
-  if (category === "risk") return types.size > 0 && [...types].every((type) => type === "risk_signal");
+  if (category === "risk") {
+    return types.size > 0 && [...types].every((type) => type === "risk_signal")
+      ? null
+      : "risk_candidate_type_incompatible";
+  }
   if (category === "clarification" && annotation.concept_id.startsWith("ask_")) {
-    return types.has("clarification_need");
+    return types.has("clarification_need") ? null : "clarification_candidate_type_missing";
   }
   if (category === "scenario" && annotation.concept_id.startsWith("compare_")) {
     const optionCount = annotation.candidate_ids.filter(
       (id) => candidateById.get(id)?.item_type === "option",
     ).length;
-    return optionCount >= 2 && (
-      types.has("short_term_consequence") || types.has("long_term_consequence")
-    );
+    if (optionCount < 2) return "scenario_compare_option_count_insufficient";
+    return types.has("short_term_consequence") || types.has("long_term_consequence")
+      ? null
+      : "scenario_compare_consequence_missing";
   }
   if (
     category === "scenario" &&
     (annotation.concept_id === "include_information_first_path" ||
       annotation.concept_id === "include_no_action_or_information_first_path")
   ) {
-    return types.has("option") || types.has("clarification_need");
+    return types.has("option") || types.has("clarification_need")
+      ? null
+      : "information_first_grounding_missing";
   }
-  if (category === "v2_status") return false;
-  return true;
+  if (category === "v2_status") return "v2_status_candidate_material_forbidden";
+  return null;
+}
+
+function annotationInvalid(
+  reason: CanonicalProviderAnnotationInvalidReason,
+  category: CanonicalProviderEvaluationCategory | null = null,
+  annotation?: Record<string, unknown>,
+  candidateById: Map<string, CandidateDecisionMaterialItem> = new Map(),
+): CanonicalProviderEvaluationResultValidation {
+  const conceptId = category !== null && typeof annotation?.concept_id === "string" &&
+      CANONICAL_PROVIDER_EVALUATION_TAXONOMY[category].includes(annotation.concept_id)
+    ? annotation.concept_id
+    : null;
+  const evidenceKind = annotation?.evidence_kind === "candidate_material" ||
+      annotation?.evidence_kind === "execution_outcome"
+    ? annotation.evidence_kind
+    : null;
+  const candidateIds = Array.isArray(annotation?.candidate_ids) &&
+      annotation.candidate_ids.every((value) => typeof value === "string")
+    ? annotation.candidate_ids as string[]
+    : null;
+  return {
+    status: "invalid",
+    category: "evaluation_annotation_invalid",
+    annotationDiagnostic: {
+      reason,
+      annotationCategory: category,
+      conceptId,
+      evidenceKind,
+      candidateIdCount: Array.isArray(annotation?.candidate_ids)
+        ? annotation.candidate_ids.length
+        : null,
+      sourceRefCount: Array.isArray(annotation?.source_refs) ? annotation.source_refs.length : null,
+      actualCandidateItemTypes: candidateIds === null
+        ? []
+        : [...itemTypes(candidateIds, candidateById)].sort(),
+    },
+  };
 }
 
 export function validateCanonicalProviderEvaluationResult(
@@ -281,7 +378,7 @@ export function validateCanonicalProviderEvaluationResult(
   if (!record(value.evaluation_annotations) || !exactKeys(
     value.evaluation_annotations,
     CANONICAL_PROVIDER_EVALUATION_CATEGORIES,
-  )) return { status: "invalid", category: "evaluation_annotation_invalid" };
+  )) return annotationInvalid("evaluation_annotations_object_invalid");
 
   const candidateById = new Map(
     (candidateMaterial?.items ?? []).map((item) => [item.candidate_id, item]),
@@ -290,20 +387,36 @@ export function validateCanonicalProviderEvaluationResult(
   for (const category of CANONICAL_PROVIDER_EVALUATION_CATEGORIES) {
     const annotations = value.evaluation_annotations[category];
     if (!Array.isArray(annotations)) {
-      return { status: "invalid", category: "evaluation_annotation_invalid" };
+      return annotationInvalid("annotation_category_not_array", category);
     }
     const conceptIds = new Set<string>();
     for (const annotation of annotations) {
-      if (!record(annotation) || !exactKeys(annotation, [
+      if (!record(annotation)) return annotationInvalid("annotation_object_invalid", category);
+      if (!exactKeys(annotation, [
         "concept_id", "evidence_kind", "candidate_ids", "source_refs",
-      ]) || typeof annotation.concept_id !== "string" ||
-        !CANONICAL_PROVIDER_EVALUATION_TAXONOMY[category].includes(annotation.concept_id) ||
-        (annotation.evidence_kind !== "candidate_material" &&
-          annotation.evidence_kind !== "execution_outcome") ||
-        !stringArray(annotation.candidate_ids) || !stringArray(annotation.source_refs) ||
-        !unique(annotation.candidate_ids) || !unique(annotation.source_refs) ||
-        conceptIds.has(annotation.concept_id)) {
-        return { status: "invalid", category: "evaluation_annotation_invalid" };
+      ])) return annotationInvalid("annotation_fields_invalid", category, annotation);
+      if (typeof annotation.concept_id !== "string" ||
+        !CANONICAL_PROVIDER_EVALUATION_TAXONOMY[category].includes(annotation.concept_id)) {
+        return annotationInvalid("concept_id_invalid", category, annotation);
+      }
+      if (annotation.evidence_kind !== "candidate_material" &&
+        annotation.evidence_kind !== "execution_outcome") {
+        return annotationInvalid("evidence_kind_invalid", category, annotation);
+      }
+      if (!stringArray(annotation.candidate_ids)) {
+        return annotationInvalid("candidate_ids_invalid", category, annotation);
+      }
+      if (!stringArray(annotation.source_refs)) {
+        return annotationInvalid("source_refs_invalid", category, annotation);
+      }
+      if (!unique(annotation.candidate_ids)) {
+        return annotationInvalid("duplicate_candidate_id", category, annotation, candidateById);
+      }
+      if (!unique(annotation.source_refs)) {
+        return annotationInvalid("duplicate_source_ref", category, annotation, candidateById);
+      }
+      if (conceptIds.has(annotation.concept_id)) {
+        return annotationInvalid("duplicate_concept_id", category, annotation, candidateById);
       }
       conceptIds.add(annotation.concept_id);
       if (
@@ -319,8 +432,14 @@ export function validateCanonicalProviderEvaluationResult(
           return { status: "invalid", category: "evaluation_annotation_grounding_invalid" };
         }
       }
-      if (!annotationCategoryCompatible(category, typedAnnotation, value.outcome, candidateById)) {
-        return { status: "invalid", category: "evaluation_annotation_invalid" };
+      const compatibilityFailure = annotationCompatibilityFailure(
+        category,
+        typedAnnotation,
+        value.outcome,
+        candidateById,
+      );
+      if (compatibilityFailure !== null) {
+        return annotationInvalid(compatibilityFailure, category, annotation, candidateById);
       }
     }
   }

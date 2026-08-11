@@ -18,6 +18,7 @@ import {
   OPENAI_DECISION_MATERIAL_MODEL,
   buildDecisionMaterialProviderRequest,
   calculateDecisionMaterialCost,
+  calculateDecisionMaterialCostEvidence,
   executeCandidateDecisionMaterial,
   type DecisionMaterialAdapterResult,
   type DecisionMaterialProviderIncompleteOperationalMetadata,
@@ -217,6 +218,27 @@ export async function runStage9OpenAIDecisionMaterialAdapterValidation(): Promis
   add("maximum-two-transport-operations", "positive", successful.mock.stats().countCalls === 1 && successful.mock.stats().generationCalls === 1);
   add("usage-normalized", "positive", successful.result.status === "completed" && successful.result.usage.inputTokens === 1200 && successful.result.usage.outputTokens === 900 && successful.result.usage.totalTokens === 2100);
   add("cost-normalized", "positive", successful.result.status === "completed" && successful.result.usage.calculatedCostUsd === calculateDecisionMaterialCost(1200, 900));
+  add("missing-cache-cost-falls-back-conservatively", "positive", successful.result.status === "completed" &&
+    successful.result.usage.cachedInputTokens === null &&
+    successful.result.usage.cacheAdjustedFallbackToConservative &&
+    successful.result.usage.cacheAdjustedCalculatedCostUsd ===
+      successful.result.usage.conservativeUncachedCostUsd);
+  const cachedCost = await execute(context, {}, mockTransport({
+    generation: {
+      status: "completed",
+      outputText: JSON.stringify(validCandidateDecisionMaterial()),
+      usage: { inputTokens: 1200, cachedInputTokens: 1000, outputTokens: 900, totalTokens: 2100 },
+    },
+  }));
+  const expectedCachedCost = calculateDecisionMaterialCostEvidence(1200, 1000, 900);
+  add("cached-token-cost-evidence-separated", "positive", cachedCost.result.status === "completed" &&
+    cachedCost.result.usage.cachedInputTokens === 1000 &&
+    cachedCost.result.usage.conservativeUncachedCostUsd ===
+      expectedCachedCost.conservativeUncachedCostUsd &&
+    cachedCost.result.usage.cacheAdjustedCalculatedCostUsd ===
+      expectedCachedCost.cacheAdjustedCalculatedCostUsd &&
+    cachedCost.result.usage.cacheAdjustedFallbackToConservative === false &&
+    cachedCost.result.usage.calculatedCostUsd === expectedCachedCost.cacheAdjustedCalculatedCostUsd);
   add("no-downstream-integration", "positive", successful.result.status === "completed" && !successful.result.metadata.uiIntegrated && !successful.result.metadata.persistenceIntegrated && !successful.result.metadata.postProviderDecisionEngineIntegrated);
 
   const disabled = await execute(context, { enabled: false });
@@ -260,6 +282,7 @@ export async function runStage9OpenAIDecisionMaterialAdapterValidation(): Promis
       reasoningTokens: 1700,
       totalTokens: 5932,
     },
+    costEvidence: calculateDecisionMaterialCostEvidence(3432, 0, 2500),
     visibleOutputPresent: true,
     visibleOutputLength: 128,
     outputItemCount: 2,
@@ -275,7 +298,9 @@ export async function runStage9OpenAIDecisionMaterialAdapterValidation(): Promis
   add("incomplete-response-fails-closed", "negative", category(incomplete.result) === "provider_incomplete");
   add("incomplete-operational-metadata-preserved", "positive", incomplete.result.status === "failed" &&
     incomplete.result.error.providerIncompleteMetadata?.incompleteReason === "max_output_tokens" &&
-    incomplete.result.error.providerIncompleteMetadata.usage?.reasoningTokens === 1700);
+    incomplete.result.error.providerIncompleteMetadata.usage?.reasoningTokens === 1700 &&
+    incomplete.result.error.providerIncompleteMetadata.costEvidence?.conservativeUncachedCostUsd ===
+      calculateDecisionMaterialCost(3432, 2500));
   const incompleteWithoutMetadata = await execute(context, {}, mockTransport({
     generation: { status: "incomplete" },
   }));
@@ -344,6 +369,15 @@ export async function runStage9OpenAIDecisionMaterialAdapterValidation(): Promis
     },
   }));
   add("usage-envelope-fails-closed", "negative", category(invalidUsage.result) === "provider_response_invalid");
+  const invalidCachedUsage = await execute(context, {}, mockTransport({
+    generation: {
+      status: "completed",
+      outputText: JSON.stringify(validCandidateDecisionMaterial()),
+      usage: { inputTokens: 1200, cachedInputTokens: 1201, outputTokens: 900, totalTokens: 2100 },
+    },
+  }));
+  add("invalid-cached-usage-fails-closed", "negative", category(invalidCachedUsage.result) ===
+    "provider_response_invalid");
   add("failure-hides-prompt-context", "negative", missingKey.result.status !== "completed" && !JSON.stringify(missingKey.result).includes(context.contextFrame.objective));
 
   const passed = cases.filter((item) => item.passed).length;
