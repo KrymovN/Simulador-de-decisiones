@@ -317,7 +317,9 @@ const allowedWriteSet = new Set([
   "lib/ai-decision-material/acceptance.ts",
   "lib/ai-provider/openai-decision-material-adapter.ts",
   "lib/ai-provider/openai-decision-material-adapter-validation.ts",
+  "lib/ai-provider/openai-synthetic-risk-adapter.server.ts",
   "scripts/stage-9-openai-decision-material-adapter-quality.mjs",
+  "scripts/stage-9-openai-synthetic-risk-adapter-quality.mjs",
   "package.json",
 ]);
 const unexpected = [...new Set(changed)].filter((path) => !allowedWriteSet.has(path));

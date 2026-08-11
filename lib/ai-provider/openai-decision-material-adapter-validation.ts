@@ -20,6 +20,7 @@ import {
   calculateDecisionMaterialCost,
   executeCandidateDecisionMaterial,
   type DecisionMaterialAdapterResult,
+  type DecisionMaterialProviderIncompleteOperationalMetadata,
   type DecisionMaterialProviderRequest,
   type DecisionMaterialTransport,
   type DecisionMaterialTransportGeneration,
@@ -207,6 +208,8 @@ export async function runStage9OpenAIDecisionMaterialAdapterValidation(): Promis
 
   const successful = await execute(context);
   add("candidate-material-returned", "positive", successful.result.status === "completed" && successful.result.candidateMaterial.capability === CANDIDATE_DECISION_MATERIAL_CAPABILITY);
+  add("completed-success-path-unchanged", "positive", successful.result.status === "completed" &&
+    !JSON.stringify(successful.result).includes("providerIncompleteMetadata"));
   add("unique-option-references-accepted", "positive", successful.result.status === "completed" && successful.result.candidateMaterial.items.every((item) => new Set(item.option_refs).size === item.option_refs.length));
   add("provider-abstraction-evidenced", "positive", successful.result.status === "completed" && successful.result.metadata.providerAbstractionUsed);
   add("prompt-context-validation-evidenced", "positive", successful.result.status === "completed" && successful.result.metadata.promptContextValidated);
@@ -242,8 +245,43 @@ export async function runStage9OpenAIDecisionMaterialAdapterValidation(): Promis
   add("controlled-rate-limit", "negative", category(rateLimit.result) === "provider_rate_limited" && rateLimit.mock.stats().generationCalls === 0);
   const refused = await execute(context, {}, mockTransport({ generation: { status: "refused" } }));
   add("provider-refusal-fails-closed", "negative", category(refused.result) === "provider_refused");
-  const incomplete = await execute(context, {}, mockTransport({ generation: { status: "incomplete" } }));
+  const incompleteMetadata: DecisionMaterialProviderIncompleteOperationalMetadata = {
+    responseStatus: "incomplete",
+    incompleteReason: "max_output_tokens",
+    providerError: null,
+    responseId: "resp_stage9_incomplete",
+    responseModel: "gpt-5.6-terra",
+    serviceTier: "default",
+    maxOutputTokens: 2500,
+    usage: {
+      inputTokens: 3432,
+      cachedInputTokens: 0,
+      outputTokens: 2500,
+      reasoningTokens: 1700,
+      totalTokens: 5932,
+    },
+    visibleOutputPresent: true,
+    visibleOutputLength: 128,
+    outputItemCount: 2,
+    outputItemsTruncated: false,
+    outputItems: [
+      { type: "reasoning", status: null, contentTypes: [] },
+      { type: "message", status: "incomplete", contentTypes: ["output_text"] },
+    ],
+  };
+  const incomplete = await execute(context, {}, mockTransport({
+    generation: { status: "incomplete", operationalMetadata: incompleteMetadata },
+  }));
   add("incomplete-response-fails-closed", "negative", category(incomplete.result) === "provider_incomplete");
+  add("incomplete-operational-metadata-preserved", "positive", incomplete.result.status === "failed" &&
+    incomplete.result.error.providerIncompleteMetadata?.incompleteReason === "max_output_tokens" &&
+    incomplete.result.error.providerIncompleteMetadata.usage?.reasoningTokens === 1700);
+  const incompleteWithoutMetadata = await execute(context, {}, mockTransport({
+    generation: { status: "incomplete" },
+  }));
+  add("incomplete-optional-metadata-safe", "negative", category(incompleteWithoutMetadata.result) ===
+    "provider_incomplete" && incompleteWithoutMetadata.result.status === "failed" &&
+    incompleteWithoutMetadata.result.error.providerIncompleteMetadata === undefined);
   const malformed = await execute(context, {}, mockTransport({
     generation: { status: "completed", outputText: "{", usage: { inputTokens: 10, outputTokens: 10, totalTokens: 20 } },
   }));

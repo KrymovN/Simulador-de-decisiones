@@ -5,6 +5,7 @@ import OpenAI from "openai";
 import {
   DecisionMaterialTransportFailure,
   OPENAI_DECISION_MATERIAL_PROVIDER,
+  type DecisionMaterialProviderIncompleteOperationalMetadata,
   type DecisionMaterialProviderRequest,
   type DecisionMaterialTransport,
 } from "./openai-decision-material-adapter";
@@ -35,7 +36,10 @@ type OpenAIResponsesTransportGeneration =
       usage: { inputTokens: number; outputTokens: number; totalTokens: number };
     }
   | { status: "refused" }
-  | { status: "incomplete" };
+  | {
+      status: "incomplete";
+      operationalMetadata: DecisionMaterialProviderIncompleteOperationalMetadata;
+    };
 
 type OpenAIResponsesTransport<TRequest extends OpenAIResponsesProviderRequest> = {
   countInput(request: TRequest, timeoutMs: number): Promise<number>;
@@ -128,6 +132,75 @@ function responseWasRefused(response: OpenAI.Responses.Response): boolean {
   );
 }
 
+function boundedMetadataToken(value: unknown): string | null {
+  if (typeof value !== "string" || value.length < 1 || value.length > 160) return null;
+  return /^[A-Za-z0-9_.\[\]-]+$/.test(value) ? value : null;
+}
+
+function boundedProviderMessage(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const sanitized = value
+    .replace(/[\u0000-\u001f\u007f]+/g, " ")
+    .replace(/\bBearer\s+\S+/gi, "Bearer [REDACTED]")
+    .replace(/\bsk-[A-Za-z0-9_-]{8,}\b/g, "[REDACTED]")
+    .replace(/\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\b/g, "[REDACTED]")
+    .replace(/\b(?:authorization|api[_ -]?key)\s*[:=]\s*\S+/gi, "credential=[REDACTED]")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 500);
+  return sanitized || null;
+}
+
+function nonNegativeInteger(value: unknown): number | null {
+  return Number.isSafeInteger(value) && Number(value) >= 0 ? Number(value) : null;
+}
+
+export function projectOpenAIIncompleteResponseMetadata(
+  response: OpenAI.Responses.Response,
+): DecisionMaterialProviderIncompleteOperationalMetadata {
+  const visibleOutputLength = typeof response.output_text === "string"
+    ? response.output_text.length
+    : 0;
+  const usage = response.usage;
+  const outputItems = response.output.slice(0, 64).map((item) => ({
+    type: boundedMetadataToken(item.type),
+    status: "status" in item ? boundedMetadataToken(item.status) : null,
+    contentTypes: item.type === "message"
+      ? item.content.map((content) => boundedMetadataToken(content.type)).filter(
+          (value): value is string => value !== null,
+        )
+      : [],
+  }));
+  return {
+    responseStatus: boundedMetadataToken(response.status),
+    incompleteReason: boundedMetadataToken(response.incomplete_details?.reason),
+    providerError: response.error
+      ? {
+          code: boundedMetadataToken(response.error.code),
+          message: boundedProviderMessage(response.error.message),
+        }
+      : null,
+    responseId: boundedMetadataToken(response.id),
+    responseModel: boundedMetadataToken(response.model),
+    serviceTier: boundedMetadataToken(response.service_tier),
+    maxOutputTokens: nonNegativeInteger(response.max_output_tokens),
+    usage: usage
+      ? {
+          inputTokens: nonNegativeInteger(usage.input_tokens),
+          cachedInputTokens: nonNegativeInteger(usage.input_tokens_details?.cached_tokens),
+          outputTokens: nonNegativeInteger(usage.output_tokens),
+          reasoningTokens: nonNegativeInteger(usage.output_tokens_details?.reasoning_tokens),
+          totalTokens: nonNegativeInteger(usage.total_tokens),
+        }
+      : null,
+    visibleOutputPresent: visibleOutputLength > 0,
+    visibleOutputLength,
+    outputItemCount: response.output.length,
+    outputItemsTruncated: response.output.length > outputItems.length,
+    outputItems,
+  };
+}
+
 /** Existing server-only OpenAI Responses transport shared by bounded adapters. */
 function createOpenAITransport<
   TRequest extends OpenAIResponsesProviderRequest = SyntheticRiskProviderRequest,
@@ -166,7 +239,12 @@ function createOpenAITransport<
           { timeout: timeoutMs, maxRetries: 0 },
         );
         if (responseWasRefused(response)) return { status: "refused" };
-        if (response.status !== "completed") return { status: "incomplete" };
+        if (response.status !== "completed") {
+          return {
+            status: "incomplete",
+            operationalMetadata: projectOpenAIIncompleteResponseMetadata(response),
+          };
+        }
         if (!response.usage || typeof response.output_text !== "string") {
           throw failure("provider_response_invalid");
         }

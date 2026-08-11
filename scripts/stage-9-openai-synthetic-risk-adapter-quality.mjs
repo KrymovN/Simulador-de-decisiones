@@ -87,12 +87,71 @@ add("bad-request-missing-metadata-safe", missingMetadata.category === "provider_
 add("existing-timeout-normalization-preserved", serverAdapter.normalizedProviderFailure(new OpenAI.APIConnectionTimeoutError()).category === "provider_timeout");
 add("existing-auth-normalization-preserved", serverAdapter.normalizedProviderFailure(new OpenAI.AuthenticationError(401, {}, undefined, new Headers())).category === "provider_authentication_failed");
 add("existing-rate-limit-normalization-preserved", serverAdapter.normalizedProviderFailure(new OpenAI.RateLimitError(429, {}, undefined, new Headers())).category === "provider_rate_limited");
+
+const rawVisibleOutput = '{"diagnostic":"must-not-survive"}';
+const rawReasoningText = "hidden reasoning must not survive";
+const incompleteSecret = "sk-SYNTHETICINCOMPLETESECRET123";
+const incompleteMetadata = serverAdapter.projectOpenAIIncompleteResponseMetadata({
+  id: "resp_stage9_incomplete",
+  model: "gpt-5.6-terra",
+  status: "incomplete",
+  incomplete_details: { reason: "max_output_tokens" },
+  error: { code: "incomplete", message: `Stopped with ${incompleteSecret}` },
+  max_output_tokens: 2500,
+  service_tier: "default",
+  usage: {
+    input_tokens: 3432,
+    input_tokens_details: { cached_tokens: 128 },
+    output_tokens: 2500,
+    output_tokens_details: { reasoning_tokens: 1700 },
+    total_tokens: 5932,
+  },
+  output_text: rawVisibleOutput,
+  output: [
+    { type: "reasoning", status: "incomplete", summary: [{ type: "summary_text", text: rawReasoningText }] },
+    { type: "message", status: "incomplete", content: [{ type: "output_text", text: rawVisibleOutput }] },
+  ],
+});
+const incompleteMetadataText = JSON.stringify(incompleteMetadata);
+add("incomplete-reason-preserved", incompleteMetadata.responseStatus === "incomplete" &&
+  incompleteMetadata.incompleteReason === "max_output_tokens");
+add("incomplete-usage-preserved", incompleteMetadata.usage?.inputTokens === 3432 &&
+  incompleteMetadata.usage.cachedInputTokens === 128 && incompleteMetadata.usage.outputTokens === 2500 &&
+  incompleteMetadata.usage.reasoningTokens === 1700 && incompleteMetadata.usage.totalTokens === 5932);
+add("incomplete-response-identity-preserved", incompleteMetadata.responseId === "resp_stage9_incomplete" &&
+  incompleteMetadata.responseModel === "gpt-5.6-terra" && incompleteMetadata.serviceTier === "default" &&
+  incompleteMetadata.maxOutputTokens === 2500);
+add("incomplete-output-shape-bounded", incompleteMetadata.visibleOutputPresent === true &&
+  incompleteMetadata.visibleOutputLength === rawVisibleOutput.length && incompleteMetadata.outputItemCount === 2 &&
+  incompleteMetadata.outputItems[0]?.type === "reasoning" &&
+  incompleteMetadata.outputItems[1]?.contentTypes.join(",") === "output_text");
+add("incomplete-sensitive-content-excluded", !incompleteMetadataText.includes(rawVisibleOutput) &&
+  !incompleteMetadataText.includes(rawReasoningText) && !incompleteMetadataText.includes(incompleteSecret) &&
+  incompleteMetadata.providerError?.message?.includes("[REDACTED]"));
+const missingIncompleteMetadata = serverAdapter.projectOpenAIIncompleteResponseMetadata({
+  id: "resp_stage9_missing_metadata",
+  model: "gpt-5.6-terra",
+  status: "incomplete",
+  incomplete_details: null,
+  error: null,
+  usage: null,
+  output_text: "",
+  output: [],
+});
+add("incomplete-optional-metadata-safe", missingIncompleteMetadata.incompleteReason === null &&
+  missingIncompleteMetadata.providerError === null && missingIncompleteMetadata.usage === null &&
+  missingIncompleteMetadata.maxOutputTokens === null && missingIncompleteMetadata.serviceTier === null &&
+  missingIncompleteMetadata.visibleOutputPresent === false && missingIncompleteMetadata.outputItems.length === 0);
 globalThis.fetch = originalFetch;
 add("offline-provider-network-requests-zero", offlineNetworkRequests === 0, "Targeted diagnostics tests must perform zero provider/network requests.");
 
 add("server-only-marker", server.startsWith('import "server-only";'), "SDK adapter must be marked server-only.");
 add("sdk-only-in-server-adapter", server.includes('from "openai"') && !core.includes('from "openai"'), "OpenAI SDK types/imports must stay in the server adapter.");
 add("automatic-retries-disabled", server.includes("maxRetries: 0") && (server.match(/maxRetries: 0/g) ?? []).length >= 3, "Client and both requests must disable automatic retries.");
+add("completed-transport-success-path-preserved", server.includes('if (response.status !== "completed")') &&
+  server.includes("outputText: response.output_text") && server.includes("inputTokens: response.usage.input_tokens") &&
+  server.includes("outputTokens: response.usage.output_tokens") && server.includes("totalTokens: response.usage.total_tokens"),
+"Completed Responses transport projection must remain unchanged.");
 add("no-raw-logging", !core.includes("console.") && !server.includes("console."), "Adapter must not log raw or controlled payloads automatically.");
 add("server-adapter-not-barrel-exported", !index.includes("openai-synthetic-risk"), "Live-capable adapter must not be reachable through the shared barrel.");
 add("quality-gate-registered", packageJson.includes('"quality:stage-9-openai-synthetic-risk-adapter"'), "Dedicated gate must be registered.");

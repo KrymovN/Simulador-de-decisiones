@@ -106,6 +106,35 @@ export type DecisionMaterialProviderErrorMetadata = {
   message: string | null;
 };
 
+export type DecisionMaterialProviderIncompleteOperationalMetadata = {
+  responseStatus: string | null;
+  incompleteReason: string | null;
+  providerError: {
+    code: string | null;
+    message: string | null;
+  } | null;
+  responseId: string | null;
+  responseModel: string | null;
+  serviceTier: string | null;
+  maxOutputTokens: number | null;
+  usage: {
+    inputTokens: number | null;
+    cachedInputTokens: number | null;
+    outputTokens: number | null;
+    reasoningTokens: number | null;
+    totalTokens: number | null;
+  } | null;
+  visibleOutputPresent: boolean;
+  visibleOutputLength: number;
+  outputItemCount: number;
+  outputItemsTruncated: boolean;
+  outputItems: Array<{
+    type: string | null;
+    status: string | null;
+    contentTypes: Array<string>;
+  }>;
+};
+
 export type DecisionMaterialProviderRequest = {
   model: typeof OPENAI_DECISION_MATERIAL_MODEL;
   instructions: string;
@@ -128,7 +157,10 @@ export type DecisionMaterialTransportGeneration =
       usage: { inputTokens: number; outputTokens: number; totalTokens: number };
     }
   | { status: "refused" }
-  | { status: "incomplete" };
+  | {
+      status: "incomplete";
+      operationalMetadata?: DecisionMaterialProviderIncompleteOperationalMetadata;
+    };
 
 export type DecisionMaterialTransport = {
   countInput(request: DecisionMaterialProviderRequest, timeoutMs: number): Promise<number>;
@@ -184,6 +216,7 @@ export type DecisionMaterialAdapterResult =
         category: DecisionMaterialAdapterErrorCategory;
         message: string;
         providerErrorMetadata?: DecisionMaterialProviderErrorMetadata;
+        providerIncompleteMetadata?: DecisionMaterialProviderIncompleteOperationalMetadata;
       };
       providerRequests: number;
       elapsedMs: number;
@@ -495,6 +528,7 @@ function failed(
   providerRequests: number,
   elapsedMs: number,
   providerErrorMetadata?: DecisionMaterialProviderErrorMetadata,
+  providerIncompleteMetadata?: DecisionMaterialProviderIncompleteOperationalMetadata,
 ): DecisionMaterialAdapterResult {
   const messages: Record<DecisionMaterialAdapterErrorCategory, string> = {
     adapter_disabled: "The production AI provider adapter is disabled.",
@@ -527,6 +561,7 @@ function failed(
       category,
       message: messages[category],
       ...(providerErrorMetadata ? { providerErrorMetadata } : {}),
+      ...(providerIncompleteMetadata ? { providerIncompleteMetadata } : {}),
     },
     providerRequests,
     elapsedMs,
@@ -612,7 +647,16 @@ export async function executeCandidateDecisionMaterial(
     return failed("failed", normalized.category, providerRequests, elapsed(), normalized.providerErrorMetadata);
   }
   if (generated.status === "refused") return failed("failed", "provider_refused", providerRequests, elapsed());
-  if (generated.status === "incomplete") return failed("failed", "provider_incomplete", providerRequests, elapsed());
+  if (generated.status === "incomplete") {
+    return failed(
+      "failed",
+      "provider_incomplete",
+      providerRequests,
+      elapsed(),
+      undefined,
+      generated.operationalMetadata,
+    );
+  }
 
   let parsed: unknown;
   try {
