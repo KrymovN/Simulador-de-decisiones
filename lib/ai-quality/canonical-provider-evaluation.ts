@@ -19,8 +19,7 @@ import type {
 import {
   OPENAI_DECISION_MATERIAL_LIMITS,
   buildCandidateDecisionMaterialProviderRequest,
-  calculateDecisionMaterialCost,
-  calculateDecisionMaterialCostEvidence,
+  type DecisionMaterialCostEvidence,
   type DecisionMaterialProviderRequest,
   type DecisionMaterialTransportGeneration,
 } from "../ai-provider/openai-decision-material-adapter";
@@ -40,11 +39,19 @@ import {
 export const CANONICAL_PROVIDER_EVALUATION_BOUNDARY_VERSION =
   "stage-9-canonical-provider-evaluation-boundary.2" as const;
 
+export const CANONICAL_PROVIDER_EVALUATION_CANDIDATE = {
+  provider: "openai",
+  model: "gpt-5.6-sol",
+  inputUsdPerMillion: 5,
+  cachedInputUsdPerMillion: 0.5,
+  outputUsdPerMillion: 30,
+} as const;
+
 export const CANONICAL_PROVIDER_EVALUATION_LIMITS = {
   maxInputTokens: OPENAI_DECISION_MATERIAL_LIMITS.maxInputTokens,
   maxOutputTokens: 4000,
   maxTotalTokens: 10000,
-  maxCostUsd: 0.06,
+  maxCostUsd: 0.16,
   maxLocalPayloadCharacters: OPENAI_DECISION_MATERIAL_LIMITS.maxLocalPayloadCharacters,
 } as const;
 
@@ -83,8 +90,9 @@ export const CANONICAL_PROVIDER_EVALUATION_INSTRUCTIONS = [
 
 export type CanonicalProviderEvaluationProviderRequest = Omit<
   DecisionMaterialProviderRequest,
-  "schemaName" | "schema" | "maxOutputTokens"
+  "model" | "schemaName" | "schema" | "maxOutputTokens"
 > & {
+  model: typeof CANONICAL_PROVIDER_EVALUATION_CANDIDATE.model;
   schemaName: typeof CANONICAL_PROVIDER_EVALUATION_SCHEMA_NAME;
   schema: typeof CANONICAL_PROVIDER_EVALUATION_RESULT_SCHEMA;
   maxOutputTokens: typeof CANONICAL_PROVIDER_EVALUATION_LIMITS.maxOutputTokens;
@@ -192,6 +200,47 @@ function requestContainsOracle(providerRequest: CanonicalProviderEvaluationProvi
   );
 }
 
+export function calculateCanonicalProviderEvaluationCost(
+  inputTokens: number,
+  outputTokens: number,
+): number {
+  return Number((
+    inputTokens * CANONICAL_PROVIDER_EVALUATION_CANDIDATE.inputUsdPerMillion / 1_000_000 +
+    outputTokens * CANONICAL_PROVIDER_EVALUATION_CANDIDATE.outputUsdPerMillion / 1_000_000
+  ).toFixed(8));
+}
+
+export function calculateCanonicalProviderEvaluationCostEvidence(
+  inputTokens: number,
+  cachedInputTokens: number | null | undefined,
+  outputTokens: number,
+): DecisionMaterialCostEvidence {
+  const conservativeUncachedCostUsd = calculateCanonicalProviderEvaluationCost(
+    inputTokens,
+    outputTokens,
+  );
+  const cacheReported = cachedInputTokens !== null && cachedInputTokens !== undefined;
+  if (
+    cacheReported &&
+    (!Number.isInteger(cachedInputTokens) || cachedInputTokens < 0 || cachedInputTokens > inputTokens)
+  ) {
+    throw new RangeError("cachedInputTokens must be an integer between zero and inputTokens.");
+  }
+  const normalizedCachedInputTokens = cacheReported ? cachedInputTokens : 0;
+  const cacheAdjustedCalculatedCostUsd = Number((
+    (inputTokens - normalizedCachedInputTokens) *
+      CANONICAL_PROVIDER_EVALUATION_CANDIDATE.inputUsdPerMillion / 1_000_000 +
+    normalizedCachedInputTokens *
+      CANONICAL_PROVIDER_EVALUATION_CANDIDATE.cachedInputUsdPerMillion / 1_000_000 +
+    outputTokens * CANONICAL_PROVIDER_EVALUATION_CANDIDATE.outputUsdPerMillion / 1_000_000
+  ).toFixed(8));
+  return {
+    conservativeUncachedCostUsd,
+    cacheAdjustedCalculatedCostUsd,
+    cacheAdjustedFallbackToConservative: !cacheReported,
+  };
+}
+
 function blocked(
   category: OfflineEvaluationFailureCategory,
   fakeTransportOperations: number,
@@ -219,6 +268,7 @@ export function buildCanonicalProviderEvaluationRequest(
   );
   const providerRequest: CanonicalProviderEvaluationProviderRequest = {
     ...baseRequest,
+    model: CANONICAL_PROVIDER_EVALUATION_CANDIDATE.model,
     schemaName: CANONICAL_PROVIDER_EVALUATION_SCHEMA_NAME,
     schema: CANONICAL_PROVIDER_EVALUATION_RESULT_SCHEMA,
     maxOutputTokens: CANONICAL_PROVIDER_EVALUATION_LIMITS.maxOutputTokens,
@@ -262,7 +312,7 @@ export async function runCanonicalProviderEvaluationOffline(
   if (request.input.length > CANONICAL_PROVIDER_EVALUATION_LIMITS.maxLocalPayloadCharacters) {
     return blocked("input_limit_exceeded", 0);
   }
-  if (calculateDecisionMaterialCost(
+  if (calculateCanonicalProviderEvaluationCost(
     CANONICAL_PROVIDER_EVALUATION_LIMITS.maxInputTokens,
     CANONICAL_PROVIDER_EVALUATION_LIMITS.maxOutputTokens,
   ) > CANONICAL_PROVIDER_EVALUATION_LIMITS.maxCostUsd) {
@@ -350,7 +400,7 @@ export async function runCanonicalProviderEvaluationOffline(
   ) {
     return blocked("candidate_usage_invalid", fakeTransportOperations);
   }
-  const costEvidence = calculateDecisionMaterialCostEvidence(
+  const costEvidence = calculateCanonicalProviderEvaluationCostEvidence(
     usage.inputTokens,
     cachedInputTokens,
     usage.outputTokens,
