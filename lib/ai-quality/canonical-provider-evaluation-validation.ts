@@ -344,6 +344,8 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
     CANONICAL_PROVIDER_EVALUATION_LIMITS.maxOutputTokens === 4000 &&
     built.request.providerRequest.reasoningEffort === "low");
   add("evaluation-conservative-ceiling-is-016", CANONICAL_PROVIDER_EVALUATION_LIMITS.maxCostUsd === 0.16);
+  add("evaluation-generation-timeout-is-120000",
+    CANONICAL_PROVIDER_EVALUATION_LIMITS.generationTimeoutMs === 120000);
   add("evaluation-candidate-is-sol", built.request.providerRequest.model === "gpt-5.6-sol" &&
     CANONICAL_PROVIDER_EVALUATION_CANDIDATE.model === "gpt-5.6-sol");
   add("production-provider-controls-reused", CANONICAL_PROVIDER_EVALUATION_CANDIDATE.provider === "openai" &&

@@ -52,6 +52,7 @@ export const CANONICAL_PROVIDER_EVALUATION_LIMITS = {
   maxOutputTokens: 4000,
   maxTotalTokens: 10000,
   maxCostUsd: 0.16,
+  generationTimeoutMs: 120000,
   maxLocalPayloadCharacters: OPENAI_DECISION_MATERIAL_LIMITS.maxLocalPayloadCharacters,
 } as const;
 
