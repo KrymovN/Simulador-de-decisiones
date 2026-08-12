@@ -84,14 +84,14 @@ export const CANONICAL_PROVIDER_CANDIDATE_GROUNDING_INVARIANTS = {
     providerInstruction: "For every candidate_material item, criterion_refs MUST be an empty array for canonical evaluation.",
   },
   providerInferenceSource: {
-    code: "provider_inference_source_ref_mismatch",
-    expectedConstraint: "evidence=provider_inference requires provenance.source_ref=provider_inference",
-    providerInstruction: "If a candidate_material item has evidence=provider_inference, its provenance.source_ref MUST be exactly provider_inference.",
+    code: "provider_inference_source_ref_not_concrete",
+    expectedConstraint: "evidence=provider_inference requires a concrete member of input.allowed_refs.source_refs, not a classification sentinel",
+    providerInstruction: "If a candidate_material item has evidence=provider_inference, use provenance.source=provider_candidate and set provenance.source_ref to the concrete allowed input provenance reference that supports the inference; do not use provider_inference or unknown as a replacement for a known supporting input reference, and do not invent source refs.",
   },
   unknownSource: {
     code: "unknown_source_ref_mismatch",
-    expectedConstraint: "evidence=unknown requires source_ref=unknown or an input critical/important gap source_ref",
-    providerInstruction: "If a candidate_material item has evidence=unknown, its provenance.source_ref MUST be exactly unknown or the source_ref of an input critical_gaps or important_gaps entry.",
+    expectedConstraint: "evidence=unknown requires an input critical/important gap source_ref when one exists; source_ref=unknown is allowed only when the input has no concrete gap anchor",
+    providerInstruction: "If a candidate_material item has evidence=unknown, use the source_ref of an input critical_gaps or important_gaps entry when any such concrete gap anchor exists; use provenance.source_ref=unknown only when the input has no critical or important gap source_ref.",
   },
 } as const;
 
@@ -421,6 +421,16 @@ export function inspectCanonicalProviderCandidateGrounding(
   material.items.forEach((item, candidateIndex) => {
     const base = `candidate_material.items[${candidateIndex}]`;
     const common = { candidateIndex, candidateId: item.candidate_id };
+    if (item.evidence === "provider_inference" &&
+      ["provider_inference", "unknown"].includes(item.provenance.source_ref)) {
+      const invariant = CANONICAL_PROVIDER_CANDIDATE_GROUNDING_INVARIANTS.providerInferenceSource;
+      append(issue("candidate_grounding", invariant.code, `${base}.provenance.source_ref`,
+        invariant.expectedConstraint, {
+          ...common,
+          sourceRef: item.provenance.source_ref,
+          receivedIdentifier: item.provenance.source_ref,
+        }));
+    }
     if (!sourceRefs.has(item.provenance.source_ref)) {
       const invariant = CANONICAL_PROVIDER_CANDIDATE_GROUNDING_INVARIANTS.sourceRefAllowed;
       append(issue("candidate_grounding", invariant.code, `${base}.provenance.source_ref`,
@@ -443,18 +453,10 @@ export function inspectCanonicalProviderCandidateGrounding(
           invariant.expectedConstraint, { ...common, receivedCount: values.length }));
       }
     }
-    if (item.evidence === "provider_inference" &&
-      item.provenance.source_ref !== "provider_inference") {
-      const invariant = CANONICAL_PROVIDER_CANDIDATE_GROUNDING_INVARIANTS.providerInferenceSource;
-      append(issue("candidate_grounding", invariant.code, `${base}.provenance.source_ref`,
-        invariant.expectedConstraint, {
-          ...common,
-          sourceRef: item.provenance.source_ref,
-          receivedIdentifier: item.provenance.source_ref,
-        }));
-    }
-    if (item.evidence === "unknown" && item.provenance.source_ref !== "unknown" &&
-      !gapRefs.has(item.provenance.source_ref)) {
+    if (item.evidence === "unknown" && (
+      (gapRefs.size > 0 && !gapRefs.has(item.provenance.source_ref)) ||
+      (gapRefs.size === 0 && item.provenance.source_ref !== "unknown")
+    )) {
       const invariant = CANONICAL_PROVIDER_CANDIDATE_GROUNDING_INVARIANTS.unknownSource;
       append(issue("candidate_grounding", invariant.code, `${base}.provenance.source_ref`,
         invariant.expectedConstraint, {

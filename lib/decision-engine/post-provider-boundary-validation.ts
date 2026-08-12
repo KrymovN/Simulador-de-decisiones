@@ -124,7 +124,7 @@ function candidate(overrides: Partial<CandidateDecisionMaterialItem> = {}): Cand
     candidate_id: "candidate_risk_launch",
     item_type: "risk_signal",
     content: "La dependencia de evidencia temprana puede limitar el aprendizaje.",
-    provenance: { source: "provider_candidate", source_ref: "provider_inference" },
+    provenance: { source: "provider_candidate", source_ref: "question_1" },
     confidence: "medium",
     evidence: "provider_inference",
     option_refs: ["option_1"],
@@ -201,7 +201,7 @@ export function runPostProviderDecisionEngineBoundaryValidation(): PostProviderD
     candidate_id: "candidate_new_option",
     item_type: "option",
     content: "Una tercera vía inferida por el proveedor.",
-    provenance: { source: "provider_candidate", source_ref: "provider_inference" },
+    provenance: { source: "provider_candidate", source_ref: "question_1" },
     evidence: "provider_inference",
     option_refs: [],
     scenario_refs: [],
@@ -224,6 +224,8 @@ export function runPostProviderDecisionEngineBoundaryValidation(): PostProviderD
         result.controlledMaterial.items.length === 1 &&
         result.controlledMaterial.items[0].optionIds[0] === "option_launch" &&
         result.controlledMaterial.items[0].scenarioOptionIds[0] === "option_launch" &&
+        result.controlledMaterial.items[0].sourceProvenanceRef === "question_1" &&
+        result.controlledMaterial.items[0].sourceContextEntityIds[0] === "decision_post_provider" &&
         result.controlledMaterial.items[0].authority === "decision_engine" &&
         result.simulationSource.decisionContext.decisionId === "decision_post_provider" &&
         result.simulationSource.requestId === "stage_9_post_provider_bridge" &&
@@ -328,6 +330,32 @@ export function runPostProviderDecisionEngineBoundaryValidation(): PostProviderD
       ]))),
       passed: (result) => errorCode(result) === "candidate_safety_invalid",
       issue: "Russian provider best-option claim was accepted.",
+    }),
+    validationCase({
+      caseId: "provider_inference_sentinel_fails_closed",
+      kind: "negative",
+      result: composePostProviderDecisionMaterial(request(material([candidate({
+        provenance: { source: "provider_candidate", source_ref: "provider_inference" },
+      })]))),
+      passed: (result) => errorCode(result) === "candidate_grounding_invalid",
+      issue: "Provider inference classification sentinel was accepted as provenance.",
+    }),
+    validationCase({
+      caseId: "unknown_fallback_is_accepted_without_gap_structure",
+      kind: "positive",
+      result: composePostProviderDecisionMaterial(request(material([candidate({
+        candidate_id: "candidate_unknown_gap",
+        item_type: "clarification_need",
+        provenance: { source: "provider_candidate", source_ref: "unknown" },
+        evidence: "unknown",
+        option_refs: [],
+        scenario_refs: [],
+        criterion_refs: [],
+      })]))),
+      passed: (result) => result.status === "composed" &&
+        result.controlledMaterial.items[0].sourceProvenanceRef === "unknown" &&
+        result.controlledMaterial.items[0].sourceContextEntityIds.length === 0,
+      issue: "Bounded unknown fallback was not preserved.",
     }),
     validationCase({
       caseId: "invalid_provenance_reference_fails_closed",

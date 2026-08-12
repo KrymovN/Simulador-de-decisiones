@@ -51,6 +51,7 @@ export type DecisionEngineControlledMaterialItem = {
   content: string;
   evidenceClassification: CandidateDecisionMaterialItem["evidence"];
   confidence: CandidateDecisionMaterialItem["confidence"];
+  sourceProvenanceRef: string;
   sourceContextEntityIds: EntityId[];
   optionIds: EntityId[];
   scenarioOptionIds: EntityId[];
@@ -188,7 +189,6 @@ function allowedSourceRefs(optionCount: number, constraintCount: number, criteri
     ...positionalRefs("scenario", optionCount),
     ...Array.from({ length: constraintCount }, (_, index) => `constraint_${index + 1}`),
     ...positionalRefs("criterion", criterionCount),
-    "provider_inference",
     "unknown",
   ]);
 }
@@ -199,10 +199,10 @@ function provenanceIsGrounded(
 ): boolean {
   return material.items.every((item) =>
     sourceRefs.has(item.provenance.source_ref) &&
-    (item.evidence !== "provider_inference" || item.provenance.source_ref === "provider_inference") &&
+    (item.evidence !== "provider_inference" || item.provenance.source_ref !== "unknown") &&
     (item.evidence !== "unknown" || item.provenance.source_ref === "unknown") &&
     (!["user_fact_reference", "user_assumption_reference"].includes(item.evidence) ||
-      !["provider_inference", "unknown"].includes(item.provenance.source_ref))
+      item.provenance.source_ref !== "unknown")
   );
 }
 
@@ -286,6 +286,7 @@ function controlledItem(
     content: item.content,
     evidenceClassification: item.evidence,
     confidence: item.confidence,
+    sourceProvenanceRef: item.provenance.source_ref,
     sourceContextEntityIds: sourceContextEntityIds(item, context),
     optionIds: mapOptionRefs(item.option_refs, context),
     scenarioOptionIds: mapOptionRefs(item.scenario_refs, context),

@@ -104,7 +104,7 @@ export function validCandidateDecisionMaterial(): CandidateDecisionMaterial {
         candidate_id: "candidate_dependency_south",
         item_type: "dependency",
         content: "La dependencia externa condiciona el escenario de crecimiento rápido.",
-        provenance: { source: "provider_candidate", source_ref: "provider_inference" },
+        provenance: { source: "provider_candidate", source_ref: "scenario_2" },
         confidence: "medium",
         evidence: "provider_inference",
         option_refs: ["option_2"],
@@ -206,6 +206,11 @@ export async function runStage9OpenAIDecisionMaterialAdapterValidation(): Promis
   add("provider-schema-excludes-unsupported-unique-items", "positive", !JSON.stringify(request.schema).includes('"uniqueItems"'));
   add("request-is-stateless", "positive", request.store === false && request.stream === false && request.background === false && request.tools.length === 0);
   add("context-is-minimized", "positive", !Object.hasOwn(serialized, "evidence") && !Object.hasOwn(serialized, "inputId") && !Object.hasOwn(serialized, "outputId"));
+  const serializedRefs = (serialized.allowed_refs as { source_refs: string[] }).source_refs;
+  add("provider-inference-contract-is-explicit", "positive",
+    request.instructions.includes("concrete allowed input provenance reference") &&
+    request.instructions.includes("do not use provider_inference as a replacement") &&
+    !serializedRefs.includes("provider_inference"));
 
   const successful = await execute(context);
   add("candidate-material-returned", "positive", successful.result.status === "completed" && successful.result.candidateMaterial.capability === CANDIDATE_DECISION_MATERIAL_CAPABILITY);
@@ -341,6 +346,20 @@ export async function runStage9OpenAIDecisionMaterialAdapterValidation(): Promis
     generation: { status: "completed", outputText: JSON.stringify(badRef), usage: { inputTokens: 1200, outputTokens: 900, totalTokens: 2100 } },
   }));
   add("ungrounded-reference-rejected", "negative", category(ungrounded.result) === "provider_grounding_invalid");
+  const inferenceSentinel = validCandidateDecisionMaterial();
+  inferenceSentinel.items[1].provenance.source_ref = "provider_inference";
+  const inferenceSentinelResult = await execute(context, {}, mockTransport({
+    generation: { status: "completed", outputText: JSON.stringify(inferenceSentinel), usage: { inputTokens: 1200, outputTokens: 900, totalTokens: 2100 } },
+  }));
+  add("provider-inference-sentinel-rejected", "negative",
+    category(inferenceSentinelResult.result) === "provider_grounding_invalid");
+  const inferenceConcrete = validCandidateDecisionMaterial();
+  inferenceConcrete.items[1].provenance.source_ref = "objective_1";
+  const inferenceConcreteResult = await execute(context, {}, mockTransport({
+    generation: { status: "completed", outputText: JSON.stringify(inferenceConcrete), usage: { inputTokens: 1200, outputTokens: 900, totalTokens: 2100 } },
+  }));
+  add("provider-inference-concrete-reference-accepted", "positive",
+    inferenceConcreteResult.result.status === "completed");
   const duplicateOptionRef = validCandidateDecisionMaterial();
   duplicateOptionRef.items[0].option_refs = ["option_1", "option_1"];
   const duplicateOptionRefResult = await execute(context, {}, mockTransport({

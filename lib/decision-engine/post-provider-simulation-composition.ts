@@ -24,6 +24,7 @@ const CONTROLLED_ITEM_KEYS = [
   "content",
   "evidenceClassification",
   "confidence",
+  "sourceProvenanceRef",
   "sourceContextEntityIds",
   "optionIds",
   "scenarioOptionIds",
@@ -174,6 +175,7 @@ function controlledItemIsValid(
     !["user_fact_reference", "user_assumption_reference", "provider_inference", "unknown"]
       .includes(value.evidenceClassification as string) ||
     !["low", "medium", "high", "unknown"].includes(value.confidence as string) ||
+    !nonEmptyString(value.sourceProvenanceRef) ||
     !uniqueStringList(value.sourceContextEntityIds) ||
     !uniqueStringList(value.optionIds) ||
     !uniqueStringList(value.scenarioOptionIds) ||
@@ -183,6 +185,24 @@ function controlledItemIsValid(
   ) return false;
 
   const context = source.decisionContext;
+  const bridge = bridgeDecisionEngineToPromptContext({
+    bridgeId: source.requestId,
+    submittedAt: source.generatedAt,
+    locale: source.inputLanguage,
+    decisionContext: source.decisionContext,
+    ...(source.safety === undefined ? {} : { safety: source.safety }),
+  });
+  if (bridge.status !== "ready") return false;
+  const frame = bridge.promptContextOutput.contextFrame;
+  const allowedProvenanceRefs = new Set([
+    "objective_1",
+    "question_1",
+    ...frame.knownConstraints.map((_, index) => `constraint_${index + 1}`),
+    ...frame.scenarioSeeds.map((_, index) => `option_${index + 1}`),
+    ...frame.scenarioSeeds.map((_, index) => `scenario_${index + 1}`),
+    ...frame.tradeoffFocus.map((_, index) => `criterion_${index + 1}`),
+    "unknown",
+  ]);
   const allowedOptionIds = new Set(context.options.map((item) => item.id));
   const allowedSourceIds = new Set([
     context.decisionId,
@@ -195,6 +215,9 @@ function controlledItemIsValid(
     ...context.evidence.map((item) => item.id),
   ]);
   return value.optionIds.every((id) => allowedOptionIds.has(id)) &&
+    allowedProvenanceRefs.has(value.sourceProvenanceRef) &&
+    (value.evidenceClassification !== "provider_inference" || value.sourceProvenanceRef !== "unknown") &&
+    (value.evidenceClassification !== "unknown" || value.sourceProvenanceRef === "unknown") &&
     value.scenarioOptionIds.every((id) => allowedOptionIds.has(id)) &&
     value.sourceContextEntityIds.every((id) => allowedSourceIds.has(id)) &&
     value.criterionRefs.every((ref) => /^criterion_[1-9]\d*$/.test(ref)) &&
@@ -353,7 +376,7 @@ function composeControlledTrace(
         ...items.map((item) => ({
           stage: "response_mapping" as const,
           status: "completed" as const,
-          detail: `Composed controlled ${item.itemType} material under Decision Engine authority.`,
+          detail: `Composed controlled ${item.itemType} material under Decision Engine authority from provenance ${item.sourceProvenanceRef}.`,
           sourceEntityIds: [item.materialItemId, ...item.sourceContextEntityIds, ...item.optionIds],
         })),
       ],

@@ -145,7 +145,7 @@ function unsupportedOptionMaterial(): CandidateDecisionMaterial {
       candidate_id: "candidate_provider_option",
       item_type: "option",
       content: "Una tercera opción inferida no existe en el Decision Context.",
-      provenance: { source: "provider_candidate", source_ref: "provider_inference" },
+      provenance: { source: "provider_candidate", source_ref: "question_1" },
       confidence: "medium",
       evidence: "provider_inference",
       option_refs: [],

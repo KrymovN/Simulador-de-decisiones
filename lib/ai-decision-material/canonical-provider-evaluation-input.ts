@@ -179,7 +179,7 @@ export function compileCanonicalProviderEvaluationInput(
           ...knownAssumptions.map((item) => item.source_ref),
           ...criticalGaps.map((item) => item.source_ref),
           ...importantGaps.map((item) => item.source_ref),
-          "provider_inference", "unknown",
+          "unknown",
         ],
         option_refs: [], scenario_refs: [], criterion_refs: [],
       },

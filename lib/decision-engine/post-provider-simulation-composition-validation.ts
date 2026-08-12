@@ -89,7 +89,9 @@ export function runPostProviderSimulationCompositionValidation(): PostProviderSi
           item.source === "engine_inference" &&
           item.userConfirmed === false) &&
         result.response.traceability.responseMapping.some((item) =>
-          item.sourceEntityIds.includes("decision_material_1_candidate_risk_launch")),
+          item.sourceEntityIds.includes("decision_material_1_candidate_risk_launch") &&
+          item.sourceEntityIds.includes("decision_post_provider") &&
+          item.detail.includes("provenance question_1")),
       issue: "Controlled material lost Decision Engine traceability during Simulator composition.",
     }),
     validationCase({
@@ -204,6 +206,15 @@ export function runPostProviderSimulationCompositionValidation(): PostProviderSi
       })),
       passed: (result) => errorCode(result) === "controlled_result_incompatible",
       issue: "Unsupported option mapping entered SimulationResponseV2Draft.",
+    }),
+    validationCase({
+      caseId: "tampered_source_provenance_ref_fails_closed",
+      kind: "negative",
+      result: composePostProviderSimulationResponse(changed((value) => {
+        value.controlledMaterial.items[0].sourceProvenanceRef = "made_up_fact";
+      })),
+      passed: (result) => errorCode(result) === "controlled_result_incompatible",
+      issue: "Fabricated controlled provenance reference entered SimulationResponseV2Draft.",
     }),
     validationCase({
       caseId: "unknown_controlled_material_field_fails_closed",

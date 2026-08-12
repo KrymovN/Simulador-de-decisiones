@@ -71,7 +71,7 @@ function baseItem(
     candidate_id: candidateId,
     item_type: itemType,
     content,
-    provenance: { source: "provider_candidate", source_ref: "provider_inference" },
+    provenance: { source: "provider_candidate", source_ref: "case_situation" },
     confidence: "unknown",
     evidence: "provider_inference",
     option_refs: [],
@@ -148,7 +148,7 @@ function candidateEvidence(
     return {
       evidence_kind: "candidate_material",
       candidate_ids: ["evaluation_clarification_1"],
-      source_refs: ["provider_inference"],
+      source_refs: ["case_situation"],
     };
   }
   if (category === "scenario" && concept.startsWith("compare_")) {
@@ -158,20 +158,20 @@ function candidateEvidence(
         "evaluation_option_1", "evaluation_option_2",
         "evaluation_short_term_1", "evaluation_long_term_1",
       ],
-      source_refs: ["provider_inference"],
+      source_refs: ["case_situation"],
     };
   }
   if (category === "scenario" && concept.includes("information_first_path")) {
     return {
       evidence_kind: "candidate_material",
       candidate_ids: ["evaluation_option_1", "evaluation_clarification_1"],
-      source_refs: ["provider_inference"],
+      source_refs: ["case_situation"],
     };
   }
   return {
     evidence_kind: "candidate_material",
     candidate_ids: ["evaluation_short_term_1"],
-    source_refs: ["provider_inference"],
+    source_refs: ["case_situation"],
   };
 }
 
@@ -374,17 +374,31 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
   disallowedProvenance.items[0].provenance.source_ref = "invented_source";
   add("candidate-grounding-disallowed-provenance-diagnostic",
     groundingCode(disallowedProvenance) === "source_ref_not_allowed");
-  const providerInferenceCorrect = structuredClone(validGroundingCandidate);
-  providerInferenceCorrect.items[0].evidence = "provider_inference";
-  providerInferenceCorrect.items[0].provenance.source_ref = "provider_inference";
-  add("candidate-grounding-provider-inference-correct", inspectCanonicalProviderCandidateGrounding(
-    providerInferenceCorrect,
+  const providerInferenceSituation = structuredClone(validGroundingCandidate);
+  providerInferenceSituation.items[0].evidence = "provider_inference";
+  providerInferenceSituation.items[0].provenance.source_ref = "case_situation";
+  add("candidate-grounding-provider-inference-case-situation", inspectCanonicalProviderCandidateGrounding(
+    providerInferenceSituation,
     compiled.input,
   ).valid);
-  const providerInferenceWrong = structuredClone(providerInferenceCorrect);
-  providerInferenceWrong.items[0].provenance.source_ref = "fact_1";
-  add("candidate-grounding-provider-inference-mismatch-diagnostic",
-    groundingCode(providerInferenceWrong) === "provider_inference_source_ref_mismatch");
+  const providerInferenceFact = structuredClone(providerInferenceSituation);
+  providerInferenceFact.items[0].provenance.source_ref = "fact_2";
+  add("candidate-grounding-provider-inference-fact-2", compiled.input.allowed_refs.source_refs.includes(
+    "fact_2",
+  ) && inspectCanonicalProviderCandidateGrounding(providerInferenceFact, compiled.input).valid);
+  const providerInferenceAssumption = structuredClone(providerInferenceSituation);
+  providerInferenceAssumption.items[0].provenance.source_ref = "assumption_1";
+  add("candidate-grounding-provider-inference-assumption-1",
+    compiled.input.allowed_refs.source_refs.includes("assumption_1") &&
+    inspectCanonicalProviderCandidateGrounding(providerInferenceAssumption, compiled.input).valid);
+  const providerInferenceFabricated = structuredClone(providerInferenceSituation);
+  providerInferenceFabricated.items[0].provenance.source_ref = "made_up_fact";
+  add("candidate-grounding-provider-inference-fabricated-diagnostic",
+    groundingCode(providerInferenceFabricated) === "source_ref_not_allowed");
+  const providerInferenceSentinel = structuredClone(providerInferenceSituation);
+  providerInferenceSentinel.items[0].provenance.source_ref = "provider_inference";
+  add("candidate-grounding-provider-inference-sentinel-diagnostic",
+    groundingCode(providerInferenceSentinel) === "provider_inference_source_ref_not_concrete");
   const unknownCorrect = structuredClone(validGroundingCandidate);
   unknownCorrect.items[0].evidence = "unknown";
   unknownCorrect.items[0].provenance.source_ref = "unknown";
@@ -392,10 +406,30 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
     unknownCorrect,
     compiled.input,
   ).valid);
+  const gapSource = CANONICAL_OFFLINE_EVALUATION_CASES.find((item) =>
+    item.critical_gaps.length > 0 || item.important_gaps.length > 0);
+  if (!gapSource) throw new Error("Canonical gap source unavailable.");
+  const gapCompiled = compileCanonicalProviderEvaluationInput(gapSource);
+  if (gapCompiled.status !== "ready") throw new Error("Canonical gap source did not compile.");
+  const concreteGapRef = gapCompiled.input.input.critical_gaps[0]?.source_ref ??
+    gapCompiled.input.input.important_gaps[0]?.source_ref;
+  if (!concreteGapRef) throw new Error("Canonical concrete gap reference unavailable.");
+  const unknownConcreteGap = structuredClone(unknownCorrect);
+  unknownConcreteGap.items[0].provenance.source_ref = concreteGapRef;
+  add("candidate-grounding-unknown-concrete-gap", concreteGapRef !== undefined &&
+    inspectCanonicalProviderCandidateGrounding(unknownConcreteGap, gapCompiled.input).valid);
+  const unknownSentinelWithGap = structuredClone(unknownCorrect);
+  add("candidate-grounding-unknown-sentinel-rejected-when-gap-exists",
+    inspectCanonicalProviderCandidateGrounding(unknownSentinelWithGap, gapCompiled.input)
+      .diagnostic?.issues[0]?.code === "unknown_source_ref_mismatch");
   const unknownWrong = structuredClone(unknownCorrect);
   unknownWrong.items[0].provenance.source_ref = "fact_1";
   add("candidate-grounding-unknown-mismatch-diagnostic",
     groundingCode(unknownWrong) === "unknown_source_ref_mismatch");
+  const unknownFabricated = structuredClone(unknownCorrect);
+  unknownFabricated.items[0].provenance.source_ref = "made_up_gap";
+  add("candidate-grounding-unknown-fabricated-diagnostic",
+    groundingCode(unknownFabricated) === "source_ref_not_allowed");
   for (const [field, expectedCode] of [
     ["option_refs", "option_refs_must_be_empty"],
     ["scenario_refs", "scenario_refs_must_be_empty"],
@@ -585,7 +619,7 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
     emptyCandidateValidation.annotationDiagnostic?.reason === "candidate_material_references_empty");
   const executionReferences = structuredClone(fakeComplete);
   executionReferences.evaluation_annotations.v2_status[0].candidate_ids = ["evaluation_option_1"];
-  executionReferences.evaluation_annotations.v2_status[0].source_refs = ["provider_inference"];
+  executionReferences.evaluation_annotations.v2_status[0].source_refs = ["case_situation"];
   const executionReferencesValidation = validateCanonicalProviderEvaluationResult(
     executionReferences,
     compiled.input,
@@ -633,7 +667,7 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
     ...v2CandidateMaterial.evaluation_annotations.v2_status[0],
     evidence_kind: "candidate_material",
     candidate_ids: ["evaluation_option_1"],
-    source_refs: ["provider_inference"],
+    source_refs: ["case_situation"],
   };
   const v2CandidateValidation = validateCanonicalProviderEvaluationResult(
     v2CandidateMaterial,
@@ -696,7 +730,7 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
       concept_id: askConcept,
       evidence_kind: "candidate_material",
       candidate_ids: ["evaluation_option_1"],
-      source_refs: ["provider_inference"],
+      source_refs: ["case_situation"],
     }];
   }
   const clarificationTypeValidation = validateCanonicalProviderEvaluationResult(
@@ -717,7 +751,7 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
       concept_id: informationFirstConcept,
       evidence_kind: "candidate_material",
       candidate_ids: ["evaluation_short_term_1"],
-      source_refs: ["provider_inference"],
+      source_refs: ["case_situation"],
     }];
   }
   const informationFirstValidation = validateCanonicalProviderEvaluationResult(
