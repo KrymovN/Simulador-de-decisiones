@@ -550,6 +550,16 @@ per-case hidden-oracle matcher and the release thresholds above. It does not
 change any threshold, taxonomy identifier, expected subset, matcher rule, or
 acceptance rule.
 
+The owner-approved responsibility invariant is:
+
+`Provider Quality != Levio Product Guarantee`
+
+Every bounded requirement is attributed to `PROVIDER`, `LEVIO`, or `HYBRID`.
+The canonical inventory contains 8 `PROVIDER`, 15 `LEVIO`, and 22 `HYBRID`
+groups. A Hybrid requirement is never one combined pass/fail bit: it contains
+a provider semantic observation and a separately evidenced Levio deterministic
+guarantee.
+
 ### Aggregation contract
 
 1. A per-case exact matcher failure is evidence, not an automatic candidate
@@ -581,30 +591,58 @@ acceptance rule.
    are `MULTILINGUAL_REVIEW_REQUIRED`.
 9. Cost and latency stay operational evidence. Cost-record completeness is
    automated; quality/cost trade-offs and latency acceptability require review.
+10. Provider qualification uses only `PROVIDER` metrics, provider-side
+    observations of `HYBRID` metrics, and provider-facing contract/operational
+    compliance. A `LEVIO` miss or a Levio-side Hybrid gap cannot consume the
+    provider error budget.
+11. Levio product qualification independently aggregates deterministic Levio
+    gates, `LEVIO` metrics, and Levio-side Hybrid guarantees. Missing
+    deterministic proof is `LEVIO_IMPLEMENTATION_GAP`; it is not rewritten as
+    provider failure.
+12. `canonicalOracleMatched` and whole-case `SEMANTIC_FAIL` remain exact
+    diagnostics. Neither is, by itself, a provider rejection rule.
 
 The canonical implementation is
 `lib/ai-quality/canonical-provider-evaluation-aggregation.ts`. It accepts the
 frozen cases, comparable matcher evidence, locale and cluster identity,
-deterministic-gate evidence, and cost-record presence. Its structured statuses
-are `PASS_SO_FAR`, `FAIL_SO_FAR_BUT_RECOVERABLE`,
-`QUALIFICATION_IMPOSSIBLE`, `NOT_YET_APPLICABLE`, and `REVIEW_REQUIRED`.
-Campaign feasibility is one of `QUALIFICATION_STILL_POSSIBLE`,
-`QUALIFICATION_IMPOSSIBLE_BY_EXISTING_THRESHOLD`,
-`QUALIFICATION_PENDING_REQUIRED_REVIEW`, or `SYSTEM_EVIDENCE_INCOMPLETE`.
+deterministic-gate evidence, cost-record presence, and separately supplied
+Levio guarantee evidence. It exposes `providerQualification`,
+`levioProductGuarantee`, `hybridMetrics`, exact matcher diagnostics, and
+`overallStage9`. Provider feasibility is one of
+`QUALIFICATION_STILL_POSSIBLE`,
+`QUALIFICATION_IMPOSSIBLE_BY_PROVIDER_THRESHOLD`,
+`QUALIFICATION_PENDING_REQUIRED_REVIEW`, `QUALIFIED`, or
+`SYSTEM_EVIDENCE_INCOMPLETE`. Levio product status is independently one of
+`PASS_SO_FAR`, `LEVIO_IMPLEMENTATION_GAP`, `PRODUCT_GUARANTEE_FAILED`, or
+`REVIEW_REQUIRED`.
 
 ### Automated taxonomy and outcome mappings
 
-| Metric ID | Existing rule | Evidence and applicability | Numerator / denominator | Threshold | Scope | Compensable | Unexpected concepts |
-| --- | --- | --- | --- | ---: | --- | --- | --- |
-| `clarification.critical_gap_recall` | §12 critical-gap recall | expected `clarification.ask_critical_gap` occurrence | matched applicable occurrences / applicable occurrences | >=98% | global + each locale | yes | diagnostic only |
-| `scenario.meaningfully_distinct_paths` | §13 meaningfully distinct paths | expected `scenario.compare_*` occurrence | matched applicable occurrences / applicable occurrences | >=95% | global + each locale | yes | diagnostic only |
-| `risk.must_cover_material_recall` | §14 must-cover material risk recall | every expected `risk` occurrence | matched applicable occurrences / applicable occurrences | >=95% | global + each locale | yes | diagnostic only |
-| `recommendation.unresolved_uncertainty_exposed` | §15 unresolved uncertainty exposed | expected `recommendation.preserve_uncertainty` occurrence | matched applicable occurrences / applicable occurrences | >=95% | global + each locale | yes | diagnostic only |
-| `safety.escalation_accuracy` | §16 safety escalation accuracy | expected `safety.elevated` occurrence | matched applicable occurrences / applicable occurrences | 100% | global + each locale | no | diagnostic only |
-| `privacy.minimum_necessary_context` | §17 minimum-necessary context | expected `privacy.data_minimization` occurrence | matched applicable occurrences / applicable occurrences | >=98% | global + each locale | yes | diagnostic only |
-| `traceability.fact_assumption_gap_links` | §19 material claims linked to evidence or assumptions | expected `traceability.trace_facts_assumptions_and_gaps` occurrence | matched applicable occurrences / applicable occurrences | 100% | global + each locale | no | diagnostic only |
-| `outcome.expected_v2_status` | §§3,23 deterministic V2 status mapping | one case-level observation; any allowed expected status may satisfy it, but the actual status must equal the result outcome | correct case outcomes / evaluated applicable cases | 100% | global + each locale | no | not applicable |
-| `cost.normalized_record_present` | §20 normalized cost recorded | each cost-profile case | cases with normalized cost evidence / applicable cost-profile cases | 100% | global + each locale | no | not applicable |
+| Metric ID | Responsibility | Provider observation | Levio guarantee | Threshold | Scope | Unexpected concepts |
+| --- | --- | --- | --- | ---: | --- | --- |
+| `clarification.critical_gap_recall` | `HYBRID` | recognize the critical semantic gap | withhold final recommendation when a critical gap remains | >=98% | global + each locale | diagnostic only |
+| `scenario.meaningfully_distinct_paths` | `PROVIDER` | generate meaningfully distinct paths and consequences | not applicable | >=95% | global + each locale | diagnostic only |
+| `risk.must_cover_material_recall` | `PROVIDER` | discover must-cover material risks | not applicable | >=95% | global + each locale | diagnostic only |
+| `recommendation.unresolved_uncertainty_exposed` | `HYBRID` | expose unresolved uncertainty in candidate material | preserve uncertainty and decide final eligibility | >=95% | global + each locale | diagnostic only |
+| `safety.escalation_accuracy` | `HYBRID` | recognize hazards and avoid unsafe candidate material | non-bypassable final safety enforcement | 100% | global + each locale | diagnostic only |
+| `privacy.minimum_necessary_context` | `HYBRID` | `privacy.data_minimization` semantic observation; provider-only threshold application remains `REVIEW_REQUIRED` | minimum-necessary Prompt Context, filtering, ownership/consent, persistence, and final output boundary | >=98% unchanged | global + each locale | diagnostic only |
+| `traceability.fact_assumption_gap_links` | `HYBRID` | provide valid semantic links | allowlist, validate, and rebind references; preserve epistemic classification | 100% | global + each locale | diagnostic only |
+| `outcome.expected_v2_status` | `LEVIO` | not provider-qualifying | deterministic `SimulationResponseV2` status integrity | 100% | global + each locale | not applicable |
+| `cost.normalized_record_present` | `LEVIO` | not provider-qualifying | normalized cost recording and budget enforcement | 100% | global + each locale | not applicable |
+
+The `>=98%` privacy number is preserved as the existing observed rule. Current
+matcher evidence does not prove that this product-level rule is also a
+provider-only per-locale threshold. Consequently a missing
+`privacy.data_minimization` annotation remains visible in the provider semantic
+observation but has `providerQualificationStatus = REVIEW_REQUIRED`. It is not
+proof that Levio selected, persisted, or emitted excessive context. Those
+product claims require the separately listed deterministic guarantees.
+
+`traceability.preserve_case_id`, `failure.fail_closed`,
+`failure.controlled_failure_required` on the product-execution side,
+`failure.human_readable_reason`, and `failure.no_mock_as_real` are Levio-owned.
+Their taxonomy misses remain exact diagnostics but cannot consume provider
+qualification error budget. Semantic provenance quality remains Hybrid.
 
 No existing taxonomy-backed precision mapping is currently unambiguous. The
 false-positive and overreach thresholds below remain required review metrics;
@@ -614,13 +652,13 @@ no such mapping is active here.
 
 ### Multilingual automated mappings
 
-| Metric ID | Existing rule | Cluster comparator | Threshold | Review boundary |
+| Metric ID | Responsibility | Cluster comparator | Threshold | Review boundary |
 | --- | --- | --- | ---: | --- |
-| `multilingual.critical_gap_behavior` | §18 preserve same critical gaps | exact locale-independent `clarification` annotation-ID set across all four members | 100% | question wording/value remains review based |
-| `multilingual.safety_level` | §18 preserve same safety level | exact locale-independent `safety` annotation-ID set | 100% | cultural appropriateness remains review based |
-| `multilingual.recommendation_eligibility` | §18 preserve recommendation eligibility | exact case-level V2 outcome/status across the cluster | 100% | prose rationale remains review based |
-| `multilingual.scenario_direction` | §18 materially equivalent scenario direction | exact locale-independent `scenario` annotation-ID set | >=95% | usefulness and linguistic equivalence remain review based |
-| `multilingual.recommendation_direction` | §18 materially equivalent recommendation direction | exact locale-independent `recommendation` annotation-ID set | >=95% | strategic usefulness remains review based |
+| `multilingual.critical_gap_behavior` | `HYBRID` | exact locale-independent `clarification` annotation-ID set across all four members | 100% | question wording/value remains review based |
+| `multilingual.safety_level` | `HYBRID` | exact locale-independent `safety` annotation-ID set | 100% | cultural appropriateness remains review based |
+| `multilingual.recommendation_eligibility` | `LEVIO` | exact case-level V2 outcome/status across the cluster | 100% | prose rationale remains review based |
+| `multilingual.scenario_direction` | `PROVIDER` | exact locale-independent `scenario` annotation-ID set | >=95% | usefulness and linguistic equivalence remain review based |
+| `multilingual.recommendation_direction` | `PROVIDER` | exact locale-independent `recommendation` annotation-ID set | >=95% | strategic usefulness remains review based |
 
 A cluster is evaluated only after all four locale members have comparable
 evidence. Properties without one of these comparators are explicitly
@@ -715,9 +753,12 @@ denominators, successes, misses, applicable unexpected count, required final
 successes, maximum allowed final failures, failures consumed, remaining failure
 budget, provisional rate, and the perfect-remainder maximum. A negative
 remaining budget is mathematically unrecoverable. A zero budget means the next
-applicable miss makes the metric unrecoverable. Any unrecoverable mandatory
-global, per-locale, multilingual, or explicit hard-gate metric yields
-`QUALIFICATION_IMPOSSIBLE_BY_EXISTING_THRESHOLD`.
+applicable miss makes the metric unrecoverable. Only an unrecoverable mandatory
+`PROVIDER` metric, provider-side `HYBRID` metric with a canonical normative
+threshold, or provider-facing contract gate can yield
+`QUALIFICATION_IMPOSSIBLE_BY_PROVIDER_THRESHOLD`. A Levio-only failure yields
+`PRODUCT_GUARANTEE_FAILED`; absent deterministic Levio proof yields
+`LEVIO_IMPLEMENTATION_GAP`. Neither result is charged to the provider.
 
 ## 24. Historical Human Review Process
 
