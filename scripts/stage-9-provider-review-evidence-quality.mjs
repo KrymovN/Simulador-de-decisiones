@@ -429,7 +429,56 @@ function fakeEvaluationResult(source) {
   };
 }
 
+function projectReviewability(result, sourceCase = source) {
+  const sourceCaseSha256 = campaignEvidence.canonicalEvidenceSha256(sourceCase);
+  return review.projectCanonicalProviderHumanReviewability({
+    executionHash: sha("reviewability-execution"),
+    caseId: sourceCase.case_id,
+    caseVersion: sourceCase.case_version,
+    caseSha256: sourceCaseSha256,
+    validatedResult: result,
+    sourceCase,
+    sourceCaseSha256,
+  });
+}
+
 const source = cases[0];
+const reviewabilityResult = fakeEvaluationResult(source);
+reviewabilityResult.candidate_material.items = reviewabilityResult.candidate_material.items.filter(
+  (item) => item.item_type !== "clarification_need",
+);
+reviewabilityResult.evaluation_annotations.clarification = [];
+reviewabilityResult.evaluation_annotations.privacy = [];
+const reviewability = projectReviewability(reviewabilityResult);
+add("reviewability-clarification-absent-reviewable",
+  reviewability.clarification_relevance.reviewable === true);
+add("reviewability-privacy-annotation-absent-reviewable",
+  reviewability.provider_privacy_semantic_quality.reviewable === true);
+add("reviewability-scenario-preserved",
+  reviewability.scenario_usefulness_distinctness.reviewable === true);
+add("reviewability-risk-preserved", reviewability.risk_discipline.reviewable === true);
+add("reviewability-recommendation-preserved",
+  reviewability.recommendation_strategic_usefulness.reviewable === true);
+const missingCandidateResult = structuredClone(reviewabilityResult);
+missingCandidateResult.candidate_material = null;
+const missingCandidateReviewability = projectReviewability(missingCandidateResult);
+add("reviewability-missing-candidate-not-reviewable",
+  review.CANONICAL_PROVIDER_REVIEWABILITY_DIMENSIONS.every(
+    (dimension) => missingCandidateReviewability[dimension].reviewable === false,
+  ));
+const brokenSourceLinkage = review.projectCanonicalProviderHumanReviewability({
+  executionHash: sha("reviewability-execution"),
+  caseId: source.case_id,
+  caseVersion: source.case_version,
+  caseSha256: sha("wrong-source"),
+  validatedResult: reviewabilityResult,
+  sourceCase: source,
+  sourceCaseSha256: campaignEvidence.canonicalEvidenceSha256(source),
+});
+add("reviewability-broken-source-linkage-not-reviewable",
+  review.CANONICAL_PROVIDER_REVIEWABILITY_DIMENSIONS.every(
+    (dimension) => brokenSourceLinkage[dimension].reviewable === false,
+  ));
 const captured = campaignEvidence.captureCanonicalProviderExecutionEvidence({
   campaignId: "campaign-test-001",
   executionId: "execution-test-001",

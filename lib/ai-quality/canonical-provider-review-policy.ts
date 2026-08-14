@@ -1,5 +1,10 @@
 import "server-only";
 
+import type { CanonicalOfflineEvaluationCase } from
+  "../ai-decision-material/fixtures";
+import type { CanonicalProviderEvaluationResultV1 } from
+  "./canonical-provider-evaluation-result";
+
 export const STAGE_9_PROVIDER_REVIEW_POLICY_VERSION =
   "stage-9-provider-review-policy.1" as const;
 
@@ -20,6 +25,74 @@ export const CANONICAL_HUMAN_REVIEW_DIMENSIONS = [
 
 export type CanonicalHumanReviewDimension =
   (typeof CANONICAL_HUMAN_REVIEW_DIMENSIONS)[number];
+
+export const CANONICAL_PROVIDER_REVIEWABILITY_DIMENSIONS = [
+  ...CANONICAL_HUMAN_REVIEW_DIMENSIONS,
+  "provider_privacy_semantic_quality",
+] as const;
+
+export type CanonicalProviderReviewabilityDimension =
+  (typeof CANONICAL_PROVIDER_REVIEWABILITY_DIMENSIONS)[number];
+
+export type CanonicalProviderHumanReviewabilityInput = {
+  executionHash: string;
+  caseId: string;
+  caseVersion: string;
+  caseSha256: string;
+  validatedResult: CanonicalProviderEvaluationResultV1;
+  sourceCase: Pick<
+    CanonicalOfflineEvaluationCase,
+    "case_id" | "case_version" | "user_situation" | "user_intent"
+  >;
+  sourceCaseSha256: string;
+};
+
+export type CanonicalProviderHumanReviewabilityProjection = Record<
+  CanonicalProviderReviewabilityDimension,
+  { applicable: boolean; reviewable: boolean }
+>;
+
+const REVIEWABILITY_HASH = /^[a-f0-9]{64}$/;
+
+/**
+ * Projects whether retained provider evidence is sufficient for human review.
+ * It does not score, judge, match, or qualify the provider result.
+ */
+export function projectCanonicalProviderHumanReviewability(
+  input: CanonicalProviderHumanReviewabilityInput,
+): CanonicalProviderHumanReviewabilityProjection {
+  const sourceLinked = REVIEWABILITY_HASH.test(input.executionHash) &&
+    REVIEWABILITY_HASH.test(input.caseSha256) &&
+    input.caseSha256 === input.sourceCaseSha256 &&
+    input.caseId === input.sourceCase.case_id &&
+    input.caseVersion === input.sourceCase.case_version &&
+    input.sourceCase.user_situation.trim().length > 0 &&
+    input.sourceCase.user_intent.trim().length > 0;
+  const items = input.validatedResult.candidate_material?.items ?? [];
+  const candidateMaterialPresent = items.length > 0;
+  const itemTypes = new Set(items.map((item) => item.item_type));
+  const annotations = input.validatedResult.evaluation_annotations;
+  const projection = (contentPresent: boolean) => ({
+    applicable: true,
+    reviewable: sourceLinked && contentPresent,
+  });
+
+  return {
+    clarification_relevance: projection(candidateMaterialPresent),
+    scenario_usefulness_distinctness: projection(
+      itemTypes.has("option") &&
+      (itemTypes.has("short_term_consequence") || itemTypes.has("long_term_consequence")) &&
+      annotations.scenario.length > 0,
+    ),
+    risk_discipline: projection(
+      itemTypes.has("risk_signal") && annotations.risk.length > 0,
+    ),
+    recommendation_strategic_usefulness: projection(
+      candidateMaterialPresent && annotations.recommendation.length > 0,
+    ),
+    provider_privacy_semantic_quality: projection(candidateMaterialPresent),
+  };
+}
 
 export const CANONICAL_HUMAN_REVIEW_THRESHOLDS = {
   clarification_relevance: { numerator: 35, denominator: 10 },
