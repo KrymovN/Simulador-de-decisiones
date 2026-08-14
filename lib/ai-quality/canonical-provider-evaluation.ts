@@ -1,5 +1,7 @@
 import "server-only";
 
+import { createHash } from "node:crypto";
+
 import {
   acceptCandidateDecisionMaterial,
   candidateDecisionMaterialHasValidContract,
@@ -17,8 +19,6 @@ import type {
   DecisionMaterialAcceptanceResult,
 } from "../ai-decision-material/contracts";
 import {
-  OPENAI_DECISION_MATERIAL_LIMITS,
-  buildCandidateDecisionMaterialProviderRequest,
   type DecisionMaterialCostEvidence,
   type DecisionMaterialProviderRequest,
   type DecisionMaterialTransportGeneration,
@@ -39,21 +39,125 @@ import {
 export const CANONICAL_PROVIDER_EVALUATION_BOUNDARY_VERSION =
   "stage-9-canonical-provider-evaluation-boundary.2" as const;
 
-export const CANONICAL_PROVIDER_EVALUATION_CANDIDATE = {
+export const CANONICAL_PROVIDER_EVALUATION_PROFILE_VERSION =
+  "stage-9-provider-evaluation-profile.1" as const;
+
+export type CanonicalProviderEvaluationProfile = {
+  profileId: string;
+  profileVersion: typeof CANONICAL_PROVIDER_EVALUATION_PROFILE_VERSION;
+  provider: "openai";
+  model: "gpt-5.6-sol" | "gpt-5.6-terra";
+  reasoningEffort: "low";
+  maxInputTokens: 6000;
+  maxOutputTokens: 4000;
+  maxTotalTokens: 10000;
+  generationTimeoutMs: 120000;
+  maxLocalPayloadCharacters: 16000;
+  store: false;
+  tools: readonly [];
+  retries: 0;
+  automaticReruns: 0;
+  inputUsdPerMillion: number;
+  cachedInputUsdPerMillion: number;
+  outputUsdPerMillion: number;
+  maxCostUsd: number;
+};
+
+export const CANONICAL_PROVIDER_EVALUATION_SOL_PROFILE = {
+  profileId: "stage9-sol-evaluation-v1",
+  profileVersion: CANONICAL_PROVIDER_EVALUATION_PROFILE_VERSION,
   provider: "openai",
   model: "gpt-5.6-sol",
+  reasoningEffort: "low",
+  maxInputTokens: 6000,
+  maxOutputTokens: 4000,
+  maxTotalTokens: 10000,
+  generationTimeoutMs: 120000,
+  maxLocalPayloadCharacters: 16000,
+  store: false,
+  tools: [],
+  retries: 0,
+  automaticReruns: 0,
   inputUsdPerMillion: 5,
   cachedInputUsdPerMillion: 0.5,
   outputUsdPerMillion: 30,
-} as const;
+  maxCostUsd: 0.16,
+} as const satisfies CanonicalProviderEvaluationProfile;
 
-export const CANONICAL_PROVIDER_EVALUATION_LIMITS = {
-  maxInputTokens: OPENAI_DECISION_MATERIAL_LIMITS.maxInputTokens,
+export const CANONICAL_PROVIDER_EVALUATION_TERRA_PROFILE = {
+  profileId: "stage9-terra-evaluation-v1",
+  profileVersion: CANONICAL_PROVIDER_EVALUATION_PROFILE_VERSION,
+  provider: "openai",
+  model: "gpt-5.6-terra",
+  reasoningEffort: "low",
+  maxInputTokens: 6000,
   maxOutputTokens: 4000,
   maxTotalTokens: 10000,
-  maxCostUsd: 0.16,
   generationTimeoutMs: 120000,
-  maxLocalPayloadCharacters: OPENAI_DECISION_MATERIAL_LIMITS.maxLocalPayloadCharacters,
+  maxLocalPayloadCharacters: 16000,
+  store: false,
+  tools: [],
+  retries: 0,
+  automaticReruns: 0,
+  inputUsdPerMillion: 2,
+  cachedInputUsdPerMillion: 0.2,
+  outputUsdPerMillion: 12,
+  maxCostUsd: 0.06,
+} as const satisfies CanonicalProviderEvaluationProfile;
+
+export const CANONICAL_PROVIDER_EVALUATION_PROFILES = {
+  sol: CANONICAL_PROVIDER_EVALUATION_SOL_PROFILE,
+  terra: CANONICAL_PROVIDER_EVALUATION_TERRA_PROFILE,
+} as const;
+
+export const CANONICAL_PROVIDER_EVALUATION_ACTIVE_PROFILE_ID = "terra" as const;
+export const CANONICAL_PROVIDER_EVALUATION_CANDIDATE =
+  CANONICAL_PROVIDER_EVALUATION_PROFILES[
+    CANONICAL_PROVIDER_EVALUATION_ACTIVE_PROFILE_ID
+  ];
+
+function canonicalProfileJson(profile: CanonicalProviderEvaluationProfile): string {
+  return JSON.stringify({
+    profileId: profile.profileId,
+    profileVersion: profile.profileVersion,
+    provider: profile.provider,
+    model: profile.model,
+    reasoningEffort: profile.reasoningEffort,
+    maxInputTokens: profile.maxInputTokens,
+    maxOutputTokens: profile.maxOutputTokens,
+    maxTotalTokens: profile.maxTotalTokens,
+    generationTimeoutMs: profile.generationTimeoutMs,
+    maxLocalPayloadCharacters: profile.maxLocalPayloadCharacters,
+    store: profile.store,
+    tools: profile.tools,
+    retries: profile.retries,
+    automaticReruns: profile.automaticReruns,
+    inputUsdPerMillion: profile.inputUsdPerMillion,
+    cachedInputUsdPerMillion: profile.cachedInputUsdPerMillion,
+    outputUsdPerMillion: profile.outputUsdPerMillion,
+    maxCostUsd: profile.maxCostUsd,
+  });
+}
+
+export function canonicalProviderEvaluationProfileFingerprint(
+  profile: CanonicalProviderEvaluationProfile,
+): string {
+  return createHash("sha256").update(canonicalProfileJson(profile)).digest("hex");
+}
+
+export const CANONICAL_PROVIDER_EVALUATION_CANDIDATE_FINGERPRINT =
+  canonicalProviderEvaluationProfileFingerprint(
+    CANONICAL_PROVIDER_EVALUATION_CANDIDATE,
+  );
+
+export const CANONICAL_PROVIDER_EVALUATION_LIMITS = {
+  maxInputTokens: CANONICAL_PROVIDER_EVALUATION_CANDIDATE.maxInputTokens,
+  maxOutputTokens: CANONICAL_PROVIDER_EVALUATION_CANDIDATE.maxOutputTokens,
+  maxTotalTokens: CANONICAL_PROVIDER_EVALUATION_CANDIDATE.maxTotalTokens,
+  maxCostUsd: CANONICAL_PROVIDER_EVALUATION_CANDIDATE.maxCostUsd,
+  generationTimeoutMs: CANONICAL_PROVIDER_EVALUATION_CANDIDATE.generationTimeoutMs,
+  maxLocalPayloadCharacters:
+    CANONICAL_PROVIDER_EVALUATION_CANDIDATE.maxLocalPayloadCharacters,
 } as const;
 
 export const CANONICAL_PROVIDER_ANNOTATION_RULES = [
@@ -211,6 +315,40 @@ export function calculateCanonicalProviderEvaluationCost(
   ).toFixed(8));
 }
 
+export function authorizeCanonicalProviderEvaluationGeneration(
+  countedInputTokens: number,
+): {
+  status: "authorized";
+  theoreticalUncachedCommitmentUsd: number;
+} | {
+  status: "blocked";
+  category: "input_limit_exceeded" | "cost_limit_exceeded";
+  theoreticalUncachedCommitmentUsd: number;
+} {
+  const theoreticalUncachedCommitmentUsd = calculateCanonicalProviderEvaluationCost(
+    countedInputTokens,
+    CANONICAL_PROVIDER_EVALUATION_LIMITS.maxOutputTokens,
+  );
+  if (theoreticalUncachedCommitmentUsd > CANONICAL_PROVIDER_EVALUATION_LIMITS.maxCostUsd) {
+    return {
+      status: "blocked",
+      category: "cost_limit_exceeded",
+      theoreticalUncachedCommitmentUsd,
+    };
+  }
+  if (!Number.isInteger(countedInputTokens) || countedInputTokens < 0 ||
+    countedInputTokens > CANONICAL_PROVIDER_EVALUATION_LIMITS.maxInputTokens ||
+    countedInputTokens + CANONICAL_PROVIDER_EVALUATION_LIMITS.maxOutputTokens >
+      CANONICAL_PROVIDER_EVALUATION_LIMITS.maxTotalTokens) {
+    return {
+      status: "blocked",
+      category: "input_limit_exceeded",
+      theoreticalUncachedCommitmentUsd,
+    };
+  }
+  return { status: "authorized", theoreticalUncachedCommitmentUsd };
+}
+
 export function calculateCanonicalProviderEvaluationCostEvidence(
   inputTokens: number,
   cachedInputTokens: number | null | undefined,
@@ -263,15 +401,18 @@ export function buildCanonicalProviderEvaluationRequest(
 ): CanonicalProviderEvaluationRequestResult {
   const compiled = compileCanonicalProviderEvaluationInput(canonicalCase);
   if (compiled.status === "blocked") return compiled;
-  const baseRequest = buildCandidateDecisionMaterialProviderRequest(
-    JSON.stringify(compiled.input),
-    CANONICAL_PROVIDER_EVALUATION_INSTRUCTIONS,
-  );
   const providerRequest: CanonicalProviderEvaluationProviderRequest = {
-    ...baseRequest,
     model: CANONICAL_PROVIDER_EVALUATION_CANDIDATE.model,
+    instructions: CANONICAL_PROVIDER_EVALUATION_INSTRUCTIONS,
+    input: JSON.stringify(compiled.input),
+    reasoningEffort: CANONICAL_PROVIDER_EVALUATION_CANDIDATE.reasoningEffort,
     schemaName: CANONICAL_PROVIDER_EVALUATION_SCHEMA_NAME,
     schema: CANONICAL_PROVIDER_EVALUATION_RESULT_SCHEMA,
+    strict: true,
+    store: CANONICAL_PROVIDER_EVALUATION_CANDIDATE.store,
+    stream: false,
+    background: false,
+    tools: [],
     maxOutputTokens: CANONICAL_PROVIDER_EVALUATION_LIMITS.maxOutputTokens,
   };
   if (requestContainsOracle(providerRequest)) {
@@ -313,10 +454,9 @@ export async function runCanonicalProviderEvaluationOffline(
   if (request.input.length > CANONICAL_PROVIDER_EVALUATION_LIMITS.maxLocalPayloadCharacters) {
     return blocked("input_limit_exceeded", 0);
   }
-  if (calculateCanonicalProviderEvaluationCost(
+  if (authorizeCanonicalProviderEvaluationGeneration(
     CANONICAL_PROVIDER_EVALUATION_LIMITS.maxInputTokens,
-    CANONICAL_PROVIDER_EVALUATION_LIMITS.maxOutputTokens,
-  ) > CANONICAL_PROVIDER_EVALUATION_LIMITS.maxCostUsd) {
+  ).status !== "authorized") {
     return blocked("cost_limit_exceeded", 0);
   }
 
@@ -328,12 +468,9 @@ export async function runCanonicalProviderEvaluationOffline(
   } catch {
     return blocked("fake_transport_failure", fakeTransportOperations);
   }
-  if (
-    !Number.isInteger(countedInputTokens) || countedInputTokens < 0 ||
-    countedInputTokens > CANONICAL_PROVIDER_EVALUATION_LIMITS.maxInputTokens ||
-    countedInputTokens + CANONICAL_PROVIDER_EVALUATION_LIMITS.maxOutputTokens > CANONICAL_PROVIDER_EVALUATION_LIMITS.maxTotalTokens
-  ) {
-    return blocked("input_limit_exceeded", fakeTransportOperations);
+  const authorization = authorizeCanonicalProviderEvaluationGeneration(countedInputTokens);
+  if (authorization.status === "blocked") {
+    return blocked(authorization.category, fakeTransportOperations);
   }
 
   let generated: DecisionMaterialTransportGeneration;

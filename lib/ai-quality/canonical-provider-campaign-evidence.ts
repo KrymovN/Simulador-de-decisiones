@@ -12,6 +12,11 @@ import {
 import type { CanonicalOfflineEvaluationCase } from
   "../ai-decision-material/fixtures";
 import {
+  CANONICAL_PROVIDER_EVALUATION_PROFILES,
+  canonicalProviderEvaluationProfileFingerprint,
+  type CanonicalProviderEvaluationProfile,
+} from "./canonical-provider-evaluation";
+import {
   inspectCanonicalProviderCandidateGrounding,
   matchCanonicalProviderEvaluationOracle,
   validateCanonicalProviderEvaluationResult,
@@ -353,6 +358,26 @@ function operationalEvidenceValid(value: CanonicalProviderExecutionOperationalEv
     value.sanitizedErrorMetadata === null;
 }
 
+function canonicalExecutionProfile(
+  value: CanonicalProviderExecutionConfiguration,
+): CanonicalProviderEvaluationProfile | null {
+  return Object.values(CANONICAL_PROVIDER_EVALUATION_PROFILES).find((profile) =>
+    value.provider === profile.provider && value.model === profile.model &&
+    value.reasoning?.effort === profile.reasoningEffort &&
+    value.maxOutputTokens === profile.maxOutputTokens &&
+    value.timeoutMs === profile.generationTimeoutMs && value.store === profile.store &&
+    Array.isArray(value.tools) && value.tools.length === profile.tools.length &&
+    value.retries === profile.retries &&
+    value.automaticReruns === profile.automaticReruns) ?? null;
+}
+
+export function canonicalProviderExecutionConfigurationFingerprint(
+  value: CanonicalProviderExecutionConfiguration,
+): string | null {
+  const profile = canonicalExecutionProfile(value);
+  return profile === null ? null : canonicalProviderEvaluationProfileFingerprint(profile);
+}
+
 function providerConfigurationValid(value: CanonicalProviderExecutionConfiguration): boolean {
   return value !== null && typeof value === "object" &&
     typeof value.provider === "string" && value.provider.trim().length > 0 &&
@@ -367,7 +392,8 @@ function providerConfigurationValid(value: CanonicalProviderExecutionConfigurati
     value.reasoning?.effort === "low" && Number.isInteger(value.maxOutputTokens) &&
     value.maxOutputTokens > 0 && Number.isInteger(value.timeoutMs) && value.timeoutMs > 0 &&
     value.store === false && Array.isArray(value.tools) && value.tools.length === 0 &&
-    value.retries === 0 && value.automaticReruns === 0;
+    value.retries === 0 && value.automaticReruns === 0 &&
+    canonicalProviderExecutionConfigurationFingerprint(value) !== null;
 }
 
 function failureEvidenceValid(value: CanonicalProviderExecutionFailureEvidence): boolean {
@@ -461,6 +487,8 @@ export function captureCanonicalProviderExecutionEvidence(
     irrelevant_candidate_ids: [],
   });
   const providerConfiguration = structuredClone(input.providerConfiguration);
+  const configurationFingerprint =
+    canonicalProviderExecutionConfigurationFingerprint(providerConfiguration) as string;
   const withoutHash = {
     campaignId: input.campaignId,
     executionId: input.executionId,
@@ -471,7 +499,7 @@ export function captureCanonicalProviderExecutionEvidence(
     locale: input.sourceCase.language,
     semanticClusterId: input.sourceCase.provenance.semantic_cluster_id,
     providerConfiguration,
-    configurationFingerprint: canonicalEvidenceSha256(providerConfiguration),
+    configurationFingerprint,
     validatedResult: structuredClone(validated.result),
     automatedEvidence: {
       resultContract: "PASS" as const,
@@ -553,6 +581,8 @@ export function captureCanonicalProviderFailureEvidence(
   }
   if (issues.length > 0) return { status: "rejected", issues };
   const providerConfiguration = structuredClone(input.providerConfiguration);
+  const configurationFingerprint =
+    canonicalProviderExecutionConfigurationFingerprint(providerConfiguration) as string;
   const withoutHash = {
     campaignId: input.campaignId,
     executionId: input.executionId,
@@ -563,7 +593,7 @@ export function captureCanonicalProviderFailureEvidence(
     locale: input.sourceCase.language,
     semanticClusterId: input.sourceCase.provenance.semantic_cluster_id,
     providerConfiguration,
-    configurationFingerprint: canonicalEvidenceSha256(providerConfiguration),
+    configurationFingerprint,
     validatedResult: null,
     automatedEvidence: {
       resultContract: "NOT_REACHED" as const,
@@ -711,8 +741,9 @@ export function validateCanonicalProviderCampaignEvidenceV2(
       execution.caseSha256 !== canonicalEvidenceSha256(source) ||
       execution.caseVersion !== source.case_version || execution.locale !== source.language ||
       execution.semanticClusterId !== source.provenance.semantic_cluster_id ||
-      execution.configurationFingerprint !== canonicalEvidenceSha256(
-        execution.providerConfiguration) ||
+      execution.configurationFingerprint !==
+        canonicalProviderExecutionConfigurationFingerprint(
+          execution.providerConfiguration) ||
       execution.configurationFingerprint !==
         value.frozenConfiguration.configurationFingerprint) {
       issues.push(`execution_identity_or_config_invalid:${execution.caseId}`);

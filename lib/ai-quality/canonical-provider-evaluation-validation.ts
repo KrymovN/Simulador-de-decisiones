@@ -343,12 +343,12 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
   add("evaluation-output-limit-is-4000", built.request.providerRequest.maxOutputTokens === 4000 &&
     CANONICAL_PROVIDER_EVALUATION_LIMITS.maxOutputTokens === 4000 &&
     built.request.providerRequest.reasoningEffort === "low");
-  add("evaluation-conservative-ceiling-is-016", CANONICAL_PROVIDER_EVALUATION_LIMITS.maxCostUsd === 0.16);
+  add("evaluation-conservative-ceiling-is-006", CANONICAL_PROVIDER_EVALUATION_LIMITS.maxCostUsd === 0.06);
   add("evaluation-generation-timeout-is-120000",
     CANONICAL_PROVIDER_EVALUATION_LIMITS.generationTimeoutMs === 120000);
-  add("evaluation-candidate-is-sol", built.request.providerRequest.model === "gpt-5.6-sol" &&
-    CANONICAL_PROVIDER_EVALUATION_CANDIDATE.model === "gpt-5.6-sol");
-  add("production-provider-controls-reused", CANONICAL_PROVIDER_EVALUATION_CANDIDATE.provider === "openai" &&
+  add("evaluation-candidate-is-terra", built.request.providerRequest.model === "gpt-5.6-terra" &&
+    CANONICAL_PROVIDER_EVALUATION_CANDIDATE.model === "gpt-5.6-terra");
+  add("evaluation-provider-controls-profile-owned", CANONICAL_PROVIDER_EVALUATION_CANDIDATE.provider === "openai" &&
     built.request.providerRequest.store === false && built.request.providerRequest.tools.length === 0);
   add("evaluation-only-evidence", built.request.evidence.decisionContextBuilt === false &&
     built.request.evidence.promptContextBuilt === false &&
@@ -806,8 +806,8 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
   add("completed-usage-preserves-cached-tokens", offline.status === "completed" &&
     offline.usage.cachedInputTokens === 600);
   add("conservative-and-cache-adjusted-cost-separated", offline.status === "completed" &&
-    offline.usage.conservativeUncachedCostUsd === 0.025 &&
-    offline.usage.cacheAdjustedCalculatedCostUsd === 0.0223 &&
+    offline.usage.conservativeUncachedCostUsd === 0.01 &&
+    offline.usage.cacheAdjustedCalculatedCostUsd === 0.00892 &&
     offline.usage.cacheAdjustedFallbackToConservative === false &&
     offline.usage.calculatedCostUsd === offline.usage.cacheAdjustedCalculatedCostUsd);
 
