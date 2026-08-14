@@ -9,9 +9,14 @@ import {
 } from "./canonical-provider-evaluation-taxonomy";
 import type { CanonicalProviderEvaluationOracleMatch } from
   "./canonical-provider-evaluation-result";
+import {
+  aggregateCanonicalProviderCampaignReviews,
+  type CanonicalCampaignReviewAggregation,
+  type CanonicalProviderCampaignReviewEvidence,
+} from "./canonical-provider-review-policy";
 
 export const CANONICAL_PROVIDER_EVALUATION_AGGREGATION_VERSION =
-  "canonical-provider-evaluation-aggregation.2" as const;
+  "canonical-provider-evaluation-aggregation.3" as const;
 
 export const CANONICAL_PROVIDER_EVALUATION_LOCALES = [
   "es", "en", "ru", "zh",
@@ -392,10 +397,6 @@ export const CANONICAL_REVIEW_REQUIRED_METRIC_IDS = [
   { metricId: "privacy.remaining_release_thresholds", responsibility: "HYBRID", providerQualifying: true },
   { metricId: "traceability.remaining_release_thresholds", responsibility: "HYBRID", providerQualifying: true },
   { metricId: "failure.all_release_thresholds", responsibility: "LEVIO", providerQualifying: false },
-  { metricId: "rubric.semantic_fidelity", responsibility: "PROVIDER", providerQualifying: true },
-  { metricId: "rubric.uncertainty_preservation", responsibility: "HYBRID", providerQualifying: true },
-  { metricId: "rubric.safety_privacy_equivalence", responsibility: "HYBRID", providerQualifying: true },
-  { metricId: "rubric.decision_simulation_not_answer", responsibility: "PROVIDER", providerQualifying: true },
   { metricId: "human.dimension_scores", responsibility: "PROVIDER", providerQualifying: true },
   { metricId: "multilingual.remaining_properties", responsibility: "HYBRID", providerQualifying: true },
   { metricId: "operational.latency_and_quality_tradeoff", responsibility: "HYBRID", providerQualifying: true },
@@ -434,6 +435,7 @@ export type CanonicalComparableCaseEvidence = {
   caseId: string;
   locale: CanonicalProviderEvaluationLocale;
   semanticClusterId: string;
+  executionHash?: string;
   matcher: CanonicalProviderEvaluationOracleMatch;
   deterministicGates: Record<
     (typeof CANONICAL_NON_COMPENSABLE_HARD_GATE_IDS)[number],
@@ -537,6 +539,7 @@ export type CanonicalCampaignAggregationResult = {
     reviewClassification: "REVIEW_REQUIRED" | "HUMAN_REVIEW_PENDING" |
       "MULTILINGUAL_REVIEW_REQUIRED";
   }>;
+  reviewEvidenceAggregation: CanonicalCampaignReviewAggregation | null;
   operationalEvidence: CanonicalCampaignOperationalEvidence | null;
   exactMatcherDiagnostics: {
     canonicalOracleMatched: number;
@@ -784,6 +787,7 @@ export function aggregateCanonicalProviderEvaluationCampaign(
     CANONICAL_AUTOMATED_METRIC_MAPPINGS,
   operationalEvidence: CanonicalCampaignOperationalEvidence | null = null,
   levioGuaranteeEvidence: CanonicalLevioGuaranteeEvidence | null = null,
+  reviewEvidence: CanonicalProviderCampaignReviewEvidence | null = null,
 ): CanonicalCampaignAggregationResult {
   const evidenceIssues: string[] = [];
   const caseById = new Map(cases.map((item) => [item.case_id, item]));
@@ -896,7 +900,33 @@ export function aggregateCanonicalProviderEvaluationCampaign(
   const multilingual = CANONICAL_MULTILINGUAL_METRIC_MAPPINGS.map((definition) =>
     buildMultilingualMetric(definition, cases, evidenceByCase)
   );
-  const reviewRequired = CANONICAL_REVIEW_REQUIRED_METRIC_IDS.map((definition) => ({
+  const reviewEvidenceAggregation = aggregateCanonicalProviderCampaignReviews(
+    new Map(cases.map((item) => [item.case_id, item.language])),
+    new Set(cases.map((item) => item.provenance.semantic_cluster_id)),
+    new Map([...evidenceByCase.values()].flatMap((item) =>
+      item.executionHash === undefined ? [] : [[item.caseId, item.executionHash]])),
+    reviewEvidence,
+  );
+  if (reviewEvidenceAggregation !== null) {
+    evidenceIssues.push(...reviewEvidenceAggregation.issues.map((issue) =>
+      `review_evidence:${issue}`));
+  }
+  const reviewRequirementResolved = (metricId: string): boolean => {
+    if (reviewEvidenceAggregation === null) return false;
+    if (metricId === "human.dimension_scores") {
+      return reviewEvidenceAggregation.humanDimensions.every((item) => item.status === "PASS");
+    }
+    if (metricId === "multilingual.remaining_properties") {
+      return reviewEvidenceAggregation.multilingual.status === "PASS";
+    }
+    if (metricId === "operational.latency_and_quality_tradeoff") {
+      return reviewEvidenceAggregation.latency.evidenceStatus === "COMPLETE";
+    }
+    return reviewEvidenceAggregation.campaignRequirements.some((item) =>
+      item.metricId === metricId && item.status === "PASS");
+  };
+  const reviewRequired = CANONICAL_REVIEW_REQUIRED_METRIC_IDS.filter((definition) =>
+    !reviewRequirementResolved(definition.metricId)).map((definition) => ({
     metricId: definition.metricId,
     responsibility: definition.responsibility,
     providerQualifying: definition.providerQualifying,
@@ -914,18 +944,33 @@ export function aggregateCanonicalProviderEvaluationCampaign(
   const providerHardGates = hardGates.filter((item) => item.providerQualifying);
   const providerImpossible = allProviderMetrics.some(
     (item) => item.providerQualificationStatus === "QUALIFICATION_IMPOSSIBLE",
-  ) || providerHardGates.some((item) => item.status === "QUALIFICATION_IMPOSSIBLE");
+  ) || providerHardGates.some((item) => item.status === "QUALIFICATION_IMPOSSIBLE") ||
+    reviewEvidenceAggregation?.hardFailure === true ||
+    reviewEvidenceAggregation?.humanDimensions.some((item) =>
+      item.status === "QUALIFICATION_IMPOSSIBLE" || item.status === "HARD_FAILURE") === true ||
+    reviewEvidenceAggregation?.providerPrivacy.some((item) =>
+      item.status === "QUALIFICATION_IMPOSSIBLE" || item.status === "HARD_FAILURE") === true ||
+    reviewEvidenceAggregation?.multilingual.status === "QUALIFICATION_IMPOSSIBLE" ||
+    reviewEvidenceAggregation?.campaignRequirements.some((item) =>
+      item.status === "QUALIFICATION_IMPOSSIBLE") === true;
   const providerReviewMetricIds = [
     ...allProviderMetrics.filter(
-      (item) => item.providerQualificationStatus === "REVIEW_REQUIRED",
+      (item) => item.providerQualificationStatus === "REVIEW_REQUIRED" && !(
+        item.metricId === "privacy.minimum_necessary_context" &&
+        reviewEvidenceAggregation?.providerPrivacy.some((privacy) =>
+          privacy.scope === item.scope && privacy.status === "PASS")
+      ),
     ).map((item) => `${item.metricId}:${item.scope}`),
-    ...reviewRequired.filter((item) => item.providerQualifying).map((item) => item.metricId),
+    ...reviewRequired.filter((item) => item.providerQualifying &&
+      !reviewRequirementResolved(item.metricId)).map((item) => item.metricId),
+    ...(reviewEvidenceAggregation?.unresolvedMetricIds ?? []),
   ];
+  const uniqueProviderReviewMetricIds = [...new Set(providerReviewMetricIds)];
   const providerStatus: CanonicalCampaignFeasibility = evidenceIssues.length > 0
     ? "SYSTEM_EVIDENCE_INCOMPLETE"
     : providerImpossible
       ? "QUALIFICATION_IMPOSSIBLE_BY_PROVIDER_THRESHOLD"
-      : providerReviewMetricIds.length > 0
+      : uniqueProviderReviewMetricIds.length > 0
         ? "QUALIFICATION_PENDING_REQUIRED_REVIEW"
         : evidenceByCase.size === cases.length
           ? "QUALIFIED"
@@ -1054,6 +1099,7 @@ export function aggregateCanonicalProviderEvaluationCampaign(
     hardGates,
     multilingual,
     reviewRequired,
+    reviewEvidenceAggregation,
     operationalEvidence,
     exactMatcherDiagnostics: {
       canonicalOracleMatched: [...evidenceByCase.values()].filter(
@@ -1074,7 +1120,7 @@ export function aggregateCanonicalProviderEvaluationCampaign(
       metrics: allProviderMetrics,
       hardGates: providerHardGates,
       limitingMetrics,
-      requiredReviewMetricIds: providerReviewMetricIds,
+      requiredReviewMetricIds: uniqueProviderReviewMetricIds,
     },
     levioProductGuarantee: {
       status: levioProductStatus,
