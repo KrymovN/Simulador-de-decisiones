@@ -811,6 +811,147 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
     offline.usage.cacheAdjustedFallbackToConservative === false &&
     offline.usage.calculatedCostUsd === offline.usage.cacheAdjustedCalculatedCostUsd);
 
+  const runAcceptedProjectionFixture = (result: unknown) =>
+    runCanonicalProviderEvaluationOffline(source, {
+      kind: "deterministic_fake_provider",
+      async countInput() { return 800; },
+      async generate() {
+        return {
+          status: "completed" as const,
+          outputText: JSON.stringify(result),
+          usage: { inputTokens: 800, outputTokens: 700, totalTokens: 1500 },
+        };
+      },
+    });
+  const mixedImperative = structuredClone(fakeComplete);
+  const imperativeCandidate = baseItem(
+    "evaluation_imperative_rejected",
+    "option",
+    "Choose this option immediately.",
+  );
+  mixedImperative.candidate_material?.items.push(imperativeCandidate);
+  const rejectedAnnotationConcept = mixedImperative.evaluation_annotations.scenario[0]?.concept_id;
+  if (mixedImperative.evaluation_annotations.scenario[0]) {
+    mixedImperative.evaluation_annotations.scenario[0] = {
+      ...mixedImperative.evaluation_annotations.scenario[0],
+      evidence_kind: "candidate_material",
+      candidate_ids: [imperativeCandidate.candidate_id],
+      source_refs: [imperativeCandidate.provenance.source_ref],
+    };
+  }
+  const mixedImperativeOffline = await runAcceptedProjectionFixture(mixedImperative);
+  const imperativeLedger = mixedImperativeOffline.status === "completed"
+    ? mixedImperativeOffline.acceptance?.ledger.find(
+        (entry) => entry.candidate_id === imperativeCandidate.candidate_id)
+    : undefined;
+  add("mixed-imperative-outer-result-survives", mixedImperativeOffline.status === "completed");
+  add("mixed-imperative-item-rejected", imperativeLedger?.disposition ===
+    "rejected_unsupported_authority" && imperativeLedger.reason ===
+      "imperative_instruction_forbidden");
+  add("mixed-imperative-valid-items-preserved", mixedImperativeOffline.status === "completed" &&
+    mixedImperativeOffline.candidateMaterial?.items.some(
+      (item) => item.candidate_id === "evaluation_option_1") === true &&
+    !mixedImperativeOffline.candidateMaterial.items.some(
+      (item) => item.candidate_id === imperativeCandidate.candidate_id));
+  add("mixed-imperative-no-silent-loss", mixedImperativeOffline.status === "completed" &&
+    mixedImperativeOffline.acceptance?.silent_drop_count === 0 &&
+    mixedImperativeOffline.acceptance.ledger.length ===
+      mixedImperativeOffline.acceptance.observed_candidate_count);
+  add("mixed-imperative-dependent-annotation-pruned", mixedImperativeOffline.status === "completed" &&
+    mixedImperativeOffline.acceptedProjection.annotationProjection.prunedAnnotationCount >= 1 &&
+    !mixedImperativeOffline.evaluationResult.evaluation_annotations.scenario.some(
+      (annotation) => annotation.candidate_ids.includes(imperativeCandidate.candidate_id)));
+  add("mixed-imperative-rejected-material-no-matcher-credit",
+    mixedImperativeOffline.status === "completed" && rejectedAnnotationConcept !== undefined &&
+    mixedImperativeOffline.oracleMatch.categories.scenario.missing.includes(
+      rejectedAnnotationConcept));
+  add("mixed-imperative-content-not-in-accepted-projection",
+    mixedImperativeOffline.status === "completed" &&
+    !JSON.stringify(mixedImperativeOffline.acceptedProjection).includes(
+      imperativeCandidate.content));
+
+  const mixedRecommendation = structuredClone(fakeComplete);
+  const recommendationCandidate = baseItem(
+    "evaluation_recommendation_rejected", "option", "I recommend the best option.",
+  );
+  mixedRecommendation.candidate_material?.items.push(recommendationCandidate);
+  const mixedRecommendationOffline = await runAcceptedProjectionFixture(mixedRecommendation);
+  add("mixed-direct-recommendation-rejected", mixedRecommendationOffline.status === "completed" &&
+    mixedRecommendationOffline.acceptance?.ledger.some((entry) =>
+      entry.candidate_id === recommendationCandidate.candidate_id &&
+      entry.disposition === "rejected_unsupported_authority" &&
+      entry.reason === "direct_recommendation_forbidden"));
+
+  const mixedCertainty = structuredClone(fakeComplete);
+  const certaintyCandidate = baseItem(
+    "evaluation_certainty_rejected", "risk_signal", "This outcome is guaranteed.",
+  );
+  mixedCertainty.candidate_material?.items.push(certaintyCandidate);
+  const mixedCertaintyOffline = await runAcceptedProjectionFixture(mixedCertainty);
+  add("mixed-unsupported-certainty-rejected", mixedCertaintyOffline.status === "completed" &&
+    mixedCertaintyOffline.acceptance?.ledger.some((entry) =>
+      entry.candidate_id === certaintyCandidate.candidate_id &&
+      entry.disposition === "rejected_unsupported_authority" &&
+      entry.reason === "unsupported_certainty_forbidden"));
+
+  const normalizationAndDuplicate = structuredClone(fakeComplete);
+  const normalizedCandidate = baseItem(
+    "evaluation_normalized_candidate", "unknown", "  A bounded unknown remains open.  ",
+  );
+  const projectionDuplicateCandidate = baseItem(
+    "evaluation_duplicate_candidate", "unknown", "A bounded unknown remains open.",
+  );
+  normalizationAndDuplicate.candidate_material?.items.push(
+    normalizedCandidate,
+    projectionDuplicateCandidate,
+  );
+  const normalizationAndDuplicateOffline = await runAcceptedProjectionFixture(
+    normalizationAndDuplicate,
+  );
+  add("accepted-projection-normalization-and-merge-deterministic",
+    normalizationAndDuplicateOffline.status === "completed" &&
+    normalizationAndDuplicateOffline.acceptance?.ledger.some((entry) =>
+      entry.candidate_id === normalizedCandidate.candidate_id &&
+      entry.disposition === "accepted_with_normalization") &&
+    normalizationAndDuplicateOffline.acceptance.ledger.some((entry) =>
+      entry.candidate_id === projectionDuplicateCandidate.candidate_id &&
+      entry.disposition === "merged_as_duplicate" &&
+      entry.normalized_or_merged_item_id === normalizedCandidate.candidate_id));
+
+  const structurallyIncompatible = structuredClone(fakeComplete) as unknown as Record<string, unknown>;
+  structurallyIncompatible.evaluation_contract_version = "incompatible-result-version";
+  const structurallyIncompatibleOffline = await runAcceptedProjectionFixture(
+    structurallyIncompatible,
+  );
+  add("incompatible-top-level-contract-remains-hard-failure",
+    structurallyIncompatibleOffline.status === "blocked" &&
+    structurallyIncompatibleOffline.category === "evaluation_result_contract_invalid");
+
+  const excessiveItems = structuredClone(fakeComplete);
+  if (excessiveItems.candidate_material) {
+    excessiveItems.candidate_material.items = Array.from({ length: 65 }, (_, index) =>
+      baseItem(
+        `evaluation_excessive_${index + 1}`,
+        "context_factor",
+        `Bounded excessive candidate ${index + 1}.`,
+      ));
+  }
+  const excessiveItemsOffline = await runAcceptedProjectionFixture(excessiveItems);
+  add("excessive-item-count-remains-hard-failure", excessiveItemsOffline.status === "blocked" &&
+    excessiveItemsOffline.category === "evaluation_result_contract_invalid" &&
+    excessiveItemsOffline.preMatcherDiagnostic?.issues[0]?.code ===
+      "candidate_item_count_exceeded");
+
+  const allRejected = structuredClone(fakeComplete);
+  if (allRejected.candidate_material) allRejected.candidate_material.items = [imperativeCandidate];
+  const allRejectedOffline = await runAcceptedProjectionFixture(allRejected);
+  add("all-rejected-uses-existing-empty-material-semantics", allRejectedOffline.status === "completed" &&
+    allRejectedOffline.candidateMaterial?.items.length === 0 &&
+    allRejectedOffline.acceptance?.observed_candidate_count === 1 &&
+    allRejectedOffline.acceptance.ledger.length === 1 &&
+    allRejectedOffline.acceptance.silent_drop_count === 0 &&
+    !allRejectedOffline.oracleMatch.passed);
+
   const offlineAnnotationInvalid = await runCanonicalProviderEvaluationOffline(source, {
     kind: "deterministic_fake_provider",
     async countInput() { return 800; },
@@ -822,13 +963,15 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
       };
     },
   });
-  add("annotation-diagnostic-propagates", offlineAnnotationInvalid.status === "blocked" &&
-    offlineAnnotationInvalid.category === "evaluation_annotation_invalid" &&
-    offlineAnnotationInvalid.annotationDiagnostic?.reason === "risk_candidate_type_incompatible");
-  add("annotation-diagnostic-excludes-raw-output", offlineAnnotationInvalid.status === "blocked" &&
-    !JSON.stringify(offlineAnnotationInvalid.annotationDiagnostic).includes(
+  add("annotation-invalid-pruned-before-matcher", offlineAnnotationInvalid.status === "completed" &&
+    offlineAnnotationInvalid.acceptedProjection.annotationProjection.prunedAnnotationCount >= 1 &&
+    !offlineAnnotationInvalid.evaluationResult.evaluation_annotations.risk.some(
+      (annotation) => annotation.candidate_ids.includes("evaluation_option_1")));
+  add("annotation-projection-excludes-raw-output", offlineAnnotationInvalid.status === "completed" &&
+    !JSON.stringify(offlineAnnotationInvalid.acceptedProjection.annotationProjection).includes(
       riskTypeMismatch.candidate_material?.items[0].content ?? "candidate-content-sentinel",
-    ) && !JSON.stringify(offlineAnnotationInvalid.annotationDiagnostic).includes("reasoning"));
+    ) && !JSON.stringify(offlineAnnotationInvalid.acceptedProjection.annotationProjection).includes(
+      "reasoning"));
 
   const candidateGroundingFailure = structuredClone(fakeComplete);
   if (candidateGroundingFailure.candidate_material) {
@@ -845,12 +988,13 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
       };
     },
   });
-  add("candidate-grounding-field-diagnostic-propagates",
-    offlineCandidateGrounding.status === "blocked" &&
-    offlineCandidateGrounding.category === "candidate_grounding_invalid" &&
-    offlineCandidateGrounding.preMatcherDiagnostic?.issues[0]?.code ===
-      "option_refs_must_be_empty" &&
-    offlineCandidateGrounding.preMatcherDiagnostic.issues[0].path.endsWith("option_refs"));
+  add("candidate-invalid-reference-rejected-before-grounding",
+    offlineCandidateGrounding.status === "completed" &&
+    offlineCandidateGrounding.acceptance?.ledger.some((entry) =>
+      entry.candidate_id === "evaluation_option_1" &&
+      entry.disposition === "rejected_invalid" && entry.reason === "invalid_reference") &&
+    !offlineCandidateGrounding.candidateMaterial?.items.some(
+      (item) => item.candidate_id === "evaluation_option_1"));
 
   const offlineResultContract = await runCanonicalProviderEvaluationOffline(source, {
     kind: "deterministic_fake_provider",
@@ -863,11 +1007,11 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
       };
     },
   });
-  add("result-contract-field-diagnostic-propagates",
-    offlineResultContract.status === "blocked" &&
-    offlineResultContract.category === "evaluation_result_contract_invalid" &&
-    offlineResultContract.preMatcherDiagnostic?.issues[0]?.code ===
-      "candidate_content_whitespace_only");
+  add("item-schema-defect-rejected-without-result-hard-fail",
+    offlineResultContract.status === "completed" &&
+    offlineResultContract.acceptance?.ledger.some((entry) =>
+      entry.candidate_id === "evaluation_option_1" &&
+      entry.disposition === "rejected_invalid" && entry.reason === "schema_invalid"));
 
   const offlineAnnotationGrounding = await runCanonicalProviderEvaluationOffline(source, {
     kind: "deterministic_fake_provider",
@@ -880,11 +1024,11 @@ export async function runCanonicalProviderEvaluationBoundaryValidation(): Promis
       };
     },
   });
-  add("annotation-grounding-field-diagnostic-propagates",
-    offlineAnnotationGrounding.status === "blocked" &&
-    offlineAnnotationGrounding.category === "evaluation_annotation_grounding_invalid" &&
-    offlineAnnotationGrounding.preMatcherDiagnostic?.issues[0]?.code ===
-      "annotation_source_ref_not_in_selected_candidate_provenance");
+  add("annotation-grounding-defect-pruned-before-matcher",
+    offlineAnnotationGrounding.status === "completed" &&
+    offlineAnnotationGrounding.acceptedProjection.annotationProjection.prunedAnnotationCount >= 1 &&
+    !offlineAnnotationGrounding.evaluationResult.evaluation_annotations.risk.some(
+      (annotation) => annotation.source_refs.includes("fact_1")));
   add("pre-matcher-diagnostics-exclude-natural-language-content", [
     offlineCandidateGrounding,
     offlineResultContract,

@@ -3,11 +3,6 @@ import "server-only";
 import { createHash } from "node:crypto";
 
 import {
-  acceptCandidateDecisionMaterial,
-  candidateDecisionMaterialHasValidContract,
-  inspectCandidateDecisionMaterialContract,
-} from "../ai-decision-material/acceptance";
-import {
   CANONICAL_PROVIDER_EVALUATION_ORACLE_KEYS,
   compileCanonicalProviderEvaluationInput,
   extractCanonicalProviderEvaluationOracle,
@@ -27,9 +22,10 @@ import {
   CANONICAL_PROVIDER_EVALUATION_RESULT_SCHEMA,
   CANONICAL_PROVIDER_EVALUATION_SCHEMA_NAME,
   CANONICAL_PROVIDER_EFFECTIVE_CONTRACT_INSTRUCTIONS,
+  buildCanonicalAcceptedEvaluationProjection,
   inspectCanonicalProviderCandidateGrounding,
   matchCanonicalProviderEvaluationOracle,
-  validateCanonicalProviderEvaluationResult,
+  type CanonicalAcceptedEvaluationProjection,
   type CanonicalProviderEvaluationOracleMatch,
   type CanonicalProviderAnnotationInvalidDiagnostic,
   type CanonicalProviderEvaluationResultV1,
@@ -251,6 +247,7 @@ export type CanonicalProviderEvaluationOfflineResult =
       evaluationResult: CanonicalProviderEvaluationResultV1;
       candidateMaterial: CandidateDecisionMaterial | null;
       acceptance: DecisionMaterialAcceptanceResult | null;
+      acceptedProjection: CanonicalAcceptedEvaluationProjection;
       oracle: CanonicalProviderEvaluationOracle;
       oracleMatch: CanonicalProviderEvaluationOracleMatch;
       usage: {
@@ -275,6 +272,7 @@ export type CanonicalProviderEvaluationOfflineResult =
         fakeTransportOperations: 2;
         networkOperations: 0;
         existingAcceptanceBoundaryUsed: true;
+        acceptedProjectionUsed: true;
         oracleReadAfterProviderResult: true;
       };
     }
@@ -489,25 +487,29 @@ export async function runCanonicalProviderEvaluationOffline(
   } catch {
     return blocked("evaluation_result_contract_invalid", fakeTransportOperations);
   }
-  const validatedResult = validateCanonicalProviderEvaluationResult(
+  const projectedResult = buildCanonicalAcceptedEvaluationProjection(
     rawResult,
     built.request.compiledInput,
+    {
+      allowed_option_refs: [],
+      allowed_scenario_refs: [],
+      allowed_criterion_refs: [],
+      contradictory_candidate_ids: [],
+      irrelevant_candidate_ids: [],
+    },
   );
-  if (validatedResult.status === "invalid") {
+  if (projectedResult.status === "invalid") {
     return blocked(
-      validatedResult.category,
+      projectedResult.category,
       fakeTransportOperations,
-      validatedResult.annotationDiagnostic,
-      validatedResult.preMatcherDiagnostic,
+      projectedResult.annotationDiagnostic,
+      projectedResult.preMatcherDiagnostic,
     );
   }
-  const candidate = validatedResult.result.candidate_material;
+  const acceptedProjection = projectedResult.projection;
+  const acceptedResult = acceptedProjection.acceptedResult;
+  const candidate = acceptedResult.candidate_material;
   if (candidate !== null) {
-    if (!candidateDecisionMaterialHasValidContract(candidate)) {
-      return blocked("candidate_contract_invalid", fakeTransportOperations);
-    }
-    const inspection = inspectCandidateDecisionMaterialContract(candidate);
-    if (!inspection.safetyValid) return blocked("candidate_safety_invalid", fakeTransportOperations);
     const grounding = inspectCanonicalProviderCandidateGrounding(
       candidate,
       built.request.compiledInput,
@@ -546,19 +548,17 @@ export async function runCanonicalProviderEvaluationOffline(
   if (costEvidence.conservativeUncachedCostUsd > CANONICAL_PROVIDER_EVALUATION_LIMITS.maxCostUsd) {
     return blocked("cost_limit_exceeded", fakeTransportOperations);
   }
-  const acceptance = candidate === null ? null : acceptCandidateDecisionMaterial(candidate, {
-    allowed_option_refs: [], allowed_scenario_refs: [], allowed_criterion_refs: [],
-    contradictory_candidate_ids: [], irrelevant_candidate_ids: [],
-  });
+  const acceptance = acceptedProjection.acceptance;
   const oracle = extractCanonicalProviderEvaluationOracle(canonicalCase);
   if (!oracle) return blocked("canonical_case_invalid", fakeTransportOperations);
-  const oracleMatch = matchCanonicalProviderEvaluationOracle(validatedResult.result, oracle);
+  const oracleMatch = matchCanonicalProviderEvaluationOracle(acceptedResult, oracle);
   return {
     status: "completed",
     sourceCaseId: built.request.sourceCaseId,
-    evaluationResult: validatedResult.result,
+    evaluationResult: acceptedResult,
     candidateMaterial: candidate,
     acceptance,
+    acceptedProjection,
     oracle,
     oracleMatch,
     usage: {
@@ -582,6 +582,7 @@ export async function runCanonicalProviderEvaluationOffline(
       fakeTransportOperations: 2,
       networkOperations: 0,
       existingAcceptanceBoundaryUsed: true,
+      acceptedProjectionUsed: true,
       oracleReadAfterProviderResult: true,
     },
   };

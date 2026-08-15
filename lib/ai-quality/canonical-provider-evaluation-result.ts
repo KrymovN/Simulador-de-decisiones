@@ -1,13 +1,18 @@
 import "server-only";
 
 import {
+  acceptCandidateDecisionMaterial,
   candidateDecisionMaterialHasValidContract,
   inspectCandidateDecisionMaterialContract,
 } from "../ai-decision-material/acceptance";
-import type {
-  CandidateDecisionMaterial,
-  CandidateDecisionMaterialItem,
-  DecisionMaterialItemType,
+import {
+  CANDIDATE_DECISION_MATERIAL_CAPABILITY,
+  CANDIDATE_DECISION_MATERIAL_CONTRACT_VERSION,
+  type CandidateDecisionMaterial,
+  type CandidateDecisionMaterialItem,
+  type DecisionMaterialAcceptanceContext,
+  type DecisionMaterialAcceptanceResult,
+  type DecisionMaterialItemType,
 } from "../ai-decision-material/contracts";
 import type { CanonicalProviderEvaluationInputV1 } from
   "../ai-decision-material/canonical-provider-evaluation-input";
@@ -204,6 +209,38 @@ export type CanonicalProviderEvaluationResultValidation =
       annotationDiagnostic?: CanonicalProviderAnnotationInvalidDiagnostic;
       preMatcherDiagnostic?: CanonicalProviderPreMatcherDiagnostic;
     };
+
+export const CANONICAL_ACCEPTED_EVALUATION_PROJECTION_VERSION =
+  "canonical-accepted-evaluation-projection.1" as const;
+
+export type CanonicalAcceptedEvaluationProjection = {
+  version: typeof CANONICAL_ACCEPTED_EVALUATION_PROJECTION_VERSION;
+  sourceResult: {
+    evaluationContractVersion: typeof CANONICAL_PROVIDER_EVALUATION_RESULT_VERSION;
+    candidateMaterialPresent: boolean;
+    observedCandidateCount: number;
+    outcome: CanonicalProviderEvaluationResultV1["outcome"];
+  };
+  acceptance: DecisionMaterialAcceptanceResult | null;
+  annotationProjection: {
+    rejectedCandidateIds: string[];
+    mergedCandidateIds: string[];
+    prunedAnnotationCount: number;
+    rewrittenAnnotationCount: number;
+    removedCandidateReferenceCount: number;
+    removedSourceReferenceCount: number;
+  };
+  acceptedResult: CanonicalProviderEvaluationResultV1;
+};
+
+export type CanonicalAcceptedEvaluationProjectionEvidence = Omit<
+  CanonicalAcceptedEvaluationProjection,
+  "acceptedResult"
+>;
+
+export type CanonicalAcceptedEvaluationProjectionValidation =
+  | { status: "valid"; projection: CanonicalAcceptedEvaluationProjection }
+  | Extract<CanonicalProviderEvaluationResultValidation, { status: "invalid" }>;
 
 export type CanonicalProviderEvaluationOracleMatch = {
   passed: boolean;
@@ -987,6 +1024,275 @@ export function validateCanonicalProviderEvaluationResult(
   }
 
   return { status: "valid", result: value as CanonicalProviderEvaluationResultV1 };
+}
+
+function structurallyValidateCanonicalProviderEvaluationResult(
+  value: unknown,
+): Extract<CanonicalProviderEvaluationResultValidation, { status: "invalid" }> | null {
+  if (!record(value) || !exactKeys(value, [
+    "evaluation_contract_version",
+    "candidate_material",
+    "evaluation_annotations",
+    "outcome",
+  ]) || value.evaluation_contract_version !== CANONICAL_PROVIDER_EVALUATION_RESULT_VERSION) {
+    return {
+      status: "invalid",
+      category: "evaluation_result_contract_invalid",
+      preMatcherDiagnostic: evaluationResultContractDiagnostic(value),
+    };
+  }
+  const candidateMaterial = value.candidate_material;
+  if (candidateMaterial !== null) {
+    if (!record(candidateMaterial) || !exactKeys(candidateMaterial, CANDIDATE_MATERIAL_KEYS) ||
+      !Array.isArray(candidateMaterial.items)) {
+      return {
+        status: "invalid",
+        category: "evaluation_result_contract_invalid",
+        preMatcherDiagnostic: candidateContractDiagnostic(candidateMaterial),
+      };
+    }
+    if (
+      candidateMaterial.capability !== CANDIDATE_DECISION_MATERIAL_CAPABILITY ||
+      candidateMaterial.contract_version !== CANDIDATE_DECISION_MATERIAL_CONTRACT_VERSION ||
+      candidateMaterial.generation_status !== "completed" ||
+      candidateMaterial.classification !== "synthetic_non_personal" ||
+      candidateMaterial.items.length > 64
+    ) {
+      return {
+        status: "invalid",
+        category: "evaluation_result_contract_invalid",
+        preMatcherDiagnostic: candidateContractDiagnostic(candidateMaterial),
+      };
+    }
+  }
+  if (!record(value.outcome) || !outcomeIsValid(
+    value.outcome,
+    candidateMaterial as CandidateDecisionMaterial | null,
+  )) {
+    return {
+      status: "invalid",
+      category: "evaluation_outcome_invalid",
+      preMatcherDiagnostic: outcomeDiagnostic(
+        value.outcome,
+        candidateMaterial as CandidateDecisionMaterial | null,
+      ),
+    };
+  }
+  if (!record(value.evaluation_annotations) || !exactKeys(
+    value.evaluation_annotations,
+    CANONICAL_PROVIDER_EVALUATION_CATEGORIES,
+  )) return annotationInvalid("evaluation_annotations_object_invalid") as Extract<
+    CanonicalProviderEvaluationResultValidation,
+    { status: "invalid" }
+  >;
+  for (const category of CANONICAL_PROVIDER_EVALUATION_CATEGORIES) {
+    if (!Array.isArray(value.evaluation_annotations[category])) {
+      return annotationInvalid("annotation_category_not_array", category) as Extract<
+        CanonicalProviderEvaluationResultValidation,
+        { status: "invalid" }
+      >;
+    }
+  }
+  return null;
+}
+
+function acceptedCandidateProjection(
+  acceptance: DecisionMaterialAcceptanceResult,
+): Map<string, string | null> {
+  return new Map(acceptance.ledger.map((entry) => {
+    if (entry.disposition === "merged_as_duplicate") {
+      return [entry.candidate_id, entry.normalized_or_merged_item_id ?? null];
+    }
+    if (entry.disposition === "accepted" || entry.disposition === "accepted_with_normalization") {
+      return [entry.candidate_id, entry.candidate_id];
+    }
+    return [entry.candidate_id, null];
+  }));
+}
+
+function projectAnnotationsToAcceptedCandidates(
+  annotationsValue: Record<string, unknown>,
+  acceptance: DecisionMaterialAcceptanceResult | null,
+): {
+  annotations: Record<string, unknown[]>;
+  prunedAnnotationCount: number;
+  rewrittenAnnotationCount: number;
+  removedCandidateReferenceCount: number;
+  removedSourceReferenceCount: number;
+} {
+  if (acceptance === null) {
+    return {
+      annotations: Object.fromEntries(CANONICAL_PROVIDER_EVALUATION_CATEGORIES.map(
+        (category) => [category, structuredClone(annotationsValue[category]) as unknown[]],
+      )),
+      prunedAnnotationCount: 0,
+      rewrittenAnnotationCount: 0,
+      removedCandidateReferenceCount: 0,
+      removedSourceReferenceCount: 0,
+    };
+  }
+  const candidateProjection = acceptedCandidateProjection(acceptance);
+  const acceptedById = new Map(
+    acceptance.accepted_material.items.map((item) => [item.candidate_id, item]),
+  );
+  let prunedAnnotationCount = 0;
+  let rewrittenAnnotationCount = 0;
+  let removedCandidateReferenceCount = 0;
+  let removedSourceReferenceCount = 0;
+  const annotations = Object.fromEntries(CANONICAL_PROVIDER_EVALUATION_CATEGORIES.map(
+    (category) => [category, (annotationsValue[category] as unknown[]).flatMap((value) => {
+      if (!record(value) || value.evidence_kind !== "candidate_material" ||
+        !Array.isArray(value.candidate_ids) || !Array.isArray(value.source_refs) ||
+        !value.candidate_ids.every((item) => typeof item === "string") ||
+        !value.source_refs.every((item) => typeof item === "string")) {
+        return [structuredClone(value)];
+      }
+      const projectedCandidateIds = [...new Set(value.candidate_ids.flatMap((candidateId) => {
+        const projected = candidateProjection.get(candidateId);
+        return projected === undefined || projected === null ? [] : [projected];
+      }))];
+      removedCandidateReferenceCount += value.candidate_ids.length - projectedCandidateIds.length;
+      const acceptedSourceRefs = new Set(projectedCandidateIds.map(
+        (candidateId) => acceptedById.get(candidateId)?.provenance.source_ref,
+      ).filter((sourceRef): sourceRef is string => sourceRef !== undefined));
+      const projectedSourceRefs = [...new Set(value.source_refs.filter(
+        (sourceRef) => acceptedSourceRefs.has(sourceRef),
+      ))];
+      removedSourceReferenceCount += value.source_refs.length - projectedSourceRefs.length;
+      if (projectedCandidateIds.length === 0 || projectedSourceRefs.length === 0) {
+        prunedAnnotationCount += 1;
+        return [];
+      }
+      if (projectedCandidateIds.length !== value.candidate_ids.length ||
+        projectedSourceRefs.length !== value.source_refs.length ||
+        projectedCandidateIds.some((candidateId, index) => candidateId !== value.candidate_ids[index]) ||
+        projectedSourceRefs.some((sourceRef, index) => sourceRef !== value.source_refs[index])) {
+        rewrittenAnnotationCount += 1;
+      }
+      return [{
+        ...structuredClone(value),
+        candidate_ids: projectedCandidateIds,
+        source_refs: projectedSourceRefs,
+      }];
+    })],
+  ));
+  return {
+    annotations,
+    prunedAnnotationCount,
+    rewrittenAnnotationCount,
+    removedCandidateReferenceCount,
+    removedSourceReferenceCount,
+  };
+}
+
+function removableAnnotationLocation(
+  validation: Extract<CanonicalProviderEvaluationResultValidation, { status: "invalid" }>,
+  annotations: Record<string, unknown[]>,
+): { category: CanonicalProviderEvaluationCategory; index: number } | null {
+  const issue = validation.preMatcherDiagnostic?.issues[0];
+  if (issue?.annotationCategory !== null && issue?.annotationIndex !== null &&
+    issue?.annotationCategory !== undefined && issue?.annotationIndex !== undefined) {
+    return { category: issue.annotationCategory, index: issue.annotationIndex };
+  }
+  const diagnostic = validation.annotationDiagnostic;
+  if (diagnostic?.annotationCategory === null || diagnostic?.annotationCategory === undefined ||
+    diagnostic.conceptId === null) return null;
+  const index = annotations[diagnostic.annotationCategory].findIndex(
+    (annotation) => record(annotation) && annotation.concept_id === diagnostic.conceptId,
+  );
+  return index < 0 ? null : { category: diagnostic.annotationCategory, index };
+}
+
+export function buildCanonicalAcceptedEvaluationProjection(
+  value: unknown,
+  input: CanonicalProviderEvaluationInputV1,
+  acceptanceContext: DecisionMaterialAcceptanceContext,
+): CanonicalAcceptedEvaluationProjectionValidation {
+  const structuralFailure = structurallyValidateCanonicalProviderEvaluationResult(value);
+  if (structuralFailure !== null) return structuralFailure;
+  const structuredResult = value as Record<string, unknown>;
+  const sourceCandidateMaterial = structuredResult.candidate_material;
+  const acceptance = sourceCandidateMaterial === null
+    ? null
+    : acceptCandidateDecisionMaterial(sourceCandidateMaterial, acceptanceContext);
+  if (acceptance?.status === "controlled_failure") {
+    return {
+      status: "invalid",
+      category: "evaluation_result_contract_invalid",
+      preMatcherDiagnostic: candidateContractDiagnostic(sourceCandidateMaterial),
+    };
+  }
+  const acceptedCandidateMaterial: CandidateDecisionMaterial | null = acceptance === null
+    ? null
+    : {
+        capability: CANDIDATE_DECISION_MATERIAL_CAPABILITY,
+        contract_version: CANDIDATE_DECISION_MATERIAL_CONTRACT_VERSION,
+        generation_status: "completed",
+        classification: "synthetic_non_personal",
+        items: structuredClone(acceptance.accepted_material.items),
+      };
+  const annotationProjection = projectAnnotationsToAcceptedCandidates(
+    structuredResult.evaluation_annotations as Record<string, unknown>,
+    acceptance,
+  );
+  const projectedAnnotations = annotationProjection.annotations;
+  const maximumValidationPasses = CANONICAL_PROVIDER_EVALUATION_CATEGORIES.reduce(
+    (total, category) => total + projectedAnnotations[category].length,
+    1,
+  );
+  let additionalPrunedAnnotations = 0;
+  for (let pass = 0; pass < maximumValidationPasses; pass += 1) {
+    const acceptedResult = {
+      evaluation_contract_version: CANONICAL_PROVIDER_EVALUATION_RESULT_VERSION,
+      candidate_material: acceptedCandidateMaterial,
+      evaluation_annotations: projectedAnnotations,
+      outcome: structuredClone(structuredResult.outcome),
+    };
+    const validation = validateCanonicalProviderEvaluationResult(acceptedResult, input);
+    if (validation.status === "valid") {
+      const rejectedCandidateIds = acceptance?.ledger.filter((entry) =>
+        entry.disposition.startsWith("rejected") || entry.disposition === "controlled_failure"
+      ).map((entry) => entry.candidate_id) ?? [];
+      const mergedCandidateIds = acceptance?.ledger.filter(
+        (entry) => entry.disposition === "merged_as_duplicate",
+      ).map((entry) => entry.candidate_id) ?? [];
+      return {
+        status: "valid",
+        projection: {
+          version: CANONICAL_ACCEPTED_EVALUATION_PROJECTION_VERSION,
+          sourceResult: {
+            evaluationContractVersion: CANONICAL_PROVIDER_EVALUATION_RESULT_VERSION,
+            candidateMaterialPresent: sourceCandidateMaterial !== null,
+            observedCandidateCount: acceptance?.observed_candidate_count ?? 0,
+            outcome: structuredClone(validation.result.outcome),
+          },
+          acceptance,
+          annotationProjection: {
+            rejectedCandidateIds,
+            mergedCandidateIds,
+            prunedAnnotationCount: annotationProjection.prunedAnnotationCount +
+              additionalPrunedAnnotations,
+            rewrittenAnnotationCount: annotationProjection.rewrittenAnnotationCount,
+            removedCandidateReferenceCount:
+              annotationProjection.removedCandidateReferenceCount,
+            removedSourceReferenceCount: annotationProjection.removedSourceReferenceCount,
+          },
+          acceptedResult: validation.result,
+        },
+      };
+    }
+    if (validation.category !== "evaluation_annotation_invalid" &&
+      validation.category !== "evaluation_annotation_grounding_invalid") return validation;
+    const location = removableAnnotationLocation(validation, projectedAnnotations);
+    if (location === null || location.index < 0 ||
+      location.index >= projectedAnnotations[location.category].length) return validation;
+    projectedAnnotations[location.category].splice(location.index, 1);
+    additionalPrunedAnnotations += 1;
+  }
+  return annotationInvalid("evaluation_annotations_object_invalid") as Extract<
+    CanonicalProviderEvaluationResultValidation,
+    { status: "invalid" }
+  >;
 }
 
 function sorted(values: readonly string[]): string[] {

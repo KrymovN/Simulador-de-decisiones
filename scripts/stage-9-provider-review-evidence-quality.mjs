@@ -532,6 +532,58 @@ const blindPacket = campaignEvidence.buildCanonicalProviderBlindReviewPacket(cap
 add("blind-review-packet-excludes-oracle-and-matcher", blindPacket.oracleIncluded === false &&
   blindPacket.matcherIncluded === false && !Object.hasOwn(blindPacket, "automatedEvidence") &&
   !JSON.stringify(blindPacket).includes("expected_risk_behavior"));
+const mixedReviewResult = fakeEvaluationResult(source);
+const rejectedImperative = baseItem(
+  "evaluation_review_imperative_rejected",
+  "option",
+  "Choose this option immediately.",
+);
+mixedReviewResult.candidate_material.items.push(rejectedImperative);
+if (mixedReviewResult.evaluation_annotations.scenario[0]) {
+  mixedReviewResult.evaluation_annotations.scenario[0] = {
+    ...mixedReviewResult.evaluation_annotations.scenario[0],
+    evidence_kind: "candidate_material",
+    candidate_ids: [rejectedImperative.candidate_id],
+    source_refs: [rejectedImperative.provenance.source_ref],
+  };
+}
+const mixedCaptured = campaignEvidence.captureCanonicalProviderExecutionEvidence({
+  campaignId: "campaign-test-mixed-projection",
+  executionId: "execution-test-mixed-projection",
+  position: 2,
+  sourceCase: source,
+  providerConfiguration: captured.record.providerConfiguration,
+  result: mixedReviewResult,
+  operationalEvidence: captured.record.operationalEvidence,
+  approvedCostBudgetPassed: true,
+});
+add("mixed-evidence-captures-full-acceptance-ledger", mixedCaptured.status === "captured" &&
+  mixedCaptured.record.acceptedProjection?.acceptance?.ledger.length ===
+    mixedCaptured.record.acceptedProjection?.sourceResult.observedCandidateCount &&
+  mixedCaptured.record.acceptedProjection?.acceptance?.silent_drop_count === 0 &&
+  mixedCaptured.record.acceptedProjection.annotationProjection.rejectedCandidateIds.includes(
+    rejectedImperative.candidate_id));
+add("mixed-evidence-persists-rejection-metadata-not-content", mixedCaptured.status === "captured" &&
+  mixedCaptured.record.acceptedProjection?.acceptance?.ledger.some((entry) =>
+    entry.candidate_id === rejectedImperative.candidate_id &&
+    entry.disposition === "rejected_unsupported_authority" &&
+    entry.reason === "imperative_instruction_forbidden") &&
+  !JSON.stringify(mixedCaptured.record).includes(rejectedImperative.content));
+const mixedBlindPacket = mixedCaptured.status === "captured"
+  ? campaignEvidence.buildCanonicalProviderBlindReviewPacket(mixedCaptured.record)
+  : null;
+add("mixed-blind-review-uses-accepted-projection", mixedBlindPacket !== null &&
+  !mixedBlindPacket.validatedResult.candidate_material.items.some(
+    (item) => item.candidate_id === rejectedImperative.candidate_id) &&
+  !JSON.stringify(mixedBlindPacket).includes(rejectedImperative.content) &&
+  mixedBlindPacket.validatedResult.candidate_material.items.some(
+    (item) => item.candidate_id === "evaluation_option_1"));
+const mixedReviewability = mixedBlindPacket === null
+  ? null
+  : projectReviewability(mixedBlindPacket.validatedResult);
+add("reviewability-operates-on-sanitized-mixed-projection", mixedReviewability !== null &&
+  mixedReviewability.provider_privacy_semantic_quality.reviewable === true &&
+  mixedReviewability.scenario_usefulness_distinctness.reviewable === true);
 const capturedFailure = campaignEvidence.captureCanonicalProviderFailureEvidence({
   campaignId: "campaign-test-failure",
   executionId: "execution-test-failure",

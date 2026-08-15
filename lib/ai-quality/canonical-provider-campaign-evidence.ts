@@ -2,7 +2,6 @@ import "server-only";
 
 import { createHash } from "node:crypto";
 import {
-  acceptCandidateDecisionMaterial,
   inspectCandidateDecisionMaterialContract,
 } from "../ai-decision-material/acceptance";
 import {
@@ -17,9 +16,13 @@ import {
   type CanonicalProviderEvaluationProfile,
 } from "./canonical-provider-evaluation";
 import {
+  CANONICAL_ACCEPTED_EVALUATION_PROJECTION_VERSION,
+  CANONICAL_PROVIDER_EVALUATION_RESULT_VERSION,
+  buildCanonicalAcceptedEvaluationProjection,
   inspectCanonicalProviderCandidateGrounding,
   matchCanonicalProviderEvaluationOracle,
   validateCanonicalProviderEvaluationResult,
+  type CanonicalAcceptedEvaluationProjectionEvidence,
   type CanonicalProviderEvaluationOracleMatch,
   type CanonicalProviderEvaluationResultV1,
 } from "./canonical-provider-evaluation-result";
@@ -104,6 +107,7 @@ export type CanonicalProviderCampaignExecutionRecordV2 = {
   providerConfiguration: CanonicalProviderExecutionConfiguration;
   configurationFingerprint: string;
   validatedResult: CanonicalProviderEvaluationResultV1;
+  acceptedProjection?: CanonicalAcceptedEvaluationProjectionEvidence;
   automatedEvidence: {
     resultContract: "PASS";
     candidateContract: "PASS" | "NOT_APPLICABLE";
@@ -240,7 +244,7 @@ export type CaptureCanonicalProviderExecutionInput = {
   position: number;
   sourceCase: CanonicalOfflineEvaluationCase;
   providerConfiguration: CanonicalProviderExecutionConfiguration;
-  result: CanonicalProviderEvaluationResultV1;
+  result: unknown;
   operationalEvidence: CanonicalProviderExecutionOperationalEvidence;
   approvedCostBudgetPassed: boolean;
 };
@@ -457,12 +461,19 @@ export function captureCanonicalProviderExecutionEvidence(
   }
   const compiled = compileCanonicalProviderEvaluationInput(input.sourceCase);
   if (compiled.status !== "ready") issues.push("canonical_case_invalid");
-  const validated = compiled.status === "ready"
-    ? validateCanonicalProviderEvaluationResult(input.result, compiled.input)
+  const projected = compiled.status === "ready"
+    ? buildCanonicalAcceptedEvaluationProjection(input.result, compiled.input, {
+        allowed_option_refs: [],
+        allowed_scenario_refs: [],
+        allowed_criterion_refs: [],
+        contradictory_candidate_ids: [],
+        irrelevant_candidate_ids: [],
+      })
     : null;
-  if (validated?.status !== "valid") issues.push("provider_result_not_validated");
-  const candidate = validated?.status === "valid"
-    ? validated.result.candidate_material : null;
+  if (projected?.status !== "valid") issues.push("provider_result_not_validated");
+  const acceptedProjection = projected?.status === "valid" ? projected.projection : null;
+  const validatedResult = acceptedProjection?.acceptedResult ?? null;
+  const candidate = validatedResult?.candidate_material ?? null;
   const inspection = candidate === null ? null : inspectCandidateDecisionMaterialContract(candidate);
   if (inspection !== null && (!inspection.schemaValid || !inspection.safetyValid)) {
     issues.push("candidate_contract_or_safety_invalid");
@@ -475,17 +486,11 @@ export function captureCanonicalProviderExecutionEvidence(
     issues.push("operational_evidence_invalid");
   }
   const oracle = extractCanonicalProviderEvaluationOracle(input.sourceCase);
-  if (oracle === null || validated?.status !== "valid") issues.push("oracle_unavailable");
-  if (issues.length > 0 || compiled.status !== "ready" || validated?.status !== "valid" ||
-    oracle === null) return { status: "rejected", issues };
-  const matcher = matchCanonicalProviderEvaluationOracle(validated.result, oracle);
-  const acceptance = candidate === null ? null : acceptCandidateDecisionMaterial(candidate, {
-    allowed_option_refs: [],
-    allowed_scenario_refs: [],
-    allowed_criterion_refs: [],
-    contradictory_candidate_ids: [],
-    irrelevant_candidate_ids: [],
-  });
+  if (oracle === null || acceptedProjection === null) issues.push("oracle_unavailable");
+  if (issues.length > 0 || compiled.status !== "ready" || acceptedProjection === null ||
+    validatedResult === null || oracle === null) return { status: "rejected", issues };
+  const matcher = matchCanonicalProviderEvaluationOracle(validatedResult, oracle);
+  const acceptance = acceptedProjection.acceptance;
   const providerConfiguration = structuredClone(input.providerConfiguration);
   const configurationFingerprint =
     canonicalProviderExecutionConfigurationFingerprint(providerConfiguration) as string;
@@ -500,7 +505,13 @@ export function captureCanonicalProviderExecutionEvidence(
     semanticClusterId: input.sourceCase.provenance.semantic_cluster_id,
     providerConfiguration,
     configurationFingerprint,
-    validatedResult: structuredClone(validated.result),
+    validatedResult: structuredClone(validatedResult),
+    acceptedProjection: {
+      version: acceptedProjection.version,
+      sourceResult: structuredClone(acceptedProjection.sourceResult),
+      acceptance: structuredClone(acceptedProjection.acceptance),
+      annotationProjection: structuredClone(acceptedProjection.annotationProjection),
+    },
     automatedEvidence: {
       resultContract: "PASS" as const,
       candidateContract: candidate === null ? "NOT_APPLICABLE" as const : "PASS" as const,
@@ -675,6 +686,47 @@ function retentionIssues(value: CanonicalProviderCampaignEvidenceV2): string[] {
   return issues;
 }
 
+function acceptedProjectionEvidenceValid(
+  execution: CanonicalProviderCampaignExecutionRecordV2,
+): boolean {
+  const projection = execution.acceptedProjection;
+  if (projection === undefined) return true;
+  if (projection.version !== CANONICAL_ACCEPTED_EVALUATION_PROJECTION_VERSION ||
+    projection.sourceResult.evaluationContractVersion !==
+      CANONICAL_PROVIDER_EVALUATION_RESULT_VERSION ||
+    !Number.isInteger(projection.sourceResult.observedCandidateCount) ||
+    projection.sourceResult.observedCandidateCount < 0) return false;
+  const acceptance = projection.acceptance;
+  if (acceptance === null) {
+    return execution.validatedResult.candidate_material === null &&
+      projection.sourceResult.candidateMaterialPresent === false &&
+      projection.sourceResult.observedCandidateCount === 0;
+  }
+  if (acceptance.status !== "accepted" || acceptance.silent_drop_count !== 0 ||
+    acceptance.raw_provider_material_persisted !== false ||
+    acceptance.observed_candidate_count !== projection.sourceResult.observedCandidateCount ||
+    acceptance.ledger.length !== acceptance.observed_candidate_count ||
+    execution.validatedResult.candidate_material === null ||
+    JSON.stringify(acceptance.accepted_material.items) !==
+      JSON.stringify(execution.validatedResult.candidate_material.items)) return false;
+  const rejectedCandidateIds = acceptance.ledger.filter((entry) =>
+    entry.disposition.startsWith("rejected") || entry.disposition === "controlled_failure"
+  ).map((entry) => entry.candidate_id);
+  const mergedCandidateIds = acceptance.ledger.filter(
+    (entry) => entry.disposition === "merged_as_duplicate",
+  ).map((entry) => entry.candidate_id);
+  const annotationProjection = projection.annotationProjection;
+  return JSON.stringify(rejectedCandidateIds) ===
+      JSON.stringify(annotationProjection.rejectedCandidateIds) &&
+    JSON.stringify(mergedCandidateIds) ===
+      JSON.stringify(annotationProjection.mergedCandidateIds) &&
+    [annotationProjection.prunedAnnotationCount,
+      annotationProjection.rewrittenAnnotationCount,
+      annotationProjection.removedCandidateReferenceCount,
+      annotationProjection.removedSourceReferenceCount].every((value) =>
+      Number.isInteger(value) && value >= 0);
+}
+
 export function validateCanonicalProviderCampaignEvidenceV2(
   value: CanonicalProviderCampaignEvidenceV2,
   cases: readonly CanonicalOfflineEvaluationCase[],
@@ -762,6 +814,11 @@ export function validateCanonicalProviderCampaignEvidenceV2(
         execution.operationalEvidence.status !== "COMPLETED" ||
         !operationalEvidenceValid(execution.operationalEvidence)) {
         issues.push(`persisted_execution_not_validated:${execution.caseId}`);
+      }
+      if (!acceptedProjectionEvidenceValid(
+        execution as CanonicalProviderCampaignExecutionRecordV2,
+      )) {
+        issues.push(`accepted_projection_evidence_invalid:${execution.caseId}`);
       }
     }
   }
