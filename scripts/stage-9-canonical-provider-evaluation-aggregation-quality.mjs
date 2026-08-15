@@ -28,6 +28,18 @@ const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const fixtures = require(join(root, "lib", "ai-decision-material", "fixtures.ts"));
 const taxonomy = require(join(root, "lib", "ai-quality", "canonical-provider-evaluation-taxonomy.ts"));
 const aggregation = require(join(root, "lib", "ai-quality", "canonical-provider-evaluation-aggregation.ts"));
+const failureEvidence = require(join(
+  root,
+  "lib",
+  "ai-quality",
+  "canonical-provider-campaign-failure-evidence.ts",
+));
+const campaignEvidence = require(join(
+  root,
+  "lib",
+  "ai-quality",
+  "canonical-provider-campaign-evidence.ts",
+));
 
 const cases = fixtures.CANONICAL_OFFLINE_EVALUATION_CASES;
 const byId = new Map(cases.map((item) => [item.case_id, item]));
@@ -218,6 +230,11 @@ add("existing-counts-reproduced", JSON.stringify(result.taxonomyDiagnostics) ===
   traceability: { expected: 24, success: 16, missing: 8, unexpected: 0 },
   rubric: { expected: 32, success: 24, missing: 8, unexpected: 0 },
 }));
+add("comparable-only-coverage-semantics-preserved",
+  result.coverage.evaluatedComparableCases === 8 &&
+  result.coverage.consumedProviderPositions === 8 &&
+  result.coverage.terminalProviderFailures === 0 &&
+  result.coverage.humanReviewedExecutions === 0);
 add("frozen-structure", result.coverage.totalFrozenCases === 160 && result.coverage.locales === 4 && Object.values(result.coverage.casesPerLocale).every((count) => count === 40) && result.coverage.semanticClusters === 40);
 add("frozen-taxonomy-denominators", JSON.stringify(result.frozenTaxonomyDenominators) === JSON.stringify({
   scenario: 480, risk: 476, clarification: 248, recommendation: 320,
@@ -296,6 +313,156 @@ const providerContractFailure = aggregation.aggregateCanonicalProviderEvaluation
   operationalEvidence, levioGuaranteeEvidence,
 );
 add("canonical-provider-contract-violation-rejects-provider", providerContractFailure.providerQualification.status === "QUALIFICATION_IMPOSSIBLE_BY_PROVIDER_THRESHOLD" && providerContractFailure.providerQualification.hardGates.find((item) => item.gateId === "provider_result_contract").failures === 1);
+
+const persistedTerminalFailure = JSON.parse(readFileSync(join(
+  root,
+  "docs",
+  "qa",
+  "stage-9",
+  "live-evidence",
+  "STAGE_9_TERRA_POSITION_2_PROVIDER_CONTRACT_FAILURE_EVIDENCE.v1.json",
+), "utf8"));
+const terminalFailureLinkage = {
+  campaignId: "stage9-terra-comparable-campaign-v1",
+  attemptId: "stage9-terra-position-002-S9-CORE-001-EN",
+  position: 2,
+  caseId: "S9-CORE-001-EN",
+  caseVersion: "1.0",
+  caseSha256: "3ceee5f10db0ee4c75e42176ba256b7d6715d7a303a2347447a00419822f3c43",
+  locale: "en",
+  semanticClusterId: "S9-CLUSTER-001",
+  baselineCommit: "fd651a4c9336643e45e749b629af12318f2a1c8a",
+  configurationFingerprint:
+    "ee8c00893a300a8534c597f285ce99ab57b139475c9c88abf5bc9d62efcfe142",
+};
+const terminalFailureInput = [{
+  kind: "TERMINAL_PROVIDER_FAILURE",
+  artifact: persistedTerminalFailure,
+  expectedLinkage: terminalFailureLinkage,
+}];
+const comparableWithoutTerminalCase = evidence.filter((item) =>
+  item.caseId !== terminalFailureLinkage.caseId);
+const comparableOnlyControl = aggregation.aggregateCanonicalProviderEvaluationCampaign(
+  cases,
+  comparableWithoutTerminalCase,
+  aggregation.CANONICAL_AUTOMATED_METRIC_MAPPINGS,
+  null,
+  levioGuaranteeEvidence,
+);
+const mixedTerminalCampaign = aggregation.aggregateCanonicalProviderEvaluationCampaign(
+  cases,
+  comparableWithoutTerminalCase,
+  aggregation.CANONICAL_AUTOMATED_METRIC_MAPPINGS,
+  null,
+  levioGuaranteeEvidence,
+  null,
+  terminalFailureInput,
+);
+const mixedContractGate = mixedTerminalCampaign.providerQualification.hardGates.find(
+  (item) => item.gateId === "provider_result_contract",
+);
+add("validated-terminal-contract-failure-enters-provider-hard-gate",
+  failureEvidence.validateCanonicalProviderCampaignFailureEvidence(
+    persistedTerminalFailure,
+    terminalFailureLinkage,
+  ).valid && mixedContractGate.evaluated === 8 && mixedContractGate.failures === 1 &&
+  mixedContractGate.status === "QUALIFICATION_IMPOSSIBLE");
+add("terminal-failure-consumed-versus-comparable-coverage",
+  mixedTerminalCampaign.coverage.consumedProviderPositions === 8 &&
+  mixedTerminalCampaign.coverage.evaluatedComparableCases === 7 &&
+  mixedTerminalCampaign.coverage.terminalProviderFailures === 1);
+add("terminal-failure-responsibility-is-provider",
+  mixedTerminalCampaign.terminalProviderFailureEvidence.responsibility === "PROVIDER" &&
+  mixedTerminalCampaign.terminalProviderFailureEvidence.hardGateId ===
+    "provider_result_contract" &&
+  JSON.stringify(mixedTerminalCampaign.terminalProviderFailureEvidence.caseIds) ===
+    JSON.stringify(["S9-CORE-001-EN"]) &&
+  JSON.stringify(mixedTerminalCampaign.terminalProviderFailureEvidence.artifactHashes) ===
+    JSON.stringify([
+      "ea0f53062d283a582f4d285a3d8d8e5e823ee8a5612e029958753a56e48d19b6",
+    ]));
+add("terminal-failure-does-not-create-fake-matcher",
+  JSON.stringify(mixedTerminalCampaign.exactMatcherDiagnostics) ===
+    JSON.stringify(comparableOnlyControl.exactMatcherDiagnostics) &&
+  JSON.stringify(mixedTerminalCampaign.taxonomyDiagnostics) ===
+    JSON.stringify(comparableOnlyControl.taxonomyDiagnostics));
+add("terminal-failure-uses-existing-qualification-policy",
+  mixedTerminalCampaign.providerQualification.status ===
+    "QUALIFICATION_IMPOSSIBLE_BY_PROVIDER_THRESHOLD" &&
+  mixedTerminalCampaign.overallStage9.status === "STAGE9_BLOCKED" &&
+  mixedTerminalCampaign.overallStage9.blockers.includes(
+    "PROVIDER_QUALIFICATION_IMPOSSIBLE",
+  ));
+const invalidTerminalFailure = structuredClone(persistedTerminalFailure);
+invalidTerminalFailure.artifactHash = "0".repeat(64);
+const rejectedTerminalCampaign = aggregation.aggregateCanonicalProviderEvaluationCampaign(
+  cases,
+  comparableWithoutTerminalCase,
+  aggregation.CANONICAL_AUTOMATED_METRIC_MAPPINGS,
+  null,
+  levioGuaranteeEvidence,
+  null,
+  [{
+    kind: "TERMINAL_PROVIDER_FAILURE",
+    artifact: invalidTerminalFailure,
+    expectedLinkage: terminalFailureLinkage,
+  }],
+);
+add("invalid-terminal-failure-rejected-before-qualification",
+  rejectedTerminalCampaign.coverage.terminalProviderFailures === 0 &&
+  rejectedTerminalCampaign.terminalProviderFailureEvidence.caseIds.length === 0 &&
+  rejectedTerminalCampaign.hardGates.find(
+    (item) => item.gateId === "provider_result_contract",
+  ).failures === 0 &&
+  rejectedTerminalCampaign.providerQualification.status === "SYSTEM_EVIDENCE_INCOMPLETE" &&
+  rejectedTerminalCampaign.evidenceIssues.some((issue) =>
+    issue.startsWith("terminal_failure_invalid:")));
+const wrongLinkageTerminalCampaign = aggregation.aggregateCanonicalProviderEvaluationCampaign(
+  cases,
+  comparableWithoutTerminalCase,
+  aggregation.CANONICAL_AUTOMATED_METRIC_MAPPINGS,
+  null,
+  levioGuaranteeEvidence,
+  null,
+  [{
+    kind: "TERMINAL_PROVIDER_FAILURE",
+    artifact: persistedTerminalFailure,
+    expectedLinkage: { ...terminalFailureLinkage, position: 3 },
+  }],
+);
+add("terminal-failure-linkage-rejected-before-qualification",
+  wrongLinkageTerminalCampaign.coverage.terminalProviderFailures === 0 &&
+  wrongLinkageTerminalCampaign.hardGates.find(
+    (item) => item.gateId === "provider_result_contract",
+  ).failures === 0 && wrongLinkageTerminalCampaign.evidenceIssues.some((issue) =>
+    issue.includes("failure_attempt_linkage_invalid")));
+const invalidContractTerminalFailure = structuredClone(persistedTerminalFailure);
+invalidContractTerminalFailure.execution.generationCount = 2;
+const { artifactHash: ignoredArtifactHash, ...invalidContractWithoutHash } =
+  invalidContractTerminalFailure;
+invalidContractTerminalFailure.artifactHash = campaignEvidence.canonicalEvidenceSha256(
+  invalidContractWithoutHash,
+);
+const invalidContractTerminalCampaign =
+  aggregation.aggregateCanonicalProviderEvaluationCampaign(
+    cases,
+    comparableWithoutTerminalCase,
+    aggregation.CANONICAL_AUTOMATED_METRIC_MAPPINGS,
+    null,
+    levioGuaranteeEvidence,
+    null,
+    [{
+      kind: "TERMINAL_PROVIDER_FAILURE",
+      artifact: invalidContractTerminalFailure,
+      expectedLinkage: terminalFailureLinkage,
+    }],
+  );
+add("terminal-failure-contract-rejected-before-qualification",
+  invalidContractTerminalCampaign.coverage.terminalProviderFailures === 0 &&
+  invalidContractTerminalCampaign.hardGates.find(
+    (item) => item.gateId === "provider_result_contract",
+  ).failures === 0 && invalidContractTerminalCampaign.evidenceIssues.some((issue) =>
+    issue.includes("failure_execution_state_invalid")));
 add("oracle-leakage-remains-zero", result.hardGates.find((item) => item.gateId === "oracle_isolation").failures === 0 && result.levioProductGuarantee.guarantees.find((item) => item.guaranteeId === "oracle_isolation").status === "PASS");
 
 const failed = checks.filter((item) => !item.passed);

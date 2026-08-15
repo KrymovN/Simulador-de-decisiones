@@ -10,6 +10,12 @@ import {
 import type { CanonicalProviderEvaluationOracleMatch } from
   "./canonical-provider-evaluation-result";
 import {
+  validateCanonicalProviderCampaignFailureEvidence,
+  type CanonicalProviderCampaignFailureEvidenceV1,
+  type CanonicalProviderCampaignFailureExpectedLinkage,
+} from "./canonical-provider-campaign-failure-evidence";
+import {
+  CANONICAL_HUMAN_REVIEW_DIMENSIONS,
   aggregateCanonicalProviderCampaignReviews,
   type CanonicalCampaignReviewAggregation,
   type CanonicalProviderCampaignReviewEvidence,
@@ -444,6 +450,12 @@ export type CanonicalComparableCaseEvidence = {
   normalizedCostRecorded: boolean;
 };
 
+export type CanonicalTerminalProviderFailureEvidenceInput = {
+  kind: "TERMINAL_PROVIDER_FAILURE";
+  artifact: CanonicalProviderCampaignFailureEvidenceV1;
+  expectedLinkage: CanonicalProviderCampaignFailureExpectedLinkage;
+};
+
 export type CanonicalCampaignOperationalEvidence = {
   reportedCases: number;
   inputTokens: number;
@@ -516,10 +528,20 @@ export type CanonicalCampaignAggregationResult = {
   coverage: {
     totalFrozenCases: number;
     evaluatedComparableCases: number;
+    consumedProviderPositions: number;
+    terminalProviderFailures: number;
+    humanReviewedExecutions: number;
+    humanReviewedExecutionsByLocale: Record<CanonicalProviderEvaluationLocale, number>;
     remainingCases: number;
     locales: number;
     casesPerLocale: Record<CanonicalProviderEvaluationLocale, number>;
     semanticClusters: number;
+  };
+  terminalProviderFailureEvidence: {
+    responsibility: "PROVIDER";
+    hardGateId: "provider_result_contract";
+    caseIds: string[];
+    artifactHashes: string[];
   };
   metrics: CanonicalAggregationMetricResult[];
   taxonomyDiagnostics: Record<CanonicalProviderEvaluationCategory, {
@@ -788,6 +810,7 @@ export function aggregateCanonicalProviderEvaluationCampaign(
   operationalEvidence: CanonicalCampaignOperationalEvidence | null = null,
   levioGuaranteeEvidence: CanonicalLevioGuaranteeEvidence | null = null,
   reviewEvidence: CanonicalProviderCampaignReviewEvidence | null = null,
+  terminalProviderFailures: readonly CanonicalTerminalProviderFailureEvidenceInput[] = [],
 ): CanonicalCampaignAggregationResult {
   const evidenceIssues: string[] = [];
   const caseById = new Map(cases.map((item) => [item.case_id, item]));
@@ -837,6 +860,41 @@ export function aggregateCanonicalProviderEvaluationCampaign(
     }
     evidenceByCase.set(item.caseId, item);
   }
+  const terminalFailureByCase = new Map<
+    string,
+    CanonicalProviderCampaignFailureEvidenceV1
+  >();
+  const terminalFailurePositions = new Set<number>();
+  for (const [index, input] of terminalProviderFailures.entries()) {
+    if (input.kind !== "TERMINAL_PROVIDER_FAILURE") {
+      evidenceIssues.push(`terminal_failure_kind_invalid:${index}`);
+      continue;
+    }
+    const validation = validateCanonicalProviderCampaignFailureEvidence(
+      input.artifact,
+      input.expectedLinkage,
+    );
+    if (!validation.valid) {
+      evidenceIssues.push(
+        `terminal_failure_invalid:${index}:${validation.issues.join("|")}`,
+      );
+      continue;
+    }
+    const identity = input.artifact.identity;
+    const source = caseById.get(identity.caseId);
+    if (source === undefined || source.language !== identity.locale ||
+      source.provenance.semantic_cluster_id !== identity.semanticClusterId) {
+      evidenceIssues.push(`terminal_failure_case_linkage_invalid:${identity.caseId}`);
+      continue;
+    }
+    if (evidenceByCase.has(identity.caseId) || terminalFailureByCase.has(identity.caseId) ||
+      terminalFailurePositions.has(identity.position)) {
+      evidenceIssues.push(`terminal_failure_duplicate_attempt:${identity.caseId}`);
+      continue;
+    }
+    terminalFailureByCase.set(identity.caseId, input.artifact);
+    terminalFailurePositions.add(identity.position);
+  }
   if (operationalEvidence !== null) {
     if (operationalEvidence.reportedCases !== evidenceByCase.size) {
       evidenceIssues.push("operational_reported_case_count_mismatch");
@@ -885,14 +943,17 @@ export function aggregateCanonicalProviderEvaluationCampaign(
   ) as CanonicalCampaignAggregationResult["frozenTaxonomyDenominators"];
 
   const hardGates = CANONICAL_NON_COMPENSABLE_HARD_GATE_IDS.map((gateId) => {
-    const failures = [...evidenceByCase.values()].filter(
+    const comparableFailures = [...evidenceByCase.values()].filter(
       (item) => item.deterministicGates[gateId] === "FAIL",
     ).length;
+    const terminalFailures = gateId === "provider_result_contract"
+      ? terminalFailureByCase.size : 0;
+    const failures = comparableFailures + terminalFailures;
     return {
       gateId,
       responsibility: CANONICAL_HARD_GATE_RESPONSIBILITY[gateId].responsibility,
       providerQualifying: CANONICAL_HARD_GATE_RESPONSIBILITY[gateId].providerQualifying,
-      evaluated: evidenceByCase.size,
+      evaluated: evidenceByCase.size + terminalFailures,
       failures,
       status: failures === 0 ? "PASS_SO_FAR" as const : "QUALIFICATION_IMPOSSIBLE" as const,
     };
@@ -907,6 +968,18 @@ export function aggregateCanonicalProviderEvaluationCampaign(
       item.executionHash === undefined ? [] : [[item.caseId, item.executionHash]])),
     reviewEvidence,
   );
+  const reviewedCaseIds = new Set<string>();
+  if (reviewEvidence !== null) {
+    for (const [caseId, executionHash] of new Map([...evidenceByCase.values()].flatMap(
+      (item) => item.executionHash === undefined ? [] : [[item.caseId, item.executionHash]],
+    ))) {
+      const completeDimensions = CANONICAL_HUMAN_REVIEW_DIMENSIONS.every((dimension) =>
+        reviewEvidence.humanDimensionReviews.some((record) =>
+          record.caseId === caseId && record.reviewedExecutionHash === executionHash &&
+          record.dimension === dimension && record.score !== null));
+      if (completeDimensions) reviewedCaseIds.add(caseId);
+    }
+  }
   if (reviewEvidenceAggregation !== null) {
     evidenceIssues.push(...reviewEvidenceAggregation.issues.map((issue) =>
       `review_evidence:${issue}`));
@@ -1084,6 +1157,15 @@ export function aggregateCanonicalProviderEvaluationCampaign(
     coverage: {
       totalFrozenCases: cases.length,
       evaluatedComparableCases: evidenceByCase.size,
+      consumedProviderPositions: evidenceByCase.size + terminalFailureByCase.size,
+      terminalProviderFailures: terminalFailureByCase.size,
+      humanReviewedExecutions: reviewedCaseIds.size,
+      humanReviewedExecutionsByLocale: Object.fromEntries(
+        CANONICAL_PROVIDER_EVALUATION_LOCALES.map((locale) => [
+          locale,
+          [...reviewedCaseIds].filter((caseId) => caseById.get(caseId)?.language === locale).length,
+        ]),
+      ) as Record<CanonicalProviderEvaluationLocale, number>,
       remainingCases: cases.length - evidenceByCase.size,
       locales: CANONICAL_PROVIDER_EVALUATION_LOCALES.length,
       casesPerLocale: Object.fromEntries(CANONICAL_PROVIDER_EVALUATION_LOCALES.map(
@@ -1092,6 +1174,14 @@ export function aggregateCanonicalProviderEvaluationCampaign(
       semanticClusters: new Set(cases.map(
         (item) => item.provenance.semantic_cluster_id,
       )).size,
+    },
+    terminalProviderFailureEvidence: {
+      responsibility: "PROVIDER",
+      hardGateId: "provider_result_contract",
+      caseIds: [...terminalFailureByCase.keys()],
+      artifactHashes: [...terminalFailureByCase.values()].map(
+        (artifact) => artifact.artifactHash,
+      ),
     },
     metrics,
     taxonomyDiagnostics,

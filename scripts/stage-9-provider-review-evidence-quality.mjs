@@ -38,6 +38,12 @@ const humanReviewEvidence = require(join(
   "ai-quality",
   "canonical-provider-human-review-evidence.ts",
 ));
+const failureEvidence = require(join(
+  root,
+  "lib",
+  "ai-quality",
+  "canonical-provider-campaign-failure-evidence.ts",
+));
 
 const cases = fixtures.CANONICAL_OFFLINE_EVALUATION_CASES;
 const categories = taxonomy.CANONICAL_PROVIDER_EVALUATION_CATEGORIES;
@@ -799,6 +805,84 @@ const providerGate = aggregation.aggregateCanonicalProviderEvaluationCampaign(
 );
 add("provider-hard-gate-rejects-provider", providerGate.providerQualification.status ===
   "QUALIFICATION_IMPOSSIBLE_BY_PROVIDER_THRESHOLD");
+
+const position1StyleComparable = structuredClone(machineEvidence[0]);
+const position1StyleHumanArtifact = humanReviewEvidence.buildCanonicalProviderHumanReviewEvidence({
+  ...structuredClone(persistedHumanReview.verbatimSubmission),
+  identity: {
+    ...persistedHumanReview.verbatimSubmission.identity,
+    reviewedExecutionHash: position1StyleComparable.executionHash,
+  },
+});
+const position1StyleReviewEvidence =
+  humanReviewEvidence.canonicalProviderCampaignReviewEvidenceFromHumanArtifact(
+    position1StyleHumanArtifact,
+  );
+const persistedTerminalFailure = JSON.parse(readFileSync(join(
+  root,
+  "docs",
+  "qa",
+  "stage-9",
+  "live-evidence",
+  "STAGE_9_TERRA_POSITION_2_PROVIDER_CONTRACT_FAILURE_EVIDENCE.v1.json",
+), "utf8"));
+const terminalFailureLinkage = {
+  campaignId: "stage9-terra-comparable-campaign-v1",
+  attemptId: "stage9-terra-position-002-S9-CORE-001-EN",
+  position: 2,
+  caseId: "S9-CORE-001-EN",
+  caseVersion: "1.0",
+  caseSha256: "3ceee5f10db0ee4c75e42176ba256b7d6715d7a303a2347447a00419822f3c43",
+  locale: "en",
+  semanticClusterId: "S9-CLUSTER-001",
+  baselineCommit: "fd651a4c9336643e45e749b629af12318f2a1c8a",
+  configurationFingerprint:
+    "ee8c00893a300a8534c597f285ce99ab57b139475c9c88abf5bc9d62efcfe142",
+};
+const mixedReviewCampaign = aggregation.aggregateCanonicalProviderEvaluationCampaign(
+  cases,
+  [position1StyleComparable],
+  aggregation.CANONICAL_AUTOMATED_METRIC_MAPPINGS,
+  null,
+  {
+    ...allLevioPass,
+    minimum_necessary_prompt_context: "LEVIO_IMPLEMENTATION_GAP",
+    controlled_failure_product_presentation: "LEVIO_IMPLEMENTATION_GAP",
+  },
+  position1StyleReviewEvidence,
+  [{
+    kind: "TERMINAL_PROVIDER_FAILURE",
+    artifact: persistedTerminalFailure,
+    expectedLinkage: terminalFailureLinkage,
+  }],
+);
+add("mixed-terminal-failure-artifact-valid",
+  failureEvidence.validateCanonicalProviderCampaignFailureEvidence(
+    persistedTerminalFailure,
+    terminalFailureLinkage,
+  ).valid);
+add("terminal-failure-does-not-add-human-zero",
+  review.CANONICAL_HUMAN_REVIEW_DIMENSIONS.every((dimension) =>
+    humanMetric(mixedReviewCampaign, dimension).exactMean === 3 &&
+    humanMetric(mixedReviewCampaign, dimension, "es").exactMean === 3 &&
+    humanMetric(mixedReviewCampaign, dimension, "en").exactMean === null));
+add("mixed-human-reviewed-coverage-excludes-terminal-failure",
+  mixedReviewCampaign.coverage.consumedProviderPositions === 2 &&
+  mixedReviewCampaign.coverage.evaluatedComparableCases === 1 &&
+  mixedReviewCampaign.coverage.terminalProviderFailures === 1 &&
+  mixedReviewCampaign.coverage.humanReviewedExecutions === 1 &&
+  mixedReviewCampaign.coverage.humanReviewedExecutionsByLocale.es === 1 &&
+  mixedReviewCampaign.coverage.humanReviewedExecutionsByLocale.en === 0);
+add("terminal-failure-does-not-create-semantic-privacy-score",
+  privacyMetric(mixedReviewCampaign).exactMean === 1 &&
+  privacyMetric(mixedReviewCampaign, "es").exactMean === 1 &&
+  privacyMetric(mixedReviewCampaign, "en").exactMean === null &&
+  mixedReviewCampaign.reviewEvidenceAggregation.criticalProviderPrivacyGate.violations === 0);
+add("mixed-provider-hard-gate-and-levio-gap-remain-separate",
+  mixedReviewCampaign.providerQualification.status ===
+    "QUALIFICATION_IMPOSSIBLE_BY_PROVIDER_THRESHOLD" &&
+  mixedReviewCampaign.levioProductGuarantee.status === "LEVIO_IMPLEMENTATION_GAP" &&
+  mixedReviewCampaign.overallStage9.status === "STAGE9_BLOCKED");
 
 let networkOperations = 0;
 const originalFetch = globalThis.fetch;
