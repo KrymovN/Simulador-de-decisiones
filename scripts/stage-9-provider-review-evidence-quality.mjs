@@ -32,6 +32,12 @@ const resultContract = require(join(root, "lib", "ai-quality", "canonical-provid
 const aggregation = require(join(root, "lib", "ai-quality", "canonical-provider-evaluation-aggregation.ts"));
 const review = require(join(root, "lib", "ai-quality", "canonical-provider-review-policy.ts"));
 const campaignEvidence = require(join(root, "lib", "ai-quality", "canonical-provider-campaign-evidence.ts"));
+const humanReviewEvidence = require(join(
+  root,
+  "lib",
+  "ai-quality",
+  "canonical-provider-human-review-evidence.ts",
+));
 
 const cases = fixtures.CANONICAL_OFFLINE_EVALUATION_CASES;
 const categories = taxonomy.CANONICAL_PROVIDER_EVALUATION_CATEGORIES;
@@ -683,6 +689,105 @@ add("review-references-exact-execution-hash", !review.validateCanonicalProviderC
   new Set(cases.map((item) => item.provenance.semantic_cluster_id)),
   executionHashByCase,
 ).valid);
+const persistedHumanReview = JSON.parse(readFileSync(join(
+  root,
+  "docs",
+  "qa",
+  "stage-9",
+  "live-evidence",
+  "STAGE_9_TERRA_POSITION_1_HUMAN_REVIEW_EVIDENCE.v1.json",
+), "utf8"));
+const persistedHumanReviewLinkage = {
+  caseId: "S9-CORE-001-ES",
+  locale: "es",
+  semanticClusterId: "S9-CLUSTER-001",
+  executionHash: "4bcc5d6371415286e7a2cba707d24529bf7d2ae9f562ae01d418e7bb0e2336b6",
+};
+const persistedHumanReviewValidation =
+  humanReviewEvidence.validateCanonicalProviderHumanReviewEvidence(
+    persistedHumanReview,
+    persistedHumanReviewLinkage,
+  );
+add("human-review-artifact-valid", persistedHumanReviewValidation.valid,
+  persistedHumanReviewValidation.issues.join(", "));
+const rebuiltHumanReview = humanReviewEvidence.buildCanonicalProviderHumanReviewEvidence(
+  persistedHumanReview.verbatimSubmission,
+);
+add("human-review-dimension-comments-lossless-round-trip",
+  review.CANONICAL_HUMAN_REVIEW_DIMENSIONS.every((dimension) =>
+    JSON.stringify(rebuiltHumanReview.verbatimSubmission.dimensionReviews[dimension]) ===
+      JSON.stringify(persistedHumanReview.verbatimSubmission.dimensionReviews[dimension]) &&
+    rebuiltHumanReview.normalizedReview.humanDimensionReviews.find((record) =>
+      record.dimension === dimension)?.reason ===
+      persistedHumanReview.verbatimSubmission.dimensionReviews[dimension]
+        .commentParagraphs.join("\n")));
+add("human-review-privacy-lossless-round-trip",
+  campaignEvidence.canonicalEvidenceSha256(
+    rebuiltHumanReview.verbatimSubmission.privacyReview,
+  ) === campaignEvidence.canonicalEvidenceSha256(
+    persistedHumanReview.verbatimSubmission.privacyReview,
+  ));
+add("human-review-general-assessment-lossless-round-trip",
+  campaignEvidence.canonicalEvidenceSha256(
+    rebuiltHumanReview.verbatimSubmission.generalAssessment,
+  ) === campaignEvidence.canonicalEvidenceSha256(
+    persistedHumanReview.verbatimSubmission.generalAssessment,
+  ) && rebuiltHumanReview.verbatimSubmission.generalAssessment.mainImprovement ===
+    "Precisión" && rebuiltHumanReview.verbatimSubmission.independenceConfirmation === "SÍ");
+add("human-review-normalization-exact",
+  rebuiltHumanReview.artifactHash === persistedHumanReview.artifactHash &&
+  rebuiltHumanReview.normalizedReview.humanDimensionReviews.length === 4 &&
+  rebuiltHumanReview.normalizedReview.humanDimensionReviews.every((record) =>
+    record.score === 3 && record.status === "PASS" &&
+    record.reviewedExecutionHash === persistedHumanReviewLinkage.executionHash) &&
+  rebuiltHumanReview.normalizedReview.providerPrivacyReviews.length === 1 &&
+  rebuiltHumanReview.normalizedReview.providerPrivacyReviews[0].status === "PASS" &&
+  rebuiltHumanReview.normalizedReview.providerPrivacyReviews[0]
+    .criticalProviderPrivacyViolation === false);
+const wrongHumanReviewExecution = humanReviewEvidence.buildCanonicalProviderHumanReviewEvidence({
+  ...structuredClone(persistedHumanReview.verbatimSubmission),
+  identity: {
+    ...persistedHumanReview.verbatimSubmission.identity,
+    reviewedExecutionHash: sha("wrong-human-review-execution"),
+  },
+});
+add("human-review-wrong-execution-linkage-rejected",
+  humanReviewEvidence.validateCanonicalProviderHumanReviewEvidence(
+    wrongHumanReviewExecution,
+    persistedHumanReviewLinkage,
+  ).issues.includes("human_review_execution_linkage_invalid"));
+const wrongHumanReviewCase = humanReviewEvidence.buildCanonicalProviderHumanReviewEvidence({
+  ...structuredClone(persistedHumanReview.verbatimSubmission),
+  identity: {
+    ...persistedHumanReview.verbatimSubmission.identity,
+    caseId: "S9-CORE-002-ES",
+  },
+});
+add("human-review-wrong-case-linkage-rejected",
+  humanReviewEvidence.validateCanonicalProviderHumanReviewEvidence(
+    wrongHumanReviewCase,
+    persistedHumanReviewLinkage,
+  ).issues.includes("human_review_execution_linkage_invalid"));
+add("human-review-duplicate-artifact-rejected",
+  humanReviewEvidence.validateCanonicalProviderHumanReviewEvidence(
+    persistedHumanReview,
+    persistedHumanReviewLinkage,
+    new Set([persistedHumanReview.artifactHash]),
+  ).issues.includes(`duplicate_human_review_artifact:${persistedHumanReview.artifactHash}`));
+const machineEvidenceHashBeforeHumanReview = campaignEvidence.canonicalEvidenceSha256(validArtifact);
+const blindPacketHashBeforeHumanReview = campaignEvidence.canonicalEvidenceSha256(blindPacket);
+humanReviewEvidence.validateCanonicalProviderHumanReviewEvidence(
+  rebuiltHumanReview,
+  persistedHumanReviewLinkage,
+);
+add("human-review-persistence-does-not-mutate-machine-evidence",
+  campaignEvidence.canonicalEvidenceSha256(validArtifact) ===
+    machineEvidenceHashBeforeHumanReview &&
+  campaignEvidence.canonicalEvidenceSha256(blindPacket) === blindPacketHashBeforeHumanReview);
+add("human-review-artifact-excludes-oracle-matcher-and-reviewer-pii",
+  !/\"(?:hidden_?oracle|matcher|reviewer_?(?:name|email)|name|email)\"/i.test(
+    JSON.stringify(persistedHumanReview),
+  ));
 add("responsibility-aware-aggregator-consumes-review", complete.providerQualification.status ===
   "QUALIFIED" && complete.reviewEvidenceAggregation.coverageComplete);
 add("levio-only-gap-does-not-reject-provider", levioGap.providerQualification.status === "QUALIFIED");

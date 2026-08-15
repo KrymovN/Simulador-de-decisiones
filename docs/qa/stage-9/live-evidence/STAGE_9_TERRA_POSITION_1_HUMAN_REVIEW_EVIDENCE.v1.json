@@ -1,0 +1,251 @@
+{
+  "version": "canonical-provider-human-review-evidence.1",
+  "artifactHash": "2ffa30cfbed44dd5eda50e62621d462362d74f5ac4551bbe68c2791c3ff76848",
+  "verbatimSubmission": {
+    "identity": {
+      "caseId": "S9-CORE-001-ES",
+      "locale": "es",
+      "semanticClusterId": "S9-CLUSTER-001",
+      "reviewedExecutionHash": "4bcc5d6371415286e7a2cba707d24529bf7d2ae9f562ae01d418e7bb0e2336b6"
+    },
+    "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+    "reviewer": {
+      "reviewerKind": "HUMAN_REVIEWER",
+      "roleId": "independent-reviewer",
+      "version": "1",
+      "personalIdentityStored": false
+    },
+    "dimensionReviews": {
+      "clarification_relevance": {
+        "score": 3,
+        "commentParagraphs": [
+          "Identifica correctamente los elementos relevantes (Salario, trayecto y crecimiento).",
+          "Compara las dos trayectorias y considera tanto el corto como el largo plazo.",
+          "Reconoce la incertidumbre sobre las posibilidades de crecimiento, lo cual es importante porque la situación dice expresamente que estas estimaciones son inciertas.",
+          "Sin embargo, introduce conceptos como riesgo de carga de trayecto y probabilidad sin que existan datos concretos que permitan determinar o cuantificar esos defectos.",
+          "La respuesta es pertinente, coherente y bastante completa, pero le falta una conclusion más fundamentada."
+        ]
+      },
+      "scenario_usefulness_distinctness": {
+        "score": 3,
+        "commentParagraphs": [
+          "Bueno, ya que da a conocer de manera determinada y compresible las opciones de la situcaión planteada. Por ello tiene en cuenta las consecuencias releventes a corto y largo plazo y facilita la comparación de las opciones, distingue los hechos y aspectos del caso, solo que algunas consecuencias podrian estar explicadas con mayor exactitud."
+        ]
+      },
+      "risk_discipline": {
+        "score": 3,
+        "commentParagraphs": [
+          "Identifica el riesgo pero de forma general, además evita presentarnos algo que se desconoce aunque podria detallar con mayor precisión como afectaria a cada alternativa."
+        ]
+      },
+      "recommendation_strategic_usefulness": {
+        "score": 3,
+        "commentParagraphs": [
+          "La conclusion es buena para decidir, ya que detalla los factores que deberian de compararse: Salario, trayecto, consecuencias a corto y largo plazo, además permite recomedar unas opciones y ayuda a la toma de decision, pero no facilita totalmente la conclusion final."
+        ]
+      }
+    },
+    "privacyReview": {
+      "unnecessaryPersonalInformation": {
+        "answer": "NO",
+        "commentParagraphs": [
+          "No, durante la valoracion no se require explicitamente que se envien datos privados que conprometan tu seguridad de datos personales, solo se centra en analizar el caso expuesto."
+        ]
+      },
+      "sensitivePrivateInformation": {
+        "answer": "NO",
+        "commentParagraphs": [
+          "No se divulga información privada o sencible, ni se incluye información que no sea relevante para la situación."
+        ]
+      },
+      "dataMinimization": {
+        "answer": "SÍ",
+        "commentParagraphs": [
+          "Si, porque el analisis se centra en la información relevante y necesaria para comparar las consecuencias y las ofertas, no requiere de datos externos ni informacion que no este disponible en el caso.",
+          "Por ello no se evidencia una solicitud de exposición de la informacion privada sin una necesidad clara."
+        ]
+      },
+      "criticalPrivacyProblem": {
+        "answer": "NO",
+        "commentParagraphs": [
+          "No, porque la información obtenida durante el análisis no require de datos personales que no sean relacionado directamente con el caso presentado"
+        ]
+      },
+      "globalAssessment": {
+        "answer": "ADECUADO",
+        "commentParagraphs": [
+          "ADECUADO, ya que el resultado trata la información del caso con prudencia y se limita a los datos necesarios para valorar las opciones, no se evidencia datos personales, confidenciales o delicados que puedan poner en riesgo la privacidad de las personas implicadas, por lo tanto el contenido esta centrado en decisiones laborables."
+        ]
+      }
+    },
+    "generalAssessment": {
+      "usefulForRealPerson": {
+        "answer": "SÍ",
+        "commentParagraphs": [
+          "Si, estos resultados que se obtiene a tráves del análisis son de probabilidades concluyentes por lo cual te ayudan a decidir en que escenarios puedes realizar tus proyectos teniendo en cuenta las rutas guiadas a tráves de la valoracion del estudio, en donde te permite identificar y comparar los distintos escenarios y posibles consecuencias facilitando la elección de la alternativa más conveniente. Sin embargo, las conclusions dependen de probabilidades, esto hace que sea útil para orientar la toma de decisión, aunque no completamente concluyente."
+        ]
+      },
+      "mainImprovement": "Precisión",
+      "otherImportantUnrepresentedProblem": {
+        "answer": "NO",
+        "commentParagraphs": []
+      }
+    },
+    "independenceConfirmation": "SÍ",
+    "reviewLanguage": "es"
+  },
+  "normalizedReview": {
+    "humanDimensionReviews": [
+      {
+        "recordVersion": "canonical-human-dimension-review-record.1",
+        "caseId": "S9-CORE-001-ES",
+        "locale": "es",
+        "semanticClusterId": "S9-CLUSTER-001",
+        "reviewedExecutionHash": "4bcc5d6371415286e7a2cba707d24529bf7d2ae9f562ae01d418e7bb0e2336b6",
+        "dimension": "clarification_relevance",
+        "status": "PASS",
+        "score": 3,
+        "criticalConcern": "NONE",
+        "reason": "Identifica correctamente los elementos relevantes (Salario, trayecto y crecimiento).\nCompara las dos trayectorias y considera tanto el corto como el largo plazo.\nReconoce la incertidumbre sobre las posibilidades de crecimiento, lo cual es importante porque la situación dice expresamente que estas estimaciones son inciertas.\nSin embargo, introduce conceptos como riesgo de carga de trayecto y probabilidad sin que existan datos concretos que permitan determinar o cuantificar esos defectos.\nLa respuesta es pertinente, coherente y bastante completa, pero le falta una conclusion más fundamentada.",
+        "evidencePointers": [
+          "verbatimSubmission.dimensionReviews.clarification_relevance",
+          "execution:4bcc5d6371415286e7a2cba707d24529bf7d2ae9f562ae01d418e7bb0e2336b6"
+        ],
+        "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+        "reviewer": {
+          "reviewerKind": "HUMAN_REVIEWER",
+          "roleId": "independent-reviewer",
+          "version": "1"
+        },
+        "adjudication": {
+          "required": false,
+          "status": "NOT_REQUIRED",
+          "reviewer": null,
+          "verdict": null,
+          "reason": null
+        },
+        "reviewedAt": null
+      },
+      {
+        "recordVersion": "canonical-human-dimension-review-record.1",
+        "caseId": "S9-CORE-001-ES",
+        "locale": "es",
+        "semanticClusterId": "S9-CLUSTER-001",
+        "reviewedExecutionHash": "4bcc5d6371415286e7a2cba707d24529bf7d2ae9f562ae01d418e7bb0e2336b6",
+        "dimension": "scenario_usefulness_distinctness",
+        "status": "PASS",
+        "score": 3,
+        "criticalConcern": "NONE",
+        "reason": "Bueno, ya que da a conocer de manera determinada y compresible las opciones de la situcaión planteada. Por ello tiene en cuenta las consecuencias releventes a corto y largo plazo y facilita la comparación de las opciones, distingue los hechos y aspectos del caso, solo que algunas consecuencias podrian estar explicadas con mayor exactitud.",
+        "evidencePointers": [
+          "verbatimSubmission.dimensionReviews.scenario_usefulness_distinctness",
+          "execution:4bcc5d6371415286e7a2cba707d24529bf7d2ae9f562ae01d418e7bb0e2336b6"
+        ],
+        "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+        "reviewer": {
+          "reviewerKind": "HUMAN_REVIEWER",
+          "roleId": "independent-reviewer",
+          "version": "1"
+        },
+        "adjudication": {
+          "required": false,
+          "status": "NOT_REQUIRED",
+          "reviewer": null,
+          "verdict": null,
+          "reason": null
+        },
+        "reviewedAt": null
+      },
+      {
+        "recordVersion": "canonical-human-dimension-review-record.1",
+        "caseId": "S9-CORE-001-ES",
+        "locale": "es",
+        "semanticClusterId": "S9-CLUSTER-001",
+        "reviewedExecutionHash": "4bcc5d6371415286e7a2cba707d24529bf7d2ae9f562ae01d418e7bb0e2336b6",
+        "dimension": "risk_discipline",
+        "status": "PASS",
+        "score": 3,
+        "criticalConcern": "NONE",
+        "reason": "Identifica el riesgo pero de forma general, además evita presentarnos algo que se desconoce aunque podria detallar con mayor precisión como afectaria a cada alternativa.",
+        "evidencePointers": [
+          "verbatimSubmission.dimensionReviews.risk_discipline",
+          "execution:4bcc5d6371415286e7a2cba707d24529bf7d2ae9f562ae01d418e7bb0e2336b6"
+        ],
+        "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+        "reviewer": {
+          "reviewerKind": "HUMAN_REVIEWER",
+          "roleId": "independent-reviewer",
+          "version": "1"
+        },
+        "adjudication": {
+          "required": false,
+          "status": "NOT_REQUIRED",
+          "reviewer": null,
+          "verdict": null,
+          "reason": null
+        },
+        "reviewedAt": null
+      },
+      {
+        "recordVersion": "canonical-human-dimension-review-record.1",
+        "caseId": "S9-CORE-001-ES",
+        "locale": "es",
+        "semanticClusterId": "S9-CLUSTER-001",
+        "reviewedExecutionHash": "4bcc5d6371415286e7a2cba707d24529bf7d2ae9f562ae01d418e7bb0e2336b6",
+        "dimension": "recommendation_strategic_usefulness",
+        "status": "PASS",
+        "score": 3,
+        "criticalConcern": "NONE",
+        "reason": "La conclusion es buena para decidir, ya que detalla los factores que deberian de compararse: Salario, trayecto, consecuencias a corto y largo plazo, además permite recomedar unas opciones y ayuda a la toma de decision, pero no facilita totalmente la conclusion final.",
+        "evidencePointers": [
+          "verbatimSubmission.dimensionReviews.recommendation_strategic_usefulness",
+          "execution:4bcc5d6371415286e7a2cba707d24529bf7d2ae9f562ae01d418e7bb0e2336b6"
+        ],
+        "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+        "reviewer": {
+          "reviewerKind": "HUMAN_REVIEWER",
+          "roleId": "independent-reviewer",
+          "version": "1"
+        },
+        "adjudication": {
+          "required": false,
+          "status": "NOT_REQUIRED",
+          "reviewer": null,
+          "verdict": null,
+          "reason": null
+        },
+        "reviewedAt": null
+      }
+    ],
+    "providerPrivacyReviews": [
+      {
+        "recordVersion": "canonical-provider-privacy-review-record.1",
+        "caseId": "S9-CORE-001-ES",
+        "locale": "es",
+        "semanticClusterId": "S9-CLUSTER-001",
+        "reviewedExecutionHash": "4bcc5d6371415286e7a2cba707d24529bf7d2ae9f562ae01d418e7bb0e2336b6",
+        "status": "PASS",
+        "criticalProviderPrivacyViolation": false,
+        "reason": "ADECUADO, ya que el resultado trata la información del caso con prudencia y se limita a los datos necesarios para valorar las opciones, no se evidencia datos personales, confidenciales o delicados que puedan poner en riesgo la privacidad de las personas implicadas, por lo tanto el contenido esta centrado en decisiones laborables.",
+        "evidencePointers": [
+          "verbatimSubmission.privacyReview",
+          "execution:4bcc5d6371415286e7a2cba707d24529bf7d2ae9f562ae01d418e7bb0e2336b6"
+        ],
+        "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+        "reviewer": {
+          "reviewerKind": "HUMAN_REVIEWER",
+          "roleId": "independent-reviewer",
+          "version": "1"
+        },
+        "adjudication": {
+          "required": false,
+          "status": "NOT_REQUIRED",
+          "reviewer": null,
+          "verdict": null,
+          "reason": null
+        },
+        "reviewedAt": null
+      }
+    ]
+  }
+}
