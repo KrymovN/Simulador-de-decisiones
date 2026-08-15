@@ -1,0 +1,101 @@
+{
+  "version": "canonical-provider-campaign-failure-evidence.1",
+  "identity": {
+    "campaignId": "stage9-terra-comparable-campaign-v1",
+    "attemptId": "stage9-terra-position-002-S9-CORE-001-EN",
+    "position": 2,
+    "caseId": "S9-CORE-001-EN",
+    "caseVersion": "1.0",
+    "caseSha256": "3ceee5f10db0ee4c75e42176ba256b7d6715d7a303a2347447a00419822f3c43",
+    "locale": "en",
+    "semanticClusterId": "S9-CLUSTER-001"
+  },
+  "frozenConfiguration": {
+    "baselineCommit": "fd651a4c9336643e45e749b629af12318f2a1c8a",
+    "configurationFingerprint": "ee8c00893a300a8534c597f285ce99ab57b139475c9c88abf5bc9d62efcfe142",
+    "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+    "inputContractVersion": "canonical-provider-evaluation-input.2",
+    "resultContractVersion": "canonical-provider-evaluation-result.1",
+    "taxonomyVersion": "canonical-provider-evaluation-taxonomy.1",
+    "taskProfileVersion": "canonical-provider-evaluation-task-profile.1",
+    "boundaryVersion": "stage-9-canonical-provider-evaluation-boundary.2",
+    "aggregationVersion": "canonical-provider-evaluation-aggregation.3"
+  },
+  "authorization": {
+    "inputTokens": 5831,
+    "maxInputTokens": 6000,
+    "maxOutputTokens": 4000,
+    "configuredMaxTotalTokens": 10000,
+    "maximumAuthorizedTotalTokens": 9831,
+    "theoreticalUncachedCommitmentUsd": 0.059662,
+    "maximumCommitmentUsd": 0.06,
+    "tokenPreflightLatencyMs": 1344,
+    "status": "PASS"
+  },
+  "provider": {
+    "configuredProvider": "openai",
+    "configuredModel": "gpt-5.6-terra",
+    "responseId": null,
+    "returnedModel": null,
+    "serviceTier": null
+  },
+  "execution": {
+    "generationAttempted": true,
+    "generationCount": 1,
+    "retries": 0,
+    "reruns": 0,
+    "operationalProviderResponseReceived": true,
+    "terminalStatus": "PROVIDER_CONTRACT_HARD_FAIL",
+    "classification": "evaluation_result_contract_invalid",
+    "generationLatencyMs": null,
+    "usage": {
+      "inputTokens": null,
+      "cachedInputTokens": null,
+      "outputTokens": null,
+      "reasoningTokens": null,
+      "totalTokens": null
+    },
+    "actualCostUsd": null,
+    "unavailableFields": [
+      "provider.responseId",
+      "provider.returnedModel",
+      "provider.serviceTier",
+      "execution.generationLatencyMs",
+      "execution.usage.inputTokens",
+      "execution.usage.cachedInputTokens",
+      "execution.usage.outputTokens",
+      "execution.usage.reasoningTokens",
+      "execution.usage.totalTokens",
+      "execution.actualCostUsd"
+    ]
+  },
+  "contractFailureDiagnostic": {
+    "stage": "evaluation_result_contract",
+    "code": "imperative_instruction_forbidden",
+    "path": "candidate_material.items[0].content",
+    "candidateId": "opt_1",
+    "receivedLength": 33,
+    "truncated": false
+  },
+  "downstreamState": {
+    "matcherExecuted": false,
+    "evidenceV2Created": false,
+    "blindPacketCreated": false,
+    "humanReviewStatus": "NOT_REACHED",
+    "comparableValidatedResult": false
+  },
+  "privacyCaptureAttestation": {
+    "fixtureClassification": "synthetic_non_personal",
+    "evaluationOnly": true,
+    "secretScan": "PASS",
+    "personalDataPolicyScan": "PASS",
+    "chainOfThoughtAbsent": true,
+    "rawHttpRequestPersisted": false,
+    "rawHttpResponsePersisted": false,
+    "rawProviderPayloadPersisted": false,
+    "rawPromptPersisted": false,
+    "rejectedProviderOutputPersisted": false,
+    "hiddenOraclePersisted": false
+  },
+  "artifactHash": "ea0f53062d283a582f4d285a3d8d8e5e823ee8a5612e029958753a56e48d19b6"
+}

@@ -75,6 +75,7 @@
     "quality:stage-9-terra-evaluation-configuration": "node scripts/stage-9-terra-evaluation-configuration-quality.mjs",
     "quality:stage-9-canonical-provider-evaluation-aggregation": "node scripts/stage-9-canonical-provider-evaluation-aggregation-quality.mjs",
     "quality:stage-9-provider-review-evidence": "node scripts/stage-9-provider-review-evidence-quality.mjs",
+    "quality:stage-9-provider-contract-failure-evidence": "node scripts/stage-9-provider-contract-failure-evidence-quality.mjs",
     "quality:stage-9-post-provider-decision-engine-boundary": "node scripts/stage-9-post-provider-decision-engine-boundary-quality.mjs",
     "quality:stage-9-post-provider-simulation-composition": "node scripts/stage-9-post-provider-simulation-composition-quality.mjs",
     "quality:stage-9-production-decision-simulation-orchestrator": "node scripts/stage-9-production-decision-simulation-orchestrator-quality.mjs",
