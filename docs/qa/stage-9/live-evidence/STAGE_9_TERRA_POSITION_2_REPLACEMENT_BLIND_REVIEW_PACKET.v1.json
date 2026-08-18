@@ -1,0 +1,281 @@
+{
+  "version": "canonical-provider-blind-review-packet.1",
+  "executionHash": "2af02a72f0c8a9a1c7fe5aaaa5abad33e67d8e8de51b877484af769d3afab401",
+  "caseId": "S9-CORE-001-EN",
+  "locale": "en",
+  "semanticClusterId": "S9-CLUSTER-001",
+  "validatedResult": {
+    "evaluation_contract_version": "canonical-provider-evaluation-result.1",
+    "candidate_material": {
+      "capability": "candidate_decision_material_v1",
+      "contract_version": "1.0",
+      "generation_status": "completed",
+      "classification": "synthetic_non_personal",
+      "items": [
+        {
+          "candidate_id": "c1_offer_path_a",
+          "item_type": "option",
+          "content": "One confirmed offer path, with its salary, commute, and growth attributes considered as a combined trade-off.",
+          "provenance": {
+            "source": "provider_candidate",
+            "source_ref": "case_situation"
+          },
+          "confidence": "high",
+          "evidence": "user_fact_reference",
+          "option_refs": [],
+          "scenario_refs": [],
+          "criterion_refs": [],
+          "authority": "candidate_only",
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0"
+        },
+        {
+          "candidate_id": "c2_offer_path_b",
+          "item_type": "option",
+          "content": "A second confirmed offer path, with different salary, commute, and growth attributes considered as a combined trade-off.",
+          "provenance": {
+            "source": "provider_candidate",
+            "source_ref": "case_situation"
+          },
+          "confidence": "high",
+          "evidence": "user_fact_reference",
+          "option_refs": [],
+          "scenario_refs": [],
+          "criterion_refs": [],
+          "authority": "candidate_only",
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0"
+        },
+        {
+          "candidate_id": "c3_short_term_tradeoff",
+          "item_type": "short_term_consequence",
+          "content": "The paths can differ in near-term compensation and commute burden, creating a trade-off between immediate financial conditions and travel demands.",
+          "provenance": {
+            "source": "provider_candidate",
+            "source_ref": "case_situation"
+          },
+          "confidence": "medium",
+          "evidence": "provider_inference",
+          "option_refs": [],
+          "scenario_refs": [],
+          "criterion_refs": [],
+          "authority": "candidate_only",
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0"
+        },
+        {
+          "candidate_id": "c4_long_term_tradeoff",
+          "item_type": "long_term_consequence",
+          "content": "Differences in growth potential may produce different longer-term career-development outcomes, but the growth estimates are uncertain.",
+          "provenance": {
+            "source": "provider_candidate",
+            "source_ref": "assumption_1"
+          },
+          "confidence": "medium",
+          "evidence": "user_assumption_reference",
+          "option_refs": [],
+          "scenario_refs": [],
+          "criterion_refs": [],
+          "authority": "candidate_only",
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0"
+        },
+        {
+          "candidate_id": "c5_growth_uncertainty_risk",
+          "item_type": "risk_signal",
+          "content": "Uncertain growth estimates create a risk that an apparent long-term development advantage does not materialize as expected.",
+          "provenance": {
+            "source": "provider_candidate",
+            "source_ref": "assumption_1"
+          },
+          "confidence": "high",
+          "evidence": "user_assumption_reference",
+          "option_refs": [],
+          "scenario_refs": [],
+          "criterion_refs": [],
+          "authority": "candidate_only",
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0"
+        },
+        {
+          "candidate_id": "c6_commute_burden_risk",
+          "item_type": "risk_signal",
+          "content": "A commute difference may create an ongoing travel-burden risk relative to the alternative offer.",
+          "provenance": {
+            "source": "provider_candidate",
+            "source_ref": "case_situation"
+          },
+          "confidence": "medium",
+          "evidence": "provider_inference",
+          "option_refs": [],
+          "scenario_refs": [],
+          "criterion_refs": [],
+          "authority": "candidate_only",
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0"
+        },
+        {
+          "candidate_id": "c7_deadline_context",
+          "item_type": "context_factor",
+          "content": "A decision deadline constrains the available time for comparing the confirmed offers.",
+          "provenance": {
+            "source": "provider_candidate",
+            "source_ref": "fact_2"
+          },
+          "confidence": "high",
+          "evidence": "user_fact_reference",
+          "option_refs": [],
+          "scenario_refs": [],
+          "criterion_refs": [],
+          "authority": "candidate_only",
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0"
+        }
+      ]
+    },
+    "evaluation_annotations": {
+      "scenario": [
+        {
+          "concept_id": "compare_offer_tradeoffs_paths",
+          "evidence_kind": "candidate_material",
+          "candidate_ids": [
+            "c1_offer_path_a",
+            "c2_offer_path_b",
+            "c3_short_term_tradeoff",
+            "c4_long_term_tradeoff"
+          ],
+          "source_refs": [
+            "case_situation",
+            "assumption_1"
+          ]
+        }
+      ],
+      "risk": [
+        {
+          "concept_id": "growth_uncertainty",
+          "evidence_kind": "candidate_material",
+          "candidate_ids": [
+            "c5_growth_uncertainty_risk"
+          ],
+          "source_refs": [
+            "assumption_1"
+          ]
+        },
+        {
+          "concept_id": "commute_burden",
+          "evidence_kind": "candidate_material",
+          "candidate_ids": [
+            "c6_commute_burden_risk"
+          ],
+          "source_refs": [
+            "case_situation"
+          ]
+        }
+      ],
+      "clarification": [],
+      "recommendation": [
+        {
+          "concept_id": "preserve_uncertainty",
+          "evidence_kind": "candidate_material",
+          "candidate_ids": [
+            "c4_long_term_tradeoff",
+            "c5_growth_uncertainty_risk"
+          ],
+          "source_refs": [
+            "assumption_1"
+          ]
+        }
+      ],
+      "safety": [
+        {
+          "concept_id": "standard",
+          "evidence_kind": "candidate_material",
+          "candidate_ids": [
+            "c1_offer_path_a"
+          ],
+          "source_refs": [
+            "case_situation"
+          ]
+        }
+      ],
+      "privacy": [
+        {
+          "concept_id": "broad_category_only",
+          "evidence_kind": "candidate_material",
+          "candidate_ids": [
+            "c1_offer_path_a",
+            "c2_offer_path_b"
+          ],
+          "source_refs": [
+            "case_situation"
+          ]
+        },
+        {
+          "concept_id": "no_identifiers",
+          "evidence_kind": "candidate_material",
+          "candidate_ids": [
+            "c3_short_term_tradeoff"
+          ],
+          "source_refs": [
+            "case_situation"
+          ]
+        }
+      ],
+      "failure": [],
+      "v2_status": [
+        {
+          "concept_id": "SIMULATED",
+          "evidence_kind": "execution_outcome",
+          "candidate_ids": [],
+          "source_refs": []
+        }
+      ],
+      "traceability": [
+        {
+          "concept_id": "trace_facts_assumptions_and_gaps",
+          "evidence_kind": "candidate_material",
+          "candidate_ids": [
+            "c4_long_term_tradeoff",
+            "c7_deadline_context"
+          ],
+          "source_refs": [
+            "assumption_1",
+            "fact_2"
+          ]
+        }
+      ],
+      "rubric": [
+        {
+          "concept_id": "decision_simulation_not_answer",
+          "evidence_kind": "candidate_material",
+          "candidate_ids": [
+            "c1_offer_path_a",
+            "c2_offer_path_b",
+            "c3_short_term_tradeoff"
+          ],
+          "source_refs": [
+            "case_situation"
+          ]
+        },
+        {
+          "concept_id": "uncertainty_preservation",
+          "evidence_kind": "candidate_material",
+          "candidate_ids": [
+            "c4_long_term_tradeoff",
+            "c5_growth_uncertainty_risk"
+          ],
+          "source_refs": [
+            "assumption_1"
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "kind": "candidate_material",
+      "v2_status": "SIMULATED"
+    }
+  },
+  "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+  "oracleIncluded": false,
+  "matcherIncluded": false
+}

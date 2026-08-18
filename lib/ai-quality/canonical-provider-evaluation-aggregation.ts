@@ -881,6 +881,7 @@ export function aggregateCanonicalProviderEvaluationCampaign(
     CanonicalProviderCampaignFailureEvidenceV1
   >();
   const terminalFailurePositions = new Set<number>();
+  const terminalComparableCollisionCaseIds = new Set<string>();
   for (const [index, input] of terminalProviderFailures.entries()) {
     if (input.kind !== "TERMINAL_PROVIDER_FAILURE") {
       evidenceIssues.push(`terminal_failure_kind_invalid:${index}`);
@@ -903,10 +904,13 @@ export function aggregateCanonicalProviderEvaluationCampaign(
       evidenceIssues.push(`terminal_failure_case_linkage_invalid:${identity.caseId}`);
       continue;
     }
-    if (evidenceByCase.has(identity.caseId) || terminalFailureByCase.has(identity.caseId) ||
+    if (terminalFailureByCase.has(identity.caseId) ||
       terminalFailurePositions.has(identity.position)) {
       evidenceIssues.push(`terminal_failure_duplicate_attempt:${identity.caseId}`);
       continue;
+    }
+    if (evidenceByCase.has(identity.caseId)) {
+      terminalComparableCollisionCaseIds.add(identity.caseId);
     }
     terminalFailureByCase.set(identity.caseId, input.artifact);
     terminalFailurePositions.add(identity.position);
@@ -916,7 +920,10 @@ export function aggregateCanonicalProviderEvaluationCampaign(
   let untouchedLogicalPositions = {
     first: null,
     last: null,
-    count: Math.max(0, cases.length - evidenceByCase.size - terminalFailureByCase.size),
+    count: Math.max(0, cases.length - new Set([
+      ...evidenceByCase.keys(),
+      ...terminalFailureByCase.keys(),
+    ]).size),
   } as { first: number | null; last: number | null; count: number };
   if (campaignMigration !== null) {
     const migrationValidation = campaignMigration.kind === "CAMPAIGN_SEMANTICS_MIGRATION"
@@ -953,12 +960,18 @@ export function aggregateCanonicalProviderEvaluationCampaign(
       ].join("|")}`);
     } else {
       supersededTerminalFailureCaseIds.add(superseded.caseId);
-      currentComparableReplacementRequiredPositions = [superseded.position];
+      currentComparableReplacementRequiredPositions = evidenceByCase.has(superseded.caseId)
+        ? [] : [superseded.position];
       untouchedLogicalPositions = {
         first: migration.coverage.untouchedLogicalPositions.first,
         last: migration.coverage.untouchedLogicalPositions.last,
         count: migration.coverage.untouchedLogicalPositions.count,
       };
+    }
+  }
+  for (const caseId of terminalComparableCollisionCaseIds) {
+    if (!supersededTerminalFailureCaseIds.has(caseId)) {
+      evidenceIssues.push(`terminal_failure_duplicate_attempt:${caseId}`);
     }
   }
   if (operationalEvidence !== null) {
@@ -1225,7 +1238,10 @@ export function aggregateCanonicalProviderEvaluationCampaign(
     coverage: {
       totalFrozenCases: cases.length,
       evaluatedComparableCases: evidenceByCase.size,
-      consumedProviderPositions: evidenceByCase.size + terminalFailureByCase.size,
+      consumedProviderPositions: new Set([
+        ...evidenceByCase.keys(),
+        ...terminalFailureByCase.keys(),
+      ]).size,
       historicalProviderGenerations: evidenceByCase.size + terminalFailureByCase.size,
       retainedComparableExecutions: evidenceByCase.size,
       terminalProviderFailures: terminalFailureByCase.size -
