@@ -1,0 +1,87 @@
+{
+  "version": "canonical-provider-campaign-migration-evidence.1",
+  "campaignIdentity": {
+    "campaignId": "stage9-terra-comparable-campaign-v1",
+    "status": "OPEN",
+    "provider": "openai",
+    "model": "gpt-5.6-terra",
+    "configurationFingerprint": "ee8c00893a300a8534c597f285ce99ab57b139475c9c88abf5bc9d62efcfe142",
+    "frozenBaselineCommit": "fd651a4c9336643e45e749b629af12318f2a1c8a",
+    "frozenCaseOrderSha256": "d48f7562c1fc0656363524b63c74719d12db7017d1835416fbb551aad925bf2d",
+    "frozenCaseCount": 160,
+    "totalPlannedLogicalPositions": 160
+  },
+  "semanticMigration": {
+    "reason": "EVALUATION_BOUNDARY_CORRECTION",
+    "fromAcceptedProjectionVersion": null,
+    "toAcceptedProjectionVersion": "canonical-accepted-evaluation-projection.1",
+    "providerConfigurationChanged": false,
+    "deterministicEvaluationSemanticsChanged": true
+  },
+  "retainedComparableExecution": {
+    "status": "RETAINED_COMPARABLE",
+    "position": 1,
+    "caseId": "S9-CORE-001-ES",
+    "executionHash": "4bcc5d6371415286e7a2cba707d24529bf7d2ae9f562ae01d418e7bb0e2336b6",
+    "evidenceV2PhysicalSha256": "50ff6c6abcae8dc8c02f73a3e443735d001ef0a8e6b02d1163c3850a33931241",
+    "blindPacketPhysicalSha256": "60a32eec79a6a3f5ab5550c8b98d4b40326bbc086bc2fdb6890a0ab2fe2885a7",
+    "humanReviewArtifactHash": "2ffa30cfbed44dd5eda50e62621d462362d74f5ac4551bbe68c2791c3ff76848",
+    "humanReviewPhysicalSha256": "0306e7bca7813fea79cfb1292442a74b06159c3d68b988d30a365e2d6436a150",
+    "equivalenceProof": {
+      "acceptedProjectionVersion": "canonical-accepted-evaluation-projection.1",
+      "historicalValidatedResultSha256": "507ea49304bd8fcc62b8ef57d377374034961b7920e21e2997127af14276a08b",
+      "replayAcceptedResultSha256": "507ea49304bd8fcc62b8ef57d377374034961b7920e21e2997127af14276a08b",
+      "historicalCandidateMaterialSha256": "61ffd21dbf042571354aa89f1f7c93e9736c92438f52210d321b8fa06adcb451",
+      "replayAcceptedCandidateMaterialSha256": "61ffd21dbf042571354aa89f1f7c93e9736c92438f52210d321b8fa06adcb451",
+      "historicalAnnotationsSha256": "47d953747bee8c080e99a6137c6fa6d919e97339d5c29643e93402619ed6f84b",
+      "replayAcceptedAnnotationsSha256": "47d953747bee8c080e99a6137c6fa6d919e97339d5c29643e93402619ed6f84b",
+      "historicalMatcherClassification": "SEMANTIC_FAIL",
+      "replayMatcherClassification": "SEMANTIC_FAIL",
+      "historicalMatcherSemanticSha256": "7ee76664a88845e51c6ff31a34289b858831fd2cda33ebed3b4f2e0f154bb79c",
+      "replayMatcherSemanticSha256": "7ee76664a88845e51c6ff31a34289b858831fd2cda33ebed3b4f2e0f154bb79c",
+      "observedCandidateCount": 8,
+      "acceptedCandidateCount": 8,
+      "rejectedCandidateCount": 0,
+      "normalizedCandidateCount": 0,
+      "mergedCandidateCount": 0,
+      "silentDropCount": 0,
+      "prunedAnnotationCount": 0,
+      "rewrittenAnnotationCount": 0,
+      "humanReviewReusable": true
+    }
+  },
+  "supersededHistoricalAttempt": {
+    "status": "HISTORICAL_QUALIFICATION_CONSEQUENCE_SUPERSEDED",
+    "reason": "EVALUATION_BOUNDARY_CORRECTION",
+    "position": 2,
+    "caseId": "S9-CORE-001-EN",
+    "attemptId": "stage9-terra-position-002-S9-CORE-001-EN",
+    "failureArtifactHash": "ea0f53062d283a582f4d285a3d8d8e5e823ee8a5612e029958753a56e48d19b6",
+    "failureArtifactPhysicalSha256": "7032e4ca290e8f364145699d60c197f83c5b32cd937d2ebbe69a0a36d2053d5e",
+    "historicalTerminalStatus": "PROVIDER_CONTRACT_HARD_FAIL",
+    "historicalClassification": "evaluation_result_contract_invalid",
+    "historicalDiagnosticCode": "imperative_instruction_forbidden",
+    "historicalProviderAttemptCount": 1,
+    "historicalGenerationCount": 1,
+    "currentComparableExecution": false,
+    "matcherEvidenceCreated": false,
+    "humanReviewEvidenceCreated": false,
+    "currentProviderHardGateParticipation": "EXCLUDED_BY_VALIDATED_EVALUATION_BOUNDARY_MIGRATION",
+    "replacementRequirement": "COMPARABLE_REPLACEMENT_REQUIRED"
+  },
+  "coverage": {
+    "historicalPhysicalProviderGenerations": 2,
+    "retainedComparableExecutions": 1,
+    "supersededHistoricalAttempts": 1,
+    "currentComparableReplacementRequiredPositions": [
+      2
+    ],
+    "untouchedLogicalPositions": {
+      "first": 3,
+      "last": 160,
+      "count": 158
+    },
+    "providerOperationsPerformedByMigration": 0
+  },
+  "artifactHash": "17b888d0366e35db273f530bb2bc27f1e44c2ddd422d06e315c6df186b5c2f27"
+}

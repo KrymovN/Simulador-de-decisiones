@@ -206,6 +206,7 @@ export type CanonicalProviderCampaignEvidenceV2 = {
   };
   versionManifest: {
     reviewPolicyVersion: typeof STAGE_9_PROVIDER_REVIEW_POLICY_VERSION;
+    acceptedProjectionVersion?: typeof CANONICAL_ACCEPTED_EVALUATION_PROJECTION_VERSION;
     inputContractVersion: string;
     resultContractVersion: string;
     taxonomyVersion: string;
@@ -748,6 +749,8 @@ export function validateCanonicalProviderCampaignEvidenceV2(
   }
   const manifest = value.versionManifest;
   if (manifest.reviewPolicyVersion !== STAGE_9_PROVIDER_REVIEW_POLICY_VERSION ||
+    (manifest.acceptedProjectionVersion !== undefined &&
+      manifest.acceptedProjectionVersion !== CANONICAL_ACCEPTED_EVALUATION_PROJECTION_VERSION) ||
     [manifest.inputContractVersion, manifest.resultContractVersion,
       manifest.taxonomyVersion, manifest.taskProfileVersion,
       manifest.boundaryVersion, manifest.aggregationVersion].some(
@@ -755,6 +758,11 @@ export function validateCanonicalProviderCampaignEvidenceV2(
     !SHA256.test(manifest.providerInstructionsSha256) ||
     !SHA256.test(manifest.providerSchemaSha256)) {
     issues.push("version_checksum_manifest_invalid");
+  }
+  if (value.executions.some((execution) => execution.validatedResult !== null &&
+    "acceptedProjection" in execution && execution.acceptedProjection !== undefined) &&
+    manifest.acceptedProjectionVersion !== CANONICAL_ACCEPTED_EVALUATION_PROJECTION_VERSION) {
+    issues.push("accepted_projection_comparability_version_missing");
   }
   if (value.campaignAggregation.aggregationVersion !== manifest.aggregationVersion ||
     (value.campaignAggregation.generatedAt !== null &&

@@ -649,6 +649,8 @@ function oneExecutionArtifact() {
     },
     versionManifest: {
       reviewPolicyVersion: review.STAGE_9_PROVIDER_REVIEW_POLICY_VERSION,
+      acceptedProjectionVersion:
+        resultContract.CANONICAL_ACCEPTED_EVALUATION_PROJECTION_VERSION,
       inputContractVersion: "canonical-provider-evaluation-input.2",
       resultContractVersion: "canonical-provider-evaluation-result.1",
       taxonomyVersion: "canonical-provider-evaluation-taxonomy.1",

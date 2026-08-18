@@ -1,5 +1,6 @@
 import "server-only";
 
+import { createHash } from "node:crypto";
 import type { CanonicalOfflineEvaluationCase } from
   "../ai-decision-material/fixtures";
 import {
@@ -14,6 +15,10 @@ import {
   type CanonicalProviderCampaignFailureEvidenceV1,
   type CanonicalProviderCampaignFailureExpectedLinkage,
 } from "./canonical-provider-campaign-failure-evidence";
+import {
+  validateCanonicalProviderCampaignMigrationEvidence,
+  type CanonicalProviderCampaignMigrationEvidenceInput,
+} from "./canonical-provider-campaign-migration-evidence";
 import {
   CANONICAL_HUMAN_REVIEW_DIMENSIONS,
   aggregateCanonicalProviderCampaignReviews,
@@ -529,7 +534,13 @@ export type CanonicalCampaignAggregationResult = {
     totalFrozenCases: number;
     evaluatedComparableCases: number;
     consumedProviderPositions: number;
+    historicalProviderGenerations: number;
+    retainedComparableExecutions: number;
     terminalProviderFailures: number;
+    historicalTerminalProviderFailures: number;
+    supersededHistoricalAttempts: number;
+    currentComparableReplacementRequiredPositions: number[];
+    untouchedLogicalPositions: { first: number | null; last: number | null; count: number };
     humanReviewedExecutions: number;
     humanReviewedExecutionsByLocale: Record<CanonicalProviderEvaluationLocale, number>;
     remainingCases: number;
@@ -542,6 +553,10 @@ export type CanonicalCampaignAggregationResult = {
     hardGateId: "provider_result_contract";
     caseIds: string[];
     artifactHashes: string[];
+    historicalCaseIds: string[];
+    historicalArtifactHashes: string[];
+    supersededCaseIds: string[];
+    supersededArtifactHashes: string[];
   };
   metrics: CanonicalAggregationMetricResult[];
   taxonomyDiagnostics: Record<CanonicalProviderEvaluationCategory, {
@@ -811,6 +826,7 @@ export function aggregateCanonicalProviderEvaluationCampaign(
   levioGuaranteeEvidence: CanonicalLevioGuaranteeEvidence | null = null,
   reviewEvidence: CanonicalProviderCampaignReviewEvidence | null = null,
   terminalProviderFailures: readonly CanonicalTerminalProviderFailureEvidenceInput[] = [],
+  campaignMigration: CanonicalProviderCampaignMigrationEvidenceInput | null = null,
 ): CanonicalCampaignAggregationResult {
   const evidenceIssues: string[] = [];
   const caseById = new Map(cases.map((item) => [item.case_id, item]));
@@ -895,6 +911,56 @@ export function aggregateCanonicalProviderEvaluationCampaign(
     terminalFailureByCase.set(identity.caseId, input.artifact);
     terminalFailurePositions.add(identity.position);
   }
+  const supersededTerminalFailureCaseIds = new Set<string>();
+  let currentComparableReplacementRequiredPositions: number[] = [];
+  let untouchedLogicalPositions = {
+    first: null,
+    last: null,
+    count: Math.max(0, cases.length - evidenceByCase.size - terminalFailureByCase.size),
+  } as { first: number | null; last: number | null; count: number };
+  if (campaignMigration !== null) {
+    const migrationValidation = campaignMigration.kind === "CAMPAIGN_SEMANTICS_MIGRATION"
+      ? validateCanonicalProviderCampaignMigrationEvidence(campaignMigration.artifact)
+      : { valid: false, issues: ["migration_kind_invalid"] };
+    const migration = campaignMigration.artifact;
+    const retained = migration.retainedComparableExecution;
+    const superseded = migration.supersededHistoricalAttempt;
+    const retainedEvidence = evidenceByCase.get(retained.caseId);
+    const historicalFailure = terminalFailureByCase.get(superseded.caseId);
+    const expectedCaseOrderSha256 = createHash("sha256").update(
+      cases.map((item) => item.case_id).join("\n"),
+    ).digest("hex");
+    const linkageValid = migration.campaignIdentity.frozenCaseCount === cases.length &&
+      migration.campaignIdentity.frozenCaseOrderSha256 === expectedCaseOrderSha256 &&
+      cases[retained.position - 1]?.case_id === retained.caseId &&
+      cases[superseded.position - 1]?.case_id === superseded.caseId &&
+      retainedEvidence?.executionHash === retained.executionHash &&
+      historicalFailure !== undefined &&
+      historicalFailure.artifactHash === superseded.failureArtifactHash &&
+      historicalFailure.identity.campaignId === migration.campaignIdentity.campaignId &&
+      historicalFailure.identity.attemptId === superseded.attemptId &&
+      historicalFailure.identity.position === superseded.position &&
+      historicalFailure.frozenConfiguration.configurationFingerprint ===
+        migration.campaignIdentity.configurationFingerprint &&
+      historicalFailure.execution.terminalStatus === superseded.historicalTerminalStatus &&
+      historicalFailure.execution.classification === superseded.historicalClassification &&
+      historicalFailure.contractFailureDiagnostic.code ===
+        superseded.historicalDiagnosticCode;
+    if (!migrationValidation.valid || !linkageValid) {
+      evidenceIssues.push(`campaign_migration_invalid:${[
+        ...migrationValidation.issues,
+        ...(!linkageValid ? ["migration_artifact_linkage_invalid"] : []),
+      ].join("|")}`);
+    } else {
+      supersededTerminalFailureCaseIds.add(superseded.caseId);
+      currentComparableReplacementRequiredPositions = [superseded.position];
+      untouchedLogicalPositions = {
+        first: migration.coverage.untouchedLogicalPositions.first,
+        last: migration.coverage.untouchedLogicalPositions.last,
+        count: migration.coverage.untouchedLogicalPositions.count,
+      };
+    }
+  }
   if (operationalEvidence !== null) {
     if (operationalEvidence.reportedCases !== evidenceByCase.size) {
       evidenceIssues.push("operational_reported_case_count_mismatch");
@@ -947,7 +1013,9 @@ export function aggregateCanonicalProviderEvaluationCampaign(
       (item) => item.deterministicGates[gateId] === "FAIL",
     ).length;
     const terminalFailures = gateId === "provider_result_contract"
-      ? terminalFailureByCase.size : 0;
+      ? [...terminalFailureByCase.keys()].filter(
+        (caseId) => !supersededTerminalFailureCaseIds.has(caseId),
+      ).length : 0;
     const failures = comparableFailures + terminalFailures;
     return {
       gateId,
@@ -1158,7 +1226,14 @@ export function aggregateCanonicalProviderEvaluationCampaign(
       totalFrozenCases: cases.length,
       evaluatedComparableCases: evidenceByCase.size,
       consumedProviderPositions: evidenceByCase.size + terminalFailureByCase.size,
-      terminalProviderFailures: terminalFailureByCase.size,
+      historicalProviderGenerations: evidenceByCase.size + terminalFailureByCase.size,
+      retainedComparableExecutions: evidenceByCase.size,
+      terminalProviderFailures: terminalFailureByCase.size -
+        supersededTerminalFailureCaseIds.size,
+      historicalTerminalProviderFailures: terminalFailureByCase.size,
+      supersededHistoricalAttempts: supersededTerminalFailureCaseIds.size,
+      currentComparableReplacementRequiredPositions,
+      untouchedLogicalPositions,
       humanReviewedExecutions: reviewedCaseIds.size,
       humanReviewedExecutionsByLocale: Object.fromEntries(
         CANONICAL_PROVIDER_EVALUATION_LOCALES.map((locale) => [
@@ -1178,10 +1253,20 @@ export function aggregateCanonicalProviderEvaluationCampaign(
     terminalProviderFailureEvidence: {
       responsibility: "PROVIDER",
       hardGateId: "provider_result_contract",
-      caseIds: [...terminalFailureByCase.keys()],
-      artifactHashes: [...terminalFailureByCase.values()].map(
+      caseIds: [...terminalFailureByCase.keys()].filter(
+        (caseId) => !supersededTerminalFailureCaseIds.has(caseId),
+      ),
+      artifactHashes: [...terminalFailureByCase.entries()].filter(
+        ([caseId]) => !supersededTerminalFailureCaseIds.has(caseId),
+      ).map(([, artifact]) => artifact.artifactHash),
+      historicalCaseIds: [...terminalFailureByCase.keys()],
+      historicalArtifactHashes: [...terminalFailureByCase.values()].map(
         (artifact) => artifact.artifactHash,
       ),
+      supersededCaseIds: [...supersededTerminalFailureCaseIds],
+      supersededArtifactHashes: [...terminalFailureByCase.entries()].filter(
+        ([caseId]) => supersededTerminalFailureCaseIds.has(caseId),
+      ).map(([, artifact]) => artifact.artifactHash),
     },
     metrics,
     taxonomyDiagnostics,
