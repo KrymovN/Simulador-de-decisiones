@@ -1,0 +1,118 @@
+{
+  "version": "canonical-provider-human-review-evidence.2",
+  "sourceProvenance": {
+    "submissionId": "6631276013018277627",
+    "submissionTimestamp": "2026-08-21 09:20:01",
+    "reviewerEnteredDate": "2026-08-21",
+    "reviewLanguage": "en",
+    "sourceSystem": "Jotform",
+    "sourceFormId": null,
+    "sourceFormVersion": null,
+    "nativeSpeakerConfirmation": "YES",
+    "personalIdentityStored": false,
+    "verbatimSubmissionSha256": "9828ea66a99e5f7dfe9b132ce19edb0654404a98ca82326ab0c4675e5fe3f6dc"
+  },
+  "verbatimSubmission": {
+    "identity": {
+      "caseId": "S9-CORE-001-EN",
+      "locale": "en",
+      "semanticClusterId": "S9-CLUSTER-001",
+      "reviewedExecutionHash": "2af02a72f0c8a9a1c7fe5aaaa5abad33e67d8e8de51b877484af769d3afab401"
+    },
+    "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+    "reviewer": {
+      "reviewerKind": "HUMAN_REVIEWER",
+      "roleId": "independent-reviewer",
+      "version": "1",
+      "personalIdentityStored": false
+    },
+    "dimensionReviews": {
+      "clarification_relevance": {
+        "score": 1,
+        "commentParagraphs": [
+          "not clear"
+        ]
+      },
+      "scenario_usefulness_distinctness": {
+        "score": 2,
+        "commentParagraphs": [
+          "very similar"
+        ]
+      },
+      "risk_discipline": {
+        "score": 1,
+        "commentParagraphs": [
+          "Risk averse"
+        ]
+      },
+      "recommendation_strategic_usefulness": {
+        "score": 3,
+        "commentParagraphs": [
+          "more information is good"
+        ]
+      }
+    },
+    "privacyReview": {
+      "unnecessaryPersonalInformation": {
+        "answer": "NO",
+        "commentParagraphs": []
+      },
+      "sensitivePrivateInformation": {
+        "answer": "NO",
+        "commentParagraphs": []
+      },
+      "dataMinimization": {
+        "answer": "YES",
+        "commentParagraphs": []
+      },
+      "criticalPrivacyProblem": {
+        "answer": "NO",
+        "commentParagraphs": []
+      },
+      "globalAssessment": {
+        "answer": "CANNOT DETERMINE",
+        "commentParagraphs": [
+          "unclear"
+        ]
+      }
+    },
+    "generalAssessment": {
+      "usefulForRealPerson": {
+        "answer": "NO",
+        "commentParagraphs": [
+          "information contradicts"
+        ]
+      },
+      "mainImprovement": "more clarity",
+      "otherImportantUnrepresentedProblem": {
+        "answer": "NO",
+        "commentParagraphs": []
+      }
+    },
+    "independenceConfirmation": "YES",
+    "reviewLanguage": "en"
+  },
+  "supplements": [],
+  "completionStatus": "REVIEW_REQUIRED",
+  "remainingIssues": [
+    "human_review_privacy_comment_missing:unnecessaryPersonalInformation",
+    "human_review_privacy_comment_missing:sensitivePrivateInformation",
+    "human_review_privacy_comment_missing:dataMinimization",
+    "human_review_privacy_comment_missing:criticalPrivacyProblem"
+  ],
+  "normalizedSemantics": {
+    "privacyReview": {
+      "unnecessaryPersonalInformation": "NEGATIVE",
+      "sensitivePrivateInformation": "NEGATIVE",
+      "dataMinimization": "AFFIRMATIVE",
+      "criticalPrivacyProblem": "NEGATIVE"
+    },
+    "generalAssessment": {
+      "usefulForRealPerson": "NEGATIVE",
+      "otherImportantUnrepresentedProblem": "NEGATIVE"
+    },
+    "independenceConfirmation": "AFFIRMATIVE"
+  },
+  "normalizedReview": null,
+  "artifactHash": "0d2457280ed60d1ef5a39df140fd77b3c7ec0c8a9e4f0b9ebc9e04337e543d99"
+}
