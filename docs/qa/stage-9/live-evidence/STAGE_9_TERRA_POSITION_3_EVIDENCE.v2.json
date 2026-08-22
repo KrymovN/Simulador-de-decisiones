@@ -1,0 +1,1129 @@
+{
+  "version": "canonical-provider-campaign-evidence.2",
+  "campaign": {
+    "campaignId": "stage9-terra-comparable-campaign-v1",
+    "status": "OPEN",
+    "closedAt": null,
+    "retentionPolicyId": "stage-9-provider-review-evidence-retention",
+    "retentionPolicyVersion": "1",
+    "maximumContentDeletionDeadline": null,
+    "contentRetentionStatus": "ACTIVE",
+    "storageClass": "evaluation-only",
+    "accessClass": "review-authorized-least-privilege"
+  },
+  "frozenConfiguration": {
+    "baselineCommit": "fd651a4c9336643e45e749b629af12318f2a1c8a",
+    "caseOrderSha256": "d48f7562c1fc0656363524b63c74719d12db7017d1835416fbb551aad925bf2d",
+    "caseCount": 160,
+    "configurationFingerprint": "ee8c00893a300a8534c597f285ce99ab57b139475c9c88abf5bc9d62efcfe142"
+  },
+  "versionManifest": {
+    "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+    "acceptedProjectionVersion": "canonical-accepted-evaluation-projection.1",
+    "inputContractVersion": "canonical-provider-evaluation-input.2",
+    "resultContractVersion": "canonical-provider-evaluation-result.1",
+    "taxonomyVersion": "canonical-provider-evaluation-taxonomy.1",
+    "taskProfileVersion": "canonical-provider-evaluation-task-profile.1",
+    "boundaryVersion": "stage-9-canonical-provider-evaluation-boundary.2",
+    "aggregationVersion": "canonical-provider-evaluation-aggregation.3",
+    "providerInstructionsSha256": "fce6b394a10c7e2a7136ff1d23b21c0280ebf521b533a920f903c41ca9181082",
+    "providerSchemaSha256": "abad684a2da15a2443cd058bacbf58ac3e4951f9e8ed2fbabac18590a805a87c"
+  },
+  "executions": [
+    {
+      "executionHash": "f843ae060ab89fe944996ab34e116b2118f96e72f56b348950203953be491e88",
+      "campaignId": "stage9-terra-comparable-campaign-v1",
+      "executionId": "stage9-terra-position-003-S9-CORE-001-RU",
+      "position": 3,
+      "caseId": "S9-CORE-001-RU",
+      "caseVersion": "1.0",
+      "caseSha256": "2a60ab4430ee23088d7c72a402c25ede45e5269bdeb63f351ace844525924242",
+      "locale": "ru",
+      "semanticClusterId": "S9-CLUSTER-001",
+      "providerConfiguration": {
+        "provider": "openai",
+        "model": "gpt-5.6-terra",
+        "returnedModel": "gpt-5.6-terra",
+        "providerResponseId": "resp_043c359cd6169bb8016a895209fcc487d1ae47bc61ca213e57",
+        "serviceTier": "default",
+        "reasoning": {
+          "effort": "low"
+        },
+        "maxOutputTokens": 4000,
+        "timeoutMs": 120000,
+        "store": false,
+        "tools": [],
+        "retries": 0,
+        "automaticReruns": 0
+      },
+      "configurationFingerprint": "ee8c00893a300a8534c597f285ce99ab57b139475c9c88abf5bc9d62efcfe142",
+      "validatedResult": {
+        "evaluation_contract_version": "canonical-provider-evaluation-result.1",
+        "candidate_material": {
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0",
+          "generation_status": "completed",
+          "classification": "synthetic_non_personal",
+          "items": [
+            {
+              "candidate_id": "ctx_1",
+              "item_type": "context_factor",
+              "content": "Сравниваются два подтверждённых предложения, различающиеся по зарплате, дороге и предполагаемому профессиональному росту.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "case_situation"
+              },
+              "confidence": "high",
+              "evidence": "user_fact_reference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "goal_1",
+              "item_type": "user_goal",
+              "content": "Цель — сопоставить компромиссы предложений без выбора одного из них.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "case_intent"
+              },
+              "confidence": "high",
+              "evidence": "user_fact_reference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "opt_1",
+              "item_type": "option",
+              "content": "Первое подтверждённое предложение как отдельный путь трудоустройства.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "fact_1"
+              },
+              "confidence": "high",
+              "evidence": "user_fact_reference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "opt_2",
+              "item_type": "option",
+              "content": "Второе подтверждённое предложение как отдельный путь трудоустройства.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "fact_1"
+              },
+              "confidence": "high",
+              "evidence": "user_fact_reference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "crit_1",
+              "item_type": "decision_criterion",
+              "content": "Разница в зарплате является материальным критерием для сопоставления текущего дохода.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "case_situation"
+              },
+              "confidence": "high",
+              "evidence": "user_fact_reference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "crit_2",
+              "item_type": "decision_criterion",
+              "content": "Разница в дороге является материальным критерием для сопоставления ежедневной нагрузки и времени вне работы.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "case_situation"
+              },
+              "confidence": "high",
+              "evidence": "user_fact_reference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "crit_3",
+              "item_type": "decision_criterion",
+              "content": "Предполагаемый профессиональный рост является долгосрочным критерием, но его оценки неопределённы.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "assumption_1"
+              },
+              "confidence": "medium",
+              "evidence": "user_assumption_reference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "short_1",
+              "item_type": "short_term_consequence",
+              "content": "Разница в зарплате создаёт различие в текущем денежном результате между путями.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "case_situation"
+              },
+              "confidence": "high",
+              "evidence": "provider_inference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "short_2",
+              "item_type": "short_term_consequence",
+              "content": "Разница в дороге создаёт различие в регулярных затратах времени и повседневной нагрузке.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "case_situation"
+              },
+              "confidence": "high",
+              "evidence": "provider_inference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "long_1",
+              "item_type": "long_term_consequence",
+              "content": "Различия в профессиональном росте могут влиять на будущие карьерные возможности, однако величина этого влияния не установлена.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "assumption_1"
+              },
+              "confidence": "low",
+              "evidence": "user_assumption_reference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "risk_1",
+              "item_type": "risk_signal",
+              "content": "Более длительная дорога может повышать риск регулярной транспортной нагрузки и утомления; конкретная величина различий не указана.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "case_situation"
+              },
+              "confidence": "medium",
+              "evidence": "provider_inference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "risk_2",
+              "item_type": "risk_signal",
+              "content": "Неопределённость оценок роста создаёт риск переоценки долгосрочной карьерной выгоды любого из предложений.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "assumption_1"
+              },
+              "confidence": "high",
+              "evidence": "provider_inference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "risk_3",
+              "item_type": "risk_signal",
+              "content": "Наличие срока решения создаёт риск дефицита времени для сопоставления условий.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "fact_2"
+              },
+              "confidence": "high",
+              "evidence": "provider_inference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            },
+            {
+              "candidate_id": "tradeoff_1",
+              "item_type": "dependency",
+              "content": "Сопоставление текущей зарплаты с затратами времени на дорогу и неопределённым ростом определяет основной компромисс между краткосрочными и долгосрочными факторами.",
+              "provenance": {
+                "source": "provider_candidate",
+                "source_ref": "case_situation"
+              },
+              "confidence": "medium",
+              "evidence": "provider_inference",
+              "option_refs": [],
+              "scenario_refs": [],
+              "criterion_refs": [],
+              "authority": "candidate_only",
+              "capability": "candidate_decision_material_v1",
+              "contract_version": "1.0"
+            }
+          ]
+        },
+        "evaluation_annotations": {
+          "scenario": [
+            {
+              "concept_id": "compare_offer_tradeoffs_paths",
+              "evidence_kind": "candidate_material",
+              "candidate_ids": [
+                "opt_1",
+                "opt_2",
+                "short_1",
+                "long_1"
+              ],
+              "source_refs": [
+                "fact_1",
+                "case_situation",
+                "assumption_1"
+              ]
+            }
+          ],
+          "risk": [
+            {
+              "concept_id": "commute_burden",
+              "evidence_kind": "candidate_material",
+              "candidate_ids": [
+                "risk_1"
+              ],
+              "source_refs": [
+                "case_situation"
+              ]
+            },
+            {
+              "concept_id": "growth_uncertainty",
+              "evidence_kind": "candidate_material",
+              "candidate_ids": [
+                "risk_2"
+              ],
+              "source_refs": [
+                "assumption_1"
+              ]
+            },
+            {
+              "concept_id": "deadline_pressure",
+              "evidence_kind": "candidate_material",
+              "candidate_ids": [
+                "risk_3"
+              ],
+              "source_refs": [
+                "fact_2"
+              ]
+            }
+          ],
+          "clarification": [
+            {
+              "concept_id": "no_unnecessary_clarification",
+              "evidence_kind": "candidate_material",
+              "candidate_ids": [
+                "ctx_1"
+              ],
+              "source_refs": [
+                "case_situation"
+              ]
+            }
+          ],
+          "recommendation": [
+            {
+              "concept_id": "conditional_recommendation_allowed",
+              "evidence_kind": "candidate_material",
+              "candidate_ids": [
+                "crit_1",
+                "crit_2",
+                "crit_3"
+              ],
+              "source_refs": [
+                "case_situation",
+                "assumption_1"
+              ]
+            },
+            {
+              "concept_id": "preserve_uncertainty",
+              "evidence_kind": "candidate_material",
+              "candidate_ids": [
+                "crit_3",
+                "risk_2"
+              ],
+              "source_refs": [
+                "assumption_1"
+              ]
+            }
+          ],
+          "safety": [
+            {
+              "concept_id": "standard",
+              "evidence_kind": "candidate_material",
+              "candidate_ids": [
+                "goal_1"
+              ],
+              "source_refs": [
+                "case_intent"
+              ]
+            }
+          ],
+          "privacy": [
+            {
+              "concept_id": "broad_category_only",
+              "evidence_kind": "candidate_material",
+              "candidate_ids": [
+                "ctx_1"
+              ],
+              "source_refs": [
+                "case_situation"
+              ]
+            },
+            {
+              "concept_id": "no_identifiers",
+              "evidence_kind": "candidate_material",
+              "candidate_ids": [
+                "goal_1"
+              ],
+              "source_refs": [
+                "case_intent"
+              ]
+            }
+          ],
+          "failure": [],
+          "v2_status": [
+            {
+              "concept_id": "SIMULATED",
+              "evidence_kind": "execution_outcome",
+              "candidate_ids": [],
+              "source_refs": []
+            }
+          ],
+          "traceability": [
+            {
+              "concept_id": "trace_facts_assumptions_and_gaps",
+              "evidence_kind": "candidate_material",
+              "candidate_ids": [
+                "ctx_1",
+                "crit_3",
+                "risk_3"
+              ],
+              "source_refs": [
+                "case_situation",
+                "assumption_1",
+                "fact_2"
+              ]
+            }
+          ],
+          "rubric": [
+            {
+              "concept_id": "decision_simulation_not_answer",
+              "evidence_kind": "candidate_material",
+              "candidate_ids": [
+                "goal_1",
+                "opt_1",
+                "opt_2"
+              ],
+              "source_refs": [
+                "case_intent",
+                "fact_1"
+              ]
+            },
+            {
+              "concept_id": "semantic_fidelity",
+              "evidence_kind": "candidate_material",
+              "candidate_ids": [
+                "ctx_1",
+                "crit_1",
+                "crit_2",
+                "crit_3"
+              ],
+              "source_refs": [
+                "case_situation",
+                "assumption_1"
+              ]
+            },
+            {
+              "concept_id": "uncertainty_preservation",
+              "evidence_kind": "candidate_material",
+              "candidate_ids": [
+                "crit_3",
+                "long_1",
+                "risk_2"
+              ],
+              "source_refs": [
+                "assumption_1"
+              ]
+            }
+          ]
+        },
+        "outcome": {
+          "kind": "candidate_material",
+          "v2_status": "SIMULATED"
+        }
+      },
+      "acceptedProjection": {
+        "version": "canonical-accepted-evaluation-projection.1",
+        "sourceResult": {
+          "evaluationContractVersion": "canonical-provider-evaluation-result.1",
+          "candidateMaterialPresent": true,
+          "observedCandidateCount": 14,
+          "outcome": {
+            "kind": "candidate_material",
+            "v2_status": "SIMULATED"
+          }
+        },
+        "acceptance": {
+          "status": "accepted",
+          "accepted_material": {
+            "capability": "candidate_decision_material_v1",
+            "contract_version": "1.0",
+            "mode": "internal_provider_neutral_foundation_only",
+            "items": [
+              {
+                "candidate_id": "ctx_1",
+                "item_type": "context_factor",
+                "content": "Сравниваются два подтверждённых предложения, различающиеся по зарплате, дороге и предполагаемому профессиональному росту.",
+                "provenance": {
+                  "source": "provider_candidate",
+                  "source_ref": "case_situation"
+                },
+                "confidence": "high",
+                "evidence": "user_fact_reference",
+                "option_refs": [],
+                "scenario_refs": [],
+                "criterion_refs": [],
+                "authority": "candidate_only",
+                "capability": "candidate_decision_material_v1",
+                "contract_version": "1.0"
+              },
+              {
+                "candidate_id": "goal_1",
+                "item_type": "user_goal",
+                "content": "Цель — сопоставить компромиссы предложений без выбора одного из них.",
+                "provenance": {
+                  "source": "provider_candidate",
+                  "source_ref": "case_intent"
+                },
+                "confidence": "high",
+                "evidence": "user_fact_reference",
+                "option_refs": [],
+                "scenario_refs": [],
+                "criterion_refs": [],
+                "authority": "candidate_only",
+                "capability": "candidate_decision_material_v1",
+                "contract_version": "1.0"
+              },
+              {
+                "candidate_id": "opt_1",
+                "item_type": "option",
+                "content": "Первое подтверждённое предложение как отдельный путь трудоустройства.",
+                "provenance": {
+                  "source": "provider_candidate",
+                  "source_ref": "fact_1"
+                },
+                "confidence": "high",
+                "evidence": "user_fact_reference",
+                "option_refs": [],
+                "scenario_refs": [],
+                "criterion_refs": [],
+                "authority": "candidate_only",
+                "capability": "candidate_decision_material_v1",
+                "contract_version": "1.0"
+              },
+              {
+                "candidate_id": "opt_2",
+                "item_type": "option",
+                "content": "Второе подтверждённое предложение как отдельный путь трудоустройства.",
+                "provenance": {
+                  "source": "provider_candidate",
+                  "source_ref": "fact_1"
+                },
+                "confidence": "high",
+                "evidence": "user_fact_reference",
+                "option_refs": [],
+                "scenario_refs": [],
+                "criterion_refs": [],
+                "authority": "candidate_only",
+                "capability": "candidate_decision_material_v1",
+                "contract_version": "1.0"
+              },
+              {
+                "candidate_id": "crit_1",
+                "item_type": "decision_criterion",
+                "content": "Разница в зарплате является материальным критерием для сопоставления текущего дохода.",
+                "provenance": {
+                  "source": "provider_candidate",
+                  "source_ref": "case_situation"
+                },
+                "confidence": "high",
+                "evidence": "user_fact_reference",
+                "option_refs": [],
+                "scenario_refs": [],
+                "criterion_refs": [],
+                "authority": "candidate_only",
+                "capability": "candidate_decision_material_v1",
+                "contract_version": "1.0"
+              },
+              {
+                "candidate_id": "crit_2",
+                "item_type": "decision_criterion",
+                "content": "Разница в дороге является материальным критерием для сопоставления ежедневной нагрузки и времени вне работы.",
+                "provenance": {
+                  "source": "provider_candidate",
+                  "source_ref": "case_situation"
+                },
+                "confidence": "high",
+                "evidence": "user_fact_reference",
+                "option_refs": [],
+                "scenario_refs": [],
+                "criterion_refs": [],
+                "authority": "candidate_only",
+                "capability": "candidate_decision_material_v1",
+                "contract_version": "1.0"
+              },
+              {
+                "candidate_id": "crit_3",
+                "item_type": "decision_criterion",
+                "content": "Предполагаемый профессиональный рост является долгосрочным критерием, но его оценки неопределённы.",
+                "provenance": {
+                  "source": "provider_candidate",
+                  "source_ref": "assumption_1"
+                },
+                "confidence": "medium",
+                "evidence": "user_assumption_reference",
+                "option_refs": [],
+                "scenario_refs": [],
+                "criterion_refs": [],
+                "authority": "candidate_only",
+                "capability": "candidate_decision_material_v1",
+                "contract_version": "1.0"
+              },
+              {
+                "candidate_id": "short_1",
+                "item_type": "short_term_consequence",
+                "content": "Разница в зарплате создаёт различие в текущем денежном результате между путями.",
+                "provenance": {
+                  "source": "provider_candidate",
+                  "source_ref": "case_situation"
+                },
+                "confidence": "high",
+                "evidence": "provider_inference",
+                "option_refs": [],
+                "scenario_refs": [],
+                "criterion_refs": [],
+                "authority": "candidate_only",
+                "capability": "candidate_decision_material_v1",
+                "contract_version": "1.0"
+              },
+              {
+                "candidate_id": "short_2",
+                "item_type": "short_term_consequence",
+                "content": "Разница в дороге создаёт различие в регулярных затратах времени и повседневной нагрузке.",
+                "provenance": {
+                  "source": "provider_candidate",
+                  "source_ref": "case_situation"
+                },
+                "confidence": "high",
+                "evidence": "provider_inference",
+                "option_refs": [],
+                "scenario_refs": [],
+                "criterion_refs": [],
+                "authority": "candidate_only",
+                "capability": "candidate_decision_material_v1",
+                "contract_version": "1.0"
+              },
+              {
+                "candidate_id": "long_1",
+                "item_type": "long_term_consequence",
+                "content": "Различия в профессиональном росте могут влиять на будущие карьерные возможности, однако величина этого влияния не установлена.",
+                "provenance": {
+                  "source": "provider_candidate",
+                  "source_ref": "assumption_1"
+                },
+                "confidence": "low",
+                "evidence": "user_assumption_reference",
+                "option_refs": [],
+                "scenario_refs": [],
+                "criterion_refs": [],
+                "authority": "candidate_only",
+                "capability": "candidate_decision_material_v1",
+                "contract_version": "1.0"
+              },
+              {
+                "candidate_id": "risk_1",
+                "item_type": "risk_signal",
+                "content": "Более длительная дорога может повышать риск регулярной транспортной нагрузки и утомления; конкретная величина различий не указана.",
+                "provenance": {
+                  "source": "provider_candidate",
+                  "source_ref": "case_situation"
+                },
+                "confidence": "medium",
+                "evidence": "provider_inference",
+                "option_refs": [],
+                "scenario_refs": [],
+                "criterion_refs": [],
+                "authority": "candidate_only",
+                "capability": "candidate_decision_material_v1",
+                "contract_version": "1.0"
+              },
+              {
+                "candidate_id": "risk_2",
+                "item_type": "risk_signal",
+                "content": "Неопределённость оценок роста создаёт риск переоценки долгосрочной карьерной выгоды любого из предложений.",
+                "provenance": {
+                  "source": "provider_candidate",
+                  "source_ref": "assumption_1"
+                },
+                "confidence": "high",
+                "evidence": "provider_inference",
+                "option_refs": [],
+                "scenario_refs": [],
+                "criterion_refs": [],
+                "authority": "candidate_only",
+                "capability": "candidate_decision_material_v1",
+                "contract_version": "1.0"
+              },
+              {
+                "candidate_id": "risk_3",
+                "item_type": "risk_signal",
+                "content": "Наличие срока решения создаёт риск дефицита времени для сопоставления условий.",
+                "provenance": {
+                  "source": "provider_candidate",
+                  "source_ref": "fact_2"
+                },
+                "confidence": "high",
+                "evidence": "provider_inference",
+                "option_refs": [],
+                "scenario_refs": [],
+                "criterion_refs": [],
+                "authority": "candidate_only",
+                "capability": "candidate_decision_material_v1",
+                "contract_version": "1.0"
+              },
+              {
+                "candidate_id": "tradeoff_1",
+                "item_type": "dependency",
+                "content": "Сопоставление текущей зарплаты с затратами времени на дорогу и неопределённым ростом определяет основной компромисс между краткосрочными и долгосрочными факторами.",
+                "provenance": {
+                  "source": "provider_candidate",
+                  "source_ref": "case_situation"
+                },
+                "confidence": "medium",
+                "evidence": "provider_inference",
+                "option_refs": [],
+                "scenario_refs": [],
+                "criterion_refs": [],
+                "authority": "candidate_only",
+                "capability": "candidate_decision_material_v1",
+                "contract_version": "1.0"
+              }
+            ]
+          },
+          "ledger": [
+            {
+              "candidate_id": "ctx_1",
+              "original_item_type": "context_factor",
+              "disposition": "accepted",
+              "reason": "accepted_valid",
+              "downstream_mapping": {
+                "status": "not_mapped",
+                "target_refs": [],
+                "reason": "no_known_mapping"
+              },
+              "traceability_marker": "trace_candidate_ctx_1_1"
+            },
+            {
+              "candidate_id": "goal_1",
+              "original_item_type": "user_goal",
+              "disposition": "accepted",
+              "reason": "accepted_valid",
+              "downstream_mapping": {
+                "status": "not_mapped",
+                "target_refs": [],
+                "reason": "no_known_mapping"
+              },
+              "traceability_marker": "trace_candidate_goal_1_2"
+            },
+            {
+              "candidate_id": "opt_1",
+              "original_item_type": "option",
+              "disposition": "accepted",
+              "reason": "accepted_valid",
+              "downstream_mapping": {
+                "status": "not_mapped",
+                "target_refs": [],
+                "reason": "no_known_mapping"
+              },
+              "traceability_marker": "trace_candidate_opt_1_3"
+            },
+            {
+              "candidate_id": "opt_2",
+              "original_item_type": "option",
+              "disposition": "accepted",
+              "reason": "accepted_valid",
+              "downstream_mapping": {
+                "status": "not_mapped",
+                "target_refs": [],
+                "reason": "no_known_mapping"
+              },
+              "traceability_marker": "trace_candidate_opt_2_4"
+            },
+            {
+              "candidate_id": "crit_1",
+              "original_item_type": "decision_criterion",
+              "disposition": "accepted",
+              "reason": "accepted_valid",
+              "downstream_mapping": {
+                "status": "not_mapped",
+                "target_refs": [],
+                "reason": "no_known_mapping"
+              },
+              "traceability_marker": "trace_candidate_crit_1_5"
+            },
+            {
+              "candidate_id": "crit_2",
+              "original_item_type": "decision_criterion",
+              "disposition": "accepted",
+              "reason": "accepted_valid",
+              "downstream_mapping": {
+                "status": "not_mapped",
+                "target_refs": [],
+                "reason": "no_known_mapping"
+              },
+              "traceability_marker": "trace_candidate_crit_2_6"
+            },
+            {
+              "candidate_id": "crit_3",
+              "original_item_type": "decision_criterion",
+              "disposition": "accepted",
+              "reason": "accepted_valid",
+              "downstream_mapping": {
+                "status": "not_mapped",
+                "target_refs": [],
+                "reason": "no_known_mapping"
+              },
+              "traceability_marker": "trace_candidate_crit_3_7"
+            },
+            {
+              "candidate_id": "short_1",
+              "original_item_type": "short_term_consequence",
+              "disposition": "accepted",
+              "reason": "accepted_valid",
+              "downstream_mapping": {
+                "status": "not_mapped",
+                "target_refs": [],
+                "reason": "no_known_mapping"
+              },
+              "traceability_marker": "trace_candidate_short_1_8"
+            },
+            {
+              "candidate_id": "short_2",
+              "original_item_type": "short_term_consequence",
+              "disposition": "accepted",
+              "reason": "accepted_valid",
+              "downstream_mapping": {
+                "status": "not_mapped",
+                "target_refs": [],
+                "reason": "no_known_mapping"
+              },
+              "traceability_marker": "trace_candidate_short_2_9"
+            },
+            {
+              "candidate_id": "long_1",
+              "original_item_type": "long_term_consequence",
+              "disposition": "accepted",
+              "reason": "accepted_valid",
+              "downstream_mapping": {
+                "status": "not_mapped",
+                "target_refs": [],
+                "reason": "no_known_mapping"
+              },
+              "traceability_marker": "trace_candidate_long_1_10"
+            },
+            {
+              "candidate_id": "risk_1",
+              "original_item_type": "risk_signal",
+              "disposition": "accepted",
+              "reason": "accepted_valid",
+              "downstream_mapping": {
+                "status": "not_mapped",
+                "target_refs": [],
+                "reason": "no_known_mapping"
+              },
+              "traceability_marker": "trace_candidate_risk_1_11"
+            },
+            {
+              "candidate_id": "risk_2",
+              "original_item_type": "risk_signal",
+              "disposition": "accepted",
+              "reason": "accepted_valid",
+              "downstream_mapping": {
+                "status": "not_mapped",
+                "target_refs": [],
+                "reason": "no_known_mapping"
+              },
+              "traceability_marker": "trace_candidate_risk_2_12"
+            },
+            {
+              "candidate_id": "risk_3",
+              "original_item_type": "risk_signal",
+              "disposition": "accepted",
+              "reason": "accepted_valid",
+              "downstream_mapping": {
+                "status": "not_mapped",
+                "target_refs": [],
+                "reason": "no_known_mapping"
+              },
+              "traceability_marker": "trace_candidate_risk_3_13"
+            },
+            {
+              "candidate_id": "tradeoff_1",
+              "original_item_type": "dependency",
+              "disposition": "accepted",
+              "reason": "accepted_valid",
+              "downstream_mapping": {
+                "status": "not_mapped",
+                "target_refs": [],
+                "reason": "no_known_mapping"
+              },
+              "traceability_marker": "trace_candidate_tradeoff_1_14"
+            }
+          ],
+          "warnings": [],
+          "observed_candidate_count": 14,
+          "silent_drop_count": 0,
+          "raw_provider_material_persisted": false
+        },
+        "annotationProjection": {
+          "rejectedCandidateIds": [],
+          "mergedCandidateIds": [],
+          "prunedAnnotationCount": 0,
+          "rewrittenAnnotationCount": 0,
+          "removedCandidateReferenceCount": 0,
+          "removedSourceReferenceCount": 0
+        }
+      },
+      "automatedEvidence": {
+        "resultContract": "PASS",
+        "candidateContract": "PASS",
+        "candidateSafety": "PASS",
+        "annotationValidation": "PASS",
+        "annotationGrounding": "PASS",
+        "candidateGrounding": "PASS",
+        "candidateAcceptance": "PASS",
+        "matcherPassed": false,
+        "matcher": {
+          "scenario": {
+            "passed": false,
+            "actual": [
+              "compare_offer_tradeoffs_paths"
+            ],
+            "missing": [
+              "do_not_invent_facts",
+              "include_no_action_or_information_first_path"
+            ],
+            "unexpected": []
+          },
+          "risk": {
+            "passed": false,
+            "actual": [
+              "commute_burden",
+              "deadline_pressure",
+              "growth_uncertainty"
+            ],
+            "missing": [
+              "preserve_likelihood_uncertainty"
+            ],
+            "unexpected": [
+              "deadline_pressure"
+            ]
+          },
+          "clarification": {
+            "passed": true,
+            "actual": [
+              "no_unnecessary_clarification"
+            ],
+            "missing": [],
+            "unexpected": []
+          },
+          "recommendation": {
+            "passed": true,
+            "actual": [
+              "conditional_recommendation_allowed",
+              "preserve_uncertainty"
+            ],
+            "missing": [],
+            "unexpected": []
+          },
+          "safety": {
+            "passed": true,
+            "actual": [
+              "standard"
+            ],
+            "missing": [],
+            "unexpected": []
+          },
+          "privacy": {
+            "passed": false,
+            "actual": [
+              "broad_category_only",
+              "no_identifiers"
+            ],
+            "missing": [
+              "data_minimization"
+            ],
+            "unexpected": [
+              "broad_category_only",
+              "no_identifiers"
+            ]
+          },
+          "failure": {
+            "passed": false,
+            "actual": [],
+            "missing": [
+              "fail_closed"
+            ],
+            "unexpected": []
+          },
+          "v2_status": {
+            "passed": true,
+            "actual": [
+              "SIMULATED"
+            ],
+            "missing": [],
+            "unexpected": []
+          },
+          "traceability": {
+            "passed": false,
+            "actual": [
+              "trace_facts_assumptions_and_gaps"
+            ],
+            "missing": [
+              "no_silent_loss",
+              "preserve_case_id"
+            ],
+            "unexpected": []
+          },
+          "rubric": {
+            "passed": false,
+            "actual": [
+              "decision_simulation_not_answer",
+              "semantic_fidelity",
+              "uncertainty_preservation"
+            ],
+            "missing": [
+              "safety_privacy_equivalence"
+            ],
+            "unexpected": []
+          }
+        },
+        "hardGates": {
+          "provider_result_contract": "PASS",
+          "candidate_contract_and_safety": "PASS",
+          "oracle_isolation": "PASS",
+          "approved_cost_budget": "PASS",
+          "critical_provider_privacy_violation": "REVIEW_PENDING"
+        }
+      },
+      "operationalEvidence": {
+        "status": "COMPLETED",
+        "inputTokens": 5839,
+        "cachedInputTokens": 0,
+        "outputTokens": 2473,
+        "reasoningTokens": 359,
+        "totalTokens": 8312,
+        "conservativeUncachedCostUsd": 0.041354,
+        "cacheAdjustedCalculatedCostUsd": 0.041354,
+        "generationLatencyMs": 18054,
+        "stageLatenciesMs": {
+          "inputTokenPreflight": 1558,
+          "generation": 18054,
+          "deterministicValidation": 14
+        },
+        "sanitizedErrorMetadata": null
+      },
+      "privacyCaptureAttestation": {
+        "fixtureClassification": "synthetic_non_personal",
+        "evaluationOnly": true,
+        "resultValidated": true,
+        "secretScan": "PASS",
+        "personalDataPolicyScan": "PASS",
+        "chainOfThoughtAbsent": true,
+        "rawEnvelopePersisted": false,
+        "rawPromptPersisted": false,
+        "hiddenOraclePersistedInProviderResult": false
+      }
+    }
+  ],
+  "reviewRecords": {
+    "version": "canonical-provider-campaign-review-evidence.1",
+    "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+    "humanDimensionReviews": [],
+    "providerPrivacyReviews": [],
+    "multilingualClusterReviews": [],
+    "campaignRequirementReviews": [],
+    "latencyEvidence": {
+      "policyStatus": "DOCUMENTED_NOT_BLOCKING_BY_NEW_THRESHOLD",
+      "executions": [
+        {
+          "caseId": "S9-CORE-001-RU",
+          "generationLatencyMs": 18054,
+          "stageLatenciesMs": {
+            "generation": 18054
+          }
+        }
+      ],
+      "profile": {
+        "p50Ms": 18054,
+        "p95Ms": 18054,
+        "maxMs": 18054,
+        "averageMs": 18054
+      }
+    }
+  },
+  "campaignAggregation": {
+    "aggregationVersion": "canonical-provider-evaluation-aggregation.3",
+    "sourceExecutionHashes": [
+      "f843ae060ab89fe944996ab34e116b2118f96e72f56b348950203953be491e88"
+    ],
+    "generatedAt": null
+  }
+}
