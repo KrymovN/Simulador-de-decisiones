@@ -59,6 +59,7 @@ const historicalFailure = load(
   "STAGE_9_TERRA_POSITION_2_PROVIDER_CONTRACT_FAILURE_EVIDENCE.v1.json",
 );
 const position1Human = load("STAGE_9_TERRA_POSITION_1_HUMAN_REVIEW_EVIDENCE.v1.json");
+const position2Human = load("STAGE_9_TERRA_POSITION_2_HUMAN_REVIEW_EVIDENCE.v2.json");
 const cases = fixtures.CANONICAL_OFFLINE_EVALUATION_CASES;
 const byId = new Map(cases.map((item) => [item.case_id, item]));
 const categories = taxonomy.CANONICAL_PROVIDER_EVALUATION_CATEGORIES;
@@ -139,10 +140,25 @@ function position1Comparable() {
 
 const record = replacement.value.executions[0];
 const position2Comparable = comparableFromExecution(record);
-const reviewEvidence =
+const position1ReviewEvidence =
   humanReviewEvidence.canonicalProviderCampaignReviewEvidenceFromHumanArtifact(
     position1Human.value,
   );
+const position2ReviewEvidence =
+  humanReviewEvidence.canonicalProviderCampaignReviewEvidenceFromHumanArtifactV2(
+    position2Human.value,
+  );
+const reviewEvidence = {
+  ...position1ReviewEvidence,
+  humanDimensionReviews: [
+    ...position1ReviewEvidence.humanDimensionReviews,
+    ...position2ReviewEvidence.humanDimensionReviews,
+  ],
+  providerPrivacyReviews: [
+    ...position1ReviewEvidence.providerPrivacyReviews,
+    ...position2ReviewEvidence.providerPrivacyReviews,
+  ],
+};
 const levioGuarantees = Object.fromEntries(
   aggregation.CANONICAL_LEVIO_GUARANTEE_IDS.map((id) => [id, "PASS"]),
 );
@@ -221,7 +237,61 @@ const validation = campaignEvidence.validateCanonicalProviderCampaignEvidenceV2(
   replacement.value,
   cases,
 );
+const position2HumanValidation =
+  humanReviewEvidence.validateCanonicalProviderHumanReviewEvidenceV2(
+    position2Human.value,
+    {
+      caseId: "S9-CORE-001-EN",
+      locale: "en",
+      semanticClusterId: "S9-CLUSTER-001",
+      executionHash: record.executionHash,
+    },
+  );
+const duplicateReviewEvidence = structuredClone(reviewEvidence);
+duplicateReviewEvidence.humanDimensionReviews.push(
+  structuredClone(position2ReviewEvidence.humanDimensionReviews[0]),
+);
+duplicateReviewEvidence.providerPrivacyReviews.push(
+  structuredClone(position2ReviewEvidence.providerPrivacyReviews[0]),
+);
+const duplicateReviewValidation = review.validateCanonicalProviderCampaignReviewEvidence(
+  duplicateReviewEvidence,
+  new Set(cases.map((item) => item.case_id)),
+  new Set(cases.map((item) => item.provenance.semantic_cluster_id)),
+  new Map([
+    ["S9-CORE-001-ES", position1Human.value.verbatimSubmission.identity.reviewedExecutionHash],
+    ["S9-CORE-001-EN", record.executionHash],
+  ]),
+);
+const position2Status = !position2HumanValidation.valid
+  ? "REVIEW_REQUIRED"
+  : position2Human.value.normalizedReview.humanDimensionReviews.some(
+      (item) => item.status === "FAIL",
+    ) || position2Human.value.normalizedReview.providerPrivacyReviews.some(
+      (item) => item.status === "FAIL",
+    )
+    ? "FAIL"
+    : "PASS";
+const position3ContinuationGate = !position2HumanValidation.valid
+  ? "BLOCKED / REVIEW REQUIRED"
+  : result.evidenceIssues.length > 0 ||
+      result.providerQualification.status ===
+        "QUALIFICATION_IMPOSSIBLE_BY_PROVIDER_THRESHOLD" ||
+      result.providerQualification.status === "SYSTEM_EVIDENCE_INCOMPLETE" ||
+      result.overallStage9.status === "STAGE9_BLOCKED" ||
+      result.overallStage9.status === "SYSTEM_EVIDENCE_INCOMPLETE"
+    ? "NOT AUTHORIZED"
+    : "AUTHORIZED";
 add("replacement-evidence-valid", validation.valid, validation.issues.join(", "));
+add("position2-md-human-review-valid-and-complete",
+  position2HumanValidation.valid && position2HumanValidation.status === "COMPLETE" &&
+  position2HumanValidation.issues.length === 0 && position2Status === "FAIL");
+add("duplicate-case-dimension-and-privacy-review-rejected",
+  duplicateReviewValidation.issues.includes(
+    "duplicate_human_review:S9-CORE-001-EN:clarification_relevance",
+  ) && duplicateReviewValidation.issues.includes(
+    "duplicate_privacy_review:S9-CORE-001-EN",
+  ));
 add("replacement-identity-exact",
   record.position === 2 && record.caseId === "S9-CORE-001-EN" &&
   record.locale === "en" && record.semanticClusterId === "S9-CLUSTER-001" &&
@@ -278,14 +348,21 @@ add("invalid-migration-cannot-suppress-historical-hard-gate",
   invalidMigrationResult.providerQualification.hardGates.find(
     (gate) => gate.gateId === "provider_result_contract",
   ).failures === 1);
-add("human-review-count-unchanged",
-  result.coverage.humanReviewedExecutions === 1 &&
+add("human-review-count-includes-position2-md",
+  result.coverage.humanReviewedExecutions === 2 &&
   result.coverage.humanReviewedExecutionsByLocale.es === 1 &&
-  result.coverage.humanReviewedExecutionsByLocale.en === 0);
+  result.coverage.humanReviewedExecutionsByLocale.en === 1);
 add("qualification-remains-incomplete",
   result.providerQualification.status === "QUALIFICATION_PENDING_REQUIRED_REVIEW" &&
   result.levioProductGuarantee.status === "LEVIO_IMPLEMENTATION_GAP" &&
   result.overallStage9.status === "STAGE9_INCOMPLETE");
+add("position3-continuation-is-authorized-but-not-executed",
+  position3ContinuationGate === "AUTHORIZED");
+add("non-admissible-and-deleted-submissions-excluded",
+  !JSON.stringify(position2Human.value).includes("6631642268422133854") &&
+  !JSON.stringify(reviewEvidence).includes("6631642268422133854") &&
+  !JSON.stringify(position2Human.value).includes("6631276013018277627") &&
+  !JSON.stringify(reviewEvidence).includes("6631276013018277627"));
 add("historical-artifact-physical-hashes-unchanged",
   sha(position1Human.buffer) ===
     "0306e7bca7813fea79cfb1292442a74b06159c3d68b988d30a365e2d6436a150" &&
@@ -302,6 +379,24 @@ console.log(JSON.stringify({
   evidencePhysicalSha256: sha(replacement.buffer),
   blindPacketPhysicalSha256: sha(blind.buffer),
   executionHash: record.executionHash,
+  position2HumanReview: {
+    submissionId: position2Human.value.sourceProvenance.submissionId,
+    artifactHash: position2Human.value.artifactHash,
+    completionStatus: position2Human.value.completionStatus,
+    positionStatus: position2Status,
+    dimensionStatuses: Object.fromEntries(
+      position2Human.value.normalizedReview.humanDimensionReviews.map((item) => [
+        item.dimension,
+        { score: item.score, status: item.status },
+      ]),
+    ),
+    rawPrivacyAssessment:
+      position2Human.value.verbatimSubmission.privacyReview.globalAssessment.answer,
+    privacyStatus: position2Human.value.normalizedReview.providerPrivacyReviews[0].status,
+    criticalProviderPrivacyViolation:
+      position2Human.value.normalizedReview.providerPrivacyReviews[0]
+        .criticalProviderPrivacyViolation,
+  },
   acceptance: {
     observed: projection.sourceResult.observedCandidateCount,
     dispositions,
@@ -324,6 +419,7 @@ console.log(JSON.stringify({
   providerQualification: result.providerQualification.status,
   levioProductGuarantee: result.levioProductGuarantee.status,
   overallStage9: result.overallStage9,
+  position3ContinuationGate,
   providerPrivacy: result.reviewEvidenceAggregation?.providerPrivacy ?? null,
   multilingualReview: result.reviewEvidenceAggregation?.multilingual ?? null,
   checks,

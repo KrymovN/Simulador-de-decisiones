@@ -1,16 +1,16 @@
 {
   "version": "canonical-provider-human-review-evidence.2",
   "sourceProvenance": {
-    "submissionId": "6631276013018277627",
-    "submissionTimestamp": "2026-08-21 09:20:01",
-    "reviewerEnteredDate": "2026-08-21",
+    "submissionId": "6631532634015686286",
+    "submissionTimestamp": "2026-08-21 16:27:43",
+    "reviewerEnteredDate": "2026-08-22",
     "reviewLanguage": "en",
     "sourceSystem": "Jotform",
     "sourceFormId": null,
     "sourceFormVersion": null,
     "nativeSpeakerConfirmation": "YES",
     "personalIdentityStored": false,
-    "verbatimSubmissionSha256": "9828ea66a99e5f7dfe9b132ce19edb0654404a98ca82326ab0c4675e5fe3f6dc"
+    "verbatimSubmissionSha256": "5038b8b1fa74367bfbcbbb3fa4f91b57a66f5dcf13c94f87044e6b10cd0731ec"
   },
   "verbatimSubmission": {
     "identity": {
@@ -28,62 +28,70 @@
     },
     "dimensionReviews": {
       "clarification_relevance": {
-        "score": 1,
+        "score": 3,
         "commentParagraphs": [
-          "not clear"
+          "Points 3 to 7, once read and digested made complete sense concerning the scenario, points 1 & 2 comprehension was a lot more difficult, the wording contextually to the intention of the point initially did not communicate well comparatively to an alternate approach to its wording."
         ]
       },
       "scenario_usefulness_distinctness": {
-        "score": 2,
+        "score": 4,
         "commentParagraphs": [
-          "very similar"
+          "The scenario was fine, complete, once comprehended no issues."
         ]
       },
       "risk_discipline": {
-        "score": 1,
+        "score": 4,
         "commentParagraphs": [
-          "Risk averse"
+          "The scenario included sufficient risk analysis discernment. The overall points had a high level of comprehension risk for non native English speakers."
         ]
       },
       "recommendation_strategic_usefulness": {
         "score": 3,
         "commentParagraphs": [
-          "more information is good"
+          "Points had good information concerning the scenario, same feedback as question 1."
         ]
       }
     },
     "privacyReview": {
       "unnecessaryPersonalInformation": {
         "answer": "NO",
-        "commentParagraphs": []
+        "commentParagraphs": [
+          "No information was personally involved with the scenario"
+        ]
       },
       "sensitivePrivateInformation": {
         "answer": "NO",
-        "commentParagraphs": []
+        "commentParagraphs": [
+          "The questions structure is non discrepant"
+        ]
       },
       "dataMinimization": {
         "answer": "YES",
-        "commentParagraphs": []
+        "commentParagraphs": [
+          "Pure logic initially replaying the scenario in my head but based of the reviewer (person larping as discerner or people doing this survey) results could change to emotional based on the experiences of the deciding factors."
+        ]
       },
       "criticalPrivacyProblem": {
         "answer": "NO",
-        "commentParagraphs": []
+        "commentParagraphs": [
+          "No"
+        ]
       },
       "globalAssessment": {
-        "answer": "CANNOT DETERMINE",
+        "answer": "ADEQUATE",
         "commentParagraphs": [
-          "unclear"
+          "Non descriptive, generic tactical wording, no personal information involved"
         ]
       }
     },
     "generalAssessment": {
       "usefulForRealPerson": {
-        "answer": "NO",
+        "answer": "YES",
         "commentParagraphs": [
-          "information contradicts"
+          "Taking the theoretical application of the question and mentally replacing the factors with a potential personal scenario could be useful for their decisions."
         ]
       },
-      "mainImprovement": "more clarity",
+      "mainImprovement": "Rewording and restructuring or Point 1 and Point 2",
       "otherImportantUnrepresentedProblem": {
         "answer": "NO",
         "commentParagraphs": []
@@ -93,13 +101,8 @@
     "reviewLanguage": "en"
   },
   "supplements": [],
-  "completionStatus": "REVIEW_REQUIRED",
-  "remainingIssues": [
-    "human_review_privacy_comment_missing:unnecessaryPersonalInformation",
-    "human_review_privacy_comment_missing:sensitivePrivateInformation",
-    "human_review_privacy_comment_missing:dataMinimization",
-    "human_review_privacy_comment_missing:criticalPrivacyProblem"
-  ],
+  "completionStatus": "COMPLETE",
+  "remainingIssues": [],
   "normalizedSemantics": {
     "privacyReview": {
       "unnecessaryPersonalInformation": "NEGATIVE",
@@ -108,11 +111,165 @@
       "criticalPrivacyProblem": "NEGATIVE"
     },
     "generalAssessment": {
-      "usefulForRealPerson": "NEGATIVE",
+      "usefulForRealPerson": "AFFIRMATIVE",
       "otherImportantUnrepresentedProblem": "NEGATIVE"
     },
     "independenceConfirmation": "AFFIRMATIVE"
   },
-  "normalizedReview": null,
-  "artifactHash": "0d2457280ed60d1ef5a39df140fd77b3c7ec0c8a9e4f0b9ebc9e04337e543d99"
+  "normalizedReview": {
+    "humanDimensionReviews": [
+      {
+        "recordVersion": "canonical-human-dimension-review-record.1",
+        "caseId": "S9-CORE-001-EN",
+        "locale": "en",
+        "semanticClusterId": "S9-CLUSTER-001",
+        "reviewedExecutionHash": "2af02a72f0c8a9a1c7fe5aaaa5abad33e67d8e8de51b877484af769d3afab401",
+        "dimension": "clarification_relevance",
+        "status": "PASS",
+        "score": 3,
+        "criticalConcern": "NONE",
+        "reason": "Points 3 to 7, once read and digested made complete sense concerning the scenario, points 1 & 2 comprehension was a lot more difficult, the wording contextually to the intention of the point initially did not communicate well comparatively to an alternate approach to its wording.",
+        "evidencePointers": [
+          "verbatimSubmission.dimensionReviews.clarification_relevance",
+          "execution:2af02a72f0c8a9a1c7fe5aaaa5abad33e67d8e8de51b877484af769d3afab401"
+        ],
+        "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+        "reviewer": {
+          "reviewerKind": "HUMAN_REVIEWER",
+          "roleId": "independent-reviewer",
+          "version": "1"
+        },
+        "adjudication": {
+          "required": false,
+          "status": "NOT_REQUIRED",
+          "reviewer": null,
+          "verdict": null,
+          "reason": null
+        },
+        "reviewedAt": null
+      },
+      {
+        "recordVersion": "canonical-human-dimension-review-record.1",
+        "caseId": "S9-CORE-001-EN",
+        "locale": "en",
+        "semanticClusterId": "S9-CLUSTER-001",
+        "reviewedExecutionHash": "2af02a72f0c8a9a1c7fe5aaaa5abad33e67d8e8de51b877484af769d3afab401",
+        "dimension": "scenario_usefulness_distinctness",
+        "status": "PASS",
+        "score": 4,
+        "criticalConcern": "NONE",
+        "reason": "The scenario was fine, complete, once comprehended no issues.",
+        "evidencePointers": [
+          "verbatimSubmission.dimensionReviews.scenario_usefulness_distinctness",
+          "execution:2af02a72f0c8a9a1c7fe5aaaa5abad33e67d8e8de51b877484af769d3afab401"
+        ],
+        "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+        "reviewer": {
+          "reviewerKind": "HUMAN_REVIEWER",
+          "roleId": "independent-reviewer",
+          "version": "1"
+        },
+        "adjudication": {
+          "required": false,
+          "status": "NOT_REQUIRED",
+          "reviewer": null,
+          "verdict": null,
+          "reason": null
+        },
+        "reviewedAt": null
+      },
+      {
+        "recordVersion": "canonical-human-dimension-review-record.1",
+        "caseId": "S9-CORE-001-EN",
+        "locale": "en",
+        "semanticClusterId": "S9-CLUSTER-001",
+        "reviewedExecutionHash": "2af02a72f0c8a9a1c7fe5aaaa5abad33e67d8e8de51b877484af769d3afab401",
+        "dimension": "risk_discipline",
+        "status": "PASS",
+        "score": 4,
+        "criticalConcern": "NONE",
+        "reason": "The scenario included sufficient risk analysis discernment. The overall points had a high level of comprehension risk for non native English speakers.",
+        "evidencePointers": [
+          "verbatimSubmission.dimensionReviews.risk_discipline",
+          "execution:2af02a72f0c8a9a1c7fe5aaaa5abad33e67d8e8de51b877484af769d3afab401"
+        ],
+        "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+        "reviewer": {
+          "reviewerKind": "HUMAN_REVIEWER",
+          "roleId": "independent-reviewer",
+          "version": "1"
+        },
+        "adjudication": {
+          "required": false,
+          "status": "NOT_REQUIRED",
+          "reviewer": null,
+          "verdict": null,
+          "reason": null
+        },
+        "reviewedAt": null
+      },
+      {
+        "recordVersion": "canonical-human-dimension-review-record.1",
+        "caseId": "S9-CORE-001-EN",
+        "locale": "en",
+        "semanticClusterId": "S9-CLUSTER-001",
+        "reviewedExecutionHash": "2af02a72f0c8a9a1c7fe5aaaa5abad33e67d8e8de51b877484af769d3afab401",
+        "dimension": "recommendation_strategic_usefulness",
+        "status": "PASS",
+        "score": 3,
+        "criticalConcern": "NONE",
+        "reason": "Points had good information concerning the scenario, same feedback as question 1.",
+        "evidencePointers": [
+          "verbatimSubmission.dimensionReviews.recommendation_strategic_usefulness",
+          "execution:2af02a72f0c8a9a1c7fe5aaaa5abad33e67d8e8de51b877484af769d3afab401"
+        ],
+        "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+        "reviewer": {
+          "reviewerKind": "HUMAN_REVIEWER",
+          "roleId": "independent-reviewer",
+          "version": "1"
+        },
+        "adjudication": {
+          "required": false,
+          "status": "NOT_REQUIRED",
+          "reviewer": null,
+          "verdict": null,
+          "reason": null
+        },
+        "reviewedAt": null
+      }
+    ],
+    "providerPrivacyReviews": [
+      {
+        "recordVersion": "canonical-provider-privacy-review-record.1",
+        "caseId": "S9-CORE-001-EN",
+        "locale": "en",
+        "semanticClusterId": "S9-CLUSTER-001",
+        "reviewedExecutionHash": "2af02a72f0c8a9a1c7fe5aaaa5abad33e67d8e8de51b877484af769d3afab401",
+        "status": "FAIL",
+        "criticalProviderPrivacyViolation": false,
+        "reason": "Non descriptive, generic tactical wording, no personal information involved",
+        "evidencePointers": [
+          "verbatimSubmission.privacyReview",
+          "source-submission:6631532634015686286",
+          "execution:2af02a72f0c8a9a1c7fe5aaaa5abad33e67d8e8de51b877484af769d3afab401"
+        ],
+        "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+        "reviewer": {
+          "reviewerKind": "HUMAN_REVIEWER",
+          "roleId": "independent-reviewer",
+          "version": "1"
+        },
+        "adjudication": {
+          "required": false,
+          "status": "NOT_REQUIRED",
+          "reviewer": null,
+          "verdict": null,
+          "reason": null
+        },
+        "reviewedAt": null
+      }
+    ]
+  },
+  "artifactHash": "cc84da273086b83c8770554fb7bf3ff465546ff33e9c27a8a6a7ecb907a4e09f"
 }

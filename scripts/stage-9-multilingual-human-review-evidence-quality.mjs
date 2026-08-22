@@ -67,38 +67,61 @@ const verbatimSubmission = {
   },
   dimensionReviews: {
     clarification_relevance: {
-      score: 1,
-      commentParagraphs: ["not clear"],
+      score: 3,
+      commentParagraphs: [
+        "Points 3 to 7, once read and digested made complete sense concerning the scenario, points 1 & 2 comprehension was a lot more difficult, the wording contextually to the intention of the point initially did not communicate well comparatively to an alternate approach to its wording.",
+      ],
     },
     scenario_usefulness_distinctness: {
-      score: 2,
-      commentParagraphs: ["very similar"],
+      score: 4,
+      commentParagraphs: [
+        "The scenario was fine, complete, once comprehended no issues.",
+      ],
     },
     risk_discipline: {
-      score: 1,
-      commentParagraphs: ["Risk averse"],
+      score: 4,
+      commentParagraphs: [
+        "The scenario included sufficient risk analysis discernment. The overall points had a high level of comprehension risk for non native English speakers.",
+      ],
     },
     recommendation_strategic_usefulness: {
       score: 3,
-      commentParagraphs: ["more information is good"],
+      commentParagraphs: [
+        "Points had good information concerning the scenario, same feedback as question 1.",
+      ],
     },
   },
   privacyReview: {
-    unnecessaryPersonalInformation: { answer: "NO", commentParagraphs: [] },
-    sensitivePrivateInformation: { answer: "NO", commentParagraphs: [] },
-    dataMinimization: { answer: "YES", commentParagraphs: [] },
-    criticalPrivacyProblem: { answer: "NO", commentParagraphs: [] },
+    unnecessaryPersonalInformation: {
+      answer: "NO",
+      commentParagraphs: ["No information was personally involved with the scenario"],
+    },
+    sensitivePrivateInformation: {
+      answer: "NO",
+      commentParagraphs: ["The questions structure is non discrepant"],
+    },
+    dataMinimization: {
+      answer: "YES",
+      commentParagraphs: [
+        "Pure logic initially replaying the scenario in my head but based of the reviewer (person larping as discerner or people doing this survey) results could change to emotional based on the experiences of the deciding factors.",
+      ],
+    },
+    criticalPrivacyProblem: { answer: "NO", commentParagraphs: ["No"] },
     globalAssessment: {
-      answer: "CANNOT DETERMINE",
-      commentParagraphs: ["unclear"],
+      answer: "ADEQUATE",
+      commentParagraphs: [
+        "Non descriptive, generic tactical wording, no personal information involved",
+      ],
     },
   },
   generalAssessment: {
     usefulForRealPerson: {
-      answer: "NO",
-      commentParagraphs: ["information contradicts"],
+      answer: "YES",
+      commentParagraphs: [
+        "Taking the theoretical application of the question and mentally replacing the factors with a potential personal scenario could be useful for their decisions.",
+      ],
     },
-    mainImprovement: "more clarity",
+    mainImprovement: "Rewording and restructuring or Point 1 and Point 2",
     otherImportantUnrepresentedProblem: {
       answer: "NO",
       commentParagraphs: [],
@@ -108,9 +131,9 @@ const verbatimSubmission = {
   reviewLanguage: "en",
 };
 const sourceProvenance = {
-  submissionId: "6631276013018277627",
-  submissionTimestamp: "2026-08-21 09:20:01",
-  reviewerEnteredDate: "2026-08-21",
+  submissionId: "6631532634015686286",
+  submissionTimestamp: "2026-08-21 16:27:43",
+  reviewerEnteredDate: "2026-08-22",
   reviewLanguage: "en",
   sourceSystem: "Jotform",
   sourceFormId: null,
@@ -187,34 +210,36 @@ const currentValidation = human.validateCanonicalProviderHumanReviewEvidenceV2(
   persistedCurrent,
   linkage,
 );
-const expectedMissing = [
-  "unnecessaryPersonalInformation",
-  "sensitivePrivateInformation",
-  "dataMinimization",
-  "criticalPrivacyProblem",
-].map((field) => `human_review_privacy_comment_missing:${field}`).sort();
-add("position2-remains-review-required-only-for-missing-comments",
-  currentValidation.valid === false && currentValidation.status === "REVIEW_REQUIRED" &&
-  JSON.stringify([...currentValidation.issues].sort()) === JSON.stringify(expectedMissing) &&
-  persistedCurrent.normalizedReview === null &&
+add("position2-md-review-is-complete-and-valid",
+  currentValidation.valid === true && currentValidation.status === "COMPLETE" &&
+  currentValidation.issues.length === 0 &&
+  persistedCurrent.normalizedReview !== null &&
   !currentValidation.issues.some((issue) => issue.includes("binary_token")));
 add("position2-provenance-is-retained-outside-semantic-payload",
-  persistedCurrent.sourceProvenance.submissionId === "6631276013018277627" &&
-  persistedCurrent.sourceProvenance.submissionTimestamp === "2026-08-21 09:20:01" &&
-  persistedCurrent.sourceProvenance.reviewerEnteredDate === "2026-08-21" &&
+  persistedCurrent.sourceProvenance.submissionId === "6631532634015686286" &&
+  persistedCurrent.sourceProvenance.submissionTimestamp === "2026-08-21 16:27:43" &&
+  persistedCurrent.sourceProvenance.reviewerEnteredDate === "2026-08-22" &&
   persistedCurrent.sourceProvenance.nativeSpeakerConfirmation === "YES" &&
   !Object.hasOwn(persistedCurrent.verbatimSubmission, "submissionId"));
 
-let incompleteAggregationRejected = false;
-try {
+const position2CampaignReview =
   human.canonicalProviderCampaignReviewEvidenceFromHumanArtifactV2(persistedCurrent);
-} catch (error) {
-  incompleteAggregationRejected = error instanceof Error &&
-    error.message === "human_review_v2_not_complete";
-}
-add("incomplete-review-cannot-enter-campaign-aggregation", incompleteAggregationRejected);
+add("complete-review-enters-campaign-aggregation",
+  position2CampaignReview.humanDimensionReviews.length === 4 &&
+  position2CampaignReview.providerPrivacyReviews.length === 1);
 
-const syntheticSupplement = human.buildCanonicalProviderHumanReviewSupplement({
+const duplicateValidation = human.validateCanonicalProviderHumanReviewEvidenceV2(
+  persistedCurrent,
+  linkage,
+  new Set([persistedCurrent.artifactHash]),
+);
+add("duplicate-human-review-artifact-is-rejected",
+  duplicateValidation.valid === false &&
+  duplicateValidation.issues.includes(
+    `duplicate_human_review_artifact:${persistedCurrent.artifactHash}`,
+  ));
+
+const completedReviewSupplement = human.buildCanonicalProviderHumanReviewSupplement({
   supplementId: "TEST-SUPPLEMENT-001",
   originalSubmissionId: sourceProvenance.submissionId,
   reviewedExecutionHash: executionHash,
@@ -233,61 +258,28 @@ const syntheticSupplement = human.buildCanonicalProviderHumanReviewSupplement({
     { field: "criticalPrivacyProblem", commentParagraphs: ["TEST-ONLY D"] },
   ],
 });
-const syntheticComplete = human.buildCanonicalProviderHumanReviewEvidenceV2(
+const supplementedCompletedReview = human.buildCanonicalProviderHumanReviewEvidenceV2(
   sourceProvenance,
   verbatimSubmission,
-  [syntheticSupplement],
+  [completedReviewSupplement],
 );
-const syntheticValidation = human.validateCanonicalProviderHumanReviewEvidenceV2(
-  syntheticComplete,
-  linkage,
-);
-add("test-only-complete-supplement-is-structurally-valid",
-  syntheticValidation.valid && syntheticValidation.status === "COMPLETE" &&
-  syntheticComplete.normalizedReview !== null &&
-  syntheticComplete.normalizedReview.providerPrivacyReviews[0].evidencePointers.includes(
-    `supplement:${syntheticSupplement.artifactHash}`,
-  ));
-add("completed-test-artifact-preserves-original-scores-and-answers",
-  JSON.stringify(syntheticComplete.verbatimSubmission.dimensionReviews) ===
+add("complete-review-cannot-receive-privacy-comment-supplement",
+  supplementedCompletedReview.completionStatus === "INVALID" &&
+  supplementedCompletedReview.remainingIssues.filter((issue) =>
+    issue.startsWith("human_review_supplement_not_missing:")).length === 4);
+add("completed-artifact-preserves-original-scores-and-answers",
+  JSON.stringify(persistedCurrent.verbatimSubmission.dimensionReviews) ===
     JSON.stringify(verbatimSubmission.dimensionReviews) &&
-  syntheticComplete.verbatimSubmission.privacyReview.dataMinimization.answer === "YES" &&
-  syntheticComplete.verbatimSubmission.independenceConfirmation === "YES" &&
-  syntheticComplete.verbatimSubmission.privacyReview.globalAssessment.answer ===
-    "CANNOT DETERMINE");
-add("diagnostic-record-statuses-preserve-frozen-semantics",
-  syntheticComplete.normalizedReview.humanDimensionReviews.map((record) => record.status)
-    .join(",") === "FAIL,FAIL,FAIL,PASS" &&
-  syntheticComplete.normalizedReview.providerPrivacyReviews[0].status === "FAIL" &&
-  syntheticComplete.normalizedReview.providerPrivacyReviews[0]
+  persistedCurrent.verbatimSubmission.privacyReview.dataMinimization.answer === "YES" &&
+  persistedCurrent.verbatimSubmission.independenceConfirmation === "YES" &&
+  persistedCurrent.verbatimSubmission.privacyReview.globalAssessment.answer ===
+    "ADEQUATE");
+add("normalized-record-statuses-preserve-frozen-semantics",
+  persistedCurrent.normalizedReview.humanDimensionReviews.map((record) => record.status)
+    .join(",") === "PASS,PASS,PASS,PASS" &&
+  persistedCurrent.normalizedReview.providerPrivacyReviews[0].status === "FAIL" &&
+  persistedCurrent.normalizedReview.providerPrivacyReviews[0]
     .criticalProviderPrivacyViolation === false);
-
-function supplementMutationRejected(mutator) {
-  const mutated = structuredClone(syntheticSupplement);
-  mutator(mutated);
-  const combined = human.buildCanonicalProviderHumanReviewEvidenceV2(
-    sourceProvenance,
-    verbatimSubmission,
-    [mutated],
-  );
-  return combined.completionStatus === "INVALID" &&
-    combined.remainingIssues.some((issue) =>
-      issue.startsWith("human_review_supplement_"));
-}
-add("supplement-cannot-alter-scores",
-  supplementMutationRejected((supplement) => { supplement.score = 4; }));
-add("supplement-cannot-alter-original-binary-answers",
-  supplementMutationRejected((supplement) => {
-    supplement.commentSupplements[0].answer = "YES";
-  }));
-add("supplement-cannot-alter-overall-privacy-assessment",
-  supplementMutationRejected((supplement) => {
-    supplement.globalAssessment = "ADECUADO";
-  }));
-add("supplement-cannot-alter-independence-confirmation",
-  supplementMutationRejected((supplement) => {
-    supplement.independenceConfirmation = "NO";
-  }));
 add("position2-provider-evidence-and-blind-packet-remain-immutable",
   physicalSha("STAGE_9_TERRA_POSITION_2_REPLACEMENT_EVIDENCE.v2.json") ===
     "57b1adaeb23e4fc7f4f5a68856a90846a42e9692301c634bb2f96b864d62ddfa" &&
@@ -313,10 +305,12 @@ process.stdout.write(`${JSON.stringify({
     submissionId: persistedCurrent.sourceProvenance.submissionId,
   },
   diagnosticOnly: {
-    perRecordStatuses: ["FAIL", "FAIL", "FAIL", "PASS"],
+    perRecordStatuses: ["PASS", "PASS", "PASS", "PASS"],
     recommendationScore: 3,
     recommendationCampaignThreshold: { numerator: 34, denominator: 10 },
-    privacyWouldPassIfComplete: false,
+    privacyStatus: "FAIL",
+    rawPrivacyAssessment: "ADEQUATE",
+    criticalProviderPrivacyViolation: false,
   },
   checks,
 }, null, 2)}\n`);
