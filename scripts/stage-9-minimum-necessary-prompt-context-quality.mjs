@@ -46,7 +46,6 @@ const implementationPaths = [
   "lib/ai-provider/openai-decision-material-adapter.ts",
   "lib/ai-integration/production-decision-simulation-orchestrator.ts",
   "lib/ai-integration/production-decision-simulation-composition-root.server.ts",
-  "lib/runtime-integration/controlled-production-ai-runtime-switch.server.ts",
 ];
 const productionDiff = execFileSync(
   "git",

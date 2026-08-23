@@ -1,0 +1,27 @@
+{
+  "evidenceId": "stage-9-controlled-failure-product-presentation-closure-evidence.1",
+  "baselineCommit": "afa1e12b32544731c440e13af728b2c1e59464a9",
+  "guaranteeId": "controlled_failure_product_presentation",
+  "canonicalObligation": "Present a controlled public V2 failure state when production AI is active.",
+  "rootCause": "PARTIAL_IMPLEMENTATION_AND_PROOF_GAP",
+  "proofVersion": "stage-9-controlled-failure-product-presentation-proof.1",
+  "status": "PASS",
+  "runtimeBoundary": [
+    "provider_result_validation",
+    "post_provider_decision_engine",
+    "simulation_response_v2",
+    "controlled_production_runtime_switch",
+    "simulation_response_v2_ui_model"
+  ],
+  "productionFailurePresentationChanged": true,
+  "publicApiActivated": false,
+  "publicUiCopyChanged": false,
+  "mockFallbackAllowedForProductionFailure": false,
+  "minimumNecessaryPromptContextStatus": "PASS",
+  "historicalProviderEvidenceChanged": false,
+  "providerQualificationReassessed": false,
+  "position5OrLaterAuthorized": false,
+  "externalProviderOperations": 0,
+  "apiOperations": 0,
+  "humanReviewOperations": 0
+}

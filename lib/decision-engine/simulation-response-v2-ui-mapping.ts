@@ -141,6 +141,22 @@ export function mapSimulationResponseV2ToUiModel(value: unknown): SimulationResp
   }
 
   const response = value;
+  if (response.status === "failed") {
+    const model = baseModel("controlled_failure", emptySections("empty"));
+    model.sections.status = section("status", "available", [{
+      lifecycle: "failed",
+      tone: "failure",
+      message: statusMessage(response),
+    }]);
+    return {
+      ...model,
+      requestId: response.requestId,
+      responseId: response.responseId,
+      generatedAt: response.generatedAt,
+      responseStatus: response.status,
+    };
+  }
+
   const optionLabels = new Map(response.decision.optionSummaries.map((option) => [option.id, option.label]));
   const scenarios = response.analysis?.scenarios.map((scenario) => ({
     id: scenario.id,

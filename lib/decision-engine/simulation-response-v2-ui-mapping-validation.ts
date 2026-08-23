@@ -351,6 +351,10 @@ function cases(): MappingValidationCase[] {
         (model) => model.renderState === "controlled_failure" ? undefined : "Expected controlled failure state.",
         (model) => model.sections.scenarios.items.length === 0 ? undefined : "Failure must not expose scenarios.",
         (model) => model.sections.recommendation.items.length === 0 ? undefined : "Failure must not expose recommendation.",
+        (model) => Object.entries(model.sections).every(([id, value]) =>
+          id === "status" || value.items.length === 0
+        ) ? undefined : "Failure must expose only the bounded status section.",
+        (model) => model.mappingErrors.length === 0 ? undefined : "Valid failure mapping must not expose internal mapping diagnostics.",
       ],
     },
     {

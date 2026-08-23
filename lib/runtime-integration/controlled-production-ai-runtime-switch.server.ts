@@ -19,6 +19,10 @@ import {
   readOpenAIEnvironmentConfiguration,
 } from "../ai-provider/openai-synthetic-risk-adapter.server";
 import type { DecisionContext } from "../decision-engine/types";
+import { runSimulationPipeline } from "../decision-engine/pipeline";
+import { mapSimulationResponseV2ToUiModel } from
+  "../decision-engine/simulation-response-v2-ui-mapping";
+import type { ControlledFailure, DecisionInput } from "../decision-engine/types";
 import {
   CONTROLLED_SIMULATOR_SWITCH_MODE,
   CONTROLLED_SIMULATOR_SWITCH_VERSION,
@@ -70,6 +74,9 @@ type OperationalExecutionContext = {
   requestId: string;
   rollbackState: ControlledProductionAiOperationalEvent["rollbackState"];
 };
+
+export const CONTROLLED_PRODUCTION_AI_PUBLIC_FAILURE_MESSAGE =
+  "No se pudo completar la simulación de forma segura." as const;
 
 function record(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -155,13 +162,28 @@ function aiFailure(input: {
   sourceCode?: string;
   compositionRootUsed: boolean;
 }): ControlledProductionAiFailureResult {
+  const publicFailure: ControlledFailure = {
+    code: "internal_error",
+    message: CONTROLLED_PRODUCTION_AI_PUBLIC_FAILURE_MESSAGE,
+    retryable: false,
+  };
+  const response = runSimulationPipeline({ requestId: input.requestId } as DecisionInput);
+  response.responseId = `response_failed_${input.requestId}`;
+  response.requestId = input.requestId;
+  response.generatedAt = "not_recorded";
+  response.status = "failed";
+  response.analysis = undefined;
+  response.recommendation = undefined;
+  response.failure = publicFailure;
+  response.controlledFailures = [publicFailure];
   return {
     switchVersion: CONTROLLED_SIMULATOR_SWITCH_VERSION,
     mode: CONTROLLED_SIMULATOR_SWITCH_MODE,
     requestId: input.requestId,
     selectedPath: "controlled_failure",
-    selectedContract: "none",
+    selectedContract: "SimulationResponseV2UiModel",
     runtimeSource: "production_ai",
+    uiModel: mapSimulationResponseV2ToUiModel(response),
     failure: {
       code: input.code,
       message: input.message,

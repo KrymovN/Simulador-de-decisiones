@@ -374,6 +374,21 @@ export async function runControlledProductionAiRuntimeSwitchValidation():
       issue: "Invalid provider material escaped controlled orchestration failure.",
     }),
     validationCase({
+      caseId: "production_failure_exposes_bounded_v2_ui_state",
+      kind: "negative",
+      passed: unavailable.selectedPath === "controlled_failure" &&
+        unavailable.selectedContract === "SimulationResponseV2UiModel" &&
+        unavailable.uiModel.renderState === "controlled_failure" &&
+        unavailable.uiModel.responseStatus === "failed" &&
+        unavailable.uiModel.mappingErrors.length === 0 &&
+        unavailable.uiModel.sections.status.items.length === 1 &&
+        Object.entries(unavailable.uiModel.sections).every(([id, section]) =>
+          id === "status" || section.items.length === 0
+        ) &&
+        !JSON.stringify(unavailable.uiModel).includes("provider_unavailable"),
+      issue: "Production failure did not expose the bounded V2 UI failure state.",
+    }),
+    validationCase({
       caseId: "operational_evidence_covers_selection_orchestration_and_provider",
       kind: "positive",
       passed: [

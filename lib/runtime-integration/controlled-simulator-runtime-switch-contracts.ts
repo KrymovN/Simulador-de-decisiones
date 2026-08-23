@@ -151,8 +151,9 @@ export type ControlledProductionAiFailureResult = {
   mode: ControlledSimulatorSwitchMode;
   requestId: string;
   selectedPath: "controlled_failure";
-  selectedContract: "none";
+  selectedContract: "SimulationResponseV2UiModel";
   runtimeSource: "production_ai";
+  uiModel: SimulationResponseV2UiModel;
   failure: {
     code: ControlledProductionAiFailureCode;
     message: string;
