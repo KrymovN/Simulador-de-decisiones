@@ -50,6 +50,9 @@ const human = require(join(
 const readiness = require(join(
   root, "lib", "ai-quality", "canonical-levio-integration-readiness.ts",
 ));
+const minimumPromptContext = require(join(
+  root, "lib", "ai-integration", "minimum-necessary-prompt-context-proof.ts",
+));
 
 const replacement = load("STAGE_9_TERRA_POSITION_2_REPLACEMENT_EVIDENCE.v2.json");
 const position3 = load("STAGE_9_TERRA_POSITION_3_EVIDENCE.v2.json");
@@ -166,10 +169,15 @@ const reviewEvidence = {
     ...position3Review.providerPrivacyReviews,
   ],
 };
+const minimumPromptContextProof =
+  minimumPromptContext.runMinimumNecessaryPromptContextProof();
 const levioGuarantees = Object.fromEntries(
   aggregation.CANONICAL_LEVIO_GUARANTEE_IDS.map((id) => [id, "PASS"]),
 );
-levioGuarantees.minimum_necessary_prompt_context = "LEVIO_IMPLEMENTATION_GAP";
+levioGuarantees.minimum_necessary_prompt_context =
+  minimumPromptContextProof.status === "PASS"
+    ? "PASS"
+    : "LEVIO_IMPLEMENTATION_GAP";
 levioGuarantees.controlled_failure_product_presentation = "LEVIO_IMPLEMENTATION_GAP";
 const failureInput = [{
   kind: "TERMINAL_PROVIDER_FAILURE",
@@ -311,15 +319,25 @@ add("position5-and-later-provider-execution-stopped",
   projection.providerEvaluation.furtherProviderPositionsAuthorized === false &&
   projection.workAuthorization.nextProviderPosition ===
     "NOT_AUTHORIZED_OWNER_REBASELINE");
+add("minimum-necessary-prompt-context-proof-closes-guarantee",
+  minimumPromptContextProof.version ===
+    "stage-9-minimum-necessary-prompt-context-proof.1" &&
+  minimumPromptContextProof.rootCause === "PROOF_MISSING" &&
+  minimumPromptContextProof.status === "PASS" &&
+  minimumPromptContextProof.summary.failed === 0 &&
+  minimumPromptContextProof.summary.providerOperations === 0 &&
+  minimumPromptContextProof.summary.apiOperations === 0 &&
+  minimumPromptContextProof.summary.humanReviewOperations === 0 &&
+  historicalAggregation.levioProductGuarantee.guarantees.find((item) =>
+    item.guaranteeId === "minimum_necessary_prompt_context")?.status === "PASS");
 const blockerIds = projection.levioIntegrationReadiness.blockers.map(
   (item) => item.guaranteeId,
 ).sort();
-add("exact-levio-implementation-gaps-remain-blocking",
+add("exactly-one-levio-implementation-gap-remains-blocking",
   projection.levioIntegrationReadiness.status === "STAGE9_INCOMPLETE" &&
   projection.levioIntegrationReadiness.ready === false &&
   JSON.stringify(blockerIds) === JSON.stringify([
     "controlled_failure_product_presentation",
-    "minimum_necessary_prompt_context",
   ]) && projection.levioIntegrationReadiness.blockers.every((item) =>
     item.status === "LEVIO_IMPLEMENTATION_GAP"));
 const gateById = new Map(readiness.CANONICAL_STAGE9_GATE_DISPOSITIONS.map(
@@ -387,6 +405,7 @@ console.log(JSON.stringify({
     impossibleMetric,
   },
   currentProjection: projection,
+  minimumPromptContextProof,
   immutableEvidenceCount: Object.keys(immutableEvidenceHashes).length,
   immutableFrozenSourceCount: Object.keys(immutableSourceHashes).length,
   checks,

@@ -1,0 +1,24 @@
+{
+  "evidenceId": "stage-9-minimum-necessary-prompt-context-closure-evidence.1",
+  "baselineCommit": "ba429d40c8d7ccb9038b9344bf2e8a221bd30ee2",
+  "guaranteeId": "minimum_necessary_prompt_context",
+  "canonicalObligation": "Prove minimum-necessary Prompt Context selection before provider invocation.",
+  "rootCause": "PROOF_MISSING",
+  "proofVersion": "stage-9-minimum-necessary-prompt-context-proof.1",
+  "status": "PASS",
+  "runtimeBoundary": [
+    "controlled_simulator_request",
+    "decision_engine_context",
+    "prompt_context_boundary",
+    "validated_prompt_context_output",
+    "provider_request_payload"
+  ],
+  "productionImplementationChanged": false,
+  "controlledFailureProductPresentationChanged": false,
+  "historicalProviderEvidenceChanged": false,
+  "providerQualificationReassessed": false,
+  "position5OrLaterAuthorized": false,
+  "providerOperations": 0,
+  "apiOperations": 0,
+  "humanReviewOperations": 0
+}
