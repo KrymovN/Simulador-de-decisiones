@@ -1,5 +1,28 @@
 # LEVIO IMPLEMENTATION PLAN
 
+## Stage 9 canonical qualification state reconciliation — 23 August 2026
+
+At checkpoint `db3f5b88ffc5085df665bbe82e2c7df4c64dd014`, Stage 9 is
+complete under `canonical-levio-integration-readiness.1` with status
+`STAGE9_QUALIFIED`, `ready=true`, `blockers=[]`, and remediation
+`NOT_REQUIRED`. The selected provider remains `openai / gpt-5.6-terra`.
+
+Historical provider qualification remains
+`QUALIFICATION_IMPOSSIBLE_BY_PROVIDER_THRESHOLD` as diagnostic evidence only.
+The provider campaign remains `STOPPED_BY_OWNER_REBASELINE_EVIDENCE_RETAINED`,
+and Position 5+ remains `NOT_AUTHORIZED_OWNER_REBASELINE`. Dated Stage 9
+execution entries and immutable provider evidence retain their historical
+meaning; this reconciliation supersedes only earlier root-state assertions
+that Stage 9 is currently In Progress or that an earlier Stage 9 action is
+still active.
+
+The current roadmap position remains Stage 15 Scale. Stage 15 is `IN_PROGRESS`,
+its execution verdict remains `NOT READY`, and Stage 15.5 requirements are
+unchanged. The first bounded blocker-resolution action remains `Scope and
+authority stabilization` covering S15-P12, S15-P29, and classification of
+S15-P21 through S15-P25. It requires separate explicit approval and is not
+executed by this reconciliation.
+
 ## Stage 9 deferred release/runtime decision recorded — 30 July 2026
 
 The prepared contract is now exercised by an explicit `project_owner`
@@ -883,7 +906,7 @@ module, planning document, or readiness checklist as production completion.
 | A. Decision Simulation Persistence Implementation | Completed | Stage 4.2 persistence runtime foundation is closed. `lib/persistence-runtime` exists with owner contracts, Supabase provider, runtime wiring, simulation record save, history append, and draft save/update services. The recent `Saved Decision Simulations Runtime Foundation` commit adds an internal `lib/saved-decision-simulations` runtime boundary for save/load/list over owner-scoped simulation records. `docs/architecture/LEVIO_DECISION_SIMULATION_DOMAIN_MODEL.md` defines the final Decision Simulation product domain model for A1. A2 Persistence Runtime Mapping is complete: internal runtime maps saved `simulation_records` into canonical Decision Simulation domain objects and supports owner-scoped save/list/load/reopen/archive through existing server-only Auth/Persistence boundaries. A3 Saved Decision Simulation History / Product Surface Integration is implemented through `/dashboard/simulations`, `/dashboard/simulations/[id]`, and the server-only saved simulations product-surface boundary. The bounded completed-simulation save-from-UI flow is implemented on the HomeSimulator completed result surface through the same server-only runtime boundary, with owner identity resolved from Auth -> `levio_principals`. Block A Closure Validation is accepted through `npm run quality:block-a-decision-simulation-persistence-closure`, 79/79 PASS. | No remaining Block A implementation work for the approved persistence scope. Export/delete integration belongs to Block C. Block B real-account runtime is closed for its approved scope. Separately approved history/revision lifecycle events remain deferred until explicitly scoped. |
 | B. Real User Account Runtime | Completed / Closure Accepted | Stage 4.1 auth runtime hardening exists. Supabase Auth boundary, browser auth boundary, server session validation, auth callback, protected dashboard layout, dashboard-only redirects, fail-closed protected access, magic-link login/register initiation, and client logout cleanup are implemented at foundation level. Block A already consumes authenticated session state through the approved saved-simulation product surface and resolves durable owners through `levio_principals`. B1 Supabase Auth Configuration Lock is complete in `docs/stages/stage-04-runtime-architecture/stage-04-01-auth-runtime/LEVIO_BLOCK_B1_SUPABASE_AUTH_CONFIGURATION_LOCK.md`. B2 Auth Action Boundary Completion is implemented and covered by `npm run quality:block-b-auth-action-boundary`. B3 Email Confirmation and Recovery Flow Validation is implemented and covered by `npm run quality:block-b-email-flow`. B4 Session Lifecycle and Protected Route Validation, B5 Real Account State in Dashboard, B6 Account-Owned Simulation Persistence Boundary, and B7 Account-Owned Dashboard Simulation Surface Validation are implemented and covered by their dedicated quality gates. Block B Closure evidence confirms real Supabase project validation, production email delivery, callback success, Supabase user creation, dashboard access after email confirmation, logout, and repeat sign-in reaching Supabase. The temporary Supabase diagnostic patch was removed. The final observed `over_email_send_rate_limit` / HTTP 429 response is a Supabase provider rate limit and not a Block B blocker. | No remaining Block B implementation or closure work for the approved real-account runtime scope. Export/delete integration belongs to Block C. Broader production readiness, operations, observability, security/privacy review, and release readiness belong to Block E/F. |
 | C. User Data Management | Completed / Stage 7 Closure Accepted | Stage 4.3 User Data Controls foundation is closed. Export, deletion planning, retention status, consent status, and cross-surface validation cover saved simulations, drafts, and history. Owner-scoped deletion clears one saved simulation plus its matching active user-visible history atomically through a server-only transactional RPC, or clears one explicitly confirmed draft through the authenticated single-draft surface and its existing lifecycle boundary. Explicit draft retention and the authenticated resume/edit warning destination are implemented. Independent deletion of an arbitrary history entry remains outside Levio V1. | No remaining Stage 7 implementation work for the approved V1 scope. Automatic/background retention and account deletion runtime remain bounded later-scope deferrals. Final production notices, processing records, provider/DPA, backup-rotation, production deployment, and broader release evidence remain Product Validation / Production Readiness work. |
-| D. Production AI Integration | In Progress / Independent AI Review Batch 1 Complete | Offline evidence remains 216 fixtures. The owner-approved four-pass internal AI review protocol completed Batch 1 for 36 fixtures with 13 pass, 11 pass-with-note, 5 minor fail, 5 major fail, 2 disputed, and 11 reinforced-review cases; 180 fixtures remain. | Release readiness is not declared. Confirmed and disputed findings remain unremediated QA artifacts. Prompt Context -> AI Provider runtime, Decision Engine post-provider runtime integration, structured production composition, Simulator/API/UI, persistence, authenticated production integration, user-data processing, production configuration/observability, and public/live OpenAI execution remain unopened. |
+| D. Production AI Integration | Completed / `STAGE9_QUALIFIED` | `canonical-levio-integration-readiness.1` records `ready=true`, `blockers=[]`, and remediation `NOT_REQUIRED` for selected provider `openai / gpt-5.6-terra`. Historical `QUALIFICATION_IMPOSSIBLE_BY_PROVIDER_THRESHOLD` remains diagnostic, and the provider campaign remains stopped with Position 5+ unauthorized. | No Stage 9 Levio-owned remediation remains. This status does not activate public Real AI execution, Production Release, Commercial Launch, or Scale execution. The next active roadmap work belongs to separately approved Stage 15 blocker resolution. |
 | E. Product Validation & Production Readiness | In Progress | Stage 10 Product Quality Hardening is closed with deterministic preview gates for public simulator, public home, DecisionContext Builder, simulation pipeline runner, public adapter, observability, security, contract regression, HomeSimulator integration, trust readiness, and rendered public surface. Stage 15.4 aggregate verdict is NOT READY. | Full production user-flow QA, current pre-release gate reruns, observability/error tracking, infrastructure readiness, support readiness, incident/rollback decision authority, security/privacy review, and performance validation remain incomplete. |
 | F. Commercial Production | Foundation Complete / Deferred | Stage 4.4 subscription runtime foundation is closed. Stage 11 legal/trust layer, Stage 12 market readiness, Stage 13 closed beta planning, Stage 14 public launch readiness, and Stage 15 scale readiness planning are documented. | Billing provider, checkout, customer portal, webhooks, pricing/tax/legal approval, final legal documents, monitoring/logging/support, Production Release, Commercial Launch, and Scale Execution remain unopened or blocked. |
 
@@ -1097,13 +1120,16 @@ Approved Stage 7 internal policy boundary:
   legal-claims processing only where actually applicable; consent is not a
   universal basis and marketing remains separate.
 
-Block D: Deferred, **20% estimated**, remaining work:
+Block D: Completed under `canonical-levio-integration-readiness.1`:
 
-- connect real AI Provider internally;
-- execute Prompt Context -> AI Provider -> Decision Engine path;
-- normalize outputs as decision simulations;
-- implement cost, safety, fallback, and error controls;
-- prevent AI Chat / Answer Engine drift.
+- Stage 9 status is `STAGE9_QUALIFIED` with `ready=true`, `blockers=[]`, and
+  remediation `NOT_REQUIRED`;
+- the selected provider remains `openai / gpt-5.6-terra`;
+- historical provider qualification remains diagnostic and Position 5+
+  remains unauthorized;
+- no Stage 9 Levio-owned remediation remains;
+- public Real AI execution and later release/scale gates remain separately
+  controlled and are not activated by this completion.
 
 Block E: In Progress, **45% estimated**, remaining work:
 
@@ -1148,7 +1174,10 @@ Current roadmap/planning Stage: **Stage 15 - Scale**, bounded to
 documentation-only scale-readiness planning. Stage 15.5 is complete and Stage
 15.4 aggregate verdict remains NOT READY.
 
-Most recently closed V1 implementation scope: **Stage 7 - User Data Controls**.
+Most recently completed canonical integration-readiness scope: **Stage 9 -
+Real AI Integration**, with `STAGE9_QUALIFIED`.
+
+Stage 7 - User Data Controls remains closed for its approved V1 scope.
 
 Most recent Stage 7 implementation substep: **explicitly confirmed
 user-triggered owner-scoped deletion on the single-draft surface**.
@@ -1159,6 +1188,9 @@ Current evidence:
   approved persistence scope;
 - Block B - Real User Account Runtime is complete / closure accepted for the
   approved real-account runtime scope;
+- Stage 9 - Real AI Integration is complete under
+  `canonical-levio-integration-readiness.1`; historical provider qualification
+  remains diagnostic and the provider campaign remains stopped;
 - C1 account data export surface is complete in commit
   `904b4f5a835d09d621e2371b6c8f301c50e24069`;
 - C2 deletion planning surface is complete in commit `f42ea5f`;
@@ -1203,15 +1235,12 @@ Current evidence:
 
 Next canonical direction:
 
-No further Block A, Block B, or Stage 7 / Block C implementation task is
-required for their approved scopes. The next direction in the existing V1
-completion map is **Production AI Integration**, aligned to official Stage 9 -
-Real AI Integration after the existing Stage 8 foundation/runtime-boundary
-state. This direction is identified only; it is not opened or approved for
-implementation.
-Any provider SDK/env/key execution, model call, Prompt Context -> AI Provider
-runtime path, post-provider Decision Engine validation, safety/cost controls,
-observability, or rollback work requires separate explicit owner approval.
+No further Block A, Block B, Stage 7 / Block C, or Stage 9 Levio-owned
+remediation task is required for the approved scopes. The next active work
+belongs to Stage 15 blocker resolution. The first bounded action remains
+**Scope and authority stabilization**, covering S15-P12, S15-P29, and explicit
+classification of S15-P21 through S15-P25. It requires separate explicit
+approval and is not executed by this reconciliation.
 
 Any next step must continue using the approved server-only boundaries and must
 not change the public `/api/simulate` contract unless separately approved.

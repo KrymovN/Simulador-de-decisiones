@@ -1,5 +1,28 @@
 # CURRENT STAGE
 
+## Stage 9 canonical qualification state reconciliation — 23 August 2026
+
+At checkpoint `db3f5b88ffc5085df665bbe82e2c7df4c64dd014`, Stage 9 is
+complete under `canonical-levio-integration-readiness.1` with status
+`STAGE9_QUALIFIED`, `ready=true`, `blockers=[]`, and remediation
+`NOT_REQUIRED`. The selected provider remains `openai / gpt-5.6-terra`.
+
+Historical provider qualification remains
+`QUALIFICATION_IMPOSSIBLE_BY_PROVIDER_THRESHOLD` as diagnostic evidence only.
+The provider campaign remains `STOPPED_BY_OWNER_REBASELINE_EVIDENCE_RETAINED`,
+and Position 5+ remains `NOT_AUTHORIZED_OWNER_REBASELINE`. Dated Stage 9
+execution entries and immutable provider evidence retain their historical
+meaning; this reconciliation supersedes only earlier root-state assertions
+that Stage 9 is currently In Progress or that an earlier Stage 9 action is
+still active.
+
+The current roadmap position remains Stage 15 Scale. Stage 15 is `IN_PROGRESS`,
+its execution verdict remains `NOT READY`, and Stage 15.5 requirements are
+unchanged. The first bounded blocker-resolution action remains `Scope and
+authority stabilization` covering S15-P12, S15-P29, and classification of
+S15-P21 through S15-P25. It requires separate explicit approval and is not
+executed by this reconciliation.
+
 ## Stage 9 deferred release/runtime decision recorded — 30 July 2026
 
 The decision contract is prepared and the `project_owner` has recorded the
@@ -2562,9 +2585,10 @@ The explicit draft retention/warning flow, explicitly confirmed direct draft
 deletion, and atomic parent-driven history cleanup on single saved-simulation
 deletion are complete. Independent history-entry deletion remains excluded;
 bulk/background retention and account deletion remain bounded later-scope
-deferrals. The next canonical V1 direction is Production AI Integration /
-official Stage 9 Real AI Integration. It is not opened for implementation and
-must not create a new Stage, Block, roadmap branch, or architecture change.
+deferrals. Stage 9 Real AI Integration is complete under the current canonical
+integration-readiness projection. The next active roadmap work is the separately
+approved Stage 15 Scope and authority stabilization action covering S15-P12,
+S15-P29, and classification of S15-P21 through S15-P25.
 
 Scale execution, Production Release, Commercial Launch, Real AI execution,
 production auth/account/persistence, subscription/billing/commercial runtime,

@@ -1,5 +1,28 @@
 # PROJECT CONTEXT
 
+## Stage 9 canonical qualification state reconciliation — 23 August 2026
+
+At checkpoint `db3f5b88ffc5085df665bbe82e2c7df4c64dd014`, Stage 9 is
+complete under `canonical-levio-integration-readiness.1` with status
+`STAGE9_QUALIFIED`, `ready=true`, `blockers=[]`, and remediation
+`NOT_REQUIRED`. The selected provider remains `openai / gpt-5.6-terra`.
+
+Historical provider qualification remains
+`QUALIFICATION_IMPOSSIBLE_BY_PROVIDER_THRESHOLD` as diagnostic evidence only.
+The provider campaign remains `STOPPED_BY_OWNER_REBASELINE_EVIDENCE_RETAINED`,
+and Position 5+ remains `NOT_AUTHORIZED_OWNER_REBASELINE`. Dated Stage 9
+execution entries and immutable provider evidence retain their historical
+meaning; this reconciliation supersedes only earlier root-state assertions
+that Stage 9 is currently In Progress or that an earlier Stage 9 action is
+still active.
+
+The current roadmap position remains Stage 15 Scale. Stage 15 is `IN_PROGRESS`,
+its execution verdict remains `NOT READY`, and Stage 15.5 requirements are
+unchanged. The first bounded blocker-resolution action remains `Scope and
+authority stabilization` covering S15-P12, S15-P29, and classification of
+S15-P21 through S15-P25. It requires separate explicit approval and is not
+executed by this reconciliation.
+
 ## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026
 
 All nine bounded remediation substeps are complete: `Stage 9
@@ -723,8 +746,9 @@ VERIFIED prerequisites, groups them by engineering direction, defines
 objective closure conditions, required evidence, verification criteria,
 blocker dependencies, and required resolution order.
 
-The most recently closed V1 implementation scope is Stage 7 - User Data
-Controls. Blocks A/B/C are internal V1 implementation substeps only; they are not roadmap
+The most recently completed canonical integration-readiness scope is Stage 9 -
+Real AI Integration. Stage 7 - User Data Controls remains closed for its
+approved V1 scope. Blocks A/B/C are internal V1 implementation substeps only; they are not roadmap
 Stages, not a replacement project-management system, and not permission to
 expand the roadmap. The canonical V1 comparison target lives in
 `LEVIO_IMPLEMENTATION_PLAN.md`.
@@ -914,9 +938,10 @@ automatic/background retention and account deletion remain unopened. The
 user-facing warning destination, explicitly confirmed direct draft deletion,
 and parent-driven history cleanup on one saved-simulation deletion are
 implemented. No further Stage 7 implementation remains for the approved scope.
-The next canonical V1 direction is Production AI Integration / official Stage
-9 Real AI Integration, identified without opening implementation or granting
-permission for a new Stage, roadmap branch, or runtime architecture change.
+The next active roadmap work belongs to Stage 15 blocker resolution. Its first
+bounded action remains Scope and authority stabilization for S15-P12, S15-P29,
+and classification of S15-P21 through S15-P25; it requires separate explicit
+approval and is not opened by this state reconciliation.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as foundation-only preflight, runtime
