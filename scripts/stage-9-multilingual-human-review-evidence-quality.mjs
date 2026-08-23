@@ -229,6 +229,14 @@ const persistedCurrent = load(
   "STAGE_9_TERRA_POSITION_2_HUMAN_REVIEW_EVIDENCE.v2.json",
 );
 const position3Evidence = load("STAGE_9_TERRA_POSITION_3_EVIDENCE.v2.json");
+const position3HumanReview = load(
+  "STAGE_9_TERRA_POSITION_3_HUMAN_REVIEW_EVIDENCE.v2.json",
+);
+const position3HumanValidation =
+  human.validateCanonicalProviderHumanReviewEvidenceV2(
+    position3HumanReview,
+    ruLinkage,
+  );
 const position3BlindPacket = load(
   "STAGE_9_TERRA_POSITION_3_BLIND_REVIEW_PACKET.v1.json",
 );
@@ -439,16 +447,40 @@ add("position2-provider-evidence-and-blind-packet-remain-immutable",
     "57b1adaeb23e4fc7f4f5a68856a90846a42e9692301c634bb2f96b864d62ddfa" &&
   physicalSha("STAGE_9_TERRA_POSITION_2_REPLACEMENT_BLIND_REVIEW_PACKET.v1.json") ===
     "54b745b515e96ade85f6c8d448dd05078fef54e4c3aaac82c82420cae5042d5e");
-add("position3-evidence-and-blind-packet-remain-immutable-and-unreviewed",
+add("position3-evidence-and-blind-packet-remain-bound-after-review",
   physicalSha("STAGE_9_TERRA_POSITION_3_EVIDENCE.v2.json") ===
-    "95895fae5293a7a6fe0940089bbc27b5414f621fa3f438975b75d13f960237df" &&
+    "4ced64a0a5183b75ed71d317c5ec375587da4b6c7e8fcf63d18883cba5148534" &&
   physicalSha("STAGE_9_TERRA_POSITION_3_BLIND_REVIEW_PACKET.v1.json") ===
     "38d8caee2e1d452ce8a0c9d6680404ded6aa85519131b5a76d2d4cc53ab67061" &&
   JSON.stringify(position3BlindPacket) === JSON.stringify(
     campaign.buildCanonicalProviderBlindReviewPacket(position3Evidence.executions[0]),
   ) &&
-  position3Evidence.reviewRecords.humanDimensionReviews.length === 0 &&
-  position3Evidence.reviewRecords.providerPrivacyReviews.length === 0);
+  position3Evidence.reviewRecords.humanDimensionReviews.length === 4 &&
+  position3Evidence.reviewRecords.providerPrivacyReviews.length === 1);
+add("position3-manual-human-review-v2-is-exact-valid-and-complete",
+  physicalSha("STAGE_9_TERRA_POSITION_3_HUMAN_REVIEW_EVIDENCE.v2.json") ===
+    "f7170c5e1c578609178056671d0d29250a9cf7cf531c532405235b0a8c729a60" &&
+  position3HumanReview.artifactHash ===
+    "a83a442f3af438b75eadedab4413c01d5eb8b2979839e2faf76e4a5cdf65ef89" &&
+  position3HumanReview.sourceProvenance.verbatimSubmissionSha256 ===
+    "7c5b13d876d84cdba1444c41184bfee030856e38ad8701a525595c50e0172e0a" &&
+  position3HumanReview.sourceProvenance.submissionId ===
+    "manual-s9-core-001-ru-p3-r1" &&
+  position3HumanReview.sourceProvenance.sourceSystem ===
+    "manual-canonical-presentation-review" &&
+  position3HumanValidation.valid && position3HumanValidation.status === "COMPLETE" &&
+  position3HumanValidation.issues.length === 0 &&
+  position3HumanReview.supplements.length === 0);
+add("position3-campaign-review-records-equal-v2-normalization",
+  JSON.stringify(position3Evidence.reviewRecords.humanDimensionReviews) ===
+    JSON.stringify(position3HumanReview.normalizedReview.humanDimensionReviews) &&
+  JSON.stringify(position3Evidence.reviewRecords.providerPrivacyReviews) ===
+    JSON.stringify(position3HumanReview.normalizedReview.providerPrivacyReviews) &&
+  position3HumanReview.normalizedReview.humanDimensionReviews.every(
+    (record) => record.status === "PASS",
+  ) && position3HumanReview.normalizedReview.providerPrivacyReviews[0].status === "FAIL" &&
+  position3HumanReview.normalizedReview.providerPrivacyReviews[0]
+    .criticalProviderPrivacyViolation === false);
 const executableImports = readFileSync(fileURLToPath(import.meta.url), "utf8")
   .split("\n").filter((line) => line.startsWith("import ") || line.includes("require("));
 add("no-provider-or-network-operations",
@@ -469,7 +501,9 @@ process.stdout.write(`${JSON.stringify({
     submissionId: persistedCurrent.sourceProvenance.submissionId,
   },
   currentPosition3: {
-    actualReviewStatus: "REVIEW_REQUIRED",
+    actualReviewStatus: "FAIL",
+    completionStatus: position3HumanReview.completionStatus,
+    artifactHash: position3HumanReview.artifactHash,
     testOnlyRuV2StructurallyCompletable: completeRuTestValidation.valid,
     executionHash: ruLinkage.executionHash,
     presentationSha256: ruPresentationLinkage.presentationSha256,

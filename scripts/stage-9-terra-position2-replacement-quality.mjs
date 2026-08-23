@@ -60,6 +60,8 @@ const historicalFailure = load(
 );
 const position1Human = load("STAGE_9_TERRA_POSITION_1_HUMAN_REVIEW_EVIDENCE.v1.json");
 const position2Human = load("STAGE_9_TERRA_POSITION_2_HUMAN_REVIEW_EVIDENCE.v2.json");
+const position3 = load("STAGE_9_TERRA_POSITION_3_EVIDENCE.v2.json");
+const position3Human = load("STAGE_9_TERRA_POSITION_3_HUMAN_REVIEW_EVIDENCE.v2.json");
 const cases = fixtures.CANONICAL_OFFLINE_EVALUATION_CASES;
 const byId = new Map(cases.map((item) => [item.case_id, item]));
 const categories = taxonomy.CANONICAL_PROVIDER_EVALUATION_CATEGORIES;
@@ -148,6 +150,10 @@ const position2ReviewEvidence =
   humanReviewEvidence.canonicalProviderCampaignReviewEvidenceFromHumanArtifactV2(
     position2Human.value,
   );
+const position3ReviewEvidence =
+  humanReviewEvidence.canonicalProviderCampaignReviewEvidenceFromHumanArtifactV2(
+    position3Human.value,
+  );
 const reviewEvidence = {
   ...position1ReviewEvidence,
   humanDimensionReviews: [
@@ -193,6 +199,28 @@ const result = aggregation.aggregateCanonicalProviderEvaluationCampaign(
   { kind: "CAMPAIGN_SEMANTICS_MIGRATION", artifact: migration.value },
 );
 const aggregationLatencyMs = Math.round(performance.now() - aggregationStarted);
+const reviewEvidenceThroughPosition3 = {
+  ...reviewEvidence,
+  humanDimensionReviews: [
+    ...reviewEvidence.humanDimensionReviews,
+    ...position3ReviewEvidence.humanDimensionReviews,
+  ],
+  providerPrivacyReviews: [
+    ...reviewEvidence.providerPrivacyReviews,
+    ...position3ReviewEvidence.providerPrivacyReviews,
+  ],
+};
+const position3Result = aggregation.aggregateCanonicalProviderEvaluationCampaign(
+  cases,
+  [position1Comparable(), position2Comparable,
+    comparableFromExecution(position3.value.executions[0])],
+  aggregation.CANONICAL_AUTOMATED_METRIC_MAPPINGS,
+  null,
+  levioGuarantees,
+  reviewEvidenceThroughPosition3,
+  failureInput,
+  { kind: "CAMPAIGN_SEMANTICS_MIGRATION", artifact: migration.value },
+);
 const invalidMigrationSource = structuredClone(migration.value);
 invalidMigrationSource.retainedComparableExecution.equivalenceProof
   .replayAcceptedResultSha256 = sha("invalid-replacement-migration");
@@ -247,6 +275,29 @@ const position2HumanValidation =
       executionHash: record.executionHash,
     },
   );
+const position3HumanValidation =
+  humanReviewEvidence.validateCanonicalProviderHumanReviewEvidenceV2(
+    position3Human.value,
+    {
+      caseId: "S9-CORE-001-RU",
+      locale: "ru",
+      semanticClusterId: "S9-CLUSTER-001",
+      executionHash: position3.value.executions[0].executionHash,
+      reviewPresentation: {
+        presentationVersion: "canonical-human-review-presentation.1",
+        presentationSha256:
+          "20d2b00c716498f78c0149a1fe0f05a421ed0966ebb024951d7c68bcf2abfb1b",
+        sourceBlindPacketVersion: "canonical-provider-blind-review-packet.1",
+        sourceBlindPacketSha256:
+          "38d8caee2e1d452ce8a0c9d6680404ded6aa85519131b5a76d2d4cc53ab67061",
+        caseId: "S9-CORE-001-RU",
+        locale: "ru",
+        semanticClusterId: "S9-CLUSTER-001",
+        reviewedExecutionHash:
+          "f843ae060ab89fe944996ab34e116b2118f96e72f56b348950203953be491e88",
+      },
+    },
+  );
 const duplicateReviewEvidence = structuredClone(reviewEvidence);
 duplicateReviewEvidence.humanDimensionReviews.push(
   structuredClone(position2ReviewEvidence.humanDimensionReviews[0]),
@@ -280,6 +331,25 @@ const position3ContinuationGate = !position2HumanValidation.valid
       result.providerQualification.status === "SYSTEM_EVIDENCE_INCOMPLETE" ||
       result.overallStage9.status === "STAGE9_BLOCKED" ||
       result.overallStage9.status === "SYSTEM_EVIDENCE_INCOMPLETE"
+    ? "NOT AUTHORIZED"
+    : "AUTHORIZED";
+const position3Status = !position3HumanValidation.valid
+  ? "REVIEW_REQUIRED"
+  : position3Human.value.normalizedReview.humanDimensionReviews.some(
+      (item) => item.status === "FAIL",
+    ) || position3Human.value.normalizedReview.providerPrivacyReviews.some(
+      (item) => item.status === "FAIL",
+    )
+    ? "FAIL"
+    : "PASS";
+const position4ContinuationGate = !position3HumanValidation.valid
+  ? "BLOCKED / REVIEW REQUIRED"
+  : position3Result.evidenceIssues.length > 0 ||
+      position3Result.providerQualification.status ===
+        "QUALIFICATION_IMPOSSIBLE_BY_PROVIDER_THRESHOLD" ||
+      position3Result.providerQualification.status === "SYSTEM_EVIDENCE_INCOMPLETE" ||
+      position3Result.overallStage9.status === "STAGE9_BLOCKED" ||
+      position3Result.overallStage9.status === "SYSTEM_EVIDENCE_INCOMPLETE"
     ? "NOT AUTHORIZED"
     : "AUTHORIZED";
 add("replacement-evidence-valid", validation.valid, validation.issues.join(", "));
@@ -358,6 +428,21 @@ add("qualification-remains-incomplete",
   result.overallStage9.status === "STAGE9_INCOMPLETE");
 add("position3-continuation-is-authorized-but-not-executed",
   position3ContinuationGate === "AUTHORIZED");
+add("position3-review-and-campaign-evidence-are-valid",
+  position3HumanValidation.valid && position3HumanValidation.status === "COMPLETE" &&
+  position3HumanValidation.issues.length === 0 &&
+  campaignEvidence.validateCanonicalProviderCampaignEvidenceV2(position3.value, cases).valid &&
+  JSON.stringify(position3.value.reviewRecords.humanDimensionReviews) ===
+    JSON.stringify(position3ReviewEvidence.humanDimensionReviews) &&
+  JSON.stringify(position3.value.reviewRecords.providerPrivacyReviews) ===
+    JSON.stringify(position3ReviewEvidence.providerPrivacyReviews));
+add("position3-result-and-position4-gate-are-canonical",
+  position3Result.evidenceIssues.length === 0 && position3Status === "FAIL" &&
+  position3Result.coverage.humanReviewedExecutions === 3 &&
+  position3Result.providerQualification.status ===
+    "QUALIFICATION_PENDING_REQUIRED_REVIEW" &&
+  position3Result.overallStage9.status === "STAGE9_INCOMPLETE" &&
+  position4ContinuationGate === "AUTHORIZED");
 add("non-admissible-and-deleted-submissions-excluded",
   !JSON.stringify(position2Human.value).includes("6631642268422133854") &&
   !JSON.stringify(reviewEvidence).includes("6631642268422133854") &&
@@ -420,6 +505,22 @@ console.log(JSON.stringify({
   levioProductGuarantee: result.levioProductGuarantee.status,
   overallStage9: result.overallStage9,
   position3ContinuationGate,
+  position3HumanReview: {
+    artifactHash: position3Human.value.artifactHash,
+    completionStatus: position3Human.value.completionStatus,
+    positionStatus: position3Status,
+    privacyStatus: position3Human.value.normalizedReview.providerPrivacyReviews[0].status,
+    criticalProviderPrivacyViolation:
+      position3Human.value.normalizedReview.providerPrivacyReviews[0]
+        .criticalProviderPrivacyViolation,
+  },
+  position3Aggregation: {
+    coverage: position3Result.coverage,
+    providerQualification: position3Result.providerQualification.status,
+    overallStage9: position3Result.overallStage9,
+    position4ContinuationGate,
+    position4Executed: false,
+  },
   providerPrivacy: result.reviewEvidenceAggregation?.providerPrivacy ?? null,
   multilingualReview: result.reviewEvidenceAggregation?.multilingual ?? null,
   checks,

@@ -1,0 +1,287 @@
+{
+  "version": "canonical-provider-human-review-evidence.2",
+  "sourceProvenance": {
+    "submissionId": "manual-s9-core-001-ru-p3-r1",
+    "submissionTimestamp": null,
+    "reviewerEnteredDate": null,
+    "reviewLanguage": "ru",
+    "sourceSystem": "manual-canonical-presentation-review",
+    "sourceFormId": null,
+    "sourceFormVersion": null,
+    "nativeSpeakerConfirmation": null,
+    "personalIdentityStored": false,
+    "verbatimSubmissionSha256": "7c5b13d876d84cdba1444c41184bfee030856e38ad8701a525595c50e0172e0a",
+    "reviewPresentation": {
+      "presentationVersion": "canonical-human-review-presentation.1",
+      "presentationSha256": "20d2b00c716498f78c0149a1fe0f05a421ed0966ebb024951d7c68bcf2abfb1b",
+      "sourceBlindPacketVersion": "canonical-provider-blind-review-packet.1",
+      "sourceBlindPacketSha256": "38d8caee2e1d452ce8a0c9d6680404ded6aa85519131b5a76d2d4cc53ab67061",
+      "caseId": "S9-CORE-001-RU",
+      "locale": "ru",
+      "semanticClusterId": "S9-CLUSTER-001",
+      "reviewedExecutionHash": "f843ae060ab89fe944996ab34e116b2118f96e72f56b348950203953be491e88"
+    }
+  },
+  "verbatimSubmission": {
+    "identity": {
+      "caseId": "S9-CORE-001-RU",
+      "locale": "ru",
+      "semanticClusterId": "S9-CLUSTER-001",
+      "reviewedExecutionHash": "f843ae060ab89fe944996ab34e116b2118f96e72f56b348950203953be491e88"
+    },
+    "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+    "reviewer": {
+      "reviewerKind": "HUMAN_REVIEWER",
+      "roleId": "independent-reviewer",
+      "version": "1",
+      "personalIdentityStored": false
+    },
+    "dimensionReviews": {
+      "clarification_relevance": {
+        "score": 3,
+        "commentParagraphs": [
+          "В представленном материале релевантность уточнений дублируется что не представляет прозрачности понимания работы проекта, хотя основной принцип работы ресурса ясен и понятен"
+        ]
+      },
+      "scenario_usefulness_distinctness": {
+        "score": 4,
+        "commentParagraphs": [
+          "Сценарии, которые представлены выглядят профессиональными и раскрывают моменты которые на первом этаме , на этапе ожидания, проекта не могут быть предсказуемыми потребителем"
+        ]
+      },
+      "risk_discipline": {
+        "score": 3,
+        "commentParagraphs": [
+          "Риски представлены соизмеримо но , глубина и информационное обоснование не раскрыто"
+        ]
+      },
+      "recommendation_strategic_usefulness": {
+        "score": 4,
+        "commentParagraphs": [
+          "Полезность рекоммендации материала причсутствует н о есть чёткое ощущение нехватки дополнительной базовой информации которая может обосновать данное суждение"
+        ]
+      }
+    },
+    "privacyReview": {
+      "unnecessaryPersonalInformation": {
+        "answer": "НЕТ",
+        "commentParagraphs": [
+          "Запрашиваемый материал не содержит персональную информацию"
+        ]
+      },
+      "sensitivePrivateInformation": {
+        "answer": "НЕТ",
+        "commentParagraphs": [
+          "Данный материал не содержит ни чувствительную ни необходимую информацию"
+        ]
+      },
+      "dataMinimization": {
+        "answer": "НЕТ",
+        "commentParagraphs": [
+          "Принцип минимизации данных не замечен, хотя вполне возможно что он там присутствует"
+        ]
+      },
+      "criticalPrivacyProblem": {
+        "answer": "НЕТ",
+        "commentParagraphs": [
+          "Критиче кая проблема приватности в данном материале не обнаружена"
+        ]
+      },
+      "globalAssessment": {
+        "answer": "Аспекты приватности не затронуты, материал выглядит малоинформативным но вполне возможно полезным",
+        "commentParagraphs": [
+          "Приватноть информации в данном материале не затронута, как по мне, материал достаточно сух и поверностен, общими фразами об общих темах. Необходима более глубокая картина , базовые данные должны быть более раскрыты"
+        ]
+      }
+    },
+    "generalAssessment": {
+      "usefulForRealPerson": {
+        "answer": "ДА",
+        "commentParagraphs": [
+          "В случае если данный материал имел бы уточняющие вопросы к пользователю, более глубокому анализу ситуации и предложении раскрытой ситуации на основе большей вводной информации – полезность материала стратегически неслабы более глубокую ценность для конечного пользователя"
+        ]
+      },
+      "mainImprovement": "На мой личный взгляд этот материал стал бы полезнее при условии что система набирает необходимый минимум персональных вопросов и объёма информации для оценки потенциальных рисков и создания рекомендаций по принятию тех или иных решений в зависимости от потребности клиента",
+      "otherImportantUnrepresentedProblem": {
+        "answer": "НЕТ",
+        "commentParagraphs": [
+          "Такой проблемы я не выявил"
+        ]
+      }
+    },
+    "independenceConfirmation": "ДА",
+    "reviewLanguage": "ru"
+  },
+  "supplements": [],
+  "completionStatus": "COMPLETE",
+  "remainingIssues": [],
+  "normalizedSemantics": {
+    "privacyReview": {
+      "unnecessaryPersonalInformation": "NEGATIVE",
+      "sensitivePrivateInformation": "NEGATIVE",
+      "dataMinimization": "NEGATIVE",
+      "criticalPrivacyProblem": "NEGATIVE"
+    },
+    "generalAssessment": {
+      "usefulForRealPerson": "AFFIRMATIVE",
+      "otherImportantUnrepresentedProblem": "NEGATIVE"
+    },
+    "independenceConfirmation": "AFFIRMATIVE"
+  },
+  "normalizedReview": {
+    "humanDimensionReviews": [
+      {
+        "recordVersion": "canonical-human-dimension-review-record.1",
+        "caseId": "S9-CORE-001-RU",
+        "locale": "ru",
+        "semanticClusterId": "S9-CLUSTER-001",
+        "reviewedExecutionHash": "f843ae060ab89fe944996ab34e116b2118f96e72f56b348950203953be491e88",
+        "dimension": "clarification_relevance",
+        "status": "PASS",
+        "score": 3,
+        "criticalConcern": "NONE",
+        "reason": "В представленном материале релевантность уточнений дублируется что не представляет прозрачности понимания работы проекта, хотя основной принцип работы ресурса ясен и понятен",
+        "evidencePointers": [
+          "verbatimSubmission.dimensionReviews.clarification_relevance",
+          "execution:f843ae060ab89fe944996ab34e116b2118f96e72f56b348950203953be491e88"
+        ],
+        "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+        "reviewer": {
+          "reviewerKind": "HUMAN_REVIEWER",
+          "roleId": "independent-reviewer",
+          "version": "1"
+        },
+        "adjudication": {
+          "required": false,
+          "status": "NOT_REQUIRED",
+          "reviewer": null,
+          "verdict": null,
+          "reason": null
+        },
+        "reviewedAt": null
+      },
+      {
+        "recordVersion": "canonical-human-dimension-review-record.1",
+        "caseId": "S9-CORE-001-RU",
+        "locale": "ru",
+        "semanticClusterId": "S9-CLUSTER-001",
+        "reviewedExecutionHash": "f843ae060ab89fe944996ab34e116b2118f96e72f56b348950203953be491e88",
+        "dimension": "scenario_usefulness_distinctness",
+        "status": "PASS",
+        "score": 4,
+        "criticalConcern": "NONE",
+        "reason": "Сценарии, которые представлены выглядят профессиональными и раскрывают моменты которые на первом этаме , на этапе ожидания, проекта не могут быть предсказуемыми потребителем",
+        "evidencePointers": [
+          "verbatimSubmission.dimensionReviews.scenario_usefulness_distinctness",
+          "execution:f843ae060ab89fe944996ab34e116b2118f96e72f56b348950203953be491e88"
+        ],
+        "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+        "reviewer": {
+          "reviewerKind": "HUMAN_REVIEWER",
+          "roleId": "independent-reviewer",
+          "version": "1"
+        },
+        "adjudication": {
+          "required": false,
+          "status": "NOT_REQUIRED",
+          "reviewer": null,
+          "verdict": null,
+          "reason": null
+        },
+        "reviewedAt": null
+      },
+      {
+        "recordVersion": "canonical-human-dimension-review-record.1",
+        "caseId": "S9-CORE-001-RU",
+        "locale": "ru",
+        "semanticClusterId": "S9-CLUSTER-001",
+        "reviewedExecutionHash": "f843ae060ab89fe944996ab34e116b2118f96e72f56b348950203953be491e88",
+        "dimension": "risk_discipline",
+        "status": "PASS",
+        "score": 3,
+        "criticalConcern": "NONE",
+        "reason": "Риски представлены соизмеримо но , глубина и информационное обоснование не раскрыто",
+        "evidencePointers": [
+          "verbatimSubmission.dimensionReviews.risk_discipline",
+          "execution:f843ae060ab89fe944996ab34e116b2118f96e72f56b348950203953be491e88"
+        ],
+        "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+        "reviewer": {
+          "reviewerKind": "HUMAN_REVIEWER",
+          "roleId": "independent-reviewer",
+          "version": "1"
+        },
+        "adjudication": {
+          "required": false,
+          "status": "NOT_REQUIRED",
+          "reviewer": null,
+          "verdict": null,
+          "reason": null
+        },
+        "reviewedAt": null
+      },
+      {
+        "recordVersion": "canonical-human-dimension-review-record.1",
+        "caseId": "S9-CORE-001-RU",
+        "locale": "ru",
+        "semanticClusterId": "S9-CLUSTER-001",
+        "reviewedExecutionHash": "f843ae060ab89fe944996ab34e116b2118f96e72f56b348950203953be491e88",
+        "dimension": "recommendation_strategic_usefulness",
+        "status": "PASS",
+        "score": 4,
+        "criticalConcern": "NONE",
+        "reason": "Полезность рекоммендации материала причсутствует н о есть чёткое ощущение нехватки дополнительной базовой информации которая может обосновать данное суждение",
+        "evidencePointers": [
+          "verbatimSubmission.dimensionReviews.recommendation_strategic_usefulness",
+          "execution:f843ae060ab89fe944996ab34e116b2118f96e72f56b348950203953be491e88"
+        ],
+        "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+        "reviewer": {
+          "reviewerKind": "HUMAN_REVIEWER",
+          "roleId": "independent-reviewer",
+          "version": "1"
+        },
+        "adjudication": {
+          "required": false,
+          "status": "NOT_REQUIRED",
+          "reviewer": null,
+          "verdict": null,
+          "reason": null
+        },
+        "reviewedAt": null
+      }
+    ],
+    "providerPrivacyReviews": [
+      {
+        "recordVersion": "canonical-provider-privacy-review-record.1",
+        "caseId": "S9-CORE-001-RU",
+        "locale": "ru",
+        "semanticClusterId": "S9-CLUSTER-001",
+        "reviewedExecutionHash": "f843ae060ab89fe944996ab34e116b2118f96e72f56b348950203953be491e88",
+        "status": "FAIL",
+        "criticalProviderPrivacyViolation": false,
+        "reason": "Приватноть информации в данном материале не затронута, как по мне, материал достаточно сух и поверностен, общими фразами об общих темах. Необходима более глубокая картина , базовые данные должны быть более раскрыты",
+        "evidencePointers": [
+          "verbatimSubmission.privacyReview",
+          "source-submission:manual-s9-core-001-ru-p3-r1",
+          "execution:f843ae060ab89fe944996ab34e116b2118f96e72f56b348950203953be491e88"
+        ],
+        "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+        "reviewer": {
+          "reviewerKind": "HUMAN_REVIEWER",
+          "roleId": "independent-reviewer",
+          "version": "1"
+        },
+        "adjudication": {
+          "required": false,
+          "status": "NOT_REQUIRED",
+          "reviewer": null,
+          "verdict": null,
+          "reason": null
+        },
+        "reviewedAt": null
+      }
+    ]
+  },
+  "artifactHash": "a83a442f3af438b75eadedab4413c01d5eb8b2979839e2faf76e4a5cdf65ef89"
+}
