@@ -408,7 +408,7 @@ export const CANONICAL_PROVIDER_HUMAN_REVIEW_PRIVACY_COMMENT_FIELDS = [
 ] as const;
 
 export type CanonicalHumanBinarySemantic = "AFFIRMATIVE" | "NEGATIVE";
-export type CanonicalLocalizedHumanBinaryAnswer = "SÍ" | "YES" | "NO";
+export type CanonicalLocalizedHumanBinaryAnswer = "SÍ" | "YES" | "NO" | "ДА" | "НЕТ";
 export type CanonicalProviderHumanReviewPrivacyCommentField =
   (typeof CANONICAL_PROVIDER_HUMAN_REVIEW_PRIVACY_COMMENT_FIELDS)[number];
 
@@ -506,6 +506,8 @@ function localizedBinarySemantic(
   if (token === "NO" && (locale === "es" || locale === "en")) return "NEGATIVE";
   if (locale === "es" && token === "SÍ") return "AFFIRMATIVE";
   if (locale === "en" && token === "YES") return "AFFIRMATIVE";
+  if (locale === "ru" && token === "ДА") return "AFFIRMATIVE";
+  if (locale === "ru" && token === "НЕТ") return "NEGATIVE";
   return null;
 }
 

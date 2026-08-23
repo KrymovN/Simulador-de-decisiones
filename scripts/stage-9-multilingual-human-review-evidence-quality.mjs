@@ -147,6 +147,44 @@ const currentArtifact = human.buildCanonicalProviderHumanReviewEvidenceV2(
   verbatimSubmission,
 );
 
+const ruLinkage = {
+  caseId: "S9-CORE-001-RU",
+  locale: "ru",
+  semanticClusterId: "S9-CLUSTER-001",
+  executionHash:
+    "f843ae060ab89fe944996ab34e116b2118f96e72f56b348950203953be491e88",
+};
+const ruSubmission = structuredClone(verbatimSubmission);
+ruSubmission.identity = {
+  caseId: ruLinkage.caseId,
+  locale: ruLinkage.locale,
+  semanticClusterId: ruLinkage.semanticClusterId,
+  reviewedExecutionHash: ruLinkage.executionHash,
+};
+ruSubmission.privacyReview.unnecessaryPersonalInformation.answer = "НЕТ";
+ruSubmission.privacyReview.sensitivePrivateInformation.answer = "НЕТ";
+ruSubmission.privacyReview.dataMinimization.answer = "ДА";
+ruSubmission.privacyReview.criticalPrivacyProblem.answer = "НЕТ";
+ruSubmission.privacyReview.globalAssessment.answer = "ADECUADO";
+ruSubmission.generalAssessment.usefulForRealPerson.answer = "ДА";
+ruSubmission.generalAssessment.otherImportantUnrepresentedProblem.answer = "НЕТ";
+ruSubmission.independenceConfirmation = "ДА";
+ruSubmission.reviewLanguage = "ru";
+const buildTestRuArtifact = (submission) =>
+  human.buildCanonicalProviderHumanReviewEvidenceV2({
+    submissionId: "TEST-RU-HUMAN-REVIEW-001",
+    submissionTimestamp: null,
+    reviewerEnteredDate: null,
+    reviewLanguage: "ru",
+    sourceSystem: "TEST-ONLY",
+    sourceFormId: null,
+    sourceFormVersion: null,
+    nativeSpeakerConfirmation: null,
+    personalIdentityStored: false,
+    verbatimSubmissionSha256: campaign.canonicalEvidenceSha256(submission),
+  }, submission);
+const completeRuTestArtifact = buildTestRuArtifact(ruSubmission);
+
 if (process.argv.includes("--emit-artifact")) {
   process.stdout.write(`${JSON.stringify(currentArtifact, null, 2)}\n`);
   process.exit(0);
@@ -176,6 +214,10 @@ add("spanish-v1-position1-remains-valid-and-immutable",
 const persistedCurrent = load(
   "STAGE_9_TERRA_POSITION_2_HUMAN_REVIEW_EVIDENCE.v2.json",
 );
+const position3Evidence = load("STAGE_9_TERRA_POSITION_3_EVIDENCE.v2.json");
+const position3BlindPacket = load(
+  "STAGE_9_TERRA_POSITION_3_BLIND_REVIEW_PACKET.v1.json",
+);
 add("english-raw-yes-no-round-trips-losslessly",
   JSON.stringify(currentArtifact.verbatimSubmission) === JSON.stringify(verbatimSubmission) &&
   JSON.stringify(persistedCurrent.verbatimSubmission) === JSON.stringify(verbatimSubmission));
@@ -188,7 +230,74 @@ add("localized-semantic-mapping-is-deterministic",
   human.normalizeCanonicalLocalizedHumanBinaryAnswer("en", "YES") === "AFFIRMATIVE" &&
   human.normalizeCanonicalLocalizedHumanBinaryAnswer("en", "NO") === "NEGATIVE" &&
   human.normalizeCanonicalLocalizedHumanBinaryAnswer("es", "SÍ") === "AFFIRMATIVE" &&
-  human.normalizeCanonicalLocalizedHumanBinaryAnswer("es", "NO") === "NEGATIVE");
+  human.normalizeCanonicalLocalizedHumanBinaryAnswer("es", "NO") === "NEGATIVE" &&
+  human.normalizeCanonicalLocalizedHumanBinaryAnswer("ru", "ДА") === "AFFIRMATIVE" &&
+  human.normalizeCanonicalLocalizedHumanBinaryAnswer("ru", "НЕТ") === "NEGATIVE");
+add("ru-binary-literals-are-exact-and-locale-specific",
+  ["Да", "да", "Нет", "нет", "YES", "NO", "SÍ", "PARTLY", " ДА", "НЕТ ",
+    true, false, 1, 0].every((token) =>
+    human.normalizeCanonicalLocalizedHumanBinaryAnswer("ru", token) === null) &&
+  human.normalizeCanonicalLocalizedHumanBinaryAnswer("es", "ДА") === null &&
+  human.normalizeCanonicalLocalizedHumanBinaryAnswer("en", "НЕТ") === null);
+add("partly-remains-unsupported-for-every-review-locale",
+  ["es", "en", "ru", "zh"].every((locale) =>
+    human.normalizeCanonicalLocalizedHumanBinaryAnswer(locale, "PARTLY") === null));
+add("zh-binary-normalization-remains-undefined",
+  ["SÍ", "YES", "NO", "ДА", "НЕТ"].every((token) =>
+    human.normalizeCanonicalLocalizedHumanBinaryAnswer("zh", token) === null));
+
+const completeRuTestValidation = human.validateCanonicalProviderHumanReviewEvidenceV2(
+  completeRuTestArtifact,
+  ruLinkage,
+);
+add("ru-position3-human-review-v2-is-structurally-completable-test-only",
+  completeRuTestValidation.valid === true &&
+  completeRuTestValidation.status === "COMPLETE" &&
+  completeRuTestArtifact.completionStatus === "COMPLETE" &&
+  completeRuTestArtifact.normalizedReview?.providerPrivacyReviews[0]?.status === "PASS" &&
+  completeRuTestArtifact.normalizedReview?.providerPrivacyReviews[0]
+    ?.criticalProviderPrivacyViolation === false &&
+  completeRuTestArtifact.normalizedSemantics?.independenceConfirmation === "AFFIRMATIVE" &&
+  completeRuTestArtifact.normalizedSemantics?.privacyReview
+    .unnecessaryPersonalInformation === "NEGATIVE" &&
+  completeRuTestArtifact.normalizedSemantics?.privacyReview
+    .sensitivePrivateInformation === "NEGATIVE" &&
+  completeRuTestArtifact.normalizedSemantics?.privacyReview.dataMinimization ===
+    "AFFIRMATIVE" &&
+  completeRuTestArtifact.normalizedSemantics?.privacyReview.criticalPrivacyProblem ===
+    "NEGATIVE" &&
+  completeRuTestArtifact.normalizedSemantics?.generalAssessment.usefulForRealPerson ===
+    "AFFIRMATIVE" &&
+  completeRuTestArtifact.normalizedSemantics?.generalAssessment
+    .otherImportantUnrepresentedProblem === "NEGATIVE");
+
+const scoreStatuses = [0, 1, 2, 3, 4].map((score) => {
+  const submission = structuredClone(ruSubmission);
+  submission.dimensionReviews.clarification_relevance.score = score;
+  return buildTestRuArtifact(submission).normalizedReview?.humanDimensionReviews.find(
+    (record) => record.dimension === "clarification_relevance",
+  )?.status;
+});
+add("score-status-normalization-remains-frozen",
+  scoreStatuses.join(",") === "FAIL,FAIL,FAIL,PASS,PASS");
+
+const nonAdecuadoRuSubmission = structuredClone(ruSubmission);
+nonAdecuadoRuSubmission.privacyReview.globalAssessment.answer = "НЕАДЕКВАТНО";
+const nonAdecuadoRuArtifact = buildTestRuArtifact(nonAdecuadoRuSubmission);
+add("non-adecuado-global-privacy-assessment-remains-fail",
+  nonAdecuadoRuArtifact.completionStatus === "COMPLETE" &&
+  nonAdecuadoRuArtifact.normalizedReview?.providerPrivacyReviews[0]?.status === "FAIL" &&
+  nonAdecuadoRuArtifact.normalizedReview?.providerPrivacyReviews[0]
+    ?.criticalProviderPrivacyViolation === false);
+
+const criticalPrivacyRuSubmission = structuredClone(ruSubmission);
+criticalPrivacyRuSubmission.privacyReview.criticalPrivacyProblem.answer = "ДА";
+const criticalPrivacyRuArtifact = buildTestRuArtifact(criticalPrivacyRuSubmission);
+add("affirmative-critical-privacy-remains-non-compensable-failure-input",
+  criticalPrivacyRuArtifact.completionStatus === "COMPLETE" &&
+  criticalPrivacyRuArtifact.normalizedReview?.providerPrivacyReviews[0]?.status === "FAIL" &&
+  criticalPrivacyRuArtifact.normalizedReview?.providerPrivacyReviews[0]
+    ?.criticalProviderPrivacyViolation === true);
 
 const unknownToken = structuredClone(verbatimSubmission);
 unknownToken.privacyReview.dataMinimization.answer = "UNKNOWN";
@@ -285,6 +394,16 @@ add("position2-provider-evidence-and-blind-packet-remain-immutable",
     "57b1adaeb23e4fc7f4f5a68856a90846a42e9692301c634bb2f96b864d62ddfa" &&
   physicalSha("STAGE_9_TERRA_POSITION_2_REPLACEMENT_BLIND_REVIEW_PACKET.v1.json") ===
     "54b745b515e96ade85f6c8d448dd05078fef54e4c3aaac82c82420cae5042d5e");
+add("position3-evidence-and-blind-packet-remain-immutable-and-unreviewed",
+  physicalSha("STAGE_9_TERRA_POSITION_3_EVIDENCE.v2.json") ===
+    "95895fae5293a7a6fe0940089bbc27b5414f621fa3f438975b75d13f960237df" &&
+  physicalSha("STAGE_9_TERRA_POSITION_3_BLIND_REVIEW_PACKET.v1.json") ===
+    "38d8caee2e1d452ce8a0c9d6680404ded6aa85519131b5a76d2d4cc53ab67061" &&
+  JSON.stringify(position3BlindPacket) === JSON.stringify(
+    campaign.buildCanonicalProviderBlindReviewPacket(position3Evidence.executions[0]),
+  ) &&
+  position3Evidence.reviewRecords.humanDimensionReviews.length === 0 &&
+  position3Evidence.reviewRecords.providerPrivacyReviews.length === 0);
 const executableImports = readFileSync(fileURLToPath(import.meta.url), "utf8")
   .split("\n").filter((line) => line.startsWith("import ") || line.includes("require("));
 add("no-provider-or-network-operations",
@@ -303,6 +422,14 @@ process.stdout.write(`${JSON.stringify({
     normalizedReviewPersisted: persistedCurrent.normalizedReview !== null,
     executionHash,
     submissionId: persistedCurrent.sourceProvenance.submissionId,
+  },
+  currentPosition3: {
+    actualReviewStatus: "REVIEW_REQUIRED",
+    testOnlyRuV2StructurallyCompletable: completeRuTestValidation.valid,
+    executionHash: ruLinkage.executionHash,
+    persistedHumanDimensionReviewCount:
+      position3Evidence.reviewRecords.humanDimensionReviews.length,
+    persistedPrivacyReviewCount: position3Evidence.reviewRecords.providerPrivacyReviews.length,
   },
   diagnosticOnly: {
     perRecordStatuses: ["PASS", "PASS", "PASS", "PASS"],
