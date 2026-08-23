@@ -16,12 +16,14 @@ meaning; this reconciliation supersedes only earlier root-state assertions
 that Stage 9 is currently In Progress or that an earlier Stage 9 action is
 still active.
 
-The current roadmap position remains Stage 15 Scale. Stage 15 is `IN_PROGRESS`,
-its execution verdict remains `NOT READY`, and Stage 15.5 requirements are
-unchanged. The first bounded blocker-resolution action remains `Scope and
-authority stabilization` covering S15-P12, S15-P29, and classification of
-S15-P21 through S15-P25. It requires separate explicit approval and is not
-executed by this reconciliation.
+The current roadmap position remains Stage 15 Scale. Stage 15 is `IN_PROGRESS`
+with verdict `NOT READY`. The owner-approved initial Scale scope and authority
+decision is recorded in
+`docs/stages/stage-15-scale/LEVIO_STAGE_15_INITIAL_SCALE_SCOPE_AUTHORITY_DECISION.md`.
+S15-P21 through S15-P24 are `VERIFIED`; S15-P12, S15-P29, and S15-P25 are
+`PARTIALLY VERIFIED`. The aggregate is 11 `VERIFIED`, 7 `PARTIALLY VERIFIED`,
+12 `NOT VERIFIED`, and 19 unresolved blockers. The next action is
+`OWNER_ASSIGNMENTS_REQUIRED`; no later blocker group or execution gate is open.
 
 ## Stage 9 remediation plan and bounded fix sequence accepted — 22 July 2026
 
@@ -938,10 +940,10 @@ automatic/background retention and account deletion remain unopened. The
 user-facing warning destination, explicitly confirmed direct draft deletion,
 and parent-driven history cleanup on one saved-simulation deletion are
 implemented. No further Stage 7 implementation remains for the approved scope.
-The next active roadmap work belongs to Stage 15 blocker resolution. Its first
-bounded action remains Scope and authority stabilization for S15-P12, S15-P29,
-and classification of S15-P21 through S15-P25; it requires separate explicit
-approval and is not opened by this state reconciliation.
+The owner-approved initial Scale scope classification is now recorded. Stage 15
+remains `NOT READY`; the next action is `OWNER_ASSIGNMENTS_REQUIRED` for the
+operational and final-authority roles listed in the canonical Stage 15 scope
+and authority decision. No later blocker group is opened.
 
 Stage 5.4 AI Integration Foundation Complete / Real AI Runtime Deferred remains
 closed. Stage 5.4A-D are closed as foundation-only preflight, runtime

@@ -16,12 +16,14 @@ meaning; this reconciliation supersedes only earlier root-state assertions
 that Stage 9 is currently In Progress or that an earlier Stage 9 action is
 still active.
 
-The current roadmap position remains Stage 15 Scale. Stage 15 is `IN_PROGRESS`,
-its execution verdict remains `NOT READY`, and Stage 15.5 requirements are
-unchanged. The first bounded blocker-resolution action remains `Scope and
-authority stabilization` covering S15-P12, S15-P29, and classification of
-S15-P21 through S15-P25. It requires separate explicit approval and is not
-executed by this reconciliation.
+The current roadmap position remains Stage 15 Scale. Stage 15 is `IN_PROGRESS`
+with verdict `NOT READY`. The owner-approved initial Scale scope and authority
+decision is recorded in
+`docs/stages/stage-15-scale/LEVIO_STAGE_15_INITIAL_SCALE_SCOPE_AUTHORITY_DECISION.md`.
+S15-P21 through S15-P24 are `VERIFIED`; S15-P12, S15-P29, and S15-P25 are
+`PARTIALLY VERIFIED`. The aggregate is 11 `VERIFIED`, 7 `PARTIALLY VERIFIED`,
+12 `NOT VERIFIED`, and 19 unresolved blockers. The next action is
+`OWNER_ASSIGNMENTS_REQUIRED`; no later blocker group or execution gate is open.
 
 ## Stage 9 deferred release/runtime decision recorded — 30 July 2026
 
@@ -1236,11 +1238,10 @@ Current evidence:
 Next canonical direction:
 
 No further Block A, Block B, Stage 7 / Block C, or Stage 9 Levio-owned
-remediation task is required for the approved scopes. The next active work
-belongs to Stage 15 blocker resolution. The first bounded action remains
-**Scope and authority stabilization**, covering S15-P12, S15-P29, and explicit
-classification of S15-P21 through S15-P25. It requires separate explicit
-approval and is not executed by this reconciliation.
+remediation task is required for the approved scopes. The owner-approved Stage
+15 initial scope classification is recorded. The next action is
+`OWNER_ASSIGNMENTS_REQUIRED` for the roles listed in the canonical Stage 15
+scope and authority decision. No later blocker group is opened.
 
 Any next step must continue using the approved server-only boundaries and must
 not change the public `/api/simulate` contract unless separately approved.

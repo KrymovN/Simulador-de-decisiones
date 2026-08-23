@@ -16,12 +16,14 @@ meaning; this reconciliation supersedes only earlier root-state assertions
 that Stage 9 is currently In Progress or that an earlier Stage 9 action is
 still active.
 
-The current roadmap position remains Stage 15 Scale. Stage 15 is `IN_PROGRESS`,
-its execution verdict remains `NOT READY`, and Stage 15.5 requirements are
-unchanged. The first bounded blocker-resolution action remains `Scope and
-authority stabilization` covering S15-P12, S15-P29, and classification of
-S15-P21 through S15-P25. It requires separate explicit approval and is not
-executed by this reconciliation.
+The current roadmap position remains Stage 15 Scale. Stage 15 is `IN_PROGRESS`
+with verdict `NOT READY`. The owner-approved initial Scale scope and authority
+decision is recorded in
+`docs/stages/stage-15-scale/LEVIO_STAGE_15_INITIAL_SCALE_SCOPE_AUTHORITY_DECISION.md`.
+S15-P21 through S15-P24 are `VERIFIED`; S15-P12, S15-P29, and S15-P25 are
+`PARTIALLY VERIFIED`. The aggregate is 11 `VERIFIED`, 7 `PARTIALLY VERIFIED`,
+12 `NOT VERIFIED`, and 19 unresolved blockers. The next action is
+`OWNER_ASSIGNMENTS_REQUIRED`; no later blocker group or execution gate is open.
 
 ## Stage 9 deferred release/runtime decision recorded — 30 July 2026
 
@@ -2586,9 +2588,9 @@ deletion, and atomic parent-driven history cleanup on single saved-simulation
 deletion are complete. Independent history-entry deletion remains excluded;
 bulk/background retention and account deletion remain bounded later-scope
 deferrals. Stage 9 Real AI Integration is complete under the current canonical
-integration-readiness projection. The next active roadmap work is the separately
-approved Stage 15 Scope and authority stabilization action covering S15-P12,
-S15-P29, and classification of S15-P21 through S15-P25.
+integration-readiness projection. The owner-approved initial Scale scope is
+recorded; the next action is `OWNER_ASSIGNMENTS_REQUIRED`. No later Stage 15
+blocker group is opened.
 
 Scale execution, Production Release, Commercial Launch, Real AI execution,
 production auth/account/persistence, subscription/billing/commercial runtime,
