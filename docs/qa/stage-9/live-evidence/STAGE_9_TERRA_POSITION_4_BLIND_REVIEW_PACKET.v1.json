@@ -1,0 +1,355 @@
+{
+  "version": "canonical-provider-blind-review-packet.1",
+  "executionHash": "a58e55d549191db2961fa838c9c86679549ec726a7af480d25e7fd86ac2b0d4b",
+  "caseId": "S9-CORE-001-ZH",
+  "locale": "zh",
+  "semanticClusterId": "S9-CLUSTER-001",
+  "validatedResult": {
+    "evaluation_contract_version": "canonical-provider-evaluation-result.1",
+    "candidate_material": {
+      "capability": "candidate_decision_material_v1",
+      "contract_version": "1.0",
+      "generation_status": "completed",
+      "classification": "synthetic_non_personal",
+      "items": [
+        {
+          "candidate_id": "c1_offer_a",
+          "item_type": "option",
+          "content": "工作机会甲：两份已确认机会中的一份。",
+          "provenance": {
+            "source": "provider_candidate",
+            "source_ref": "fact_1"
+          },
+          "confidence": "high",
+          "evidence": "user_fact_reference",
+          "option_refs": [],
+          "scenario_refs": [],
+          "criterion_refs": [],
+          "authority": "candidate_only",
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0"
+        },
+        {
+          "candidate_id": "c2_offer_b",
+          "item_type": "option",
+          "content": "工作机会乙：两份已确认机会中的另一份。",
+          "provenance": {
+            "source": "provider_candidate",
+            "source_ref": "fact_1"
+          },
+          "confidence": "high",
+          "evidence": "user_fact_reference",
+          "option_refs": [],
+          "scenario_refs": [],
+          "criterion_refs": [],
+          "authority": "candidate_only",
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0"
+        },
+        {
+          "candidate_id": "c3_salary_criterion",
+          "item_type": "decision_criterion",
+          "content": "薪资是两份工作机会存在差异的比较维度。",
+          "provenance": {
+            "source": "provider_candidate",
+            "source_ref": "case_situation"
+          },
+          "confidence": "high",
+          "evidence": "user_fact_reference",
+          "option_refs": [],
+          "scenario_refs": [],
+          "criterion_refs": [],
+          "authority": "candidate_only",
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0"
+        },
+        {
+          "candidate_id": "c4_commute_criterion",
+          "item_type": "decision_criterion",
+          "content": "通勤是两份工作机会存在差异的比较维度。",
+          "provenance": {
+            "source": "provider_candidate",
+            "source_ref": "case_situation"
+          },
+          "confidence": "high",
+          "evidence": "user_fact_reference",
+          "option_refs": [],
+          "scenario_refs": [],
+          "criterion_refs": [],
+          "authority": "candidate_only",
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0"
+        },
+        {
+          "candidate_id": "c5_growth_criterion",
+          "item_type": "decision_criterion",
+          "content": "成长是两份工作机会存在差异的比较维度。",
+          "provenance": {
+            "source": "provider_candidate",
+            "source_ref": "case_situation"
+          },
+          "confidence": "high",
+          "evidence": "user_fact_reference",
+          "option_refs": [],
+          "scenario_refs": [],
+          "criterion_refs": [],
+          "authority": "candidate_only",
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0"
+        },
+        {
+          "candidate_id": "c6_deadline_trigger",
+          "item_type": "decision_trigger",
+          "content": "两份工作机会的比较受到决策截止期约束。",
+          "provenance": {
+            "source": "provider_candidate",
+            "source_ref": "fact_2"
+          },
+          "confidence": "high",
+          "evidence": "user_fact_reference",
+          "option_refs": [],
+          "scenario_refs": [],
+          "criterion_refs": [],
+          "authority": "candidate_only",
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0"
+        },
+        {
+          "candidate_id": "c7_growth_uncertainty",
+          "item_type": "assumption",
+          "content": "对成长前景的估计具有不确定性。",
+          "provenance": {
+            "source": "provider_candidate",
+            "source_ref": "assumption_1"
+          },
+          "confidence": "high",
+          "evidence": "user_assumption_reference",
+          "option_refs": [],
+          "scenario_refs": [],
+          "criterion_refs": [],
+          "authority": "candidate_only",
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0"
+        },
+        {
+          "candidate_id": "c8_short_term_tradeoff",
+          "item_type": "short_term_consequence",
+          "content": "短期比较涉及薪资、通勤与成长维度之间的取舍。",
+          "provenance": {
+            "source": "provider_candidate",
+            "source_ref": "case_situation"
+          },
+          "confidence": "high",
+          "evidence": "provider_inference",
+          "option_refs": [],
+          "scenario_refs": [],
+          "criterion_refs": [],
+          "authority": "candidate_only",
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0"
+        },
+        {
+          "candidate_id": "c9_long_term_growth_consequence",
+          "item_type": "long_term_consequence",
+          "content": "长期成长相关结果会受到成长估计不确定性的影响。",
+          "provenance": {
+            "source": "provider_candidate",
+            "source_ref": "assumption_1"
+          },
+          "confidence": "medium",
+          "evidence": "provider_inference",
+          "option_refs": [],
+          "scenario_refs": [],
+          "criterion_refs": [],
+          "authority": "candidate_only",
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0"
+        },
+        {
+          "candidate_id": "c10_deadline_risk",
+          "item_type": "risk_signal",
+          "content": "决策截止期可能造成决策时间压力。",
+          "provenance": {
+            "source": "provider_candidate",
+            "source_ref": "fact_2"
+          },
+          "confidence": "medium",
+          "evidence": "provider_inference",
+          "option_refs": [],
+          "scenario_refs": [],
+          "criterion_refs": [],
+          "authority": "candidate_only",
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0"
+        },
+        {
+          "candidate_id": "c11_growth_risk",
+          "item_type": "risk_signal",
+          "content": "成长估计的不确定性可能导致对长期成长结果的预期偏差。",
+          "provenance": {
+            "source": "provider_candidate",
+            "source_ref": "assumption_1"
+          },
+          "confidence": "medium",
+          "evidence": "provider_inference",
+          "option_refs": [],
+          "scenario_refs": [],
+          "criterion_refs": [],
+          "authority": "candidate_only",
+          "capability": "candidate_decision_material_v1",
+          "contract_version": "1.0"
+        }
+      ]
+    },
+    "evaluation_annotations": {
+      "scenario": [
+        {
+          "concept_id": "compare_offer_tradeoffs_paths",
+          "evidence_kind": "candidate_material",
+          "candidate_ids": [
+            "c1_offer_a",
+            "c2_offer_b",
+            "c8_short_term_tradeoff"
+          ],
+          "source_refs": [
+            "fact_1",
+            "case_situation"
+          ]
+        }
+      ],
+      "risk": [
+        {
+          "concept_id": "deadline_pressure",
+          "evidence_kind": "candidate_material",
+          "candidate_ids": [
+            "c10_deadline_risk"
+          ],
+          "source_refs": [
+            "fact_2"
+          ]
+        },
+        {
+          "concept_id": "growth_uncertainty",
+          "evidence_kind": "candidate_material",
+          "candidate_ids": [
+            "c11_growth_risk"
+          ],
+          "source_refs": [
+            "assumption_1"
+          ]
+        }
+      ],
+      "clarification": [
+        {
+          "concept_id": "no_unnecessary_clarification",
+          "evidence_kind": "execution_outcome",
+          "candidate_ids": [],
+          "source_refs": []
+        }
+      ],
+      "recommendation": [
+        {
+          "concept_id": "conditional_recommendation_allowed",
+          "evidence_kind": "candidate_material",
+          "candidate_ids": [
+            "c3_salary_criterion",
+            "c4_commute_criterion",
+            "c5_growth_criterion"
+          ],
+          "source_refs": [
+            "case_situation"
+          ]
+        },
+        {
+          "concept_id": "preserve_uncertainty",
+          "evidence_kind": "candidate_material",
+          "candidate_ids": [
+            "c7_growth_uncertainty",
+            "c9_long_term_growth_consequence"
+          ],
+          "source_refs": [
+            "assumption_1"
+          ]
+        }
+      ],
+      "safety": [
+        {
+          "concept_id": "standard",
+          "evidence_kind": "execution_outcome",
+          "candidate_ids": [],
+          "source_refs": []
+        }
+      ],
+      "privacy": [
+        {
+          "concept_id": "broad_category_only",
+          "evidence_kind": "execution_outcome",
+          "candidate_ids": [],
+          "source_refs": []
+        },
+        {
+          "concept_id": "no_identifiers",
+          "evidence_kind": "execution_outcome",
+          "candidate_ids": [],
+          "source_refs": []
+        }
+      ],
+      "failure": [],
+      "v2_status": [
+        {
+          "concept_id": "SIMULATED",
+          "evidence_kind": "execution_outcome",
+          "candidate_ids": [],
+          "source_refs": []
+        }
+      ],
+      "traceability": [
+        {
+          "concept_id": "trace_facts_assumptions_and_gaps",
+          "evidence_kind": "candidate_material",
+          "candidate_ids": [
+            "c6_deadline_trigger",
+            "c7_growth_uncertainty"
+          ],
+          "source_refs": [
+            "fact_2",
+            "assumption_1"
+          ]
+        }
+      ],
+      "rubric": [
+        {
+          "concept_id": "decision_simulation_not_answer",
+          "evidence_kind": "candidate_material",
+          "candidate_ids": [
+            "c1_offer_a",
+            "c2_offer_b",
+            "c8_short_term_tradeoff"
+          ],
+          "source_refs": [
+            "fact_1",
+            "case_situation"
+          ]
+        },
+        {
+          "concept_id": "uncertainty_preservation",
+          "evidence_kind": "candidate_material",
+          "candidate_ids": [
+            "c7_growth_uncertainty",
+            "c9_long_term_growth_consequence"
+          ],
+          "source_refs": [
+            "assumption_1"
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "kind": "candidate_material",
+      "v2_status": "SIMULATED"
+    }
+  },
+  "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+  "oracleIncluded": false,
+  "matcherIncluded": false
+}
