@@ -80,6 +80,7 @@
     "quality:stage-9-terra-position2-replacement": "node scripts/stage-9-terra-position2-replacement-quality.mjs",
     "quality:stage-9-multilingual-human-review-evidence": "node scripts/stage-9-multilingual-human-review-evidence-quality.mjs",
     "quality:stage-9-human-review-presentation": "node scripts/stage-9-human-review-presentation-quality.mjs",
+    "quality:stage-9-levio-integration-readiness-rebaseline": "node scripts/stage-9-levio-integration-readiness-rebaseline-quality.mjs",
     "quality:stage-9-post-provider-decision-engine-boundary": "node scripts/stage-9-post-provider-decision-engine-boundary-quality.mjs",
     "quality:stage-9-post-provider-simulation-composition": "node scripts/stage-9-post-provider-simulation-composition-quality.mjs",
     "quality:stage-9-production-decision-simulation-orchestrator": "node scripts/stage-9-production-decision-simulation-orchestrator-quality.mjs",
