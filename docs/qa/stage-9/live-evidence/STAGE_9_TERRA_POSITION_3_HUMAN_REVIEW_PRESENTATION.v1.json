@@ -1,0 +1,124 @@
+{
+  "version": "canonical-human-review-presentation.1",
+  "presentationSha256": "20d2b00c716498f78c0149a1fe0f05a421ed0966ebb024951d7c68bcf2abfb1b",
+  "source": {
+    "presentationVersion": "canonical-human-review-presentation.1",
+    "presentationSha256": "20d2b00c716498f78c0149a1fe0f05a421ed0966ebb024951d7c68bcf2abfb1b",
+    "sourceBlindPacketVersion": "canonical-provider-blind-review-packet.1",
+    "sourceBlindPacketSha256": "38d8caee2e1d452ce8a0c9d6680404ded6aa85519131b5a76d2d4cc53ab67061",
+    "caseId": "S9-CORE-001-RU",
+    "locale": "ru",
+    "semanticClusterId": "S9-CLUSTER-001",
+    "reviewedExecutionHash": "f843ae060ab89fe944996ab34e116b2118f96e72f56b348950203953be491e88"
+  },
+  "reviewerVisible": {
+    "serialization": "utf8-markdown.1",
+    "mediaType": "text/markdown; charset=utf-8",
+    "content": "# Независимая оценка материала\n\nОцените только представленный ниже материал. Не пытайтесь угадывать ожидаемые ответы. Не указывайте имя, адрес электронной почты, телефон или другие персональные идентификаторы.\n\n## Материал для оценки\n\n### Контекст\n\nСравниваются два подтверждённых предложения, различающиеся по зарплате, дороге и предполагаемому профессиональному росту.\n\n### Цель\n\nЦель — сопоставить компромиссы предложений без выбора одного из них.\n\n### Вариант\n\nПервое подтверждённое предложение как отдельный путь трудоустройства.\n\n### Вариант\n\nВторое подтверждённое предложение как отдельный путь трудоустройства.\n\n### Критерий решения\n\nРазница в зарплате является материальным критерием для сопоставления текущего дохода.\n\n### Критерий решения\n\nРазница в дороге является материальным критерием для сопоставления ежедневной нагрузки и времени вне работы.\n\n### Критерий решения\n\nПредполагаемый профессиональный рост является долгосрочным критерием, но его оценки неопределённы.\n\n### Краткосрочное последствие\n\nРазница в зарплате создаёт различие в текущем денежном результате между путями.\n\n### Краткосрочное последствие\n\nРазница в дороге создаёт различие в регулярных затратах времени и повседневной нагрузке.\n\n### Долгосрочное последствие\n\nРазличия в профессиональном росте могут влиять на будущие карьерные возможности, однако величина этого влияния не установлена.\n\n### Риск\n\nБолее длительная дорога может повышать риск регулярной транспортной нагрузки и утомления; конкретная величина различий не указана.\n\n### Риск\n\nНеопределённость оценок роста создаёт риск переоценки долгосрочной карьерной выгоды любого из предложений.\n\n### Риск\n\nНаличие срока решения создаёт риск дефицита времени для сопоставления условий.\n\n### Взаимосвязь\n\nСопоставление текущей зарплаты с затратами времени на дорогу и неопределённым ростом определяет основной компромисс между краткосрочными и долгосрочными факторами.\n\n## Шкала оценки\n\n- 0 — неприемлемо или отсутствует\n- 1 — существенно неверно\n- 2 — частично верно с существенными ограничениями\n- 3 — приемлемо\n- 4 — сильный результат\n\nДля каждого числового ответа выберите только целое число от 0 до 4 и добавьте минимум один содержательный комментарий.\n\n## Вопросы оценки\n\n### 1. Релевантность уточнений\nОцените релевантность уточнений в представленном материале.\nОтвет: целое число от 0 до 4. Комментарий обязателен.\n\n### 2. Полезность и различимость сценариев\nОцените полезность и различимость представленных сценариев и путей решения.\nОтвет: целое число от 0 до 4. Комментарий обязателен.\n\n### 3. Представление рисков\nОцените дисциплину и качество представления рисков.\nОтвет: целое число от 0 до 4. Комментарий обязателен.\n\n### 4. Стратегическая полезность рекомендационного материала\nОцените стратегическую полезность рекомендационного материала.\nОтвет: целое число от 0 до 4. Комментарий обязателен.\n\n## Приватность\n\nДля следующих четырёх вопросов допустимы только точные ответы ДА или НЕТ. Регистр имеет значение. Для каждого ответа комментарий обязателен.\n\n### 5. Ненужная персональная информация\nСодержит или запрашивает ли материал ненужную персональную информацию?\n\n### 6. Чувствительная или частная информация\nСодержит ли материал чувствительную или частную информацию, не необходимую для рассматриваемой задачи?\n\n### 7. Минимизация данных\nСоблюдает ли материал принцип минимизации данных?\n\n### 8. Критическая проблема приватности\nЕсть ли в материале критическая проблема приватности?\n\n### 9. Общая оценка приватности\nДайте собственную общую оценку аспектов приватности материала. Ответ должен быть непустым и содержать не более 120 символов. Комментарий обязателен.\n\n## Общая оценка\n\n### 10. Полезность для реального человека\nБыл бы представленный материал полезен реальному человеку в описанной ситуации? Ответьте только ДА или НЕТ. Комментарий обязателен.\n\n### 11. Главное улучшение\nКакое главное улучшение вы бы предложили? Ответ должен быть непустым и содержать не более 600 символов.\n\n### 12. Другая важная проблема\nЕсть ли другая важная проблема, не представленная в предыдущих ответах? Ответьте только ДА или НЕТ. Комментарий необязателен.\n\n## Подтверждение независимости\n\nПодтвердите самостоятельно, что выполняете оценку как независимый рецензент и не являетесь тестируемым поставщиком или моделью. Для подтверждения введите точный ответ ДА. Если вы не можете подтвердить это утверждение, не отправляйте оценку.\n\nЯзык оценки: ru\n"
+  },
+  "ingestionBinding": {
+    "version": "canonical-human-review-presentation-binding.1",
+    "reviewPolicyVersion": "stage-9-provider-review-policy.1",
+    "reviewLanguage": "ru",
+    "questionBindings": [
+      {
+        "questionId": "Q1",
+        "answerField": "dimensionReviews.clarification_relevance.score",
+        "commentField": "dimensionReviews.clarification_relevance.commentParagraphs",
+        "answerContract": "INTEGER_0_TO_4",
+        "commentRequired": true
+      },
+      {
+        "questionId": "Q2",
+        "answerField": "dimensionReviews.scenario_usefulness_distinctness.score",
+        "commentField": "dimensionReviews.scenario_usefulness_distinctness.commentParagraphs",
+        "answerContract": "INTEGER_0_TO_4",
+        "commentRequired": true
+      },
+      {
+        "questionId": "Q3",
+        "answerField": "dimensionReviews.risk_discipline.score",
+        "commentField": "dimensionReviews.risk_discipline.commentParagraphs",
+        "answerContract": "INTEGER_0_TO_4",
+        "commentRequired": true
+      },
+      {
+        "questionId": "Q4",
+        "answerField": "dimensionReviews.recommendation_strategic_usefulness.score",
+        "commentField": "dimensionReviews.recommendation_strategic_usefulness.commentParagraphs",
+        "answerContract": "INTEGER_0_TO_4",
+        "commentRequired": true
+      },
+      {
+        "questionId": "Q5",
+        "answerField": "privacyReview.unnecessaryPersonalInformation.answer",
+        "commentField": "privacyReview.unnecessaryPersonalInformation.commentParagraphs",
+        "answerContract": "EXACT_RU_BINARY",
+        "commentRequired": true
+      },
+      {
+        "questionId": "Q6",
+        "answerField": "privacyReview.sensitivePrivateInformation.answer",
+        "commentField": "privacyReview.sensitivePrivateInformation.commentParagraphs",
+        "answerContract": "EXACT_RU_BINARY",
+        "commentRequired": true
+      },
+      {
+        "questionId": "Q7",
+        "answerField": "privacyReview.dataMinimization.answer",
+        "commentField": "privacyReview.dataMinimization.commentParagraphs",
+        "answerContract": "EXACT_RU_BINARY",
+        "commentRequired": true
+      },
+      {
+        "questionId": "Q8",
+        "answerField": "privacyReview.criticalPrivacyProblem.answer",
+        "commentField": "privacyReview.criticalPrivacyProblem.commentParagraphs",
+        "answerContract": "EXACT_RU_BINARY",
+        "commentRequired": true
+      },
+      {
+        "questionId": "Q9",
+        "answerField": "privacyReview.globalAssessment.answer",
+        "commentField": "privacyReview.globalAssessment.commentParagraphs",
+        "answerContract": "NON_EMPTY_TEXT_MAX_120",
+        "commentRequired": true
+      },
+      {
+        "questionId": "Q10",
+        "answerField": "generalAssessment.usefulForRealPerson.answer",
+        "commentField": "generalAssessment.usefulForRealPerson.commentParagraphs",
+        "answerContract": "EXACT_RU_BINARY",
+        "commentRequired": true
+      },
+      {
+        "questionId": "Q11",
+        "answerField": "generalAssessment.mainImprovement",
+        "commentField": null,
+        "answerContract": "NON_EMPTY_TEXT_MAX_600",
+        "commentRequired": false
+      },
+      {
+        "questionId": "Q12",
+        "answerField": "generalAssessment.otherImportantUnrepresentedProblem.answer",
+        "commentField": "generalAssessment.otherImportantUnrepresentedProblem.commentParagraphs",
+        "answerContract": "EXACT_RU_BINARY",
+        "commentRequired": false
+      },
+      {
+        "questionId": "Q13",
+        "answerField": "independenceConfirmation",
+        "commentField": null,
+        "answerContract": "EXACT_RU_AFFIRMATIVE",
+        "commentRequired": false
+      },
+      {
+        "questionId": "Q14",
+        "answerField": "reviewLanguage",
+        "commentField": null,
+        "answerContract": "FIXED_RU",
+        "commentRequired": false
+      }
+    ]
+  }
+}

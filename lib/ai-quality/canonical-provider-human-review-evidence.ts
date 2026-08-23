@@ -2,6 +2,10 @@ import "server-only";
 
 import { canonicalEvidenceSha256 } from "./canonical-provider-campaign-evidence";
 import {
+  CANONICAL_HUMAN_REVIEW_PRESENTATION_VERSION,
+  type CanonicalHumanReviewPresentationLinkageV1,
+} from "./canonical-human-review-presentation";
+import {
   CANONICAL_HUMAN_REVIEW_DIMENSIONS,
   STAGE_9_PROVIDER_REVIEW_POLICY_VERSION,
   validateCanonicalProviderCampaignReviewEvidence,
@@ -88,6 +92,7 @@ export type CanonicalProviderHumanReviewExpectedLinkage = {
   locale: CanonicalReviewLocale;
   semanticClusterId: string;
   executionHash: string;
+  reviewPresentation?: CanonicalHumanReviewPresentationLinkageV1;
 };
 
 const HASH = /^[a-f0-9]{64}$/;
@@ -450,6 +455,7 @@ export type CanonicalProviderHumanReviewSourceProvenanceV2 = {
   nativeSpeakerConfirmation: string | null;
   personalIdentityStored: false;
   verbatimSubmissionSha256: string;
+  reviewPresentation?: CanonicalHumanReviewPresentationLinkageV1;
 };
 
 export type CanonicalProviderHumanReviewSupplementV1 = {
@@ -531,7 +537,7 @@ function v2SourceProvenanceIssues(
   value: unknown,
   submission: CanonicalProviderHumanReviewSubmissionV2,
 ): string[] {
-  if (!record(value) || !exactKeys(value, [
+  const baseKeys = [
     "submissionId",
     "submissionTimestamp",
     "reviewerEnteredDate",
@@ -542,10 +548,36 @@ function v2SourceProvenanceIssues(
     "nativeSpeakerConfirmation",
     "personalIdentityStored",
     "verbatimSubmissionSha256",
-  ])) return ["human_review_source_provenance_invalid"];
+  ] as const;
+  if (!record(value) ||
+    (!exactKeys(value, baseKeys) && !exactKeys(value, [...baseKeys, "reviewPresentation"]))) {
+    return ["human_review_source_provenance_invalid"];
+  }
   const nullableText = (item: unknown, maximum = 240): boolean =>
     item === null || (typeof item === "string" && item.trim().length > 0 &&
       item.length <= maximum);
+  const presentation = value.reviewPresentation;
+  const identity = submission.identity;
+  const presentationValid = presentation === undefined
+    ? submission.reviewLanguage !== "ru"
+    : (record(presentation) && exactKeys(presentation, [
+      "presentationVersion",
+      "presentationSha256",
+      "sourceBlindPacketVersion",
+      "sourceBlindPacketSha256",
+      "caseId",
+      "locale",
+      "semanticClusterId",
+      "reviewedExecutionHash",
+    ]) && presentation.presentationVersion ===
+      CANONICAL_HUMAN_REVIEW_PRESENTATION_VERSION &&
+      presentation.sourceBlindPacketVersion ===
+        "canonical-provider-blind-review-packet.1" &&
+      HASH.test(String(presentation.presentationSha256)) &&
+      HASH.test(String(presentation.sourceBlindPacketSha256)) &&
+      presentation.caseId === identity.caseId && presentation.locale === identity.locale &&
+      presentation.semanticClusterId === identity.semanticClusterId &&
+      presentation.reviewedExecutionHash === identity.reviewedExecutionHash);
   const valid = ID.test(String(value.submissionId)) &&
     nullableText(value.submissionTimestamp) &&
     nullableText(value.reviewerEnteredDate) &&
@@ -555,7 +587,8 @@ function v2SourceProvenanceIssues(
     nullableText(value.sourceFormVersion, 160) &&
     nullableText(value.nativeSpeakerConfirmation, 120) &&
     value.personalIdentityStored === false &&
-    value.verbatimSubmissionSha256 === canonicalEvidenceSha256(submission);
+    value.verbatimSubmissionSha256 === canonicalEvidenceSha256(submission) &&
+    presentationValid;
   return valid ? [] : ["human_review_source_provenance_invalid"];
 }
 
@@ -967,6 +1000,13 @@ export function validateCanonicalProviderHumanReviewEvidenceV2(
     identity.semanticClusterId !== expected.semanticClusterId ||
     identity.reviewedExecutionHash !== expected.executionHash) {
     issues.push("human_review_execution_linkage_invalid");
+  }
+  if (expected.locale === "ru" && expected.reviewPresentation === undefined) {
+    issues.push("human_review_expected_presentation_linkage_missing");
+  } else if (expected.reviewPresentation !== undefined &&
+    canonicalEvidenceSha256(value.sourceProvenance.reviewPresentation) !==
+      canonicalEvidenceSha256(expected.reviewPresentation)) {
+    issues.push("human_review_presentation_linkage_invalid");
   }
   if (rebuilt.completionStatus === "COMPLETE" && rebuilt.normalizedReview !== null) {
     const normalized = canonicalProviderCampaignReviewEvidenceFromHumanArtifact({

@@ -39,6 +39,12 @@ const campaign = require(join(
   "ai-quality",
   "canonical-provider-campaign-evidence.ts",
 ));
+const presentation = require(join(
+  root,
+  "lib",
+  "ai-quality",
+  "canonical-human-review-presentation.ts",
+));
 const read = (name) => readFileSync(join(live, name));
 const load = (name) => JSON.parse(read(name).toString("utf8"));
 const physicalSha = (name) => createHash("sha256").update(read(name)).digest("hex");
@@ -147,12 +153,19 @@ const currentArtifact = human.buildCanonicalProviderHumanReviewEvidenceV2(
   verbatimSubmission,
 );
 
+const position3Presentation = load(
+  "STAGE_9_TERRA_POSITION_3_HUMAN_REVIEW_PRESENTATION.v1.json",
+);
+const ruPresentationLinkage = presentation.canonicalHumanReviewPresentationLinkage(
+  position3Presentation,
+);
 const ruLinkage = {
   caseId: "S9-CORE-001-RU",
   locale: "ru",
   semanticClusterId: "S9-CLUSTER-001",
   executionHash:
     "f843ae060ab89fe944996ab34e116b2118f96e72f56b348950203953be491e88",
+  reviewPresentation: ruPresentationLinkage,
 };
 const ruSubmission = structuredClone(verbatimSubmission);
 ruSubmission.identity = {
@@ -182,6 +195,7 @@ const buildTestRuArtifact = (submission) =>
     nativeSpeakerConfirmation: null,
     personalIdentityStored: false,
     verbatimSubmissionSha256: campaign.canonicalEvidenceSha256(submission),
+    reviewPresentation: ruPresentationLinkage,
   }, submission);
 const completeRuTestArtifact = buildTestRuArtifact(ruSubmission);
 
@@ -270,6 +284,37 @@ add("ru-position3-human-review-v2-is-structurally-completable-test-only",
     "AFFIRMATIVE" &&
   completeRuTestArtifact.normalizedSemantics?.generalAssessment
     .otherImportantUnrepresentedProblem === "NEGATIVE");
+const mismatchedRuPresentationLinkage = structuredClone(ruLinkage);
+mismatchedRuPresentationLinkage.reviewPresentation.presentationSha256 = "0".repeat(64);
+const mismatchedRuPresentationValidation =
+  human.validateCanonicalProviderHumanReviewEvidenceV2(
+    completeRuTestArtifact,
+    mismatchedRuPresentationLinkage,
+  );
+add("ru-human-review-v2-rejects-presentation-linkage-mismatch",
+  mismatchedRuPresentationValidation.valid === false &&
+  mismatchedRuPresentationValidation.issues.includes(
+    "human_review_presentation_linkage_invalid",
+  ));
+const ruLinkageWithoutPresentation = structuredClone(ruLinkage);
+delete ruLinkageWithoutPresentation.reviewPresentation;
+const missingExpectedPresentationValidation =
+  human.validateCanonicalProviderHumanReviewEvidenceV2(
+    completeRuTestArtifact,
+    ruLinkageWithoutPresentation,
+  );
+const unlinkedRuProvenance = structuredClone(completeRuTestArtifact.sourceProvenance);
+delete unlinkedRuProvenance.reviewPresentation;
+const unlinkedRuArtifact = human.buildCanonicalProviderHumanReviewEvidenceV2(
+  unlinkedRuProvenance,
+  ruSubmission,
+);
+add("ru-human-review-v2-requires-authoritative-presentation-linkage",
+  missingExpectedPresentationValidation.valid === false &&
+  missingExpectedPresentationValidation.issues.includes(
+    "human_review_expected_presentation_linkage_missing",
+  ) && unlinkedRuArtifact.completionStatus === "INVALID" &&
+  unlinkedRuArtifact.remainingIssues.includes("human_review_source_provenance_invalid"));
 
 const scoreStatuses = [0, 1, 2, 3, 4].map((score) => {
   const submission = structuredClone(ruSubmission);
@@ -427,6 +472,7 @@ process.stdout.write(`${JSON.stringify({
     actualReviewStatus: "REVIEW_REQUIRED",
     testOnlyRuV2StructurallyCompletable: completeRuTestValidation.valid,
     executionHash: ruLinkage.executionHash,
+    presentationSha256: ruPresentationLinkage.presentationSha256,
     persistedHumanDimensionReviewCount:
       position3Evidence.reviewRecords.humanDimensionReviews.length,
     persistedPrivacyReviewCount: position3Evidence.reviewRecords.providerPrivacyReviews.length,
