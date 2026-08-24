@@ -26,7 +26,8 @@ require.extensions[".ts"] = function loadTypeScriptModule(module, filename) {
 };
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
-const baseline = "afa1e12b32544731c440e13af728b2c1e59464a9";
+const proofBaseline = "afa1e12b32544731c440e13af728b2c1e59464a9";
+const repositoryBaseline = "8ae21fda24488ff706a8ec53d9addd75e580d7b6";
 const proofModule = require(join(
   root,
   "lib/runtime-integration/controlled-failure-product-presentation-proof.ts",
@@ -38,7 +39,7 @@ const evidence = JSON.parse(readFileSync(join(
 ), "utf8"));
 
 const changed = [
-  ...execFileSync("git", ["diff", "--name-only", baseline], {
+  ...execFileSync("git", ["diff", "--name-only", repositoryBaseline], {
     cwd: root, encoding: "utf8",
   }).split("\n"),
   ...execFileSync("git", ["ls-files", "--others", "--exclude-standard"], {
@@ -53,15 +54,26 @@ const allowed = new Set([
   "lib/runtime-integration/controlled-production-ai-runtime-switch-validation.ts",
   "lib/runtime-integration/controlled-production-ai-runtime-switch.server.ts",
   "lib/runtime-integration/controlled-simulator-runtime-switch-contracts.ts",
+  "lib/runtime-integration/public-simulation-api-v2-adapter.server.ts",
+  "lib/runtime-integration/public-simulation-api-v2-contracts.ts",
+  "app/api/simulate/route.ts",
+  "components/HomeSimulator.tsx",
   "package.json",
+  "scripts/public-api-controlled-ai-composition-quality.mjs",
+  "scripts/public-home-simulator-api-integration-quality.mjs",
   "scripts/stage-9-controlled-failure-product-presentation-quality.mjs",
+  "scripts/stage-9-controlled-production-ai-runtime-switch-quality.mjs",
   "scripts/stage-9-levio-integration-readiness-rebaseline-quality.mjs",
   "scripts/stage-9-minimum-necessary-prompt-context-quality.mjs",
 ]);
 const unexpected = [...new Set(changed)].filter((path) => !allowed.has(path));
 const publicSurfaceDiff = execFileSync("git", [
-  "diff", "--name-only", baseline, "--",
+  "diff", "--name-only", repositoryBaseline, "--",
   "app/api/simulate/route.ts", "components/HomeSimulator.tsx",
+], { cwd: root, encoding: "utf8" }).trim();
+const historicalEvidenceDiff = execFileSync("git", [
+  "diff", "--name-only", "HEAD", "--",
+  "docs/qa/stage-9/STAGE_9_CONTROLLED_FAILURE_PRODUCT_PRESENTATION_CLOSURE_EVIDENCE.v1.json",
 ], { cwd: root, encoding: "utf8" }).trim();
 
 const checks = [...proof.checks];
@@ -74,16 +86,18 @@ add("canonical-proof-version-root-cause-and-status",
 add("versioned-closure-evidence-is-exact",
   evidence.evidenceId ===
     "stage-9-controlled-failure-product-presentation-closure-evidence.1" &&
-  evidence.baselineCommit === baseline &&
+  evidence.baselineCommit === proofBaseline &&
   evidence.guaranteeId === proof.guaranteeId &&
   evidence.canonicalObligation === proof.canonicalObligation &&
   evidence.rootCause === proof.rootCause &&
   evidence.proofVersion === proof.version && evidence.status === proof.status);
 add("bounded-remediation-write-set",
   unexpected.length === 0 && evidence.productionFailurePresentationChanged === true);
-add("public-api-ui-copy-and-activation-unchanged",
-  publicSurfaceDiff === "" && evidence.publicApiActivated === false &&
-  evidence.publicUiCopyChanged === false);
+add("historical-closure-evidence-retained-and-public-composition-bounded",
+  historicalEvidenceDiff === "" &&
+  publicSurfaceDiff.split("\n").filter(Boolean).sort().join("\n") ===
+    ["app/api/simulate/route.ts", "components/HomeSimulator.tsx"].sort().join("\n") &&
+  evidence.publicApiActivated === false && evidence.publicUiCopyChanged === false);
 add("no-external-provider-api-or-human-review-operations",
   proof.summary.externalProviderOperations === 0 &&
   proof.summary.apiOperations === 0 && proof.summary.humanReviewOperations === 0 &&

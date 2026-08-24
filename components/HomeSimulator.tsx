@@ -5,6 +5,10 @@ import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEven
 import { saveCompletedSimulationFromUi } from "../lib/saved-decision-simulations/ui-save-action";
 import type { SimulationResponse } from "../lib/simulationEngine";
 import {
+  isPublicSimulationApiV2Envelope,
+  type PublicSimulationApiV2Envelope,
+} from "../lib/runtime-integration/public-simulation-api-v2-contracts";
+import {
   IDLE_PROCESSING_STATE,
   PROCESSING_STAGE_TITLES,
   PROCESSING_TIMING,
@@ -59,6 +63,8 @@ type SimulationErrorState = {
   message: string;
   requestId?: string;
   retryAfterSeconds?: number;
+  runtimeSource?: "production_ai";
+  renderState?: "controlled_failure";
 };
 
 type SimulationPreviewState = {
@@ -71,8 +77,19 @@ type SimulationPreviewState = {
 type SimulationRequestOutcome =
   | {
       status: "completed";
+      responseMode: "deterministic_preview";
       simulation: SimulationResponse;
       preview: SimulationPreviewState;
+    }
+  | {
+      status: "completed";
+      responseMode: "production_v2";
+      production: {
+        contractVersion: PublicSimulationApiV2Envelope["contractVersion"];
+        requestId: string;
+        runtimeSource: "production_ai";
+        uiModel: PublicSimulationApiV2Envelope["uiModel"];
+      };
     }
   | {
       status: "failed";
@@ -80,6 +97,8 @@ type SimulationRequestOutcome =
       message: string;
       requestId?: string;
       retryAfterSeconds?: number;
+      runtimeSource?: "production_ai";
+      renderState?: "controlled_failure";
     };
 
 type SaveSimulationState = Awaited<ReturnType<typeof saveCompletedSimulationFromUi>>;
@@ -122,16 +141,26 @@ class SimulateApiFailure extends Error {
   code?: string;
   requestId?: string;
   retryAfterSeconds?: number;
+  runtimeSource?: "production_ai";
+  renderState?: "controlled_failure";
 
   constructor(
     message: string,
-    options?: { code?: string; requestId?: string; retryAfterSeconds?: number },
+    options?: {
+      code?: string;
+      requestId?: string;
+      retryAfterSeconds?: number;
+      runtimeSource?: "production_ai";
+      renderState?: "controlled_failure";
+    },
   ) {
     super(message);
     this.name = "SimulateApiFailure";
     this.code = options?.code;
     this.requestId = options?.requestId;
     this.retryAfterSeconds = options?.retryAfterSeconds;
+    this.runtimeSource = options?.runtimeSource;
+    this.renderState = options?.renderState;
   }
 }
 
@@ -202,6 +231,14 @@ function isSimulateApiResponse(value: unknown): value is SimulateApiResponse {
     Array.isArray(value.data.thinkingStages);
 }
 
+function v2FailureMessage(payload: PublicSimulationApiV2Envelope): string {
+  if (payload.status !== "failed") {
+    return "No se pudo completar la simulación de forma segura.";
+  }
+
+  return payload.uiModel.sections.status.items[0]?.message ?? payload.error.message;
+}
+
 type ProcessingStepVisualState = "pending" | "active" | "completing" | "completed";
 
 function processingStepVisualState(
@@ -245,6 +282,10 @@ export default function HomeSimulator() {
   const [isListening, setIsListening] = useState(false);
   const [result, setResult] = useState<SimulationResponse | null>(null);
   const [previewState, setPreviewState] = useState<SimulationPreviewState | null>(null);
+  const [productionResult, setProductionResult] = useState<Extract<
+    SimulationRequestOutcome,
+    { status: "completed"; responseMode: "production_v2" }
+  >["production"] | null>(null);
   const [errorState, setErrorState] = useState<SimulationErrorState | null>(null);
   const [saveState, setSaveState] = useState<SaveSimulationState | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -297,6 +338,15 @@ export default function HomeSimulator() {
     if (!response.ok) {
       const payload = await response.json().catch(() => null);
 
+      if (isPublicSimulationApiV2Envelope(payload) && payload.status === "failed") {
+        throw new SimulateApiFailure(v2FailureMessage(payload), {
+          code: payload.error.code,
+          requestId: payload.requestId,
+          runtimeSource: payload.runtimeSource,
+          renderState: "controlled_failure",
+        });
+      }
+
       if (isSimulateApiResponse(payload) && payload.status === "failed") {
         throw new SimulateApiFailure(payload.error.message, {
           code: payload.error.code,
@@ -310,8 +360,17 @@ export default function HomeSimulator() {
 
     const payload = await response.json();
 
-    if (!isSimulateApiResponse(payload)) {
+    if (!isSimulateApiResponse(payload) && !isPublicSimulationApiV2Envelope(payload)) {
       throw new Error("El simulador público devolvió una respuesta fuera de contrato.");
+    }
+
+    if (isPublicSimulationApiV2Envelope(payload) && payload.status === "failed") {
+      throw new SimulateApiFailure(v2FailureMessage(payload), {
+        code: payload.error.code,
+        requestId: payload.requestId,
+        runtimeSource: payload.runtimeSource,
+        renderState: "controlled_failure",
+      });
     }
 
     if (payload.status === "failed") {
@@ -408,9 +467,17 @@ export default function HomeSimulator() {
     }
 
     if (simulationResult.status === "completed") {
-      setResult(simulationResult.simulation);
-      setPreviewState(simulationResult.preview);
-      setMessage("Simulación demo completada. Escenarios orientativos listos para revisar.");
+      if (simulationResult.responseMode === "deterministic_preview") {
+        setResult(simulationResult.simulation);
+        setPreviewState(simulationResult.preview);
+        setProductionResult(null);
+        setMessage("Simulación demo completada. Escenarios orientativos listos para revisar.");
+      } else {
+        setResult(null);
+        setPreviewState(null);
+        setProductionResult(simulationResult.production);
+        setMessage("Simulación Real AI completada mediante el runtime controlado.");
+      }
       setProcessingState({
         phase: "result-reveal",
         stepIndex: PROCESSING_STAGE_TITLES.length - 1,
@@ -441,11 +508,14 @@ export default function HomeSimulator() {
     } else {
       setResult(null);
       setPreviewState(null);
+      setProductionResult(null);
       setErrorState({
         title: simulationResult.title,
         message: simulationResult.message,
         requestId: simulationResult.requestId,
         retryAfterSeconds: simulationResult.retryAfterSeconds,
+        runtimeSource: simulationResult.runtimeSource,
+        renderState: simulationResult.renderState,
       });
       setMessage("Simulación detenida. No se generó un resultado local de sustitución.");
     }
@@ -468,6 +538,7 @@ export default function HomeSimulator() {
       setMessage("Describe una situación concreta para iniciar la simulación.");
       setErrorState(null);
       setPreviewState(null);
+      setProductionResult(null);
       setSaveState(null);
       return;
     }
@@ -475,6 +546,7 @@ export default function HomeSimulator() {
     if (situation.length > MAX_SIMULATION_INPUT_LENGTH) {
       setResult(null);
       setPreviewState(null);
+      setProductionResult(null);
       setSaveState(null);
       setErrorState({
         title: "Simulación no ejecutada",
@@ -493,6 +565,7 @@ export default function HomeSimulator() {
     setMessage("");
     setResult(null);
     setPreviewState(null);
+    setProductionResult(null);
     setSaveState(null);
     setErrorState(null);
     setProcessingState({ phase: "preparing", stepIndex: -1, resultVisible: false });
@@ -506,16 +579,32 @@ export default function HomeSimulator() {
       situation,
       controller.abortController.signal,
     ).then(
-      (payload) => ({
-        status: "completed" as const,
-        simulation: payload.data,
-        preview: {
-          contractVersion: payload.contractVersion,
-          requestId: payload.requestId,
-          mockOnly: payload.meta.mockOnly,
-          apiReady: payload.meta.apiReady,
-        },
-      }),
+      (payload): SimulationRequestOutcome => {
+        if (isPublicSimulationApiV2Envelope(payload)) {
+          return {
+            status: "completed",
+            responseMode: "production_v2",
+            production: {
+              contractVersion: payload.contractVersion,
+              requestId: payload.requestId,
+              runtimeSource: payload.runtimeSource,
+              uiModel: payload.uiModel,
+            },
+          };
+        }
+
+        return {
+          status: "completed",
+          responseMode: "deterministic_preview",
+          simulation: payload.data,
+          preview: {
+            contractVersion: payload.contractVersion,
+            requestId: payload.requestId,
+            mockOnly: payload.meta.mockOnly,
+            apiReady: payload.meta.apiReady,
+          },
+        };
+      },
       (error: unknown) => {
         const simulateError = error instanceof SimulateApiFailure ? error : null;
 
@@ -531,6 +620,8 @@ export default function HomeSimulator() {
               : "El simulador público devolvió un fallo controlado.",
           requestId: simulateError?.requestId,
           retryAfterSeconds: simulateError?.retryAfterSeconds,
+          runtimeSource: simulateError?.runtimeSource,
+          renderState: simulateError?.renderState,
         };
       },
     );
@@ -670,6 +761,7 @@ export default function HomeSimulator() {
                 setInput(event.target.value);
                 setErrorState(null);
                 setPreviewState(null);
+                setProductionResult(null);
                 setSaveState(null);
               }}
               onKeyDown={handleTextareaKeyDown}
@@ -724,7 +816,7 @@ export default function HomeSimulator() {
         </p>
       </div>
 
-      {(isRunning || result) && (
+      {(isRunning || result || productionResult) && (
         <div
           className="thinking-panel"
           aria-label="Etapas de simulación del motor"
@@ -775,6 +867,9 @@ export default function HomeSimulator() {
             <small>Reintento disponible en {errorState.retryAfterSeconds} s.</small>
           )}
           {errorState.requestId && <small>Referencia: {errorState.requestId}</small>}
+          {errorState.runtimeSource === "production_ai" && (
+            <small>Ruta Real AI controlada · estado {errorState.renderState}.</small>
+          )}
           <small>No se ha generado una simulación local de sustitución.</small>
         </article>
       )}
@@ -894,6 +989,80 @@ export default function HomeSimulator() {
               ) : null}
             </p>
           )}
+        </div>
+      )}
+
+      {productionResult && (
+        <div
+          className={`simulation-output ${
+            processingState.phase === "result-reveal" && !processingState.resultVisible
+              ? "is-result-pending"
+              : "is-result-visible"
+          }`}
+          ref={outputRef}
+        >
+          <div className="simulation-output-header">
+            <div>
+              <p className="eyebrow">Simulación Real AI controlada</p>
+              <h2>
+                {productionResult.uiModel.sections.decisionSummary.items[0]?.statement ??
+                  "Mapa de decisión preparado"}
+              </h2>
+            </div>
+            <div className="output-confidence">
+              <span>Estado del análisis</span>
+              <strong>{productionResult.uiModel.renderState}</strong>
+            </div>
+          </div>
+
+          <article className="strategic-conclusion">
+            <span>SimulationResponseV2</span>
+            <strong>Resultado producido por la ruta Real AI protegida.</strong>
+            <p>
+              Fuente: {productionResult.runtimeSource}. Contrato público: {productionResult.contractVersion}.
+              No se usó un resultado mock de sustitución. Referencia: {productionResult.requestId}.
+            </p>
+          </article>
+
+          <div className="home-scenario-grid">
+            {productionResult.uiModel.sections.scenarios.items.map((scenario) => (
+              <article className="home-scenario-card tone-opportunity" key={scenario.id}>
+                <span>{scenario.perspective}</span>
+                <h3>{scenario.optionLabel}</h3>
+                <dl>
+                  <div>
+                    <dt>Confianza del modelo</dt>
+                    <dd>{Math.round(scenario.confidence.score)}%</dd>
+                  </div>
+                  <div>
+                    <dt>Tipo canónico</dt>
+                    <dd>{scenario.canonicalType}</dd>
+                  </div>
+                </dl>
+                <div className="scenario-notes">
+                  <strong>Condiciones</strong>
+                  {scenario.triggerConditions.map((item) => <p key={item}>{item}</p>)}
+                </div>
+                <div className="scenario-notes warning-notes">
+                  <strong>Incertidumbre</strong>
+                  {scenario.uncertaintyReasons.map((item) => <p key={item}>{item}</p>)}
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <article className="strategic-conclusion">
+            <span>Marco de decisión V2</span>
+            <strong>
+              {productionResult.uiModel.sections.status.items[0]?.message ??
+                "Análisis completado con límites explícitos."}
+            </strong>
+            <p>
+              {productionResult.uiModel.sections.recommendation.items[0]?.confidence.explanation ??
+                (productionResult.uiModel.sections.notices.items.map((notice) => notice.message).join(" ") ||
+                  "Revisa los escenarios y sus condiciones antes de actuar.")}
+            </p>
+          </article>
         </div>
       )}
     </section>

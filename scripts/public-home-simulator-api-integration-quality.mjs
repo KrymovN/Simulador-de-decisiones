@@ -108,6 +108,7 @@ async function withServer(run) {
       ...process.env,
       LEVIO_AUTH_RUNTIME_ENABLED: "false",
       NEXT_PUBLIC_LEVIO_AUTH_RUNTIME_ENABLED: "false",
+      LEVIO_REAL_AI_DEV_ENABLED: "false",
     },
     stdio: ["ignore", "pipe", "pipe"],
   });
@@ -235,6 +236,11 @@ function runSimulatorSourceChecks() {
   sourceIncludes(source, 'fetch("/api/simulate"', "HomeSimulator uses approved /api/simulate route");
   sourceIncludes(source, 'body: JSON.stringify({ input: situation, lang: "es" })', "HomeSimulator sends only approved input/lang payload");
   sourceIncludes(source, "isSimulateApiResponse(payload)", "HomeSimulator validates public envelope before handling");
+  sourceIncludes(source, "isPublicSimulationApiV2Envelope(payload)", "HomeSimulator validates the truthful public V2 envelope before handling");
+  sourceIncludes(source, 'responseMode: "production_v2"', "HomeSimulator distinguishes production V2 from deterministic preview");
+  sourceIncludes(source, "productionResult.uiModel.sections.scenarios.items.map", "HomeSimulator renders V2 success through the existing UI mapping");
+  sourceIncludes(source, 'renderState: "controlled_failure"', "HomeSimulator preserves the controlled V2 failure mapping");
+  sourceIncludes(source, "No se usó un resultado mock de sustitución.", "HomeSimulator discloses that production V2 did not use mock fallback");
   sourceIncludes(source, 'payload.status === "failed"', "HomeSimulator branches failed envelopes explicitly");
   sourceIncludes(source, "throw new SimulateApiFailure", "HomeSimulator converts fail-close envelopes to controlled UI state");
   sourceIncludes(source, "setPreviewState(null)", "HomeSimulator clears preview metadata on failed envelopes");

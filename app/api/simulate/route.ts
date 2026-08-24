@@ -7,6 +7,17 @@ import {
   DETERMINISTIC_ENGINE_PREVIEW_RUNTIME_MARKER,
   runInternalSimulationPipeline,
 } from "../../../lib/decision-engine/simulation-pipeline-runner";
+import { buildDecisionContext } from "../../../lib/decision-engine/context-builder";
+import {
+  CONTROLLED_SIMULATOR_SWITCH_MODE,
+  CONTROLLED_SIMULATOR_SWITCH_VERSION,
+} from "../../../lib/runtime-integration/controlled-simulator-runtime-switch-contracts";
+import { runControlledProductionAiRuntimeSwitch } from "../../../lib/runtime-integration/controlled-production-ai-runtime-switch.server";
+import {
+  adaptControlledProductionAiResultToPublicV2Envelope,
+  createPublicSimulationApiV2FailureEnvelope,
+} from "../../../lib/runtime-integration/public-simulation-api-v2-adapter.server";
+import { isPublicSimulationApiV2Envelope } from "../../../lib/runtime-integration/public-simulation-api-v2-contracts";
 
 const SIMULATE_API_CONTRACT_VERSION = "simulate-api-v1-mock";
 const MAX_BODY_LENGTH = 8192;
@@ -334,6 +345,72 @@ export async function POST(req: Request) {
       "La situación es demasiado larga para una simulación mock.",
       413,
     );
+  }
+
+  const productionAiEnabled = process.env.LEVIO_REAL_AI_DEV_ENABLED === "true";
+
+  if (productionAiEnabled) {
+    const generatedAt = new Date().toISOString();
+    const adapterInput = {
+      requestId,
+      generatedAt,
+      maxInputLength: MAX_INPUT_LENGTH,
+      maxBodyLength: MAX_BODY_LENGTH,
+    };
+
+    try {
+      const contextResult = buildDecisionContext({
+        requestId,
+        rawInput: input,
+        inputLanguage: "es",
+        requestedOutputLanguage: "es",
+      });
+
+      if (
+        contextResult.status !== "built" ||
+        !contextResult.decisionInput ||
+        !contextResult.decisionContext
+      ) {
+        return Response.json(
+          createPublicSimulationApiV2FailureEnvelope(adapterInput),
+          { status: 500 },
+        );
+      }
+
+      const runtimeResult = await runControlledProductionAiRuntimeSwitch({
+        switchVersion: CONTROLLED_SIMULATOR_SWITCH_VERSION,
+        mode: CONTROLLED_SIMULATOR_SWITCH_MODE,
+        executionContext: "internal_dev",
+        requestId,
+        input,
+        lang: "es",
+        requestedOutputLanguage: "es",
+        userIntent: contextResult.decisionInput.userIntent,
+        context: contextResult.decisionContext,
+        ...(contextResult.safety ? { safety: contextResult.safety } : {}),
+        safetyContextComplete: contextResult.safetyContextComplete,
+      });
+      const response = adaptControlledProductionAiResultToPublicV2Envelope(
+        runtimeResult,
+        adapterInput,
+      );
+
+      if (!isPublicSimulationApiV2Envelope(response)) {
+        return Response.json(
+          createPublicSimulationApiV2FailureEnvelope(adapterInput),
+          { status: 500 },
+        );
+      }
+
+      return Response.json(response, {
+        status: response.status === "completed" ? 200 : 502,
+      });
+    } catch {
+      return Response.json(
+        createPublicSimulationApiV2FailureEnvelope(adapterInput),
+        { status: 500 },
+      );
+    }
   }
 
   try {

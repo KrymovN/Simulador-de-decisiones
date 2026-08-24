@@ -79,11 +79,18 @@ const allowedWriteSet = new Set([
   "lib/runtime-integration/controlled-production-ai-runtime-switch.server.ts",
   "lib/runtime-integration/controlled-production-ai-runtime-switch-validation.ts",
   "lib/runtime-integration/controlled-simulator-runtime-switch-contracts.ts",
+  "lib/runtime-integration/public-simulation-api-v2-adapter.server.ts",
+  "lib/runtime-integration/public-simulation-api-v2-contracts.ts",
+  "app/api/simulate/route.ts",
+  "components/HomeSimulator.tsx",
+  "scripts/public-api-controlled-ai-composition-quality.mjs",
+  "scripts/public-home-simulator-api-integration-quality.mjs",
+  "scripts/stage-9-controlled-failure-product-presentation-quality.mjs",
   "scripts/stage-9-controlled-production-ai-runtime-switch-quality.mjs",
   "package.json",
 ]);
 const unexpected = [...new Set(changed)].filter((path) => !allowedWriteSet.has(path));
-const clientImports = spawnSync("rg", ["-n", "controlled-production-ai-runtime-switch", "app", "components"], {
+const clientImports = spawnSync("rg", ["-n", "controlled-production-ai-runtime-switch", "components"], {
   cwd: root,
   encoding: "utf8",
   stdio: ["ignore", "pipe", "ignore"],
@@ -111,9 +118,9 @@ add("no-parallel-provider-abstraction", !runtime.includes("createAIProviderAdapt
 add("no-direct-provider-egress", !runtime.includes("fetch(") && !runtime.includes("responses.create(") && !runtime.includes('from "openai"'), "Runtime switch must delegate provider work to the existing composition root/transport.");
 add("existing-switch-source-unchanged", !changed.includes("lib/runtime-integration/controlled-simulator-runtime-switch.ts"), "Existing deterministic switch implementation must not be rewritten.");
 add("composition-root-source-unchanged", !changed.includes("lib/ai-integration/production-decision-simulation-composition-root.server.ts"), "Existing production composition root must not be rewritten for runtime selection.");
-add("no-client-import", clientImports.status === 1 && !clientImports.stdout.trim(), "App and component code must not import the server runtime callsite.");
-add("public-api-still-mock", route.includes("mockOnly: true") && !route.toLowerCase().includes("openai") && !route.includes("controlled-production-ai-runtime-switch"), "Public /api/simulate must remain mock-only and AI-runtime-free.");
-add("ui-still-public-api-only", home.includes('fetch("/api/simulate"') && !home.toLowerCase().includes("openai") && !home.includes("controlled-production-ai-runtime-switch"), "HomeSimulator must remain on the public mock API.");
+add("no-client-import", clientImports.status === 1 && !clientImports.stdout.trim(), "Client components must not import the server runtime callsite.");
+add("public-api-controlled-and-default-deny", route.includes("runControlledProductionAiRuntimeSwitch") && route.includes('LEVIO_REAL_AI_DEV_ENABLED === "true"') && route.includes("runInternalSimulationPipeline") && !route.toLowerCase().includes('from "openai"') && !route.includes("responses.create("), "Public /api/simulate must use the protected runtime only behind the existing explicit server gate and retain deterministic default execution.");
+add("ui-still-public-api-only", home.includes('fetch("/api/simulate"') && !home.toLowerCase().includes("openai") && !home.includes("controlled-production-ai-runtime-switch") && !home.includes("process.env"), "HomeSimulator must consume only truthful public API envelopes without runtime controls.");
 add("quality-script-registered", packageJson.includes('"quality:stage-9-controlled-production-ai-runtime-switch"'), "Dedicated runtime-selection gate must be registered.");
 add("external-network-zero", externalNetworkRequests === 0 && selectionValidation.summary.networkRequests === 0, "Offline validation must execute zero external network requests.");
 add("exact-bounded-write-set", unexpected.length === 0, `Unexpected changed paths: ${unexpected.join(", ") || "none"}.`);

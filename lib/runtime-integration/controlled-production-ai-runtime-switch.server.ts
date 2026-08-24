@@ -582,7 +582,7 @@ export function createControlledProductionAiRuntimeSwitch():
   );
 }
 
-/** Server-only runtime callsite. It is intentionally not connected to API/UI. */
+/** Server-only callsite used by the public route only after its explicit server gate. */
 export function runControlledProductionAiRuntimeSwitch(
   request: unknown,
 ): Promise<ControlledServerRuntimeSelectionResult> {
