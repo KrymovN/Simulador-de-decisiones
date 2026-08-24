@@ -93,6 +93,13 @@ complete as documentation-only blocker framework work.
 `docs/qa/` contains readiness, testing, dataset threshold, and documentation
 audit material.
 
+## Deployment
+
+`docs/deployment/` contains versioned pre-release configuration and operator
+handoff packages. The current package is:
+
+- [Levio Production Environment Configuration Package v1](deployment/LEVIO_PRODUCTION_ENVIRONMENT_CONFIGURATION_PACKAGE.v1.md)
+
 ## Decisions
 
 `docs/decisions/` contains explicit project decisions, including provider or
