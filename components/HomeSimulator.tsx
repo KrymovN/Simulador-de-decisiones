@@ -84,12 +84,7 @@ type SimulationRequestOutcome =
   | {
       status: "completed";
       responseMode: "production_v2";
-      production: {
-        contractVersion: PublicSimulationApiV2Envelope["contractVersion"];
-        requestId: string;
-        runtimeSource: "production_ai";
-        uiModel: PublicSimulationApiV2Envelope["uiModel"];
-      };
+      production: Extract<PublicSimulationApiV2Envelope, { status: "completed" }>;
     }
   | {
       status: "failed";
@@ -584,12 +579,7 @@ export default function HomeSimulator() {
           return {
             status: "completed",
             responseMode: "production_v2",
-            production: {
-              contractVersion: payload.contractVersion,
-              requestId: payload.requestId,
-              runtimeSource: payload.runtimeSource,
-              uiModel: payload.uiModel,
-            },
+            production: payload,
           };
         }
 
@@ -710,7 +700,9 @@ export default function HomeSimulator() {
   }, []);
 
   async function handleSave() {
-    if (!result) {
+    const simulation = result ?? productionResult;
+
+    if (!simulation) {
       return;
     }
 
@@ -718,7 +710,7 @@ export default function HomeSimulator() {
     setSaveState(null);
 
     try {
-      const saved = await saveCompletedSimulationFromUi({ simulation: result });
+      const saved = await saveCompletedSimulationFromUi({ simulation });
       setSaveState(saved);
 
       if (saved.status === "saved") {
@@ -1063,6 +1055,54 @@ export default function HomeSimulator() {
                   "Revisa los escenarios y sus condiciones antes de actuar.")}
             </p>
           </article>
+
+          <div className="simulator-cta-row" aria-label="Acciones posteriores a la simulación">
+            <button
+              disabled={isSaving || saveState?.status === "saved"}
+              onClick={handleSave}
+              type="button"
+            >
+              {isSaving
+                ? "Guardando..."
+                : saveState?.status === "saved"
+                  ? "Simulación guardada"
+                  : "Guardar simulación"}
+            </button>
+            {saveState?.status === "saved" ? (
+              <Link className="secondary-button" href={saveState.historyHref}>
+                Ver historial
+              </Link>
+            ) : (
+              <Link
+                className="secondary-button"
+                href={
+                  saveState?.status === "auth_required"
+                    ? saveState.loginHref
+                    : "/login?next=%2Fdashboard%2Fsimulations"
+                }
+              >
+                Revisar acceso preparado
+              </Link>
+            )}
+            <Link className="text-link" href="/register">
+              Preparar acceso
+            </Link>
+          </div>
+
+          {saveState && (
+            <p
+              className={`save-flow-state ${saveState.status === "error" ? "is-error" : ""}`}
+              role={saveState.status === "error" ? "alert" : "status"}
+            >
+              {saveState.message}
+              {saveState.status === "saved" ? (
+                <>
+                  {" "}
+                  <Link href={saveState.detailHref}>Abrir simulación guardada</Link>
+                </>
+              ) : null}
+            </p>
+          )}
         </div>
       )}
     </section>

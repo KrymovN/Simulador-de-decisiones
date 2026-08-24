@@ -62,6 +62,7 @@ const PERSISTENCE_MAPPING: DecisionSimulationPersistenceMapping = {
     "generatedScenarios.fromDeterministicOutputSnapshot",
     "decisionEngineOutput",
     "aiMetadata.deterministicPreviewEvidence",
+    "aiMetadata.controlledProductionExecutionProvenanceWhenV2",
     "runtimeMetadata",
     "auditMetadata.parentRevisionExportReferences",
     "lifecycleMetadata",
@@ -72,7 +73,6 @@ const PERSISTENCE_MAPPING: DecisionSimulationPersistenceMapping = {
     "historyEventAppendForReopenArchiveRestoreDelete",
     "revisionCreationRuntime",
     "exportDeleteUserFlows",
-    "realAiProviderProvenance",
     "dashboardProductSurfaceIntegration",
   ],
   computedRuntime: [
@@ -319,8 +319,18 @@ function generatedScenariosSnapshot(record: SimulationRecordRow): Record<string,
   return null;
 }
 
-function runtimeTruthBoundary(record: SimulationRecordRow): "deterministic_preview" | "future_real_ai_path" {
+function runtimeTruthBoundary(
+  record: SimulationRecordRow,
+): DecisionSimulationDomainModel["runtimeMetadata"]["runtimeTruthBoundary"] {
   const aiProviderUsed = booleanFromRecord(record.safety_flags, "aiProviderUsed") ?? false;
+
+  if (
+    aiProviderUsed &&
+    record.simulation_response_version === "simulation_response_v2"
+  ) {
+    return "controlled_production_ai";
+  }
+
   return aiProviderUsed ? "future_real_ai_path" : "deterministic_preview";
 }
 
@@ -417,7 +427,11 @@ export function mapSimulationRecordToDecisionSimulation(
     },
     aiMetadata: {
       aiProviderUsed: booleanFromRecord(record.safety_flags, "aiProviderUsed") ?? false,
-      realAiExecution: "deferred",
+      realAiExecution:
+        record.simulation_response_version === "simulation_response_v2" &&
+        booleanFromRecord(record.safety_flags, "aiProviderUsed") === true
+          ? "completed"
+          : "deferred",
       rawProviderMaterialStored: false,
     },
     runtimeMetadata: {

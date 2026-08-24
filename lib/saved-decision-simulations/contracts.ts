@@ -2,6 +2,7 @@ import type { LevioAuthRuntimeContext } from "../auth/types";
 import type {
   JsonObject,
   PersistenceRuntimeWiring,
+  PersistableSimulationResponse,
   SimulationRecordPersistenceConfig,
   SimulationRecordRow,
   SimulationRecordStatus,
@@ -10,7 +11,6 @@ import type {
   SupabaseSimulationRecordReadProvider,
   SupabaseSimulationRecordSaveProvider,
 } from "../persistence-runtime";
-import type { SimulationResponse } from "../simulationEngine";
 
 export const SAVED_DECISION_SIMULATIONS_RUNTIME_VERSION =
   "block-a-a2-decision-simulation-persistence-runtime-mapping.1" as const;
@@ -135,11 +135,14 @@ export type DecisionSimulationDomainModel = {
   };
   aiMetadata: {
     aiProviderUsed: boolean;
-    realAiExecution: "deferred";
+    realAiExecution: "deferred" | "completed";
     rawProviderMaterialStored: false;
   };
   runtimeMetadata: {
-    runtimeTruthBoundary: "deterministic_preview" | "future_real_ai_path";
+    runtimeTruthBoundary:
+      | "deterministic_preview"
+      | "future_real_ai_path"
+      | "controlled_production_ai";
     sourceType: "explicit_save" | "approved_account_save" | "registered_user_import";
     safetyClassification: string;
     contentSensitivity: string;
@@ -172,7 +175,7 @@ export type DecisionSimulationDomainModel = {
 
 export type SavedDecisionSimulationSaveInput = {
   authContext: LevioAuthRuntimeContext | null | undefined;
-  simulation: SimulationResponse;
+  simulation: PersistableSimulationResponse;
   title?: string;
   userNote?: string;
   runtime?: PersistenceRuntimeWiring;

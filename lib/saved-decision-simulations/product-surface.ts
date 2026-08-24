@@ -1,7 +1,7 @@
 import type { LevioAuthRuntimeContext } from "../auth/types";
 import { readServerAuthSession } from "../auth/session";
-import type { SimulationResponse } from "../simulationEngine";
 import type {
+  PersistableSimulationResponse,
   PersistenceRuntimeWiring,
   SupabaseSimulationRecordArchiveProvider,
   SupabaseSimulationRecordDeleteProvider,
@@ -68,7 +68,7 @@ export type SavedSimulationsProductSurfaceInput = {
 
 export type SaveCompletedSimulationSurfaceInput = {
   authContext?: LevioAuthRuntimeContext | null;
-  simulation: SimulationResponse;
+  simulation: PersistableSimulationResponse;
   runtime?: PersistenceRuntimeWiring;
   saveProvider?: SupabaseSimulationRecordSaveProvider;
   config?: SavedDecisionSimulationsRuntimeConfig;
@@ -289,10 +289,17 @@ function summaryFromSimulation(simulation: DecisionSimulationDomainModel): strin
   const output = deterministicOutput(simulation);
   const legacy = legacySimulation(output);
   const recommendation = recordValue(output, "recommendation");
+  const rationale = recommendation ? arrayValue(recommendation, "rationale") : [];
+  const firstRationale = isRecord(rationale[0]) ? rationale[0] : null;
+  const preferredOption = recommendation
+    ? stringValue(recommendation.preferredOptionLabel)
+    : null;
 
   return (
     (legacy ? stringValue(legacy.result) : null) ??
     (recommendation ? stringValue(recommendation.summary) : null) ??
+    (preferredOption ? `Opción preferida: ${preferredOption}.` : null) ??
+    (firstRationale ? stringValue(firstRationale.explanation) : null) ??
     simulation.decisionEngineOutput.recommendationState ??
     "Simulación de decisión guardada."
   );
@@ -323,6 +330,10 @@ function riskValue(simulation: DecisionSimulationDomainModel): number | null {
 function sourceLabel(simulation: DecisionSimulationDomainModel): string {
   if (simulation.runtimeMetadata.runtimeTruthBoundary === "deterministic_preview") {
     return "Motor determinista";
+  }
+
+  if (simulation.runtimeMetadata.runtimeTruthBoundary === "controlled_production_ai") {
+    return "Runtime Real AI controlado";
   }
 
   return "Proveedor AI interno";
@@ -368,17 +379,33 @@ function scenarioViews(simulation: DecisionSimulationDomainModel): SavedSimulati
 
   return sourceScenarios.slice(0, 4).map((scenario, index) => {
     const record = isRecord(scenario) ? scenario : {};
-    const label = stringValue(record.label) ?? `Escenario ${index + 1}`;
-    const title = stringValue(record.title) ?? stringValue(record.name) ?? label;
+    const confidence = recordValue(record, "confidence");
+    const triggerConditions = arrayValue(record, "triggerConditions")
+      .filter((item): item is string => typeof item === "string");
+    const uncertaintyReasons = arrayValue(record, "uncertaintyReasons")
+      .filter((item): item is string => typeof item === "string");
+    const label =
+      stringValue(record.label) ??
+      stringValue(record.perspective) ??
+      `Escenario ${index + 1}`;
+    const title =
+      stringValue(record.title) ??
+      stringValue(record.name) ??
+      stringValue(record.optionLabel) ??
+      label;
     const copy =
       stringValue(record.copy) ??
       stringValue(record.summary) ??
       stringValue(record.description) ??
+      ([...triggerConditions, ...uncertaintyReasons].join(" ") || null) ??
       "Escenario guardado dentro de la simulación.";
     const signal =
       stringValue(record.signal) ??
       stringValue(record.score) ??
       stringValue(record.status) ??
+      (confidence
+        ? `${stringValue(confidence.band) ?? "Confianza"} · ${Math.round(numberValue(confidence.score) ?? 0)}%`
+        : null) ??
       "Disponible";
 
     return {

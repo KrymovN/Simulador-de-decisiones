@@ -7,10 +7,10 @@ import {
   deleteSavedSimulationSurface,
   saveCompletedSimulationSurface,
 } from "./product-surface";
-import type { SimulationResponse } from "../simulationEngine";
+import type { PersistableSimulationResponse } from "../persistence-runtime";
 
 export async function saveCompletedSimulationFromUi(input: {
-  simulation: SimulationResponse;
+  simulation: PersistableSimulationResponse;
 }) {
   const result = await saveCompletedSimulationSurface({
     simulation: input.simulation,

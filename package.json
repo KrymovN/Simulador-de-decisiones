@@ -105,6 +105,7 @@
     "quality:visual-migration-closure": "node scripts/visual-migration-closure-quality.mjs",
     "quality:public-home-simulator-api-integration": "node scripts/public-home-simulator-api-integration-quality.mjs",
     "quality:public-api-controlled-ai-composition": "node scripts/public-api-controlled-ai-composition-quality.mjs",
+    "quality:simulation-response-v2-persistence-flow": "node scripts/simulation-response-v2-persistence-flow-quality.mjs",
     "quality:public-site-trust-readiness": "node scripts/public-site-trust-readiness-quality.mjs",
     "quality:rendered-public-surface-regression": "node scripts/rendered-public-surface-regression-quality.mjs",
     "quality:public-interaction-hardening": "node scripts/public-interaction-hardening-quality.mjs",

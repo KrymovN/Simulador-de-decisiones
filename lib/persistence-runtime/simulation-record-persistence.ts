@@ -1,4 +1,10 @@
 import type { LevioAuthRuntimeContext } from "../auth/types";
+import { validateSimulationResponseV2DraftShape } from "../decision-engine/simulation-response";
+import { mapSimulationResponseV2ToUiModel } from "../decision-engine/simulation-response-v2-ui-mapping";
+import {
+  isPublicSimulationApiV2Envelope,
+  type PublicSimulationApiV2Envelope,
+} from "../runtime-integration/public-simulation-api-v2-contracts";
 import type { SimulationResponse } from "../simulationEngine";
 import type { SimulationRecordRow } from "./contracts";
 import {
@@ -51,7 +57,7 @@ export type SimulationRecordPersistenceConfig = {
 
 export type SimulationRecordSaveInput = {
   authContext: LevioAuthRuntimeContext | null | undefined;
-  simulation: SimulationResponse;
+  simulation: PersistableSimulationResponse;
   title?: string;
   userNote?: string;
   runtime?: PersistenceRuntimeWiring;
@@ -76,6 +82,8 @@ export type SimulationRecordSaveResult =
     };
 
 type ConfigEnv = Record<string, string | undefined>;
+
+export type PersistableSimulationResponse = SimulationResponse | PublicSimulationApiV2Envelope;
 
 function isEnabledFlag(value: string | undefined): boolean {
   const normalized = value?.trim().toLowerCase();
@@ -158,12 +166,107 @@ export function simulationRecordPersistenceEvidence(): SimulationRecordPersisten
 }
 
 export function buildSimulationRecordInsertPayload(input: {
-  simulation: SimulationResponse;
+  simulation: PersistableSimulationResponse;
   ownerPrincipalId: string;
   title?: string;
   userNote?: string;
 }): SupabaseSimulationRecordInsertPayload | null {
   const { simulation } = input;
+
+  if (isPublicSimulationApiV2Envelope(simulation)) {
+    if (simulation.status !== "completed") {
+      return null;
+    }
+
+    const response = simulation.data;
+
+    if (!validateSimulationResponseV2DraftShape(response)) {
+      return null;
+    }
+
+    const uiModel = mapSimulationResponseV2ToUiModel(response);
+
+    if (uiModel.renderState === "controlled_failure") {
+      return null;
+    }
+
+    const decision = uiModel.sections.decisionSummary.items[0];
+    const modelQuality = uiModel.sections.modelQuality.items[0];
+    const clarification = uiModel.sections.clarification.items[0];
+    const recommendation = uiModel.sections.recommendation.items[0];
+    const safety = uiModel.sections.safety.items[0];
+    const scenarios = uiModel.sections.scenarios.items;
+    const risks = uiModel.sections.risks.items;
+    const notices = uiModel.sections.notices.items;
+    const maximumRisk = risks.reduce<number | null>((current, risk) => {
+      const score = risk.comparativeProbability.score;
+      return current === null ? score : Math.max(current, score);
+    }, null);
+
+    if (!decision || !modelQuality || !safety) {
+      return null;
+    }
+
+    return {
+      owner_principal_id: input.ownerPrincipalId,
+      owner_principal_type: "registered_user",
+      record_status: "active",
+      source_type: "explicit_save",
+      title: truncateTitle(input.title ?? decision.statement),
+      user_note: normalizeUserNote(input.userNote),
+      user_input_snapshot: {
+        input: decision.statement,
+        language: response.language.input,
+        generatedAt: response.generatedAt,
+        source: "levio_simulator",
+      },
+      deterministic_output_snapshot: {
+        contractVersion: "2.0",
+        status: response.status,
+        decision,
+        modelQuality,
+        ...(clarification ? { clarification } : {}),
+        analysis: {
+          scenarios,
+          risks,
+        },
+        ...(recommendation ? { recommendation } : {}),
+        safety,
+        notices,
+      },
+      metadata: {
+        source: "simulator",
+        runtimeSource: simulation.runtimeSource,
+        responseMode: simulation.responseMode,
+        publicContractVersion: simulation.contractVersion,
+        generatedAt: response.generatedAt,
+        persistenceVersion: SIMULATION_RECORD_PERSISTENCE_VERSION,
+      },
+      safety_flags: {
+        mockOnly: false,
+        memoryCreated: false,
+        aiProviderUsed: true,
+        realAiExecution: true,
+      },
+      clarification_snapshot: clarification ? { ...clarification } : null,
+      decision_model_snapshot: null,
+      confidence_summary: {
+        confidence: modelQuality.confidence.score,
+        completeness: modelQuality.completeness.score,
+        risk: maximumRisk,
+      },
+      simulation_response_version: "simulation_response_v2",
+      decision_contract_version: "2.0",
+      language: response.language.output,
+      safety_classification: safety.level,
+      recommendation_state: recommendation?.status ?? response.status,
+      content_sensitivity: "user_decision_content",
+      deletion_state: "active",
+      retention_rule: "saved_simulation_lifecycle",
+      export_eligible: true,
+      schema_version: 1,
+    };
+  }
 
   if (
     !simulation ||
