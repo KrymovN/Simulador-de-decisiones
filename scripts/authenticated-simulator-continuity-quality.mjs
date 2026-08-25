@@ -26,11 +26,17 @@ function check(name, condition, detail = "") {
 }
 
 check(
-  "Dashboard Nueva simulación uses client navigation to the canonical simulator target",
-  dashboard.includes('<Link className="dashboard-action" href="/#simulador">') &&
+  "Dashboard Nueva simulación uses same-tab client navigation to the canonical simulator target",
+  dashboard.includes('<Link className="dashboard-action" href="/#simulador" target="_self">') &&
     dashboard.includes("Nueva simulación"),
 );
 check("Dashboard no longer targets the nested textarea hash", !dashboard.includes("/#decision-input"));
+check(
+  "Dashboard simulator CTA cannot request a new browsing context",
+  !dashboard.includes('target="_blank"') &&
+    !dashboard.includes("window.open") &&
+    !dashboard.includes("formTarget"),
+);
 check(
   "Homepage keeps exactly one canonical HomeSimulator implementation",
   (home.match(/<HomeSimulator \/>/g) ?? []).length === 1 &&
@@ -47,7 +53,9 @@ check(
   "Authenticated header exposes Resumen instead of anonymous login",
   accountLink.includes('identityState === "authenticated"') &&
     accountLink.includes('? { href: "/dashboard", label: "Resumen" }') &&
-    accountLink.includes(': { href: "/login", label: "Iniciar sesión" }'),
+    accountLink.includes(': { href: "/login", label: "Iniciar sesión" }') &&
+    !accountLink.includes('target="_blank"') &&
+    !accountLink.includes("window.open"),
 );
 check(
   "Anonymous homepage preserves Iniciar sesión",
