@@ -143,6 +143,25 @@ check(
     register.includes("emailRedirectTo: redirectResult.emailRedirectTo"),
 );
 check(
+  "pending login tab completes in place when authentication arrives from another tab",
+  login.includes('type LoginTabState = "idle" | "pending_email" | "completed_elsewhere"') &&
+    login.includes('useState<LoginTabState>("idle")') &&
+    login.includes('setLoginTabState("pending_email")') &&
+    login.includes('if (loginTabState === "pending_email")') &&
+    login.includes('setLoginTabState("completed_elsewhere")') &&
+    login.includes('if (loginTabState === "completed_elsewhere")') &&
+    login.indexOf('if (loginTabState === "completed_elsewhere")') < login.indexOf("router.replace(nextPath)") &&
+    login.includes("Inicio de sesión completado") &&
+    login.includes("Has iniciado sesión correctamente en otra pestaña. Ya puedes cerrar esta pestaña."),
+);
+check(
+  "normal login states preserve their existing redirect and pending-email behavior",
+  login.includes('loginTabState === "pending_email"') &&
+    login.includes("Revisa tu correo. Te hemos enviado un enlace para iniciar sesión.") &&
+    login.includes("router.replace(nextPath)") &&
+    login.includes("shouldCreateUser: false"),
+);
+check(
   "anonymous missing-session state is neutral",
   authProvider.includes("isAuthSessionMissingError(error)") &&
     authProvider.indexOf("isAuthSessionMissingError(error)") < authProvider.indexOf('identityState: "auth_error"') &&

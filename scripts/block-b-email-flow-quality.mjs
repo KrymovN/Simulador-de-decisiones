@@ -117,6 +117,17 @@ assertCheck(
 );
 
 assertCheck(
+  "original pending login tab presents cross-tab completion without changing callback behavior",
+  loginPage.includes('setLoginTabState("pending_email")') &&
+    loginPage.includes('setLoginTabState("completed_elsewhere")') &&
+    loginPage.includes("Inicio de sesión completado") &&
+    loginPage.includes("Has iniciado sesión correctamente en otra pestaña. Ya puedes cerrar esta pestaña.") &&
+    loginPage.indexOf('if (loginTabState === "completed_elsewhere")') < loginPage.indexOf("router.replace(nextPath)") &&
+    authCallback.includes('NextResponse.redirect(new URL(nextPath, request.url))'),
+  "Expected only the initiating login tab to suppress its dashboard redirect after external authentication.",
+);
+
+assertCheck(
   "password recovery scaffold is absent from the passwordless flow",
   forgotPasswordPage.includes('redirect("/login")') &&
     !forgotPasswordPage.includes("resetPasswordForEmail") &&

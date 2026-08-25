@@ -267,6 +267,18 @@ function runRenderedSurfaceSourceChecks(sources) {
   sourceIncludes(sources.login, 'className="auth-secondary-actions"', "Login keeps both secondary actions below the primary form");
   sourceIncludes(sources.login, "¿Problemas para acceder?", "Login exposes passwordless access help");
   sourceIncludes(sources.login, "Levio no utiliza contraseña", "Login help explains the passwordless mechanism");
+  sourceIncludes(sources.login, "Inicio de sesión completado", "Login exposes the completed-in-another-tab title");
+  sourceIncludes(
+    sources.login,
+    "Has iniciado sesión correctamente en otra pestaña. Ya puedes cerrar esta pestaña.",
+    "Login exposes the completed-in-another-tab guidance",
+  );
+  sourceIncludes(sources.login, 'setLoginTabState("pending_email")', "Login records tab-local pending email state");
+  sourceIncludes(
+    sources.login,
+    'setLoginTabState("completed_elsewhere")',
+    "Login maps cross-tab authentication to an in-place completed state",
+  );
   sourceIncludes(sources.register, "shouldCreateUser: true", "Registration preserves passwordless OTP account creation");
   sourceExcludes(sources.register, "auth-mode-switch", "Registration removes the upper account mode switch");
   sourceIncludes(sources.register, 'className="auth-secondary-actions"', "Registration keeps secondary actions below the primary form");

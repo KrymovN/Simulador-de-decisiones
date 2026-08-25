@@ -12,16 +12,18 @@ import { getAuthErrorMessage } from "../../lib/auth/messages";
 import { sanitizeRedirectPath } from "../../lib/auth/redirects";
 import { createSupabaseBrowserAuthClient } from "../../lib/auth/supabase/client";
 
+type LoginTabState = "idle" | "pending_email" | "completed_elsewhere";
+
 export default function LoginPage() {
   const router = useRouter();
   const auth = useAuthRuntime();
-  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [nextPath, setNextPath] = useState("/dashboard");
   const [queryError, setQueryError] = useState("");
   const [hasParsedSearch, setHasParsedSearch] = useState(false);
   const [showAccessHelp, setShowAccessHelp] = useState(false);
+  const [loginTabState, setLoginTabState] = useState<LoginTabState>("idle");
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -33,14 +35,23 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (hasParsedSearch && auth.identityState === "authenticated") {
+      if (loginTabState === "pending_email") {
+        setLoginTabState("completed_elsewhere");
+        return;
+      }
+
+      if (loginTabState === "completed_elsewhere") {
+        return;
+      }
+
       router.replace(nextPath);
     }
-  }, [auth.identityState, hasParsedSearch, nextPath, router]);
+  }, [auth.identityState, hasParsedSearch, loginTabState, nextPath, router]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
-    setMessage("");
+    setLoginTabState("idle");
 
     const formData = new FormData(event.currentTarget);
     const email = String(formData.get("email") || "").trim();
@@ -87,7 +98,7 @@ export default function LoginPage() {
     }
 
     router.refresh();
-    setMessage("Revisa tu correo. Te hemos enviado un enlace para iniciar sesión.");
+    setLoginTabState("pending_email");
   }
 
   return (
@@ -96,53 +107,62 @@ export default function LoginPage() {
       eyebrow="levio.es / Cuenta"
       title="Inicia sesión en Levio."
     >
-      <AuthStateView />
-      {queryError && !error && (
-        <div className="mock-feedback" role="alert">
-          {queryError}
+      {loginTabState === "completed_elsewhere" ? (
+        <div className="auth-completed-state" role="status">
+          <h2>Inicio de sesión completado</h2>
+          <p>Has iniciado sesión correctamente en otra pestaña. Ya puedes cerrar esta pestaña.</p>
         </div>
-      )}
-      <form className="auth-form" onSubmit={handleSubmit}>
-        <label>
-          Correo electrónico
-          <input autoComplete="email" name="email" placeholder="tu@correo.com" required type="email" />
-        </label>
-        <button disabled={isSubmitting} type="submit">
-          {isSubmitting ? "Enviando enlace..." : "Iniciar sesión"}
-        </button>
-      </form>
+      ) : (
+        <>
+          <AuthStateView />
+          {queryError && !error && (
+            <div className="mock-feedback" role="alert">
+              {queryError}
+            </div>
+          )}
+          <form className="auth-form" onSubmit={handleSubmit}>
+            <label>
+              Correo electrónico
+              <input autoComplete="email" name="email" placeholder="tu@correo.com" required type="email" />
+            </label>
+            <button disabled={isSubmitting} type="submit">
+              {isSubmitting ? "Enviando enlace..." : "Iniciar sesión"}
+            </button>
+          </form>
 
-      <div className="auth-secondary-actions">
-        <Link className="auth-secondary-action" href="/register">
-          Crear cuenta
-        </Link>
-        <button
-          aria-controls="login-access-help"
-          aria-expanded={showAccessHelp}
-          className="auth-secondary-action"
-          onClick={() => setShowAccessHelp((isVisible) => !isVisible)}
-          type="button"
-        >
-          ¿Problemas para acceder?
-        </button>
-      </div>
+          <div className="auth-secondary-actions">
+            <Link className="auth-secondary-action" href="/register">
+              Crear cuenta
+            </Link>
+            <button
+              aria-controls="login-access-help"
+              aria-expanded={showAccessHelp}
+              className="auth-secondary-action"
+              onClick={() => setShowAccessHelp((isVisible) => !isVisible)}
+              type="button"
+            >
+              ¿Problemas para acceder?
+            </button>
+          </div>
 
-      {showAccessHelp && (
-        <div className="auth-help-panel" id="login-access-help" role="status">
-          Levio no utiliza contraseña. Introduce tu correo y te enviaremos un enlace seguro de un solo uso. Si no
-          llega, revisa spam o correo no deseado y comprueba que el correo introducido sea correcto.
-        </div>
-      )}
+          {showAccessHelp && (
+            <div className="auth-help-panel" id="login-access-help" role="status">
+              Levio no utiliza contraseña. Introduce tu correo y te enviaremos un enlace seguro de un solo uso. Si no
+              llega, revisa spam o correo no deseado y comprueba que el correo introducido sea correcto.
+            </div>
+          )}
 
-      {message && (
-        <div className="mock-feedback" role="status">
-          {message}
-        </div>
-      )}
-      {error && (
-        <div className="mock-feedback" role="alert">
-          {error}
-        </div>
+          {loginTabState === "pending_email" && (
+            <div className="mock-feedback" role="status">
+              Revisa tu correo. Te hemos enviado un enlace para iniciar sesión.
+            </div>
+          )}
+          {error && (
+            <div className="mock-feedback" role="alert">
+              {error}
+            </div>
+          )}
+        </>
       )}
     </AuthShell>
   );
