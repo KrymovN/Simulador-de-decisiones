@@ -265,8 +265,9 @@
   margin: 12px 0 0;
   color: var(--levio-text);
   font-size: clamp(2.4rem, 4.8vw, 4.4rem);
-  line-height: 0.98;
-  letter-spacing: -0.055em;
+  font-weight: var(--levio-display-heading-weight);
+  letter-spacing: var(--levio-display-heading-tracking);
+  line-height: var(--levio-display-heading-leading);
   overflow-wrap: anywhere;
   text-wrap: balance;
 }

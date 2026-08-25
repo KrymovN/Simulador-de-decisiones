@@ -223,7 +223,9 @@ html.home-simulator-auto-follow {
 
 .simulation-output-header h2 {
   font-size: clamp(1.45rem, 2.4vw, 2.2rem);
-  line-height: 1.08;
+  font-weight: var(--levio-display-heading-weight);
+  letter-spacing: var(--levio-display-heading-tracking);
+  line-height: var(--levio-display-heading-leading);
 }
 
 .output-confidence,

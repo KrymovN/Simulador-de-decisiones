@@ -247,9 +247,9 @@
   max-width: 540px;
   margin-bottom: 30px;
   font-size: clamp(3.4rem, 5.3vw, 5rem);
-  font-weight: 680;
-  letter-spacing: -0.06em;
-  line-height: 0.98;
+  font-weight: var(--levio-display-heading-weight);
+  letter-spacing: var(--levio-display-heading-tracking);
+  line-height: var(--levio-display-heading-leading);
 }
 
 .minimal-home__hero-title-wrap {

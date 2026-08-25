@@ -175,12 +175,22 @@ check(
   !/(?:\bopenai\b|\bchatgpt\b|\bchat\b|\bassistant\b|answer engine|ia real)/i.test(visibleCopy),
 );
 
-for (const path of [
-  "app/not-found.tsx",
-  "app/styles/public-secondary.css",
-]) {
-  check(`${path} remains byte-identical to baseline`, readFileSync(join(rootDir, path), "utf8") === baselineFile(path));
-}
+check(
+  "app/not-found.tsx remains byte-identical to baseline",
+  notFound === baselineFile("app/not-found.tsx"),
+);
+
+const expectedPublicSecondaryCss = baselineFile("app/styles/public-secondary.css").replace(
+  `  line-height: 0.98;
+  letter-spacing: -0.055em;`,
+  `  font-weight: var(--levio-display-heading-weight);
+  letter-spacing: var(--levio-display-heading-tracking);
+  line-height: var(--levio-display-heading-leading);`,
+);
+check(
+  "Public secondary CSS differs from baseline only by the approved display-heading contract",
+  css === expectedPublicSecondaryCss,
+);
 
 for (const invariant of [
   "MAX_SIMULATION_INPUT_LENGTH = 1200",

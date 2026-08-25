@@ -104,8 +104,9 @@
 .public-secondary h1 {
   max-width: 12ch;
   font-size: clamp(2.4rem, 5.5vw, 5rem);
-  line-height: 0.98;
-  letter-spacing: -0.055em;
+  font-weight: var(--levio-display-heading-weight);
+  letter-spacing: var(--levio-display-heading-tracking);
+  line-height: var(--levio-display-heading-leading);
 }
 
 .public-secondary h2 {
