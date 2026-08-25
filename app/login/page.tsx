@@ -21,6 +21,7 @@ export default function LoginPage() {
   const [nextPath, setNextPath] = useState("/dashboard");
   const [queryError, setQueryError] = useState("");
   const [hasParsedSearch, setHasParsedSearch] = useState(false);
+  const [showAccessHelp, setShowAccessHelp] = useState(false);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -95,10 +96,6 @@ export default function LoginPage() {
       eyebrow="levio.es / Cuenta"
       title="Inicia sesión en Levio."
     >
-      <nav aria-label="Acceso a la cuenta" className="auth-mode-switch">
-        <Link href="/register">Crear cuenta</Link>
-        <span aria-current="page">Iniciar sesión</span>
-      </nav>
       <AuthStateView />
       {queryError && !error && (
         <div className="mock-feedback" role="alert">
@@ -114,6 +111,28 @@ export default function LoginPage() {
           {isSubmitting ? "Enviando enlace..." : "Iniciar sesión"}
         </button>
       </form>
+
+      <div className="auth-secondary-actions">
+        <Link className="auth-secondary-action" href="/register">
+          Crear cuenta
+        </Link>
+        <button
+          aria-controls="login-access-help"
+          aria-expanded={showAccessHelp}
+          className="auth-secondary-action"
+          onClick={() => setShowAccessHelp((isVisible) => !isVisible)}
+          type="button"
+        >
+          ¿Problemas para acceder?
+        </button>
+      </div>
+
+      {showAccessHelp && (
+        <div className="auth-help-panel" id="login-access-help" role="status">
+          Levio no utiliza contraseña. Introduce tu correo y te enviaremos un enlace seguro de un solo uso. Si no
+          llega, revisa spam o correo no deseado y comprueba que el correo introducido sea correcto.
+        </div>
+      )}
 
       {message && (
         <div className="mock-feedback" role="status">

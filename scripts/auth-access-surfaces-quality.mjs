@@ -87,13 +87,35 @@ excludes(authShell, "auth-core", "AuthShell removes the animated legacy core");
 excludes(authShell, "section-frame", "AuthShell is isolated from legacy global panels");
 
 check(
-  "login and registration order account modes as create account then sign in",
-  login.includes(
-    '<Link href="/register">Crear cuenta</Link>\n        <span aria-current="page">Iniciar sesión</span>',
-  ) &&
+  "login uses conventional secondary actions while registration keeps its mode switch",
+  !login.includes("auth-mode-switch") &&
+    login.includes('className="auth-secondary-actions"') &&
+    login.includes('<Link className="auth-secondary-action" href="/register">') &&
+    login.includes("Crear cuenta") &&
+    login.includes("¿Problemas para acceder?") &&
     register.includes(
       '<span aria-current="page">Crear cuenta</span>\n        <Link href="/login">Iniciar sesión</Link>',
     ),
+);
+check(
+  "login access help is UI-only, accessible and passwordless",
+  login.includes("showAccessHelp") &&
+    login.includes('aria-controls="login-access-help"') &&
+    login.includes("aria-expanded={showAccessHelp}") &&
+    login.includes("setShowAccessHelp((isVisible) => !isVisible)") &&
+    login.includes('type="button"') &&
+    login.includes("Levio no utiliza contraseña") &&
+    login.includes("enlace seguro de un solo uso") &&
+    login.includes("spam o correo no deseado") &&
+    !login.includes("resetPasswordForEmail"),
+);
+check(
+  "login secondary actions stay visually subordinate and keyboard accessible",
+  css.includes(".auth-secondary-actions") &&
+    css.includes(".auth-secondary-action:hover") &&
+    css.includes(".auth-secondary-action:focus-visible") &&
+    css.includes("cursor: pointer") &&
+    css.includes("border: 0"),
 );
 check(
   "passwordless modes invoke Supabase OTP with distinct account-creation intent",

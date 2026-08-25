@@ -53,6 +53,7 @@ const publicPages = [
       "Inicia sesión en Levio.",
       "Iniciar sesión",
       "Crear cuenta",
+      "¿Problemas para acceder?",
       'type="email"',
     ],
   },
@@ -255,6 +256,10 @@ function runRenderedSurfaceSourceChecks(sources) {
   sourceIncludes(sources.simulateRoute, "safeRender: true", "Simulate route keeps safeRender public flag");
   sourceIncludes(sources.simulateRoute, "apiReady: true", "Simulate route keeps apiReady public flag");
   sourceIncludes(sources.login, "shouldCreateUser: false", "Login preserves passwordless OTP without implicit registration");
+  sourceExcludes(sources.login, "auth-mode-switch", "Login removes the upper account mode switch");
+  sourceIncludes(sources.login, 'className="auth-secondary-actions"', "Login keeps both secondary actions below the primary form");
+  sourceIncludes(sources.login, "¿Problemas para acceder?", "Login exposes passwordless access help");
+  sourceIncludes(sources.login, "Levio no utiliza contraseña", "Login help explains the passwordless mechanism");
   sourceIncludes(sources.register, "shouldCreateUser: true", "Registration preserves passwordless OTP account creation");
   sourceIncludes(sources.authStateView, "if (!signedOutLabel)", "Anonymous auth state renders no error or status notice");
   sourceIncludes(sources.forgotPassword, 'redirect("/login")', "Unused password recovery scaffold redirects to login");
