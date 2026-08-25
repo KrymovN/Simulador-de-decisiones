@@ -24,9 +24,9 @@ export default async function DashboardPage() {
               ? "Describe otra decisión para generar una nueva simulación y guardarla en tu cuenta."
               : "Cuando guardes tu primera simulación, aparecerá aquí vinculada a tu cuenta."}
           </p>
-          <a className="dashboard-action" href="/#decision-input">
+          <Link className="dashboard-action" href="/#simulador">
             Nueva simulación
-          </a>
+          </Link>
         </article>
 
         <article className="dashboard-card">

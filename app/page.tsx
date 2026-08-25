@@ -3,6 +3,7 @@ import HomeSimulator from "../components/HomeSimulator";
 import HomepageAnchorLink from "../components/HomepageAnchorLink";
 import HomepageAssemblyController from "../components/HomepageAssemblyController";
 import HomepageNavigation from "../components/HomepageNavigation";
+import HomepageAccountLink from "../components/HomepageAccountLink";
 import BrandLockup from "../components/BrandLockup";
 
 const processSteps = [
@@ -97,9 +98,7 @@ export default function Home() {
       <header className="minimal-home__header reference-header">
         <BrandLockup ariaLabel="levio.es" markSize="lg" nameClassName="brand-name" priority />
         <HomepageNavigation />
-        <Link className="minimal-home__header-login" href="/login">
-          Iniciar sesión
-        </Link>
+        <HomepageAccountLink />
       </header>
 
       <section

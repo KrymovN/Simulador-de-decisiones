@@ -110,8 +110,8 @@ includes(landing, "readSavedSimulationsHistorySurface({ limit: 3 })", "Landing r
 includes(landing, "<SavedSimulationsHistorySurface state={historyState} />", "Landing renders the existing persisted history UI");
 check(
   "Landing links only to existing V1 entry points",
-  ["/#decision-input", "/dashboard/privacy", "/dashboard/simulations"].every((href) => landingHrefs.includes(href)) &&
-    landingHrefs.every((href) => ["/#decision-input", "/dashboard/privacy", "/dashboard/simulations"].includes(href)),
+  ["/#simulador", "/dashboard/privacy", "/dashboard/simulations"].every((href) => landingHrefs.includes(href)) &&
+    landingHrefs.every((href) => ["/#simulador", "/dashboard/privacy", "/dashboard/simulations"].includes(href)),
 );
 check(
   "Production navigation exposes only usable authenticated routes",
@@ -251,7 +251,6 @@ for (const directory of [
 }
 
 for (const path of [
-  "app/page.tsx",
   "app/login/page.tsx",
   "app/register/page.tsx",
   "app/forgot-password/page.tsx",
@@ -279,7 +278,9 @@ for (const path of [
 }
 
 const allowedScope = new Set([
+  "app/page.tsx",
   "app/dashboard/page.tsx",
+  "app/styles/dashboard-shell.css",
   "app/styles/motion.css",
   "components/DecisionSingularity.tsx",
   "components/DecisionSingularity.module.css",
@@ -290,6 +291,7 @@ const allowedScope = new Set([
   "components/SimulationDetailClient.tsx",
   "components/SimulationsList.tsx",
   "components/DashboardShell.tsx",
+  "components/HomepageAccountLink.tsx",
   "package.json",
   "docs/architecture/LEVIO_AI_ABSTRACTION_OBSERVABILITY_COSTS.md",
   "docs/architecture/LEVIO_DECISION_ENGINE.md",
@@ -299,6 +301,7 @@ const allowedScope = new Set([
   "lib/ai-decision-material/evaluation.ts",
   "lib/ai-decision-material/fixtures.ts",
   "scripts/dashboard-shell-landing-quality.mjs",
+  "scripts/authenticated-simulator-continuity-quality.mjs",
   "scripts/rendered-public-surface-regression-quality.mjs",
   "scripts/homepage-one-time-assembly-refinement-quality.mjs",
   "scripts/stage-9-ai-value-preservation-quality.mjs",

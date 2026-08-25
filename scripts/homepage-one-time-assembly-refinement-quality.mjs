@@ -290,7 +290,7 @@ includes(simulator, 'aria-label="Simular decisión"', "Simulator submit accessib
 includes(simulateRoute, "mockOnly: true", "Public runtime remains deterministic and mock-only");
 includes(css, "overflow: clip", "Homepage clips horizontal assembly overflow");
 excludes(css, "overflow-x: auto", "Mobile navigation creates no horizontal scrolling");
-includes(home, 'className="minimal-home__header-login" href="/login"', "Login remains a bounded direct header link");
+includes(home, "<HomepageAccountLink />", "Header mounts the bounded account-aware access link");
 excludes(navigation, "Iniciar sesión", "Login has no duplicate navigation overlay");
 check(
   "Public client surface has no OpenAI transport",

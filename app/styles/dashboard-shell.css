@@ -488,7 +488,7 @@
   text-decoration: none;
 }
 
-.dashboard-shell--landing .dashboard-action[href="/#decision-input"] {
+.dashboard-shell--landing .dashboard-action[href="/#simulador"] {
   border-color: var(--levio-brand);
   background: var(--levio-brand);
   color: var(--levio-bg);
@@ -498,7 +498,7 @@
   border-color: var(--levio-text-muted);
 }
 
-.dashboard-shell--landing .dashboard-action[href="/#decision-input"]:hover {
+.dashboard-shell--landing .dashboard-action[href="/#simulador"]:hover {
   border-color: var(--levio-brand-hover);
   background: var(--levio-brand-hover);
 }
