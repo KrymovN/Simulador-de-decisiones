@@ -16,6 +16,7 @@ export default function RegisterPage() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showAccessHelp, setShowAccessHelp] = useState(false);
 
   useEffect(() => {
     if (auth.identityState === "authenticated") {
@@ -82,10 +83,6 @@ export default function RegisterPage() {
       eyebrow="levio.es / Cuenta"
       title="Crea tu cuenta de Levio."
     >
-      <nav aria-label="Acceso a la cuenta" className="auth-mode-switch">
-        <span aria-current="page">Crear cuenta</span>
-        <Link href="/login">Iniciar sesión</Link>
-      </nav>
       <AuthStateView />
       <form className="auth-form" onSubmit={handleSubmit}>
         <label>
@@ -114,6 +111,28 @@ export default function RegisterPage() {
           {isSubmitting ? "Enviando enlace..." : "Crear cuenta"}
         </button>
       </form>
+
+      <div className="auth-secondary-actions">
+        <Link className="auth-secondary-action" href="/login">
+          Iniciar sesión
+        </Link>
+        <button
+          aria-controls="register-access-help"
+          aria-expanded={showAccessHelp}
+          className="auth-secondary-action"
+          onClick={() => setShowAccessHelp((isVisible) => !isVisible)}
+          type="button"
+        >
+          ¿Problemas para acceder?
+        </button>
+      </div>
+
+      {showAccessHelp && (
+        <div className="auth-help-panel" id="register-access-help" role="status">
+          Levio no utiliza contraseña. Introduce tu correo y te enviaremos un enlace seguro de un solo uso. Si no
+          llega, revisa spam o correo no deseado y comprueba que el correo introducido sea correcto.
+        </div>
+      )}
 
       {message && (
         <div className="mock-feedback" role="status">

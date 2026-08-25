@@ -66,6 +66,7 @@ const publicPages = [
       "Crea tu cuenta de Levio.",
       "Iniciar sesión",
       "Crear cuenta",
+      "¿Problemas para acceder?",
       "política de privacidad",
       "términos de uso",
     ],
@@ -261,6 +262,16 @@ function runRenderedSurfaceSourceChecks(sources) {
   sourceIncludes(sources.login, "¿Problemas para acceder?", "Login exposes passwordless access help");
   sourceIncludes(sources.login, "Levio no utiliza contraseña", "Login help explains the passwordless mechanism");
   sourceIncludes(sources.register, "shouldCreateUser: true", "Registration preserves passwordless OTP account creation");
+  sourceExcludes(sources.register, "auth-mode-switch", "Registration removes the upper account mode switch");
+  sourceIncludes(sources.register, 'className="auth-secondary-actions"', "Registration keeps secondary actions below the primary form");
+  sourceIncludes(sources.register, '<Link className="auth-secondary-action" href="/login">', "Registration keeps sign-in as secondary navigation");
+  sourceIncludes(sources.register, "¿Problemas para acceder?", "Registration exposes passwordless access help");
+  assertCheck(
+    "Login and registration share one secondary-action row each",
+    (sources.login.match(/className="auth-secondary-actions"/g) ?? []).length === 1 &&
+      (sources.register.match(/className="auth-secondary-actions"/g) ?? []).length === 1,
+    "Auth entry surfaces do not share the expected secondary-row structure.",
+  );
   sourceIncludes(sources.authStateView, "if (!signedOutLabel)", "Anonymous auth state renders no error or status notice");
   sourceIncludes(sources.forgotPassword, 'redirect("/login")', "Unused password recovery scaffold redirects to login");
   assertCheck(

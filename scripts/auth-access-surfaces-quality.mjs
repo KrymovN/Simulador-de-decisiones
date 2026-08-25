@@ -87,27 +87,43 @@ excludes(authShell, "auth-core", "AuthShell removes the animated legacy core");
 excludes(authShell, "section-frame", "AuthShell is isolated from legacy global panels");
 
 check(
-  "login uses conventional secondary actions while registration keeps its mode switch",
+  "login and registration share the conventional secondary-action structure",
   !login.includes("auth-mode-switch") &&
+    !register.includes("auth-mode-switch") &&
     login.includes('className="auth-secondary-actions"') &&
+    register.includes('className="auth-secondary-actions"') &&
     login.includes('<Link className="auth-secondary-action" href="/register">') &&
-    login.includes("Crear cuenta") &&
-    login.includes("¿Problemas para acceder?") &&
-    register.includes(
-      '<span aria-current="page">Crear cuenta</span>\n        <Link href="/login">Iniciar sesión</Link>',
-    ),
+    register.includes('<Link className="auth-secondary-action" href="/login">') &&
+    (login.match(/className="auth-secondary-actions"/g) ?? []).length === 1 &&
+    (register.match(/className="auth-secondary-actions"/g) ?? []).length === 1,
 );
 check(
-  "login access help is UI-only, accessible and passwordless",
+  "registration keeps its primary CTA and places sign-in navigation below the form",
+  register.includes('{isSubmitting ? "Enviando enlace..." : "Crear cuenta"}') &&
+    register.indexOf("</form>") < register.indexOf('className="auth-secondary-actions"') &&
+    register.indexOf('className="auth-secondary-actions"') <
+      register.indexOf('<Link className="auth-secondary-action" href="/login">'),
+);
+check(
+  "login and registration access help is UI-only, accessible and passwordless",
   login.includes("showAccessHelp") &&
+    register.includes("showAccessHelp") &&
     login.includes('aria-controls="login-access-help"') &&
+    register.includes('aria-controls="register-access-help"') &&
     login.includes("aria-expanded={showAccessHelp}") &&
+    register.includes("aria-expanded={showAccessHelp}") &&
     login.includes("setShowAccessHelp((isVisible) => !isVisible)") &&
+    register.includes("setShowAccessHelp((isVisible) => !isVisible)") &&
     login.includes('type="button"') &&
+    register.includes('type="button"') &&
     login.includes("Levio no utiliza contraseña") &&
+    register.includes("Levio no utiliza contraseña") &&
     login.includes("enlace seguro de un solo uso") &&
+    register.includes("enlace seguro de un solo uso") &&
     login.includes("spam o correo no deseado") &&
-    !login.includes("resetPasswordForEmail"),
+    register.includes("spam o correo no deseado") &&
+    !login.includes("resetPasswordForEmail") &&
+    !register.includes("resetPasswordForEmail"),
 );
 check(
   "login secondary actions stay visually subordinate and keyboard accessible",
