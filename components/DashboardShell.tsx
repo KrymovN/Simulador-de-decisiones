@@ -10,12 +10,8 @@ import { clearMockSession } from "./MockAuthGate";
 
 const navigationItems = [
   { href: "/dashboard", label: "Resumen" },
-  { href: "/dashboard/decisions", label: "Decisiones" },
   { href: "/dashboard/simulations", label: "Simulaciones" },
-  { href: "/dashboard/memory", label: "Memoria" },
-  { href: "/dashboard/profile", label: "Perfil" },
   { href: "/dashboard/privacy", label: "Privacidad" },
-  { href: "/dashboard/security", label: "Seguridad" },
 ];
 
 type DashboardShellProps = {
@@ -60,7 +56,7 @@ export default function DashboardShell({
       <div className="dashboard-shell__frame">
         <aside className="dashboard-sidebar">
           <BrandLockup className="dashboard-brand" markSize="sm" />
-          <p>Vista preparada del motor de simulación de decisiones.</p>
+          <p>Simulaciones guardadas y controles de tu cuenta.</p>
           <details className="dashboard-nav-menu">
             <summary>
               <span>Vista actual</span>
@@ -107,10 +103,6 @@ export default function DashboardShell({
               <p className="eyebrow brand-mark">{eyebrow}</p>
               <h1>{title}</h1>
               <p>{description}</p>
-            </div>
-            <div className="privacy-state">
-              <span>Privacidad</span>
-              <strong>Preparada</strong>
             </div>
           </header>
           {children}
