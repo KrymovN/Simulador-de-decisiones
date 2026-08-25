@@ -1,7 +1,16 @@
+import type { EmailOtpType } from "@supabase/supabase-js";
 import { type NextRequest, NextResponse } from "next/server";
 import { sanitizeRedirectPath } from "../redirects";
 import type { LevioAuthErrorCode } from "../types";
 import { createSupabaseRouteHandlerClient } from "./server";
+
+type EmailTokenHashOtpType = Extract<EmailOtpType, "email">;
+
+const EMAIL_TOKEN_HASH_OTP_TYPE: EmailTokenHashOtpType = "email";
+
+function parseEmailTokenHashOtpType(value: string | null): EmailTokenHashOtpType | null {
+  return value === EMAIL_TOKEN_HASH_OTP_TYPE ? EMAIL_TOKEN_HASH_OTP_TYPE : null;
+}
 
 function classifyCallbackFailure(value: string | null | undefined): LevioAuthErrorCode | null {
   const normalized = value?.toLowerCase() ?? "";
@@ -50,6 +59,9 @@ function authErrorRedirect(request: NextRequest, code: LevioAuthErrorCode) {
 export async function handleSupabaseAuthCallback(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
+  const tokenHash = requestUrl.searchParams.get("token_hash");
+  const rawOtpType = requestUrl.searchParams.get("type");
+  const otpType = parseEmailTokenHashOtpType(rawOtpType);
   const providerError = requestUrl.searchParams.get("error");
   const providerErrorCode = requestUrl.searchParams.get("error_code");
   const providerErrorDescription = requestUrl.searchParams.get("error_description");
@@ -63,7 +75,11 @@ export async function handleSupabaseAuthCallback(request: NextRequest) {
     return authErrorRedirect(request, classifiedError ?? "provider_error");
   }
 
-  if (!code) {
+  if (!code && (!tokenHash || !otpType)) {
+    if (tokenHash || rawOtpType) {
+      return authErrorRedirect(request, "callback_invalid");
+    }
+
     return authErrorRedirect(request, "callback_missing_code");
   }
 
@@ -74,10 +90,16 @@ export async function handleSupabaseAuthCallback(request: NextRequest) {
     return authErrorRedirect(request, "auth_config_missing");
   }
 
-  const { error } = await supabase.auth.exchangeCodeForSession(code);
+  try {
+    const { error } = code
+      ? await supabase.auth.exchangeCodeForSession(code)
+      : await supabase.auth.verifyOtp({ token_hash: tokenHash!, type: otpType! });
 
-  if (error) {
-    return authErrorRedirect(request, classifyCallbackFailure(error.message) ?? "callback_exchange_failed");
+    if (error) {
+      return authErrorRedirect(request, classifyCallbackFailure(error.message) ?? "callback_exchange_failed");
+    }
+  } catch {
+    return authErrorRedirect(request, "callback_exchange_failed");
   }
 
   return response;

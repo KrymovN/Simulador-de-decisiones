@@ -176,6 +176,15 @@ includes(
   'return NextResponse.redirect(new URL(`/login?auth_error=${code}`, request.url));',
   "Callback errors keep the login redirect presentation",
 );
+check(
+  "Callback supports PKCE and bounded email token-hash verification",
+  callbackRuntime.includes("exchangeCodeForSession(code)") &&
+    callbackRuntime.includes('type EmailTokenHashOtpType = Extract<EmailOtpType, "email">') &&
+    callbackRuntime.includes('const EMAIL_TOKEN_HASH_OTP_TYPE: EmailTokenHashOtpType = "email"') &&
+    callbackRuntime.includes("supabase.auth.verifyOtp({ token_hash: tokenHash!, type: otpType! })") &&
+    callbackRuntime.includes('sanitizeRedirectPath(requestUrl.searchParams.get("next"), "/dashboard")') &&
+    !callbackRuntime.includes("console."),
+);
 
 for (const path of [
   "app/auth/callback/route.ts",
@@ -186,7 +195,6 @@ for (const path of [
   "lib/auth/messages.ts",
   "lib/auth/redirects.ts",
   "lib/auth/session.ts",
-  "lib/auth/supabase/callback.ts",
   "lib/auth/supabase/client.ts",
   "lib/auth/supabase/server.ts",
   "lib/auth/types.ts",
