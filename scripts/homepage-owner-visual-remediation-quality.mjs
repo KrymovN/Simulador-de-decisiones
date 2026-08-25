@@ -41,6 +41,9 @@ function blockBetween(source, start, end) {
 const processBlock = blockBetween(home, 'id="como-funciona"', 'id="criterios"');
 const capabilityBlock = blockBetween(home, 'id="criterios"', 'className="minimal-home__final-cta"');
 const criteriaBlock = blockBetween(simulator, 'className="simulator-criteria"', 'className="simulator-action-cluster"');
+const criteriaCss = css.match(
+  /\.minimal-home \.simulator-criteria \{[\s\S]*?\.minimal-home \.simulator-action-cluster \{/,
+)?.[0] ?? "";
 const publicClientSurface = `${home}\n${navigation}\n${anchorLink}\n${simulator}`;
 const forbiddenVisualTechnology = /<svg|<canvas|WebGL|three(?:\.js)?|particle|DecisionSingularity|hero-approved|hero-approved-network-bg/i;
 const cssRulesUsingBrand = css
@@ -81,7 +84,7 @@ includes(navigation, '{ label: "Inicio", href: "#inicio" }', "Header keeps canon
 includes(navigation, '{ label: "Cómo funciona", href: "#como-funciona" }', "Header keeps Cómo funciona route");
 includes(navigation, '{ label: "Criterios", href: "#criterios" }', "Header keeps Criterios route");
 includes(navigation, '{ label: "Simulador", href: "#simulador" }', "Header keeps Simulador route");
-includes(home, 'className="minimal-home__header-login" href="/login"', "Header keeps the real login route");
+includes(home, "<HomepageAccountLink />", "Header keeps the production account-aware navigation component");
 includes(css, ".minimal-home .reference-nav .nav-active::after", "Active navigation has a scoped neutral underline");
 includes(css, "background: var(--home-muted-strong) !important;", "Active navigation underline is neutral");
 includes(css, ".minimal-home .minimal-home__header-login", "Login remains a bordered monochrome action");
@@ -111,9 +114,17 @@ check(
   "Capability section contains non-text decorative content.",
 );
 check(
-  "Criteria pills are text-only",
-  !/<svg|<img|<Image|icon/i.test(criteriaBlock) && ["Resultado", "Riesgo", "Tiempo", "Recursos"].every((label) => criteriaBlock.includes(label)),
-  "Criteria pills must contain only the four approved text labels.",
+  "Simulator dimensions are informational text only",
+  criteriaBlock.includes("La simulación tendrá en cuenta") &&
+    criteriaBlock.includes("<p>Resultado · Riesgo · Tiempo · Recursos</p>") &&
+    !/<button|<input|<select|<ul|<li|role=|aria-pressed|aria-checked|tabIndex|onClick|onKeyDown/i.test(criteriaBlock),
+  "Simulator dimensions must remain plain non-interactive text.",
+);
+check(
+  "Simulator dimensions have no selectable-control styling",
+  criteriaCss.includes(".minimal-home .simulator-criteria p") &&
+    !/cursor\s*:|:hover|border\s*:|border-radius\s*:|background\s*:/.test(criteriaCss),
+  "Informational dimensions must not retain pill, hover, or pointer affordances.",
 );
 
 includes(designSystemCss, "--levio-bg: #050505", "Shared palette owns the near-black background token");

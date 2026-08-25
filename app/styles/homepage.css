@@ -482,7 +482,7 @@
 
 .minimal-home .simulator-criteria {
   display: grid;
-  gap: 12px;
+  gap: 6px;
 }
 
 .minimal-home .simulator-criteria > strong {
@@ -491,25 +491,13 @@
   font-weight: 540;
 }
 
-.minimal-home .simulator-criteria ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+.minimal-home .simulator-criteria p {
   margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.minimal-home .simulator-criteria li {
-  min-height: 36px;
-  display: inline-flex;
-  align-items: center;
-  padding: 0 12px;
-  border: 1px solid var(--home-line);
-  border-radius: 999px;
-  background: #0c0c0c;
   color: var(--home-muted-strong);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
 }
 
 .minimal-home .simulator-action-cluster {

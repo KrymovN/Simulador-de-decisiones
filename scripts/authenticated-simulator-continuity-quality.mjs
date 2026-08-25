@@ -25,6 +25,13 @@ function check(name, condition, detail = "") {
   checks.push({ name, passed: Boolean(condition), detail });
 }
 
+function withoutCriteriaPresentation(source) {
+  return source.replace(
+    /\s*<div className="simulator-criteria">[\s\S]*?<div className="simulator-action-cluster">/,
+    '\n        <div className="simulator-action-cluster">',
+  );
+}
+
 check(
   "Dashboard Nueva simulación uses same-tab client navigation to the canonical simulator target",
   dashboard.includes('<Link className="dashboard-action" href="/#simulador" target="_self">') &&
@@ -72,8 +79,9 @@ check(
   ),
 );
 check(
-  "Simulator implementation remains byte-identical to the production baseline",
-  simulator === baselineFile("components/HomeSimulator.tsx"),
+  "Simulator implementation differs from the production baseline only in criteria presentation",
+  withoutCriteriaPresentation(simulator) ===
+    withoutCriteriaPresentation(baselineFile("components/HomeSimulator.tsx")),
 );
 check(
   "Owner-scoped save action remains byte-identical to the production baseline",

@@ -8,6 +8,7 @@ const nextBin = join(rootDir, "node_modules", "next", "dist", "bin", "next");
 const buildIdPath = join(rootDir, ".next", "BUILD_ID");
 const pagePath = join(rootDir, "app", "page.tsx");
 const simulatorPath = join(rootDir, "components", "HomeSimulator.tsx");
+const simulateRoutePath = join(rootDir, "app", "api", "simulate", "route.ts");
 const contractVersion = "simulate-api-v1-mock";
 const maxInputLength = 1200;
 const maxBodyLength = 8192;
@@ -228,13 +229,38 @@ async function expectIntegrationCase(baseUrl, name, options, expected) {
 
 function runSimulatorSourceChecks() {
   const source = read(simulatorPath);
+  const simulateRoute = read(simulateRoutePath);
   const successIndex = source.indexOf('if (simulationResult.status === "completed")');
   const resultSetIndex = source.indexOf("setResult(simulationResult.simulation)");
   const failureIndex = source.indexOf("setResult(null)");
   const errorIndex = source.indexOf("setErrorState({");
+  const criteriaStart = source.indexOf('<div className="simulator-criteria">');
+  const criteriaEnd = source.indexOf('<div className="simulator-action-cluster">', criteriaStart);
+  const criteriaBlock = criteriaStart >= 0 && criteriaEnd > criteriaStart
+    ? source.slice(criteriaStart, criteriaEnd)
+    : "";
 
   sourceIncludes(source, 'fetch("/api/simulate"', "HomeSimulator uses approved /api/simulate route");
   sourceIncludes(source, 'body: JSON.stringify({ input: situation, lang: "es" })', "HomeSimulator sends only approved input/lang payload");
+  sourceIncludes(simulateRoute, 'const ALLOWED_PAYLOAD_FIELDS = new Set(["input", "lang"]);', "Simulator API keeps the exact input/lang request contract");
+  assertCheck(
+    "Canonical dimensions are plain informational text",
+    criteriaBlock.includes("La simulación tendrá en cuenta") &&
+      criteriaBlock.includes("<p>Resultado · Riesgo · Tiempo · Recursos</p>"),
+    "Expected the four automatic dimensions in a compact informational paragraph.",
+  );
+  assertCheck(
+    "Canonical dimensions expose no selectable semantics",
+    !/<button|<input|<select|<ul|<li|role=|aria-pressed|aria-checked|tabIndex|onClick|onKeyDown/i.test(criteriaBlock),
+    "Criteria presentation must not expose button, checkbox, radio, or keyboard-control semantics.",
+  );
+  assertCheck(
+    "Simulation submission requires no criteria selection",
+    !/selectedCriteria|criteriaSelection|setCriteria|toggleCriteria/.test(source) &&
+      source.includes("const situation = input.trim();") &&
+      source.includes("requestSimulation(\n      situation,"),
+    "Submit flow must remain dependent only on the decision text input.",
+  );
   sourceIncludes(source, "isSimulateApiResponse(payload)", "HomeSimulator validates public envelope before handling");
   sourceIncludes(source, "isPublicSimulationApiV2Envelope(payload)", "HomeSimulator validates the truthful public V2 envelope before handling");
   sourceIncludes(source, 'responseMode: "production_v2"', "HomeSimulator distinguishes production V2 from deterministic preview");
@@ -372,6 +398,8 @@ async function runRuntimeHomeChecks(baseUrl) {
 
     assert(response.status === 200, `Expected / to return 200, received ${response.status}.`);
     assert(html.includes('id="decision-input"'), "Runtime HTML must include simulator textarea.");
+    assert(html.includes("La simulación tendrá en cuenta"), "Runtime HTML must explain automatic dimensions.");
+    assert(html.includes("Resultado · Riesgo · Tiempo · Recursos"), "Runtime HTML must render all four dimensions as text.");
     assert(html.includes("Vista previa determinista · Respuestas de ejemplo"), "Runtime HTML must keep the concise AI-neutral preview disclosure.");
     assert(html.includes("Preview público"), "Runtime HTML must include public preview status.");
     assert(!html.includes("conexión con IA real"), "Runtime HTML must not expose unnecessary Real AI reminders.");

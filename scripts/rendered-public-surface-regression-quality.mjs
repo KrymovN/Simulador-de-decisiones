@@ -40,6 +40,8 @@ const publicPages = [
       "Decide antes",
       "Comenzar simulación",
       'id="decision-input"',
+      "La simulación tendrá en cuenta",
+      "Resultado · Riesgo · Tiempo · Recursos",
       "Preview público",
       "Empieza con una decisión real.",
     ],
@@ -245,6 +247,9 @@ function runRenderedSurfaceSourceChecks(sources) {
   sourceIncludes(sources.home, '<HomeSimulator />', "Home keeps HomeSimulator mounted");
   sourceIncludes(sources.home, 'className="minimal-home__final-cta"', "Home keeps final CTA rendered");
   sourceIncludes(sources.homeSimulator, 'id="decision-input"', "HomeSimulator keeps stable textarea anchor");
+  sourceIncludes(sources.homeSimulator, "La simulación tendrá en cuenta", "HomeSimulator explains that canonical dimensions are automatic");
+  sourceIncludes(sources.homeSimulator, "<p>Resultado · Riesgo · Tiempo · Recursos</p>", "HomeSimulator renders canonical dimensions as informational text");
+  sourceExcludes(sources.homeSimulator, "Criterios principales", "HomeSimulator removes the misleading selectable-criteria label");
   sourceIncludes(sources.homeSimulator, "Vista previa determinista", "HomeSimulator keeps the concise deterministic preview line");
   sourceIncludes(sources.homeSimulator, "Vista previa determinista · Respuestas de ejemplo", "HomeSimulator keeps AI-neutral deterministic preview copy");
   sourceExcludes(sources.homeSimulator, "conexión con IA real", "HomeSimulator removes unnecessary Real AI reminders");
@@ -320,6 +325,12 @@ function runResponsiveGuardrailChecks(sources) {
   sourceIncludes(sources.homeCss, ".minimal-home .decision-console .simulator-composition", "Simulator input row has responsive CSS");
   sourceIncludes(sources.homeCss, ".minimal-home .decision-input-shell textarea", "Simulator textarea spacing is guarded");
   sourceIncludes(sources.homeCss, ".minimal-home .decision-console .voice-input-button", "Voice button has stable rendered placement");
+  sourceIncludes(sources.homeCss, ".minimal-home .simulator-criteria p", "Simulator dimensions use a non-interactive text rule");
+  sourceMatches(
+    sources.homeCss,
+    /\.minimal-home \.simulator-criteria p\s*\{[\s\S]*?overflow-wrap:\s*anywhere;[\s\S]*?text-wrap:\s*pretty;/,
+    "Simulator dimensions preserve readable desktop/mobile wrapping",
+  );
   sourceMatches(
     sources.homeCss,
     /@media\s+\(max-width:\s*560px\)[\s\S]*?\.minimal-home\s+\.decision-input-shell\s+textarea[\s\S]*?min-height:\s*168px;/,

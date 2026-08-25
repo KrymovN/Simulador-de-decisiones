@@ -764,13 +764,8 @@ export default function HomeSimulator() {
           </div>
         </div>
         <div className="simulator-criteria">
-          <strong>Criterios principales</strong>
-          <ul aria-label="Criterios principales">
-            <li>Resultado</li>
-            <li>Riesgo</li>
-            <li>Tiempo</li>
-            <li>Recursos</li>
-          </ul>
+          <strong>La simulación tendrá en cuenta</strong>
+          <p>Resultado · Riesgo · Tiempo · Recursos</p>
         </div>
         <div className="simulator-action-cluster">
           <button
