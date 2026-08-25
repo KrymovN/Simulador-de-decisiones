@@ -168,8 +168,8 @@ function runAccessibilityChecks(pageSource, navigationSource, simulatorSource) {
   sourceIncludes(simulatorSource, "aria-pressed={isListening}", "Voice toggle exposes pressed state");
   sourceIncludes(simulatorSource, 'aria-label="Etapas de simulación del motor"', "Thinking stages have accessible label");
   sourceIncludes(simulatorSource, 'aria-label="Acciones posteriores a la simulación"', "Post-result actions have accessible label");
-  sourceIncludes(simulatorSource, "No se ha generado una simulación local de sustitución.", "Controlled error copy is user-visible");
-  sourceIncludes(simulatorSource, "Simulación demo completada.", "Successful completion copy is user-visible");
+  sourceIncludes(simulatorSource, "No se ha generado un resultado.", "Controlled error copy is user-visible");
+  sourceIncludes(simulatorSource, "Resultado orientativo listo.", "Successful completion copy is user-visible");
 }
 
 function runPerformanceSafetyChecks(pageSource, simulatorSource, packageSource) {

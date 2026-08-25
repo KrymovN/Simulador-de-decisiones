@@ -1,13 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
+import type { LevioIdentityState } from "../lib/auth/types";
 import { saveCompletedSimulationFromUi } from "../lib/saved-decision-simulations/ui-save-action";
 import type { SimulationResponse } from "../lib/simulationEngine";
+import {
+  RESULT_PRESENTATION_COPY,
+  presentCanonicalScenarioType,
+  presentPerspectiveBadge,
+  presentRenderState,
+  presentScenarioRecommendation,
+  presentScenarioTitle,
+  presentSimulationText,
+  shouldShowAnonymousResultActions,
+} from "../lib/simulator-result-presentation";
 import {
   isPublicSimulationApiV2Envelope,
   type PublicSimulationApiV2Envelope,
 } from "../lib/runtime-integration/public-simulation-api-v2-contracts";
+import { useAuthRuntime } from "./auth/AuthRuntimeProvider";
 import {
   IDLE_PROCESSING_STATE,
   PROCESSING_STAGE_TITLES,
@@ -57,6 +69,28 @@ const defaultInput =
   "Aceptar una oferta, lanzar un producto, cambiar de país, invertir en una nueva dirección...";
 const MAX_SIMULATION_INPUT_LENGTH = 1200;
 const SIMULATE_API_CONTRACT_VERSION = "simulate-api-v1-mock";
+const DEFAULT_PROCESSING_STAGES = [
+  {
+    title: "Comprendiendo la situación",
+    detail: "Separando objetivo, presión externa, urgencia y coste de no decidir.",
+  },
+  {
+    title: "Detectando variables críticas",
+    detail: "Identificando energía disponible, dinero, relaciones, plazos y reversibilidad.",
+  },
+  {
+    title: "Simulando escenarios",
+    detail: "Abriendo rutas probables con oportunidad, tensión acumulada y alternativas.",
+  },
+  {
+    title: "Evaluando riesgos y beneficios",
+    detail: "Comparando exposición, ventaja potencial, latencia y consecuencias secundarias.",
+  },
+  {
+    title: "Preparando marco de decisión",
+    detail: "Construyendo un mapa de opciones sin presentar una certeza falsa.",
+  },
+] as const;
 
 type SimulationErrorState = {
   title: string;
@@ -97,6 +131,57 @@ type SimulationRequestOutcome =
     };
 
 type SaveSimulationState = Awaited<ReturnType<typeof saveCompletedSimulationFromUi>>;
+
+function SimulationResultActions({
+  identityState,
+  isSaving,
+  onSave,
+  saveState,
+}: {
+  identityState: LevioIdentityState;
+  isSaving: boolean;
+  onSave: () => void;
+  saveState: SaveSimulationState | null;
+}) {
+  const showAnonymousActions = shouldShowAnonymousResultActions(identityState);
+
+  return (
+    <div className="simulator-cta-row" aria-label="Acciones posteriores a la simulación">
+      <button
+        disabled={isSaving || saveState?.status === "saved"}
+        onClick={onSave}
+        type="button"
+      >
+        {isSaving
+          ? "Guardando..."
+          : saveState?.status === "saved"
+            ? "Simulación guardada"
+            : "Guardar simulación"}
+      </button>
+      {saveState?.status === "saved" ? (
+        <Link className="secondary-button" href={saveState.historyHref}>
+          Ver historial
+        </Link>
+      ) : showAnonymousActions ? (
+        <Link
+          className="secondary-button"
+          href={
+            saveState?.status === "auth_required"
+              ? saveState.loginHref
+              : "/login?next=%2Fdashboard%2Fsimulations"
+          }
+        >
+          Iniciar sesión
+        </Link>
+      ) : null}
+      {showAnonymousActions && (
+        <Link className="text-link" href="/register">
+          Crear cuenta
+        </Link>
+      )}
+    </div>
+  );
+}
 
 type SimulateApiError = {
   code: string;
@@ -271,12 +356,13 @@ function processingStepAccessibleState(state: ProcessingStepVisualState) {
 }
 
 export default function HomeSimulator() {
+  const { identityState } = useAuthRuntime();
   const [input, setInput] = useState("");
   const [processingState, setProcessingState] = useState<ProcessingState>(IDLE_PROCESSING_STATE);
   const [isRunning, setIsRunning] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [result, setResult] = useState<SimulationResponse | null>(null);
-  const [previewState, setPreviewState] = useState<SimulationPreviewState | null>(null);
+  const [, setPreviewState] = useState<SimulationPreviewState | null>(null);
   const [productionResult, setProductionResult] = useState<Extract<
     SimulationRequestOutcome,
     { status: "completed"; responseMode: "production_v2" }
@@ -293,32 +379,7 @@ export default function HomeSimulator() {
   const processingRunRef = useRef<ProcessingRunController | null>(null);
   const processingRunIdRef = useRef(0);
 
-  const stages = useMemo(
-    () =>
-      result?.thinkingStages ?? [
-        {
-          title: "Comprendiendo la situación",
-          detail: "Separando objetivo, presión externa, urgencia y coste de no decidir.",
-        },
-        {
-          title: "Detectando variables críticas",
-          detail: "Identificando energía disponible, dinero, relaciones, timing y reversibilidad.",
-        },
-        {
-          title: "Simulando escenarios",
-          detail: "Abriendo rutas probables con oportunidad, tensión acumulada y alternativas.",
-        },
-        {
-          title: "Evaluando riesgos y beneficios",
-          detail: "Comparando exposición, ventaja potencial, latencia y consecuencias secundarias.",
-        },
-        {
-          title: "Preparando marco de decisión",
-          detail: "Construyendo un mapa de opciones sin presentar una certeza falsa.",
-        },
-      ],
-    [result],
-  );
+  const stages = DEFAULT_PROCESSING_STAGES;
 
   async function requestSimulation(situation: string, signal: AbortSignal) {
     const response = await fetch("/api/simulate", {
@@ -466,12 +527,12 @@ export default function HomeSimulator() {
         setResult(simulationResult.simulation);
         setPreviewState(simulationResult.preview);
         setProductionResult(null);
-        setMessage("Simulación demo completada. Escenarios orientativos listos para revisar.");
+        setMessage("Resultado orientativo listo. Revisa los escenarios y sus condiciones.");
       } else {
         setResult(null);
         setPreviewState(null);
         setProductionResult(simulationResult.production);
-        setMessage("Simulación Real AI completada mediante el runtime controlado.");
+        setMessage("Resultado orientativo listo. Revisa los escenarios y sus condiciones.");
       }
       setProcessingState({
         phase: "result-reveal",
@@ -512,7 +573,7 @@ export default function HomeSimulator() {
         runtimeSource: simulationResult.runtimeSource,
         renderState: simulationResult.renderState,
       });
-      setMessage("Simulación detenida. No se generó un resultado local de sustitución.");
+      setMessage("La simulación se ha detenido sin generar un resultado.");
     }
 
     setProcessingState({
@@ -605,9 +666,9 @@ export default function HomeSimulator() {
               ? "Límite temporal alcanzado"
               : "Simulación no ejecutada",
           message:
-            error instanceof Error
-              ? error.message
-              : "El simulador público devolvió un fallo controlado.",
+            simulateError?.code === "rate_limited"
+              ? "Has realizado varias simulaciones en poco tiempo. Espera un momento antes de intentarlo de nuevo."
+              : "No se pudo completar la simulación con la información disponible. Revisa el texto e inténtalo de nuevo.",
           requestId: simulateError?.requestId,
           retryAfterSeconds: simulateError?.retryAfterSeconds,
           runtimeSource: simulateError?.runtimeSource,
@@ -847,17 +908,13 @@ export default function HomeSimulator() {
 
       {errorState && (
         <article className="simulation-error-panel">
-          <span>Fallo controlado</span>
+          <span>No se pudo completar</span>
           <strong>{errorState.title}</strong>
           <p>{errorState.message}</p>
           {typeof errorState.retryAfterSeconds === "number" && (
             <small>Reintento disponible en {errorState.retryAfterSeconds} s.</small>
           )}
-          {errorState.requestId && <small>Referencia: {errorState.requestId}</small>}
-          {errorState.runtimeSource === "production_ai" && (
-            <small>Ruta Real AI controlada · estado {errorState.renderState}.</small>
-          )}
-          <small>No se ha generado una simulación local de sustitución.</small>
+          <small>No se ha generado un resultado. Puedes revisar la situación e intentarlo de nuevo.</small>
         </article>
       )}
 
@@ -872,8 +929,8 @@ export default function HomeSimulator() {
         >
           <div className="simulation-output-header">
             <div>
-              <p className="eyebrow">Mapa de escenarios demo</p>
-              <h2>{result.simulation.result}</h2>
+              <p className="eyebrow">{RESULT_PRESENTATION_COPY.eyebrow}</p>
+              <h2>{RESULT_PRESENTATION_COPY.heading}</h2>
             </div>
             <div className="output-confidence">
               <span>Claridad orientativa</span>
@@ -882,20 +939,22 @@ export default function HomeSimulator() {
           </div>
 
           <article className="strategic-conclusion">
-            <span>Preview controlado</span>
-            <strong>Simulación demostrativa con respuestas de ejemplo.</strong>
-            <p>
-              Este mapa usa la versión pública {previewState?.contractVersion ?? SIMULATE_API_CONTRACT_VERSION} con respuestas de ejemplo. Sirve para
-              explorar escenarios, riesgos y consecuencias sin presentarse como predicción lista para producción.
-              {previewState?.requestId ? ` Referencia: ${previewState.requestId}.` : ""}
-            </p>
+            <span>Cómo interpretar el resultado</span>
+            <strong>{RESULT_PRESENTATION_COPY.summaryTitle}</strong>
+            <p>{RESULT_PRESENTATION_COPY.summaryBody}</p>
           </article>
 
           <div className="home-scenario-grid">
             {result.simulation.scenarios.map((scenario) => (
               <article className={`home-scenario-card tone-${scenario.riskLevel === "Alto" ? "risk" : scenario.riskLevel === "Medio" ? "amber" : "opportunity"}`} key={`${scenario.label}-${scenario.title}`}>
                 <span>{scenario.label}</span>
-                <h3>{scenario.title}</h3>
+                <h3>
+                  {presentScenarioTitle({
+                    optionLabel: scenario.title,
+                    perspective: scenario.signal,
+                    submittedInput: result.input,
+                  })}
+                </h3>
                 <dl>
                   <div>
                     <dt>Probabilidad orientativa</dt>
@@ -907,60 +966,38 @@ export default function HomeSimulator() {
                   </div>
                   <div>
                     <dt>Beneficio potencial</dt>
-                    <dd>{scenario.potentialBenefit}</dd>
+                    <dd>{scenario.potentialBenefit && presentSimulationText(scenario.potentialBenefit)}</dd>
                   </div>
                 </dl>
                 <div className="scenario-notes">
                   <strong>Consecuencias</strong>
-                  {scenario.consequences?.map((item) => <p key={item}>{item}</p>)}
+                  {scenario.consequences?.map((item) => (
+                    <p key={item}>{presentSimulationText(item)}</p>
+                  ))}
                 </div>
                 <div className="scenario-notes warning-notes">
                   <strong>Advertencias</strong>
-                  {scenario.warnings?.map((item) => <p key={item}>{item}</p>)}
+                  {scenario.warnings?.map((item) => (
+                    <p key={item}>{presentSimulationText(item)}</p>
+                  ))}
                 </div>
-                <small>{scenario.recommendation}</small>
+                <small>{presentScenarioRecommendation(scenario.recommendation)}</small>
               </article>
             ))}
           </div>
 
           <article className="strategic-conclusion">
             <span>Marco de decisión</span>
-            <strong>{result.simulation.strategicConclusion}</strong>
-            <p>{result.simulation.detailCopy}</p>
+            <strong>{RESULT_PRESENTATION_COPY.guidanceTitle}</strong>
+            <p>{RESULT_PRESENTATION_COPY.guidanceBody}</p>
           </article>
 
-          <div className="simulator-cta-row" aria-label="Acciones posteriores a la simulación">
-            <button
-              disabled={isSaving || saveState?.status === "saved"}
-              onClick={handleSave}
-              type="button"
-            >
-              {isSaving
-                ? "Guardando..."
-                : saveState?.status === "saved"
-                  ? "Simulación guardada"
-                  : "Guardar simulación"}
-            </button>
-            {saveState?.status === "saved" ? (
-              <Link className="secondary-button" href={saveState.historyHref}>
-                Ver historial
-              </Link>
-            ) : (
-              <Link
-                className="secondary-button"
-                href={
-                  saveState?.status === "auth_required"
-                    ? saveState.loginHref
-                    : "/login?next=%2Fdashboard%2Fsimulations"
-                }
-              >
-                Iniciar sesión
-              </Link>
-            )}
-            <Link className="text-link" href="/register">
-              Crear cuenta
-            </Link>
-          </div>
+          <SimulationResultActions
+            identityState={identityState}
+            isSaving={isSaving}
+            onSave={handleSave}
+            saveState={saveState}
+          />
 
           {saveState && (
             <p
@@ -990,99 +1027,79 @@ export default function HomeSimulator() {
         >
           <div className="simulation-output-header">
             <div>
-              <p className="eyebrow">Simulación Real AI controlada</p>
-              <h2>
-                {productionResult.uiModel.sections.decisionSummary.items[0]?.statement ??
-                  "Mapa de decisión preparado"}
-              </h2>
+              <p className="eyebrow">{RESULT_PRESENTATION_COPY.eyebrow}</p>
+              <h2>{RESULT_PRESENTATION_COPY.heading}</h2>
             </div>
             <div className="output-confidence">
               <span>Estado del análisis</span>
-              <strong>{productionResult.uiModel.renderState}</strong>
+              <strong>{presentRenderState(productionResult.uiModel.renderState)}</strong>
             </div>
           </div>
 
           <article className="strategic-conclusion">
-            <span>SimulationResponseV2</span>
-            <strong>Resultado producido por la ruta Real AI protegida.</strong>
-            <p>
-              Fuente: {productionResult.runtimeSource}. Contrato público: {productionResult.contractVersion}.
-              No se usó un resultado mock de sustitución. Referencia: {productionResult.requestId}.
-            </p>
+            <span>Cómo interpretar el resultado</span>
+            <strong>{RESULT_PRESENTATION_COPY.summaryTitle}</strong>
+            <p>{RESULT_PRESENTATION_COPY.summaryBody}</p>
           </article>
 
           <div className="home-scenario-grid">
             {productionResult.uiModel.sections.scenarios.items.map((scenario) => (
-              <article className="home-scenario-card tone-opportunity" key={scenario.id}>
-                <span>{scenario.perspective}</span>
-                <h3>{scenario.optionLabel}</h3>
+              <article
+                className={`home-scenario-card tone-${
+                  scenario.perspective === "pessimistic"
+                    ? "risk"
+                    : scenario.perspective === "realistic"
+                      ? "amber"
+                      : "opportunity"
+                }`}
+                key={scenario.id}
+              >
+                <span>{presentPerspectiveBadge(scenario.perspective)}</span>
+                <h3>
+                  {presentScenarioTitle({
+                    optionLabel: scenario.optionLabel,
+                    perspective: scenario.perspective,
+                    submittedInput: productionResult.data.decision.statement,
+                  })}
+                </h3>
                 <dl>
                   <div>
-                    <dt>Confianza del modelo</dt>
+                    <dt>Confianza orientativa</dt>
                     <dd>{Math.round(scenario.confidence.score)}%</dd>
                   </div>
                   <div>
-                    <dt>Tipo canónico</dt>
-                    <dd>{scenario.canonicalType}</dd>
+                    <dt>Tipo de escenario</dt>
+                    <dd>{presentCanonicalScenarioType(scenario.canonicalType)}</dd>
                   </div>
                 </dl>
                 <div className="scenario-notes">
                   <strong>Condiciones</strong>
-                  {scenario.triggerConditions.map((item) => <p key={item}>{item}</p>)}
+                  {scenario.triggerConditions.map((item) => (
+                    <p key={item}>{presentSimulationText(item)}</p>
+                  ))}
                 </div>
                 <div className="scenario-notes warning-notes">
                   <strong>Incertidumbre</strong>
-                  {scenario.uncertaintyReasons.map((item) => <p key={item}>{item}</p>)}
+                  {scenario.uncertaintyReasons.map((item) => (
+                    <p key={item}>{presentSimulationText(item)}</p>
+                  ))}
                 </div>
               </article>
             ))}
           </div>
 
           <article className="strategic-conclusion">
-            <span>Marco de decisión V2</span>
-            <strong>
-              {productionResult.uiModel.sections.status.items[0]?.message ??
-                "Análisis completado con límites explícitos."}
-            </strong>
-            <p>
-              {productionResult.uiModel.sections.recommendation.items[0]?.confidence.explanation ??
-                (productionResult.uiModel.sections.notices.items.map((notice) => notice.message).join(" ") ||
-                  "Revisa los escenarios y sus condiciones antes de actuar.")}
-            </p>
+            <span>Marco de decisión</span>
+            <strong>{RESULT_PRESENTATION_COPY.guidanceTitle}</strong>
+            <p>{RESULT_PRESENTATION_COPY.guidanceBody}</p>
           </article>
 
-          <div className="simulator-cta-row" aria-label="Acciones posteriores a la simulación">
-            <button
-              disabled={isSaving || saveState?.status === "saved"}
-              onClick={handleSave}
-              type="button"
-            >
-              {isSaving
-                ? "Guardando..."
-                : saveState?.status === "saved"
-                  ? "Simulación guardada"
-                  : "Guardar simulación"}
-            </button>
-            {saveState?.status === "saved" ? (
-              <Link className="secondary-button" href={saveState.historyHref}>
-                Ver historial
-              </Link>
-            ) : (
-              <Link
-                className="secondary-button"
-                href={
-                  saveState?.status === "auth_required"
-                    ? saveState.loginHref
-                    : "/login?next=%2Fdashboard%2Fsimulations"
-                }
-              >
-                Iniciar sesión
-              </Link>
-            )}
-            <Link className="text-link" href="/register">
-              Crear cuenta
-            </Link>
-          </div>
+          <SimulationResultActions
+            identityState={identityState}
+            isSaving={isSaving}
+            onSave={handleSave}
+            saveState={saveState}
+          />
 
           {saveState && (
             <p

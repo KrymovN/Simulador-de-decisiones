@@ -4,7 +4,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
-const baseline = "4ba12bdb5c4d58263651f9eddc4735fc9bbaee24";
+const baseline = "c37034ba494ac838244ef81d05eacc3eaf68161a";
 const read = (...segments) => readFileSync(join(rootDir, ...segments), "utf8");
 const baselineFile = (path) =>
   execFileSync("git", ["show", `${baseline}:${path}`], {
@@ -25,11 +25,10 @@ function check(name, condition, detail = "") {
   checks.push({ name, passed: Boolean(condition), detail });
 }
 
-function withoutCriteriaPresentation(source) {
-  return source.replace(
-    /\s*<div className="simulator-criteria">[\s\S]*?<div className="simulator-action-cluster">/,
-    '\n        <div className="simulator-action-cluster">',
-  );
+function functionBlock(source, start, end) {
+  const startIndex = source.indexOf(start);
+  const endIndex = source.indexOf(end, startIndex);
+  return startIndex >= 0 && endIndex > startIndex ? source.slice(startIndex, endIndex) : "";
 }
 
 check(
@@ -79,9 +78,19 @@ check(
   ),
 );
 check(
-  "Simulator implementation differs from the production baseline only in criteria presentation",
-  withoutCriteriaPresentation(simulator) ===
-    withoutCriteriaPresentation(baselineFile("components/HomeSimulator.tsx")),
+  "Simulator request and save integrations remain byte-identical to the task baseline",
+  functionBlock(simulator, "  async function requestSimulation", "  async function runProcessingSequence") ===
+    functionBlock(
+      baselineFile("components/HomeSimulator.tsx"),
+      "  async function requestSimulation",
+      "  async function runProcessingSequence",
+    ) &&
+    functionBlock(simulator, "  async function handleSave", "\n\n  return (") ===
+      functionBlock(
+        baselineFile("components/HomeSimulator.tsx"),
+        "  async function handleSave",
+        "\n\n  return (",
+      ),
 );
 check(
   "Owner-scoped save action remains byte-identical to the production baseline",

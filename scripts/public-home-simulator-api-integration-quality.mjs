@@ -266,13 +266,13 @@ function runSimulatorSourceChecks() {
   sourceIncludes(source, 'responseMode: "production_v2"', "HomeSimulator distinguishes production V2 from deterministic preview");
   sourceIncludes(source, "productionResult.uiModel.sections.scenarios.items.map", "HomeSimulator renders V2 success through the existing UI mapping");
   sourceIncludes(source, 'renderState: "controlled_failure"', "HomeSimulator preserves the controlled V2 failure mapping");
-  sourceIncludes(source, "No se usó un resultado mock de sustitución.", "HomeSimulator discloses that production V2 did not use mock fallback");
+  sourceIncludes(source, "RESULT_PRESENTATION_COPY.eyebrow", "HomeSimulator presents both success paths as an orientative result");
   sourceIncludes(source, 'payload.status === "failed"', "HomeSimulator branches failed envelopes explicitly");
   sourceIncludes(source, "throw new SimulateApiFailure", "HomeSimulator converts fail-close envelopes to controlled UI state");
   sourceIncludes(source, "setPreviewState(null)", "HomeSimulator clears preview metadata on failed envelopes");
-  sourceIncludes(source, "No se ha generado una simulación local de sustitución.", "HomeSimulator tells users there is no local substitute");
+  sourceIncludes(source, "No se ha generado un resultado.", "HomeSimulator exposes a controlled product failure");
   sourceIncludes(source, "{result && (", "HomeSimulator renders simulation artifacts only when result exists");
-  sourceIncludes(source, "result?.thinkingStages ??", "HomeSimulator guards thinking stages before result exists");
+  sourceIncludes(source, "const stages = DEFAULT_PROCESSING_STAGES", "HomeSimulator keeps product-facing processing stages independent from internal metadata");
   sourceIncludes(source, "result.simulation.scenarios.map", "HomeSimulator scenario rendering is success-only");
   sourceIncludes(source, "data: null", "HomeSimulator public response type models failed data:null");
   sourceIncludes(source, "error: null", "HomeSimulator public response type models completed error:null");
@@ -281,10 +281,10 @@ function runSimulatorSourceChecks() {
   sourceIncludes(source, "mockOnly !== true", "HomeSimulator checks mockOnly before render");
   sourceIncludes(source, "apiReady !== true", "HomeSimulator checks apiReady before render");
   sourceIncludes(source, "Vista previa determinista · Respuestas de ejemplo", "HomeSimulator keeps AI-neutral deterministic preview copy");
-  sourceIncludes(source, "Simulación demostrativa con respuestas de ejemplo.", "HomeSimulator keeps AI-neutral demonstrative result copy");
+  sourceIncludes(source, "Resultado orientativo listo.", "HomeSimulator uses production product wording after completion");
   sourceExcludes(source, "conexión con IA real", "HomeSimulator removes unnecessary Real AI reminders");
-  sourceIncludes(source, "Simulación demo completada.", "HomeSimulator has controlled success message");
-  sourceIncludes(source, "Simulación detenida. No se generó un resultado local de sustitución.", "HomeSimulator has controlled failure message");
+  sourceExcludes(source, "Simulación demo completada.", "HomeSimulator removes demo wording from completed results");
+  sourceIncludes(source, "La simulación se ha detenido sin generar un resultado.", "HomeSimulator has controlled failure message");
   sourceIncludes(source, 'simulateError?.code === "rate_limited"', "HomeSimulator recognizes public rate-limit error code");
   sourceIncludes(source, "Límite temporal alcanzado", "HomeSimulator maps rate-limit errors to safe title");
   sourceIncludes(source, "Simulación no ejecutada", "HomeSimulator maps other public errors to safe title");
@@ -334,7 +334,7 @@ function runHomePositioningChecks() {
   sourceExcludes(combinedSource, "billing", "Public Home does not promise billing");
   sourceExcludes(combinedSource, "closed beta", "Public Home does not promise closed beta");
   sourceExcludes(combinedSource, "memoria de cuenta", "Public Home does not promise account memory");
-  sourceIncludes(simulatorSource, "sin presentarse como predicción lista para producción", "HomeSimulator keeps production-readiness disclaimer");
+  sourceIncludes(simulatorSource, "RESULT_PRESENTATION_COPY.guidanceBody", "HomeSimulator keeps the bounded uncertainty guidance");
 }
 
 async function runApiEnvelopeChecks(baseUrl) {
