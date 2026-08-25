@@ -87,11 +87,13 @@ excludes(authShell, "auth-core", "AuthShell removes the animated legacy core");
 excludes(authShell, "section-frame", "AuthShell is isolated from legacy global panels");
 
 check(
-  "login and registration expose both production account modes",
-  login.includes('<span aria-current="page">Iniciar sesión</span>') &&
-    login.includes('<Link href="/register">Crear cuenta</Link>') &&
-    register.includes('<Link href="/login">Iniciar sesión</Link>') &&
-    register.includes('<span aria-current="page">Crear cuenta</span>'),
+  "login and registration order account modes as create account then sign in",
+  login.includes(
+    '<Link href="/register">Crear cuenta</Link>\n        <span aria-current="page">Iniciar sesión</span>',
+  ) &&
+    register.includes(
+      '<span aria-current="page">Crear cuenta</span>\n        <Link href="/login">Iniciar sesión</Link>',
+    ),
 );
 check(
   "passwordless modes invoke Supabase OTP with distinct account-creation intent",

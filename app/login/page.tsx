@@ -96,8 +96,8 @@ export default function LoginPage() {
       title="Inicia sesión en Levio."
     >
       <nav aria-label="Acceso a la cuenta" className="auth-mode-switch">
-        <span aria-current="page">Iniciar sesión</span>
         <Link href="/register">Crear cuenta</Link>
+        <span aria-current="page">Iniciar sesión</span>
       </nav>
       <AuthStateView />
       {queryError && !error && (

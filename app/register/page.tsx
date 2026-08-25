@@ -83,8 +83,8 @@ export default function RegisterPage() {
       title="Crea tu cuenta de Levio."
     >
       <nav aria-label="Acceso a la cuenta" className="auth-mode-switch">
-        <Link href="/login">Iniciar sesión</Link>
         <span aria-current="page">Crear cuenta</span>
+        <Link href="/login">Iniciar sesión</Link>
       </nav>
       <AuthStateView />
       <form className="auth-form" onSubmit={handleSubmit}>
