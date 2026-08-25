@@ -28,11 +28,9 @@ export default function AuthShell({
             <h1>{title}</h1>
             <p>{description}</p>
             <div className="security-note">
-              <strong>Aviso de seguridad</strong>
+              <strong>Acceso seguro por correo</strong>
               <span>
-                Esta zona usa una arquitectura temporal de acceso para demostración.
-                La autenticación final debe conectarse a un proveedor seguro antes
-                de procesar datos personales reales.
+                Recibirás un enlace de un solo uso. No necesitas crear ni recordar una contraseña.
               </span>
             </div>
           </div>

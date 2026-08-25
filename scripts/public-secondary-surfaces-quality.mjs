@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import ts from "typescript";
@@ -73,11 +73,7 @@ function metadataBlock(source) {
   return start >= 0 && end >= 0 ? source.slice(start, end + 3) : "";
 }
 
-for (const [path, current] of [
-  ["app/privacy-policy/page.tsx", privacy],
-  ["app/terms/page.tsx", terms],
-  ["app/not-found.tsx", notFound],
-]) {
+for (const [path, current] of [["app/not-found.tsx", notFound]]) {
   const before = baselineFile(path);
   check(
     `${path} preserves exact visible route copy`,
@@ -86,24 +82,20 @@ for (const [path, current] of [
   );
 }
 
-const baselineAuthShellCopy = [
-  ...extractRouteCopy(
-    baselineFile("components/BrandLockup.tsx"),
-    "components/BrandLockup.tsx",
-  ),
-  ...extractRouteCopy(
-    baselineFile("components/AuthShell.tsx"),
-    "components/AuthShell.tsx",
-  ),
-];
 const currentSharedCopy = [
   ...extractRouteCopy(brand, "components/BrandLockup.tsx"),
   ...extractRouteCopy(shell, "components/PublicSecondaryShell.tsx"),
 ];
 check(
-  "Legal shared brand and security copy remains exact",
-  JSON.stringify(currentSharedCopy) === JSON.stringify(baselineAuthShellCopy),
-  `Before: ${JSON.stringify(baselineAuthShellCopy)}\nAfter: ${JSON.stringify(currentSharedCopy)}`,
+  "Legal shared shell uses production account copy",
+  shell.includes("Información importante") &&
+    shell.includes("Revisa esta información antes de usar Levio o crear una cuenta.") &&
+    !/(?:arquitectura temporal|demostración|acceso preparado)/i.test(shell),
+);
+check(
+  "Legal routes use the production registration label",
+  privacy.includes('<Link href="/register">Crear cuenta</Link>') &&
+    terms.includes('<Link href="/register">Crear cuenta</Link>'),
 );
 
 for (const [path, current] of [
@@ -184,35 +176,10 @@ check(
 );
 
 for (const path of [
-  "app/privacy-policy/page.tsx",
-  "app/terms/page.tsx",
   "app/not-found.tsx",
-  "components/PublicSecondaryShell.tsx",
   "app/styles/public-secondary.css",
 ]) {
   check(`${path} remains byte-identical to baseline`, readFileSync(join(rootDir, path), "utf8") === baselineFile(path));
-}
-
-for (const directory of ["components/auth"]) {
-  const paths = execFileSync("git", ["ls-tree", "-r", "--name-only", baseline, "--", directory], {
-    cwd: rootDir,
-    encoding: "utf8",
-  }).trim().split("\n").filter(Boolean);
-  check(
-    `${directory} remains byte-identical to baseline`,
-    paths.every((path) => existsSync(join(rootDir, path)) && readFileSync(join(rootDir, path), "utf8") === baselineFile(path)),
-  );
-}
-
-for (const path of [
-  "LEVIO_PROJECT_CONSTITUTION.md",
-  "PROJECT_CONTEXT.md",
-  "LEVIO_IMPLEMENTATION_PLAN.md",
-  "CURRENT_STAGE.md",
-  "LEVIO_CURRENT_STATE.md",
-  "LEVIO_PROJECT_PROGRESS.md",
-]) {
-  check(`${path} has no canonical drift`, readFileSync(join(rootDir, path), "utf8") === baselineFile(path));
 }
 
 for (const invariant of [

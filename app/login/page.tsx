@@ -70,6 +70,7 @@ export default function LoginPage() {
         email,
         options: {
           emailRedirectTo: redirectResult.emailRedirectTo,
+          shouldCreateUser: false,
         },
       });
 
@@ -85,16 +86,20 @@ export default function LoginPage() {
     }
 
     router.refresh();
-    setMessage("Si el correo está habilitado, recibirás un enlace de acceso. Revisa tu bandeja.");
+    setMessage("Revisa tu correo. Te hemos enviado un enlace para iniciar sesión.");
   }
 
   return (
     <AuthShell
-      description="Revisa el estado del acceso preparado para simulaciones locales y futuras preferencias de decisión."
-      eyebrow="levio.es / Acceso preparado"
-      title="Acceso preparado al entorno de simulación."
+      description="Introduce tu correo y te enviaremos un enlace seguro para acceder."
+      eyebrow="levio.es / Cuenta"
+      title="Inicia sesión en Levio."
     >
-      <AuthStateView signedOutLabel="Acceso por correo condicionado a la configuración del sistema de acceso." />
+      <nav aria-label="Acceso a la cuenta" className="auth-mode-switch">
+        <span aria-current="page">Iniciar sesión</span>
+        <Link href="/register">Crear cuenta</Link>
+      </nav>
+      <AuthStateView />
       {queryError && !error && (
         <div className="mock-feedback" role="alert">
           {queryError}
@@ -106,7 +111,7 @@ export default function LoginPage() {
           <input autoComplete="email" name="email" placeholder="tu@correo.com" required type="email" />
         </label>
         <button disabled={isSubmitting} type="submit">
-          {isSubmitting ? "Preparando enlace" : "Preparar enlace de acceso"}
+          {isSubmitting ? "Enviando enlace..." : "Iniciar sesión"}
         </button>
       </form>
 
@@ -120,11 +125,6 @@ export default function LoginPage() {
           {error}
         </div>
       )}
-
-      <div className="auth-links">
-        <Link href="/register">Preparar acceso</Link>
-        <Link href="/forgot-password">Ver recuperación preparada</Link>
-      </div>
     </AuthShell>
   );
 }

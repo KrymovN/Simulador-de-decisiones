@@ -30,7 +30,7 @@ export default function TermsPage() {
           información que requiera garantías legales finales.
         </p>
         <div className="public-secondary__actions">
-          <Link href="/register">Volver al acceso preparado</Link>
+          <Link href="/register">Crear cuenta</Link>
           <Link href="/">Volver al simulador</Link>
         </div>
       </div>

@@ -17,6 +17,7 @@ const sourcePaths = {
   terms: join(rootDir, "app", "terms", "page.tsx"),
   authShell: join(rootDir, "components", "AuthShell.tsx"),
   authStateView: join(rootDir, "components", "auth", "AuthStateView.tsx"),
+  publicSecondaryShell: join(rootDir, "components", "PublicSecondaryShell.tsx"),
   dashboardLayout: join(rootDir, "app", "dashboard", "layout.tsx"),
   dashboardShell: join(rootDir, "components", "DashboardShell.tsx"),
   dashboardHome: join(rootDir, "app", "dashboard", "page.tsx"),
@@ -164,24 +165,30 @@ function runPositioningSourceChecks(sources) {
 }
 
 function runAuthReadinessSourceChecks(sources) {
-  sourceIncludes(sources.authShell, "arquitectura temporal de acceso para demostración", "Auth shell discloses temporary access architecture");
-  sourceMatches(
+  const authSurface = [
     sources.authShell,
-    /antes\s+de\s+procesar\s+datos\s+personales\s+reales/,
-    "Auth shell blocks personal-data production promise",
+    sources.authStateView,
+    sources.publicSecondaryShell,
+    sources.homeSimulator,
+    sources.login,
+    sources.register,
+    sources.forgotPassword,
+    sources.privacyPolicy,
+    sources.terms,
+  ].join("\n");
+  sourceIncludes(sources.authShell, "Acceso seguro por correo", "Auth shell explains the production passwordless flow");
+  sourceIncludes(sources.login, "Iniciar sesión", "Login exposes the production login mode");
+  sourceIncludes(sources.login, "Crear cuenta", "Login exposes the registration mode switch");
+  sourceIncludes(sources.register, "Iniciar sesión", "Register exposes the login mode switch");
+  sourceIncludes(sources.register, "Crear cuenta", "Register exposes the production registration mode");
+  sourceIncludes(sources.forgotPassword, 'redirect("/login")', "Unused password recovery route returns to passwordless login");
+  sourceIncludes(sources.authStateView, "if (!signedOutLabel)", "Anonymous signed-out state is neutral by default");
+  sourceIncludes(sources.authStateView, 'role="alert"', "Real auth errors remain visible");
+  assertCheck(
+    "Auth production copy removes temporary scaffold terminology",
+    !/(?:acceso preparado|preparar enlace de acceso|preparar acceso|recuperación preparada|arquitectura temporal|demostración)/i.test(authSurface),
+    "Prepared/demo auth copy remains in a production-facing auth source.",
   );
-  sourceIncludes(sources.authStateView, "Acceso configurado", "Auth status copy avoids account wording");
-  sourceIncludes(sources.authStateView, "Acceso no configurado", "Signed-out status copy avoids account wording");
-  sourceIncludes(sources.login, "Acceso preparado", "Login is positioned as prepared access");
-  sourceIncludes(sources.login, "condicionado a la configuración del sistema de acceso", "Login discloses access-system condition");
-  sourceIncludes(sources.login, "Preparar enlace de acceso", "Login CTA avoids production account promise");
-  sourceIncludes(sources.login, "Preparar acceso", "Login links to prepared access instead of account creation");
-  sourceIncludes(sources.register, "Acceso preparado", "Register is positioned as prepared access");
-  sourceIncludes(sources.register, "cuando estén disponibles", "Register copy defers future controls");
-  sourceIncludes(sources.register, "Registro por correo condicionado a la configuración del sistema de acceso.", "Register discloses access-system condition");
-  sourceIncludes(sources.register, "Ya tengo acceso preparado", "Register avoids existing-account promise");
-  sourceIncludes(sources.forgotPassword, "no se envían correos reales", "Recovery page discloses no real emails");
-  sourceIncludes(sources.forgotPassword, "La recuperación productiva todavía no está activada", "Recovery action discloses deferred production recovery");
 }
 
 function runLegalReadinessSourceChecks(sources) {
@@ -251,7 +258,6 @@ function runPrematurePromiseSourceChecks(sources) {
   ].join("\n");
 
   const forbiddenExactPhrases = [
-    "Crear cuenta",
     "Ya tengo cuenta",
     "Datos preparados de cuenta",
     "Área personal",
@@ -315,26 +321,24 @@ async function runRuntimePublicPageChecks(baseUrl) {
     {
       path: "/login",
       includes: [
-        "Acceso preparado",
-        "Preparar enlace de acceso",
-        "Preparar acceso",
+        "Inicia sesión en Levio.",
+        "Iniciar sesión",
+        "Crear cuenta",
       ],
     },
     {
       path: "/register",
       includes: [
-        "Acceso preparado",
-        "cuando estén disponibles",
-        "Ya tengo acceso preparado",
+        "Crea tu cuenta de Levio.",
+        "Iniciar sesión",
+        "Crear cuenta",
       ],
     },
     {
       path: "/forgot-password",
-      includes: [
-        "Recuperación preparada",
-        "En este MVP no se envían correos reales.",
-        "La recuperación de contraseña no está activada para esta fase.",
-      ],
+      status: 307,
+      redirectTo: "/login",
+      includes: [],
     },
     {
       path: "/privacy-policy",
@@ -358,14 +362,19 @@ async function runRuntimePublicPageChecks(baseUrl) {
     try {
       const { response, html } = await fetchHtml(baseUrl, pageCase.path);
 
-      assert(response.status === 200, `${pageCase.path} returned ${response.status}.`);
+      assert(response.status === (pageCase.status ?? 200), `${pageCase.path} returned ${response.status}.`);
       assert(!/Application error|Internal Server Error|Unhandled Runtime Error/i.test(html), `${pageCase.path} contains fatal error marker.`);
 
       for (const text of pageCase.includes) {
         assert(html.includes(text), `${pageCase.path} missing runtime copy: ${text}`);
       }
 
-      assert(!html.includes("Crear cuenta"), `${pageCase.path} still promises account creation.`);
+      if (["/login", "/register", "/forgot-password"].includes(pageCase.path)) {
+        assert(
+          !/(?:Acceso preparado|Preparar enlace de acceso|Preparar acceso|Recuperación preparada|arquitectura temporal)/i.test(html),
+          `${pageCase.path} still renders temporary auth scaffold copy.`,
+        );
+      }
       assert(!html.includes("OpenAI"), `${pageCase.path} mentions OpenAI.`);
       assert(!html.includes("ChatGPT"), `${pageCase.path} mentions ChatGPT.`);
       assert(!html.includes("Stripe"), `${pageCase.path} mentions Stripe.`);

@@ -160,6 +160,41 @@
   padding: clamp(24px, 4.5vw, 48px);
 }
 
+.auth-mode-switch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  margin-bottom: 22px;
+  padding: 4px;
+  border: 1px solid var(--levio-border);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-surface-elevated);
+}
+
+.auth-mode-switch a,
+.auth-mode-switch span {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: var(--levio-radius-sm);
+  color: var(--levio-text-secondary);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+
+.auth-mode-switch span[aria-current="page"] {
+  background: var(--levio-surface);
+  color: var(--levio-text);
+}
+
+.auth-mode-switch a:hover {
+  color: var(--levio-text);
+}
+
 .auth-form {
   display: grid;
   gap: 16px;
@@ -199,6 +234,7 @@
 .auth-form select:focus-visible,
 .auth-form button:focus-visible,
 .auth-shell .auth-brand:focus-visible,
+.auth-mode-switch a:focus-visible,
 .auth-links a:focus-visible {
   outline: 3px solid var(--levio-focus-ring);
   outline-offset: 3px;

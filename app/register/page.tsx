@@ -73,16 +73,20 @@ export default function RegisterPage() {
     }
 
     router.refresh();
-    setMessage("Si el correo está habilitado, recibirás un enlace de confirmación o acceso. Revisa tu bandeja.");
+    setMessage("Revisa tu correo. Te hemos enviado un enlace para confirmar tu cuenta.");
   }
 
   return (
     <AuthShell
-      description="Prepara una vista de acceso para futuras simulaciones, idioma preferido y controles de datos cuando estén disponibles."
-      eyebrow="levio.es / Acceso preparado"
-      title="Prepara tu acceso de simulación."
+      description="Introduce tu correo para recibir un enlace de confirmación. No necesitas contraseña."
+      eyebrow="levio.es / Cuenta"
+      title="Crea tu cuenta de Levio."
     >
-      <AuthStateView signedOutLabel="Registro por correo condicionado a la configuración del sistema de acceso." />
+      <nav aria-label="Acceso a la cuenta" className="auth-mode-switch">
+        <Link href="/login">Iniciar sesión</Link>
+        <span aria-current="page">Crear cuenta</span>
+      </nav>
+      <AuthStateView />
       <form className="auth-form" onSubmit={handleSubmit}>
         <label>
           Correo electrónico
@@ -107,7 +111,7 @@ export default function RegisterPage() {
           </span>
         </label>
         <button disabled={isSubmitting} type="submit">
-          {isSubmitting ? "Enviando enlace" : "Solicitar enlace de acceso"}
+          {isSubmitting ? "Enviando enlace..." : "Crear cuenta"}
         </button>
       </form>
 
@@ -121,10 +125,6 @@ export default function RegisterPage() {
           {error}
         </div>
       )}
-
-      <div className="auth-links">
-        <Link href="/login">Ya tengo acceso preparado</Link>
-      </div>
     </AuthShell>
   );
 }

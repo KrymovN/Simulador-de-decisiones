@@ -18,6 +18,13 @@ const callbackRoute = read("app", "auth", "callback", "route.ts");
 const callbackRuntime = read("lib", "auth", "supabase", "callback.ts");
 const authShell = read("components", "AuthShell.tsx");
 const authState = read("components", "auth", "AuthStateView.tsx");
+const authProvider = read("components", "auth", "AuthRuntimeProvider.tsx");
+const relatedAuthEntryCopy = [
+  read("components", "HomeSimulator.tsx"),
+  read("components", "PublicSecondaryShell.tsx"),
+  read("app", "privacy-policy", "page.tsx"),
+  read("app", "terms", "page.tsx"),
+].join("\n");
 const css = read("app", "styles", "auth.css");
 const layout = read("app", "layout.tsx");
 const packageJson = read("package.json");
@@ -67,31 +74,60 @@ function extractCopy(source, filename) {
 for (const [path, source] of [
   ["app/login/page.tsx", login],
   ["app/register/page.tsx", register],
-  ["app/forgot-password/page.tsx", forgot],
 ]) {
-  check(`${path} remains byte-identical to baseline`, source === baselineFile(path));
-  check(
-    `${path} preserves exact visible copy`,
-    JSON.stringify(extractCopy(source, path)) === JSON.stringify(extractCopy(baselineFile(path), path)),
-  );
   check(`${path} uses AuthShell exactly once`, (source.match(/<AuthShell(?:\s|>)/g) ?? []).length === 1);
   excludes(source, "<BrandLockup", `${path} does not duplicate BrandLockup`);
   excludes(source, "<LevioMark", `${path} does not duplicate the brand mark`);
   excludes(source, "style={{", `${path} adds no inline visual styles`);
 }
 
-check(
-  "AuthShell preserves exact shared copy",
-  JSON.stringify(extractCopy(authShell, "AuthShell.tsx")) ===
-    JSON.stringify(extractCopy(baselineFile("components/AuthShell.tsx"), "AuthShell.tsx")),
-);
 check("AuthShell owns one BrandLockup", (authShell.match(/<BrandLockup(?:\s|>)/g) ?? []).length === 1);
 includes(authShell, 'markSize="sm"', "AuthShell uses the canonical mark");
 excludes(authShell, "auth-core", "AuthShell removes the animated legacy core");
 excludes(authShell, "section-frame", "AuthShell is isolated from legacy global panels");
+
 check(
-  "AuthStateView semantics and copy remain byte-identical",
-  authState === baselineFile("components/auth/AuthStateView.tsx"),
+  "login and registration expose both production account modes",
+  login.includes('<span aria-current="page">Iniciar sesión</span>') &&
+    login.includes('<Link href="/register">Crear cuenta</Link>') &&
+    register.includes('<Link href="/login">Iniciar sesión</Link>') &&
+    register.includes('<span aria-current="page">Crear cuenta</span>'),
+);
+check(
+  "passwordless modes invoke Supabase OTP with distinct account-creation intent",
+  login.includes("supabase.auth.signInWithOtp") &&
+    login.includes("shouldCreateUser: false") &&
+    register.includes("supabase.auth.signInWithOtp") &&
+    register.includes("shouldCreateUser: true") &&
+    login.includes("emailRedirectTo: redirectResult.emailRedirectTo") &&
+    register.includes("emailRedirectTo: redirectResult.emailRedirectTo"),
+);
+check(
+  "anonymous missing-session state is neutral",
+  authProvider.includes("isAuthSessionMissingError(error)") &&
+    authProvider.indexOf("isAuthSessionMissingError(error)") < authProvider.indexOf('identityState: "auth_error"') &&
+    authProvider.includes('setState({ identityState: "signed_out" })') &&
+    authState.includes("if (!signedOutLabel)") &&
+    authState.includes("return null") &&
+    login.includes("<AuthStateView />") &&
+    register.includes("<AuthStateView />"),
+);
+check(
+  "real browser-auth errors remain safely representable",
+  authProvider.includes('identityState: "auth_error"') &&
+    authProvider.includes('error: "session_invalid"') &&
+    authProvider.includes("catch") &&
+    authState.includes('role="alert"') &&
+    authState.includes("No se pudo verificar la sesión. Inténtalo de nuevo.") &&
+    !authState.includes("{auth.error}") &&
+    !authState.includes("error.message"),
+);
+check(
+  "legacy password recovery scaffold redirects to the canonical passwordless login",
+  forgot.includes('import { redirect } from "next/navigation"') &&
+    forgot.includes('redirect("/login")') &&
+    !forgot.includes("resetPasswordForEmail") &&
+    !forgot.includes("createSupabaseBrowserAuthClient"),
 );
 
 includes(callbackRoute, "handleSupabaseAuthCallback(request)", "Callback route keeps the established handler");
@@ -114,7 +150,6 @@ for (const path of [
   "lib/auth/supabase/client.ts",
   "lib/auth/supabase/server.ts",
   "lib/auth/types.ts",
-  "components/auth/AuthRuntimeProvider.tsx",
 ]) {
   check(`${path} preserves auth behaviour byte-for-byte`, read(path) === baselineFile(path));
 }
@@ -128,7 +163,7 @@ for (const contract of [
 ]) {
   check(
     `Form contract remains present: ${contract}`,
-    [login, register, forgot].every((source) => source.includes(contract)),
+    [login, register].every((source) => source.includes(contract)),
   );
 }
 includes(login, "disabled={isSubmitting}", "Login keeps pending disabled state");
@@ -201,31 +236,12 @@ check(
   "Migrated auth UI adds no forbidden AI/chat terminology",
   !/(?:\bopenai\b|\bchatgpt\b|\bchat\b|\bassistant\b|answer engine|ia real)/i.test(visibleCopy),
 );
-
-for (const path of [
-  "app/page.tsx",
-  "app/privacy-policy/page.tsx",
-  "app/terms/page.tsx",
-  "app/not-found.tsx",
-  "components/PublicSecondaryShell.tsx",
-  "app/styles/public-secondary.css",
-  "components/HomeSimulator.tsx",
-]) {
-  check(`${path} remains outside the Batch 3 redesign`, read(path) === baselineFile(path));
-}
-
-for (const path of [
-  "LEVIO_PROJECT_CONSTITUTION.md",
-  "PROJECT_CONTEXT.md",
-  "LEVIO_IMPLEMENTATION_PLAN.md",
-  "CURRENT_STAGE.md",
-  "LEVIO_CURRENT_STATE.md",
-  "LEVIO_PROJECT_PROGRESS.md",
-]) {
-  check(`${path} has no canonical drift`, read(path) === baselineFile(path));
-}
-
-check("Completed Batch 3 remains closed while later visual batches proceed", true);
+check(
+  "Production auth UI removes prepared and demo scaffold terminology",
+  !/(?:acceso preparado|preparar enlace de acceso|preparar acceso|recuperación preparada|arquitectura temporal|demostración|simulaciones locales)/i.test(
+    `${visibleCopy}\n${relatedAuthEntryCopy}`,
+  ),
+);
 
 const failed = checks.filter((item) => !item.passed);
 for (const item of checks) {

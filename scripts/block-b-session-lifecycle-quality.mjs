@@ -102,6 +102,8 @@ assertCheck(
 assertCheck(
   "browser session runtime refreshes on provider state changes without trusting localStorage",
   authProvider.includes("supabase.auth.getUser()") &&
+    authProvider.includes("isAuthSessionMissingError(error)") &&
+    authProvider.includes('setState({ identityState: "signed_out" })') &&
     authProvider.includes("refreshSession") &&
     authProvider.includes("onAuthStateChange") &&
     authProvider.includes("subscription.unsubscribe()") &&
@@ -113,6 +115,7 @@ assertCheck(
 assertCheck(
   "client session errors are controlled and not rendered from provider internals",
   authProvider.includes('error: "session_invalid"') &&
+    authProvider.includes('identityState: "auth_error"') &&
     !authProvider.includes("error.message") &&
     authStateView.includes("No se pudo verificar la sesión") &&
     !authStateView.includes("{auth.error}") &&

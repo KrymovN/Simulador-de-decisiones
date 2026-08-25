@@ -9,7 +9,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { User } from "@supabase/supabase-js";
+import { isAuthSessionMissingError, type User } from "@supabase/supabase-js";
 import { createSupabaseBrowserAuthClient } from "../../lib/auth/supabase/client";
 import type { LevioIdentityState } from "../../lib/auth/types";
 
@@ -50,20 +50,32 @@ export function AuthRuntimeProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const {
-      data: { user },
-      error,
-    } = await supabase.auth.getUser();
+    try {
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
 
-    if (error) {
+      if (isAuthSessionMissingError(error)) {
+        setState({ identityState: "signed_out" });
+        return;
+      }
+
+      if (error) {
+        setState({
+          identityState: "auth_error",
+          error: "session_invalid",
+        });
+        return;
+      }
+
+      setState(mapUserToState(user));
+    } catch {
       setState({
         identityState: "auth_error",
         error: "session_invalid",
       });
-      return;
     }
-
-    setState(mapUserToState(user));
   }, [supabase]);
 
   const signOut = useCallback(async () => {

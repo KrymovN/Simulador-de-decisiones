@@ -13,6 +13,9 @@ const sourcePaths = {
   login: join(rootDir, "app", "login", "page.tsx"),
   register: join(rootDir, "app", "register", "page.tsx"),
   forgotPassword: join(rootDir, "app", "forgot-password", "page.tsx"),
+  authShell: join(rootDir, "components", "AuthShell.tsx"),
+  authStateView: join(rootDir, "components", "auth", "AuthStateView.tsx"),
+  publicSecondaryShell: join(rootDir, "components", "PublicSecondaryShell.tsx"),
   privacyPolicy: join(rootDir, "app", "privacy-policy", "page.tsx"),
   terms: join(rootDir, "app", "terms", "page.tsx"),
   dashboardLayout: join(rootDir, "app", "dashboard", "layout.tsx"),
@@ -47,8 +50,9 @@ const publicPages = [
     status: 200,
     includes: [
       'class="auth-shell"',
-      "Acceso preparado",
-      "Preparar enlace de acceso",
+      "Inicia sesión en Levio.",
+      "Iniciar sesión",
+      "Crear cuenta",
       'type="email"',
     ],
   },
@@ -58,8 +62,9 @@ const publicPages = [
     status: 200,
     includes: [
       'class="auth-shell"',
-      "Prepara tu acceso",
-      "Solicitar enlace de acceso",
+      "Crea tu cuenta de Levio.",
+      "Iniciar sesión",
+      "Crear cuenta",
       "política de privacidad",
       "términos de uso",
     ],
@@ -67,13 +72,9 @@ const publicPages = [
   {
     label: "Forgot Password",
     path: "/forgot-password",
-    status: 200,
-    includes: [
-      'class="auth-shell"',
-      "Recuperación preparada",
-      "Ver estado de recuperación",
-      "no se envían correos reales",
-    ],
+    status: 307,
+    redirectTo: "/login",
+    includes: [],
   },
   {
     label: "Privacy",
@@ -253,6 +254,27 @@ function runRenderedSurfaceSourceChecks(sources) {
   sourceIncludes(sources.simulateRoute, "mockOnly: true", "Simulate route keeps mockOnly public flag");
   sourceIncludes(sources.simulateRoute, "safeRender: true", "Simulate route keeps safeRender public flag");
   sourceIncludes(sources.simulateRoute, "apiReady: true", "Simulate route keeps apiReady public flag");
+  sourceIncludes(sources.login, "shouldCreateUser: false", "Login preserves passwordless OTP without implicit registration");
+  sourceIncludes(sources.register, "shouldCreateUser: true", "Registration preserves passwordless OTP account creation");
+  sourceIncludes(sources.authStateView, "if (!signedOutLabel)", "Anonymous auth state renders no error or status notice");
+  sourceIncludes(sources.forgotPassword, 'redirect("/login")', "Unused password recovery scaffold redirects to login");
+  assertCheck(
+    "Rendered auth sources contain no prepared/demo scaffold terminology",
+    !/(?:acceso preparado|preparar enlace de acceso|preparar acceso|recuperación preparada|arquitectura temporal|demostración)/i.test(
+      [
+        sources.login,
+        sources.register,
+        sources.forgotPassword,
+        sources.authShell,
+        sources.authStateView,
+        sources.publicSecondaryShell,
+        sources.homeSimulator,
+        sources.privacyPolicy,
+        sources.terms,
+      ].join("\n"),
+    ),
+    "Prepared/demo terminology remains in an auth source.",
+  );
 }
 
 function runResponsiveGuardrailChecks(sources) {
@@ -344,11 +366,22 @@ async function runRuntimeRenderedChecks(baseUrl) {
       response.status === page.status,
       `Expected ${page.status}, received ${response.status}.`,
     );
-    assertRenderedSize(page.label, html);
+    if (page.redirectTo) {
+      assertCheck(`${page.label} returns a redirect response`, response.status === 307, "Expected a 307 redirect.");
+    } else {
+      assertRenderedSize(page.label, html);
+    }
     assertNoFatalRenderedMarkers(page.label, html);
 
     for (const text of page.includes) {
       htmlIncludes(html, text, `${page.label} rendered HTML includes ${text}`);
+    }
+    if (["Login", "Register", "Forgot Password"].includes(page.label)) {
+      assertCheck(
+        `${page.label} rendered HTML removes prepared/demo auth copy`,
+        !/(?:Acceso preparado|Preparar enlace de acceso|Preparar acceso|Recuperación preparada|arquitectura temporal)/i.test(html),
+        "Temporary auth scaffold copy remains in rendered HTML.",
+      );
     }
   }
 
@@ -357,7 +390,7 @@ async function runRuntimeRenderedChecks(baseUrl) {
     const finalUrl = response.url.replace(baseUrl, "");
 
     assertCheck(
-      `${redirect.label} redirects to prepared login boundary`,
+      `${redirect.label} redirects to production login boundary`,
       finalUrl.startsWith("/login?next=%2Fdashboard") &&
         (
           finalUrl.includes("reason=auth_config_missing") ||
@@ -367,7 +400,8 @@ async function runRuntimeRenderedChecks(baseUrl) {
     );
     assertRenderedSize(`${redirect.label} redirect`, html);
     assertNoFatalRenderedMarkers(`${redirect.label} redirect`, html);
-    htmlIncludes(html, "Acceso preparado", `${redirect.label} redirect renders prepared access copy`);
+    htmlIncludes(html, "Iniciar sesión", `${redirect.label} redirect renders production login copy`);
+    htmlIncludes(html, "Crear cuenta", `${redirect.label} redirect keeps the registration mode visible`);
   }
 }
 

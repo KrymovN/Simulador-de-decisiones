@@ -959,11 +959,11 @@ export default function HomeSimulator() {
                     : "/login?next=%2Fdashboard%2Fsimulations"
                 }
               >
-                Revisar acceso preparado
+                Iniciar sesión
               </Link>
             )}
             <Link className="text-link" href="/register">
-              Preparar acceso
+              Crear cuenta
             </Link>
           </div>
 
@@ -1081,11 +1081,11 @@ export default function HomeSimulator() {
                     : "/login?next=%2Fdashboard%2Fsimulations"
                 }
               >
-                Revisar acceso preparado
+                Iniciar sesión
               </Link>
             )}
             <Link className="text-link" href="/register">
-              Preparar acceso
+              Crear cuenta
             </Link>
           </div>
 

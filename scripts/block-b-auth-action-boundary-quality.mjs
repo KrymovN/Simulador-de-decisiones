@@ -106,13 +106,11 @@ assertCheck(
 );
 
 assertCheck(
-  "password recovery remains controlled inactive",
-  forgotPasswordPage.includes("Recuperación preparada") &&
-    forgotPasswordPage.includes("no se envían correos reales") &&
-    forgotPasswordPage.includes("recuperación productiva todavía no está activada") &&
+  "password recovery scaffold is absent from the passwordless flow",
+  forgotPasswordPage.includes('redirect("/login")') &&
     !forgotPasswordPage.includes("createSupabaseBrowserAuthClient") &&
     !forgotPasswordPage.includes("resetPasswordForEmail"),
-  "Expected forgot-password page to remain a controlled inactive surface with no production recovery action.",
+  "Expected forgot-password to return to canonical login without introducing a password recovery action.",
 );
 
 assertCheck(

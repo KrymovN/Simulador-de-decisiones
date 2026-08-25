@@ -38,11 +38,9 @@ export default function PublicSecondaryShell({
           </div>
           {showSecurityNotice ? (
             <aside className="public-secondary__notice">
-              <strong>Aviso de seguridad</strong>
+              <strong>Información importante</strong>
               <span>
-                Esta zona usa una arquitectura temporal de acceso para demostración.
-                La autenticación final debe conectarse a un proveedor seguro antes
-                de procesar datos personales reales.
+                Revisa esta información antes de usar Levio o crear una cuenta.
               </span>
             </aside>
           ) : null}

@@ -107,22 +107,22 @@ assertCheck(
     registerPage.includes("prepareEmailOtpAuthRedirect") &&
     loginPage.includes("emailRedirectTo: redirectResult.emailRedirectTo") &&
     registerPage.includes("emailRedirectTo: redirectResult.emailRedirectTo") &&
-    loginPage.includes("recibirás un enlace de acceso") &&
-    registerPage.includes("recibirás un enlace de confirmación o acceso") &&
+    loginPage.includes("shouldCreateUser: false") &&
+    registerPage.includes("shouldCreateUser: true") &&
+    loginPage.includes("enlace para iniciar sesión") &&
+    registerPage.includes("enlace para confirmar tu cuenta") &&
     !loginPage.includes("window.location.origin") &&
     !registerPage.includes("window.location.origin"),
   "Expected login/register to use the approved auth redirect action and show controlled pending email messages.",
 );
 
 assertCheck(
-  "password recovery remains explicitly inactive",
-  forgotPasswordPage.includes("Recuperación preparada") &&
-    forgotPasswordPage.includes("no se envían correos reales") &&
-    forgotPasswordPage.includes("recuperación productiva todavía no está activada") &&
+  "password recovery scaffold is absent from the passwordless flow",
+  forgotPasswordPage.includes('redirect("/login")') &&
     !forgotPasswordPage.includes("resetPasswordForEmail") &&
     !forgotPasswordPage.includes("emailRedirectTo") &&
     !forgotPasswordPage.includes("createSupabaseBrowserAuthClient"),
-  "Expected password recovery to remain controlled inactive until the policy is approved.",
+  "Expected the unused recovery scaffold to redirect to login without opening a password-reset action.",
 );
 
 assertCheck(

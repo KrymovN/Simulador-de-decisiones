@@ -9,9 +9,9 @@ type AuthStateViewProps = {
 };
 
 export default function AuthStateView({
-  authenticatedLabel = "Acceso configurado",
-  signedOutLabel = "Acceso no configurado",
-  errorLabel = "No se pudo verificar la sesión",
+  authenticatedLabel = "Sesión iniciada",
+  signedOutLabel,
+  errorLabel = "No se pudo verificar la sesión. Inténtalo de nuevo.",
 }: AuthStateViewProps) {
   const auth = useAuthRuntime();
 
@@ -34,10 +34,14 @@ export default function AuthStateView({
 
   if (auth.error === "auth_config_missing") {
     return (
-      <div className="mock-feedback" role="status">
-        El sistema de acceso no está configurado todavía.
+      <div className="mock-feedback" role="alert">
+        El sistema de acceso no está disponible en este momento.
       </div>
     );
+  }
+
+  if (!signedOutLabel) {
+    return null;
   }
 
   return (
