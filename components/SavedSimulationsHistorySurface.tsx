@@ -159,10 +159,17 @@ export function SavedSimulationDetailSurface({
 
   return (
     <>
+      <section
+        aria-label="Situación simulada"
+        className="dashboard-card saved-records-card saved-records-input"
+      >
+        <p className="eyebrow">Situación simulada</p>
+        <p className="saved-records-input__content">{simulation.userInputSummary}</p>
+      </section>
+
       <section className="simulation-detail-hero saved-records-card saved-records-detail-hero">
         <div>
           <p className="eyebrow">Simulación reabierta</p>
-          <h2>{simulation.title}</h2>
           <p>{simulation.decisionSummary}</p>
           <div className="detail-tags" aria-label="Metadatos de simulación">
             <span>{simulation.lifecycleLabel}</span>
@@ -189,12 +196,6 @@ export function SavedSimulationDetailSurface({
             <strong>{simulation.exportLabel}</strong>
           </div>
         </div>
-      </section>
-
-      <section className="dashboard-card saved-records-card">
-        <p className="eyebrow">Entrada original</p>
-        <h2>Decisión guardada.</h2>
-        <p>{simulation.userInputSummary}</p>
       </section>
 
       {simulation.scenarios.length > 0 ? (

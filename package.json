@@ -16,6 +16,7 @@
     "quality:deterministic-runtime-security-boundary": "node scripts/deterministic-runtime-security-boundary-quality.mjs",
     "quality:deterministic-runtime-contract-regression": "node scripts/deterministic-runtime-contract-regression-quality.mjs",
     "quality:saved-simulation-ui-save-flow": "node scripts/saved-simulation-ui-save-flow-quality.mjs",
+    "quality:saved-simulation-detail-hierarchy": "node scripts/saved-simulation-detail-hierarchy-quality.mjs",
     "quality:block-a-decision-simulation-persistence-closure": "node scripts/block-a-decision-simulation-persistence-closure-quality.mjs",
     "quality:block-c-user-data-export-surface": "node scripts/block-c-user-data-export-surface-quality.mjs",
     "quality:block-c-user-data-deletion-surface": "node scripts/block-c-user-data-deletion-surface-quality.mjs",
