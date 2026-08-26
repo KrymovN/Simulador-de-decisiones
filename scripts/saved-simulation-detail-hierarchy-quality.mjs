@@ -129,7 +129,12 @@ const allowed = new Set([
   pagePath,
   componentPath,
   cssPath,
+  "lib/saved-decision-simulations/product-surface.ts",
+  "lib/simulator-result-presentation.ts",
   "scripts/saved-simulation-detail-hierarchy-quality.mjs",
+  "scripts/saved-simulation-metadata-presentation-quality.mjs",
+  "scripts/saved-simulation-result-presentation-parity-quality.mjs",
+  "scripts/stage-7-saved-simulation-deletion-execution-quality.mjs",
   "package.json",
 ]);
 const unexpected = [...new Set(changed)].filter((path) => !allowed.has(path));

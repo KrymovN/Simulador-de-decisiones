@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 const require = createRequire(import.meta.url);
 const ts = require("typescript");
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
-const startingHead = "4ba685610349e40567181b282bf7ad89a6198acf";
+const startingHead = "d6eed9cc28a9bc326ea4d7981d574c20d542724c";
 const read = (...parts) => readFileSync(join(root, ...parts), "utf8");
 const before = (path) => execFileSync(
   "git",
@@ -33,6 +33,7 @@ function loadPresenter() {
 
 const presentation = loadPresenter();
 const savedPresenter = read("lib/saved-decision-simulations/product-surface.ts");
+const savedDetail = read("components/SavedSimulationsHistorySurface.tsx");
 const liveSurface = read("components/HomeSimulator.tsx");
 const submittedInput =
   "Aceptar una nueva oferta laboral con más responsabilidad y un cambio importante de horario";
@@ -58,6 +59,11 @@ const titles = [
     submittedInput,
   }),
 ];
+const productionDelayTitle = presentation.presentScenarioTitle({
+  optionLabel: "Delay and gather more information",
+  perspective: "optimistic",
+  submittedInput,
+});
 
 add(
   "shared-title-semantics",
@@ -78,6 +84,35 @@ add(
   "delay-title-is-spanish",
   !titles[3].includes("Delay and gather") && titles[3].includes("posponer y reunir más información"),
   titles[3],
+);
+add(
+  "scenario-four-uses-canonical-favorable-semantics",
+  productionDelayTitle === "Condiciones favorables: posponer y reunir más información" &&
+    presentation.presentCanonicalScenarioType("favorable") === "Favorable" &&
+    read("lib/decision-engine/scenarios.ts").includes(
+      'const PERSPECTIVES: ScenarioPerspective[] = ["optimistic", "realistic", "pessimistic"]',
+    ) &&
+    read("lib/decision-engine/scenarios.ts").includes(
+      "eligibleOptions.flatMap((option) =>\n      PERSPECTIVES.map((perspective)",
+    ) &&
+    read("lib/decision-engine/context-builder.ts").indexOf('id: "option_proposed_action"') <
+      read("lib/decision-engine/context-builder.ts").indexOf('id: "option_delay_gather_information"'),
+  productionDelayTitle,
+);
+
+const contextItems = presentation.presentScenarioContextItems([
+  "decisionDeadline",
+  "shortTermWindow",
+]);
+add(
+  "canonical-context-is-structured-not-flattened",
+  JSON.stringify(contextItems) === JSON.stringify(["Plazo de decisión", "Impacto a corto plazo"]) &&
+    savedPresenter.includes("contextItems,") &&
+    !savedPresenter.includes("context: [...triggerConditions, ...consequences") &&
+    savedDetail.includes('<ul aria-label="Condiciones y consecuencias del escenario">') &&
+    savedDetail.includes("scenario.contextItems.map") &&
+    !savedDetail.includes("Plazo de decisión Impacto a corto plazo"),
+  JSON.stringify(contextItems),
 );
 
 const internalDescriptions = [
@@ -123,6 +158,25 @@ add(
   "Live result rendering changed.",
 );
 add(
+  "plain-language-deletion-copy",
+  savedDetail.includes(
+    "Eliminar afecta solo a esta simulación guardada. No elimina otros datos de tu cuenta.",
+  ) &&
+    !savedDetail.includes("runtime interno") &&
+    !savedDetail.includes("historial técnico"),
+  "Saved detail still exposes implementation terminology.",
+);
+add(
+  "deletion-contract-unchanged",
+  [
+    "lib/saved-decision-simulations/ui-save-action.ts",
+    "lib/saved-decision-simulations/runtime.ts",
+    "lib/persistence-runtime/simulation-record-persistence.ts",
+    "lib/persistence-runtime/supabase-provider.ts",
+  ].every((path) => read(path) === before(path)),
+  "Deletion behavior changed.",
+);
+add(
   "canonical-generation-and-persistence-unchanged",
   [
     "lib/decision-engine/simulation-response-public-adapter.ts",
@@ -145,8 +199,12 @@ const changed = [
 const allowed = new Set([
   "lib/simulator-result-presentation.ts",
   "lib/saved-decision-simulations/product-surface.ts",
+  "components/SavedSimulationsHistorySurface.tsx",
+  "scripts/saved-simulation-detail-hierarchy-quality.mjs",
+  "scripts/saved-simulation-metadata-presentation-quality.mjs",
   "scripts/simulation-response-v2-persistence-flow-quality.mjs",
   "scripts/saved-simulation-result-presentation-parity-quality.mjs",
+  "scripts/stage-7-saved-simulation-deletion-execution-quality.mjs",
   "package.json",
 ]);
 const unexpected = [...new Set(changed)].filter((path) => !allowed.has(path));

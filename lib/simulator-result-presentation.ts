@@ -164,6 +164,14 @@ export function presentSimulationText(value: string): string {
   );
 }
 
+export function presentScenarioContextItems(context: string[]): string[] {
+  return [...new Set(
+    context
+      .map(presentSimulationText)
+      .filter((item) => item && !INTERNAL_SCENARIO_DESCRIPTION.test(item)),
+  )];
+}
+
 function presentOptionLabel(optionLabel: string, submittedInput: string): string {
   if (startsWithSubmittedInput(optionLabel, submittedInput)) {
     return "la opción planteada";
@@ -206,10 +214,7 @@ export function presentScenarioDescription({
     return presentedDescription;
   }
 
-  const presentedContext = context
-    .map(presentSimulationText)
-    .filter((item) => item && !INTERNAL_SCENARIO_DESCRIPTION.test(item))
-    .slice(0, 2);
+  const presentedContext = presentScenarioContextItems(context).slice(0, 2);
 
   if (presentedContext.length > 0) {
     return presentedContext.join(" ");

@@ -81,7 +81,7 @@ check(
   !provider.includes('.from("simulation_drafts").delete') &&
     !provider.includes('.from("simulation_history_entries").delete') &&
     !provider.includes('.from("levio_principals").delete') &&
-    component.includes("no elimina borradores, historial técnico ni la cuenta"),
+    component.includes("No elimina otros datos de tu cuenta."),
   "The execution surface must not physically delete drafts, history, principals, or imply account deletion.",
 );
 check(

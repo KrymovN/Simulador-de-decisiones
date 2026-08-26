@@ -203,6 +203,15 @@ export function SavedSimulationDetailSurface({
                 <span>{scenario.signal}</span>
               </div>
               <small>{scenario.copy}</small>
+              {scenario.contextItems.length > 0 && (
+                <ul aria-label="Condiciones y consecuencias del escenario">
+                  {scenario.contextItems.map((item) => (
+                    <li key={item}>
+                      <small>{item}</small>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </article>
           ))}
         </section>
@@ -230,10 +239,7 @@ export function SavedSimulationDetailSurface({
       <section className="dashboard-card saved-records-card saved-records-management">
         <span>Estado de privacidad</span>
         <strong>Datos de la cuenta autenticada</strong>
-        <p>
-          Esta vista usa el runtime interno de simulaciones guardadas. Eliminar afecta solo a esta simulación
-          guardada: no elimina borradores, historial técnico ni la cuenta.
-        </p>
+        <p>Eliminar afecta solo a esta simulación guardada. No elimina otros datos de tu cuenta.</p>
         <Link className="dashboard-action" href="/dashboard/simulations">
           Volver al historial
         </Link>

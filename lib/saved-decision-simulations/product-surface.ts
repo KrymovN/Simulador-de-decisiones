@@ -22,6 +22,7 @@ import type {
 } from "./contracts";
 import {
   presentCanonicalScenarioType,
+  presentScenarioContextItems,
   presentScenarioDescription,
   presentScenarioTitle,
   presentSimulationText,
@@ -50,6 +51,7 @@ export type SavedSimulationScenarioView = {
   label: string;
   title: string;
   copy: string;
+  contextItems: string[];
   signal: string;
 };
 
@@ -418,6 +420,12 @@ function scenarioViews(simulation: DecisionSimulationDomainModel): SavedSimulati
       stringValue(record.signal) ??
       stringValue(record.score) ??
       (confidence ? `${Math.round(numberValue(confidence.score) ?? 0)}%` : null);
+    const contextItems = presentScenarioContextItems([
+      ...triggerConditions,
+      ...consequences,
+      ...uncertaintyReasons,
+      ...warnings,
+    ]).slice(0, 2);
 
     return {
       id: `${simulation.identity.simulationId}-${index}`,
@@ -426,8 +434,8 @@ function scenarioViews(simulation: DecisionSimulationDomainModel): SavedSimulati
       copy: presentScenarioDescription({
         description,
         perspective,
-        context: [...triggerConditions, ...consequences, ...uncertaintyReasons, ...warnings],
       }),
+      contextItems,
       signal: canonicalType
         ? presentCanonicalScenarioType(canonicalType)
         : rawSignal
