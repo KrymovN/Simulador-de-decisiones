@@ -92,7 +92,7 @@ export default function DashboardShell({
             <strong>{account.accountState}</strong>
             <small>{account.email}</small>
           </div>
-          <button className="ghost-button" onClick={handleLogout} type="button">
+          <button className="ghost-button dashboard-logout-button" onClick={handleLogout} type="button">
             Cerrar sesión
           </button>
         </aside>

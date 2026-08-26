@@ -535,6 +535,14 @@
   margin-top: 18px;
 }
 
+@media (max-width: 980px) {
+  .dashboard-sidebar > .dashboard-logout-button {
+    width: 100%;
+    max-width: 100%;
+    display: block;
+  }
+}
+
 @media (max-width: 900px) {
   .dashboard-shell__frame {
     width: min(100%, 700px);

@@ -97,6 +97,7 @@
     "quality:auth-callback-token-hash": "node scripts/auth-callback-token-hash-quality.mjs",
     "quality:block-b-email-flow": "node scripts/block-b-email-flow-quality.mjs",
     "quality:block-b-session-lifecycle": "node scripts/block-b-session-lifecycle-quality.mjs",
+    "quality:mobile-authenticated-logout-access": "node scripts/mobile-authenticated-logout-access-quality.mjs",
     "quality:block-b-dashboard-account-state": "node scripts/block-b-dashboard-account-state-quality.mjs",
     "quality:block-b-account-owned-simulation-persistence": "node scripts/block-b-account-owned-simulation-persistence-quality.mjs",
     "quality:block-b-dashboard-simulation-surface": "node scripts/block-b-dashboard-simulation-surface-quality.mjs",
