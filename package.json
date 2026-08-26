@@ -18,6 +18,7 @@
     "quality:saved-simulation-ui-save-flow": "node scripts/saved-simulation-ui-save-flow-quality.mjs",
     "quality:saved-simulation-detail-hierarchy": "node scripts/saved-simulation-detail-hierarchy-quality.mjs",
     "quality:saved-simulation-metadata-presentation": "node scripts/saved-simulation-metadata-presentation-quality.mjs",
+    "quality:saved-simulation-result-presentation-parity": "node scripts/saved-simulation-result-presentation-parity-quality.mjs",
     "quality:block-a-decision-simulation-persistence-closure": "node scripts/block-a-decision-simulation-persistence-closure-quality.mjs",
     "quality:block-c-user-data-export-surface": "node scripts/block-c-user-data-export-surface-quality.mjs",
     "quality:block-c-user-data-deletion-surface": "node scripts/block-c-user-data-deletion-surface-quality.mjs",

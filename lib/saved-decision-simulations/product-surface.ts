@@ -20,6 +20,12 @@ import type {
   SavedDecisionSimulationsBlockedReason,
   SavedDecisionSimulationsRuntimeConfig,
 } from "./contracts";
+import {
+  presentCanonicalScenarioType,
+  presentScenarioDescription,
+  presentScenarioTitle,
+  presentSimulationText,
+} from "../simulator-result-presentation";
 
 export const SAVED_DECISION_SIMULATIONS_PRODUCT_SURFACE_VERSION =
   "block-a-a3-saved-simulations-history-product-surface.1" as const;
@@ -370,6 +376,7 @@ function scenarioViews(simulation: DecisionSimulationDomainModel): SavedSimulati
   const output = deterministicOutput(simulation);
   const legacy = legacySimulation(output);
   const analysis = recordValue(output, "analysis");
+  const submittedInput = sentenceFromUserInput(simulation.simulationInput.userInputSnapshot);
   const sourceScenarios = legacy
     ? arrayValue(legacy, "scenarios")
     : analysis
@@ -383,36 +390,49 @@ function scenarioViews(simulation: DecisionSimulationDomainModel): SavedSimulati
       .filter((item): item is string => typeof item === "string");
     const uncertaintyReasons = arrayValue(record, "uncertaintyReasons")
       .filter((item): item is string => typeof item === "string");
-    const label =
-      stringValue(record.label) ??
+    const consequences = arrayValue(record, "consequences")
+      .filter((item): item is string => typeof item === "string");
+    const warnings = arrayValue(record, "warnings")
+      .filter((item): item is string => typeof item === "string");
+    const perspective =
       stringValue(record.perspective) ??
-      `Escenario ${index + 1}`;
-    const title =
+      stringValue(record.signal) ??
+      "";
+    const rawLabel = stringValue(record.label);
+    const label = rawLabel && !["optimistic", "realistic", "pessimistic"].includes(rawLabel)
+      ? presentSimulationText(rawLabel)
+      : `Escenario ${index + 1}`;
+    const optionLabel =
+      stringValue(record.optionLabel) ??
       stringValue(record.title) ??
       stringValue(record.name) ??
-      stringValue(record.optionLabel) ??
       label;
-    const copy =
+    const description =
       stringValue(record.copy) ??
       stringValue(record.summary) ??
       stringValue(record.description) ??
-      ([...triggerConditions, ...uncertaintyReasons].join(" ") || null) ??
-      "Escenario guardado dentro de la simulación.";
-    const signal =
+      undefined;
+    const canonicalType = stringValue(record.canonicalType);
+    const rawSignal =
+      canonicalType ??
       stringValue(record.signal) ??
       stringValue(record.score) ??
-      stringValue(record.status) ??
-      (confidence
-        ? `${stringValue(confidence.band) ?? "Confianza"} · ${Math.round(numberValue(confidence.score) ?? 0)}%`
-        : null) ??
-      "Disponible";
+      (confidence ? `${Math.round(numberValue(confidence.score) ?? 0)}%` : null);
 
     return {
       id: `${simulation.identity.simulationId}-${index}`,
       label,
-      title,
-      copy,
-      signal,
+      title: presentScenarioTitle({ optionLabel, perspective, submittedInput }),
+      copy: presentScenarioDescription({
+        description,
+        perspective,
+        context: [...triggerConditions, ...consequences, ...uncertaintyReasons, ...warnings],
+      }),
+      signal: canonicalType
+        ? presentCanonicalScenarioType(canonicalType)
+        : rawSignal
+          ? presentSimulationText(rawSignal)
+          : "Disponible",
     };
   });
 }

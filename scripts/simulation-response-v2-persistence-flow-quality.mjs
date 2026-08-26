@@ -49,6 +49,9 @@ const {
   saveCompletedSimulationSurface,
 } = require(join(root, "lib/saved-decision-simulations/product-surface.ts"));
 const {
+  presentScenarioTitle,
+} = require(join(root, "lib/simulator-result-presentation.ts"));
+const {
   deleteDecisionSimulation,
 } = require(join(root, "lib/saved-decision-simulations/runtime.ts"));
 const {
@@ -349,6 +352,21 @@ try {
     readProvider: persistenceProvider,
     config: enabledPersistence,
   });
+  const expectedReopenedTitles = success.uiModel.sections.scenarios.items.map((scenario) =>
+    presentScenarioTitle({
+      optionLabel: scenario.optionLabel,
+      perspective: scenario.perspective,
+      submittedInput: success.uiModel.sections.decisionSummary.items[0]?.statement ?? "",
+    }),
+  );
+  const reopenedTitles = reopened.status === "loaded"
+    ? reopened.simulation.scenarios.map((scenario) => scenario.title)
+    : [];
+  const reopenedDescriptions = reopened.status === "loaded"
+    ? reopened.simulation.scenarios.map((scenario) => scenario.copy)
+    : [];
+  const storedOptionLabels = stored.deterministic_output_snapshot.analysis.scenarios
+    .map((scenario) => scenario.optionLabel);
   add(
     "owner-list-and-reopen-preserve-v2-result",
     history.status === "ready" && history.simulations.length === 1 &&
@@ -359,8 +377,14 @@ try {
         success.uiModel.sections.scenarios.items.length &&
       reopened.simulation.scenarios.length ===
         Math.min(4, success.uiModel.sections.scenarios.items.length) &&
-      reopened.simulation.scenarios[0]?.title ===
-        success.uiModel.sections.scenarios.items[0]?.optionLabel,
+      JSON.stringify(reopenedTitles) === JSON.stringify(expectedReopenedTitles.slice(0, 4)) &&
+      reopenedTitles.every((title) => !title.includes("Delay and gather more information")) &&
+      reopenedDescriptions.every((description) =>
+        !/Decision Engine|simulaci[oó]n determin[ií]stica/i.test(description)
+      ) &&
+      JSON.stringify(storedOptionLabels) === JSON.stringify(
+        success.uiModel.sections.scenarios.items.map((scenario) => scenario.optionLabel),
+      ),
     `history=${JSON.stringify(history)} reopened=${JSON.stringify(reopened)} expectedDecision=${JSON.stringify(success.uiModel.sections.decisionSummary.items[0]?.statement)} expectedScenarios=${success.uiModel.sections.scenarios.items.length}`,
   );
 

@@ -95,6 +95,24 @@ const RENDER_STATE_LABELS: Record<string, string> = {
   refused: "No disponible",
 };
 
+const SCENARIO_DESCRIPTION_FALLBACKS: Record<string, string> = {
+  optimistic:
+    "Este escenario muestra cómo podría evolucionar la opción si se cumplen condiciones favorables.",
+  realistic:
+    "Este escenario sirve como referencia con la información y las condiciones disponibles.",
+  pessimistic:
+    "Este escenario muestra cómo podría evolucionar la opción si aparecen condiciones adversas.",
+  Oportunidad:
+    "Este escenario muestra cómo podría evolucionar la opción si se cumplen condiciones favorables.",
+  Base:
+    "Este escenario sirve como referencia con la información y las condiciones disponibles.",
+  Riesgo:
+    "Este escenario muestra cómo podría evolucionar la opción si aparecen condiciones adversas.",
+};
+
+const INTERNAL_SCENARIO_DESCRIPTION =
+  /\bDecision Engine\b|simulaci[oó]n determin[ií]stica|ruta\s+(?:optimistic|realistic|pessimistic)\s+generada|opci[oó]n estructurada por/i;
+
 export const RESULT_PRESENTATION_COPY = {
   eyebrow: "Resultado orientativo",
   heading: "Comparación de escenarios",
@@ -171,6 +189,34 @@ export function presentScenarioTitle({
   }
 
   return `${presentedPerspective}: ${presentedOption}`;
+}
+
+export function presentScenarioDescription({
+  description,
+  perspective,
+  context = [],
+}: {
+  description?: string;
+  perspective: string;
+  context?: string[];
+}): string {
+  const presentedDescription = description ? presentSimulationText(description) : "";
+
+  if (presentedDescription && !INTERNAL_SCENARIO_DESCRIPTION.test(presentedDescription)) {
+    return presentedDescription;
+  }
+
+  const presentedContext = context
+    .map(presentSimulationText)
+    .filter((item) => item && !INTERNAL_SCENARIO_DESCRIPTION.test(item))
+    .slice(0, 2);
+
+  if (presentedContext.length > 0) {
+    return presentedContext.join(" ");
+  }
+
+  return SCENARIO_DESCRIPTION_FALLBACKS[perspective] ??
+    "Este escenario permite comparar consecuencias, condiciones e incertidumbres de la opción.";
 }
 
 export function presentPerspectiveBadge(perspective: string): string {
