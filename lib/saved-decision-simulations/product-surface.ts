@@ -52,8 +52,7 @@ export type SavedSimulationDetailView = SavedSimulationHistoryItemView & {
   decisionSummary: string;
   languageLabel: string;
   lifecycleLabel: string;
-  exportLabel: string;
-  engineStatusLabel: string;
+  resultTypeLabel: "Orientativo";
   scenarios: SavedSimulationScenarioView[];
   notices: string[];
 };
@@ -449,10 +448,7 @@ export function mapDecisionSimulationToDetail(
       titleFromSimulation(simulation),
     languageLabel: simulation.simulationInput.language.toUpperCase(),
     lifecycleLabel: statusLabel(simulation),
-    exportLabel: simulation.lifecycleMetadata.exportEligible
-      ? "Incluida en futura exportación"
-      : "Exportación restringida",
-    engineStatusLabel: simulation.decisionEngineOutput.status,
+    resultTypeLabel: "Orientativo",
     scenarios: scenarioViews(simulation),
     notices: noticeViews(simulation),
   };

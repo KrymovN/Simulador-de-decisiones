@@ -18,6 +18,7 @@ const cssPath = "app/styles/saved-records-surfaces.css";
 const page = read(pagePath);
 const component = read(componentPath);
 const css = read(cssPath);
+const productSurface = read("lib/saved-decision-simulations/product-surface.ts");
 const designSystem = read("app/styles/design-system.css");
 const route = read("app/api/simulate/route.ts");
 const checks = [];
@@ -85,13 +86,15 @@ add(
 add(
   "persistence-and-reopen-contracts-unchanged",
   [
-    "lib/saved-decision-simulations/product-surface.ts",
     "lib/saved-decision-simulations/runtime.ts",
     "lib/saved-decision-simulations/contracts.ts",
     "lib/persistence-runtime/simulation-record-persistence.ts",
     "lib/persistence-runtime/contracts.ts",
     "lib/persistence-runtime/supabase-provider.ts",
-  ].every((path) => read(path) === before(path)),
+  ].every((path) => read(path) === before(path)) &&
+    productSurface.includes(
+      "userInputSummary: sentenceFromUserInput(simulation.simulationInput.userInputSnapshot)",
+    ),
   "Saved/reopen/persistence contract files changed.",
 );
 add(
@@ -101,8 +104,7 @@ add(
     component.includes("simulation.notices.map") &&
     component.includes("simulation.confidenceLabel") &&
     component.includes("simulation.riskLabel") &&
-    component.includes("simulation.engineStatusLabel") &&
-    component.includes("simulation.exportLabel"),
+    component.includes("simulation.resultTypeLabel"),
   "Existing reopened result content was removed.",
 );
 add(

@@ -173,7 +173,6 @@ export function SavedSimulationDetailSurface({
           <p>{simulation.decisionSummary}</p>
           <div className="detail-tags" aria-label="Metadatos de simulación">
             <span>{simulation.lifecycleLabel}</span>
-            <span>{simulation.sourceLabel}</span>
             <span>{simulation.languageLabel}</span>
           </div>
         </div>
@@ -188,12 +187,8 @@ export function SavedSimulationDetailSurface({
             <strong>{simulation.riskLabel}</strong>
           </div>
           <div className="detail-metric">
-            <span>Motor</span>
-            <strong>{simulation.engineStatusLabel}</strong>
-          </div>
-          <div className="detail-metric">
-            <span>Datos</span>
-            <strong>{simulation.exportLabel}</strong>
+            <span>Tipo de resultado</span>
+            <strong>{simulation.resultTypeLabel}</strong>
           </div>
         </div>
       </section>
