@@ -146,14 +146,13 @@ assertCheck(
 );
 
 assertCheck(
-  "block-c-c2-privacy-panel-exposes-plan-not-execution",
-  privacyPanel.includes("/dashboard/privacy/deletion") &&
-    privacyPanel.includes("Descargar plan") &&
-    privacyPanel.includes("sin ejecutar la eliminación") &&
-    privacyPanel.includes("UnavailableAction") &&
-    privacyPanel.includes("Pausa no disponible") &&
-    privacyPanel.includes("no se ha registrado ninguna solicitud"),
-  "Privacy panel must expose deletion planning without turning future privacy controls into execution flows.",
+  "block-c-c2-privacy-panel-routes-to-real-saved-simulation-deletion",
+  privacyPanel.includes('href="/dashboard/simulations"') &&
+    privacyPanel.includes("Gestionar simulaciones guardadas") &&
+    privacyPanel.includes("elimina de forma individual") &&
+    !privacyPanel.includes("/dashboard/privacy/deletion") &&
+    !privacyPanel.includes("Descargar plan"),
+  "Privacy panel must route users to the implemented saved-simulation controls without presenting the planning-only JSON as deletion execution.",
 );
 
 assertCheck(

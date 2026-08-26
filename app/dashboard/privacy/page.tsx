@@ -6,9 +6,9 @@ export default function PrivacyPage({ searchParams }: { searchParams: { draftDel
   return (
     <MockAuthGate>
       <DashboardShell
-        description="Prepara consentimiento, memoria futura, portabilidad, supresión y límites del tratamiento para etapas productivas."
-        eyebrow="levio.es / Centro de privacidad"
-        title="Privacidad y controles preparados."
+        description="Revisa, exporta y gestiona los datos personales asociados a tu cuenta."
+        eyebrow="LEVIO.ES / CENTRO DE PRIVACIDAD"
+        title="Privacidad y datos"
       >
         <div className="privacy-controls-surface">
           {searchParams.draftDeletion === "completed" && (
@@ -17,20 +17,6 @@ export default function PrivacyPage({ searchParams }: { searchParams: { draftDel
               <p>Su contenido activo se ha eliminado o ya no estaba disponible. No se ha modificado ninguna otra simulación ni la cuenta.</p>
             </section>
           )}
-          <section className="dashboard-grid privacy-controls-summary">
-            <article className="dashboard-card privacy-controls-card">
-              <span>Datos personales</span>
-              <strong>Perfil mínimo</strong>
-            </article>
-            <article className="dashboard-card privacy-controls-card">
-              <span>Consentimiento preparado</span>
-              <strong>Pendiente de activación productiva</strong>
-            </article>
-            <article className="dashboard-card privacy-controls-card">
-              <span>Memoria futura</span>
-              <strong>Preparada</strong>
-            </article>
-          </section>
           <PrivacyPanel />
         </div>
       </DashboardShell>

@@ -116,14 +116,12 @@ assertCheck(
 );
 
 assertCheck(
-  "stage-7-retention-privacy-panel-exposes-status-not-enforcement",
-  privacyPanel.includes("/dashboard/privacy/retention") &&
-    privacyPanel.includes("Descargar estado") &&
-    privacyPanel.includes("sin iniciar trabajos automáticos") &&
-    privacyPanel.includes("UnavailableAction") &&
-    privacyPanel.includes("Pausa no disponible") &&
-    privacyPanel.includes("no se ha registrado ninguna solicitud"),
-  "Privacy panel must expose retention status without turning future privacy controls into enforcement flows.",
+  "stage-7-retention-privacy-panel-explains-v1-rules-without-technical-download",
+  privacyPanel.includes("Las simulaciones guardadas se conservan mientras permanezcan en tu cuenta o hasta que las elimines.") &&
+    privacyPanel.includes("Los borradores tienen una fecha de caducidad configurada; esa fecha determina cuándo pueden eliminarse.") &&
+    !privacyPanel.includes("/dashboard/privacy/retention") &&
+    !privacyPanel.includes("Descargar estado"),
+  "Privacy panel must explain the implemented retention semantics in plain Spanish without foregrounding the technical status document.",
 );
 
 assertCheck(

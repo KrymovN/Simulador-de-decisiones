@@ -131,15 +131,14 @@ assertCheck(
 );
 
 assertCheck(
-  "block-c-c1-privacy-panel-exposes-export-without-deletion-execution",
+  "block-c-c1-privacy-panel-exposes-v1-export-without-placeholder-controls",
   privacyPanel.includes("/dashboard/privacy/export") &&
     privacyPanel.includes("Descargar JSON") &&
-  privacyPanel.includes("/dashboard/privacy/deletion") &&
-    privacyPanel.includes("Descargar plan") &&
-    privacyPanel.includes("UnavailableAction") &&
-    privacyPanel.includes("Pausa no disponible") &&
-    privacyPanel.includes("no se ha registrado ninguna solicitud"),
-  "Privacy panel must expose the export download while keeping deletion execution out of C1.",
+    privacyPanel.includes("Descarga una copia de los datos asociados a tu cuenta en formato JSON.") &&
+    !privacyPanel.includes("/dashboard/privacy/deletion") &&
+    !privacyPanel.includes("Descargar plan") &&
+    !privacyPanel.includes("UnavailableAction"),
+  "Privacy panel must expose the implemented export without staging or non-functional controls.",
 );
 
 assertCheck(

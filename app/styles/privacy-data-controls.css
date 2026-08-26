@@ -69,13 +69,19 @@
   margin-top: 22px;
 }
 
-.privacy-controls-surface .rights-grid span {
+.privacy-controls-surface .privacy-right {
   min-width: 0;
+  display: grid;
+  gap: 6px;
   border: 1px solid var(--levio-border);
   border-radius: var(--levio-radius-sm);
   padding: 12px;
   background: var(--levio-surface-elevated);
   color: var(--levio-text-secondary);
+}
+
+.privacy-controls-surface .privacy-right span {
+  line-height: 1.55;
 }
 
 .privacy-controls-surface .privacy-actions {

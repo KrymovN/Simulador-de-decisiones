@@ -63,11 +63,12 @@ check(
   "Consent route must delegate through the no-store server surface.",
 );
 check(
-  "stage-7-consent-privacy-action-is-accurate",
-  panel.includes('href: "/dashboard/privacy/consent"') &&
-    panel.includes("sin registrar, modificar ni retirar consentimiento") &&
-    !panel.includes("Gestión futura del consentimiento"),
-  "Privacy panel must expose status without promising consent management.",
+  "stage-7-consent-policy-status-is-not-presented-as-a-v1-control",
+  !panel.includes("/dashboard/privacy/consent") &&
+    !panel.includes("Estado del consentimiento") &&
+    !panel.includes("Consentimiento preparado") &&
+    !panel.includes("Pendiente de activación productiva"),
+  "The policy-only status with no ledger, capture, or withdrawal must not be presented as an operational V1 consent control.",
 );
 check(
   "stage-7-consent-quality-gate-is-registered",
