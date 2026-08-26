@@ -334,16 +334,8 @@ function riskValue(simulation: DecisionSimulationDomainModel): number | null {
   return confidence ? numberValue(confidence.risk) : null;
 }
 
-function sourceLabel(simulation: DecisionSimulationDomainModel): string {
-  if (simulation.runtimeMetadata.runtimeTruthBoundary === "deterministic_preview") {
-    return "Motor determinista";
-  }
-
-  if (simulation.runtimeMetadata.runtimeTruthBoundary === "controlled_production_ai") {
-    return "Runtime Real AI controlado";
-  }
-
-  return "Proveedor AI interno";
+function sourceLabel(): string {
+  return "Resultado orientativo";
 }
 
 function statusLabel(simulation: DecisionSimulationDomainModel): string {
@@ -364,13 +356,13 @@ export function mapDecisionSimulationToHistoryItem(
     id: simulation.identity.simulationId,
     href: `/dashboard/simulations/${simulation.identity.simulationId}`,
     title: titleFromSimulation(simulation),
-    summary: summaryFromSimulation(simulation),
+    summary: presentSimulationText(summaryFromSimulation(simulation)),
     createdLabel: dateLabel(simulation.identity.createdAt),
     statusLabel: statusLabel(simulation),
     recommendationLabel: simulation.decisionEngineOutput.recommendationState,
     confidenceLabel: confidence === null ? "Claridad pendiente" : `Claridad ${Math.round(confidence)}%`,
     riskLabel: risk === null ? "Riesgo no calculado" : `Riesgo ${Math.round(risk)}%`,
-    sourceLabel: sourceLabel(simulation),
+    sourceLabel: sourceLabel(),
   };
 }
 

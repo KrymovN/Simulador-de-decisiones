@@ -370,8 +370,8 @@ try {
   add(
     "owner-list-and-reopen-preserve-v2-result",
     history.status === "ready" && history.simulations.length === 1 &&
-      history.simulations[0].sourceLabel === "Runtime Real AI controlado" &&
-      reopened.status === "loaded" && reopened.simulation.sourceLabel === "Runtime Real AI controlado" &&
+      history.simulations[0].sourceLabel === "Resultado orientativo" &&
+      reopened.status === "loaded" && reopened.simulation.sourceLabel === "Resultado orientativo" &&
       reopened.simulation.decisionSummary === success.uiModel.sections.decisionSummary.items[0]?.statement &&
       stored.deterministic_output_snapshot.analysis.scenarios.length ===
         success.uiModel.sections.scenarios.items.length &&

@@ -152,6 +152,14 @@ export function presentSimulationText(value: string): string {
     return knownText;
   }
 
+  if (/^Simulaci[oó]n determin[ií]stica limitada por contexto incompleto\.?$/i.test(trimmed)) {
+    return "Resultado orientativo con contexto incompleto.";
+  }
+
+  if (/^Simulaci[oó]n determin[ií]stica preparada para revisi[oó]n\.?$/i.test(trimmed)) {
+    return "Resultado orientativo preparado para revisión.";
+  }
+
   const outcome = trimmed.match(/^(opportunity|constraint|resource|timeline):\s*(favorable|stable|uncertain|adverse)$/);
 
   if (outcome) {

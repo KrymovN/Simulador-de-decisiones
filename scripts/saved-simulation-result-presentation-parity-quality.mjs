@@ -201,6 +201,7 @@ const allowed = new Set([
   "lib/saved-decision-simulations/product-surface.ts",
   "components/SavedSimulationsHistorySurface.tsx",
   "scripts/saved-simulation-detail-hierarchy-quality.mjs",
+  "scripts/saved-simulation-history-presentation-quality.mjs",
   "scripts/saved-simulation-metadata-presentation-quality.mjs",
   "scripts/simulation-response-v2-persistence-flow-quality.mjs",
   "scripts/saved-simulation-result-presentation-parity-quality.mjs",
