@@ -33,7 +33,7 @@ function assertCheck(caseId, condition, issue) {
 const resourceCoverage = [
   {
     resource: "saved-simulations",
-    exportEvidence: ["savedSimulations", "readSavedSimulationsHistorySurface"],
+    exportEvidence: ["savedSimulations", "listExportEligibleSimulationRecords"],
     deletionEvidence: ["savedSimulations", "readSavedSimulationsHistorySurface"],
     retentionEvidence: ["savedSimulations", "listDecisionSimulations"],
   },

@@ -140,9 +140,11 @@ assertCheck(
 
 assertCheck(
   "stage-7-control-set-stays-owner-scoped",
-  surfaces.slice(0, 3).every(({ surface }) =>
-    surface.includes("owner_scoped_saved_simulation_history"),
-  ),
+  surfaces[0].surface.includes('savedSimulations: "eligible_saved_simulations"') &&
+    surfaces[0].surface.includes("listExportEligibleSimulationRecords") &&
+    surfaces.slice(1, 3).every(({ surface }) =>
+      surface.includes("owner_scoped_saved_simulation_history"),
+    ),
   "Export, deletion planning, and retention status must describe the same owner-scoped saved-simulation boundary.",
 );
 

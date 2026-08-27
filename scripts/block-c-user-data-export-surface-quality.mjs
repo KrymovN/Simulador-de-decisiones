@@ -1,20 +1,37 @@
+import { createRequire } from "node:module";
 import { readFileSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const rootDir = process.cwd();
+const require = createRequire(import.meta.url);
+const ts = require("typescript");
+const Module = require("node:module");
+const originalLoad = Module._load;
+Module._load = function loadInternal(request, parent, isMain) {
+  if (request === "server-only") return {};
+  return originalLoad.call(this, request, parent, isMain);
+};
+require.extensions[".ts"] = function loadTypeScriptModule(module, filename) {
+  const output = ts.transpileModule(readFileSync(filename, "utf8"), {
+    fileName: filename,
+    compilerOptions: {
+      esModuleInterop: true,
+      jsx: ts.JsxEmit.ReactJSX,
+      module: ts.ModuleKind.CommonJS,
+      moduleResolution: ts.ModuleResolutionKind.NodeJs,
+      target: ts.ScriptTarget.ES2022,
+    },
+  });
+  module._compile(output.outputText, filename);
+};
 
-function readProjectFile(...segments) {
-  return readFileSync(join(rootDir, ...segments), "utf8");
-}
-
+const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
+const readProjectFile = (...segments) =>
+  readFileSync(join(rootDir, ...segments), "utf8");
 const checks = [];
 
 function assertCheck(caseId, condition, issue) {
-  checks.push({
-    caseId,
-    passed: Boolean(condition),
-    issue,
-  });
+  checks.push({ caseId, passed: Boolean(condition), issue });
 }
 
 const exportSurface = readProjectFile(
@@ -22,7 +39,13 @@ const exportSurface = readProjectFile(
   "user-data-controls",
   "account-data-export-surface.ts",
 );
-const exportRoute = readProjectFile("app", "dashboard", "privacy", "export", "route.ts");
+const exportRoute = readProjectFile(
+  "app",
+  "dashboard",
+  "privacy",
+  "export",
+  "route.ts",
+);
 const persistenceProvider = readProjectFile(
   "lib",
   "persistence-runtime",
@@ -32,102 +55,91 @@ const privacyPanel = readProjectFile("components", "PrivacyPanel.tsx");
 const packageJson = readProjectFile("package.json");
 
 assertCheck(
-  "block-c-c1-export-surface-versioned",
-  exportSurface.includes("stage-7-account-data-export-surface.3") &&
-    exportSurface.includes("levio-account-data-export-json"),
-  "Account data export surface must expose the current Stage 7 export version and JSON format.",
+  "account-export-has-product-facing-version",
+  exportSurface.includes('"levio-account-data-export.1"') &&
+    exportSurface.includes('format: "levio-account-data-export-json"'),
+  "Account export must expose a stable product-facing version and JSON format.",
 );
 
 assertCheck(
-  "block-c-c1-export-uses-owner-scoped-saved-simulations",
-  exportSurface.includes("readSavedSimulationsHistorySurface") &&
-    exportSurface.includes("owner_scoped_saved_simulation_history"),
-  "Account data export must reuse the existing owner-scoped saved simulations product surface.",
+  "saved-simulations-use-canonical-persisted-export-source",
+  exportSurface.includes("listExportEligibleSimulationRecords") &&
+    exportSurface.includes("mapSimulationRecordToDecisionSimulation") &&
+    exportSurface.includes("mapDecisionSimulationToAccountExport") &&
+    !exportSurface.includes("readSavedSimulationsHistorySurface"),
+  "Saved simulations must use canonical persisted rows rather than the dashboard card projection.",
 );
 
 assertCheck(
-  "stage-7-export-includes-owner-scoped-eligible-drafts",
-  exportSurface.includes(
-    'simulationDrafts: "owner_scoped_eligible_simulation_drafts"',
-  ) &&
-    exportSurface.includes("readServerAuthSession") &&
-    exportSurface.includes('operation: "list_simulation_drafts"') &&
-    exportSurface.includes("row.owner_principal_id !== preflight.principalId") &&
-    exportSurface.includes("draftPayload: row.draft_payload") &&
-    exportSurface.includes("draftText: row.draft_text_snapshot") &&
-    persistenceProvider.includes("async listSimulationDrafts(input)") &&
-    persistenceProvider.includes('.from("simulation_drafts")') &&
+  "saved-simulation-export-includes-complete-input-and-result",
+  exportSurface.includes("userInputSnapshot:") &&
+    exportSurface.includes("clarificationAnswers:") &&
+    exportSurface.includes("decisionContext:") &&
+    exportSurface.includes("deterministicOutputSnapshot") &&
+    exportSurface.includes("generatedScenarios:") &&
+    exportSurface.includes("confidenceSummary:") &&
+    exportSurface.includes("parentSimulationId:") &&
+    exportSurface.includes("resultFormatVersion:"),
+  "Saved export must include the eligible persisted input, result, relationship, and version content.",
+);
+
+assertCheck(
+  "saved-simulation-export-query-is-owner-scoped-and-eligible",
+  persistenceProvider.includes("async listExportEligibleSimulationRecords(input)") &&
+    persistenceProvider.includes('.from("simulation_records")') &&
     persistenceProvider.includes('.eq("owner_principal_id", input.ownerPrincipalId)') &&
     persistenceProvider.includes('.eq("owner_principal_type", "registered_user")') &&
-    persistenceProvider.includes('.eq("export_eligible", true)') &&
+    persistenceProvider.includes('.in("record_status", ["active", "archived"])') &&
     persistenceProvider.includes('.eq("deletion_state", "active")') &&
-    exportSurface.includes('deletion: "not_executed"'),
-  "Stage 7 export must include only eligible owner-scoped drafts and must not open deletion execution.",
+    persistenceProvider.includes('.eq("export_eligible", true)'),
+  "Persistence must select only eligible active/archived saved simulations for the resolved owner.",
 );
 
 assertCheck(
-  "stage-7-export-includes-owner-scoped-user-visible-history",
-  exportSurface.includes(
-    'simulationHistory: "owner_scoped_eligible_user_visible_history"',
-  ) &&
+  "draft-and-history-export-remain-owner-scoped",
+  exportSurface.includes('operation: "list_simulation_drafts"') &&
     exportSurface.includes('operation: "list_simulation_history"') &&
-    exportSurface.includes("listSimulationHistoryEntries") &&
     exportSurface.includes("row.owner_principal_id !== preflight.principalId") &&
     exportSurface.includes("row.user_visible !== true") &&
-    exportSurface.includes("eventPayload: row.event_payload") &&
-    persistenceProvider.includes("async listSimulationHistoryEntries(input)") &&
-    persistenceProvider.includes('.from("simulation_history_entries")') &&
-    persistenceProvider.includes('.eq("owner_principal_id", input.ownerPrincipalId)') &&
-    persistenceProvider.includes('.eq("owner_principal_type", "registered_user")') &&
-    persistenceProvider.includes('.eq("user_visible", true)') &&
-    persistenceProvider.includes('.eq("export_eligible", true)') &&
-    persistenceProvider.includes('.eq("deletion_state", "active")'),
-  "Stage 7 export must include only eligible, user-visible history for the resolved owner.",
+    exportSurface.includes("row.export_eligible !== true") &&
+    exportSurface.includes("row.deletion_state !== \"active\""),
+  "Draft/history export must retain the existing owner, visibility, eligibility, and lifecycle checks.",
 );
 
 assertCheck(
-  "block-c-c1-export-has-no-client-owner-input",
-  !exportSurface.includes("clientOwner") &&
-    !exportRoute.includes("ownerPrincipalId") &&
-    !exportRoute.includes("clientOwner"),
-  "Stage 7 export must not accept owner identifiers from client-controlled input.",
+  "account-export-rejects-internal-content-markers",
+  exportSurface.includes("INTERNAL_CONTENT_KEYS") &&
+    exportSurface.includes("INTERNAL_CONTENT_VALUE") &&
+    exportSurface.includes("thinkingstages") &&
+    exportSurface.includes("mock_recommendation_available") &&
+    !exportSurface.includes("outside this Stage 7 export substep"),
+  "Export mapping must remove internal stage/debug material and replace mock recommendation terminology.",
 );
 
 assertCheck(
-  "stage-7-export-draft-output-excludes-owner-and-provider-authority",
-  !exportSurface.includes("ownerPrincipalId: row.owner_principal_id") &&
-    !exportSurface.includes("providerReference:") &&
-    !exportSurface.includes("legalHoldReason:") &&
-    exportSurface.includes("exportEligible: true"),
-  "Draft export output must remain provider-independent and must not expose owner authority or legal-hold internals.",
+  "account-export-has-no-client-owner-input",
+  !exportRoute.includes("ownerPrincipalId") &&
+    !exportRoute.includes("clientOwner") &&
+    !exportSurface.includes("clientOwner"),
+  "Account export must not accept owner identifiers from client-controlled input.",
 );
 
 assertCheck(
-  "stage-7-export-history-output-excludes-owner-and-provider-authority",
-  !exportSurface.includes("ownerPrincipalId: row.owner_principal_id") &&
-    !exportSurface.includes("claimTransactionReference:") &&
-    !exportSurface.includes("exportReference:") &&
-    !exportSurface.includes("legalHoldReason:") &&
-    exportSurface.includes("simulationId: row.record_id"),
-  "History export output must preserve the parent relationship without exposing owner, provider, claim, export-job, or legal-hold internals.",
-);
-
-assertCheck(
-  "block-c-c1-route-is-dashboard-json-download",
+  "account-export-route-keeps-stable-download-contract",
   exportRoute.includes('export const dynamic = "force-dynamic"') &&
-    exportRoute.includes("readAccountDataExportSurface") &&
     exportRoute.includes("Content-Disposition") &&
-    exportRoute.includes("Cache-Control") &&
-    exportRoute.includes("no-store"),
-  "Dashboard export route must be dynamic, no-store, and return the account export document as a download.",
+    exportRoute.includes('filename="levio-account-data-export.json"') &&
+    exportRoute.includes('"Content-Type": "application/json; charset=utf-8"') &&
+    exportRoute.includes('"Cache-Control": "no-store"'),
+  "Dashboard export route must remain dynamic, no-store JSON with the stable filename.",
 );
 
 assertCheck(
-  "block-c-c1-route-does-not-read-env-or-supabase-directly",
+  "account-export-route-does-not-read-provider-directly",
   !exportRoute.includes("process.env") &&
     !exportRoute.includes("createSupabase") &&
     !exportRoute.includes("createClient"),
-  "Dashboard export route must use the product surface instead of direct env or Supabase access.",
+  "The route must delegate through the account export surface.",
 );
 
 assertCheck(
@@ -142,9 +154,48 @@ assertCheck(
 );
 
 assertCheck(
-  "block-c-c1-quality-script-registered",
+  "account-export-quality-script-remains-registered",
   packageJson.includes('"quality:block-c-user-data-export-surface"'),
-  "Package scripts must register the Block C C1 quality gate.",
+  "The targeted account export quality gate must remain registered.",
+);
+
+let externalNetworkRequests = 0;
+const originalFetch = globalThis.fetch;
+globalThis.fetch = async () => {
+  externalNetworkRequests += 1;
+  throw new Error("Network access is forbidden in account export validation.");
+};
+
+try {
+  const validation = require(
+    join(
+      rootDir,
+      "lib",
+      "user-data-controls",
+      "account-data-export-surface-validation.ts",
+    ),
+  );
+  const result = await validation.runAccountDataExportSurfaceValidation();
+  assertCheck(
+    "account-export-deterministic-regression",
+    result.passed === true && result.failed === false,
+    "Deterministic account export validation failed.",
+  );
+  for (const item of result.cases) {
+    assertCheck(
+      `account-export-${item.caseId}`,
+      item.passed === true,
+      item.issues?.join(" ") || "Validation case failed.",
+    );
+  }
+} finally {
+  globalThis.fetch = originalFetch;
+}
+
+assertCheck(
+  "account-export-performs-zero-provider-network-operations",
+  externalNetworkRequests === 0,
+  "Account export regression must remain fully offline.",
 );
 
 for (const check of checks) {
@@ -156,6 +207,6 @@ for (const check of checks) {
   }
 }
 
-if (checks.some((check) => !check.passed)) {
-  process.exitCode = 1;
-}
+const failed = checks.filter((check) => !check.passed);
+console.log(`\nAccount export quality gate: ${checks.length - failed.length}/${checks.length} passed.`);
+if (failed.length > 0) process.exitCode = 1;

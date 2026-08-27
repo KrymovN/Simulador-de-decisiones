@@ -332,7 +332,8 @@ export type SupabaseSimulationRecordArchiveClient = {
 };
 
 export type SupabaseSimulationRecordReadQuery = {
-  eq(column: string, value: string): SupabaseSimulationRecordReadQuery;
+  eq(column: string, value: string | boolean): SupabaseSimulationRecordReadQuery;
+  in(column: string, values: string[]): SupabaseSimulationRecordReadQuery;
   order(
     column: string,
     options: {
@@ -409,6 +410,13 @@ export type SupabaseSimulationRecordReadProvider = PersistenceProviderAdapter & 
     ownerPrincipalId: string;
   }): Promise<SimulationRecordRow | null>;
   listSimulationRecords(input: {
+    ownerPrincipalId: string;
+    limit: number;
+  }): Promise<SimulationRecordRow[]>;
+};
+
+export type SupabaseSimulationRecordExportProvider = PersistenceProviderAdapter & {
+  listExportEligibleSimulationRecords(input: {
     ownerPrincipalId: string;
     limit: number;
   }): Promise<SimulationRecordRow[]>;
@@ -533,6 +541,7 @@ export type SupabaseSimulationHistoryEntryReadProvider = PersistenceProviderAdap
 export type SupabasePersistenceRuntimeProvider =
   SupabaseSimulationRecordSaveProvider &
     SupabaseSimulationRecordReadProvider &
+    SupabaseSimulationRecordExportProvider &
     SupabaseSimulationRecordArchiveProvider &
     SupabaseSimulationRecordDeleteProvider &
     SupabaseSimulationHistoryEntrySaveProvider &
@@ -1117,6 +1126,32 @@ export function createSupabasePersistenceProviderAdapter(input: {
         .eq("owner_principal_type", "registered_user")
         .eq("record_status", "active")
         .eq("deletion_state", "active")
+        .order("created_at", { ascending: false })
+        .limit(input.limit);
+
+      if (
+        response.error ||
+        !Array.isArray(response.data) ||
+        !response.data.every(isSimulationRecordRow)
+      ) {
+        return [];
+      }
+
+      return response.data;
+    },
+    async listExportEligibleSimulationRecords(input) {
+      if (!isServerRuntime()) {
+        return [];
+      }
+
+      const response = await recordReadClient
+        .from("simulation_records")
+        .select("*")
+        .eq("owner_principal_id", input.ownerPrincipalId)
+        .eq("owner_principal_type", "registered_user")
+        .in("record_status", ["active", "archived"])
+        .eq("deletion_state", "active")
+        .eq("export_eligible", true)
         .order("created_at", { ascending: false })
         .limit(input.limit);
 
