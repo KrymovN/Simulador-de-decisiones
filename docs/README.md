@@ -100,6 +100,13 @@ handoff packages. The current package is:
 
 - [Levio Production Environment Configuration Package v1](deployment/LEVIO_PRODUCTION_ENVIRONMENT_CONFIGURATION_PACKAGE.v1.md)
 
+## Operations
+
+`docs/operations/` contains operational procedures and current readiness
+evidence. The current bounded runbook is:
+
+- [Levio V1 Operational Readiness Runbook](operations/LEVIO_V1_OPERATIONAL_READINESS_RUNBOOK.md)
+
 ## Decisions
 
 `docs/decisions/` contains explicit project decisions, including provider or
