@@ -17,7 +17,8 @@ Evidence is classified as:
 - **Repository evidence**: committed code, configuration, tests, or procedures.
 - **External infrastructure evidence**: current account or service state observed
   directly in Vercel or Supabase.
-- **Owner decision**: a named person accepts a role, authority, and backup.
+- **Owner decision**: the Project Owner explicitly approves a role and its
+  authority boundary.
 
 The assessment uses only `VERIFIED`, `PARTIALLY VERIFIED`, `NOT VERIFIED`,
 `OWNER DECISION REQUIRED`, `EXTERNAL ACTION REQUIRED`, and `NOT APPLICABLE`.
@@ -45,20 +46,73 @@ point-in-time observation and must be rechecked before every release:
 - Supabase API, Auth, and Postgres logs are accessible. No configured alert or
   backup evidence was found.
 - The live footer exposes `mailto:hola@levio.es`. Delivery, intake workflow,
-  coverage, and ownership were not verified.
+  and coverage were not verified.
 
 Do not infer an owner from Git metadata, account email addresses, project
 creators, or service-account membership.
+
+## Approved solo-owner V1 operating model
+
+Levio V1 currently operates under an explicitly approved sole-owner
+operational model. All product, deployment, release, GO/NO-GO, incident,
+support, abuse, monitoring, rollback, emergency-stop, backup/restore, and AI
+production activation authority is held by the sole Project Owner.
+
+| Operational role or authority | Approved V1 assignment |
+| --- | --- |
+| Project Owner | sole Project Owner |
+| Product Owner | Project Owner |
+| Deployment Owner | Project Owner |
+| Release Authority | Project Owner |
+| GO/NO-GO Authority | Project Owner |
+| AI Production Activation Authority | Project Owner |
+| Incident Owner | Project Owner |
+| Incident Commander | Project Owner |
+| Emergency Stop Authority | Project Owner |
+| Rollback Authority | Project Owner |
+| Support Owner | Project Owner |
+| Abuse Handling Owner | Project Owner |
+| Monitoring / Alert Owner | Project Owner |
+| Backup / Restore Owner | Project Owner |
+
+No secondary human operator, backup human operator, or delegate is required
+for the approved V1 launch scope. Their absence is not a launch blocker.
+Separate operational responsibilities may be delegated to other people as the
+product scales, but that is future operational scaling, not a current V1
+launch requirement or a staffing plan.
+
+The sole Project Owner accepts the residual single-person operational
+dependency: a prolonged period of owner unavailability may increase response
+time. This is an accepted operational risk, not a zero-risk claim and not a V1
+launch blocker.
+
+The approved V1 operating concept depends on completing automated detection,
+direct owner notifications, documented recovery procedures, verified
+rollback/stop capability, and backup/restore capability:
+
+```text
+failure
+-> automated alert
+-> Project Owner receives a mobile-accessible notification
+-> diagnosis
+-> rollback / emergency stop if required
+-> remediation
+-> deterministic validation
+-> redeploy
+```
+
+This assignment verifies who is responsible. It does not verify that an
+external technical capability is configured or has been exercised.
 
 ## Operational readiness matrix
 
 | Control | Status | Evidence and remaining gap |
 | --- | --- | --- |
-| Deployment ownership | `OWNER DECISION REQUIRED` | The role exists in canonical documentation; no named primary and backup have accepted it. |
-| Product ownership | `OWNER DECISION REQUIRED` | Canonical Project Owner authority exists; no named person is recorded. |
-| Support ownership | `OWNER DECISION REQUIRED` | No named primary and backup or accepted coverage boundary. |
-| Incident ownership | `OWNER DECISION REQUIRED` | No named incident commander primary and backup. |
-| Abuse handling | `PARTIALLY VERIFIED` | Repository rate limiting exists; there is no explicit abuse route, owner, triage policy, or decision log. |
+| Deployment ownership | `VERIFIED` | Explicit approved solo-owner V1 operating model assigns deployment and release authority to the Project Owner. |
+| Product ownership | `VERIFIED` | Explicit approved solo-owner V1 operating model assigns product authority to the Project Owner. |
+| Support ownership | `VERIFIED` | Explicit approved solo-owner V1 operating model assigns support ownership to the Project Owner. |
+| Incident ownership | `VERIFIED` | Explicit approved solo-owner V1 operating model assigns incident ownership and command to the Project Owner. |
+| Abuse handling | `PARTIALLY VERIFIED` | Abuse ownership and repository rate limiting are verified; the external abuse route and exercised triage path are not. |
 | Rollback procedure | `VERIFIED` | The bounded procedure is defined below. |
 | Rollback capability | `PARTIALLY VERIFIED` | Vercel exposes rollback candidates and rollback mechanisms; plan entitlement, operator permission, and a drill have not been verified. |
 | Emergency stop | `PARTIALLY VERIFIED` | Repository AI kill-switch semantics and Vercel project-pause mechanisms exist; production configuration, permission, and a drill are unverified. |
@@ -66,17 +120,17 @@ creators, or service-account membership.
 | Alerts | `EXTERNAL ACTION REQUIRED` | No configured alert conditions, destinations, responders, or delivery test were evidenced. |
 | Backup | `EXTERNAL ACTION REQUIRED` | Supabase is on Free; scheduled platform backups are not included, and no controlled off-site dump process was evidenced. |
 | Restore verification | `NOT VERIFIED` | No dated non-production restore drill and integrity record exists. |
-| Support path | `PARTIALLY VERIFIED` | `hola@levio.es` is public; delivery, access, intake, escalation, and ownership are unverified. |
-| Incident path | `PARTIALLY VERIFIED` | This runbook defines handling, but no external incident channel/system, named owner, or exercised path is evidenced. |
-| GO/NO-GO authority | `OWNER DECISION REQUIRED` | Canonical Project Owner is the role authority until delegation; the named person and backup/delegate are absent. |
-| AI production activation authority | `OWNER DECISION REQUIRED` | Canonical Project Owner approval is required; the named authority and delegate are absent. Real AI remains OFF. |
+| Support path | `PARTIALLY VERIFIED` | The Project Owner is the responder and `hola@levio.es` is public; delivery, access, intake, and escalation are unverified. |
+| Incident path | `PARTIALLY VERIFIED` | The Project Owner owns incident command and this runbook defines handling; no external incident channel/system or exercised path is evidenced. |
+| GO/NO-GO authority | `VERIFIED` | Explicit approved solo-owner V1 operating model assigns GO/NO-GO authority to the Project Owner. |
+| AI production activation authority | `VERIFIED` | Explicit approved solo-owner V1 operating model assigns authority to the Project Owner. Real AI remains OFF. |
 
 The overall launch-critical verdict is `PARTIAL`. This document does not open
 Production Release, Commercial Launch, or Real AI activation.
 
 ## Deployment procedure
 
-Deployment may proceed only after a named GO/NO-GO authority records approval.
+Deployment may proceed only after the Project Owner records GO/NO-GO approval.
 The deployment operator must:
 
 1. Record the approved Git commit and confirm that it is the exact `main`
@@ -100,9 +154,7 @@ unidentified preview deployment.
 
 ## Rollback procedure
 
-Rollback requires the named incident or release authority, except where an
-accepted emergency delegation explicitly permits the operator to act first and
-record the decision immediately afterward.
+Rollback requires the Project Owner acting as incident and release authority.
 
 1. Open an incident record and capture the active deployment ID, commit,
    symptom, start time, and containment decision.
@@ -172,16 +224,16 @@ For every incident:
 4. Verify recovery across the public path and affected Auth/data paths.
 5. Record customer/support handling, follow-up owner, and authority closure.
 
-No response-time promise or 24/7 coverage exists until an owner accepts it in
-writing.
+The solo-owner model creates no response-time promise or 24/7 coverage. A
+prolonged period of Project Owner unavailability is the accepted residual risk.
 
 ## Support and abuse intake
 
 The public path currently exposes `hola@levio.es`. Before launch, an external
 operator must verify delivery, access controls, retention, triage, escalation,
-and a backup recipient. A distinct abuse route or explicit alias must be
-approved and verified. Repository API rate limiting is a technical mitigation,
-not an abuse-handling process.
+and direct Project Owner receipt. A distinct abuse route or explicit alias must
+be approved and verified. Repository API rate limiting is a technical
+mitigation, not an abuse-handling process.
 
 Intake records should contain contact details only when necessary, a concise
 description, timestamps, affected surface, severity, and disposition. Do not
@@ -198,9 +250,10 @@ At minimum, the external monitoring owner must configure and evidence:
 - unexpected Real AI/provider activity while production AI is OFF;
 - backup failures and missed restore-verification dates.
 
-Each alert requires a threshold, evaluation window, destination, primary and
-backup responder, severity, runbook link, and a dated delivery test. Access to
-Vercel or Supabase log views alone is not an alert.
+Each alert requires a threshold, evaluation window, mobile-accessible
+destination that directly notifies the Project Owner, severity, runbook link,
+and a dated delivery test. Access to Vercel or Supabase log views alone is not
+an alert. No second responder is required for the approved V1 scope.
 
 ## Backup and restore
 
@@ -211,9 +264,9 @@ API objects. Before launch, the owner must choose and evidence either an
 approved plan with scheduled backups or a controlled recurring dump process for
 the existing approved project. A new Supabase project is not implied.
 
-The approved backup design must record owner and backup, RPO, retention,
-encryption, access, off-site location, failure alert, Storage-object treatment,
-and deletion-propagation policy.
+The approved backup design must record the Project Owner, backup mechanism,
+RPO, retention, encryption, access, off-site location, failure alert,
+Storage-object treatment, and deletion-propagation policy.
 
 A restore is verified only by a dated drill into a controlled temporary or
 non-production target. The drill must record the backup source, target,
@@ -227,48 +280,11 @@ accepted.
 
 ### Owner decisions
 
-OWNER DECISION:
-Control: operational ownership
-Decision required: name and obtain written acceptance from primary and backup
-owners for product, deployment, support, incident command, abuse, rollback,
-emergency-stop, monitoring/alerts, and backup/restore.
-Available evidence: canonical documentation defines the roles but records each
-assignment as required.
-Allowed choices: assign an accepted primary and backup for each role, or record
-an explicit approved role combination with its coverage boundaries.
-Operational consequence: release remains blocked while accountable operators
-and escalation coverage are unknown.
-
-OWNER DECISION:
-Control: GO/NO-GO authority
-Decision required: name the person who holds canonical Project Owner authority
-and the accepted backup/delegate.
-Available evidence: the canonical Project Owner role is the final release,
-rollback, and stop authority until explicit delegation; no person is named.
-Allowed choices: record the accepted canonical Project Owner and backup, or
-record an explicit bounded delegation for release decisions.
-Operational consequence: no production release can receive valid GO approval.
-
-OWNER DECISION:
-Control: AI production activation authority
-Decision required: name the authority and delegate permitted to approve Real AI
-production activation.
-Available evidence: canonical approval is required and production AI is OFF;
-no named authority is recorded.
-Allowed choices: explicitly retain authority with the accepted canonical
-Project Owner, or record a bounded delegation.
-Operational consequence: Real AI activation remains prohibited.
-
-OWNER DECISION:
-Control: operational policies
-Decision required: approve support/abuse coverage and escalation boundaries,
-monitoring thresholds, backup RPO and retention, and restore frequency.
-Available evidence: this runbook identifies the minimum control surfaces but
-contains no accepted business coverage or recovery objectives.
-Allowed choices: approve explicit V1 values within current architecture, or
-defer release until acceptable values can be funded and operated.
-Operational consequence: alerting, support coverage, and recovery controls
-cannot be configured or evaluated to an accepted target.
+No operational ownership or human-staffing decision remains open for the
+approved V1 scope. The sole Project Owner holds every authority listed in the
+approved operating model. Choosing concrete alert thresholds, support routing,
+backup RPO/retention, and restore frequency is part of completing the external
+controls below, not a requirement to appoint another person.
 
 ### External actions
 
@@ -292,11 +308,11 @@ continuous checks, alert conditions, destinations, or responders exist.
 Exact external system: Vercel project `simulador-de-decisiones`, Supabase
 project `whbabqpildzfwzcksudg`, and the approved alert delivery channel.
 Exact action required: configure the minimum checks in this runbook with
-accepted thresholds, primary and backup responders, and delivery routes.
+accepted thresholds and direct, mobile-accessible Project Owner delivery.
 Evidence required to close: configuration capture plus a dated successful test
 for each condition and destination.
 Risk if left open: production, Auth, persistence, or unexpected provider
-failures may remain undetected or unassigned.
+failures may remain undetected or may not reach the Project Owner.
 
 HANDOFF:
 Control: support path, incident path, and abuse handling
@@ -308,7 +324,7 @@ Exact action required: verify delivery and access, provision accepted incident
 and abuse routes, and exercise sanitized support, incident, and abuse intake
 through escalation.
 Evidence required to close: dated delivery/intake records, access list, routing
-result, disposition, and accepted primary/backup owner.
+result, disposition, and confirmed Project Owner receipt.
 Risk if left open: user or abuse reports may be lost, mishandled, or left
 without accountable response.
 
