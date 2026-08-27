@@ -30,26 +30,14 @@ point-in-time observation and must be rechecked before every release:
 
 - Vercel project: `simulador-de-decisiones`
   (`prj_LSBuOmbUGhefM3ySgXZeBaWj8o8x`), Hobby plan.
-- Production deployment: `dpl_HsDpX1CA6bTwAjoJNsYkePL7fkAV`, state `READY`,
+- Production deployment: `dpl_GFBHnkYtnNzduxfYMrLPxdbDvP5g`, state `READY`,
   branch `main`, commit
-  `f74e64267a9aaed50906b4897d5fcb39267bf16c`, created
-  `2026-08-27 20:37:06 CEST`.
+  `a6b6576a096bc9af0b8d3c9358c0a61964ac2a81`.
 - `https://levio.es`: HTTP `200`, served by Vercel.
 - Previous production deployment:
-  `dpl_44WbaqJdHzd2mDBWgJ9QAo5Asrn8`, state `READY`, commit
-  `b03a55f70c4cbd83d664061f663abd66979f09cb`, created
-  `2026-08-27 13:41:29 CEST`; Vercel identifies it as a rollback candidate.
-  It is not permanently approved as a rollback target.
-- The authenticated Vercel UI exposes deployment actions, but `Instant
-  Rollback` is disabled for the observed current deployment. Current Vercel
-  documentation limits rollback to a specific older deployment to Pro or
-  Enterprise; the observed project is on Hobby.
-- The inspected deployment inventory contained production deployments only.
-  No isolated preview/non-production target suitable for a rollback or
-  project-pause drill was evidenced.
-- Controlled drill: `NOT EXECUTED`. A rollback or pause would affect the only
-  evidenced production project and `levio.es`; production impact from this
-  verification was `NONE`.
+  `dpl_HAs3RwSvnVN5gn5MF8MNRpS3qzNE`, commit
+  `f2865976c5c04e3868c8f7df059028775b710f88`; Vercel identifies it as a
+  rollback candidate. It is not permanently approved as a rollback target.
 - Vercel runtime logs and error views are accessible. No current-deployment
   error or fatal event was returned for the observed 24-hour window. This does
   not prove that alerts are configured.
@@ -126,8 +114,8 @@ external technical capability is configured or has been exercised.
 | Incident ownership | `VERIFIED` | Explicit approved solo-owner V1 operating model assigns incident ownership and command to the Project Owner. |
 | Abuse handling | `PARTIALLY VERIFIED` | Abuse ownership and repository rate limiting are verified; the external abuse route and exercised triage path are not. |
 | Rollback procedure | `VERIFIED` | The bounded procedure is defined below. |
-| Rollback capability | `PARTIALLY VERIFIED` | A current and previous `READY` production deployment are visible, but `Instant Rollback` is disabled on the observed Hobby project; write permission and a drill are unverified. |
-| Emergency stop | `PARTIALLY VERIFIED` | Repository AI kill-switch semantics and Vercel's project-pause endpoint exist; project-specific pause permission and a safe drill are unverified. |
+| Rollback capability | `PARTIALLY VERIFIED` | Vercel exposes rollback candidates and rollback mechanisms; plan entitlement, operator permission, and a drill have not been verified. |
+| Emergency stop | `PARTIALLY VERIFIED` | Repository AI kill-switch semantics and Vercel project-pause mechanisms exist; production configuration, permission, and a drill are unverified. |
 | Monitoring | `PARTIALLY VERIFIED` | Vercel and Supabase log views are accessible; no complete availability, API, Auth, persistence, or AI-state monitor set is verified. |
 | Alerts | `EXTERNAL ACTION REQUIRED` | No configured alert conditions, destinations, responders, or delivery test were evidenced. |
 | Backup | `EXTERNAL ACTION REQUIRED` | Supabase is on Free; scheduled platform backups are not included, and no controlled off-site dump process was evidenced. |
@@ -175,22 +163,16 @@ Rollback requires the Project Owner acting as incident and release authority.
    document.
 3. Record the chosen target and authority. Confirm the target was previously a
    production deployment and is compatible with the current data state.
-4. Recheck project plan and action availability. On the observed Hobby project,
-   `Instant Rollback` is disabled; do not treat the generic Dashboard, API, or
-   `vercel rollback <deployment-id-or-url>` documentation as entitlement. If a
-   project-specific rollback action is enabled and authorized, use it. If it is
-   unavailable, use the separately approved source recovery path: revert the
-   faulty Git change without rewriting history, run deterministic validation,
-   and publish the resulting approved `main` commit through the normal Git
-   deployment path.
+4. Use the authorized Vercel Dashboard rollback action, documented rollback
+   API, or `vercel rollback <deployment-id-or-url>`. Do not use a force push or
+   rewrite Git history.
 5. Verify the rollback deployment is `READY`, owns the intended production
    alias, serves `levio.es`, and has no new fatal/runtime error pattern.
 6. Record the result, residual data risk, follow-up owner, and closure decision.
 
-The observed previous deployment is only a candidate. Visibility of the
-candidate and an enabled `Redeploy` menu do not prove Instant Rollback or
-project write permission. Capability remains `PARTIALLY VERIFIED` until the
-Project Owner completes a project-specific controlled drill.
+The observed previous deployment is only a candidate. Capability remains
+`PARTIALLY VERIFIED` until an authorized operator confirms entitlement and
+permission and completes a controlled drill.
 
 ## Emergency stop
 
@@ -220,9 +202,7 @@ project using the Dashboard or documented project-pause API. If safe service
 can be restored faster, the authority may instead order a rollback. A pause
 blocks the active production deployment and domain assignment, so it must not
 be exercised against production merely as a test. Resume only on recorded
-GO/NO-GO approval and verify the active deployment and domain afterward. The
-documented endpoint is `POST /v1/projects/{projectId}/pause`; its existence does
-not prove permission for the observed Hobby project.
+GO/NO-GO approval and verify the active deployment and domain afterward.
 
 ## Incident procedure
 
@@ -310,19 +290,14 @@ controls below, not a requirement to appoint another person.
 
 HANDOFF:
 Control: rollback capability and emergency stop
-Why repository evidence is insufficient: read-only project and deployment
-access is verified, but `Instant Rollback` is disabled, the authenticated
-surfaces do not expose the operator role, and no safe isolated drill target was
-found.
+Why repository evidence is insufficient: repository procedures cannot prove
+Vercel plan entitlement, account permission, or successful operator execution.
 Exact external system: Vercel project `simulador-de-decisiones`.
-Exact action required: in a separately approved maintenance window, the Project
-Owner must enable or select the supported recovery path for this project and
-perform one controlled production rollback/recovery plus project pause/resume
-drill. Do not perform this drill without explicit production-impact approval.
-Evidence required to close: dated operator, plan and permission result,
-source/target deployment IDs or recovery commit, pause/resume result,
-`levio.es` checks before and after, and confirmation that production data and
-Real AI state were unchanged.
+Exact action required: verify rollback and project-pause permission; perform a
+controlled non-production rollback drill; document production pause permission
+without pausing production.
+Evidence required to close: dated operator, target/source deployment IDs,
+permission result, successful drill checks, and approved production-stop path.
 Risk if left open: a failed or harmful release may not be containable within an
 accepted recovery window.
 
