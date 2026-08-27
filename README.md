@@ -7,30 +7,37 @@ Engine, and not a Generic AI Assistant.
 the project. If project documents conflict, the higher-level document in the
 constitutional hierarchy prevails unless explicitly amended.
 
-The current confirmed runtime remains deterministic-preview only for the public
-`/api/simulate` surface. The public contract is intentionally preserved:
+The public `/api/simulate` surface remains deterministic and provider-proof.
+Its public contract is intentionally preserved:
 
 - `contractVersion: "simulate-api-v1-mock"`
 - `mockOnly=true`
 - `safeRender=true`
 - `apiReady=true`
 
-Real AI Runtime, AI Provider execution, production auth, production
-persistence, billing, subscriptions, Closed Beta execution, Public Launch
-execution, Production Release, Commercial Launch, and Scale execution remain
-deferred until explicitly opened by the roadmap. Stage 11 Legal & Trust Layer
-is closed. Stage 12 Market Readiness is closed. Stage 13 Closed Beta is
-closed. Stage 14 Public Launch is closed as a readiness block. Stage 15.1 Scale
-Scope & Entry Lock is complete as documentation-only Scale planning work.
-Stage 15.2 Scale Preconditions & Evidence Inventory is complete as
-documentation-only prerequisite/evidence inventory work. Stage 15.3 Scale
-Readiness Evidence Validation is complete as documentation-only validation
-framework work. Stage 15.4 Scale Readiness Evidence Assessment is complete as
-documentation-only readiness assessment work with aggregate verdict NOT READY.
-Stage 15.5 Scale Blocker Resolution Framework is complete as
-documentation-only blocker framework work.
-Stage 15 is open only as bounded documentation-only scale-readiness planning;
-Scale execution remains unopened.
+Current Levio V1 includes Supabase passwordless authentication, account and
+session lifecycle, protected dashboard navigation and logout, owner-scoped
+saved simulation and draft persistence, save/list/reopen/archive/individual
+delete flows, saved history, and account export with eligible active and
+archived input/result data. Export preserves owner isolation and filters
+internal markers.
+
+Stage 9 is `STAGE9_QUALIFIED`; no additional provider campaign, Position 5+,
+or human-review programme is required. The qualified server-side chain and
+production activation are separate decisions: Real AI production activation
+remains `OFF`. The canonical provider-proof release command is
+`npm run release:validate:deterministic`, with provider operations fixed at
+zero. Privacy/Terms technical factual alignment is `PASS`; legal owner or
+external approval is not claimed and remains an external handoff.
+
+Tasks 1 and 2 are closed `PASS`; Task 3 is technically closed `PASS`; Task 4
+is the current documentation-only reconciliation. Task 5 Operational
+Readiness is next, followed by Task 6 Production Release Candidate Validation,
+Task 7 AI Production Scope Decision, and Task 8 Final GO / NO-GO. Remaining
+launch work is operational readiness, external legal-owner handoff, release
+candidate validation, the explicit AI production-scope decision, and the final
+owner GO / NO-GO. Full subscription, checkout, billing portal, tax, and other
+commercial runtime remain POST-V1 and are not V1 launch blockers.
 
 ## Active Project State
 

@@ -1,5 +1,48 @@
 # LEVIO CURRENT STATE
 
+## V1 canonical state reconciliation — 27 August 2026
+
+At starting checkpoint `f2865976c5c04e3868c8f7df059028775b710f88`, the
+current implemented V1 state is:
+
+- Auth: Supabase Auth, passwordless email OTP, accounts, sessions, guarded
+  dashboard, authenticated navigation, and logout exist.
+- Persistence: owner-scoped save, list, reopen, archive, individual deletion,
+  draft persistence, and saved history exist.
+- Data controls: account export includes full eligible saved input/result data
+  for active and archived records, filters internal markers, preserves owner
+  isolation, and coexists with draft retention and individual deletion.
+- Stage 9 is `STAGE9_QUALIFIED`. No Position 5+, additional provider campaign,
+  additional human reviews, or new staffing/evaluation programme is required.
+- A qualified server-side Real AI chain exists, while Real AI production
+  activation remains `OFF`; qualification does not activate production.
+- `npm run release:validate:deterministic` is the canonical provider-proof
+  release-validation command and performs zero provider operations.
+- Privacy/Terms technical factual alignment is `PASS`. Legal owner or external
+  approval is not claimed and remains an external handoff.
+- Full subscriptions, checkout, billing portal, tax, and commercial charging
+  runtime remain POST-V1 and are not V1 launch blockers.
+
+The dated Stage 15 initial Scale scope decision remains preserved as an
+owner-approved classification of Scale dependencies at its recorded baseline.
+Its account/persistence exclusions do not assert that those capabilities are
+absent from the current V1 product state.
+
+Current bounded backlog: Task 1 Account Export Finalization is `CLOSED / PASS`;
+Task 2 Provider-Proof Release Validation is `CLOSED / PASS`; Task 3 Final
+Production Privacy / Terms is `TECHNICAL CLOSED / PASS` with external legal
+handoff retained; Task 4 Canonical State Reconciliation is the current task and
+is closed by this documentation patch. Next is Task 5 Operational Readiness,
+then Task 6 Production Release Candidate Validation, Task 7 AI Production Scope
+Decision, and Task 8 Final GO / NO-GO. No Task 5 work is included here.
+
+Remaining launch blockers are operational ownership and production readiness,
+the external legal-owner handoff, production release-candidate validation, an
+explicit AI production-scope decision, and final owner GO / NO-GO. They do not
+include a new Supabase project, additional Stage 9 execution, or POST-V1
+billing/subscription runtime. Older dated sections below remain historical
+checkpoint records and are not current-state claims.
+
 ## Stage 9 canonical qualification state reconciliation — 23 August 2026
 
 At checkpoint `db3f5b88ffc5085df665bbe82e2c7df4c64dd014`, Stage 9 is
