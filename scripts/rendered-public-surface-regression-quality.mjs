@@ -86,9 +86,9 @@ const publicPages = [
     status: 200,
     includes: [
       'class="public-secondary public-secondary--legal"',
-      "Política de privacidad provisional",
-      "política legal final",
-      "se almacenan localmente en este navegador",
+      "Política de privacidad.",
+      "contenido completo elegible de entradas y resultados guardados",
+      "proveedor de IA no está activado",
     ],
   },
   {
@@ -97,9 +97,9 @@ const publicPages = [
     status: 200,
     includes: [
       'class="public-secondary public-secondary--legal"',
-      "Términos de uso provisionales",
+      "Términos de uso.",
       "asesoramiento legal",
-      "garantías legales finales",
+      "proveedor de IA no está activado",
     ],
   },
   {

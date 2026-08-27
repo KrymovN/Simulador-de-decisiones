@@ -106,6 +106,7 @@
     "quality:public-home": "node scripts/public-home-quality.mjs",
     "quality:shared-visual-system-foundation": "node scripts/shared-visual-system-foundation-quality.mjs",
     "quality:public-secondary-surfaces": "node scripts/public-secondary-surfaces-quality.mjs",
+    "quality:production-legal-surfaces": "node scripts/production-legal-surfaces-quality.mjs",
     "quality:auth-access-surfaces": "node scripts/auth-access-surfaces-quality.mjs",
     "quality:dashboard-shell-landing": "node scripts/dashboard-shell-landing-quality.mjs",
     "quality:workspace-surfaces": "node scripts/workspace-surfaces-quality.mjs",

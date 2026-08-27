@@ -192,18 +192,18 @@ function runAuthReadinessSourceChecks(sources) {
 }
 
 function runLegalReadinessSourceChecks(sources) {
-  sourceIncludes(sources.privacyPolicy, "política legal final", "Privacy page discloses non-final legal status");
-  sourceIncludes(sources.privacyPolicy, "respuestas de ejemplo", "Privacy page discloses example simulator state");
-  sourceIncludes(sources.privacyPolicy, "se almacenan localmente en este navegador", "Privacy page discloses local-only saved simulations");
-  sourceIncludes(sources.privacyPolicy, "Antes de procesar datos personales reales en producción", "Privacy page defers production personal-data processing");
-  sourceIncludes(sources.terms, "borrador provisional", "Terms page discloses provisional status");
+  sourceIncludes(sources.privacyPolicy, "Supabase Auth", "Privacy page describes current passwordless account authentication");
+  sourceIncludes(sources.privacyPolicy, "contenido completo elegible de entradas y resultados guardados", "Privacy page describes current account export");
+  sourceIncludes(sources.privacyPolicy, "eliminar individualmente simulaciones guardadas y borradores", "Privacy page describes current deletion controls");
+  sourceIncludes(sources.privacyPolicy, "proveedor de IA no está activado", "Privacy page describes the current provider-off state");
+  sourceIncludes(sources.terms, "Términos de uso.", "Terms page exposes current product terms");
   sourceMatches(
     sources.terms,
-    /No\s+constituyen\s+asesoramiento\s+legal,\s+financiero,\s+médico/,
+    /no\s+constituyen\s+asesoramiento\s+legal,\s+financiero\s+o\s+médico/i,
     "Terms page blocks legal/financial/medical advice promise",
   );
-  sourceIncludes(sources.terms, "no debe utilizarse todavía para introducir datos sensibles", "Terms page blocks sensitive-data readiness");
-  sourceIncludes(sources.terms, "garantías legales finales", "Terms page defers legal-grade guarantees");
+  sourceIncludes(sources.terms, "Evita incluir identificadores o datos sensibles", "Terms page limits unnecessary sensitive data");
+  sourceIncludes(sources.terms, "resultados son orientativos", "Terms page avoids outcome guarantees");
 }
 
 function runDashboardPlaceholderSourceChecks(sources) {
@@ -288,7 +288,7 @@ function runPrematurePromiseSourceChecks(sources) {
 
   sourceMatches(
     sources.terms,
-    /No\s+constituyen\s+asesoramiento\s+legal,\s+financiero,\s+médico/,
+    /no\s+constituyen\s+asesoramiento\s+legal,\s+financiero\s+o\s+médico/i,
     "Terms explicitly block high-stakes advice positioning",
   );
   sourceMatches(
@@ -343,17 +343,17 @@ async function runRuntimePublicPageChecks(baseUrl) {
     {
       path: "/privacy-policy",
       includes: [
-        "Política de privacidad provisional.",
-        "no es una política legal final",
-        "se almacenan localmente en este navegador",
+        "Política de privacidad.",
+        "contenido completo elegible de entradas y resultados guardados",
+        "proveedor de IA no está activado",
       ],
     },
     {
       path: "/terms",
       includes: [
-        "Términos de uso provisionales.",
-        "No constituyen asesoramiento legal, financiero, médico",
-        "no debe utilizarse todavía",
+        "Términos de uso.",
+        "no constituyen asesoramiento legal, financiero o médico",
+        "proveedor de IA no está activado",
       ],
     },
   ];
