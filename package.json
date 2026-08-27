@@ -7,6 +7,7 @@
     "build": "next build",
     "lint": "next lint",
     "start": "next start",
+    "release:validate:deterministic": "node scripts/deterministic-release-validation.mjs",
     "quality:public-simulator": "node scripts/public-simulator-quality.mjs",
     "quality:simulation-result-presentation": "node scripts/simulation-result-presentation-quality.mjs",
     "quality:decision-context-builder": "node scripts/decision-context-builder-quality.mjs",

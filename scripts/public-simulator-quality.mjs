@@ -1,7 +1,12 @@
 import { spawn } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
+import { createServer } from "node:http";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  createDeterministicReleaseValidationEnvironment,
+  inspectDeterministicReleaseValidationEnvironment,
+} from "./deterministic-release-validation-environment.mjs";
 
 const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
 const nextBin = join(rootDir, "node_modules", "next", "dist", "bin", "next");
@@ -14,6 +19,8 @@ const maxBodyLength = 8192;
 
 const checks = [];
 let server;
+let providerTrapRequests = [];
+let providerTrapReady = false;
 
 function pass(name) {
   checks.push({ name, passed: true });
@@ -70,7 +77,7 @@ async function waitForServer(baseUrl) {
   throw new Error("Timed out while waiting for next start.");
 }
 
-async function withServer(run) {
+async function withServer(environment, run) {
   if (!existsSync(buildIdPath)) {
     throw new Error("Missing .next/BUILD_ID. Run npm run build before npm run quality:public-simulator.");
   }
@@ -81,7 +88,7 @@ async function withServer(run) {
   server = spawn(process.execPath, [nextBin, "start", "-H", "127.0.0.1", "-p", String(port)], {
     cwd: rootDir,
     env: {
-      ...process.env,
+      ...environment,
       LEVIO_AUTH_RUNTIME_ENABLED: "false",
       NEXT_PUBLIC_LEVIO_AUTH_RUNTIME_ENABLED: "false",
     },
@@ -107,6 +114,79 @@ async function withServer(run) {
   } finally {
     server.kill("SIGTERM");
   }
+}
+
+async function withProviderTrap(run) {
+  const trap = createServer((request, response) => {
+    providerTrapRequests.push({
+      method: request.method ?? "UNKNOWN",
+      path: request.url ?? "",
+    });
+    response.writeHead(503, { "content-type": "application/json" });
+    response.end(JSON.stringify({ error: { message: "provider trap" } }));
+  });
+
+  await new Promise((resolve, reject) => {
+    trap.once("error", reject);
+    trap.listen(0, "127.0.0.1", resolve);
+  });
+
+  const address = trap.address();
+  assert(address && typeof address === "object", "Provider trap did not bind a local port.");
+  providerTrapReady = true;
+
+  try {
+    await run(`http://127.0.0.1:${address.port}/v1`);
+  } finally {
+    await new Promise((resolve, reject) => {
+      trap.close((error) => error ? reject(error) : resolve());
+    });
+  }
+}
+
+function hostileParentEnvironment(providerBaseUrl) {
+  return {
+    ...process.env,
+    LEVIO_REAL_AI_DEV_ENABLED: "true",
+    LEVIO_AI_PROVIDER: "openai",
+    OPENAI_API_KEY: "sk-release-validation-dummy-not-a-secret",
+    OPENAI_BASE_URL: providerBaseUrl,
+  };
+}
+
+function runEnvironmentIsolationChecks(environment) {
+  const inspection = inspectDeterministicReleaseValidationEnvironment(environment);
+
+  assertCheck(
+    "Release validation forces Real AI explicitly OFF",
+    inspection.realAiExplicitlyOff,
+    "LEVIO_REAL_AI_DEV_ENABLED must be false in the validation child.",
+  );
+  assertCheck(
+    "Release validation marks the child as deterministic",
+    inspection.deterministicReleaseValidation,
+    "The deterministic release-validation marker is missing.",
+  );
+  assertCheck(
+    "Release validation removes provider configuration and credentials",
+    inspection.providerEnvironmentKeysPresent.length === 0,
+    `Provider environment keys survived: ${inspection.providerEnvironmentKeysPresent.join(", ")}`,
+  );
+}
+
+function providerOperationEvidence() {
+  const paths = providerTrapRequests.map((request) => request.path);
+  const inputTokenCalls = paths.filter((path) => path.endsWith("/responses/input_tokens")).length;
+  const responseCalls = paths.filter((path) => path.endsWith("/responses")).length;
+
+  return {
+    providerGenerationOperations: responseCalls,
+    providerTokenCountOperations: inputTokenCalls,
+    responsesCalls: responseCalls,
+    responsesInputTokensCalls: inputTokenCalls,
+    otherProviderCalls: paths.length - responseCalls - inputTokenCalls,
+    providerTransportCalls: paths.length,
+  };
 }
 
 async function postSimulation(baseUrl, options) {
@@ -422,11 +502,11 @@ function runUiSourceChecks() {
   assertSourceIncludes(source, 'fetch("/api/simulate"', "UI submits through public simulate API only");
   assertSourceIncludes(source, "isSimulateApiResponse(payload)", "UI validates API response contract before rendering");
   assertSourceIncludes(source, 'throw new Error("El simulador público devolvió una respuesta fuera de contrato.")', "UI rejects out-of-contract success payloads");
-  assertSourceIncludes(source, "No se generó un resultado local de sustitución.", "UI exposes controlled failure without local fallback");
+  assertSourceIncludes(source, "No se ha generado un resultado.", "UI exposes controlled failure without local fallback");
   assertSourceIncludes(source, "setResult(null);", "UI clears result on failure path");
-  assertSourceIncludes(source, "Preview controlado", "UI labels successful output as controlled preview");
+  assertSourceIncludes(source, "Resultado orientativo listo.", "UI labels successful output as orientative");
   assertSourceIncludes(source, "Vista previa determinista · Respuestas de ejemplo", "UI keeps AI-neutral deterministic preview disclosure");
-  assertSourceIncludes(source, "Simulación demostrativa con respuestas de ejemplo.", "UI keeps AI-neutral result disclosure");
+  assertSourceIncludes(source, "Claridad orientativa", "UI keeps orientative result disclosure");
   assertSourceExcludes(source, "conexión con IA real", "UI removes unnecessary Real AI reminders from the public simulator");
   assertSourceIncludes(source, "payload.meta.mockOnly", "UI carries mockOnly API metadata");
   assertSourceIncludes(source, "payload.meta.apiReady", "UI carries apiReady API metadata");
@@ -439,8 +519,9 @@ function runUiSourceChecks() {
   assertSourceIncludes(routeSource, '"SIMULATION_FAILED"', "API route preserves controlled SIMULATION_FAILED envelope code");
   assertSourceExcludes(routeSource, "buildMockSimulation(", "API route does not call mock simulation builder");
   assertSourceExcludes(routeSource, "from \"../../../lib/simulationEngine\"", "API route does not import mock simulation runtime");
-  assertSourceExcludes(routeSource, "process.env", "API route does not read environment configuration");
-  assertSourceExcludes(routeSource, "openai", "API route does not import OpenAI runtime");
+  assertSourceIncludes(routeSource, 'process.env.LEVIO_REAL_AI_DEV_ENABLED === "true"', "API route keeps the explicit server-side Real AI switch");
+  assertSourceIncludes(routeSource, "if (productionAiEnabled)", "API route gates the provider runtime behind the explicit switch");
+  assertSourceIncludes(routeSource, "runControlledProductionAiRuntimeSwitch", "API route delegates enabled execution to the controlled server runtime");
   assertSourceExcludes(routeSource, "@anthropic-ai/sdk", "API route does not import provider SDK runtime");
   assertSourceExcludes(routeSource, "fetch(", "API route does not perform model/network fetch");
   assertSourceIncludes(routeSource, "mockOnly: true", "API source preserves mockOnly=true metadata");
@@ -449,6 +530,18 @@ function runUiSourceChecks() {
 }
 
 function printSummary() {
+  const evidence = providerOperationEvidence();
+  const evidencePassed = Object.values(evidence).every((count) => count === 0);
+  assertCheck(
+    "Local provider trap is active for adversarial validation",
+    providerTrapReady,
+    "Provider operation evidence is invalid because the local trap did not start.",
+  );
+  assertCheck(
+    "Hostile inherited provider environment cannot reach provider transport",
+    evidencePassed,
+    `Observed ${evidence.providerTransportCalls} provider transport call(s).`,
+  );
   const failed = checks.filter((check) => !check.passed);
   const passed = checks.length - failed.length;
 
@@ -458,6 +551,7 @@ function printSummary() {
   }
 
   console.log(`\nPublic simulator quality gate: ${passed}/${checks.length} passed.`);
+  console.log(`LEVIO_PROVIDER_OPERATION_EVIDENCE ${JSON.stringify(evidence)}`);
 
   if (failed.length > 0) {
     process.exitCode = 1;
@@ -466,7 +560,13 @@ function printSummary() {
 
 try {
   runUiSourceChecks();
-  await withServer(runApiChecks);
+  await withProviderTrap(async (providerBaseUrl) => {
+    const environment = createDeterministicReleaseValidationEnvironment(
+      hostileParentEnvironment(providerBaseUrl),
+    );
+    runEnvironmentIsolationChecks(environment);
+    await withServer(environment, runApiChecks);
+  });
 } catch (error) {
   fail("Public simulator quality gate execution", error instanceof Error ? error.message : String(error));
 } finally {
