@@ -1,7 +1,7 @@
 # Levio V1 Operational Readiness Runbook
 
 Status: `PARTIAL`
-Assessment date: `2026-08-27`
+Assessment date: `2026-08-29`
 Production AI state: `OFF`
 Provider operations performed during this assessment: `0`
 
@@ -49,10 +49,22 @@ point-in-time observation and must be rechecked before every release:
 - Vercel runtime logs and error views are accessible. No current-deployment
   error or fatal event was returned for the observed 24-hour window. This does
   not prove that alerts are configured.
+- A focused monitoring review on `2026-08-29` confirmed that the Vercel Hobby
+  account has Web and Email notifications enabled and that `Deployment
+  Failures` is enabled for both destinations. The selected owner-account email
+  is intentionally masked in repository evidence. Vercel project anomaly
+  Alerts are not available on the current Hobby plan: the authenticated Alerts
+  page exposes only an upgrade action. No independent external availability
+  monitor for `levio.es` was found.
 - Supabase project: `levio-dev` (`whbabqpildzfwzcksudg`), region
   `eu-central-1`, state `ACTIVE_HEALTHY`, Free plan.
 - Supabase API, Auth, and Postgres logs are accessible. No configured alert or
   backup evidence was found.
+- The `2026-08-29` Supabase review confirmed that the Free project exposes
+  Observability health/usage views and product-specific logs. Log Drains, which
+  could forward these events to an external alerting system, require a paid
+  add-on on a Pro, Team, or Enterprise plan. No active database/API/Auth alert
+  destination or delivery test was evidenced on the current Free project.
 - The live footer exposes `mailto:hola@levio.es`. Delivery, intake workflow,
   and coverage were not verified.
 
@@ -168,8 +180,8 @@ external technical capability is configured or has been exercised.
 | Rollback procedure | `VERIFIED` | The bounded procedure is defined below. |
 | Rollback capability | `VERIFIED` | The Project Owner exercised the approved history-preserving source-recovery path to a compatible known-good tree, validated and deployed it, verified production HTTP, and restored the original approved source state. |
 | Emergency stop | `VERIFIED` | The Project Owner exercised project pause/resume permission; bounded checks observed HTTP `503` while paused and HTTP `200` after resume, with data unaffected. |
-| Monitoring | `PARTIALLY VERIFIED` | Vercel and Supabase log views are accessible; no complete availability, API, Auth, persistence, or AI-state monitor set is verified. |
-| Alerts | `EXTERNAL ACTION REQUIRED` | No configured alert conditions, destinations, responders, or delivery test were evidenced. |
+| Monitoring | `PARTIALLY VERIFIED` | Vercel and Supabase log/observability views are accessible, and Vercel deployment-failure notification routing is enabled. Independent public availability detection and active runtime, API, Auth, persistence, or AI-state alerting are not verified. |
+| Alerts | `PARTIALLY VERIFIED` | Vercel Web and Email delivery plus the Deployment Failures category are enabled for the owner account. No launch-critical alert has a dated generated-and-received delivery test, and no active Supabase critical alert destination is configured. |
 | Backup | `EXTERNAL ACTION REQUIRED` | Supabase is on Free; scheduled platform backups are not included, and no controlled off-site dump process was evidenced. |
 | Restore verification | `NOT VERIFIED` | No dated non-production restore drill and integrity record exists. |
 | Support path | `PARTIALLY VERIFIED` | The Project Owner is the responder and `hola@levio.es` is public; delivery, access, intake, and escalation are unverified. |
@@ -303,6 +315,37 @@ personal data.
 
 ## Monitoring and alerts
 
+The following point-in-time control matrix was verified on `2026-08-29`:
+
+| Condition | Current detection | Current delivery | Status and gap |
+| --- | --- | --- | --- |
+| A. `levio.es` unavailable | No monitor independent of the Vercel failure domain was found. | None evidenced. | `EXTERNAL ACTION REQUIRED`: configure an independent recurring availability check and owner delivery. |
+| B. Production deployment/build failure | Vercel platform deployment state. | Vercel Web and Email are enabled for `Deployment Failures` on the owner account. | `PARTIALLY VERIFIED`: routing is configured, but no safe dated failure-event delivery test and owner receipt were evidenced. |
+| C. Runtime/server error | Vercel runtime logs and error views; Hobby runtime-log retention is limited. | No active anomaly alert on the current Hobby plan. | `PARTIALLY VERIFIED`: manual diagnosis exists; automated error delivery requires a capability not present in the current plan or an approved external monitor. |
+| D. Supabase database/API availability | Supabase Observability and API/Postgres logs. | No active critical destination evidenced on Free. | `PARTIALLY VERIFIED`: manual visibility exists; continuous critical delivery is open. |
+| E. Supabase Auth failure | Supabase Auth observability/logs. | No active critical destination evidenced on Free. | `PARTIALLY VERIFIED`: manual visibility exists; continuous critical delivery is open. |
+
+Vercel's current project Alerts page is upgrade-gated on Hobby. Supabase Log
+Drains are a paid add-on on Pro, Team, or Enterprise. No paid plan, add-on, new
+external service, endpoint, environment variable, database/schema/Auth setting,
+or DNS setting was created or changed during this review.
+
+Alert delivery evidence for this review:
+
+- Test condition: `NONE`.
+- Test time: `NONE`.
+- Destination: Vercel owner Web/Email routing is configured for deployment
+  failures; independent-monitor and Supabase-critical destinations are not
+  configured.
+- Alert generated: `NO`.
+- Owner receipt: `NOT VERIFIED`.
+- Latency and operational impact: `NOT APPLICABLE`; no failure was induced.
+
+The current plans expose no safe, non-destructive native test that closes all
+launch-critical paths. Intentionally failing a deployment or production
+request was not authorized as monitoring evidence, and a new external monitor
+or paid platform capability requires an explicit owner selection.
+
 At minimum, the external monitoring owner must configure and evidence:
 
 - failed and unhealthy production deployments;
@@ -351,14 +394,20 @@ controls below, not a requirement to appoint another person.
 
 HANDOFF:
 Control: monitoring and alerts
-Why repository evidence is insufficient: log-view access does not prove that
-continuous checks, alert conditions, destinations, or responders exist.
-Exact external system: Vercel project `simulador-de-decisiones`, Supabase
-project `whbabqpildzfwzcksudg`, and the approved alert delivery channel.
-Exact action required: configure the minimum checks in this runbook with
-accepted thresholds and direct, mobile-accessible Project Owner delivery.
-Evidence required to close: configuration capture plus a dated successful test
-for each condition and destination.
+Why repository evidence is insufficient: configured Vercel deployment-failure
+routing and manual platform views do not provide independent availability
+detection, active Supabase-critical delivery, or proof of owner receipt.
+Exact external system: an owner-approved monitor outside the Vercel failure
+domain, Vercel project `simulador-de-decisiones`, Supabase project
+`whbabqpildzfwzcksudg`, and the existing verified owner notification channel.
+Exact action required: the Project Owner must select or approve the external
+monitoring capability (or an allowed plan/service change), configure recurring
+`levio.es` availability plus meaningful Supabase API/database/Auth health
+conditions, and route them directly to the owner. Preserve the already-enabled
+Vercel deployment-failure Web/Email routing.
+Evidence required to close: configuration capture plus a dated non-destructive
+test recording the condition, generated time, destination, owner receipt time,
+latency, result, and production impact.
 Risk if left open: production, Auth, persistence, or unexpected provider
 failures may remain undetected or may not reach the Project Owner.
 
