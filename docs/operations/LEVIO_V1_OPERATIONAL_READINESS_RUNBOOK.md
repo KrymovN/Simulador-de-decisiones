@@ -72,8 +72,17 @@ point-in-time observation and must be rechecked before every release:
   documentation identifies native alert-delivery gaps described below; a paid
   plan upgrade alone does not close those gaps or substitute for a delivery
   test.
-- The live footer exposes `mailto:hola@levio.es`. Delivery, intake workflow,
-  and coverage were not verified.
+- The production homepage returned HTTP `200` on `2026-08-30`; its `Confianza`
+  footer exposes the visible `Contacto` link with
+  `mailto:hola@levio.es`. `/privacy-policy` and `/terms` also returned HTTP
+  `200`; they do not publish a separate or conflicting contact address.
+- The canonical V1 support, incident, and abuse intake route is
+  `hola@levio.es` -> Zoho Mail -> sole Project Owner. Existing owner-device
+  evidence verifies the general Zoho incoming-mail -> iPhone push path. A
+  controlled message from an external non-Levio Gmail sender was accepted for
+  sending to the canonical address at `2026-08-30 14:35:05 UTC`, with subject
+  `[SUPPORT TEST] Levio V1 operational route verification`. Receipt of that
+  specific message in Zoho and its iPhone push remain owner-confirmation items.
 
 ## Controlled production recovery drill evidence
 
@@ -183,7 +192,7 @@ external technical capability is configured or has been exercised.
 | Product ownership | `VERIFIED` | Explicit approved solo-owner V1 operating model assigns product authority to the Project Owner. |
 | Support ownership | `VERIFIED` | Explicit approved solo-owner V1 operating model assigns support ownership to the Project Owner. |
 | Incident ownership | `VERIFIED` | Explicit approved solo-owner V1 operating model assigns incident ownership and command to the Project Owner. |
-| Abuse handling | `PARTIALLY VERIFIED` | Abuse ownership and repository rate limiting are verified; the external abuse route and exercised triage path are not. |
+| Abuse handling | `PARTIALLY VERIFIED` | The canonical public mailbox, sole-owner routing, bounded repository rate limiting, and abuse triage procedure are verified. The controlled external email was sent, but receipt of that specific message remains owner-confirmation evidence. |
 | Rollback procedure | `VERIFIED` | The bounded procedure is defined below. |
 | Rollback capability | `VERIFIED` | The Project Owner exercised the approved history-preserving source-recovery path to a compatible known-good tree, validated and deployed it, verified production HTTP, and restored the original approved source state. |
 | Emergency stop | `VERIFIED` | The Project Owner exercised project pause/resume permission; bounded checks observed HTTP `503` while paused and HTTP `200` after resume, with data unaffected. |
@@ -191,8 +200,8 @@ external technical capability is configured or has been exercised.
 | Alerts | `PARTIALLY VERIFIED` | Vercel Web and Email plus the Deployment Failures category are enabled. Vercel anomaly alerts require Observability Plus; Supabase native active DB/API/Auth alert delivery is not documented on current paid tiers. No launch-critical alert has a dated generated-and-received delivery test. |
 | Backup | `EXTERNAL ACTION REQUIRED` | Supabase is on Free; scheduled platform backups are not included, and no controlled off-site dump process was evidenced. |
 | Restore verification | `NOT VERIFIED` | No dated non-production restore drill and integrity record exists. |
-| Support path | `PARTIALLY VERIFIED` | The Project Owner is the responder and `hola@levio.es` is public; delivery, access, intake, and escalation are unverified. |
-| Incident path | `PARTIALLY VERIFIED` | The Project Owner owns incident command and this runbook defines handling; no external incident channel/system or exercised path is evidenced. |
+| Support path | `PARTIALLY VERIFIED` | `hola@levio.es` is a visible production mailto route to the sole Project Owner through Zoho; an external controlled test was sent. Receipt of that specific message is not yet confirmed. |
+| Incident path | `PARTIALLY VERIFIED` | The same canonical mailbox accepts incident intake, and the Project Owner owns incident command under the P0-P2 process below. Specific test-message receipt remains unconfirmed; a separate incident platform is not required for V1. |
 | GO/NO-GO authority | `VERIFIED` | Explicit approved solo-owner V1 operating model assigns GO/NO-GO authority to the Project Owner. |
 | AI production activation authority | `VERIFIED` | Explicit approved solo-owner V1 operating model assigns authority to the Project Owner. Real AI remains OFF. |
 
@@ -288,11 +297,12 @@ observed project was verified by the dated controlled drill above.
 
 Classify incidents as:
 
-- `SEV-1`: privacy/security exposure, unauthorized provider activity, material
-  data loss, or production unavailable for the public path.
-- `SEV-2`: major degraded function, persistent auth/persistence failures, or a
-  release defect without confirmed exposure.
-- `SEV-3`: limited degradation with a safe workaround.
+- `P0`: service unavailable, critical security or data-isolation failure,
+  unauthorized provider activity, or material data loss.
+- `P1`: a major production function is broken, persistent Auth/persistence
+  failure exists, or a severe release defect has no safe workaround.
+- `P2`: degraded or non-critical behavior with a safe workaround and no
+  confirmed critical exposure.
 
 For every incident:
 
@@ -309,16 +319,76 @@ prolonged period of Project Owner unavailability is the accepted residual risk.
 
 ## Support and abuse intake
 
-The public path currently exposes `hola@levio.es`. Before launch, an external
-operator must verify delivery, access controls, retention, triage, escalation,
-and direct Project Owner receipt. A distinct abuse route or explicit alias must
-be approved and verified. Repository API rate limiting is a technical
-mitigation, not an abuse-handling process.
+### Canonical V1 route and ownership
+
+The single canonical V1 intake route is:
+
+```text
+user or reporter
+-> public Contacto mailto:hola@levio.es
+-> Zoho Mail
+-> sole Project Owner
+-> classification, response, remediation, and closure
+```
+
+The sole Project Owner is Support Owner, Incident Owner, Incident Commander,
+and Abuse Handling Owner. A second responder, support team, incident team,
+abuse team, ticketing service, or separate mailbox is not required for V1.
+Recommended subject prefixes are `[SUPPORT]`, `[INCIDENT]`, and `[ABUSE]`, but
+the owner must classify ordinary messages without a prefix.
+
+### Support triage
+
+For support intake, the Project Owner must record the received time, affected
+surface, concise problem statement, reproducibility, severity if operational,
+action taken, response, and disposition. The owner diagnoses the bounded
+product surface, provides a safe workaround when available, remediates and
+validates a defect when required, and responds or closes the request.
+
+### Incident intake
+
+An incident report received through the same mailbox is classified `P0`, `P1`,
+or `P2` under the incident procedure above. The Project Owner inspects current
+production evidence, performs emergency stop or rollback when required,
+remediates, runs the appropriate deterministic validation, redeploys, verifies
+recovery, responds to the reporter when appropriate, and records closure.
+
+### Abuse intake
+
+An abuse report received through the same mailbox is classified `ABUSE`. The
+Project Owner preserves only relevant sanitized evidence, assesses the report
+against current product, account, and rate-limit controls, uses only a
+technically available and authorized restriction or stop control, and escalates
+to product, security, or legal review when necessary before recording the
+outcome.
+
+Current technical controls are bounded: the public simulation API validates
+content type and payload size, limits input length, and applies a per-source
+in-memory limit of 12 requests per 60 seconds with HTTP `429` and
+`Retry-After`; the Project Owner also has verified Vercel project pause/resume
+and history-preserving source recovery authority. This does not constitute an
+automated moderation system, durable account-level abuse block, or guaranteed
+attribution capability, and none is promised.
 
 Intake records should contain contact details only when necessary, a concise
-description, timestamps, affected surface, severity, and disposition. Do not
-request passwords, provider keys, raw private decision content, or unrelated
-personal data.
+description, timestamps, affected surface, severity, and disposition. Never
+request passwords, OTPs, access tokens, service-role credentials, API keys,
+database credentials, raw private decision content, or unrelated personal data
+by email.
+
+### Delivery evidence
+
+- External sender class: independent non-Levio Gmail account; private address
+  omitted from repository evidence.
+- Destination: `hola@levio.es`.
+- Subject: `[SUPPORT TEST] Levio V1 operational route verification`.
+- Body: controlled operational route test; no secrets or user data.
+- Sender acceptance: `YES`, Gmail `SENT`, at
+  `2026-08-30 14:35:05 UTC`.
+- Zoho receipt for this message: `OWNER CONFIRMATION REQUIRED`.
+- Owner readability for this message: `OWNER CONFIRMATION REQUIRED`.
+- iPhone push for this message: `OWNER CONFIRMATION REQUIRED`; the general
+  Zoho-to-iPhone push path was previously verified by owner-device evidence.
 
 ## Monitoring and alerts
 
@@ -474,17 +544,19 @@ failures may remain undetected or may not reach the Project Owner.
 
 HANDOFF:
 Control: support path, incident path, and abuse handling
-Why repository evidence is insufficient: a public mail link and rate limiting
-do not prove mail delivery, access, triage, escalation, or accountable handling.
-Exact external system: `hola@levio.es` mailbox and the owner-approved incident
-and abuse intake system or aliases.
-Exact action required: verify delivery and access, provision accepted incident
-and abuse routes, and exercise sanitized support, incident, and abuse intake
-through escalation.
-Evidence required to close: dated delivery/intake records, access list, routing
-result, disposition, and confirmed Project Owner receipt.
-Risk if left open: user or abuse reports may be lost, mishandled, or left
-without accountable response.
+Why repository evidence is insufficient: the production mailto, routing model,
+triage procedures, and external send are verified, but Codex cannot observe the
+owner's Zoho mailbox or iPhone notification state for the specific test.
+Exact external system: canonical Zoho mailbox `hola@levio.es` and the sole
+Project Owner's existing iPhone notification path.
+Exact action required: confirm that the controlled message sent at
+`2026-08-30 14:35:05 UTC` arrived in Zoho, is readable by the Project Owner,
+and produced the expected iPhone push; record the receipt timestamp. No second
+mailbox, responder, or support/incident SaaS is required.
+Evidence required to close: owner confirmation of Zoho receipt, readability,
+iPhone push, and receipt timestamp for the specific test message.
+Risk if left open: the external sender acceptance alone cannot prove that the
+canonical mailbox and mobile notification completed delivery.
 
 HANDOFF:
 Control: backup
