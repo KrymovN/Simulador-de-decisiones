@@ -1,7 +1,7 @@
 # Levio V1 Operational Readiness Runbook
 
 Status: `PARTIAL`
-Assessment date: `2026-08-29`
+Assessment date: `2026-08-30`
 Production AI state: `OFF`
 Provider operations performed during this assessment: `0`
 
@@ -54,8 +54,8 @@ point-in-time observation and must be rechecked before every release:
   Failures` is enabled for both destinations. The selected owner-account email
   is intentionally masked in repository evidence. Vercel project anomaly
   Alerts are not available on the current Hobby plan: the authenticated Alerts
-  page exposes only an upgrade action. No independent external availability
-  monitor for `levio.es` was found.
+  page exposes only an upgrade action. No Vercel-native recurring synthetic
+  availability check for `levio.es` was evidenced.
 - Supabase project: `levio-dev` (`whbabqpildzfwzcksudg`), region
   `eu-central-1`, state `ACTIVE_HEALTHY`, Free plan.
 - Supabase API, Auth, and Postgres logs are accessible. No configured alert or
@@ -65,6 +65,13 @@ point-in-time observation and must be rechecked before every release:
   could forward these events to an external alerting system, require a paid
   add-on on a Pro, Team, or Enterprise plan. No active database/API/Auth alert
   destination or delivery test was evidenced on the current Free project.
+- On `2026-08-30`, the Project Owner approved a native-only monitoring
+  architecture: Vercel native monitoring/alerts plus Supabase native
+  monitoring/alerts, routed to the sole Project Owner. Third-party monitoring
+  SaaS is not an approved V1 closure path. Current official platform
+  documentation identifies native alert-delivery gaps described below; a paid
+  plan upgrade alone does not close those gaps or substitute for a delivery
+  test.
 - The live footer exposes `mailto:hola@levio.es`. Delivery, intake workflow,
   and coverage were not verified.
 
@@ -180,8 +187,8 @@ external technical capability is configured or has been exercised.
 | Rollback procedure | `VERIFIED` | The bounded procedure is defined below. |
 | Rollback capability | `VERIFIED` | The Project Owner exercised the approved history-preserving source-recovery path to a compatible known-good tree, validated and deployed it, verified production HTTP, and restored the original approved source state. |
 | Emergency stop | `VERIFIED` | The Project Owner exercised project pause/resume permission; bounded checks observed HTTP `503` while paused and HTTP `200` after resume, with data unaffected. |
-| Monitoring | `PARTIALLY VERIFIED` | Vercel and Supabase log/observability views are accessible, and Vercel deployment-failure notification routing is enabled. Independent public availability detection and active runtime, API, Auth, persistence, or AI-state alerting are not verified. |
-| Alerts | `PARTIALLY VERIFIED` | Vercel Web and Email delivery plus the Deployment Failures category are enabled for the owner account. No launch-critical alert has a dated generated-and-received delivery test, and no active Supabase critical alert destination is configured. |
+| Monitoring | `PARTIALLY VERIFIED` | The approved architecture is Vercel native plus Supabase native. Current log/observability views and Vercel deployment-failure routing are verified; Vercel-native synthetic availability detection and Supabase-native active DB/API/Auth alerting are not evidenced. |
+| Alerts | `PARTIALLY VERIFIED` | Vercel Web and Email plus the Deployment Failures category are enabled. Vercel anomaly alerts require Observability Plus; Supabase native active DB/API/Auth alert delivery is not documented on current paid tiers. No launch-critical alert has a dated generated-and-received delivery test. |
 | Backup | `EXTERNAL ACTION REQUIRED` | Supabase is on Free; scheduled platform backups are not included, and no controlled off-site dump process was evidenced. |
 | Restore verification | `NOT VERIFIED` | No dated non-production restore drill and integrity record exists. |
 | Support path | `PARTIALLY VERIFIED` | The Project Owner is the responder and `hola@levio.es` is public; delivery, access, intake, and escalation are unverified. |
@@ -315,20 +322,57 @@ personal data.
 
 ## Monitoring and alerts
 
-The following point-in-time control matrix was verified on `2026-08-29`:
+### Approved native production monitoring strategy
 
-| Condition | Current detection | Current delivery | Status and gap |
-| --- | --- | --- | --- |
-| A. `levio.es` unavailable | No monitor independent of the Vercel failure domain was found. | None evidenced. | `EXTERNAL ACTION REQUIRED`: configure an independent recurring availability check and owner delivery. |
-| B. Production deployment/build failure | Vercel platform deployment state. | Vercel Web and Email are enabled for `Deployment Failures` on the owner account. | `PARTIALLY VERIFIED`: routing is configured, but no safe dated failure-event delivery test and owner receipt were evidenced. |
-| C. Runtime/server error | Vercel runtime logs and error views; Hobby runtime-log retention is limited. | No active anomaly alert on the current Hobby plan. | `PARTIALLY VERIFIED`: manual diagnosis exists; automated error delivery requires a capability not present in the current plan or an approved external monitor. |
-| D. Supabase database/API availability | Supabase Observability and API/Postgres logs. | No active critical destination evidenced on Free. | `PARTIALLY VERIFIED`: manual visibility exists; continuous critical delivery is open. |
-| E. Supabase Auth failure | Supabase Auth observability/logs. | No active critical destination evidenced on Free. | `PARTIALLY VERIFIED`: manual visibility exists; continuous critical delivery is open. |
+The Project Owner approved this V1 target architecture on `2026-08-30`:
 
-Vercel's current project Alerts page is upgrade-gated on Hobby. Supabase Log
-Drains are a paid add-on on Pro, Team, or Enterprise. No paid plan, add-on, new
-external service, endpoint, environment variable, database/schema/Auth setting,
-or DNS setting was created or changed during this review.
+```text
+Vercel native monitoring / alerts
++ Supabase native monitoring / alerts
+-> sole Project Owner Web / Email notification channel
+```
+
+No third-party uptime or observability SaaS is required or approved by this
+strategy. A platform Marketplace integration remains a third-party service and
+is not treated as native merely because it can be installed from a platform
+dashboard.
+
+Vercel's target paid capability is a Pro or Enterprise team with Observability
+Plus and Alerts/Alert Rules enabled. It supplies error and usage anomaly
+detection, configurable project/metric/status/route rules, Email and Vercel
+notification delivery, and 30-day runtime-log retention with up to 14
+consecutive days queryable at once. Error anomaly detection is based on
+traffic and abnormal 5xx rates; it is not a recurring synthetic request and
+does not prove detection when the application or domain serves no traffic or
+no response. Vercel Checks validate deployments and do not establish a native
+continuous production uptime monitor. This is a `NATIVE PLATFORM GAP` for
+complete `levio.es` availability detection under the approved architecture.
+
+Supabase's native Reports and Logs cover Database, API/PostgREST, Auth,
+Storage, Realtime, and Edge Functions. Pro extends Reports history from 24
+hours to 7 days; Team and Enterprise expose additional Advanced Telemetry.
+Every hosted project also exposes a beta Prometheus-compatible Metrics API.
+Current official documentation places alert evaluation and delivery outside
+Supabase Studio: Metrics API data must be scraped by an alerting system, while
+paid Log Drains forward events to another destination. Neither capability is
+itself a Supabase-native alert rule and owner-notification service. Log Drains
+are therefore not mandatory for the approved native-only strategy and would
+not close alert delivery without a separately approved receiver. This is a
+`NATIVE PLATFORM GAP` for active DB/API/Auth alert delivery.
+
+The target coverage matrix is:
+
+| Condition | Native platform | Required capability | Current plan state | Target paid state | Owner action | Closure evidence |
+| --- | --- | --- | --- | --- | --- | --- |
+| A. Failed Vercel production deployment | Vercel | Deployment state plus critical Deployment Failure notification | Enabled on Hobby | Preserve on paid production plan | Reconfirm owner Web/Email routing after upgrade and generate a safe failed non-production deployment condition if available | Failure event timestamp, notification generated, owner receipt timestamp, latency, no production impact |
+| B. Production runtime/server errors | Vercel | Observability Plus Alerts and Alert Rules for production 5xx/error anomalies; retained runtime logs for diagnosis | Logs available; anomaly Alerts plan-limited | Pro or Enterprise with Observability Plus; Alerts/Rules enabled; 30-day runtime-log retention | Upgrade/activate, scope production error rules to the project, route to owner Web/Email, run a non-destructive alert test | Rule configuration, test condition and timestamps, generated alert, owner receipt, diagnosis link |
+| C. `levio.es` application availability | Vercel | Recurring production request/health evaluation that can detect no response | No native synthetic check evidenced | `NATIVE PLATFORM GAP`: paid anomaly Alerts remain traffic/error based | After upgrade, recheck the actual native product surface; if no synthetic availability control exists, return an owner architecture decision rather than silently adding a provider | Native check configuration and dated delivered test, or explicit accepted residual-gap decision |
+| D. Supabase database/API problem | Supabase | Database/API Reports and logs plus active threshold/health alert delivery | Manual Reports/Logs on Free | Pro for 7-day Reports; Team/Enterprise only if Advanced Telemetry is required; native active delivery remains unproven | Upgrade the approved production project, verify paid native alert surface, configure only controls actually exposed, and test; otherwise record the native gap | Plan/capability state, rule/condition, generated alert, owner receipt and latency |
+| E. Supabase Auth problem | Supabase | Auth/API error Reports and logs plus active alert delivery | Manual Auth Reports/Logs on Free | Paid Reports history improves diagnosis; native active delivery remains unproven | After upgrade, configure any factual native Auth alert exposed and test it; if none exists, return an owner architecture decision | Auth condition, configuration capture, alert timestamp, owner receipt and latency |
+
+No paid plan, add-on, external service, endpoint, environment variable,
+database/schema/Auth setting, or DNS setting was created or changed during
+this strategy review.
 
 Alert delivery evidence for this review:
 
@@ -343,10 +387,10 @@ Alert delivery evidence for this review:
 
 The current plans expose no safe, non-destructive native test that closes all
 launch-critical paths. Intentionally failing a deployment or production
-request was not authorized as monitoring evidence, and a new external monitor
-or paid platform capability requires an explicit owner selection.
+request was not authorized as monitoring evidence. Paid activation and actual
+post-upgrade capability inspection remain owner actions.
 
-At minimum, the external monitoring owner must configure and evidence:
+At minimum, the monitoring owner must configure and evidence:
 
 - failed and unhealthy production deployments;
 - `levio.es` availability and public API 5xx/error-rate changes;
@@ -395,19 +439,36 @@ controls below, not a requirement to appoint another person.
 HANDOFF:
 Control: monitoring and alerts
 Why repository evidence is insufficient: configured Vercel deployment-failure
-routing and manual platform views do not provide independent availability
-detection, active Supabase-critical delivery, or proof of owner receipt.
-Exact external system: an owner-approved monitor outside the Vercel failure
-domain, Vercel project `simulador-de-decisiones`, Supabase project
-`whbabqpildzfwzcksudg`, and the existing verified owner notification channel.
-Exact action required: the Project Owner must select or approve the external
-monitoring capability (or an allowed plan/service change), configure recurring
-`levio.es` availability plus meaningful Supabase API/database/Auth health
-conditions, and route them directly to the owner. Preserve the already-enabled
-Vercel deployment-failure Web/Email routing.
-Evidence required to close: configuration capture plus a dated non-destructive
-test recording the condition, generated time, destination, owner receipt time,
-latency, result, and production impact.
+routing and manual platform views do not provide native synthetic availability,
+active Supabase-critical delivery, or proof of owner receipt.
+
+OWNER HANDOFF — VERCEL
+
+Action: upgrade or activate the approved production Vercel plan and
+Observability Plus for project `simulador-de-decisiones`.
+After activation: enable and scope native Alerts/Alert Rules for production
+runtime errors, preserve Deployment Failure Web/Email routing to the sole
+Project Owner, recheck whether a native synthetic availability capability has
+become available, and perform a non-destructive delivery test. Do not equate a
+5xx anomaly rule with a no-response uptime check.
+Evidence: plan and capability state, alert configuration, test timestamp,
+alert generated, owner receipt timestamp, latency, and production impact.
+
+OWNER HANDOFF — SUPABASE
+
+Action: upgrade or activate the approved paid production capability on the
+existing canonical project `whbabqpildzfwzcksudg`; do not create another
+project.
+After activation: verify the actual paid native DB/API/Auth monitoring and
+notification surface, configure every required native alert that is factually
+available, route it to the sole Project Owner, and perform a non-destructive
+delivery test. If active native alert rules/delivery remain unavailable, record
+`NATIVE PLATFORM GAP` and return an owner architecture decision; do not add a
+third-party destination automatically.
+Evidence: plan and capability state, alert configuration if available, test
+timestamp, alert generated, owner receipt timestamp, latency, and production
+impact.
+
 Risk if left open: production, Auth, persistence, or unexpected provider
 failures may remain undetected or may not reach the Project Owner.
 
