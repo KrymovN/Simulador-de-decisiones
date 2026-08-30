@@ -77,12 +77,15 @@ point-in-time observation and must be rechecked before every release:
   `mailto:hola@levio.es`. `/privacy-policy` and `/terms` also returned HTTP
   `200`; they do not publish a separate or conflicting contact address.
 - The canonical V1 support, incident, and abuse intake route is
-  `hola@levio.es` -> Zoho Mail -> sole Project Owner. Existing owner-device
-  evidence verifies the general Zoho incoming-mail -> iPhone push path. A
-  controlled message from an external non-Levio Gmail sender was accepted for
-  sending to the canonical address at `2026-08-30 14:35:05 UTC`, with subject
-  `[SUPPORT TEST] Levio V1 operational route verification`. Receipt of that
-  specific message in Zoho and its iPhone push remain owner-confirmation items.
+  `hola@levio.es` -> Zoho Mail -> sole Project Owner. The first controlled send
+  at `2026-08-30 14:35:05 UTC` exposed a real `550 5.1.1 User does not exist`
+  defect. The Project Owner created the `hola@levio.es` Zoho alias and routed it
+  to the existing sole-owner mailbox. A subsequent external Gmail delivery
+  test passed: Zoho received the message, the Project Owner could read it on
+  the existing iPhone at approximately `2026-08-30 16:59` local time, and no
+  bounce occurred. Existing owner-device evidence separately verifies the
+  general Zoho incoming-mail -> iPhone push path. The prior `550` defect is
+  resolved; support, incident, and abuse routes are verified.
 
 ## Controlled production recovery drill evidence
 
@@ -192,7 +195,7 @@ external technical capability is configured or has been exercised.
 | Product ownership | `VERIFIED` | Explicit approved solo-owner V1 operating model assigns product authority to the Project Owner. |
 | Support ownership | `VERIFIED` | Explicit approved solo-owner V1 operating model assigns support ownership to the Project Owner. |
 | Incident ownership | `VERIFIED` | Explicit approved solo-owner V1 operating model assigns incident ownership and command to the Project Owner. |
-| Abuse handling | `PARTIALLY VERIFIED` | The canonical public mailbox, sole-owner routing, bounded repository rate limiting, and abuse triage procedure are verified. The controlled external email was sent, but receipt of that specific message remains owner-confirmation evidence. |
+| Abuse handling | `VERIFIED` | The canonical public mailbox, external delivery, Zoho receipt, sole-owner mobile access, bounded repository rate limiting, and abuse triage procedure are verified. |
 | Rollback procedure | `VERIFIED` | The bounded procedure is defined below. |
 | Rollback capability | `VERIFIED` | The Project Owner exercised the approved history-preserving source-recovery path to a compatible known-good tree, validated and deployed it, verified production HTTP, and restored the original approved source state. |
 | Emergency stop | `VERIFIED` | The Project Owner exercised project pause/resume permission; bounded checks observed HTTP `503` while paused and HTTP `200` after resume, with data unaffected. |
@@ -200,8 +203,8 @@ external technical capability is configured or has been exercised.
 | Alerts | `PARTIALLY VERIFIED` | Vercel Web and Email plus the Deployment Failures category are enabled. Vercel anomaly alerts require Observability Plus; Supabase native active DB/API/Auth alert delivery is not documented on current paid tiers. No launch-critical alert has a dated generated-and-received delivery test. |
 | Backup | `EXTERNAL ACTION REQUIRED` | Supabase is on Free; scheduled platform backups are not included, and no controlled off-site dump process was evidenced. |
 | Restore verification | `NOT VERIFIED` | No dated non-production restore drill and integrity record exists. |
-| Support path | `PARTIALLY VERIFIED` | `hola@levio.es` is a visible production mailto route to the sole Project Owner through Zoho; an external controlled test was sent. Receipt of that specific message is not yet confirmed. |
-| Incident path | `PARTIALLY VERIFIED` | The same canonical mailbox accepts incident intake, and the Project Owner owns incident command under the P0-P2 process below. Specific test-message receipt remains unconfirmed; a separate incident platform is not required for V1. |
+| Support path | `VERIFIED` | `hola@levio.es` is a visible production mailto route; a post-fix external test was accepted by Zoho and received and read by the sole Project Owner on the existing mobile path. |
+| Incident path | `VERIFIED` | The same verified canonical mailbox accepts incident intake, and the Project Owner owns incident command under the P0-P2 process below. A separate incident platform or second responder is not required for V1. |
 | GO/NO-GO authority | `VERIFIED` | Explicit approved solo-owner V1 operating model assigns GO/NO-GO authority to the Project Owner. |
 | AI production activation authority | `VERIFIED` | Explicit approved solo-owner V1 operating model assigns authority to the Project Owner. Real AI remains OFF. |
 
@@ -381,14 +384,21 @@ by email.
 - External sender class: independent non-Levio Gmail account; private address
   omitted from repository evidence.
 - Destination: `hola@levio.es`.
-- Subject: `[SUPPORT TEST] Levio V1 operational route verification`.
 - Body: controlled operational route test; no secrets or user data.
-- Sender acceptance: `YES`, Gmail `SENT`, at
-  `2026-08-30 14:35:05 UTC`.
-- Zoho receipt for this message: `OWNER CONFIRMATION REQUIRED`.
-- Owner readability for this message: `OWNER CONFIRMATION REQUIRED`.
-- iPhone push for this message: `OWNER CONFIRMATION REQUIRED`; the general
-  Zoho-to-iPhone push path was previously verified by owner-device evidence.
+- Initial defect: the send accepted by Gmail at `2026-08-30 14:35:05 UTC`
+  subsequently returned `550 5.1.1 User does not exist`.
+- Remediation: the Project Owner created the `hola@levio.es` Zoho alias with
+  destination set to the existing sole Project Owner mailbox.
+- Post-remediation external delivery test: `PASS`.
+- Zoho acceptance and receipt: `PASS`.
+- Sole Project Owner receipt and readability: `PASS`.
+- Mobile access: `PASS`; the message was readable on the Project Owner's
+  existing iPhone at approximately `2026-08-30 16:59` local time. The general
+  Zoho incoming-mail -> iPhone push path was verified separately.
+- Post-remediation bounce: `NONE`.
+- Resolution: the previous `550` defect is resolved. Support, incident, and
+  abuse routes are `VERIFIED`; sole-owner routing is preserved and no second
+  responder is required for V1.
 
 ## Monitoring and alerts
 
@@ -542,21 +552,16 @@ impact.
 Risk if left open: production, Auth, persistence, or unexpected provider
 failures may remain undetected or may not reach the Project Owner.
 
-HANDOFF:
+CONTROL CLOSED:
 Control: support path, incident path, and abuse handling
-Why repository evidence is insufficient: the production mailto, routing model,
-triage procedures, and external send are verified, but Codex cannot observe the
-owner's Zoho mailbox or iPhone notification state for the specific test.
-Exact external system: canonical Zoho mailbox `hola@levio.es` and the sole
-Project Owner's existing iPhone notification path.
-Exact action required: confirm that the controlled message sent at
-`2026-08-30 14:35:05 UTC` arrived in Zoho, is readable by the Project Owner,
-and produced the expected iPhone push; record the receipt timestamp. No second
-mailbox, responder, or support/incident SaaS is required.
-Evidence required to close: owner confirmation of Zoho receipt, readability,
-iPhone push, and receipt timestamp for the specific test message.
-Risk if left open: the external sender acceptance alone cannot prove that the
-canonical mailbox and mobile notification completed delivery.
+Status: `VERIFIED`.
+Evidence: after the Project Owner resolved the observed `550` by creating the
+`hola@levio.es` Zoho alias to the existing sole-owner mailbox, a subsequent
+external Gmail test was delivered, received in Zoho, and readable by the sole
+Project Owner on the existing iPhone at approximately `2026-08-30 16:59` local
+time, with no bounce. The general Zoho incoming-mail -> iPhone push path was
+verified separately. No second mailbox, responder, or support/incident SaaS is
+required for V1.
 
 HANDOFF:
 Control: backup
