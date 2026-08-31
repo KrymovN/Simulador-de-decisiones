@@ -53,7 +53,7 @@ const capabilities = [
 ];
 
 const trustSignals = [
-  "Preview público con respuestas de ejemplo",
+  "Preview público con aclaración interactiva",
   "Escenarios comparables",
   "Riesgos y consecuencias",
 ];

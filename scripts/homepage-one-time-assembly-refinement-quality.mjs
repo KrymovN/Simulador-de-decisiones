@@ -90,11 +90,11 @@ excludes(home, "preview demostrativo", "Hero removes the rejected preview wordin
 includes(previewBlock, 'data-home-assembly-trigger="preview"', "Preview owns a separate one-time trigger");
 includes(previewBlock, 'data-home-motion-vector="right-to-left"', "Preview uses the shared right-to-left vector");
 for (const phrase of [
-  "Preview público con respuestas de ejemplo",
+  "Preview público con aclaración interactiva",
   "Escenarios comparables",
   "Riesgos y consecuencias",
 ]) {
-  includes(previewBlock, phrase === "Preview público con respuestas de ejemplo" ? "trustSignals.map" : "trustSignals.map", `Preview renders approved phrase through the canonical trio: ${phrase}`);
+  includes(previewBlock, "trustSignals.map", `Preview renders approved phrase through the canonical trio: ${phrase}`);
   includes(home, phrase, `Approved preview phrase exists: ${phrase}`);
 }
 includes(controller, 'const PREVIEW_SELECTOR = \'[data-home-assembly-trigger="preview"]\';', "Controller identifies preview independently");
@@ -276,8 +276,8 @@ includes(controller, 'target.dataset.homeProcessCardQueue = "settled"', "Reduced
 includes(controller, "processCardQueue = [];\n        queuedProcessCards.clear();\n        processCardQueueArmed = true;", "Reduced motion clears queued launches before exposing final state");
 
 includes(home, "Levio analiza la situación, identifica la información relevante, compara escenarios, evalúa riesgos y organiza criterios de decisión.", "Process section uses approved AI-neutral copy");
-includes(simulator, "Vista previa determinista · Respuestas de ejemplo · Máx.", "Simulator status uses approved AI-neutral copy");
-includes(simulator, "Simulación demostrativa con respuestas de ejemplo.", "Simulator result uses approved AI-neutral copy");
+includes(simulator, "Vista previa determinista · Flujo interactivo · Máx.", "Simulator status uses approved AI-neutral interactive copy");
+includes(simulator, "Aclaremos lo importante antes de simular", "Simulator exposes clarification as a normal product state");
 for (const phrase of ["asistente de IA", "IA real", "conexión con IA", "preview demostrativo"]) {
   excludes(publicHomepageSurface, phrase, `Public homepage removes prohibited phrase: ${phrase}`);
 }

@@ -18,6 +18,7 @@ const steps = [
   { id: "production-build", command: npmCommand, args: ["run", "build"] },
   { id: "simulation-pipeline-runner", command: npmCommand, args: ["run", "quality:simulation-pipeline-runner"] },
   { id: "simulation-response-public-adapter", command: npmCommand, args: ["run", "quality:simulation-response-public-adapter"] },
+  { id: "deterministic-clarification-round-trip", command: npmCommand, args: ["run", "quality:deterministic-clarification-round-trip"] },
   { id: "provider-proof-public-simulator", command: npmCommand, args: ["run", "quality:public-simulator"], providerEvidence: true },
   { id: "typescript", command: join(rootDir, "node_modules", ".bin", "tsc"), args: ["--noEmit"] },
 ];

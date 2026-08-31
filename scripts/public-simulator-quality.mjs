@@ -231,6 +231,14 @@ function assertEnvelope(payload, expectedStatus) {
     assert(Array.isArray(payload.data.simulation.scenarios), "Simulation requires scenarios.");
     assert(Array.isArray(payload.data.simulation.impacts), "Simulation requires impacts.");
     assert(Array.isArray(payload.data.simulation.timeline), "Simulation requires timeline.");
+  } else if (expectedStatus === "clarification_required") {
+    assert(payload.error === null, "Clarification must be a normal product outcome.");
+    assert(payload.data && typeof payload.data === "object", "Clarification requires bounded data.");
+    assert(payload.data.lang === "es", "Clarification data must remain Spanish.");
+    assert(typeof payload.data.simulationId === "string", "Clarification requires stable simulationId.");
+    assert(Number.isInteger(payload.data.round), "Clarification requires a bounded round.");
+    assert(Array.isArray(payload.data.questions) && payload.data.questions.length > 0, "Clarification requires questions.");
+    assert(payload.data.questions.every((question) => question.required === true), "Clarification questions must require answers.");
   } else {
     assert(payload.data === null, "Failed envelope must not include data.");
     assert(payload.error && typeof payload.error.code === "string", "Failed envelope requires error.code.");
@@ -302,13 +310,14 @@ async function expectApiCase(baseUrl, name, options, expected) {
 }
 
 async function runApiChecks(baseUrl) {
+  const oneShotInput = "Comparar aceptar una oferta laboral o seguir en mi empresa actual antes de final de mes con mi familia, sin reducir ingresos y con una transición reversible";
   const validPayload = await expectApiCase(
     baseUrl,
     "API valid request returns completed deterministic preview envelope",
     {
       source: 11,
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ input: "Lanzar una oferta premium con riesgo operativo", lang: "es" }),
+      body: JSON.stringify({ input: oneShotInput, lang: "es" }),
     },
     { httpStatus: 200, status: "completed" },
   );
@@ -319,7 +328,7 @@ async function runApiChecks(baseUrl) {
     {
       source: 12,
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ input: "Lanzar una oferta premium con riesgo operativo", lang: "es" }),
+      body: JSON.stringify({ input: oneShotInput, lang: "es" }),
     },
     { httpStatus: 200, status: "completed" },
   );
@@ -404,18 +413,76 @@ async function runApiChecks(baseUrl) {
 
   const clarificationPayload = await expectApiCase(
     baseUrl,
-    "API clarification-like request does not pretend full analysis",
+    "API sparse decision returns clarification as a normal product outcome",
     {
       source: 35,
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ input: "Explorar una decision de salud esta semana", lang: "es" }),
+      body: JSON.stringify({ input: "¿Debería cambiar de trabajo?", lang: "es" }),
     },
-    { httpStatus: 200, status: "failed", errorCode: "CLARIFICATION_REQUIRED" },
+    { httpStatus: 200, status: "clarification_required" },
   );
 
   if (clarificationPayload) {
-    assertFailClosedCase("API CLARIFICATION_REQUIRED returns no simulation artifacts", clarificationPayload, "CLARIFICATION_REQUIRED");
+    assertCheck(
+      "API clarification questions are rendered in Spanish without simulation artifacts",
+      clarificationPayload.data.questions.every((question) => question.text.startsWith("¿")) &&
+        !clarificationPayload.data.simulation,
+      "Expected Spanish questions and no premature simulation result.",
+    );
+
+    const continuationPayload = await expectApiCase(
+      baseUrl,
+      "API clarification answers continue the same simulation to completion",
+      {
+        source: 36,
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          input: clarificationPayload.data.input,
+          lang: "es",
+          clarification: {
+            simulationId: clarificationPayload.data.simulationId,
+            round: clarificationPayload.data.round,
+            answers: clarificationPayload.data.questions.map((question, index) => ({
+              questionId: question.id,
+              answer: [
+                "Mejorar estabilidad, aprendizaje y equilibrio personal.",
+                "Tengo una oferta concreta y recursos para la transición.",
+                "No reducir ingresos y mantener tiempo para mi familia.",
+              ][index],
+            })),
+          },
+        }),
+      },
+      { httpStatus: 200, status: "completed" },
+    );
+
+    if (continuationPayload) {
+      assertCheck(
+        "API completed continuation preserves the original decision question",
+        continuationPayload.data.input === "¿Debería cambiar de trabajo?",
+        "The original decision question changed during continuation.",
+      );
+    }
   }
+
+  await expectApiCase(
+    baseUrl,
+    "API rejects empty clarification answers",
+    {
+      source: 37,
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        input: "¿Debería cambiar de trabajo?",
+        lang: "es",
+        clarification: {
+          simulationId: "clarification_validation",
+          round: 1,
+          answers: [{ questionId: "builder_question_success_criteria", answer: "   " }],
+        },
+      }),
+    },
+    { httpStatus: 400, status: "failed", errorCode: "invalid_payload" },
+  );
 
   await expectApiCase(
     baseUrl,
@@ -464,7 +531,7 @@ async function runApiChecks(baseUrl) {
     const { response, payload } = await postSimulation(baseUrl, {
       source: 90,
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ input: `Rate limit validation ${index}` }),
+      body: JSON.stringify({ input: `${oneShotInput} ${index}` }),
     });
 
     if (index < 12) {
@@ -505,7 +572,9 @@ function runUiSourceChecks() {
   assertSourceIncludes(source, "No se ha generado un resultado.", "UI exposes controlled failure without local fallback");
   assertSourceIncludes(source, "setResult(null);", "UI clears result on failure path");
   assertSourceIncludes(source, "Resultado orientativo listo.", "UI labels successful output as orientative");
-  assertSourceIncludes(source, "Vista previa determinista · Respuestas de ejemplo", "UI keeps AI-neutral deterministic preview disclosure");
+  assertSourceIncludes(source, "Vista previa determinista · Flujo interactivo", "UI keeps truthful deterministic interactive disclosure");
+  assertSourceIncludes(source, 'status: "clarification_required"', "UI models clarification as a normal product outcome");
+  assertSourceIncludes(source, "Continuar simulación", "UI exposes clarification continuation");
   assertSourceIncludes(source, "Claridad orientativa", "UI keeps orientative result disclosure");
   assertSourceExcludes(source, "conexión con IA real", "UI removes unnecessary Real AI reminders from the public simulator");
   assertSourceIncludes(source, "payload.meta.mockOnly", "UI carries mockOnly API metadata");

@@ -13,6 +13,7 @@
     "quality:decision-context-builder": "node scripts/decision-context-builder-quality.mjs",
     "quality:simulation-pipeline-runner": "node scripts/simulation-pipeline-runner-quality.mjs",
     "quality:simulation-response-public-adapter": "node scripts/simulation-response-public-adapter-quality.mjs",
+    "quality:deterministic-clarification-round-trip": "node scripts/deterministic-clarification-round-trip-quality.mjs",
     "quality:deterministic-runtime-observability": "node scripts/deterministic-runtime-observability-quality.mjs",
     "quality:deterministic-runtime-security-boundary": "node scripts/deterministic-runtime-security-boundary-quality.mjs",
     "quality:deterministic-runtime-contract-regression": "node scripts/deterministic-runtime-contract-regression-quality.mjs",

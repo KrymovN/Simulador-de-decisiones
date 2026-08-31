@@ -477,7 +477,7 @@ try {
     homeSource.includes("const simulation = result ?? productionResult") &&
       homeSource.includes("saveCompletedSimulationFromUi({ simulation })") &&
       homeSource.includes("production: payload") &&
-      exportSource.includes("history.simulations"),
+      exportSource.includes("savedSimulations.simulations"),
     "Home must retain the completed public envelope and reuse the existing save/export chain.",
   );
 

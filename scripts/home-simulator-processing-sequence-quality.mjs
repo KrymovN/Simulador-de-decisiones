@@ -135,7 +135,7 @@ includes(controller, "controller.abortController.abort()", "Sequence cancellatio
 includes(controller, "controller.removeInteractionListeners?.()", "Sequence cleanup removes interaction listeners");
 includes(simulator, "cancelProcessingRun(processingRunRef.current)", "Unmount cancels the active sequence");
 includes(simulator, "if (processingRunRef.current)", "Repeated submit cannot create parallel sequences");
-includes(simulator, "disabled={isRunning}", "Submit remains disabled while processing");
+includes(simulator, "disabled={isRunning || Boolean(clarificationState)}", "Submit remains disabled while processing or clarifying");
 includes(simulator, "signal: AbortSignal", "Public request accepts a lifecycle abort signal");
 includes(simulator, "signal,", "Fetch is connected to the sequence abort signal");
 

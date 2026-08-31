@@ -19,6 +19,8 @@ const exactTopLevelKeys = ["contractVersion", "data", "error", "meta", "requestI
 const exactMetaKeys = ["apiReady", "generatedAt", "lang", "maxBodyLength", "maxInputLength", "mockOnly", "safeRender"];
 const exactErrorKeys = ["code", "message"];
 const exactDataKeys = ["generatedAt", "input", "lang", "simulation", "thinkingStages"];
+const exactClarificationDataKeys = ["answers", "input", "lang", "maxRounds", "questions", "round", "simulationId"];
+const exactClarificationQuestionKeys = ["field", "id", "required", "text", "whyItMatters"];
 const exactSimulationKeys = [
   "category",
   "date",
@@ -150,6 +152,7 @@ async function withServer(run) {
       ...process.env,
       LEVIO_AUTH_RUNTIME_ENABLED: "false",
       NEXT_PUBLIC_LEVIO_AUTH_RUNTIME_ENABLED: "false",
+      LEVIO_REAL_AI_DEV_ENABLED: "false",
     },
     stdio: ["ignore", "pipe", "pipe"],
   });
@@ -281,6 +284,25 @@ function assertFailedEnvelope(payload, expectedErrorCode) {
   assert(!("recommendation" in payload), "Failed envelope must not expose recommendation.");
 }
 
+function assertClarificationEnvelope(payload) {
+  assertBaseEnvelope(payload, "clarification_required");
+  assert(payload.error === null, "Clarification envelope error must stay null.");
+  assertExactKeys(payload.data, exactClarificationDataKeys, "Clarification data");
+  assert(payload.data.lang === "es", "Clarification language changed.");
+  assert(typeof payload.data.input === "string" && payload.data.input.length > 0, "Clarification input changed.");
+  assert(typeof payload.data.simulationId === "string", "Clarification simulationId changed.");
+  assert(Number.isInteger(payload.data.round), "Clarification round changed.");
+  assert(Number.isInteger(payload.data.maxRounds), "Clarification maxRounds changed.");
+  assert(Array.isArray(payload.data.answers), "Clarification prior answers changed.");
+  assert(Array.isArray(payload.data.questions) && payload.data.questions.length > 0, "Clarification questions changed.");
+  for (const question of payload.data.questions) {
+    assertExactKeys(question, exactClarificationQuestionKeys, "Clarification question");
+    assert(typeof question.id === "string", "Clarification question id changed.");
+    assert(typeof question.text === "string" && question.text.startsWith("¿"), "Clarification question Spanish copy changed.");
+    assert(question.required === true, "Clarification question must remain required.");
+  }
+}
+
 async function expectContractCase(baseUrl, name, options, expected) {
   try {
     const { response, payload } = await postSimulation(baseUrl, options);
@@ -289,6 +311,8 @@ async function expectContractCase(baseUrl, name, options, expected) {
 
     if (expected.status === "completed") {
       assertCompletedEnvelope(payload);
+    } else if (expected.status === "clarification_required") {
+      assertClarificationEnvelope(payload);
     } else {
       assertFailedEnvelope(payload, expected.errorCode);
     }
@@ -300,13 +324,14 @@ async function expectContractCase(baseUrl, name, options, expected) {
 }
 
 async function runApiChecks(baseUrl) {
+  const oneShotInput = "Comparar aceptar una oferta laboral o seguir en mi empresa actual antes de final de mes con mi familia, sin reducir ingresos y con una transición reversible";
   await expectContractCase(
     baseUrl,
     "Contract regression preserves successful deterministic envelope",
     {
       source: 11,
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ input: "Lanzar una oferta premium con riesgo operativo", lang: "es" }),
+      body: JSON.stringify({ input: oneShotInput, lang: "es" }),
     },
     { httpStatus: 200, status: "completed" },
   );
@@ -324,13 +349,13 @@ async function runApiChecks(baseUrl) {
 
   await expectContractCase(
     baseUrl,
-    "Contract regression preserves CLARIFICATION_REQUIRED fail-close envelope",
+    "Contract regression preserves clarification_required product envelope",
     {
       source: 22,
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ input: "Explorar una decision de salud esta semana", lang: "es" }),
+      body: JSON.stringify({ input: "¿Debería cambiar de trabajo?", lang: "es" }),
     },
-    { httpStatus: 200, status: "failed", errorCode: "CLARIFICATION_REQUIRED" },
+    { httpStatus: 200, status: "clarification_required" },
   );
 
   await expectContractCase(
@@ -370,7 +395,7 @@ function runSourceChecks() {
   const validationIndex = routeSource.indexOf("validateSimulatePayload(bodyResult.body, requestId)");
   const runnerIndex = routeSource.indexOf("runInternalSimulationPipeline({");
   const adapterIndex = routeSource.indexOf("adaptSimulationResponseV2ToPublicSimulatorEnvelope({");
-  const publicValidationIndex = routeSource.indexOf("validatePublicSimulationEnvelopeShape(response)");
+  const publicValidationIndex = routeSource.indexOf("validatePublicSimulationEnvelopeShape(response)", adapterIndex);
 
   assertSourceIncludes(routeSource, "simulationFailedResponse(requestId)", "Route keeps SIMULATION_FAILED fallback helper");
   assertSourceIncludes(routeSource, "catch", "Route catches runner/adapter exceptions");
@@ -396,7 +421,12 @@ function runSourceChecks() {
   assertSourceExcludes(routeSource, "Response.json(runnerResult", "Route never returns runner internals directly");
   assertSourceExcludes(routeSource, "Response.json(runnerResult.response", "Route never returns SimulationResponseV2Draft directly");
   assertSourceExcludes(routeSource, "runnerResult.error?.message", "Route does not leak runner error messages publicly");
-  assertSourceExcludes(routeSource, "process.env", "Route does not read environment configuration");
+  assertCheck(
+    "Route reads only the explicit controlled Real AI switch",
+    (routeSource.match(/process\.env/g) ?? []).length === 1 &&
+      routeSource.includes('process.env.LEVIO_REAL_AI_DEV_ENABLED === "true"'),
+    "Route environment access must stay limited to LEVIO_REAL_AI_DEV_ENABLED.",
+  );
   assertSourceExcludes(routeSource, "openai", "Route does not import OpenAI runtime");
   assertSourceExcludes(routeSource, "fetch(", "Route does not perform provider/network fetch");
 

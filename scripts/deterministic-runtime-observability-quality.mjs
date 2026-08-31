@@ -66,7 +66,12 @@ function runRouteSourceChecks() {
   assertSourceExcludes(source, "Response.json(runnerResult", "Route never returns runner internals directly");
   assertSourceExcludes(source, "Response.json(runnerResult.response", "Route never returns SimulationResponseV2Draft directly");
   assertSourceExcludes(source, "traceability", "Route source does not expose internal traceability");
-  assertSourceExcludes(source, "process.env", "Route does not read environment configuration");
+  assertSourceIncludes(
+    source,
+    'process.env.LEVIO_REAL_AI_DEV_ENABLED === "true"',
+    "Route keeps the explicit Real AI dev switch",
+  );
+  assertSourceExcludes(source, "OPENAI_API_KEY", "Route does not read provider credentials");
   assertSourceExcludes(source, "openai", "Route does not import OpenAI runtime");
   assertSourceExcludes(source, "fetch(", "Route does not perform provider/network fetch");
 }

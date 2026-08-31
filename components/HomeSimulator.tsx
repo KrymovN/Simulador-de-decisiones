@@ -121,6 +121,10 @@ type SimulationRequestOutcome =
       production: Extract<PublicSimulationApiV2Envelope, { status: "completed" }>;
     }
   | {
+      status: "clarification_required";
+      clarification: SimulateApiClarificationData;
+    }
+  | {
       status: "failed";
       title: string;
       message: string;
@@ -199,12 +203,49 @@ type SimulateApiMeta = {
   retryAfterSeconds?: number;
 };
 
+type SimulateApiClarificationQuestion = {
+  id: string;
+  field: string;
+  text: string;
+  required: boolean;
+  whyItMatters: string;
+};
+
+type SimulateApiClarificationAnswer = {
+  questionId: string;
+  answer: string;
+};
+
+type SimulateApiClarificationData = {
+  input: string;
+  lang: "es";
+  simulationId: string;
+  round: number;
+  maxRounds: number;
+  questions: SimulateApiClarificationQuestion[];
+  answers: SimulateApiClarificationAnswer[];
+};
+
+type SimulateApiClarificationRequest = {
+  simulationId: string;
+  round: number;
+  answers: SimulateApiClarificationAnswer[];
+};
+
 type SimulateApiResponse =
   | {
       contractVersion: typeof SIMULATE_API_CONTRACT_VERSION;
       requestId: string;
       status: "completed";
       data: SimulationResponse;
+      error: null;
+      meta: SimulateApiMeta;
+    }
+  | {
+      contractVersion: typeof SIMULATE_API_CONTRACT_VERSION;
+      requestId: string;
+      status: "clarification_required";
+      data: SimulateApiClarificationData;
       error: null;
       meta: SimulateApiMeta;
     }
@@ -277,6 +318,26 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
+function isClarificationField(value: unknown): value is string {
+  return value === "success_criteria" ||
+    value === "feasibility" ||
+    value === "constraints" ||
+    value === "reversibility" ||
+    value === "stakeholders" ||
+    value === "deadline" ||
+    value === "budget" ||
+    value === "risk_tolerance";
+}
+
+function isClarificationAnswer(value: unknown): value is SimulateApiClarificationAnswer {
+  return isRecord(value) &&
+    typeof value.questionId === "string" &&
+    /^builder_question_[a-z_]+$/.test(value.questionId) &&
+    typeof value.answer === "string" &&
+    value.answer.trim().length > 0 &&
+    value.answer.length <= 600;
+}
+
 function isSimulateApiResponse(value: unknown): value is SimulateApiResponse {
   if (!isRecord(value)) {
     return false;
@@ -304,6 +365,43 @@ function isSimulateApiResponse(value: unknown): value is SimulateApiResponse {
       typeof value.error.message === "string";
   }
 
+  if (value.status === "clarification_required") {
+    return value.error === null &&
+      isRecord(value.data) &&
+      value.data.lang === "es" &&
+      typeof value.data.input === "string" &&
+      value.data.input.trim().length > 0 &&
+      value.data.input.length <= MAX_SIMULATION_INPUT_LENGTH &&
+      typeof value.data.simulationId === "string" &&
+      /^[a-zA-Z0-9_-]{8,128}$/.test(value.data.simulationId) &&
+      typeof value.data.round === "number" &&
+      Number.isInteger(value.data.round) &&
+      value.data.round >= 1 &&
+      typeof value.data.maxRounds === "number" &&
+      Number.isInteger(value.data.maxRounds) &&
+      value.data.maxRounds >= value.data.round &&
+      value.data.maxRounds <= 2 &&
+      Array.isArray(value.data.answers) &&
+      value.data.answers.length <= 6 &&
+      value.data.answers.every(isClarificationAnswer) &&
+      Array.isArray(value.data.questions) &&
+      value.data.questions.length > 0 &&
+      value.data.questions.length <= 3 &&
+      value.data.questions.every((question) =>
+        isRecord(question) &&
+        typeof question.id === "string" &&
+        /^builder_question_[a-z_]+$/.test(question.id) &&
+        isClarificationField(question.field) &&
+        question.id === `builder_question_${question.field}` &&
+        typeof question.text === "string" &&
+        question.text.trim().length > 0 &&
+        typeof question.required === "boolean" &&
+        question.required === true &&
+        typeof question.whyItMatters === "string" &&
+        question.whyItMatters.trim().length > 0
+      );
+  }
+
   return value.status === "completed" &&
     value.error === null &&
     isRecord(value.data) &&
@@ -317,6 +415,67 @@ function v2FailureMessage(payload: PublicSimulationApiV2Envelope): string {
   }
 
   return payload.uiModel.sections.status.items[0]?.message ?? payload.error.message;
+}
+
+function requestOutcomeForPayload(
+  payload: SimulateApiResponse | Extract<PublicSimulationApiV2Envelope, { status: "completed" }>,
+): SimulationRequestOutcome {
+  if (isPublicSimulationApiV2Envelope(payload)) {
+    return {
+      status: "completed",
+      responseMode: "production_v2",
+      production: payload,
+    };
+  }
+
+  if (payload.status === "clarification_required") {
+    return {
+      status: "clarification_required",
+      clarification: payload.data,
+    };
+  }
+
+  if (payload.status === "failed") {
+    return {
+      status: "failed",
+      title: "Simulación no ejecutada",
+      message: payload.error.message,
+      requestId: payload.requestId,
+      retryAfterSeconds: payload.meta.retryAfterSeconds,
+    };
+  }
+
+  return {
+    status: "completed",
+    responseMode: "deterministic_preview",
+    simulation: payload.data,
+    preview: {
+      contractVersion: payload.contractVersion,
+      requestId: payload.requestId,
+      mockOnly: payload.meta.mockOnly,
+      apiReady: payload.meta.apiReady,
+    },
+  };
+}
+
+function requestOutcomeForFailure(error: unknown): SimulationRequestOutcome {
+  const simulateError = error instanceof SimulateApiFailure ? error : null;
+
+  return {
+    status: "failed",
+    title:
+      simulateError?.code === "rate_limited"
+        ? "Límite temporal alcanzado"
+        : "Simulación no ejecutada",
+    message:
+      simulateError?.code === "rate_limited"
+        ? "Has realizado varias simulaciones en poco tiempo. Espera un momento antes de intentarlo de nuevo."
+        : "No se pudo completar la simulación con la información disponible. Revisa el texto e inténtalo de nuevo.",
+    requestId: simulateError?.requestId,
+    retryAfterSeconds: simulateError?.retryAfterSeconds,
+    runtimeSource: simulateError?.runtimeSource,
+    renderState: simulateError?.renderState,
+  };
 }
 
 type ProcessingStepVisualState = "pending" | "active" | "completing" | "completed";
@@ -367,6 +526,8 @@ export default function HomeSimulator() {
     SimulationRequestOutcome,
     { status: "completed"; responseMode: "production_v2" }
   >["production"] | null>(null);
+  const [clarificationState, setClarificationState] = useState<SimulateApiClarificationData | null>(null);
+  const [clarificationAnswers, setClarificationAnswers] = useState<Record<string, string>>({});
   const [errorState, setErrorState] = useState<SimulationErrorState | null>(null);
   const [saveState, setSaveState] = useState<SaveSimulationState | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -381,13 +542,21 @@ export default function HomeSimulator() {
 
   const stages = DEFAULT_PROCESSING_STAGES;
 
-  async function requestSimulation(situation: string, signal: AbortSignal) {
+  async function requestSimulation(
+    situation: string,
+    signal: AbortSignal,
+    clarification?: SimulateApiClarificationRequest,
+  ) {
     const response = await fetch("/api/simulate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ input: situation, lang: "es" }),
+      body: JSON.stringify({
+        input: situation,
+        lang: "es",
+        ...(clarification ? { clarification } : {}),
+      }),
       signal,
     });
 
@@ -523,6 +692,8 @@ export default function HomeSimulator() {
     }
 
     if (simulationResult.status === "completed") {
+      setClarificationState(null);
+      setClarificationAnswers({});
       if (simulationResult.responseMode === "deterministic_preview") {
         setResult(simulationResult.simulation);
         setPreviewState(simulationResult.preview);
@@ -561,6 +732,24 @@ export default function HomeSimulator() {
       if (!reducedMotion && !(await waitForProcessingDelay(controller, PROCESSING_TIMING.resultReveal))) {
         return;
       }
+    } else if (simulationResult.status === "clarification_required") {
+      setResult(null);
+      setPreviewState(null);
+      setProductionResult(null);
+      setErrorState(null);
+      setClarificationState(simulationResult.clarification);
+      setClarificationAnswers((currentAnswers) => {
+        const nextAnswers = { ...currentAnswers };
+
+        for (const question of simulationResult.clarification.questions) {
+          nextAnswers[question.id] ??= "";
+        }
+
+        return nextAnswers;
+      });
+      setMessage(
+        `Necesitamos un poco más de contexto · Ronda ${simulationResult.clarification.round} de ${simulationResult.clarification.maxRounds}`,
+      );
     } else {
       setResult(null);
       setPreviewState(null);
@@ -587,6 +776,10 @@ export default function HomeSimulator() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (clarificationState) {
+      return;
+    }
 
     const situation = input.trim();
 
@@ -622,6 +815,8 @@ export default function HomeSimulator() {
     setResult(null);
     setPreviewState(null);
     setProductionResult(null);
+    setClarificationState(null);
+    setClarificationAnswers({});
     setSaveState(null);
     setErrorState(null);
     setProcessingState({ phase: "preparing", stepIndex: -1, resultVisible: false });
@@ -634,48 +829,60 @@ export default function HomeSimulator() {
     const simulationPromise: Promise<SimulationRequestOutcome> = requestSimulation(
       situation,
       controller.abortController.signal,
-    ).then(
-      (payload): SimulationRequestOutcome => {
-        if (isPublicSimulationApiV2Envelope(payload)) {
-          return {
-            status: "completed",
-            responseMode: "production_v2",
-            production: payload,
-          };
-        }
+    ).then(requestOutcomeForPayload, requestOutcomeForFailure);
 
-        return {
-          status: "completed",
-          responseMode: "deterministic_preview",
-          simulation: payload.data,
-          preview: {
-            contractVersion: payload.contractVersion,
-            requestId: payload.requestId,
-            mockOnly: payload.meta.mockOnly,
-            apiReady: payload.meta.apiReady,
-          },
-        };
-      },
-      (error: unknown) => {
-        const simulateError = error instanceof SimulateApiFailure ? error : null;
+    void runProcessingSequence(controller, simulationPromise).finally(() => {
+      if (processingRunRef.current === controller) {
+        processingRunRef.current = null;
+      }
+      releaseProcessingRun(controller);
+    });
+  }
 
-        return {
-          status: "failed" as const,
-          title:
-            simulateError?.code === "rate_limited"
-              ? "Límite temporal alcanzado"
-              : "Simulación no ejecutada",
-          message:
-            simulateError?.code === "rate_limited"
-              ? "Has realizado varias simulaciones en poco tiempo. Espera un momento antes de intentarlo de nuevo."
-              : "No se pudo completar la simulación con la información disponible. Revisa el texto e inténtalo de nuevo.",
-          requestId: simulateError?.requestId,
-          retryAfterSeconds: simulateError?.retryAfterSeconds,
-          runtimeSource: simulateError?.runtimeSource,
-          renderState: simulateError?.renderState,
-        };
-      },
+  function handleClarificationSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!clarificationState || processingRunRef.current) {
+      return;
+    }
+
+    const roundAnswers = clarificationState.questions.map((question) => ({
+      questionId: question.id,
+      answer: clarificationAnswers[question.id]?.trim() ?? "",
+    }));
+
+    if (roundAnswers.some((answer) => !answer.answer)) {
+      setMessage("Responde todas las preguntas para continuar con la misma simulación.");
+      return;
+    }
+
+    const accumulatedAnswers = new Map(
+      clarificationState.answers.map((answer) => [answer.questionId, answer]),
     );
+
+    for (const answer of roundAnswers) {
+      accumulatedAnswers.set(answer.questionId, answer);
+    }
+
+    setMessage("");
+    setErrorState(null);
+    setSaveState(null);
+    setProcessingState({ phase: "preparing", stepIndex: -1, resultVisible: false });
+    setIsRunning(true);
+
+    const controller = createProcessingRunController(++processingRunIdRef.current);
+    processingRunRef.current = controller;
+    emitProcessingTrace("processing-preparing");
+
+    const simulationPromise: Promise<SimulationRequestOutcome> = requestSimulation(
+      clarificationState.input,
+      controller.abortController.signal,
+      {
+        simulationId: clarificationState.simulationId,
+        round: clarificationState.round,
+        answers: [...accumulatedAnswers.values()],
+      },
+    ).then(requestOutcomeForPayload, requestOutcomeForFailure);
 
     void runProcessingSequence(controller, simulationPromise).finally(() => {
       if (processingRunRef.current === controller) {
@@ -752,6 +959,19 @@ export default function HomeSimulator() {
     }
   }
 
+  function handleClarificationReset() {
+    if (isRunning) {
+      return;
+    }
+
+    setClarificationState(null);
+    setClarificationAnswers({});
+    setErrorState(null);
+    setMessage("Puedes ajustar la situación e iniciar una nueva simulación.");
+    setProcessingState(IDLE_PROCESSING_STATE);
+    window.requestAnimationFrame(() => textareaRef.current?.focus());
+  }
+
   useEffect(() => {
     return () => {
       recognitionRef.current?.abort();
@@ -820,6 +1040,7 @@ export default function HomeSimulator() {
               onKeyDown={handleTextareaKeyDown}
               maxLength={MAX_SIMULATION_INPUT_LENGTH}
               placeholder={defaultInput}
+              readOnly={Boolean(clarificationState)}
               value={input}
             />
           </div>
@@ -833,6 +1054,7 @@ export default function HomeSimulator() {
             aria-label={isListening ? "Detener dictado por voz" : "Dictar situación"}
             aria-pressed={isListening}
             className={`voice-input-button ${isListening ? "is-listening" : ""}`}
+            disabled={isRunning || Boolean(clarificationState)}
             onClick={handleVoiceToggle}
             title={isListening ? "Detener dictado" : "Dictar situación"}
             type="button"
@@ -845,7 +1067,7 @@ export default function HomeSimulator() {
           <button
             aria-label="Simular decisión"
             className="primary-simulation-control"
-            disabled={isRunning}
+            disabled={isRunning || Boolean(clarificationState)}
             type="submit"
           >
             <span>{isRunning ? "Simulando escenarios" : "Simular escenarios"}</span>
@@ -860,9 +1082,65 @@ export default function HomeSimulator() {
       >
         <span></span>
         <p>
-          {message || `Vista previa determinista · Respuestas de ejemplo · Máx. ${MAX_SIMULATION_INPUT_LENGTH} caracteres`}
+          {message || `Vista previa determinista · Flujo interactivo · Máx. ${MAX_SIMULATION_INPUT_LENGTH} caracteres`}
         </p>
       </div>
+
+      {clarificationState && !isRunning && (
+        <section
+          aria-labelledby="clarification-heading"
+          className="simulator-clarification-panel"
+          data-clarification-round={clarificationState.round}
+        >
+          <div className="simulator-clarification-heading">
+            <div>
+              <p className="eyebrow">Contexto necesario</p>
+              <h2 id="clarification-heading">Aclaremos lo importante antes de simular</h2>
+            </div>
+            <span>Ronda {clarificationState.round} de {clarificationState.maxRounds}</span>
+          </div>
+          <p>
+            Tus respuestas se añadirán a la situación original y continuarán esta misma simulación.
+          </p>
+          <form className="simulator-clarification-form" onSubmit={handleClarificationSubmit}>
+            {clarificationState.questions.map((question, index) => (
+              <div
+                className="simulator-clarification-question"
+                data-clarification-question={question.id}
+                key={question.id}
+              >
+                <label htmlFor={`clarification-answer-${question.id}`}>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  {question.text}
+                </label>
+                <textarea
+                  id={`clarification-answer-${question.id}`}
+                  maxLength={600}
+                  onChange={(event) => {
+                    setClarificationAnswers((current) => ({
+                      ...current,
+                      [question.id]: event.target.value,
+                    }));
+                    setMessage("");
+                  }}
+                  required={question.required}
+                  rows={3}
+                  value={clarificationAnswers[question.id] ?? ""}
+                />
+                <small>{question.whyItMatters}</small>
+              </div>
+            ))}
+            <div className="simulator-clarification-actions">
+              <button className="primary-button" type="submit">
+                Continuar simulación
+              </button>
+              <button className="secondary-button" onClick={handleClarificationReset} type="button">
+                Cambiar situación
+              </button>
+            </div>
+          </form>
+        </section>
+      )}
 
       {(isRunning || result || productionResult) && (
         <div

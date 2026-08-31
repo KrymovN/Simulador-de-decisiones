@@ -1,5 +1,6 @@
 import {
   adaptSimulationResponseV2ToPublicSimulatorEnvelope,
+  createPublicDeterministicClarificationEnvelope,
   SIMULATION_RESPONSE_PUBLIC_ADAPTER_TRUTH_BOUNDARY,
   validatePublicSimulationEnvelopeShape,
 } from "../../../lib/decision-engine/simulation-response-public-adapter";
@@ -8,6 +9,14 @@ import {
   runInternalSimulationPipeline,
 } from "../../../lib/decision-engine/simulation-pipeline-runner";
 import { buildDecisionContext } from "../../../lib/decision-engine/context-builder";
+import {
+  clarificationFieldForQuestionId,
+  DETERMINISTIC_CLARIFICATION_MAX_ANSWER_LENGTH,
+  DETERMINISTIC_CLARIFICATION_MAX_ANSWERS,
+  DETERMINISTIC_CLARIFICATION_MAX_ROUNDS,
+  runDeterministicClarificationRoundTrip,
+  type DeterministicClarificationSubmittedAnswer,
+} from "../../../lib/decision-engine/deterministic-clarification-round-trip";
 import {
   CONTROLLED_SIMULATOR_SWITCH_MODE,
   CONTROLLED_SIMULATOR_SWITCH_VERSION,
@@ -42,7 +51,9 @@ type RateLimitBucket = {
 };
 
 const rateLimitBuckets = new Map<string, RateLimitBucket>();
-const ALLOWED_PAYLOAD_FIELDS = new Set(["input", "lang"]);
+const ALLOWED_PAYLOAD_FIELDS = new Set(["input", "lang", "clarification"]);
+const ALLOWED_CLARIFICATION_FIELDS = new Set(["simulationId", "round", "answers"]);
+const ALLOWED_CLARIFICATION_ANSWER_FIELDS = new Set(["questionId", "answer"]);
 
 function createRequestId() {
   return crypto.randomUUID();
@@ -117,6 +128,67 @@ function invalidPayloadResponse(requestId: string) {
     "El cuerpo de la solicitud no cumple el contrato público del simulador.",
     400,
   );
+}
+
+type ValidatedClarificationPayload = {
+  simulationId: string;
+  round: number;
+  answers: DeterministicClarificationSubmittedAnswer[];
+};
+
+function validateClarificationPayload(value: unknown): ValidatedClarificationPayload | undefined {
+  if (!isRecord(value)) {
+    return undefined;
+  }
+
+  if (Object.keys(value).some((field) => !ALLOWED_CLARIFICATION_FIELDS.has(field))) {
+    return undefined;
+  }
+
+  if (
+    typeof value.simulationId !== "string" ||
+    !/^[a-zA-Z0-9_-]{8,128}$/.test(value.simulationId) ||
+    typeof value.round !== "number" ||
+    !Number.isInteger(value.round) ||
+    value.round < 1 ||
+    value.round > DETERMINISTIC_CLARIFICATION_MAX_ROUNDS ||
+    !Array.isArray(value.answers) ||
+    value.answers.length < 1 ||
+    value.answers.length > DETERMINISTIC_CLARIFICATION_MAX_ANSWERS
+  ) {
+    return undefined;
+  }
+
+  const answers: DeterministicClarificationSubmittedAnswer[] = [];
+  const questionIds = new Set<string>();
+
+  for (const candidate of value.answers) {
+    if (
+      !isRecord(candidate) ||
+      Object.keys(candidate).some((field) => !ALLOWED_CLARIFICATION_ANSWER_FIELDS.has(field)) ||
+      typeof candidate.questionId !== "string" ||
+      !clarificationFieldForQuestionId(candidate.questionId) ||
+      questionIds.has(candidate.questionId) ||
+      typeof candidate.answer !== "string"
+    ) {
+      return undefined;
+    }
+
+    const answer = candidate.answer.trim();
+
+    if (!answer || answer.length > DETERMINISTIC_CLARIFICATION_MAX_ANSWER_LENGTH) {
+      return undefined;
+    }
+
+    questionIds.add(candidate.questionId);
+    answers.push({ questionId: candidate.questionId, answer });
+  }
+
+  return {
+    simulationId: value.simulationId,
+    round: value.round,
+    answers,
+  };
 }
 
 function pruneExpiredRateLimitBuckets(now: number) {
@@ -290,9 +362,21 @@ function validateSimulatePayload(body: unknown, requestId: string) {
     };
   }
 
+  const clarification = Object.prototype.hasOwnProperty.call(body, "clarification")
+    ? validateClarificationPayload(body.clarification)
+    : undefined;
+
+  if (Object.prototype.hasOwnProperty.call(body, "clarification") && !clarification) {
+    return {
+      ok: false as const,
+      response: invalidPayloadResponse(requestId),
+    };
+  }
+
   return {
     ok: true as const,
     input: body.input.trim(),
+    clarification,
   };
 }
 
@@ -414,11 +498,42 @@ export async function POST(req: Request) {
   }
 
   try {
-    const runnerResult = runInternalSimulationPipeline({
+    const clarificationStep = runDeterministicClarificationRoundTrip({
       requestId,
+      simulationId: payloadResult.clarification?.simulationId ?? requestId,
+      input,
+      round: payloadResult.clarification?.round ?? 0,
+      answers: payloadResult.clarification?.answers ?? [],
+    });
+
+    if (clarificationStep.status === "rejected") {
+      return simulationFailedResponse(requestId);
+    }
+
+    if (clarificationStep.status === "clarification_required") {
+      const response = createPublicDeterministicClarificationEnvelope({
+        requestId,
+        simulationId: payloadResult.clarification?.simulationId ?? requestId,
+        input,
+        round: clarificationStep.round,
+        maxRounds: DETERMINISTIC_CLARIFICATION_MAX_ROUNDS,
+        questions: clarificationStep.questions,
+        answers: clarificationStep.answers,
+      });
+
+      if (!validatePublicSimulationEnvelopeShape(response)) {
+        return simulationFailedResponse(requestId);
+      }
+
+      return Response.json(response);
+    }
+
+    const runnerResult = runInternalSimulationPipeline({
+      requestId: payloadResult.clarification?.simulationId ?? requestId,
       input,
       inputLanguage: "es",
       requestedOutputLanguage: "es",
+      clarificationAnswers: clarificationStep.answers,
     });
 
     if (!runnerResult.response) {

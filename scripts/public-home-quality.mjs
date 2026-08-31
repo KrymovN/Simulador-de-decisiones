@@ -211,7 +211,7 @@ function runPerformanceSafetyChecks(pageSource, simulatorSource, packageSource) 
   sourceExcludes(simulatorSource, "local fallback", "Simulator does not reintroduce local fallback wording");
   sourceIncludes(simulatorSource, 'fetch("/api/simulate"', "Simulator keeps single public API request path");
   sourceIncludes(simulatorSource, "isSimulateApiResponse(payload)", "Simulator validates API payload before render");
-  sourceIncludes(simulatorSource, "Vista previa determinista · Respuestas de ejemplo", "Simulator keeps AI-neutral deterministic preview disclosure");
+  sourceIncludes(simulatorSource, "Vista previa determinista · Flujo interactivo", "Simulator keeps truthful deterministic interactive disclosure");
   sourceExcludes(simulatorSource, "conexión con IA real", "Simulator removes unnecessary Real AI reminders");
 }
 
@@ -238,7 +238,7 @@ async function runRuntimeHtmlChecks(baseUrl) {
     htmlIncludes(html, "Ver cómo funciona", "Runtime HTML includes secondary CTA");
     htmlIncludes(html, "Simular decisión", "Runtime HTML includes simulator submit action");
     htmlIncludes(html, "Preview público", "Runtime HTML includes mock preview status");
-    htmlIncludes(html, "Vista previa determinista · Respuestas de ejemplo", "Runtime HTML keeps AI-neutral deterministic preview copy");
+    htmlIncludes(html, "Vista previa determinista · Flujo interactivo", "Runtime HTML keeps truthful deterministic interactive copy");
     assertCheck(
       "Runtime HTML removes unnecessary Real AI reminders",
       !html.includes("conexión con IA real"),

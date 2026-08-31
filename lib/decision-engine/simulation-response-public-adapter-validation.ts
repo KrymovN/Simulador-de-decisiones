@@ -39,6 +39,13 @@ function runCase(name: string, check: () => void): SimulationResponsePublicAdapt
   }
 }
 
+function completed(
+  envelope: PublicSimulationEnvelope,
+  message = "Expected completed public envelope.",
+): asserts envelope is Extract<PublicSimulationEnvelope, { status: "completed" }> {
+  assertCase(envelope.status === "completed", message);
+}
+
 function requireV2(input: string, requestId: string): SimulationResponseV2Draft {
   const result = runInternalSimulationPipeline({
     requestId,
@@ -93,6 +100,12 @@ function homeSimulatorAcceptsEnvelope(envelope: PublicSimulationEnvelope): boole
       envelope.error !== null &&
       typeof envelope.error.code === "string" &&
       typeof envelope.error.message === "string";
+  }
+
+  if (envelope.status === "clarification_required") {
+    return envelope.error === null &&
+      envelope.data.lang === "es" &&
+      envelope.data.questions.length > 0;
   }
 
   return envelope.error === null &&
@@ -173,7 +186,7 @@ export function runSimulationResponsePublicAdapterValidation(): SimulationRespon
   const cases = [
     runCase("normal V2 maps to completed public envelope", () => {
       const envelope = adapt(normalResponse());
-      assertCase(envelope.status === "completed", "Expected completed public envelope.");
+      completed(envelope);
       assertCase(validatePublicSimulationEnvelopeShape(envelope), "Expected valid public envelope shape.");
       assertCase(envelope.data.simulation.scenarios.length > 0, "Expected public scenarios.");
     }),
@@ -182,7 +195,7 @@ export function runSimulationResponsePublicAdapterValidation(): SimulationRespon
       const response = cloneV2(normalResponse());
       response.status = "limited_analysis";
       const envelope = adapt(response);
-      assertCase(envelope.status === "completed", "Expected completed public envelope for limited analysis.");
+      completed(envelope, "Expected completed public envelope for limited analysis.");
       assertCase(envelope.data.simulation.result.includes("limitada"), "Expected limited analysis truth copy.");
     }),
 
@@ -212,11 +225,13 @@ export function runSimulationResponsePublicAdapterValidation(): SimulationRespon
       assertCase(envelope.error?.code === "CANNOT_RECOMMEND", "Expected CANNOT_RECOMMEND error code.");
     }),
 
-    runCase("clarification_required does not pretend full analysis", () => {
+    runCase("clarification_required maps to a normal product outcome", () => {
       const envelope = adapt(failedV2("clarification_required", "Clarification is required."));
-      assertCase(envelope.status === "failed", "Expected fail-closed clarification envelope.");
-      assertCase(envelope.data === null, "clarification_required must not include data.");
-      assertCase(envelope.error?.code === "CLARIFICATION_REQUIRED", "Expected CLARIFICATION_REQUIRED error code.");
+      assertCase(envelope.status === "clarification_required", "Expected clarification_required product envelope.");
+      if (envelope.status !== "clarification_required") return;
+      assertCase(envelope.error === null, "clarification_required must not be an error.");
+      assertCase(envelope.data.questions.length > 0, "clarification_required must include questions.");
+      assertCase(validatePublicSimulationEnvelopeShape(envelope), "Expected valid clarification envelope shape.");
     }),
 
     runCase("failed maps to public failed envelope", () => {
@@ -249,7 +264,7 @@ export function runSimulationResponsePublicAdapterValidation(): SimulationRespon
     runCase("adapter output stays compatible with public simulator quality invariants", () => {
       const envelope = adapt(normalResponse());
       assertCase(envelope.contractVersion === "simulate-api-v1-mock", "Unexpected contractVersion.");
-      assertCase(envelope.status === "completed", "Expected completed status.");
+      completed(envelope, "Expected completed status.");
       assertCase(Array.isArray(envelope.data.simulation.scenarios), "Expected scenarios array.");
       assertCase(Array.isArray(envelope.data.simulation.impacts), "Expected impacts array.");
       assertCase(Array.isArray(envelope.data.simulation.timeline), "Expected timeline array.");
@@ -257,7 +272,7 @@ export function runSimulationResponsePublicAdapterValidation(): SimulationRespon
 
     runCase("adapter output preserves public home truth-boundary copy", () => {
       const envelope = adapt(normalResponse());
-      assertCase(envelope.status === "completed", "Expected completed envelope.");
+      completed(envelope);
       assertCase(envelope.data.simulation.detailCopy.includes("Real AI"), "Expected Real AI deferred copy.");
       assertCase(envelope.data.simulation.status.includes("Preview"), "Expected preview status copy.");
       assertCase(envelope.data.simulation.privacy.includes("Preview"), "Expected preview privacy copy.");

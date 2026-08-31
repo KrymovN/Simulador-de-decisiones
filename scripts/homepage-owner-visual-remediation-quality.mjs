@@ -91,7 +91,7 @@ includes(css, ".minimal-home .minimal-home__header-login", "Login remains a bord
 
 includes(home, "Decide antes", "Canonical hero heading remains");
 includes(home, "Comenzar simulación", "The approved primary CTA remains");
-includes(home, "Preview público con respuestas de ejemplo", "Truthful preview signal remains");
+includes(home, "Preview público con aclaración interactiva", "Truthful interactive preview signal remains");
 includes(home, "Levio analiza la situación, identifica la información relevante, compara escenarios, evalúa riesgos y organiza criterios de decisión.", "Approved AI-neutral process positioning remains");
 excludes(home, "usuarios", "Homepage does not invent user statistics");
 excludes(home, "simulaciones realizadas", "Homepage does not invent simulation counts");
@@ -160,7 +160,7 @@ excludes(css, "animation-iteration-count", "Homepage has no infinite animation l
 
 includes(simulator, "MAX_SIMULATION_INPUT_LENGTH = 1200", "HomeSimulator keeps the 1200-character limit");
 includes(simulator, 'fetch("/api/simulate"', "HomeSimulator keeps the approved public API route");
-includes(simulator, 'body: JSON.stringify({ input: situation, lang: "es" })', "HomeSimulator request payload remains bounded");
+includes(simulator, "...(clarification ? { clarification } : {})", "HomeSimulator continuation payload remains bounded");
 includes(simulator, "isSimulateApiResponse(payload)", "HomeSimulator validates the public envelope");
 includes(simulator, "safeRender !== true", "HomeSimulator preserves safeRender validation");
 includes(simulator, "mockOnly !== true", "HomeSimulator preserves mockOnly validation");

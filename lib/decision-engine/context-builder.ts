@@ -35,6 +35,7 @@ export type DecisionContextBuilderRequest = {
   inputLanguage?: string;
   requestedOutputLanguage?: string;
   userIntent?: DecisionIntent;
+  clarificationAnswers?: DecisionContextBuilderClarificationAnswer[];
 };
 
 export type DecisionContextBuilderStatus = "built" | "rejected";
@@ -92,6 +93,12 @@ export type DecisionContextBuilderClarificationQuestion = {
   text: string;
   required: boolean;
   reason: string;
+};
+
+export type DecisionContextBuilderClarificationAnswer = {
+  questionId: EntityId;
+  field: DecisionContextBuilderMissingFieldKind;
+  answer: string;
 };
 
 export type DecisionContextBuilderIsolationEvidence = {
@@ -488,15 +495,15 @@ function buildClarificationQuestions(
 }
 
 function questionText(field: DecisionContextBuilderMissingFieldKind, safety: SafetyBoundary | undefined): string {
-  if (field === "deadline") return "What deadline or decision window should the simulation use?";
-  if (field === "budget") return "What budget or financial limit is explicitly available for this decision?";
-  if (field === "stakeholders") return "Who is materially affected by this decision?";
-  if (field === "constraints") return "What constraints are non-negotiable for this decision?";
-  if (field === "reversibility") return "How reversible is the decision if the outcome is unfavorable?";
-  if (field === "success_criteria") return "What outcome would make this decision successful?";
-  if (field === "risk_tolerance") return "What level of risk tolerance should be assumed?";
-  if (safety?.level === "restricted") return "What qualified professional context is available for this request?";
-  return "What information is needed to assess feasibility?";
+  if (field === "deadline") return "¿En qué plazo necesitas tomar esta decisión?";
+  if (field === "budget") return "¿Qué límite económico debes respetar en esta decisión?";
+  if (field === "stakeholders") return "¿A quién afecta de forma material esta decisión?";
+  if (field === "constraints") return "¿Qué condiciones o límites no son negociables para ti?";
+  if (field === "reversibility") return "¿Qué margen tendrías para volver atrás si el resultado no fuera favorable?";
+  if (field === "success_criteria") return "¿Qué resultado concreto haría que esta decisión fuera un éxito para ti?";
+  if (field === "risk_tolerance") return "¿Qué nivel de riesgo estás dispuesto a asumir?";
+  if (safety?.level === "restricted") return "¿Qué contexto profesional cualificado tienes disponible para esta decisión?";
+  return "¿Qué recursos o condiciones determinan si esta opción es viable?";
 }
 
 export function decisionContextBuilderIsolationEvidence(): DecisionContextBuilderIsolationEvidence {
@@ -552,6 +559,24 @@ export function buildDecisionContext(request: DecisionContextBuilderRequest): De
   const evidence: EvidenceRef[] = [];
   const inferred: DecisionContextBuilderInference[] = [];
   const missing: DecisionContextBuilderMissingField[] = [];
+  const clarificationAnswers = new Map<
+    DecisionContextBuilderMissingFieldKind,
+    DecisionContextBuilderClarificationAnswer
+  >();
+
+  for (const answer of request.clarificationAnswers ?? []) {
+    if (
+      answer &&
+      answer.questionId === `builder_question_${answer.field}` &&
+      typeof answer.answer === "string" &&
+      normalizeText(answer.answer)
+    ) {
+      clarificationAnswers.set(answer.field, {
+        ...answer,
+        answer: normalizeText(answer.answer),
+      });
+    }
+  }
 
   function addEvidence(
     kind: string,
@@ -559,10 +584,49 @@ export function buildDecisionContext(request: DecisionContextBuilderRequest): De
     claim: string,
     reliability: EvidenceRef["reliability"],
     userConfirmed: boolean,
+    sourceRecordId?: EntityId,
   ): EntityId {
     const id = `builder_evidence_${evidence.length + 1}_${safeId(kind, "item")}`;
-    evidence.push({ id, source, claim, reliability, userConfirmed });
+    evidence.push({
+      id,
+      source,
+      claim,
+      reliability,
+      userConfirmed,
+      ...(sourceRecordId ? { sourceRecordId } : {}),
+    });
     return id;
+  }
+
+  const clarificationEvidence = new Map<DecisionContextBuilderMissingFieldKind, EntityId>();
+
+  function clarificationAnswer(field: DecisionContextBuilderMissingFieldKind): string | undefined {
+    return clarificationAnswers.get(field)?.answer;
+  }
+
+  function clarificationEvidenceId(field: DecisionContextBuilderMissingFieldKind): EntityId | undefined {
+    const answer = clarificationAnswers.get(field);
+
+    if (!answer) {
+      return undefined;
+    }
+
+    const existing = clarificationEvidence.get(field);
+
+    if (existing) {
+      return existing;
+    }
+
+    const evidenceId = addEvidence(
+      `clarification_${field}`,
+      "user_answer",
+      `Clarification answer for ${field}: ${answer.answer}`,
+      "high",
+      true,
+      answer.questionId,
+    );
+    clarificationEvidence.set(field, evidenceId);
+    return evidenceId;
   }
 
   function addInference(
@@ -641,15 +705,21 @@ export function buildDecisionContext(request: DecisionContextBuilderRequest): De
     ]);
   }
 
+  const successCriteriaAnswer = clarificationAnswer("success_criteria");
+  const successCriteriaEvidenceId = clarificationEvidenceId("success_criteria");
   const goal: DecisionContext["goals"][number] = {
     id: "goal_primary",
     description: `Evaluate decision: ${truncate(originalText, 160)}`,
     priority: "primary",
-    successCriteria: unknown("The user did not provide explicit success criteria."),
-    evidenceRefs: [rawEvidenceId],
+    successCriteria: successCriteriaAnswer && successCriteriaEvidenceId
+      ? known([successCriteriaAnswer], [successCriteriaEvidenceId])
+      : unknown("The user did not provide explicit success criteria."),
+    evidenceRefs: [rawEvidenceId, ...(successCriteriaEvidenceId ? [successCriteriaEvidenceId] : [])],
   };
   addInference("goal", goal.description, "Derived a primary evaluation goal from the raw user statement.", [rawEvidenceId]);
-  addMissing("success_criteria", "The user did not state measurable success criteria.", "important", [goal.id]);
+  if (!successCriteriaAnswer) {
+    addMissing("success_criteria", "The user did not state measurable success criteria.", "important", [goal.id]);
+  }
 
   const options: DecisionOption[] = [];
 
@@ -709,13 +779,20 @@ export function buildDecisionContext(request: DecisionContextBuilderRequest): De
     addInference("option", noActionOption.label, "Added the standard maintain-current-state option.", [rawEvidenceId]);
   }
 
-  addMissing(
-    "feasibility",
-    "Option feasibility was not explicitly supplied and must not be guessed.",
-    "important",
-    options.map((option) => option.id),
-  );
+  const feasibilityAnswer = clarificationAnswer("feasibility");
+  const feasibilityEvidenceId = clarificationEvidenceId("feasibility");
 
+  if (!feasibilityAnswer) {
+    addMissing(
+      "feasibility",
+      "Option feasibility was not explicitly supplied and must not be guessed.",
+      "important",
+      options.map((option) => option.id),
+    );
+  }
+
+  const constraintAnswer = clarificationAnswer("constraints");
+  const constraintAnswerEvidenceId = clarificationEvidenceId("constraints");
   const constraintDescriptions = extractConstraints(matchText);
   const constraints: Constraint[] = constraintDescriptions.map((description, index) => {
     const constraintEvidenceId = addEvidence(
@@ -737,12 +814,49 @@ export function buildDecisionContext(request: DecisionContextBuilderRequest): De
     return constraint;
   });
 
+  if (constraintAnswer && constraintAnswerEvidenceId) {
+    constraints.push({
+      id: "constraint_clarification",
+      description: constraintAnswer,
+      kind: constraintKind(normalizeForMatching(constraintAnswer)),
+      severity: "material",
+      appliesToOptionIds: options.map((option) => option.id),
+      evidenceRefs: [constraintAnswerEvidenceId],
+    });
+    addInference(
+      "constraint",
+      constraintAnswer,
+      "Added a user-confirmed constraint from the clarification round-trip.",
+      [constraintAnswerEvidenceId],
+    );
+  }
+
   if (constraints.length === 0) {
     addMissing("constraints", "The user did not provide explicit decision constraints.", "important");
   }
 
   const variables: DecisionVariable[] = [];
   const money = extractMoney(originalText);
+  const budgetAnswer = clarificationAnswer("budget");
+  const budgetAnswerEvidenceId = clarificationEvidenceId("budget");
+
+  if (feasibilityAnswer && feasibilityEvidenceId) {
+    variables.push({
+      id: "variable_feasibility_context",
+      name: "Contexto de viabilidad",
+      description: "Recursos o condiciones indicados en la aclaración.",
+      value: known(feasibilityAnswer, [feasibilityEvidenceId]),
+      materiality: "important",
+      volatility: "changeable",
+      affectedOptionIds: options.map((option) => option.id),
+    });
+    addInference(
+      "variable",
+      feasibilityAnswer,
+      "Added user-confirmed feasibility context without guessing a boolean outcome.",
+      [feasibilityEvidenceId],
+    );
+  }
 
   if (money) {
     const budgetEvidenceId = addEvidence(
@@ -762,6 +876,17 @@ export function buildDecisionContext(request: DecisionContextBuilderRequest): De
       affectedOptionIds: options.map((option) => option.id),
     });
     addInference("variable", "Budget", "Extracted an explicit monetary value.", [budgetEvidenceId]);
+  } else if (budgetAnswer && budgetAnswerEvidenceId) {
+    variables.push({
+      id: "variable_budget",
+      name: "Presupuesto",
+      description: "Límite económico indicado en la aclaración.",
+      value: known(budgetAnswer, [budgetAnswerEvidenceId]),
+      materiality: "important",
+      volatility: "changeable",
+      affectedOptionIds: options.map((option) => option.id),
+    });
+    addInference("variable", "Budget", "Added a user-confirmed budget boundary.", [budgetAnswerEvidenceId]);
   } else {
     addMissing("budget", "No explicit budget or monetary boundary was supplied.", categoryDetection.category === "finance_purchase" ? "important" : "supporting");
 
@@ -800,6 +925,9 @@ export function buildDecisionContext(request: DecisionContextBuilderRequest): De
     addMissing("risk_tolerance", "The user did not state risk tolerance.", "supporting");
   }
 
+  const reversibilityAnswer = clarificationAnswer("reversibility");
+  const reversibilityAnswerEvidenceId = clarificationEvidenceId("reversibility");
+
   if (/\b(reversible|irreversible|no hay vuelta|volver atras|cancelar)\b/.test(matchText)) {
     const reversibilityEvidenceId = addEvidence(
       "reversibility",
@@ -818,11 +946,29 @@ export function buildDecisionContext(request: DecisionContextBuilderRequest): De
       affectedOptionIds: options.map((option) => option.id),
     });
     addInference("variable", "Reversibility", "Detected explicit reversibility wording.", [reversibilityEvidenceId]);
+  } else if (reversibilityAnswer && reversibilityAnswerEvidenceId) {
+    variables.push({
+      id: "variable_reversibility",
+      name: "Reversibilidad",
+      description: "Margen para volver atrás indicado en la aclaración.",
+      value: known(reversibilityAnswer, [reversibilityAnswerEvidenceId]),
+      materiality: "important",
+      volatility: "stable",
+      affectedOptionIds: options.map((option) => option.id),
+    });
+    addInference(
+      "variable",
+      reversibilityAnswer,
+      "Added user-confirmed reversibility context.",
+      [reversibilityAnswerEvidenceId],
+    );
   } else {
     addMissing("reversibility", "The user did not state whether the decision is reversible.", "important");
   }
 
   const stakeholders: Stakeholder[] = [];
+  const stakeholderAnswer = clarificationAnswer("stakeholders");
+  const stakeholderAnswerEvidenceId = clarificationEvidenceId("stakeholders");
 
   for (const rule of STAKEHOLDER_RULES) {
     if (includesAny(matchText, rule.keywords)) {
@@ -845,16 +991,41 @@ export function buildDecisionContext(request: DecisionContextBuilderRequest): De
     }
   }
 
+  if (stakeholderAnswer && stakeholderAnswerEvidenceId) {
+    stakeholders.push({
+      id: "stakeholder_clarification",
+      role: "Personas afectadas indicadas por el usuario",
+      interests: known([stakeholderAnswer], [stakeholderAnswerEvidenceId]),
+      influence: "unknown",
+      impactExposure: "unknown",
+      evidenceRefs: [stakeholderAnswerEvidenceId],
+    });
+    addInference(
+      "stakeholder",
+      stakeholderAnswer,
+      "Added user-confirmed affected parties from clarification.",
+      [stakeholderAnswerEvidenceId],
+    );
+  }
+
   if (stakeholders.length === 0) {
     addMissing("stakeholders", "No explicit affected stakeholder was supplied.", "important");
   }
 
+  const deadlineAnswer = clarificationAnswer("deadline");
+  const deadlineAnswerEvidenceId = clarificationEvidenceId("deadline");
   const timeHorizon: TimeHorizon = {
-    decisionDeadline: timeMarker ? known(timeMarker, [rawEvidenceId]) : unknown("No explicit deadline was supplied."),
+    decisionDeadline: timeMarker
+      ? known(timeMarker, [rawEvidenceId])
+      : deadlineAnswer && deadlineAnswerEvidenceId
+        ? known(deadlineAnswer, [deadlineAnswerEvidenceId])
+        : unknown("No explicit deadline was supplied."),
     shortTermWindow: unknown("No explicit short-term window was supplied."),
     longTermWindow: unknown("No explicit long-term window was supplied."),
     delayCost: unknown("No explicit delay cost was supplied."),
-    reversibilityWindow: unknown("No explicit reversibility window was supplied."),
+    reversibilityWindow: reversibilityAnswer && reversibilityAnswerEvidenceId
+      ? known(reversibilityAnswer, [reversibilityAnswerEvidenceId])
+      : unknown("No explicit reversibility window was supplied."),
   };
 
   if (timeMarker) {
@@ -867,18 +1038,22 @@ export function buildDecisionContext(request: DecisionContextBuilderRequest): De
     );
     timeHorizon.decisionDeadline = known(timeMarker, [timeEvidenceId]);
     addInference("time_horizon", timeMarker, "Extracted an explicit time marker.", [timeEvidenceId]);
+  } else if (deadlineAnswer && deadlineAnswerEvidenceId) {
+    addInference("time_horizon", deadlineAnswer, "Added a user-confirmed decision window.", [deadlineAnswerEvidenceId]);
   } else {
     addMissing("deadline", "No explicit deadline or decision window was supplied.", "important");
   }
 
   const assumption: Assumption = {
     id: "assumption_input_only",
-    statement: "Only the supplied user statement is available; unstated conditions remain unknown.",
+    statement: clarificationAnswers.size > 0
+      ? "The original user statement and explicit clarification answers are available; other conditions remain unknown."
+      : "Only the supplied user statement is available; unstated conditions remain unknown.",
     source: "engine",
     materiality: "important",
-    validationStatus: "unvalidated",
+    validationStatus: clarificationAnswers.size > 0 ? "partially_validated" : "unvalidated",
     affectedEntityIds: [goal.id, ...options.map((option) => option.id)],
-    evidenceRefs: [rawEvidenceId],
+    evidenceRefs: [rawEvidenceId, ...clarificationEvidence.values()],
   };
 
   const decisionInput: DecisionInput = {

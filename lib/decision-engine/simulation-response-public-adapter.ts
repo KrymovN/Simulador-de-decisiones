@@ -1,4 +1,9 @@
 import type { SimulationResponseV2Draft } from "./contracts";
+import type {
+  DecisionContextBuilderClarificationAnswer,
+  DecisionContextBuilderClarificationQuestion,
+  DecisionContextBuilderMissingFieldKind,
+} from "./context-builder";
 import { validateSimulationResponseV2DraftShape } from "./simulation-response";
 
 export const SIMULATION_RESPONSE_PUBLIC_ADAPTER_VERSION = "0.1.0-deterministic";
@@ -77,8 +82,31 @@ export type PublicSimulationResponse = {
   thinkingStages: PublicSimulationThinkingStage[];
 };
 
+export type PublicSimulationClarificationQuestion = {
+  id: string;
+  field: DecisionContextBuilderMissingFieldKind;
+  text: string;
+  required: boolean;
+  whyItMatters: string;
+};
+
+export type PublicSimulationClarificationAnswer = {
+  questionId: string;
+  answer: string;
+};
+
+export type PublicSimulationClarificationResponse = {
+  input: string;
+  lang: "es";
+  simulationId: string;
+  round: number;
+  maxRounds: number;
+  questions: PublicSimulationClarificationQuestion[];
+  answers: PublicSimulationClarificationAnswer[];
+};
+
 export type PublicSimulationError = {
-  code: "CLARIFICATION_REQUIRED" | "CANNOT_RECOMMEND" | "REFUSED" | "SIMULATION_FAILED";
+  code: "CANNOT_RECOMMEND" | "REFUSED" | "SIMULATION_FAILED";
   message: string;
 };
 
@@ -99,6 +127,14 @@ export type PublicSimulationEnvelope =
       requestId: string;
       status: "completed";
       data: PublicSimulationResponse;
+      error: null;
+      meta: PublicSimulationEnvelopeMeta;
+    }
+  | {
+      contractVersion: typeof SIMULATE_API_CONTRACT_VERSION;
+      requestId: string;
+      status: "clarification_required";
+      data: PublicSimulationClarificationResponse;
       error: null;
       meta: PublicSimulationEnvelopeMeta;
     }
@@ -162,6 +198,53 @@ function failedEnvelope(
     status: "failed",
     data: null,
     error: { code, message },
+    meta: meta(generatedAt),
+  };
+}
+
+function publicClarificationReason(field: DecisionContextBuilderMissingFieldKind): string {
+  if (field === "success_criteria") return "Permite evaluar cada escenario contra el resultado que realmente buscas.";
+  if (field === "feasibility") return "Evita tratar una opción como viable sin conocer tus recursos y condiciones reales.";
+  if (field === "constraints") return "Los límites no negociables pueden descartar o cambiar una ruta completa.";
+  if (field === "reversibility") return "El coste de volver atrás cambia la exposición de cada escenario.";
+  if (field === "stakeholders") return "Las personas afectadas forman parte de las consecuencias de la decisión.";
+  if (field === "deadline") return "El plazo determina qué opciones y pasos intermedios son realistas.";
+  if (field === "budget") return "El límite económico condiciona la viabilidad y el riesgo.";
+  return "Tu tolerancia al riesgo ayuda a interpretar los escenarios sin asumirla por ti.";
+}
+
+export function createPublicDeterministicClarificationEnvelope(request: {
+  requestId: string;
+  simulationId: string;
+  input: string;
+  round: number;
+  maxRounds: number;
+  questions: DecisionContextBuilderClarificationQuestion[];
+  answers: DecisionContextBuilderClarificationAnswer[];
+  generatedAt?: string;
+}): PublicSimulationEnvelope {
+  const generatedAt = request.generatedAt ?? new Date().toISOString();
+
+  return {
+    contractVersion: SIMULATE_API_CONTRACT_VERSION,
+    requestId: request.requestId,
+    status: "clarification_required",
+    data: {
+      input: request.input,
+      lang: "es",
+      simulationId: request.simulationId,
+      round: request.round,
+      maxRounds: request.maxRounds,
+      questions: request.questions.map((question) => ({
+        id: question.id,
+        field: question.field,
+        text: question.text,
+        required: question.required,
+        whyItMatters: publicClarificationReason(question.field),
+      })),
+      answers: request.answers.map(({ questionId, answer }) => ({ questionId, answer })),
+    },
+    error: null,
     meta: meta(generatedAt),
   };
 }
@@ -444,12 +527,31 @@ export function adaptSimulationResponseV2ToPublicSimulatorEnvelope(
   }
 
   if (request.response.status === "clarification_required") {
-    return failedEnvelope(
-      requestId,
-      generatedAt,
-      "CLARIFICATION_REQUIRED",
-      request.response.clarification?.reason ?? "Clarification is required before a public simulation preview.",
+    const fields: DecisionContextBuilderMissingFieldKind[] = [
+      "success_criteria",
+      "feasibility",
+      "constraints",
+    ];
+    const questions = (request.response.clarification?.questions ?? []).slice(0, 3).map(
+      (question, index): DecisionContextBuilderClarificationQuestion => ({
+        id: `builder_question_${fields[index] ?? "feasibility"}`,
+        field: fields[index] ?? "feasibility",
+        text: question.text,
+        required: true,
+        reason: question.whyItMatters,
+      }),
     );
+
+    return createPublicDeterministicClarificationEnvelope({
+      requestId,
+      simulationId: request.response.requestId,
+      input: request.response.decision.statement,
+      round: 1,
+      maxRounds: 2,
+      questions,
+      answers: [],
+      generatedAt,
+    });
   }
 
   if (request.response.status === "cannot_recommend") {
@@ -482,6 +584,26 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
+function isPublicClarificationField(value: unknown): value is DecisionContextBuilderMissingFieldKind {
+  return value === "success_criteria" ||
+    value === "feasibility" ||
+    value === "constraints" ||
+    value === "reversibility" ||
+    value === "stakeholders" ||
+    value === "deadline" ||
+    value === "budget" ||
+    value === "risk_tolerance";
+}
+
+function isPublicClarificationAnswer(value: unknown): value is PublicSimulationClarificationAnswer {
+  return isRecord(value) &&
+    typeof value.questionId === "string" &&
+    /^builder_question_[a-z_]+$/.test(value.questionId) &&
+    typeof value.answer === "string" &&
+    value.answer.trim().length > 0 &&
+    value.answer.length <= 600;
+}
+
 export function validatePublicSimulationEnvelopeShape(value: unknown): value is PublicSimulationEnvelope {
   if (!isRecord(value) || !isRecord(value.meta)) {
     return false;
@@ -506,6 +628,43 @@ export function validatePublicSimulationEnvelopeShape(value: unknown): value is 
       isRecord(value.error) &&
       typeof value.error.code === "string" &&
       typeof value.error.message === "string";
+  }
+
+  if (value.status === "clarification_required") {
+    return value.error === null &&
+      isRecord(value.data) &&
+      value.data.lang === "es" &&
+      typeof value.data.input === "string" &&
+      value.data.input.trim().length > 0 &&
+      value.data.input.length <= SIMULATE_API_MAX_INPUT_LENGTH &&
+      typeof value.data.simulationId === "string" &&
+      /^[a-zA-Z0-9_-]{8,128}$/.test(value.data.simulationId) &&
+      typeof value.data.round === "number" &&
+      Number.isInteger(value.data.round) &&
+      value.data.round >= 1 &&
+      typeof value.data.maxRounds === "number" &&
+      Number.isInteger(value.data.maxRounds) &&
+      value.data.maxRounds >= value.data.round &&
+      value.data.maxRounds <= 2 &&
+      Array.isArray(value.data.questions) &&
+      value.data.questions.length > 0 &&
+      value.data.questions.length <= 3 &&
+      value.data.questions.every((question) =>
+        isRecord(question) &&
+        typeof question.id === "string" &&
+        /^builder_question_[a-z_]+$/.test(question.id) &&
+        isPublicClarificationField(question.field) &&
+        question.id === `builder_question_${question.field}` &&
+        typeof question.text === "string" &&
+        question.text.trim().length > 0 &&
+        typeof question.required === "boolean" &&
+        question.required === true &&
+        typeof question.whyItMatters === "string" &&
+        question.whyItMatters.trim().length > 0
+      ) &&
+      Array.isArray(value.data.answers) &&
+      value.data.answers.length <= 6 &&
+      value.data.answers.every(isPublicClarificationAnswer);
   }
 
   return value.status === "completed" &&

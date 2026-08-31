@@ -78,13 +78,10 @@ check(
   ),
 );
 check(
-  "Simulator request and save integrations remain byte-identical to the task baseline",
-  functionBlock(simulator, "  async function requestSimulation", "  async function runProcessingSequence") ===
-    functionBlock(
-      baselineFile("components/HomeSimulator.tsx"),
-      "  async function requestSimulation",
-      "  async function runProcessingSequence",
-    ) &&
+  "Simulator continuation changes stay bounded while save integration remains byte-identical",
+  simulator.includes("SimulateApiClarificationRequest") &&
+    simulator.includes("simulationId: clarificationState.simulationId") &&
+    simulator.includes("clarificationState.input") &&
     functionBlock(simulator, "  async function handleSave", "\n\n  return (") ===
       functionBlock(
         baselineFile("components/HomeSimulator.tsx"),

@@ -251,7 +251,7 @@ function runRenderedSurfaceSourceChecks(sources) {
   sourceIncludes(sources.homeSimulator, "<p>Resultado · Riesgo · Tiempo · Recursos</p>", "HomeSimulator renders canonical dimensions as informational text");
   sourceExcludes(sources.homeSimulator, "Criterios principales", "HomeSimulator removes the misleading selectable-criteria label");
   sourceIncludes(sources.homeSimulator, "Vista previa determinista", "HomeSimulator keeps the concise deterministic preview line");
-  sourceIncludes(sources.homeSimulator, "Vista previa determinista · Respuestas de ejemplo", "HomeSimulator keeps AI-neutral deterministic preview copy");
+  sourceIncludes(sources.homeSimulator, "Vista previa determinista · Flujo interactivo", "HomeSimulator keeps truthful deterministic interactive copy");
   sourceExcludes(sources.homeSimulator, "conexión con IA real", "HomeSimulator removes unnecessary Real AI reminders");
   sourceIncludes(sources.dashboardLayout, "requireAuthenticatedDashboardSession", "Dashboard routes remain protected before authenticated content renders");
   sourceExcludes(sources.dashboardHome, "Vista preparada", "Dashboard landing removes the prepared scaffold");

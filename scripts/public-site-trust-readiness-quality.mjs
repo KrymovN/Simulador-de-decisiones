@@ -154,12 +154,12 @@ function runPositioningSourceChecks(sources) {
   sourceIncludes(sources.home, "Levio analiza la situación, identifica la información relevante, compara escenarios, evalúa riesgos y organiza criterios de decisión.", "Home explains the simulation process without AI positioning");
   sourceIncludes(sources.home, "escenarios, riesgos y consecuencias", "Home keeps scenarios/risks/consequences line");
   sourceIncludes(sources.home, "trade-offs", "Home keeps tradeoffs positioning");
-  sourceIncludes(sources.home, "Preview público con respuestas de ejemplo", "Home keeps demonstrative public state");
+  sourceIncludes(sources.home, "Preview público con aclaración interactiva", "Home keeps the interactive clarification state truthful");
   sourceExcludes(sources.home, "asistente de IA", "Home avoids unnecessary AI-assistant positioning");
   sourceIncludes(sources.homeSimulator, "Vista previa determinista", "HomeSimulator keeps deterministic preview status");
-  sourceIncludes(sources.homeSimulator, "Vista previa determinista · Respuestas de ejemplo", "HomeSimulator keeps an AI-neutral deterministic preview status");
+  sourceIncludes(sources.homeSimulator, "Vista previa determinista · Flujo interactivo", "HomeSimulator keeps an AI-neutral interactive preview status");
   sourceIncludes(sources.homeSimulator, "MAX_SIMULATION_INPUT_LENGTH", "HomeSimulator keeps the bounded public input disclosure");
-  sourceIncludes(sources.homeSimulator, "Simulación demostrativa con respuestas de ejemplo.", "Result copy keeps an AI-neutral demonstrative boundary");
+  sourceIncludes(sources.homeSimulator, "Aclaremos lo importante antes de simular", "HomeSimulator exposes clarification as a normal product state");
   sourceExcludes(sources.homeSimulator, "conexión con IA real", "HomeSimulator removes unnecessary Real AI reminders");
   sourceIncludes(sources.homeSimulator, "sin presentarse como predicción lista para producción", "HomeSimulator avoids production-readiness promise");
 }
@@ -312,9 +312,9 @@ async function runRuntimePublicPageChecks(baseUrl) {
     {
       path: "/",
       includes: [
-        "Preview público con respuestas de ejemplo",
+        "Preview público con aclaración interactiva",
         "Vista previa determinista",
-        "Respuestas de ejemplo",
+        "Aclaremos lo importante antes de simular",
         "Levio analiza la situación",
       ],
     },

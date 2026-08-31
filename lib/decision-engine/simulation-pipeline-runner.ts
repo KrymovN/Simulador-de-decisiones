@@ -1,6 +1,7 @@
 import {
   buildDecisionContext,
   DECISION_CONTEXT_BUILDER_VERSION,
+  type DecisionContextBuilderClarificationAnswer,
   type DecisionContextBuilderMissingFieldKind,
   type DecisionContextBuilderResult,
 } from "./context-builder";
@@ -34,6 +35,7 @@ export type SimulationPipelineRunnerRequest = {
   inputLanguage?: string;
   requestedOutputLanguage?: string;
   userIntent?: DecisionIntent;
+  clarificationAnswers?: DecisionContextBuilderClarificationAnswer[];
 };
 
 export type SimulationPipelineRunnerStatus = "completed" | "rejected" | "failed";
@@ -239,6 +241,7 @@ export function runInternalSimulationPipeline(
       inputLanguage: request?.inputLanguage,
       requestedOutputLanguage: request?.requestedOutputLanguage,
       userIntent: request?.userIntent,
+      clarificationAnswers: request?.clarificationAnswers,
     });
 
     if (builder.status === "rejected") {

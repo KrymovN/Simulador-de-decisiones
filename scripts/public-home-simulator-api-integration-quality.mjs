@@ -209,6 +209,16 @@ function assertFailedEnvelope(payload, expectedErrorCode) {
   assert(!("recommendation" in payload), "Failed envelope must not expose recommendation at top level.");
 }
 
+function assertClarificationEnvelope(payload) {
+  assertPublicEnvelope(payload, "clarification_required");
+  assert(payload.error === null, "Clarification response must keep error:null.");
+  assert(payload.data?.lang === "es", "Clarification response must remain Spanish.");
+  assert(typeof payload.data?.simulationId === "string", "Clarification response requires simulationId.");
+  assert(Array.isArray(payload.data?.questions) && payload.data.questions.length > 0, "Clarification response requires questions.");
+  assert(payload.data.questions.every((question) => question.required === true), "Clarification questions must require answers.");
+  assert(!payload.data.simulation, "Clarification response must not expose a premature result.");
+}
+
 async function expectIntegrationCase(baseUrl, name, options, expected) {
   try {
     const { response, payload } = await postSimulation(baseUrl, options);
@@ -217,13 +227,17 @@ async function expectIntegrationCase(baseUrl, name, options, expected) {
 
     if (expected.status === "completed") {
       assertCompletedEnvelope(payload);
+    } else if (expected.status === "clarification_required") {
+      assertClarificationEnvelope(payload);
     } else {
       assertFailedEnvelope(payload, expected.errorCode);
     }
 
     pass(name);
+    return payload;
   } catch (error) {
     fail(name, error instanceof Error ? error.message : String(error));
+    return null;
   }
 }
 
@@ -241,8 +255,8 @@ function runSimulatorSourceChecks() {
     : "";
 
   sourceIncludes(source, 'fetch("/api/simulate"', "HomeSimulator uses approved /api/simulate route");
-  sourceIncludes(source, 'body: JSON.stringify({ input: situation, lang: "es" })', "HomeSimulator sends only approved input/lang payload");
-  sourceIncludes(simulateRoute, 'const ALLOWED_PAYLOAD_FIELDS = new Set(["input", "lang"]);', "Simulator API keeps the exact input/lang request contract");
+  sourceIncludes(source, "...(clarification ? { clarification } : {})", "HomeSimulator sends bounded clarification only for continuation");
+  sourceIncludes(simulateRoute, 'const ALLOWED_PAYLOAD_FIELDS = new Set(["input", "lang", "clarification"]);', "Simulator API accepts only input/lang and bounded clarification state");
   assertCheck(
     "Canonical dimensions are plain informational text",
     criteriaBlock.includes("La simulación tendrá en cuenta") &&
@@ -280,7 +294,8 @@ function runSimulatorSourceChecks() {
   sourceIncludes(source, "safeRender !== true", "HomeSimulator checks safeRender before render");
   sourceIncludes(source, "mockOnly !== true", "HomeSimulator checks mockOnly before render");
   sourceIncludes(source, "apiReady !== true", "HomeSimulator checks apiReady before render");
-  sourceIncludes(source, "Vista previa determinista · Respuestas de ejemplo", "HomeSimulator keeps AI-neutral deterministic preview copy");
+  sourceIncludes(source, "Vista previa determinista · Flujo interactivo", "HomeSimulator keeps truthful deterministic interactive copy");
+  sourceIncludes(source, "Continuar simulación", "HomeSimulator renders the clarification continuation action");
   sourceIncludes(source, "Resultado orientativo listo.", "HomeSimulator uses production product wording after completion");
   sourceExcludes(source, "conexión con IA real", "HomeSimulator removes unnecessary Real AI reminders");
   sourceExcludes(source, "Simulación demo completada.", "HomeSimulator removes demo wording from completed results");
@@ -321,9 +336,9 @@ function runHomePositioningChecks() {
   sourceIncludes(pageSource, "<HomeSimulator />", "Public Home keeps HomeSimulator mounted");
   sourceIncludes(pageSource, "Levio analiza la situación, identifica la información relevante, compara escenarios, evalúa riesgos y organiza criterios de decisión.", "Public Home explains the simulation process without AI positioning");
   sourceIncludes(pageSource, "Sistema de simulación de decisiones para explorar escenarios, riesgos y consecuencias antes de actuar.", "Public Home footer keeps simulation-system positioning");
-  sourceIncludes(pageSource, "Preview público con respuestas de ejemplo", "Public Home keeps demonstrative public state");
+  sourceIncludes(pageSource, "Preview público con aclaración interactiva", "Public Home describes the interactive public state");
   sourceExcludes(pageSource, "asistente de IA", "Public Home avoids unnecessary AI-assistant positioning");
-  sourceIncludes(simulatorSource, "Vista previa determinista · Respuestas de ejemplo", "HomeSimulator keeps the concise AI-neutral preview disclosure");
+  sourceIncludes(simulatorSource, "Vista previa determinista · Flujo interactivo", "HomeSimulator keeps the concise interactive preview disclosure");
   sourceExcludes(simulatorSource, "conexión con IA real", "HomeSimulator removes unnecessary Real AI reminders");
 
   sourceExcludes(combinedSource, "AI Chat", "Public Home does not position Levio as AI Chat");
@@ -338,12 +353,13 @@ function runHomePositioningChecks() {
 }
 
 async function runApiEnvelopeChecks(baseUrl) {
+  const oneShotInput = "Comparar aceptar una oferta laboral o seguir en mi empresa actual antes de final de mes con mi familia, sin reducir ingresos y con una transición reversible";
   await expectIntegrationCase(
     baseUrl,
     "Home integration accepts successful deterministic envelope",
     {
       source: 31,
-      body: JSON.stringify({ input: "Comparar una oferta laboral con riesgo familiar", lang: "es" }),
+      body: JSON.stringify({ input: oneShotInput, lang: "es" }),
     },
     { httpStatus: 200, status: "completed" },
   );
@@ -358,15 +374,42 @@ async function runApiEnvelopeChecks(baseUrl) {
     { httpStatus: 200, status: "failed", errorCode: "REFUSED" },
   );
 
-  await expectIntegrationCase(
+  const clarification = await expectIntegrationCase(
     baseUrl,
-    "Home integration accepts CLARIFICATION_REQUIRED data-null envelope",
+    "Home integration accepts clarification_required product envelope",
     {
       source: 33,
-      body: JSON.stringify({ input: "Explorar una decision de salud esta semana", lang: "es" }),
+      body: JSON.stringify({ input: "¿Debería cambiar de trabajo?", lang: "es" }),
     },
-    { httpStatus: 200, status: "failed", errorCode: "CLARIFICATION_REQUIRED" },
+    { httpStatus: 200, status: "clarification_required" },
   );
+
+  if (clarification) {
+    await expectIntegrationCase(
+      baseUrl,
+      "Home integration completes the same simulation after clarification answers",
+      {
+        source: 36,
+        body: JSON.stringify({
+          input: clarification.data.input,
+          lang: "es",
+          clarification: {
+            simulationId: clarification.data.simulationId,
+            round: clarification.data.round,
+            answers: clarification.data.questions.map((question, index) => ({
+              questionId: question.id,
+              answer: [
+                "Mejorar estabilidad, aprendizaje y equilibrio personal.",
+                "Tengo una oferta concreta y recursos para la transición.",
+                "No reducir ingresos y mantener tiempo para mi familia.",
+              ][index],
+            })),
+          },
+        }),
+      },
+      { httpStatus: 200, status: "completed" },
+    );
+  }
 
   await expectIntegrationCase(
     baseUrl,
@@ -400,7 +443,7 @@ async function runRuntimeHomeChecks(baseUrl) {
     assert(html.includes('id="decision-input"'), "Runtime HTML must include simulator textarea.");
     assert(html.includes("La simulación tendrá en cuenta"), "Runtime HTML must explain automatic dimensions.");
     assert(html.includes("Resultado · Riesgo · Tiempo · Recursos"), "Runtime HTML must render all four dimensions as text.");
-    assert(html.includes("Vista previa determinista · Respuestas de ejemplo"), "Runtime HTML must keep the concise AI-neutral preview disclosure.");
+    assert(html.includes("Vista previa determinista · Flujo interactivo"), "Runtime HTML must keep the concise interactive preview disclosure.");
     assert(html.includes("Preview público"), "Runtime HTML must include public preview status.");
     assert(!html.includes("conexión con IA real"), "Runtime HTML must not expose unnecessary Real AI reminders.");
     assert(!/Application error|Internal Server Error|Unhandled Runtime Error/i.test(html), "Runtime HTML contains fatal error marker.");

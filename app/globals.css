@@ -6551,6 +6551,125 @@ textarea::placeholder {
   }
 }
 
+/* Deterministic clarification round-trip */
+.simulator-clarification-panel {
+  display: grid;
+  gap: 22px;
+  margin-top: 26px;
+  padding: clamp(20px, 3vw, 30px);
+  border: 1px solid rgba(255, 211, 106, 0.38);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 92% 0%, rgba(216, 168, 74, 0.13), transparent 34%),
+    rgba(4, 3, 2, 0.9);
+  box-shadow: inset 0 1px 0 rgba(255, 243, 208, 0.08);
+}
+
+.simulator-clarification-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.simulator-clarification-heading h2 {
+  max-width: 650px;
+  margin: 6px 0 0;
+  font-size: clamp(1.35rem, 2.6vw, 2rem);
+  line-height: 1.08;
+}
+
+.simulator-clarification-heading > span {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 211, 106, 0.28);
+  border-radius: 999px;
+  color: rgba(255, 226, 160, 0.9);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.simulator-clarification-panel > p {
+  max-width: 720px;
+  margin: 0;
+  color: rgba(248, 242, 228, 0.76);
+  line-height: 1.6;
+}
+
+.decision-console .simulator-clarification-form {
+  display: grid;
+  gap: 18px;
+}
+
+.simulator-clarification-question {
+  display: grid;
+  gap: 10px;
+}
+
+.decision-console .simulator-clarification-question label {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin: 0;
+  color: rgba(255, 244, 218, 0.95);
+  font-size: 0.95rem;
+  letter-spacing: 0;
+  line-height: 1.45;
+  text-transform: none;
+}
+
+.simulator-clarification-question label span {
+  color: rgba(255, 211, 106, 0.74);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+.decision-console .simulator-clarification-question textarea {
+  width: 100%;
+  min-height: 92px;
+  padding: 15px 16px;
+  border: 1px solid rgba(255, 211, 106, 0.3);
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff8e8;
+  font: inherit;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.decision-console .simulator-clarification-question textarea:focus-visible {
+  border-color: rgba(255, 222, 145, 0.88);
+  outline: 2px solid rgba(216, 168, 74, 0.22);
+  outline-offset: 2px;
+}
+
+.simulator-clarification-question small {
+  color: rgba(235, 221, 190, 0.62);
+  line-height: 1.45;
+}
+
+.simulator-clarification-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+@media (max-width: 600px) {
+  .simulator-clarification-heading {
+    display: grid;
+  }
+
+  .simulator-clarification-heading > span {
+    justify-self: start;
+  }
+
+  .simulator-clarification-actions > button {
+    width: 100%;
+  }
+}
+
 /* Stage 2.8B.3: scoped precision polish for reference-aligned symbolic details. */
 
 .reference-hero .feature-analysis > span::after {

@@ -127,14 +127,19 @@ export function runDeterministicRuntimeObservabilityValidation(): DeterministicR
       assertNoInternalLeakage(envelope);
     }),
 
-    runCase("clarification outcome fails closed without public artifacts", () => {
+    runCase("clarification outcome remains a bounded public product state", () => {
       const response = requireResponse("Explorar una decision de salud esta semana", "observability_case_clarification");
       const envelope = adapt(response);
       assertCase(
         simulationRuntimeOutcomeForResponseStatus(response.status) === "clarification",
         "Expected clarification runtime outcome.",
       );
-      assertFailClosedNoArtifacts(envelope, "CLARIFICATION_REQUIRED");
+      if (envelope.status !== "clarification_required") {
+        throw new Error("Expected normal clarification product state.");
+      }
+      assertCase(envelope.error === null, "Clarification product state must not expose an error.");
+      assertCase(envelope.data.questions.length > 0, "Clarification product state must expose bounded questions.");
+      assertCase(envelope.data.questions.length <= 3, "Clarification product state exceeded its question bound.");
       assertPublicContract(envelope);
       assertNoInternalLeakage(envelope);
     }),
