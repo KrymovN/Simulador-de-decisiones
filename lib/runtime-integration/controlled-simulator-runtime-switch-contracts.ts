@@ -195,6 +195,14 @@ export type ControlledProductionAiOperationalEvent = {
     calculatedCostUsd: number;
   };
   failureCategory?: string;
+  providerFailureType?:
+    | "connection_error"
+    | "http_error"
+    | "timeout"
+    | "other_supported_existing_type";
+  httpStatus?: number | null;
+  providerCode?: string | null;
+  providerErrorType?: string | null;
   fallbackState: "not_used" | "fail_closed";
   rollbackState: "active" | "available";
   sensitiveDataIncluded: false;

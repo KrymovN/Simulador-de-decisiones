@@ -84,9 +84,44 @@ add("bad-request-secret-redacted", !normalizedBadRequestText.includes(syntheticS
 add("bad-request-raw-data-excluded", !normalizedBadRequestText.includes("raw_body") && !normalizedBadRequestText.includes("headers") && !normalizedBadRequestText.includes("request-id"), "Raw bodies, headers, and request IDs must not be projected.");
 const missingMetadata = serverAdapter.normalizedProviderFailure(new OpenAI.BadRequestError(400, {}, undefined, new Headers()));
 add("bad-request-missing-metadata-safe", missingMetadata.category === "provider_bad_request" && missingMetadata.providerErrorMetadata?.httpStatus === 400 && missingMetadata.providerErrorMetadata.type === null && missingMetadata.providerErrorMetadata.code === null && missingMetadata.providerErrorMetadata.param === null, "Missing provider metadata must normalize to explicit nulls.");
-add("existing-timeout-normalization-preserved", serverAdapter.normalizedProviderFailure(new OpenAI.APIConnectionTimeoutError()).category === "provider_timeout");
-add("existing-auth-normalization-preserved", serverAdapter.normalizedProviderFailure(new OpenAI.AuthenticationError(401, {}, undefined, new Headers())).category === "provider_authentication_failed");
+const connectionSecret = "sk-CONNECTIONSECRET123456";
+const normalizedConnection = serverAdapter.normalizedProviderFailure(
+  new OpenAI.APIConnectionError({
+    message: `Connection failed with ${connectionSecret}`,
+    cause: new Error(`raw transport cause ${connectionSecret}`),
+  }),
+);
+add("connection-error-category-preserved", normalizedConnection.category === "provider_unavailable");
+add("connection-error-metadata-preserved", normalizedConnection.providerFailureMetadata?.providerFailureType === "connection_error" && normalizedConnection.providerFailureMetadata.httpStatus === null && normalizedConnection.providerFailureMetadata.providerCode === null && normalizedConnection.providerFailureMetadata.providerErrorType === null);
+add("connection-error-sensitive-detail-excluded", !JSON.stringify(normalizedConnection).includes(connectionSecret) && !JSON.stringify(normalizedConnection).includes("raw transport cause"));
+
+const normalizedHttp500 = serverAdapter.normalizedProviderFailure(new OpenAI.InternalServerError(
+  500,
+  { type: "server_error", code: "internal_error", message: "raw 500 body", raw_body: { forbidden: true } },
+  undefined,
+  new Headers({ Authorization: "Bearer HTTP500SECRET" }),
+));
+add("http-500-category-preserved", normalizedHttp500.category === "provider_unavailable");
+add("http-500-metadata-preserved", normalizedHttp500.providerFailureMetadata?.providerFailureType === "http_error" && normalizedHttp500.providerFailureMetadata.httpStatus === 500 && normalizedHttp500.providerFailureMetadata.providerCode === "internal_error" && normalizedHttp500.providerFailureMetadata.providerErrorType === "server_error");
+
+const http503Secret = "sk-HTTP503SECRET123456";
+const normalizedHttp503 = serverAdapter.normalizedProviderFailure(new OpenAI.InternalServerError(
+  503,
+  { type: "service_unavailable", code: "temporarily_unavailable", message: http503Secret, raw_body: { secret: http503Secret } },
+  undefined,
+  new Headers({ Authorization: `Bearer ${http503Secret}` }),
+));
+const normalizedHttp503Text = JSON.stringify(normalizedHttp503);
+add("http-503-category-preserved", normalizedHttp503.category === "provider_unavailable");
+add("http-503-metadata-preserved", normalizedHttp503.providerFailureMetadata?.providerFailureType === "http_error" && normalizedHttp503.providerFailureMetadata.httpStatus === 503 && normalizedHttp503.providerFailureMetadata.providerCode === "temporarily_unavailable" && normalizedHttp503.providerFailureMetadata.providerErrorType === "service_unavailable");
+add("http-5xx-raw-body-and-secrets-excluded", !normalizedHttp503Text.includes("raw_body") && !normalizedHttp503Text.includes(http503Secret) && !normalizedHttp503Text.includes("Authorization"));
+
+const normalizedTimeout = serverAdapter.normalizedProviderFailure(new OpenAI.APIConnectionTimeoutError());
+add("existing-timeout-normalization-preserved", normalizedTimeout.category === "provider_timeout" && normalizedTimeout.providerFailureMetadata?.providerFailureType === "timeout" && normalizedTimeout.providerFailureMetadata.httpStatus === null);
+const normalizedAuthentication = serverAdapter.normalizedProviderFailure(new OpenAI.AuthenticationError(401, { type: "authentication_error", code: "invalid_api_key" }, undefined, new Headers()));
+add("existing-auth-normalization-preserved", normalizedAuthentication.category === "provider_authentication_failed" && normalizedAuthentication.providerFailureMetadata?.httpStatus === 401);
 add("existing-rate-limit-normalization-preserved", serverAdapter.normalizedProviderFailure(new OpenAI.RateLimitError(429, {}, undefined, new Headers())).category === "provider_rate_limited");
+add("existing-bad-request-model-rejection-preserved", normalizedBadRequest.category === "provider_bad_request" && normalizedBadRequest.providerFailureMetadata?.providerFailureType === "http_error" && normalizedBadRequest.providerFailureMetadata.httpStatus === 400);
 
 const rawVisibleOutput = '{"diagnostic":"must-not-survive"}';
 const rawReasoningText = "hidden reasoning must not survive";

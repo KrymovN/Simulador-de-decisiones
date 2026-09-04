@@ -1,3 +1,5 @@
+import type { ProviderFailureOperationalMetadata } from "./provider-failure-observability";
+
 export const OPENAI_SYNTHETIC_RISK_ADAPTER_VERSION =
   "stage-9-openai-synthetic-candidate-risk-signals.1" as const;
 export const CANDIDATE_RISK_SIGNALS_CAPABILITY =
@@ -195,15 +197,18 @@ export type SyntheticRiskExecutionConfig = {
 export class SyntheticRiskTransportFailure extends Error {
   readonly category: SyntheticRiskErrorCategory;
   readonly providerErrorMetadata: SyntheticRiskProviderErrorMetadata | undefined;
+  readonly providerFailureMetadata: ProviderFailureOperationalMetadata | undefined;
 
   constructor(
     category: SyntheticRiskErrorCategory,
     providerErrorMetadata?: SyntheticRiskProviderErrorMetadata,
+    providerFailureMetadata?: ProviderFailureOperationalMetadata,
   ) {
     super("Provider transport failed.");
     this.name = "SyntheticRiskTransportFailure";
     this.category = category;
     this.providerErrorMetadata = providerErrorMetadata;
+    this.providerFailureMetadata = providerFailureMetadata;
   }
 }
 

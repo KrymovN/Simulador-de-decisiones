@@ -3,6 +3,11 @@ import "server-only";
 import OpenAI from "openai";
 
 import {
+  boundedProviderFailureMetadata,
+  type ProviderFailureOperationalMetadata,
+} from "./provider-failure-observability";
+
+import {
   DecisionMaterialTransportFailure,
   OPENAI_DECISION_MATERIAL_PROVIDER,
   calculateDecisionMaterialCostEvidence,
@@ -67,6 +72,7 @@ type OpenAIProviderFailureCategory =
 type OpenAIProviderFailureFactory = (
   category: OpenAIProviderFailureCategory,
   providerErrorMetadata?: ReturnType<typeof boundedProviderBadRequestMetadata>,
+  providerFailureMetadata?: ProviderFailureOperationalMetadata,
 ) => Error;
 
 function responseRequest(request: OpenAIResponsesProviderRequest) {
@@ -92,16 +98,42 @@ function normalizeOpenAIProviderFailure(
   failure: OpenAIProviderFailureFactory,
 ): Error {
   if (error instanceof OpenAI.APIConnectionTimeoutError) {
-    return failure("provider_timeout");
+    return failure(
+      "provider_timeout",
+      undefined,
+      boundedProviderFailureMetadata({ providerFailureType: "timeout" }),
+    );
   }
   if (error instanceof OpenAI.AuthenticationError) {
-    return failure("provider_authentication_failed");
+    return failure(
+      "provider_authentication_failed",
+      undefined,
+      boundedProviderFailureMetadata({
+        providerFailureType: "http_error",
+        httpStatus: error.status,
+        providerCode: error.code,
+        providerErrorType: error.type,
+      }),
+    );
   }
   if (error instanceof OpenAI.RateLimitError) {
-    return failure("provider_rate_limited");
+    return failure(
+      "provider_rate_limited",
+      undefined,
+      boundedProviderFailureMetadata({
+        providerFailureType: "http_error",
+        httpStatus: error.status,
+        providerCode: error.code,
+        providerErrorType: error.type,
+      }),
+    );
   }
   if (error instanceof OpenAI.APIConnectionError) {
-    return failure("provider_unavailable");
+    return failure(
+      "provider_unavailable",
+      undefined,
+      boundedProviderFailureMetadata({ providerFailureType: "connection_error" }),
+    );
   }
   if (error instanceof OpenAI.BadRequestError) {
     return failure(
@@ -113,19 +145,46 @@ function normalizeOpenAIProviderFailure(
         param: error.param,
         message: error.message,
       }),
+      boundedProviderFailureMetadata({
+        providerFailureType: "http_error",
+        httpStatus: error.status,
+        providerCode: error.code,
+        providerErrorType: error.type,
+      }),
     );
   }
   if (error instanceof OpenAI.APIError && error.status != null && error.status >= 500) {
-    return failure("provider_unavailable");
+    return failure(
+      "provider_unavailable",
+      undefined,
+      boundedProviderFailureMetadata({
+        providerFailureType: "http_error",
+        httpStatus: error.status,
+        providerCode: error.code,
+        providerErrorType: error.type,
+      }),
+    );
   }
-  return failure("provider_unknown_failure");
+  return failure(
+    "provider_unknown_failure",
+    undefined,
+    boundedProviderFailureMetadata({
+      providerFailureType: "other_supported_existing_type",
+    }),
+  );
 }
 
-const syntheticRiskFailure: OpenAIProviderFailureFactory = (category, metadata) =>
-  new SyntheticRiskTransportFailure(category, metadata);
+const syntheticRiskFailure: OpenAIProviderFailureFactory = (
+  category,
+  metadata,
+  failureMetadata,
+) => new SyntheticRiskTransportFailure(category, metadata, failureMetadata);
 
-const decisionMaterialFailure: OpenAIProviderFailureFactory = (category, metadata) =>
-  new DecisionMaterialTransportFailure(category, metadata);
+const decisionMaterialFailure: OpenAIProviderFailureFactory = (
+  category,
+  metadata,
+  failureMetadata,
+) => new DecisionMaterialTransportFailure(category, metadata, failureMetadata);
 
 export function normalizedProviderFailure(error: unknown): SyntheticRiskTransportFailure {
   return normalizeOpenAIProviderFailure(error, syntheticRiskFailure) as SyntheticRiskTransportFailure;

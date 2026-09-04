@@ -297,7 +297,16 @@ try {
 
   const failureTransport = {
     async countInput() {
-      throw new DecisionMaterialTransportFailure("provider_unavailable");
+      throw new DecisionMaterialTransportFailure(
+        "provider_unavailable",
+        undefined,
+        {
+          providerFailureType: "http_error",
+          httpStatus: 503,
+          providerCode: "temporarily_unavailable",
+          providerErrorType: "service_unavailable",
+        },
+      );
     },
     async generate() {
       throw new Error("Generation must not run after preflight transport failure.");
@@ -324,10 +333,21 @@ try {
   add(
     "failure-internal-diagnostics-and-candidate-excluded",
     !serializedFailure.includes("provider_unavailable") &&
+      !serializedFailure.includes("providerFailureType") &&
+      !serializedFailure.includes("httpStatus") &&
+      !serializedFailure.includes("temporarily_unavailable") &&
+      !serializedFailure.includes("service_unavailable") &&
       !serializedFailure.includes("sourceCode") &&
       !serializedFailure.includes("candidateMaterial") &&
       !serializedFailure.includes("offline-proof-key"),
     "Internal diagnostics, provider candidates, and credentials must not reach the public envelope.",
+  );
+  add(
+    "failure-generic-public-message-preserved",
+    failure.error?.message === "No se pudo completar la simulación de forma segura." &&
+      failure.uiModel?.sections?.status?.items?.[0]?.message ===
+        "No se pudo completar la simulación de forma segura.",
+    "The public API and UI model must preserve the controlled generic Spanish message.",
   );
 
   let missingConfigTransportCalls = 0;

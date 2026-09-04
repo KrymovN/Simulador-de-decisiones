@@ -214,7 +214,16 @@ export async function runControlledProductionAiRuntimeSwitchValidation():
   const initializationFailure = await initializationRuntime.bound.execute(request());
 
   const unavailableFake = fakeTransport({
-    countFailure: new DecisionMaterialTransportFailure("provider_unavailable"),
+    countFailure: new DecisionMaterialTransportFailure(
+      "provider_unavailable",
+      undefined,
+      {
+        providerFailureType: "connection_error",
+        httpStatus: null,
+        providerCode: null,
+        providerErrorType: null,
+      },
+    ),
   });
   const unavailableRuntime = runtime(enabledEnvironment.environment, unavailableFake);
   const unavailable = await unavailableRuntime.bound.execute(request());
@@ -428,6 +437,10 @@ export async function runControlledProductionAiRuntimeSwitchValidation():
       caseId: "provider_failure_records_controlled_fail_closed_state",
       kind: "negative",
       passed: unavailableProviderFailureEvent?.failureCategory === "provider_unavailable" &&
+        unavailableProviderFailureEvent.providerFailureType === "connection_error" &&
+        unavailableProviderFailureEvent.httpStatus === null &&
+        unavailableProviderFailureEvent.providerCode === null &&
+        unavailableProviderFailureEvent.providerErrorType === null &&
         unavailableProviderFailureEvent.fallbackState === "fail_closed" &&
         unavailableOrchestrationFailureEvent?.failureCategory === "provider_unavailable" &&
         unavailableOrchestrationFailureEvent.fallbackState === "fail_closed" &&

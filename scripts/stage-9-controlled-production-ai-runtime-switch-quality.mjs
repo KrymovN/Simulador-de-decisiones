@@ -75,7 +75,10 @@ const changed = [
   ...execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).split("\n"),
 ].filter(Boolean);
 const allowedWriteSet = new Set([
+  "lib/ai-provider/openai-decision-material-adapter.ts",
+  "lib/ai-provider/openai-synthetic-risk-adapter.ts",
   "lib/ai-provider/openai-synthetic-risk-adapter.server.ts",
+  "lib/ai-provider/provider-failure-observability.ts",
   "lib/runtime-integration/controlled-production-ai-runtime-switch.server.ts",
   "lib/runtime-integration/controlled-production-ai-runtime-switch-validation.ts",
   "lib/runtime-integration/controlled-simulator-runtime-switch-contracts.ts",
@@ -84,6 +87,7 @@ const allowedWriteSet = new Set([
   "app/api/simulate/route.ts",
   "components/HomeSimulator.tsx",
   "scripts/public-api-controlled-ai-composition-quality.mjs",
+  "scripts/stage-9-openai-synthetic-risk-adapter-quality.mjs",
   "scripts/public-home-simulator-api-integration-quality.mjs",
   "scripts/stage-9-controlled-failure-product-presentation-quality.mjs",
   "scripts/stage-9-controlled-production-ai-runtime-switch-quality.mjs",

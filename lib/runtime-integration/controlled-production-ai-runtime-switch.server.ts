@@ -105,10 +105,20 @@ function operationalRequestId(value: unknown): string {
     : "invalid_controlled_switch_request";
 }
 
-function normalizedTransportFailure(error: unknown): string {
-  return error instanceof DecisionMaterialTransportFailure
-    ? error.category
-    : "provider_unknown_failure";
+function normalizedTransportFailure(error: unknown): Pick<
+  ControlledProductionAiOperationalEvent,
+  "failureCategory"
+> & Partial<Pick<
+  ControlledProductionAiOperationalEvent,
+  "providerFailureType" | "httpStatus" | "providerCode" | "providerErrorType"
+>> {
+  if (!(error instanceof DecisionMaterialTransportFailure)) {
+    return { failureCategory: "provider_unknown_failure" };
+  }
+  return {
+    failureCategory: error.category,
+    ...(error.providerFailureMetadata ?? {}),
+  };
 }
 
 function safeUsage(generation: DecisionMaterialTransportGeneration):
@@ -291,7 +301,7 @@ export function bindControlledProductionAiRuntimeSwitch(
               status: "failed",
               latencyMs: Math.max(0, now() - startedAt),
               providerOperation: "input_token_count",
-              failureCategory: normalizedTransportFailure(error),
+              ...normalizedTransportFailure(error),
               fallbackState: "fail_closed",
               rollbackState: context.rollbackState,
             });
@@ -339,7 +349,7 @@ export function bindControlledProductionAiRuntimeSwitch(
               status: "failed",
               latencyMs: Math.max(0, now() - startedAt),
               providerOperation: "generation",
-              failureCategory: normalizedTransportFailure(error),
+              ...normalizedTransportFailure(error),
               fallbackState: "fail_closed",
               rollbackState: context.rollbackState,
             });

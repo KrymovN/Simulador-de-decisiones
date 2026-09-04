@@ -13,6 +13,7 @@ import {
   type CandidateDecisionMaterial,
 } from "../ai-decision-material/contracts";
 import type { AIProviderRequest } from "./contracts";
+import type { ProviderFailureOperationalMetadata } from "./provider-failure-observability";
 import { createAIProviderBoundary } from "./boundary";
 import { createAIProviderRuntimeSelection } from "./runtime";
 import { createAIProviderAdapter } from "./validation";
@@ -242,15 +243,18 @@ export type DecisionMaterialAdapterResult =
 export class DecisionMaterialTransportFailure extends Error {
   readonly category: DecisionMaterialAdapterErrorCategory;
   readonly providerErrorMetadata: DecisionMaterialProviderErrorMetadata | undefined;
+  readonly providerFailureMetadata: ProviderFailureOperationalMetadata | undefined;
 
   constructor(
     category: DecisionMaterialAdapterErrorCategory,
     providerErrorMetadata?: DecisionMaterialProviderErrorMetadata,
+    providerFailureMetadata?: ProviderFailureOperationalMetadata,
   ) {
     super("Provider transport failed.");
     this.name = "DecisionMaterialTransportFailure";
     this.category = category;
     this.providerErrorMetadata = providerErrorMetadata;
+    this.providerFailureMetadata = providerFailureMetadata;
   }
 }
 
