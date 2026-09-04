@@ -89,7 +89,7 @@ const enabledPersistence = {
   simulationRecordPersistence: { enabled: true },
 };
 const publicInput =
-  "Comparar Plan Norte o Plan Sur para un lanzamiento ficticio con menos de 5000 euros.";
+  "Comparar aceptar Plan Norte o Plan Sur antes de final de mes con mi familia, sin reducir ingresos, con menos de 5000 euros y una transición reversible.";
 const recordId = "6e93864d-d53e-48d5-b98b-b8a82e590d61";
 const ownerAReference = "40720fc0-045e-439a-9c30-24772314a401";
 const ownerBReference = "71ac44cb-f530-468c-b116-10607602b402";

@@ -41,6 +41,9 @@ const {
 const {
   isPublicSimulationApiV2Envelope,
 } = require(join(root, "lib/runtime-integration/public-simulation-api-v2-contracts.ts"));
+const {
+  runDeterministicClarificationRoundTrip,
+} = require(join(root, "lib/decision-engine/deterministic-clarification-round-trip.ts"));
 
 let externalNetworkRequests = 0;
 const originalFetch = globalThis.fetch;
@@ -53,8 +56,10 @@ const originalFlag = process.env.LEVIO_REAL_AI_DEV_ENABLED;
 const originalRuntimeCall = runtimeModule.runControlledProductionAiRuntimeSwitch;
 let activeRuntime;
 let runtimeCalls = 0;
+const observedRuntimeRequests = [];
 runtimeModule.runControlledProductionAiRuntimeSwitch = async (request) => {
   runtimeCalls += 1;
+  observedRuntimeRequests.push(request);
   return activeRuntime.execute(request);
 };
 const { POST } = require(join(root, "app/api/simulate/route.ts"));
@@ -68,7 +73,13 @@ const enabledEnvironment = {
   OPENAI_API_KEY: "offline-proof-key",
 };
 const publicInput =
-  "Comparar Plan Norte o Plan Sur para un lanzamiento ficticio con menos de 5000 euros.";
+  "Comparar aceptar Plan Norte o Plan Sur antes de final de mes con mi familia, sin reducir ingresos, con menos de 5000 euros y una transición reversible.";
+const clarificationInput = "¿Debería cambiar de trabajo?";
+const clarificationAnswers = [
+  "Conseguir un trabajo más estable, con mejores condiciones y que me permita tener más tiempo para mi vida personal.",
+  "Necesito mantener unos ingresos suficientes para cubrir mis gastos y preferiría tener una nueva oferta antes de dejar mi trabajo actual.",
+  "No quiero reducir mucho mis ingresos ni aceptar unas condiciones laborales claramente peores que las actuales.",
+];
 const operationalEvents = [];
 
 function request(source, body = { input: publicInput, lang: "es" }) {
@@ -184,6 +195,106 @@ try {
     "Raw/full context, state, operational IDs/timestamps, and internal evidence must stay server-side.",
   );
 
+  const runtimeCallsBeforeClarification = runtimeCalls;
+  const providerRequestsBeforeClarification = observedProviderRequests.length;
+  const clarificationResponse = await POST(request(85, {
+    input: clarificationInput,
+    lang: "es",
+  }));
+  const clarification = await payload(clarificationResponse);
+  add(
+    "real-ai-sparse-input-returns-clarification-before-runtime",
+    clarificationResponse.status === 200 &&
+      clarification.status === "clarification_required" &&
+      clarification.meta?.mockOnly === true &&
+      runtimeCalls === runtimeCallsBeforeClarification &&
+      observedProviderRequests.length === providerRequestsBeforeClarification,
+    "Sparse input must produce clarification state without entering provider runtime.",
+  );
+
+  const submittedAnswers = clarification.data.questions.map((question, index) => ({
+    questionId: question.id,
+    answer: clarificationAnswers[index],
+  }));
+  const expectedContinuation = runDeterministicClarificationRoundTrip({
+    requestId: "offline_expected_continuation",
+    simulationId: clarification.data.simulationId,
+    input: clarificationInput,
+    round: clarification.data.round,
+    answers: submittedAnswers,
+  });
+  const continuationProviderStart = observedProviderRequests.length;
+  const continuationRuntimeStart = observedRuntimeRequests.length;
+  const continuationResponse = await POST(request(86, {
+    input: clarificationInput,
+    lang: "es",
+    clarification: {
+      simulationId: clarification.data.simulationId,
+      round: clarification.data.round,
+      answers: submittedAnswers,
+    },
+  }));
+  const continuation = await payload(continuationResponse);
+  const continuationRuntimeRequest = observedRuntimeRequests[continuationRuntimeStart];
+  const continuationProviderRequests = observedProviderRequests.slice(continuationProviderStart);
+  const continuationProviderPayloads = continuationProviderRequests.map((item) => JSON.parse(item.input));
+  const serializedCanonicalContext = JSON.stringify(continuationRuntimeRequest?.context);
+  const serializedProviderPayloads = JSON.stringify(continuationProviderPayloads);
+
+  add(
+    "clarification-continuation-preserves-logical-simulation-id",
+    continuationResponse.status === 200 &&
+      continuation.status === "completed" &&
+      continuation.requestId === clarification.data.simulationId &&
+      continuation.data?.requestId === clarification.data.simulationId &&
+      continuationRuntimeRequest?.requestId === clarification.data.simulationId,
+    "Continuation, runtime, and completed result must share the initial simulationId.",
+  );
+  add(
+    "three-clarification-answers-enter-canonical-context",
+    expectedContinuation.status === "ready" &&
+      expectedContinuation.builder.evidence.filter((item) => item.source === "user_answer").length === 3 &&
+      clarificationAnswers.every((answer) => serializedCanonicalContext.includes(answer)),
+    "All three accepted answers must be represented in canonical DecisionContext.",
+  );
+  add(
+    "deterministic-and-real-ai-use-equivalent-canonical-context",
+    expectedContinuation.status === "ready" &&
+      JSON.stringify(expectedContinuation.builder.decisionContext) === serializedCanonicalContext,
+    "The public Real-AI runtime must receive the same canonical context produced by deterministic clarification.",
+  );
+  add(
+    "real-ai-offline-payload-preserves-question-and-clarification-context",
+    continuationProviderPayloads.length === 2 &&
+      continuationProviderPayloads.every((item) => item.decision_question?.content === clarificationInput) &&
+      clarificationAnswers.every((answer) => serializedProviderPayloads.includes(answer)),
+    "Prepared provider payload must contain the original question and all clarification-derived minimum context.",
+  );
+  add(
+    "clarification-state-does-not-leak-into-provider-payload",
+    !serializedProviderPayloads.includes("mockOnly") &&
+      !serializedProviderPayloads.includes("clarification_required") &&
+      !serializedProviderPayloads.includes(clarification.data.simulationId),
+    "Presentation and continuation state must remain outside provider context.",
+  );
+
+  const runtimeCallsBeforeSafety = runtimeCalls;
+  const providerRequestsBeforeSafety = observedProviderRequests.length;
+  const safetyResponse = await POST(request(87, {
+    input: "Estoy pensando en matarme",
+    lang: "es",
+  }));
+  const safety = await payload(safetyResponse);
+  add(
+    "safety-refusal-precedes-real-ai-runtime",
+    safetyResponse.status === 200 &&
+      safety.status === "failed" &&
+      safety.error?.code === "REFUSED" &&
+      runtimeCalls === runtimeCallsBeforeSafety &&
+      observedProviderRequests.length === providerRequestsBeforeSafety,
+    "Safety refusal must complete locally before any provider transport call.",
+  );
+
   const failureTransport = {
     async countInput() {
       throw new DecisionMaterialTransportFailure("provider_unavailable");
@@ -274,7 +385,7 @@ try {
   );
   add(
     "public-client-cannot-select-runtime",
-    routeSource.includes('new Set(["input", "lang"])') &&
+    routeSource.includes('new Set(["input", "lang", "clarification"])') &&
       !homeSource.includes("LEVIO_REAL_AI_DEV_ENABLED") &&
       !homeSource.includes("process.env"),
     "Runtime selection must remain server-owned.",

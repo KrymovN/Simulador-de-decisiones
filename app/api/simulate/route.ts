@@ -6,9 +6,8 @@ import {
 } from "../../../lib/decision-engine/simulation-response-public-adapter";
 import {
   DETERMINISTIC_ENGINE_PREVIEW_RUNTIME_MARKER,
-  runInternalSimulationPipeline,
+  runInternalSimulationPipelineFromBuiltContext,
 } from "../../../lib/decision-engine/simulation-pipeline-runner";
-import { buildDecisionContext } from "../../../lib/decision-engine/context-builder";
 import {
   clarificationFieldForQuestionId,
   DETERMINISTIC_CLARIFICATION_MAX_ANSWER_LENGTH,
@@ -431,47 +430,70 @@ export async function POST(req: Request) {
     );
   }
 
-  const productionAiEnabled = process.env.LEVIO_REAL_AI_DEV_ENABLED === "true";
-
-  if (productionAiEnabled) {
-    const generatedAt = new Date().toISOString();
-    const adapterInput = {
+  try {
+    const simulationId = payloadResult.clarification?.simulationId ?? requestId;
+    const clarificationStep = runDeterministicClarificationRoundTrip({
       requestId,
-      generatedAt,
-      maxInputLength: MAX_INPUT_LENGTH,
-      maxBodyLength: MAX_BODY_LENGTH,
-    };
+      simulationId,
+      input,
+      round: payloadResult.clarification?.round ?? 0,
+      answers: payloadResult.clarification?.answers ?? [],
+    });
 
-    try {
-      const contextResult = buildDecisionContext({
+    if (clarificationStep.status === "rejected") {
+      return simulationFailedResponse(requestId);
+    }
+
+    if (clarificationStep.status === "clarification_required") {
+      const response = createPublicDeterministicClarificationEnvelope({
         requestId,
-        rawInput: input,
-        inputLanguage: "es",
-        requestedOutputLanguage: "es",
+        simulationId,
+        input,
+        round: clarificationStep.round,
+        maxRounds: DETERMINISTIC_CLARIFICATION_MAX_ROUNDS,
+        questions: clarificationStep.questions,
+        answers: clarificationStep.answers,
       });
 
-      if (
-        contextResult.status !== "built" ||
-        !contextResult.decisionInput ||
-        !contextResult.decisionContext
-      ) {
-        return Response.json(
-          createPublicSimulationApiV2FailureEnvelope(adapterInput),
-          { status: 500 },
-        );
+      if (!validatePublicSimulationEnvelopeShape(response)) {
+        return simulationFailedResponse(requestId);
       }
 
+      return Response.json(response);
+    }
+
+    const contextResult = clarificationStep.builder;
+
+    if (
+      contextResult.status !== "built" ||
+      !contextResult.decisionInput ||
+      !contextResult.decisionContext ||
+      !contextResult.safety
+    ) {
+      return simulationFailedResponse(requestId);
+    }
+
+    const productionAiEnabled = process.env.LEVIO_REAL_AI_DEV_ENABLED === "true";
+
+    if (productionAiEnabled && contextResult.safety.level === "standard") {
+      const generatedAt = new Date().toISOString();
+      const adapterInput = {
+        requestId: simulationId,
+        generatedAt,
+        maxInputLength: MAX_INPUT_LENGTH,
+        maxBodyLength: MAX_BODY_LENGTH,
+      };
       const runtimeResult = await runControlledProductionAiRuntimeSwitch({
         switchVersion: CONTROLLED_SIMULATOR_SWITCH_VERSION,
         mode: CONTROLLED_SIMULATOR_SWITCH_MODE,
         executionContext: "internal_dev",
-        requestId,
+        requestId: simulationId,
         input,
         lang: "es",
         requestedOutputLanguage: "es",
         userIntent: contextResult.decisionInput.userIntent,
         context: contextResult.decisionContext,
-        ...(contextResult.safety ? { safety: contextResult.safety } : {}),
+        safety: contextResult.safety,
         safetyContextComplete: contextResult.safetyContextComplete,
       });
       const response = adaptControlledProductionAiResultToPublicV2Envelope(
@@ -489,67 +511,22 @@ export async function POST(req: Request) {
       return Response.json(response, {
         status: response.status === "completed" ? 200 : 502,
       });
-    } catch {
-      return Response.json(
-        createPublicSimulationApiV2FailureEnvelope(adapterInput),
-        { status: 500 },
-      );
     }
-  }
 
-  try {
-    const clarificationStep = runDeterministicClarificationRoundTrip({
-      requestId,
-      simulationId: payloadResult.clarification?.simulationId ?? requestId,
-      input,
-      round: payloadResult.clarification?.round ?? 0,
-      answers: payloadResult.clarification?.answers ?? [],
+    const runnerResult = runInternalSimulationPipelineFromBuiltContext({
+      requestId: simulationId,
+      builder: contextResult,
     });
-
-    if (clarificationStep.status === "rejected") {
-      return simulationFailedResponse(requestId);
-    }
-
-    if (clarificationStep.status === "clarification_required") {
-      const response = createPublicDeterministicClarificationEnvelope({
-        requestId,
-        simulationId: payloadResult.clarification?.simulationId ?? requestId,
-        input,
-        round: clarificationStep.round,
-        maxRounds: DETERMINISTIC_CLARIFICATION_MAX_ROUNDS,
-        questions: clarificationStep.questions,
-        answers: clarificationStep.answers,
-      });
-
-      if (!validatePublicSimulationEnvelopeShape(response)) {
-        return simulationFailedResponse(requestId);
-      }
-
-      return Response.json(response);
-    }
-
-    const runnerResult = runInternalSimulationPipeline({
-      requestId: payloadResult.clarification?.simulationId ?? requestId,
-      input,
-      inputLanguage: "es",
-      requestedOutputLanguage: "es",
-      clarificationAnswers: clarificationStep.answers,
-    });
-
-    if (!runnerResult.response) {
-      return simulationFailedResponse(requestId);
-    }
 
     if (
+      !runnerResult.response ||
       runnerResult.runtime.marker !== DETERMINISTIC_ENGINE_PREVIEW_RUNTIME_MARKER ||
       !runnerResult.runtime.rollbackSafe
-    ) {
-      return simulationFailedResponse(requestId);
-    }
+    ) return simulationFailedResponse(requestId);
 
     const response = adaptSimulationResponseV2ToPublicSimulatorEnvelope({
       response: runnerResult.response,
-      requestId,
+      requestId: simulationId,
       generatedAt: new Date().toISOString(),
       truthBoundary: SIMULATION_RESPONSE_PUBLIC_ADAPTER_TRUTH_BOUNDARY,
     });

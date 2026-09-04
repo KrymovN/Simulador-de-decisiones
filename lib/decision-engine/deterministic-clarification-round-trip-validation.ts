@@ -6,7 +6,7 @@ import {
   adaptSimulationResponseV2ToPublicSimulatorEnvelope,
   SIMULATION_RESPONSE_PUBLIC_ADAPTER_TRUTH_BOUNDARY,
 } from "./simulation-response-public-adapter";
-import { runInternalSimulationPipeline } from "./simulation-pipeline-runner";
+import { runInternalSimulationPipelineFromBuiltContext } from "./simulation-pipeline-runner";
 
 export type DeterministicClarificationValidationCase = {
   name: string;
@@ -75,9 +75,9 @@ export function runDeterministicClarificationRoundTripValidation() {
       const submitted = initial.questions.map((question, index) => ({
         questionId: question.id,
         answer: [
-          "Mejorar estabilidad, aprendizaje y equilibrio personal.",
-          "Tengo una oferta concreta y margen financiero para la transición.",
-          "No reducir ingresos y mantener tiempo para mi familia.",
+          "Conseguir un trabajo más estable, con mejores condiciones y que me permita tener más tiempo para mi vida personal.",
+          "Necesito mantener unos ingresos suficientes para cubrir mis gastos y preferiría tener una nueva oferta antes de dejar mi trabajo actual.",
+          "No quiero reducir mucho mis ingresos ni aceptar unas condiciones laborales claramente peores que las actuales.",
         ][index],
       }));
       const continuation = runDeterministicClarificationRoundTrip({
@@ -100,13 +100,14 @@ export function runDeterministicClarificationRoundTripValidation() {
         ),
         "Answered fields must no longer remain missing.",
       );
+      assertCase(
+        continuation.builder.decisionInput?.requestId === "clarification_acceptance_simulation",
+        "Canonical DecisionInput must preserve the logical simulation id.",
+      );
 
-      const runner = runInternalSimulationPipeline({
+      const runner = runInternalSimulationPipelineFromBuiltContext({
         requestId: "clarification_acceptance_simulation",
-        input: acceptanceInput,
-        inputLanguage: "es",
-        requestedOutputLanguage: "es",
-        clarificationAnswers: continuation.answers,
+        builder: continuation.builder,
       });
       assertCase(runner.status === "completed" && Boolean(runner.response), "Expected canonical runner completion.");
       assertCase(runner.response?.decision.statement === acceptanceInput, "Expected original decision question to remain intact.");
@@ -119,6 +120,10 @@ export function runDeterministicClarificationRoundTripValidation() {
         truthBoundary: SIMULATION_RESPONSE_PUBLIC_ADAPTER_TRUTH_BOUNDARY,
       });
       assertCase(envelope.status === "completed", `Expected completed public result, received ${envelope.status}.`);
+      assertCase(
+        envelope.status === "completed" && envelope.data.simulation.id === "clarification_acceptance_simulation",
+        "Completed simulation must preserve the logical simulation id.",
+      );
     }),
 
     runCase("sufficiently specified input remains one-shot", () => {

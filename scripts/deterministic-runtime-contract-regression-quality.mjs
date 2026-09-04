@@ -393,14 +393,14 @@ function runSourceChecks() {
   const routeSource = readFileSync(routePath, "utf8");
   const adapterSource = readFileSync(adapterPath, "utf8");
   const validationIndex = routeSource.indexOf("validateSimulatePayload(bodyResult.body, requestId)");
-  const runnerIndex = routeSource.indexOf("runInternalSimulationPipeline({");
+  const runnerIndex = routeSource.indexOf("runInternalSimulationPipelineFromBuiltContext({");
   const adapterIndex = routeSource.indexOf("adaptSimulationResponseV2ToPublicSimulatorEnvelope({");
   const publicValidationIndex = routeSource.indexOf("validatePublicSimulationEnvelopeShape(response)", adapterIndex);
 
   assertSourceIncludes(routeSource, "simulationFailedResponse(requestId)", "Route keeps SIMULATION_FAILED fallback helper");
   assertSourceIncludes(routeSource, "catch", "Route catches runner/adapter exceptions");
   assertSourceIncludes(routeSource, "validatePublicSimulationEnvelopeShape(response)", "Route validates public envelope before return");
-  assertSourceIncludes(routeSource, "if (!runnerResult.response)", "Route fails closed when runner returns no response");
+  assertSourceIncludes(routeSource, "!runnerResult.response ||", "Route fails closed when runner returns no response");
   assertSourceIncludes(routeSource, "runnerResult.runtime.marker !== DETERMINISTIC_ENGINE_PREVIEW_RUNTIME_MARKER", "Route checks runtime marker before public response");
   assertSourceIncludes(routeSource, "!runnerResult.runtime.rollbackSafe", "Route checks rollback metadata before public response");
   assertCheck(

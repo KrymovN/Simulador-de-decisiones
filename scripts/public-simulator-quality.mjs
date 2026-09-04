@@ -584,12 +584,12 @@ function runUiSourceChecks() {
 
   assertSourceIncludes(routeSource, "runInternalSimulationPipeline", "API route uses internal deterministic pipeline runner");
   assertSourceIncludes(routeSource, "adaptSimulationResponseV2ToPublicSimulatorEnvelope", "API route uses public response adapter");
-  assertSourceIncludes(routeSource, "if (!runnerResult.response)", "API route fail-closes missing pipeline response");
+  assertSourceIncludes(routeSource, "!runnerResult.response ||", "API route fail-closes missing pipeline response");
   assertSourceIncludes(routeSource, '"SIMULATION_FAILED"', "API route preserves controlled SIMULATION_FAILED envelope code");
   assertSourceExcludes(routeSource, "buildMockSimulation(", "API route does not call mock simulation builder");
   assertSourceExcludes(routeSource, "from \"../../../lib/simulationEngine\"", "API route does not import mock simulation runtime");
   assertSourceIncludes(routeSource, 'process.env.LEVIO_REAL_AI_DEV_ENABLED === "true"', "API route keeps the explicit server-side Real AI switch");
-  assertSourceIncludes(routeSource, "if (productionAiEnabled)", "API route gates the provider runtime behind the explicit switch");
+  assertSourceIncludes(routeSource, 'if (productionAiEnabled && contextResult.safety.level === "standard")', "API route gates provider runtime behind activation and safety precedence");
   assertSourceIncludes(routeSource, "runControlledProductionAiRuntimeSwitch", "API route delegates enabled execution to the controlled server runtime");
   assertSourceExcludes(routeSource, "@anthropic-ai/sdk", "API route does not import provider SDK runtime");
   assertSourceExcludes(routeSource, "fetch(", "API route does not perform model/network fetch");

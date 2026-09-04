@@ -38,6 +38,11 @@ export type SimulationPipelineRunnerRequest = {
   clarificationAnswers?: DecisionContextBuilderClarificationAnswer[];
 };
 
+export type PreparedSimulationPipelineRunnerRequest = {
+  requestId: string;
+  builder: DecisionContextBuilderResult;
+};
+
 export type SimulationPipelineRunnerStatus = "completed" | "rejected" | "failed";
 
 export type SimulationPipelineRunnerErrorCode =
@@ -222,6 +227,152 @@ export function simulationPipelineRunnerIsolationEvidence(): SimulationPipelineR
   };
 }
 
+function runPreparedSimulationPipeline(
+  requestId: string,
+  builder: DecisionContextBuilderResult,
+  trace: SimulationPipelineRunnerTraceEntry[],
+): SimulationPipelineRunnerResult {
+  if (builder.status === "rejected") {
+    trace.push(
+      traceEntry(
+        "context_builder",
+        "rejected",
+        builder.error?.message ?? "DecisionContext Builder rejected the input.",
+        [requestId],
+      ),
+    );
+    return builderRejectedResult(requestId, builder, trace);
+  }
+
+  trace.push(
+    traceEntry("context_builder", "completed", "DecisionContext Builder produced DecisionInput, DecisionContext, and SafetyBoundary.", [
+      builder.decisionInput?.requestId ?? requestId,
+      builder.decisionContext?.decisionId ?? requestId,
+    ]),
+  );
+
+  if (
+    !builder.decisionInput ||
+    !builder.decisionContext ||
+    !builder.safety ||
+    builder.decisionInput.requestId !== requestId
+  ) {
+    trace.push(
+      traceEntry("simulation_pipeline", "failed", "Builder result was missing canonical runtime artifacts or logical identity continuity.", [
+        requestId,
+      ]),
+    );
+    return failedResult(requestId, builder, trace, {
+      code: "internal_error",
+      message: "Builder result was missing canonical runtime artifacts or logical identity continuity.",
+      retryable: false,
+      source: "runner",
+    });
+  }
+
+  const response = runSimulationPipeline(builder.decisionInput, {
+    context: builder.decisionContext,
+    safety: builder.safety,
+    safetyContextComplete: builder.safetyContextComplete,
+  });
+  trace.push(
+    traceEntry("simulation_pipeline", "completed", `Pipeline returned status ${response.status}.`, [
+      response.responseId,
+    ]),
+  );
+
+  if (!validateSimulationResponseV2DraftShape(response)) {
+    trace.push(
+      traceEntry("response_validation", "failed", "Pipeline response did not satisfy SimulationResponseV2Draft shape.", [
+        requestId,
+      ]),
+    );
+    return failedResult(requestId, builder, trace, {
+      code: "invalid_pipeline_response",
+      message: "Pipeline response did not satisfy SimulationResponseV2Draft shape.",
+      retryable: false,
+      source: "pipeline",
+    });
+  }
+
+  trace.push(
+    traceEntry("response_validation", "completed", "Pipeline response satisfied SimulationResponseV2Draft shape.", [
+      response.responseId,
+    ]),
+  );
+
+  if (response.status === "failed") {
+    return failedResult(
+      requestId,
+      builder,
+      trace,
+      {
+        code: "pipeline_failed",
+        message: response.failure?.message ?? "Simulation pipeline returned failed status.",
+        retryable: response.failure?.retryable ?? false,
+        source: "pipeline",
+      },
+      response,
+    );
+  }
+
+  return {
+    status: "completed",
+    runnerVersion: SIMULATION_PIPELINE_RUNNER_VERSION,
+    runtime: runtimeMetadata(simulationRuntimeOutcomeForResponseStatus(response.status), "pipeline"),
+    requestId,
+    builder: builderMetadata(builder),
+    pipelineStatus: response.status,
+    response,
+    evidence: builder.evidence,
+    trace,
+  };
+}
+
+function controlledInternalError(
+  requestId: string,
+  trace: SimulationPipelineRunnerTraceEntry[],
+): SimulationPipelineRunnerResult {
+  const syntheticBuilder: DecisionContextBuilderResult = {
+    status: "rejected",
+    builderVersion: DECISION_CONTEXT_BUILDER_VERSION,
+    safetyContextComplete: false,
+    inferred: [],
+    missing: [],
+    clarificationQuestions: [],
+    evidence: [],
+  };
+  trace.push(traceEntry("simulation_pipeline", "failed", "Internal simulation runner encountered a controlled failure.", [
+    requestId,
+  ]));
+
+  return failedResult(requestId, syntheticBuilder, trace, {
+    code: "internal_error",
+    message: "Internal simulation runner encountered a controlled failure.",
+    retryable: false,
+    source: "runner",
+  });
+}
+
+export function runInternalSimulationPipelineFromBuiltContext(
+  request: PreparedSimulationPipelineRunnerRequest,
+): SimulationPipelineRunnerResult {
+  const requestId = typeof request?.requestId === "string" && request.requestId.trim()
+    ? request.requestId.trim()
+    : "runner_request_missing";
+  const trace: SimulationPipelineRunnerTraceEntry[] = [
+    traceEntry("runner_received", "completed", "Internal deterministic simulation runner received a canonical builder result.", [
+      requestId,
+    ]),
+  ];
+
+  try {
+    return runPreparedSimulationPipeline(requestId, request.builder, trace);
+  } catch {
+    return controlledInternalError(requestId, trace);
+  }
+}
+
 export function runInternalSimulationPipeline(
   request: SimulationPipelineRunnerRequest,
 ): SimulationPipelineRunnerResult {
@@ -244,115 +395,8 @@ export function runInternalSimulationPipeline(
       clarificationAnswers: request?.clarificationAnswers,
     });
 
-    if (builder.status === "rejected") {
-      trace.push(
-        traceEntry(
-          "context_builder",
-          "rejected",
-          builder.error?.message ?? "DecisionContext Builder rejected the input.",
-          [requestId],
-        ),
-      );
-      return builderRejectedResult(requestId, builder, trace);
-    }
-
-    trace.push(
-      traceEntry("context_builder", "completed", "DecisionContext Builder produced DecisionInput, DecisionContext, and SafetyBoundary.", [
-        builder.decisionInput?.requestId ?? requestId,
-        builder.decisionContext?.decisionId ?? requestId,
-      ]),
-    );
-
-    if (!builder.decisionInput || !builder.decisionContext || !builder.safety) {
-      trace.push(
-        traceEntry("simulation_pipeline", "failed", "Builder result was built but missing required runtime artifacts.", [
-          requestId,
-        ]),
-      );
-      return failedResult(requestId, builder, trace, {
-        code: "internal_error",
-        message: "Builder result was built but missing required runtime artifacts.",
-        retryable: false,
-        source: "runner",
-      });
-    }
-
-    const response = runSimulationPipeline(builder.decisionInput, {
-      context: builder.decisionContext,
-      safety: builder.safety,
-      safetyContextComplete: builder.safetyContextComplete,
-    });
-    trace.push(
-      traceEntry("simulation_pipeline", "completed", `Pipeline returned status ${response.status}.`, [
-        response.responseId,
-      ]),
-    );
-
-    if (!validateSimulationResponseV2DraftShape(response)) {
-      trace.push(
-        traceEntry("response_validation", "failed", "Pipeline response did not satisfy SimulationResponseV2Draft shape.", [
-          requestId,
-        ]),
-      );
-      return failedResult(requestId, builder, trace, {
-        code: "invalid_pipeline_response",
-        message: "Pipeline response did not satisfy SimulationResponseV2Draft shape.",
-        retryable: false,
-        source: "pipeline",
-      });
-    }
-
-    trace.push(
-      traceEntry("response_validation", "completed", "Pipeline response satisfied SimulationResponseV2Draft shape.", [
-        response.responseId,
-      ]),
-    );
-
-    if (response.status === "failed") {
-      return failedResult(
-        requestId,
-        builder,
-        trace,
-        {
-          code: "pipeline_failed",
-          message: response.failure?.message ?? "Simulation pipeline returned failed status.",
-          retryable: response.failure?.retryable ?? false,
-          source: "pipeline",
-        },
-        response,
-      );
-    }
-
-    return {
-      status: "completed",
-      runnerVersion: SIMULATION_PIPELINE_RUNNER_VERSION,
-      runtime: runtimeMetadata(simulationRuntimeOutcomeForResponseStatus(response.status), "pipeline"),
-      requestId,
-      builder: builderMetadata(builder),
-      pipelineStatus: response.status,
-      response,
-      evidence: builder.evidence,
-      trace,
-    };
+    return runPreparedSimulationPipeline(requestId, builder, trace);
   } catch {
-    const syntheticBuilder: DecisionContextBuilderResult = {
-      status: "rejected",
-      builderVersion: DECISION_CONTEXT_BUILDER_VERSION,
-      safetyContextComplete: false,
-      inferred: [],
-      missing: [],
-      clarificationQuestions: [],
-      evidence: [],
-    };
-    trace.push(traceEntry("simulation_pipeline", "failed", "Internal simulation runner encountered a controlled failure.", [
-      requestId,
-    ]));
-
-    return failedResult(requestId, syntheticBuilder, trace, {
-      code: "internal_error",
-      message: "Internal simulation runner encountered a controlled failure.",
-      retryable: false,
-      source: "runner",
-    });
+    return controlledInternalError(requestId, trace);
   }
 }

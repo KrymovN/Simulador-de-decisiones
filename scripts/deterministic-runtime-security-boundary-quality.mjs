@@ -83,6 +83,7 @@ async function withServer(run) {
       ...process.env,
       LEVIO_AUTH_RUNTIME_ENABLED: "false",
       NEXT_PUBLIC_LEVIO_AUTH_RUNTIME_ENABLED: "false",
+      LEVIO_REAL_AI_DEV_ENABLED: "false",
     },
     stdio: ["ignore", "pipe", "pipe"],
   });
@@ -268,7 +269,10 @@ async function runApiChecks(baseUrl) {
     const { response, payload } = await postSimulation(baseUrl, {
       source: 60,
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ input: "Lanzar una oferta premium con riesgo operativo", lang: "es" }),
+      body: JSON.stringify({
+        input: "Comparar lanzar una oferta premium o mantener la actual antes de final de mes, con menos de 5000 euros, sin reducir ingresos y con una retirada reversible",
+        lang: "es",
+      }),
     });
 
     assert(response.status === 200, `Expected HTTP 200, received ${response.status}.`);
@@ -291,7 +295,7 @@ function assertSourceExcludes(source, text, name) {
 function runRouteSourceChecks() {
   const source = readFileSync(routePath, "utf8");
   const validationIndex = source.indexOf("validateSimulatePayload(bodyResult.body, requestId)");
-  const runnerIndex = source.indexOf("runInternalSimulationPipeline({");
+  const runnerIndex = source.indexOf("runInternalSimulationPipelineFromBuiltContext({");
   const adapterIndex = source.indexOf("adaptSimulationResponseV2ToPublicSimulatorEnvelope({");
 
   assertSourceIncludes(source, "ALLOWED_PAYLOAD_FIELDS", "Route defines explicit payload allow-list");
@@ -315,7 +319,9 @@ function runRouteSourceChecks() {
   );
   assertSourceExcludes(source, "Response.json(runnerResult", "Route never returns runner internals directly");
   assertSourceExcludes(source, "runnerResult.error?.message", "Route does not leak runner error messages publicly");
-  assertSourceExcludes(source, "process.env", "Route does not read environment configuration");
+  assertSourceIncludes(source, 'process.env.LEVIO_REAL_AI_DEV_ENABLED === "true"', "Route reads only the explicit controlled Real AI switch");
+  assertSourceExcludes(source, "process.env.LEVIO_AI_PROVIDER", "Route does not read provider selection");
+  assertSourceExcludes(source, "process.env.OPENAI_API_KEY", "Route does not read provider credentials");
   assertSourceExcludes(source, "openai", "Route does not import OpenAI runtime");
   assertSourceExcludes(source, "fetch(", "Route does not perform provider/network fetch");
 }

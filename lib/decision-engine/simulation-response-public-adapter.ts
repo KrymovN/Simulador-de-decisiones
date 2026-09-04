@@ -448,7 +448,7 @@ function completedEnvelope(
       generatedAt,
       thinkingStages: thinkingStages(),
       simulation: {
-        id: `deterministic-${response.responseId}`,
+        id: response.requestId,
         date: publicDate(generatedAt),
         category: category(response),
         decision: response.decision.statement,
