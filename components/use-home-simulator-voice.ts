@@ -124,7 +124,7 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
     }
 
     setPhase("transcribing");
-    onMessageRef.current("Transcribiendo…");
+    onMessageRef.current("");
     const abortController = new AbortController();
     session.transcriptionAbort = abortController;
     const formData = new FormData();
@@ -219,7 +219,7 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
     }
 
     setPhase("stopping");
-    onMessageRef.current("Deteniendo la grabación…");
+    onMessageRef.current("");
     try {
       session.recorder.stop();
     } catch {
@@ -396,13 +396,13 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
       session.limitTimer = setTimeout(() => {
         if (sessionRef.current?.id === session.id && recorder.state !== "inactive") {
           setPhase("stopping");
-          onMessageRef.current("Límite de grabación alcanzado. Preparando la transcripción…");
+          onMessageRef.current("");
           recorder.stop();
         }
       }, VOICE_MAX_RECORDING_MS);
       session.frame = requestAnimationFrame(updateAudioLevel);
       setPhase("recording");
-      onMessageRef.current("Grabando… Pulsa Detener cuando termines.");
+      onMessageRef.current("");
     } catch {
       setFailure("RECORDING_FAILED", session);
     }

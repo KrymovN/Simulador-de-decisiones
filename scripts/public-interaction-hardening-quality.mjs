@@ -99,7 +99,12 @@ assertCheck(
 sourceExcludes(dashboardHome, "`/dashboard/simulations/${featuredSimulation.id}`", "Featured demo card does not target persisted detail route");
 sourceExcludes(dashboardHome, "`/dashboard/simulations/${simulation.id}`", "Demo list does not target persisted detail route");
 sourceExcludes(decisions, "`/dashboard/simulations/${decision.linkedSimulationId}`", "Prepared decisions do not target persisted detail route");
-sourceIncludes(dashboardHome, "Esta tarjeta es demostrativa y no corresponde a una simulación guardada.", "Featured demo card explains unavailable detail");
+assertCheck(
+  "Featured demo card is absent or explains unavailable detail",
+  !dashboardHome.includes("featuredSimulation") ||
+    dashboardHome.includes("Esta tarjeta es demostrativa y no corresponde a una simulación guardada."),
+  "A featured demo card is present without its unavailable-detail explanation.",
+);
 sourceIncludes(decisions, "Este ejemplo no corresponde a una simulación guardada de la cuenta.", "Prepared decision explains unavailable detail");
 
 sourceIncludes(profile, "disabled type=\"text\"", "Prepared profile fields are not silently editable");
@@ -120,7 +125,8 @@ sourceIncludes(notFound, 'href="/"', "404 links back to home");
 sourceIncludes(notFound, 'href="/#decision-input"', "404 links to simulator");
 
 sourceIncludes(simulator, 'key={`${scenario.label}-${scenario.title}`}', "Scenario rendering uses stable unique composite keys");
-sourceIncludes(simulator, 'aria-label={voice.phase === "recording" ? "Detener grabación de voz" : "Dictar situación"}', "Voice icon control has an accessible name");
+sourceIncludes(simulator, 'aria-label="Dictar situación"', "Idle voice icon control has an accessible name");
+sourceIncludes(simulator, 'aria-label="Finalizar dictado"', "Voice confirmation control has an accessible name");
 sourceIncludes(simulator, 'fetch("/api/simulate"', "Simulator keeps its approved public endpoint");
 sourceIncludes(simulateRoute, 'const SIMULATE_API_CONTRACT_VERSION = "simulate-api-v1-mock"', "Simulator contract remains mock-compatible");
 sourceIncludes(simulateRoute, "mockOnly: true", "Simulator remains mockOnly");
@@ -128,7 +134,7 @@ sourceIncludes(simulateRoute, "mockOnly: true", "Simulator remains mockOnly");
 sourceIncludes(home, 'href: "/privacy-policy"', "Public footer keeps privacy link");
 sourceIncludes(home, 'href: "/terms"', "Public footer keeps terms link");
 sourceIncludes(home, 'href: "mailto:hola@levio.es"', "Public footer keeps contact link");
-sourceIncludes(home, 'href="/login"', "Public auth CTA keeps login target");
+sourceIncludes(home, '{ label: "Iniciar sesión", href: "/login" }', "Public auth CTA keeps login target");
 sourceIncludes(home, 'href: "/dashboard"', "Public workspace CTA keeps protected dashboard target");
 
 const literalHrefs = Array.from(allUiSource.matchAll(/href\s*=\s*["']([^"']+)["']/g), (match) => match[1]);

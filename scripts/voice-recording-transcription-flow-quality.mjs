@@ -36,6 +36,7 @@ const {
   appendVoiceTranscript,
   calculateVoiceAudioLevel,
   classifyMicrophoneError,
+  createVoiceWaveformLevels,
   formatVoiceRecordingTime,
   selectVoiceRecordingMimeType,
 } = require(join(rootDir, "components", "home-simulator-voice.ts"));
@@ -136,6 +137,13 @@ const audible = new Uint8Array(32).fill(184);
 check(
   "Synthetic analyser layer produces a real non-static level",
   calculateVoiceAudioLevel(quiet) === 0 && calculateVoiceAudioLevel(audible) > 0,
+);
+const quietWaveform = createVoiceWaveformLevels(calculateVoiceAudioLevel(quiet));
+const audibleWaveform = createVoiceWaveformLevels(calculateVoiceAudioLevel(audible));
+check(
+  "Waveform bars react to real analyser amplitude",
+  quietWaveform.length >= 12 &&
+    quietWaveform.every((level, index) => level < audibleWaveform[index]),
 );
 check(
   "MIME negotiation prefers a supported cross-browser candidate",
@@ -279,10 +287,31 @@ includes(voiceHook, 'fetch("/api/transcribe"', "Browser uses one same-origin tra
 includes(homeSimulator, "appendVoiceTranscript(currentInput, transcript", "Transcript targets the existing controlled input");
 includes(homeSimulator, "value={input}", "Textarea remains controlled by existing input state");
 includes(homeSimulator, "voice.isBusy", "Simulation submission is blocked during voice lifecycle");
-check("Recording exposes an explicit visible Stop action", />\s*Detener\s*</.test(homeSimulator));
-check("Recording exposes an explicit visible Cancel action", />\s*Cancelar\s*</.test(homeSimulator));
-includes(homeSimulator, "Nivel de audio en directo", "Live audio level has an accessible label");
-includes(homeSimulator, "Transcribiendo…", "Transcribing state is visible in Spanish");
+includes(homeSimulator, 'aria-label="Dictar situación"', "Idle state exposes the microphone action");
+includes(homeSimulator, 'className="voice-waveform"', "Recording renders a dedicated waveform container");
+includes(homeSimulator, "createVoiceWaveformLevels(voice.audioLevel)", "Waveform is driven by the real analyser level");
+includes(homeSimulator, 'className="voice-waveform-bar"', "Waveform renders a horizontal amplitude strip");
+excludes(homeSimulator, "<progress", "Recording no longer renders a progress element");
+excludes(homeSimulator, "<time>", "Recording no longer renders a visible timer");
+excludes(homeSimulator, "Grabando", "Successful recording has no visible Grabando label");
+excludes(voiceHook, 'onMessageRef.current("Grabando', "Recording does not publish visible Grabando copy");
+includes(homeSimulator, 'aria-label="Finalizar dictado"', "Recording completion is an accessible checkmark action");
+includes(homeSimulator, 'className="voice-confirm-control"', "Checkmark is the primary recording completion control");
+check(
+  "Checkmark stops the recorder without submitting the simulation",
+  /aria-label="Finalizar dictado"[\s\S]*?onClick=\{voice\.stop\}[\s\S]*?type="button"/.test(homeSimulator),
+);
+includes(homeSimulator, 'aria-label="Cancelar dictado"', "Recording exposes a secondary accessible cancel action");
+check(
+  "Cancel discards capture without changing the existing text",
+  /aria-label="Cancelar dictado"[\s\S]*?onClick=\{voice\.cancel\}/.test(homeSimulator) &&
+    !voiceHook.slice(voiceHook.indexOf("const cancel"), voiceHook.indexOf("const start")).includes("onTranscriptRef"),
+);
+includes(homeSimulator, 'className="voice-processing-indicator"', "Processing uses a subtle visual indicator");
+includes(homeSimulator, ") : isVoiceProcessing ? (", "Processing replaces the recording row without a layout jump");
+includes(homeSimulator, 'className="voice-accessible-status"', "Voice lifecycle keeps a visually hidden live status");
+includes(homeSimulator, "Procesando el dictado.", "Processing remains announced accessibly in Spanish");
+excludes(homeSimulator, "Transcribiendo…", "Processing does not render the heavy Transcribiendo label");
 excludes(`${homeSimulator}\n${voiceHook}`, "SpeechRecognition", "Legacy browser SpeechRecognition primary path is removed");
 excludes(voiceHook, "requestSubmit()", "Voice lifecycle cannot auto-submit a simulation");
 check(
@@ -313,8 +342,10 @@ check(
     (dashboard.match(/<HomeSimulator\s*\/>/g) ?? []).length === 1,
 );
 includes(simulatorCss, "@media (max-width: 480px)", "Voice controls include a mobile layout breakpoint");
-includes(simulatorCss, "min-height: 44px", "Mobile Stop and Cancel keep bounded touch targets");
-includes(simulatorCss, ".voice-live-meter progress", "Shared simulator CSS renders the live meter");
+includes(simulatorCss, "grid-template-columns: minmax(0, 1fr) 44px 48px", "Mobile waveform and controls use a bounded no-overflow grid");
+includes(simulatorCss, "min-height: 44px", "Mobile checkmark and cancel keep bounded touch targets");
+includes(simulatorCss, ".voice-waveform-bar", "Shared simulator CSS renders waveform bars");
+excludes(simulatorCss, ".voice-live-meter progress", "Shared simulator CSS removes the old progress-meter presentation");
 check("Recording limits match the endpoint contract", VOICE_MAX_RECORDING_MS === 120_000 && VOICE_MAX_AUDIO_BYTES === 10 * 1024 * 1024);
 check("Validation performs zero provider operations", providerOperations === 0);
 

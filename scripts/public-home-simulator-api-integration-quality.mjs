@@ -248,11 +248,9 @@ function runSimulatorSourceChecks() {
   const resultSetIndex = source.indexOf("setResult(simulationResult.simulation)");
   const failureIndex = source.indexOf("setResult(null)");
   const errorIndex = source.indexOf("setErrorState({");
-  const criteriaStart = source.indexOf('<div className="simulator-criteria">');
-  const criteriaEnd = source.indexOf('<div className="simulator-action-cluster">', criteriaStart);
-  const criteriaBlock = criteriaStart >= 0 && criteriaEnd > criteriaStart
-    ? source.slice(criteriaStart, criteriaEnd)
-    : "";
+  const criteriaBlock = source.match(
+    /<div className="simulator-criteria">[\s\S]*?<\/div>/,
+  )?.[0] ?? "";
 
   sourceIncludes(source, 'fetch("/api/simulate"', "HomeSimulator uses approved /api/simulate route");
   sourceIncludes(source, "...(clarification ? { clarification } : {})", "HomeSimulator sends bounded clarification only for continuation");

@@ -40,7 +40,9 @@ function blockBetween(source, start, end) {
 
 const processBlock = blockBetween(home, 'id="como-funciona"', 'id="criterios"');
 const capabilityBlock = blockBetween(home, 'id="criterios"', 'className="minimal-home__final-cta"');
-const criteriaBlock = blockBetween(simulator, 'className="simulator-criteria"', 'className="simulator-action-cluster"');
+const criteriaBlock = simulator.match(
+  /<div className="simulator-criteria">[\s\S]*?<\/div>/,
+)?.[0] ?? "";
 const criteriaCss = css.match(
   /\.minimal-home \.simulator-criteria \{[\s\S]*?\.minimal-home \.simulator-action-cluster \{/,
 )?.[0] ?? "";
@@ -167,7 +169,8 @@ includes(simulator, "mockOnly !== true", "HomeSimulator preserves mockOnly valid
 includes(simulator, "apiReady !== true", "HomeSimulator preserves apiReady validation");
 includes(simulator, 'id="decision-input"', "HomeSimulator keeps the stable textarea ID");
 includes(simulator, 'aria-label="Simular decisión"', "HomeSimulator keeps the submit action accessible name");
-includes(simulator, 'aria-label={voice.phase === "recording" ? "Detener grabación de voz" : "Dictar situación"}', "Voice action keeps its accessible name");
+includes(simulator, 'aria-label="Dictar situación"', "Idle voice action keeps its accessible name");
+includes(simulator, 'aria-label="Finalizar dictado"', "Recording completion keeps its accessible name");
 includes(simulator, 'aria-live={errorState ? "assertive" : "polite"}', "Safe status announcements remain");
 includes(simulateRoute, "mockOnly: true", "Public runtime remains deterministic and mockOnly");
 includes(css, ".minimal-home .decision-console .primary-simulation-control", "Simulator submit control has a scoped monochrome rule");

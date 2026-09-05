@@ -37,7 +37,7 @@ import {
 } from "./home-simulator-processing";
 import {
   appendVoiceTranscript,
-  formatVoiceRecordingTime,
+  createVoiceWaveformLevels,
 } from "./home-simulator-voice";
 import { useHomeSimulatorVoice } from "./use-home-simulator-voice";
 
@@ -515,6 +515,10 @@ export default function HomeSimulator() {
     },
   });
 
+  const isVoiceProcessing =
+    voice.phase === "requesting_permission" ||
+    voice.phase === "stopping" ||
+    voice.phase === "transcribing";
   const stages = DEFAULT_PROCESSING_STAGES;
 
   async function requestSimulation(
@@ -963,67 +967,96 @@ export default function HomeSimulator() {
           <strong>La simulación tendrá en cuenta</strong>
           <p>Resultado · Riesgo · Tiempo · Recursos</p>
         </div>
-        <div className="simulator-action-cluster">
-          <button
-            aria-label={voice.phase === "recording" ? "Detener grabación de voz" : "Dictar situación"}
-            aria-pressed={voice.phase === "recording"}
-            className={`voice-input-button ${voice.phase === "recording" ? "is-recording" : ""}`}
-            disabled={
-              isRunning ||
-              Boolean(clarificationState) ||
-              (voice.isBusy && voice.phase !== "recording")
-            }
-            onClick={voice.phase === "recording" ? voice.stop : voice.start}
-            title={voice.phase === "recording" ? "Detener grabación" : "Dictar situación"}
-            type="button"
-          >
-            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
-              <path d="M12 15.25a4 4 0 0 0 4-4V6a4 4 0 1 0-8 0v5.25a4 4 0 0 0 4 4Z" />
-              <path d="M5.75 10.75v.5a6.25 6.25 0 0 0 12.5 0v-.5M12 17.5V21M9.25 21h5.5" />
-            </svg>
-          </button>
-          <button
-            aria-label="Simular decisión"
-            className="primary-simulation-control"
-            disabled={isRunning || Boolean(clarificationState) || voice.isBusy}
-            type="submit"
-          >
-            <span>{isRunning ? "Simulando escenarios" : "Simular escenarios"}</span>
-          </button>
-        </div>
-        {voice.phase !== "idle" && (
+        {voice.phase === "recording" ? (
+          <div className="voice-recording-interaction">
+            <div
+              aria-label="Nivel de voz en directo"
+              className="voice-waveform"
+              role="img"
+            >
+              {createVoiceWaveformLevels(voice.audioLevel).map((level, index) => (
+                <span
+                  aria-hidden="true"
+                  className="voice-waveform-bar"
+                  key={index}
+                  style={{ height: `${Math.round(level * 100)}%` }}
+                />
+              ))}
+            </div>
+            <button
+              aria-label="Cancelar dictado"
+              className="voice-cancel-control"
+              onClick={voice.cancel}
+              title="Cancelar dictado"
+              type="button"
+            >
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                <path d="m7 7 10 10M17 7 7 17" />
+              </svg>
+            </button>
+            <button
+              aria-label="Finalizar dictado"
+              className="voice-confirm-control"
+              onClick={voice.stop}
+              title="Finalizar dictado"
+              type="button"
+            >
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                <path d="m5.5 12.5 4 4 9-9" />
+              </svg>
+            </button>
+          </div>
+        ) : isVoiceProcessing ? (
+          <div aria-hidden="true" className="voice-processing-indicator">
+            <span />
+            <span />
+            <span />
+          </div>
+        ) : (
+          <div className="simulator-action-cluster">
+            <button
+              aria-label="Dictar situación"
+              className="voice-input-button"
+              disabled={isRunning || Boolean(clarificationState) || voice.isBusy}
+              onClick={voice.start}
+              title="Dictar situación"
+              type="button"
+            >
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                <path d="M12 15.25a4 4 0 0 0 4-4V6a4 4 0 1 0-8 0v5.25a4 4 0 0 0 4 4Z" />
+                <path d="M5.75 10.75v.5a6.25 6.25 0 0 0 12.5 0v-.5M12 17.5V21M9.25 21h5.5" />
+              </svg>
+            </button>
+            <button
+              aria-label="Simular decisión"
+              className="primary-simulation-control"
+              disabled={isRunning || Boolean(clarificationState) || voice.isBusy}
+              type="submit"
+            >
+              <span>{isRunning ? "Simulando escenarios" : "Simular escenarios"}</span>
+            </button>
+          </div>
+        )}
+        <p
+          aria-atomic="true"
+          aria-live={voice.phase === "error" ? "assertive" : "polite"}
+          className="voice-accessible-status"
+          role={voice.phase === "error" ? "alert" : "status"}
+        >
+          {voice.phase === "requesting_permission" && "Solicitando acceso al micrófono."}
+          {voice.phase === "recording" &&
+            "Dictado por voz activo. Pulsa Finalizar dictado cuando termines."}
+          {voice.phase === "stopping" && "Finalizando el dictado."}
+          {voice.phase === "transcribing" && "Procesando el dictado."}
+          {voice.phase === "completed" && "Dictado añadido al campo editable."}
+          {voice.phase === "error" && "No se pudo completar el dictado."}
+        </p>
+        {voice.phase === "error" && (
           <div
-            aria-live={voice.phase === "error" ? "assertive" : "polite"}
-            className={`voice-capture-status voice-capture-status--${voice.phase}`}
-            data-voice-phase={voice.phase}
-            role={voice.phase === "error" ? "alert" : "status"}
+            className="voice-capture-status voice-capture-status--error"
+            data-voice-phase="error"
           >
-            {voice.phase === "recording" && (
-              <>
-                <div className="voice-live-meter">
-                  <progress
-                    aria-label="Nivel de audio en directo"
-                    max="1"
-                    value={voice.audioLevel}
-                  />
-                </div>
-                <strong>Grabando…</strong>
-                <time>{formatVoiceRecordingTime(voice.elapsedSeconds)}</time>
-                <button className="voice-stop-control" onClick={voice.stop} type="button">
-                  Detener
-                </button>
-                <button className="voice-cancel-control" onClick={voice.cancel} type="button">
-                  Cancelar
-                </button>
-              </>
-            )}
-            {voice.phase === "requesting_permission" && <strong>Solicitando permiso…</strong>}
-            {voice.phase === "stopping" && <strong>Preparando audio…</strong>}
-            {voice.phase === "transcribing" && <strong>Transcribiendo…</strong>}
-            {voice.phase === "completed" && <strong>Transcripción lista para revisar.</strong>}
-            {voice.phase === "error" && (
-              <strong>La entrada escrita se mantiene. Puedes intentarlo de nuevo.</strong>
-            )}
+            <strong>La entrada escrita se mantiene. Puedes intentarlo de nuevo.</strong>
           </div>
         )}
       </form>

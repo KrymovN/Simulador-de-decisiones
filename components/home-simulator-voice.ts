@@ -71,6 +71,29 @@ export function calculateVoiceAudioLevel(samples: Uint8Array) {
   return Math.min(1, Math.sqrt(sumOfSquares / samples.length) * 2.4);
 }
 
+const VOICE_WAVEFORM_SHAPE = [
+  0.38,
+  0.62,
+  0.84,
+  0.56,
+  0.92,
+  0.7,
+  1,
+  0.74,
+  0.9,
+  0.58,
+  0.82,
+  0.64,
+  0.4,
+] as const;
+
+export function createVoiceWaveformLevels(audioLevel: number) {
+  const boundedLevel = Math.min(1, Math.max(0, audioLevel));
+  return VOICE_WAVEFORM_SHAPE.map((weight) =>
+    Math.min(1, 0.08 + boundedLevel * weight),
+  );
+}
+
 export function formatVoiceRecordingTime(elapsedSeconds: number) {
   const boundedSeconds = Math.max(0, Math.floor(elapsedSeconds));
   const minutes = Math.floor(boundedSeconds / 60);
