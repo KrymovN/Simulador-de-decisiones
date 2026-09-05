@@ -164,8 +164,8 @@ function runAccessibilityChecks(pageSource, navigationSource, simulatorSource) {
   sourceIncludes(simulatorSource, 'Simular decisión', "Submit button has clear text");
   sourceIncludes(simulatorSource, 'aria-live={errorState ? "assertive" : "polite"}', "Status region announces state changes");
   sourceIncludes(simulatorSource, 'role={errorState ? "alert" : "status"}', "Error/success states are not visual-only");
-  sourceIncludes(simulatorSource, 'aria-label={isListening ? "Detener dictado por voz" : "Dictar situación"}', "Voice action has clear aria label");
-  sourceIncludes(simulatorSource, "aria-pressed={isListening}", "Voice toggle exposes pressed state");
+  sourceIncludes(simulatorSource, 'aria-label={voice.phase === "recording" ? "Detener grabación de voz" : "Dictar situación"}', "Voice action has clear aria label");
+  sourceIncludes(simulatorSource, 'aria-pressed={voice.phase === "recording"}', "Voice toggle exposes pressed state");
   sourceIncludes(simulatorSource, 'aria-label="Etapas de simulación del motor"', "Thinking stages have accessible label");
   sourceIncludes(simulatorSource, 'aria-label="Acciones posteriores a la simulación"', "Post-result actions have accessible label");
   sourceIncludes(simulatorSource, "No se ha generado un resultado.", "Controlled error copy is user-visible");

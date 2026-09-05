@@ -26,6 +26,10 @@ import {
   createPublicSimulationApiV2FailureEnvelope,
 } from "../../../lib/runtime-integration/public-simulation-api-v2-adapter.server";
 import { isPublicSimulationApiV2Envelope } from "../../../lib/runtime-integration/public-simulation-api-v2-contracts";
+import {
+  createPublicApiRateLimiter,
+  getPublicRequestSource,
+} from "../../../lib/runtime-integration/public-api-rate-limit";
 
 const SIMULATE_API_CONTRACT_VERSION = "simulate-api-v1-mock";
 const MAX_BODY_LENGTH = 8192;
@@ -44,12 +48,11 @@ type SimulateErrorCode =
   | "rate_limited"
   | "SIMULATION_FAILED";
 
-type RateLimitBucket = {
-  count: number;
-  windowStartedAt: number;
-};
-
-const rateLimitBuckets = new Map<string, RateLimitBucket>();
+const simulateRateLimiter = createPublicApiRateLimiter({
+  maxBuckets: RATE_LIMIT_MAX_BUCKETS,
+  maxRequests: RATE_LIMIT_MAX_REQUESTS,
+  windowMs: RATE_LIMIT_WINDOW_MS,
+});
 const ALLOWED_PAYLOAD_FIELDS = new Set(["input", "lang", "clarification"]);
 const ALLOWED_CLARIFICATION_FIELDS = new Set(["simulationId", "round", "answers"]);
 const ALLOWED_CLARIFICATION_ANSWER_FIELDS = new Set(["questionId", "answer"]);
@@ -190,70 +193,6 @@ function validateClarificationPayload(value: unknown): ValidatedClarificationPay
   };
 }
 
-function pruneExpiredRateLimitBuckets(now: number) {
-  if (rateLimitBuckets.size <= RATE_LIMIT_MAX_BUCKETS) {
-    return;
-  }
-
-  for (const [source, bucket] of rateLimitBuckets) {
-    if (now - bucket.windowStartedAt >= RATE_LIMIT_WINDOW_MS) {
-      rateLimitBuckets.delete(source);
-    }
-  }
-}
-
-function getRequestSource(req: Request) {
-  const forwardedFor = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  const realIp = req.headers.get("x-real-ip")?.trim();
-  const vercelForwardedFor = req.headers.get("x-vercel-forwarded-for")?.split(",")[0]?.trim();
-  const connectingIp = req.headers.get("cf-connecting-ip")?.trim();
-  const userAgent = req.headers.get("user-agent")?.trim();
-
-  return (
-    forwardedFor ||
-    realIp ||
-    vercelForwardedFor ||
-    connectingIp ||
-    `anonymous:${userAgent || "unknown"}`
-  );
-}
-
-function checkRateLimit(source: string) {
-  const now = Date.now();
-  pruneExpiredRateLimitBuckets(now);
-
-  const bucket = rateLimitBuckets.get(source);
-
-  if (!bucket || now - bucket.windowStartedAt >= RATE_LIMIT_WINDOW_MS) {
-    rateLimitBuckets.set(source, {
-      count: 1,
-      windowStartedAt: now,
-    });
-
-    return {
-      limited: false as const,
-    };
-  }
-
-  const retryAfterSeconds = Math.max(
-    1,
-    Math.ceil((bucket.windowStartedAt + RATE_LIMIT_WINDOW_MS - now) / 1000),
-  );
-
-  if (bucket.count >= RATE_LIMIT_MAX_REQUESTS) {
-    return {
-      limited: true as const,
-      retryAfterSeconds,
-    };
-  }
-
-  bucket.count += 1;
-
-  return {
-    limited: false as const,
-  };
-}
-
 async function readJsonBody(req: Request, requestId: string) {
   const contentType = req.headers.get("content-type")?.toLowerCase() ?? "";
 
@@ -381,7 +320,7 @@ function validateSimulatePayload(body: unknown, requestId: string) {
 
 export async function POST(req: Request) {
   const requestId = createRequestId();
-  const rateLimit = checkRateLimit(getRequestSource(req));
+  const rateLimit = simulateRateLimiter.check(getPublicRequestSource(req));
 
   if (rateLimit.limited) {
     return errorResponse(

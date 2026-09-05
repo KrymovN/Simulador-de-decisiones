@@ -120,7 +120,7 @@ sourceIncludes(notFound, 'href="/"', "404 links back to home");
 sourceIncludes(notFound, 'href="/#decision-input"', "404 links to simulator");
 
 sourceIncludes(simulator, 'key={`${scenario.label}-${scenario.title}`}', "Scenario rendering uses stable unique composite keys");
-sourceIncludes(simulator, 'aria-label={isListening ? "Detener dictado por voz" : "Dictar situación"}', "Voice icon control has an accessible name");
+sourceIncludes(simulator, 'aria-label={voice.phase === "recording" ? "Detener grabación de voz" : "Dictar situación"}', "Voice icon control has an accessible name");
 sourceIncludes(simulator, 'fetch("/api/simulate"', "Simulator keeps its approved public endpoint");
 sourceIncludes(simulateRoute, 'const SIMULATE_API_CONTRACT_VERSION = "simulate-api-v1-mock"', "Simulator contract remains mock-compatible");
 sourceIncludes(simulateRoute, "mockOnly: true", "Simulator remains mockOnly");

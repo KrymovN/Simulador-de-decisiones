@@ -20,6 +20,7 @@ const steps = [
   { id: "simulation-response-public-adapter", command: npmCommand, args: ["run", "quality:simulation-response-public-adapter"] },
   { id: "deterministic-clarification-round-trip", command: npmCommand, args: ["run", "quality:deterministic-clarification-round-trip"] },
   { id: "provider-proof-public-simulator", command: npmCommand, args: ["run", "quality:public-simulator"], providerEvidence: true },
+  { id: "voice-recording-transcription", command: npmCommand, args: ["run", "quality:voice-recording-transcription"], voiceProviderEvidence: true },
   { id: "typescript", command: join(rootDir, "node_modules", ".bin", "tsc"), args: ["--noEmit"] },
 ];
 
@@ -60,12 +61,24 @@ function parseProviderEvidence(output) {
   return JSON.parse(line.slice("LEVIO_PROVIDER_OPERATION_EVIDENCE ".length));
 }
 
+function parseVoiceProviderEvidence(output) {
+  const line = output.split("\n").find((value) =>
+    value.startsWith("LEVIO_VOICE_PROVIDER_OPERATION_EVIDENCE ")
+  );
+  if (!line) {
+    throw new Error("Provider operation evidence is missing from the voice transcription gate.");
+  }
+  return JSON.parse(line.slice("LEVIO_VOICE_PROVIDER_OPERATION_EVIDENCE ".length));
+}
+
 const results = [];
 let providerOperations;
+let voiceProviderOperations;
 
 try {
   if (
     !environmentInspection.realAiExplicitlyOff ||
+    !environmentInspection.voiceTranscriptionExplicitlyOff ||
     !environmentInspection.deterministicReleaseValidation ||
     environmentInspection.providerEnvironmentKeysPresent.length !== 0
   ) {
@@ -79,6 +92,9 @@ try {
     if (step.providerEvidence) {
       providerOperations = parseProviderEvidence(output);
     }
+    if (step.voiceProviderEvidence) {
+      voiceProviderOperations = parseVoiceProviderEvidence(output);
+    }
   }
 
   if (
@@ -86,6 +102,12 @@ try {
     Object.values(providerOperations).some((value) => value !== 0)
   ) {
     throw new Error("Deterministic release validation observed a provider operation.");
+  }
+  if (
+    !voiceProviderOperations ||
+    Object.values(voiceProviderOperations).some((value) => value !== 0)
+  ) {
+    throw new Error("Deterministic release validation observed a voice provider operation.");
   }
 
   const repositoryHead = execFileSync("git", ["rev-parse", "HEAD"], {
@@ -103,10 +125,12 @@ try {
     generatedAt: new Date().toISOString(),
     environment: {
       realAi: "OFF",
+      voiceTranscription: "OFF",
       deterministicReleaseValidation: true,
       providerEnvironmentIsolated: true,
     },
     providerOperations,
+    voiceProviderOperations,
     deterministicGates: results,
     build: "PASS",
     workingTreeClean,

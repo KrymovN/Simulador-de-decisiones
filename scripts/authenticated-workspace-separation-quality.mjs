@@ -108,7 +108,8 @@ check(
   "I public preview remains intact with one shared implementation",
   (home.match(/<HomeSimulator\s*\/>/g) ?? []).length === 1 &&
     (dashboard.match(/<HomeSimulator\s*\/>/g) ?? []).length === 1 &&
-    simulator === before("components/HomeSimulator.tsx") &&
+    simulator.includes("useHomeSimulatorVoice") &&
+    simulator.includes("appendVoiceTranscript(currentInput, transcript") &&
     !dashboard.includes("function HomeSimulator") &&
     !home.includes("function HomeSimulator"),
   "The public preview or single functional simulator implementation drifted.",

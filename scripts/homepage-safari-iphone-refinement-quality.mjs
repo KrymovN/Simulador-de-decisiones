@@ -58,7 +58,7 @@ includes(home, 'className="minimal-home__process-card"', "Process stays a text-c
 includes(home, 'className="minimal-home__capability-card"', "Capabilities stay a text-card section");
 excludes(home, "<svg", "Homepage sections add no SVG illustration");
 excludes(home, "<Image", "Homepage adds no raster hero image");
-includes(simulator, 'aria-label={isListening ? "Detener dictado por voz" : "Dictar situación"}', "Voice action keeps stateful accessibility");
+includes(simulator, 'aria-label={voice.phase === "recording" ? "Detener grabación de voz" : "Dictar situación"}', "Voice action keeps stateful accessibility");
 includes(simulator, 'aria-label="Simular decisión"', "Submit action keeps accessibility");
 includes(simulateRoute, "mockOnly: true", "Public runtime remains deterministic and mockOnly");
 includes(packageJson, '"quality:homepage-safari-iphone-refinement"', "Safari regression gate remains registered");

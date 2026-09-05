@@ -167,7 +167,7 @@ includes(simulator, "mockOnly !== true", "HomeSimulator preserves mockOnly valid
 includes(simulator, "apiReady !== true", "HomeSimulator preserves apiReady validation");
 includes(simulator, 'id="decision-input"', "HomeSimulator keeps the stable textarea ID");
 includes(simulator, 'aria-label="Simular decisión"', "HomeSimulator keeps the submit action accessible name");
-includes(simulator, 'aria-label={isListening ? "Detener dictado por voz" : "Dictar situación"}', "Voice action keeps its accessible name");
+includes(simulator, 'aria-label={voice.phase === "recording" ? "Detener grabación de voz" : "Dictar situación"}', "Voice action keeps its accessible name");
 includes(simulator, 'aria-live={errorState ? "assertive" : "polite"}', "Safe status announcements remain");
 includes(simulateRoute, "mockOnly: true", "Public runtime remains deterministic and mockOnly");
 includes(css, ".minimal-home .decision-console .primary-simulation-control", "Simulator submit control has a scoped monochrome rule");

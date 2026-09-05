@@ -395,6 +395,10 @@ Temporary processing rules:
 - It must contain the minimum required context.
 - Raw microphone audio must not be stored.
 - Voice transcripts must expire after active use unless the user explicitly saves relevant text.
+- The server-side voice-transcription boundary remains disabled by default;
+  before raw audio is sent to an external transcription provider,
+  `PRIVACY FOLLOW-UP REQUIRED` must close provider disclosure,
+  user-initiation, retention, and deletion wording.
 - Failed or refused outputs must not create a hidden persistent decision record.
 - Temporary export files and claim tokens must expire and become unusable.
 

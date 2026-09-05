@@ -1,5 +1,7 @@
 const PROVIDER_ENVIRONMENT_KEYS = new Set([
   "LEVIO_AI_PROVIDER",
+  "LEVIO_VOICE_TRANSCRIPTION_MODEL",
+  "LEVIO_VOICE_TRANSCRIPTION_PROVIDER",
 ]);
 
 const PROVIDER_ENVIRONMENT_PREFIXES = [
@@ -23,6 +25,7 @@ export function createDeterministicReleaseValidationEnvironment(source) {
   }
 
   environment.LEVIO_REAL_AI_DEV_ENABLED = "false";
+  environment.LEVIO_VOICE_TRANSCRIPTION_ENABLED = "false";
   environment[DETERMINISTIC_RELEASE_VALIDATION_FLAG] = "true";
 
   return environment;
@@ -36,6 +39,8 @@ export function inspectDeterministicReleaseValidationEnvironment(environment) {
 
   return {
     realAiExplicitlyOff: environment.LEVIO_REAL_AI_DEV_ENABLED === "false",
+    voiceTranscriptionExplicitlyOff:
+      environment.LEVIO_VOICE_TRANSCRIPTION_ENABLED === "false",
     deterministicReleaseValidation:
       environment[DETERMINISTIC_RELEASE_VALIDATION_FLAG] === "true",
     providerEnvironmentKeysPresent: providerKeys,

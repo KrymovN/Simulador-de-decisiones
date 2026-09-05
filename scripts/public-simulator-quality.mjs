@@ -163,6 +163,11 @@ function runEnvironmentIsolationChecks(environment) {
     "LEVIO_REAL_AI_DEV_ENABLED must be false in the validation child.",
   );
   assertCheck(
+    "Release validation forces voice transcription explicitly OFF",
+    inspection.voiceTranscriptionExplicitlyOff,
+    "LEVIO_VOICE_TRANSCRIPTION_ENABLED must be false in the validation child.",
+  );
+  assertCheck(
     "Release validation marks the child as deterministic",
     inspection.deterministicReleaseValidation,
     "The deterministic release-validation marker is missing.",

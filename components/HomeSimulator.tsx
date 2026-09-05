@@ -35,35 +35,11 @@ import {
   type ProcessingRunController,
   type ProcessingState,
 } from "./home-simulator-processing";
-
-interface SpeechRecognitionResultLike {
-  isFinal: boolean;
-  0: {
-    transcript: string;
-  };
-}
-
-interface SpeechRecognitionEventLike {
-  results: ArrayLike<SpeechRecognitionResultLike>;
-}
-
-interface SpeechRecognitionErrorEventLike {
-  error: string;
-}
-
-interface SpeechRecognitionLike {
-  continuous: boolean;
-  interimResults: boolean;
-  lang: string;
-  onend: (() => void) | null;
-  onerror: ((event: SpeechRecognitionErrorEventLike) => void) | null;
-  onresult: ((event: SpeechRecognitionEventLike) => void) | null;
-  abort: () => void;
-  start: () => void;
-  stop: () => void;
-}
-
-type SpeechRecognitionConstructor = new () => SpeechRecognitionLike;
+import {
+  appendVoiceTranscript,
+  formatVoiceRecordingTime,
+} from "./home-simulator-voice";
+import { useHomeSimulatorVoice } from "./use-home-simulator-voice";
 
 const defaultInput =
   "Aceptar una oferta, lanzar un producto, cambiar de país, invertir en una nueva dirección...";
@@ -283,19 +259,6 @@ class SimulateApiFailure extends Error {
     this.runtimeSource = options?.runtimeSource;
     this.renderState = options?.renderState;
   }
-}
-
-function getSpeechRecognitionConstructor() {
-  if (typeof window === "undefined") {
-    return undefined;
-  }
-
-  const speechWindow = window as typeof window & {
-    SpeechRecognition?: SpeechRecognitionConstructor;
-    webkitSpeechRecognition?: SpeechRecognitionConstructor;
-  };
-
-  return speechWindow.SpeechRecognition ?? speechWindow.webkitSpeechRecognition;
 }
 
 function preserveReachedRevealState(origin: HTMLElement | null) {
@@ -519,7 +482,6 @@ export default function HomeSimulator() {
   const [input, setInput] = useState("");
   const [processingState, setProcessingState] = useState<ProcessingState>(IDLE_PROCESSING_STATE);
   const [isRunning, setIsRunning] = useState(false);
-  const [isListening, setIsListening] = useState(false);
   const [result, setResult] = useState<SimulationResponse | null>(null);
   const [, setPreviewState] = useState<SimulationPreviewState | null>(null);
   const [productionResult, setProductionResult] = useState<Extract<
@@ -534,11 +496,24 @@ export default function HomeSimulator() {
   const [message, setMessage] = useState("");
   const consoleRef = useRef<HTMLElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const thinkingPanelRef = useRef<HTMLDivElement>(null);
   const outputRef = useRef<HTMLDivElement>(null);
   const processingRunRef = useRef<ProcessingRunController | null>(null);
   const processingRunIdRef = useRef(0);
+
+  const voice = useHomeSimulatorVoice({
+    onMessage: setMessage,
+    onTranscript(transcript) {
+      setInput((currentInput) =>
+        appendVoiceTranscript(currentInput, transcript, MAX_SIMULATION_INPUT_LENGTH),
+      );
+      setErrorState(null);
+      setPreviewState(null);
+      setProductionResult(null);
+      setSaveState(null);
+      window.requestAnimationFrame(() => textareaRef.current?.focus());
+    },
+  });
 
   const stages = DEFAULT_PROCESSING_STAGES;
 
@@ -777,7 +752,7 @@ export default function HomeSimulator() {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (clarificationState) {
+    if (clarificationState || voice.isBusy) {
       return;
     }
 
@@ -899,66 +874,6 @@ export default function HomeSimulator() {
     }
   }
 
-  function handleVoiceToggle() {
-    if (recognitionRef.current && isListening) {
-      recognitionRef.current.stop();
-      return;
-    }
-
-    const SpeechRecognition = getSpeechRecognitionConstructor();
-
-    if (!SpeechRecognition) {
-      setMessage("El dictado por voz no está disponible en este navegador.");
-      return;
-    }
-
-    const recognition = new SpeechRecognition();
-    recognition.lang = "es-ES";
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.onresult = (event) => {
-      const transcript = Array.from(event.results)
-        .filter((result) => result.isFinal)
-        .map((result) => result[0]?.transcript ?? "")
-        .join(" ")
-        .trim();
-
-      if (transcript) {
-        setInput((currentInput) =>
-          `${currentInput.trimEnd()}${currentInput.trim() ? " " : ""}${transcript}`.slice(
-            0,
-            MAX_SIMULATION_INPUT_LENGTH,
-          ),
-        );
-        setMessage("Dictado añadido. Revisa el texto antes de simular.");
-        setErrorState(null);
-      }
-    };
-    recognition.onerror = (event) => {
-      if (event.error === "not-allowed" || event.error === "service-not-allowed") {
-        setMessage("No se pudo acceder al micrófono. Revisa el permiso del navegador.");
-      } else {
-        setMessage("No se pudo completar el dictado por voz. Puedes seguir escribiendo.");
-      }
-    };
-    recognition.onend = () => {
-      recognitionRef.current = null;
-      setIsListening(false);
-    };
-
-    recognitionRef.current = recognition;
-
-    try {
-      recognition.start();
-      setIsListening(true);
-      setMessage("Escuchando... Pulsa el micrófono para detener el dictado.");
-    } catch {
-      recognitionRef.current = null;
-      setIsListening(false);
-      setMessage("No se pudo iniciar el dictado por voz. Puedes seguir escribiendo.");
-    }
-  }
-
   function handleClarificationReset() {
     if (isRunning) {
       return;
@@ -974,7 +889,6 @@ export default function HomeSimulator() {
 
   useEffect(() => {
     return () => {
-      recognitionRef.current?.abort();
       cancelProcessingRun(processingRunRef.current);
       processingRunRef.current = null;
     };
@@ -1051,12 +965,16 @@ export default function HomeSimulator() {
         </div>
         <div className="simulator-action-cluster">
           <button
-            aria-label={isListening ? "Detener dictado por voz" : "Dictar situación"}
-            aria-pressed={isListening}
-            className={`voice-input-button ${isListening ? "is-listening" : ""}`}
-            disabled={isRunning || Boolean(clarificationState)}
-            onClick={handleVoiceToggle}
-            title={isListening ? "Detener dictado" : "Dictar situación"}
+            aria-label={voice.phase === "recording" ? "Detener grabación de voz" : "Dictar situación"}
+            aria-pressed={voice.phase === "recording"}
+            className={`voice-input-button ${voice.phase === "recording" ? "is-recording" : ""}`}
+            disabled={
+              isRunning ||
+              Boolean(clarificationState) ||
+              (voice.isBusy && voice.phase !== "recording")
+            }
+            onClick={voice.phase === "recording" ? voice.stop : voice.start}
+            title={voice.phase === "recording" ? "Detener grabación" : "Dictar situación"}
             type="button"
           >
             <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
@@ -1067,12 +985,47 @@ export default function HomeSimulator() {
           <button
             aria-label="Simular decisión"
             className="primary-simulation-control"
-            disabled={isRunning || Boolean(clarificationState)}
+            disabled={isRunning || Boolean(clarificationState) || voice.isBusy}
             type="submit"
           >
             <span>{isRunning ? "Simulando escenarios" : "Simular escenarios"}</span>
           </button>
         </div>
+        {voice.phase !== "idle" && (
+          <div
+            aria-live={voice.phase === "error" ? "assertive" : "polite"}
+            className={`voice-capture-status voice-capture-status--${voice.phase}`}
+            data-voice-phase={voice.phase}
+            role={voice.phase === "error" ? "alert" : "status"}
+          >
+            {voice.phase === "recording" && (
+              <>
+                <div className="voice-live-meter">
+                  <progress
+                    aria-label="Nivel de audio en directo"
+                    max="1"
+                    value={voice.audioLevel}
+                  />
+                </div>
+                <strong>Grabando…</strong>
+                <time>{formatVoiceRecordingTime(voice.elapsedSeconds)}</time>
+                <button className="voice-stop-control" onClick={voice.stop} type="button">
+                  Detener
+                </button>
+                <button className="voice-cancel-control" onClick={voice.cancel} type="button">
+                  Cancelar
+                </button>
+              </>
+            )}
+            {voice.phase === "requesting_permission" && <strong>Solicitando permiso…</strong>}
+            {voice.phase === "stopping" && <strong>Preparando audio…</strong>}
+            {voice.phase === "transcribing" && <strong>Transcribiendo…</strong>}
+            {voice.phase === "completed" && <strong>Transcripción lista para revisar.</strong>}
+            {voice.phase === "error" && (
+              <strong>La entrada escrita se mantiene. Puedes intentarlo de nuevo.</strong>
+            )}
+          </div>
+        )}
       </form>
 
       <div
