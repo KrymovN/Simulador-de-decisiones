@@ -20,6 +20,7 @@ import {
   calculateDecisionMaterialCost,
   calculateDecisionMaterialCostEvidence,
   executeCandidateDecisionMaterial,
+  validateMaterialGrounding,
   type DecisionMaterialAdapterResult,
   type DecisionMaterialProviderIncompleteOperationalMetadata,
   type DecisionMaterialProviderRequest,
@@ -340,19 +341,97 @@ export async function runStage9OpenAIDecisionMaterialAdapterValidation(): Promis
     },
   }));
   add("adapter-output-item-budget-enforced", "negative", category(excessiveOutput.result) === "provider_schema_invalid");
-  const badRef = validCandidateDecisionMaterial();
-  badRef.items[0].option_refs = ["option_99"];
-  const ungrounded = await execute(context, {}, mockTransport({
-    generation: { status: "completed", outputText: JSON.stringify(badRef), usage: { inputTokens: 1200, outputTokens: 900, totalTokens: 2100 } },
+  const grounded = validateMaterialGrounding(validCandidateDecisionMaterial(), context);
+  add("fully-grounded-material-has-no-failure-metadata", "positive", grounded.valid);
+
+  async function groundingFailure(material: CandidateDecisionMaterial) {
+    const execution = await execute(context, {}, mockTransport({
+      generation: {
+        status: "completed",
+        outputText: JSON.stringify(material),
+        usage: { inputTokens: 1200, outputTokens: 900, totalTokens: 2100 },
+      },
+    }));
+    return execution.result.status === "failed" &&
+        execution.result.error.category === "provider_grounding_invalid"
+      ? execution.result.error.groundingFailure
+      : undefined;
+  }
+
+  const unknownSource = validCandidateDecisionMaterial();
+  unknownSource.items[0].provenance.source_ref = "invented_source";
+  const unknownSourceFailure = await groundingFailure(unknownSource);
+  add("unknown-source-ref-diagnostic", "negative",
+    unknownSourceFailure?.itemType === "option" &&
+    unknownSourceFailure.itemIndex === 0 &&
+    unknownSourceFailure.field === "provenance.source_ref" &&
+    unknownSourceFailure.predicate === "unknown_source_ref" &&
+    unknownSourceFailure.referenceToken === "invented_source");
+
+  const unknownOption = validCandidateDecisionMaterial();
+  unknownOption.items[0].option_refs = ["option_99"];
+  const unknownOptionFailure = await groundingFailure(unknownOption);
+  add("unknown-option-ref-diagnostic", "negative",
+    unknownOptionFailure?.itemIndex === 0 &&
+    unknownOptionFailure.field === "option_refs" &&
+    unknownOptionFailure.predicate === "unknown_option_ref" &&
+    unknownOptionFailure.referenceToken === "option_99");
+
+  const unknownScenario = validCandidateDecisionMaterial();
+  unknownScenario.items[0].scenario_refs = ["scenario_99"];
+  const unknownScenarioFailure = await groundingFailure(unknownScenario);
+  add("unknown-scenario-ref-diagnostic", "negative",
+    unknownScenarioFailure?.itemIndex === 0 &&
+    unknownScenarioFailure.field === "scenario_refs" &&
+    unknownScenarioFailure.predicate === "unknown_scenario_ref" &&
+    unknownScenarioFailure.referenceToken === "scenario_99");
+
+  const unknownCriterion = validCandidateDecisionMaterial();
+  unknownCriterion.items[0].criterion_refs = ["criterion_99"];
+  const unknownCriterionFailure = await groundingFailure(unknownCriterion);
+  add("unknown-criterion-ref-diagnostic", "negative",
+    unknownCriterionFailure?.itemIndex === 0 &&
+    unknownCriterionFailure.field === "criterion_refs" &&
+    unknownCriterionFailure.predicate === "unknown_criterion_ref" &&
+    unknownCriterionFailure.referenceToken === "criterion_99");
+
+  const inferenceWithoutConcreteSource = validCandidateDecisionMaterial();
+  inferenceWithoutConcreteSource.items[1].provenance.source_ref = "unknown";
+  const inferenceWithoutConcreteSourceFailure = await groundingFailure(
+    inferenceWithoutConcreteSource,
+  );
+  add("provider-inference-requires-concrete-source-diagnostic", "negative",
+    inferenceWithoutConcreteSourceFailure?.itemIndex === 1 &&
+    inferenceWithoutConcreteSourceFailure.field === "provenance.source_ref" &&
+    inferenceWithoutConcreteSourceFailure.predicate ===
+      "provider_inference_requires_concrete_source" &&
+    inferenceWithoutConcreteSourceFailure.referenceToken === "unknown");
+
+  const unknownEvidenceWithConcreteSource = validCandidateDecisionMaterial();
+  unknownEvidenceWithConcreteSource.items[0].evidence = "unknown";
+  const unknownEvidenceWithConcreteSourceFailure = await groundingFailure(
+    unknownEvidenceWithConcreteSource,
+  );
+  add("unknown-evidence-requires-unknown-source-diagnostic", "negative",
+    unknownEvidenceWithConcreteSourceFailure?.itemIndex === 0 &&
+    unknownEvidenceWithConcreteSourceFailure.field === "provenance.source_ref" &&
+    unknownEvidenceWithConcreteSourceFailure.predicate ===
+      "unknown_evidence_requires_unknown_source" &&
+    unknownEvidenceWithConcreteSourceFailure.referenceToken === "option_1");
+
+  const rawContentSentinel = "RAW_PROVIDER_CONTENT_MUST_NOT_BE_STORED";
+  unknownOption.items[0].content = rawContentSentinel;
+  const rawContentFailure = await execute(context, {}, mockTransport({
+    generation: {
+      status: "completed",
+      outputText: JSON.stringify(unknownOption),
+      usage: { inputTokens: 1200, outputTokens: 900, totalTokens: 2100 },
+    },
   }));
-  add("ungrounded-reference-rejected", "negative", category(ungrounded.result) === "provider_grounding_invalid");
-  const inferenceSentinel = validCandidateDecisionMaterial();
-  inferenceSentinel.items[1].provenance.source_ref = "provider_inference";
-  const inferenceSentinelResult = await execute(context, {}, mockTransport({
-    generation: { status: "completed", outputText: JSON.stringify(inferenceSentinel), usage: { inputTokens: 1200, outputTokens: 900, totalTokens: 2100 } },
-  }));
-  add("provider-inference-sentinel-rejected", "negative",
-    category(inferenceSentinelResult.result) === "provider_grounding_invalid");
+  add("grounding-diagnostic-excludes-raw-content", "negative",
+    category(rawContentFailure.result) === "provider_grounding_invalid" &&
+    !JSON.stringify(rawContentFailure.result).includes(rawContentSentinel) &&
+    !JSON.stringify(rawContentFailure.result).includes("outputText"));
   const inferenceConcrete = validCandidateDecisionMaterial();
   inferenceConcrete.items[1].provenance.source_ref = "objective_1";
   const inferenceConcreteResult = await execute(context, {}, mockTransport({

@@ -350,6 +350,54 @@ try {
     "The public API and UI model must preserve the controlled generic Spanish message.",
   );
 
+  const groundingRawContent = "GROUNDING_PROVIDER_PROSE_MUST_NOT_LEAK";
+  const groundingMaterial = structuredClone(validCandidateDecisionMaterial());
+  groundingMaterial.items[0].content = groundingRawContent;
+  groundingMaterial.items[0].criterion_refs = ["criterion_99"];
+  const groundingEventStart = operationalEvents.length;
+  activeRuntime = boundRuntime({
+    async countInput() {
+      return 1200;
+    },
+    async generate() {
+      return {
+        status: "completed",
+        outputText: JSON.stringify(groundingMaterial),
+        usage: { inputTokens: 1200, outputTokens: 100, totalTokens: 1300 },
+      };
+    },
+  });
+  const groundingResponse = await POST(request(88));
+  const groundingFailure = await payload(groundingResponse);
+  const serializedGroundingFailure = JSON.stringify(groundingFailure);
+  const groundingEvent = operationalEvents.slice(groundingEventStart).find(
+    (event) => event.event === "orchestration_failed",
+  );
+
+  add(
+    "grounding-failure-internal-event-is-bounded",
+    groundingEvent?.failureCategory === "provider_grounding_invalid" &&
+      groundingEvent.groundingItemType === "option" &&
+      groundingEvent.groundingItemIndex === 0 &&
+      groundingEvent.groundingField === "criterion_refs" &&
+      groundingEvent.groundingPredicate === "unknown_criterion_ref" &&
+      groundingEvent.groundingReferenceToken === "criterion_99" &&
+      !JSON.stringify(groundingEvent).includes(groundingRawContent),
+    "Internal event must identify the exact grounding predicate without provider prose.",
+  );
+  add(
+    "grounding-failure-public-envelope-remains-generic",
+    groundingResponse.status === 502 &&
+      groundingFailure.status === "failed" &&
+      groundingFailure.error?.message === "No se pudo completar la simulación de forma segura." &&
+      groundingFailure.uiModel?.renderState === "controlled_failure" &&
+      !serializedGroundingFailure.includes("grounding") &&
+      !serializedGroundingFailure.includes("criterion_99") &&
+      !serializedGroundingFailure.includes(groundingRawContent) &&
+      !serializedGroundingFailure.includes("provider_grounding_invalid"),
+    "Grounding diagnostics or raw output reached the public API/UI envelope.",
+  );
+
   let missingConfigTransportCalls = 0;
   activeRuntime = boundRuntime({
     async countInput() {

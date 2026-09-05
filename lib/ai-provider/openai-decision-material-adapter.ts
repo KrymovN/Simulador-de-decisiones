@@ -11,6 +11,7 @@ import {
   CANDIDATE_DECISION_MATERIAL_CONTRACT_VERSION,
   DECISION_MATERIAL_ITEM_TYPES,
   type CandidateDecisionMaterial,
+  type DecisionMaterialItemType,
 } from "../ai-decision-material/contracts";
 import type { AIProviderRequest } from "./contracts";
 import type { ProviderFailureOperationalMetadata } from "./provider-failure-observability";
@@ -107,6 +108,36 @@ export type DecisionMaterialProviderErrorMetadata = {
   param: string | null;
   message: string | null;
 };
+
+export const DECISION_MATERIAL_GROUNDING_PREDICATES = [
+  "unknown_source_ref",
+  "unknown_option_ref",
+  "unknown_scenario_ref",
+  "unknown_criterion_ref",
+  "provider_inference_requires_concrete_source",
+  "unknown_evidence_requires_unknown_source",
+] as const;
+
+export type DecisionMaterialGroundingPredicate =
+  (typeof DECISION_MATERIAL_GROUNDING_PREDICATES)[number];
+
+export type DecisionMaterialGroundingField =
+  | "provenance.source_ref"
+  | "option_refs"
+  | "scenario_refs"
+  | "criterion_refs";
+
+export type DecisionMaterialGroundingFailure = {
+  itemType: DecisionMaterialItemType;
+  itemIndex: number;
+  field: DecisionMaterialGroundingField;
+  predicate: DecisionMaterialGroundingPredicate;
+  referenceToken: string;
+};
+
+export type DecisionMaterialGroundingValidationResult =
+  | { valid: true }
+  | { valid: false; failure: DecisionMaterialGroundingFailure };
 
 export type DecisionMaterialProviderIncompleteOperationalMetadata = {
   responseStatus: string | null;
@@ -235,6 +266,7 @@ export type DecisionMaterialAdapterResult =
         message: string;
         providerErrorMetadata?: DecisionMaterialProviderErrorMetadata;
         providerIncompleteMetadata?: DecisionMaterialProviderIncompleteOperationalMetadata;
+        groundingFailure?: DecisionMaterialGroundingFailure;
       };
       providerRequests: number;
       elapsedMs: number;
@@ -520,23 +552,100 @@ function providerBoundaryPreflight(input: PromptContextOutput, requestedAt: stri
   }).status === "ready";
 }
 
-function materialIsGrounded(
+export function validateMaterialGrounding(
   material: CandidateDecisionMaterial,
   input: PromptContextOutput,
-): boolean {
+): DecisionMaterialGroundingValidationResult {
   const context = providerContext(input);
   const sourceRefs = new Set(context.allowed_refs.source_refs);
   const optionRefs = new Set(context.allowed_refs.option_refs);
   const scenarioRefs = new Set(context.allowed_refs.scenario_refs);
   const criterionRefs = new Set(context.allowed_refs.criterion_refs);
-  return material.items.every((item) =>
-    sourceRefs.has(item.provenance.source_ref) &&
-    item.option_refs.every((ref) => optionRefs.has(ref)) &&
-    item.scenario_refs.every((ref) => scenarioRefs.has(ref)) &&
-    item.criterion_refs.every((ref) => criterionRefs.has(ref)) &&
-    (item.evidence !== "provider_inference" || item.provenance.source_ref !== "unknown") &&
-    (item.evidence !== "unknown" || item.provenance.source_ref === "unknown")
-  );
+
+  for (const [itemIndex, item] of material.items.entries()) {
+    if (!sourceRefs.has(item.provenance.source_ref)) {
+      return {
+        valid: false,
+        failure: {
+          itemType: item.item_type,
+          itemIndex,
+          field: "provenance.source_ref",
+          predicate: "unknown_source_ref",
+          referenceToken: item.provenance.source_ref,
+        },
+      };
+    }
+
+    const unknownOptionRef = item.option_refs.find((ref) => !optionRefs.has(ref));
+    if (unknownOptionRef !== undefined) {
+      return {
+        valid: false,
+        failure: {
+          itemType: item.item_type,
+          itemIndex,
+          field: "option_refs",
+          predicate: "unknown_option_ref",
+          referenceToken: unknownOptionRef,
+        },
+      };
+    }
+
+    const unknownScenarioRef = item.scenario_refs.find((ref) => !scenarioRefs.has(ref));
+    if (unknownScenarioRef !== undefined) {
+      return {
+        valid: false,
+        failure: {
+          itemType: item.item_type,
+          itemIndex,
+          field: "scenario_refs",
+          predicate: "unknown_scenario_ref",
+          referenceToken: unknownScenarioRef,
+        },
+      };
+    }
+
+    const unknownCriterionRef = item.criterion_refs.find((ref) => !criterionRefs.has(ref));
+    if (unknownCriterionRef !== undefined) {
+      return {
+        valid: false,
+        failure: {
+          itemType: item.item_type,
+          itemIndex,
+          field: "criterion_refs",
+          predicate: "unknown_criterion_ref",
+          referenceToken: unknownCriterionRef,
+        },
+      };
+    }
+
+    if (item.evidence === "provider_inference" && item.provenance.source_ref === "unknown") {
+      return {
+        valid: false,
+        failure: {
+          itemType: item.item_type,
+          itemIndex,
+          field: "provenance.source_ref",
+          predicate: "provider_inference_requires_concrete_source",
+          referenceToken: item.provenance.source_ref,
+        },
+      };
+    }
+
+    if (item.evidence === "unknown" && item.provenance.source_ref !== "unknown") {
+      return {
+        valid: false,
+        failure: {
+          itemType: item.item_type,
+          itemIndex,
+          field: "provenance.source_ref",
+          predicate: "unknown_evidence_requires_unknown_source",
+          referenceToken: item.provenance.source_ref,
+        },
+      };
+    }
+  }
+
+  return { valid: true };
 }
 
 export function calculateDecisionMaterialCost(inputTokens: number, outputTokens: number): number {
@@ -581,6 +690,7 @@ function failed(
   elapsedMs: number,
   providerErrorMetadata?: DecisionMaterialProviderErrorMetadata,
   providerIncompleteMetadata?: DecisionMaterialProviderIncompleteOperationalMetadata,
+  groundingFailure?: DecisionMaterialGroundingFailure,
 ): DecisionMaterialAdapterResult {
   const messages: Record<DecisionMaterialAdapterErrorCategory, string> = {
     adapter_disabled: "The production AI provider adapter is disabled.",
@@ -614,6 +724,7 @@ function failed(
       message: messages[category],
       ...(providerErrorMetadata ? { providerErrorMetadata } : {}),
       ...(providerIncompleteMetadata ? { providerIncompleteMetadata } : {}),
+      ...(groundingFailure ? { groundingFailure } : {}),
     },
     providerRequests,
     elapsedMs,
@@ -726,8 +837,17 @@ export async function executeCandidateDecisionMaterial(
   if (!inspection.safetyValid) {
     return failed("failed", "provider_safety_invalid", providerRequests, elapsed());
   }
-  if (!materialIsGrounded(parsed, validated.value)) {
-    return failed("failed", "provider_grounding_invalid", providerRequests, elapsed());
+  const grounding = validateMaterialGrounding(parsed, validated.value);
+  if (grounding.valid === false) {
+    return failed(
+      "failed",
+      "provider_grounding_invalid",
+      providerRequests,
+      elapsed(),
+      undefined,
+      undefined,
+      grounding.failure,
+    );
   }
   const usage = generated.usage;
   const cachedInputTokens = usage.cachedInputTokens ?? null;

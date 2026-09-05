@@ -3,6 +3,7 @@ import "server-only";
 import {
   executeCandidateDecisionMaterial,
   type DecisionMaterialAdapterExecutionConfig,
+  type DecisionMaterialGroundingFailure,
 } from "../ai-provider/openai-decision-material-adapter";
 import type { SimulationResponseV2Draft } from "../decision-engine/contracts";
 import {
@@ -93,6 +94,7 @@ export type ProductionDecisionSimulationOrchestratorResult =
         code: ProductionDecisionSimulationOrchestratorErrorCode;
         stage: ProductionDecisionSimulationOrchestratorStage | "orchestrator";
         sourceCode?: string;
+        groundingFailure?: DecisionMaterialGroundingFailure;
         message: string;
         retryable: false;
       };
@@ -161,6 +163,7 @@ function failed(input: {
   code: ProductionDecisionSimulationOrchestratorErrorCode;
   stage: ProductionDecisionSimulationOrchestratorStage | "orchestrator";
   sourceCode?: string;
+  groundingFailure?: DecisionMaterialGroundingFailure;
   message: string;
   trace?: ProductionDecisionSimulationOrchestratorTraceEntry[];
   injectedProviderTransportUsed?: boolean;
@@ -174,6 +177,7 @@ function failed(input: {
       code: input.code,
       stage: input.stage,
       ...(input.sourceCode ? { sourceCode: input.sourceCode } : {}),
+      ...(input.groundingFailure ? { groundingFailure: input.groundingFailure } : {}),
       message: input.message,
       retryable: false,
     },
@@ -187,6 +191,7 @@ function stageFailure(input: {
   code: ProductionDecisionSimulationOrchestratorErrorCode;
   stage: ProductionDecisionSimulationOrchestratorStage;
   sourceCode: string;
+  groundingFailure?: DecisionMaterialGroundingFailure;
   message: string;
   completed: ProductionDecisionSimulationOrchestratorTraceEntry[];
   injectedProviderTransportUsed: boolean;
@@ -196,6 +201,7 @@ function stageFailure(input: {
     code: input.code,
     stage: input.stage,
     sourceCode: input.sourceCode,
+    groundingFailure: input.groundingFailure,
     message: input.message,
     trace: [
       ...input.completed,
@@ -258,6 +264,7 @@ export async function executeProductionDecisionSimulationFlow(
         code: "provider_adapter_failed",
         stage: "provider_adapter",
         sourceCode: provider.error.category,
+        groundingFailure: provider.error.groundingFailure,
         message: "Provider Adapter did not produce validated candidate decision material.",
         completed,
         injectedProviderTransportUsed: true,

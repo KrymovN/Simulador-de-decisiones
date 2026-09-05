@@ -238,6 +238,20 @@ export async function runControlledProductionAiRuntimeSwitchValidation():
   const invalidSchemaRuntime = runtime(enabledEnvironment.environment, invalidSchemaFake);
   const invalidSchema = await invalidSchemaRuntime.bound.execute(request());
 
+  const groundingContentSentinel = "GROUNDING_RAW_CONTENT_MUST_NOT_LEAK";
+  const groundingMaterial = structuredClone(validCandidateDecisionMaterial());
+  groundingMaterial.items[0].content = groundingContentSentinel;
+  groundingMaterial.items[0].scenario_refs = ["scenario_99"];
+  const groundingFake = fakeTransport({
+    generation: {
+      status: "completed",
+      outputText: JSON.stringify(groundingMaterial),
+      usage: { inputTokens: 1200, outputTokens: 100, totalTokens: 1300 },
+    },
+  });
+  const groundingRuntime = runtime(enabledEnvironment.environment, groundingFake);
+  const grounding = await groundingRuntime.bound.execute(request());
+
   const observerFailureRuntime = runtime(
     enabledEnvironment.environment,
     fakeTransport(),
@@ -272,6 +286,9 @@ export async function runControlledProductionAiRuntimeSwitchValidation():
     event.event === "provider_operation_failed"
   );
   const unavailableOrchestrationFailureEvent = unavailableRuntime.events.find((event) =>
+    event.event === "orchestration_failed"
+  );
+  const groundingOrchestrationFailureEvent = groundingRuntime.events.find((event) =>
     event.event === "orchestration_failed"
   );
 
@@ -381,6 +398,32 @@ export async function runControlledProductionAiRuntimeSwitchValidation():
         failureSource(invalidSchema) === "provider_schema_invalid" &&
         invalidSchema.fallback.used === false,
       issue: "Invalid provider material escaped controlled orchestration failure.",
+    }),
+    validationCase({
+      caseId: "grounding_failure_emits_bounded_operational_diagnostic",
+      kind: "negative",
+      passed: groundingOrchestrationFailureEvent?.failureCategory ===
+          "provider_grounding_invalid" &&
+        groundingOrchestrationFailureEvent.groundingItemType === "option" &&
+        groundingOrchestrationFailureEvent.groundingItemIndex === 0 &&
+        groundingOrchestrationFailureEvent.groundingField === "scenario_refs" &&
+        groundingOrchestrationFailureEvent.groundingPredicate === "unknown_scenario_ref" &&
+        groundingOrchestrationFailureEvent.groundingReferenceToken === "scenario_99" &&
+        groundingOrchestrationFailureEvent.sensitiveDataIncluded === false,
+      issue: "Grounding failure did not reach the bounded internal operational event.",
+    }),
+    validationCase({
+      caseId: "grounding_diagnostic_is_not_exposed_by_runtime_result",
+      kind: "negative",
+      passed: grounding.selectedPath === "controlled_failure" &&
+        failureSource(grounding) === "provider_grounding_invalid" &&
+        grounding.fallback.used === false &&
+        !JSON.stringify(grounding).includes("groundingPredicate") &&
+        !JSON.stringify(grounding).includes("scenario_99") &&
+        !JSON.stringify(grounding).includes(groundingContentSentinel) &&
+        groundingFake.stats().countCalls === 1 &&
+        groundingFake.stats().generationCalls === 1,
+      issue: "Grounding metadata or raw provider content escaped the internal failure boundary.",
     }),
     validationCase({
       caseId: "production_failure_exposes_bounded_v2_ui_state",

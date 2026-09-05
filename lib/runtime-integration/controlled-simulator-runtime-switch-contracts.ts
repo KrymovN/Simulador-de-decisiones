@@ -1,4 +1,9 @@
 import type { SimulationResponseV2Draft } from "../decision-engine/contracts";
+import type {
+  DecisionMaterialGroundingField,
+  DecisionMaterialGroundingPredicate,
+} from "../ai-provider/openai-decision-material-adapter";
+import type { DecisionMaterialItemType } from "../ai-decision-material/contracts";
 import type { SimulationResponseV2UiModel } from "../decision-engine/simulation-response-v2-ui-mapping-contracts";
 import type { SimulatorSandboxResult } from "../decision-engine/simulator-integration-sandbox-contracts";
 import type { DecisionContext, DecisionIntent, SafetyBoundary } from "../decision-engine/types";
@@ -203,6 +208,11 @@ export type ControlledProductionAiOperationalEvent = {
   httpStatus?: number | null;
   providerCode?: string | null;
   providerErrorType?: string | null;
+  groundingItemType?: DecisionMaterialItemType;
+  groundingItemIndex?: number;
+  groundingField?: DecisionMaterialGroundingField;
+  groundingPredicate?: DecisionMaterialGroundingPredicate;
+  groundingReferenceToken?: string;
   fallbackState: "not_used" | "fail_closed";
   rollbackState: "active" | "available";
   sensitiveDataIncluded: false;

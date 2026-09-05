@@ -10,6 +10,7 @@ import {
 import {
   calculateDecisionMaterialCost,
   DecisionMaterialTransportFailure,
+  type DecisionMaterialGroundingFailure,
   type DecisionMaterialProviderRequest,
   type DecisionMaterialTransport,
   type DecisionMaterialTransportGeneration,
@@ -136,6 +137,27 @@ function safeUsage(generation: DecisionMaterialTransportGeneration):
     totalTokens,
     calculatedCostUsd: calculateDecisionMaterialCost(inputTokens, outputTokens),
   };
+}
+
+function groundingOperationalMetadata(
+  failure: DecisionMaterialGroundingFailure | undefined,
+): Partial<Pick<
+  ControlledProductionAiOperationalEvent,
+  | "groundingItemType"
+  | "groundingItemIndex"
+  | "groundingField"
+  | "groundingPredicate"
+  | "groundingReferenceToken"
+>> {
+  return failure
+    ? {
+        groundingItemType: failure.itemType,
+        groundingItemIndex: failure.itemIndex,
+        groundingField: failure.field,
+        groundingPredicate: failure.predicate,
+        groundingReferenceToken: failure.referenceToken,
+      }
+    : {};
 }
 
 export function writeControlledProductionAiOperationalEvent(
@@ -528,6 +550,7 @@ export function bindControlledProductionAiRuntimeSwitch(
             status: "failed",
             latencyMs: Math.max(0, now() - executionStartedAt),
             failureCategory: sourceCode,
+            ...groundingOperationalMetadata(orchestration.error.groundingFailure),
             fallbackState: "fail_closed",
             rollbackState,
           });
