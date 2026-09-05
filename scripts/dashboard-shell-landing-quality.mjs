@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import ts from "typescript";
 
 const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
-const baseline = "43046bcee484ecd96492bfd70457c8270202118b";
+const baseline = "95c97b94ec824e8e6d5d6c746b155df92e9ce0bf";
 const read = (...segments) => readFileSync(join(rootDir, ...segments), "utf8");
 const baselineFile = (path) => execFileSync("git", ["show", `${baseline}:${path}`], {
   cwd: rootDir,
@@ -110,8 +110,10 @@ includes(landing, "readSavedSimulationsHistorySurface({ limit: 3 })", "Landing r
 includes(landing, "<SavedSimulationsHistorySurface state={historyState} />", "Landing renders the existing persisted history UI");
 check(
   "Landing links only to existing V1 entry points",
-  ["/#simulador", "/dashboard/privacy", "/dashboard/simulations"].every((href) => landingHrefs.includes(href)) &&
-    landingHrefs.every((href) => ["/#simulador", "/dashboard/privacy", "/dashboard/simulations"].includes(href)),
+  ["/dashboard/privacy", "/dashboard/simulations"].every((href) => landingHrefs.includes(href)) &&
+    landingHrefs.every((href) => ["/dashboard/privacy", "/dashboard/simulations"].includes(href)) &&
+    !landing.includes("/#simulador") &&
+    landing.includes("<HomeSimulator />"),
 );
 check(
   "Production navigation exposes only usable authenticated routes",
@@ -292,6 +294,7 @@ const allowedScope = new Set([
   "components/SimulationsList.tsx",
   "components/DashboardShell.tsx",
   "components/HomepageAccountLink.tsx",
+  "components/SavedSimulationsHistorySurface.tsx",
   "package.json",
   "docs/architecture/LEVIO_AI_ABSTRACTION_OBSERVABILITY_COSTS.md",
   "docs/architecture/LEVIO_DECISION_ENGINE.md",
@@ -302,6 +305,8 @@ const allowedScope = new Set([
   "lib/ai-decision-material/fixtures.ts",
   "scripts/dashboard-shell-landing-quality.mjs",
   "scripts/authenticated-simulator-continuity-quality.mjs",
+  "scripts/authenticated-workspace-separation-quality.mjs",
+  "scripts/mobile-authenticated-logout-access-quality.mjs",
   "scripts/rendered-public-surface-regression-quality.mjs",
   "scripts/homepage-one-time-assembly-refinement-quality.mjs",
   "scripts/stage-9-ai-value-preservation-quality.mjs",

@@ -63,10 +63,10 @@ add(
 add(
   "post-logout-homepage-returns-to-login-state",
   homepageAccountLink.includes('identityState === "authenticated"') &&
-    homepageAccountLink.includes('? { href: "/dashboard", label: "Resumen" }') &&
+    homepageAccountLink.includes('? { href: "/dashboard", label: "Mi espacio" }') &&
     homepageAccountLink.includes(': { href: "/login", label: "Iniciar sesión" }') &&
     authProvider.includes('setState({ identityState: "signed_out" })'),
-  "Homepage account navigation does not return from Resumen to Iniciar sesión after sign-out.",
+  "Homepage account navigation does not return from Mi espacio to Iniciar sesión after sign-out.",
 );
 add(
   "another-account-can-start-passwordless-login",
@@ -114,8 +114,14 @@ const changed = [
   ...execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { cwd: root, encoding: "utf8" }).split("\n"),
 ].filter(Boolean);
 const allowed = new Set([
+  "app/dashboard/page.tsx",
   "components/DashboardShell.tsx",
+  "components/HomepageAccountLink.tsx",
+  "components/SavedSimulationsHistorySurface.tsx",
   "app/styles/dashboard-shell.css",
+  "scripts/authenticated-simulator-continuity-quality.mjs",
+  "scripts/authenticated-workspace-separation-quality.mjs",
+  "scripts/dashboard-shell-landing-quality.mjs",
   "scripts/mobile-authenticated-logout-access-quality.mjs",
   "package.json",
 ]);

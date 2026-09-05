@@ -7,7 +7,7 @@ export default function HomepageAccountLink() {
   const { identityState } = useAuthRuntime();
   const accountDestination =
     identityState === "authenticated"
-      ? { href: "/dashboard", label: "Resumen" }
+      ? { href: "/dashboard", label: "Mi espacio" }
       : { href: "/login", label: "Iniciar sesión" };
 
   return (

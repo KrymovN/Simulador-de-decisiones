@@ -57,7 +57,7 @@ export function SavedSimulationsHistorySurface({
   if (state.status === "empty") {
     return (
       <StateCard
-        actionHref="/#decision-input"
+        actionHref="/dashboard#nueva-simulacion"
         actionLabel="Crear una simulación"
         message={state.message}
         title="Sin simulaciones guardadas."

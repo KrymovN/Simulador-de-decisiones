@@ -9,9 +9,9 @@ import { useDashboardAccount } from "./dashboard/DashboardAccountProvider";
 import { clearMockSession } from "./MockAuthGate";
 
 const navigationItems = [
-  { href: "/dashboard", label: "Resumen" },
-  { href: "/dashboard/simulations", label: "Simulaciones" },
-  { href: "/dashboard/privacy", label: "Privacidad" },
+  { href: "/dashboard", label: "Mi espacio" },
+  { href: "/dashboard/simulations", label: "Historial" },
+  { href: "/dashboard/privacy", label: "Privacidad y datos" },
 ];
 
 type DashboardShellProps = {
@@ -56,7 +56,10 @@ export default function DashboardShell({
       <div className="dashboard-shell__frame">
         <aside className="dashboard-sidebar">
           <BrandLockup className="dashboard-brand" markSize="sm" />
-          <p>Simulaciones guardadas y controles de tu cuenta.</p>
+          <p>Tu espacio de trabajo, historial y controles de cuenta.</p>
+          <Link className="dashboard-workspace-action" href="/dashboard#nueva-simulacion">
+            Nueva simulación
+          </Link>
           <details className="dashboard-nav-menu">
             <summary>
               <span>Vista actual</span>
@@ -73,6 +76,7 @@ export default function DashboardShell({
                   {item.label}
                 </Link>
               ))}
+              <Link href="/">Inicio</Link>
             </nav>
           </details>
           <nav aria-label="Navegación del área personal" className="dashboard-sidebar-nav">
@@ -86,6 +90,7 @@ export default function DashboardShell({
                 {item.label}
               </Link>
             ))}
+            <Link href="/">Inicio</Link>
           </nav>
           <div className="dashboard-sidebar-status">
             <span>Acceso</span>

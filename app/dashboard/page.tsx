@@ -1,5 +1,6 @@
 import Link from "next/link";
 import DashboardShell from "../../components/DashboardShell";
+import HomeSimulator from "../../components/HomeSimulator";
 import { SavedSimulationsHistorySurface } from "../../components/SavedSimulationsHistorySurface";
 import { readSavedSimulationsHistorySurface } from "../../lib/saved-decision-simulations/product-surface";
 
@@ -12,20 +13,33 @@ export default async function DashboardPage() {
   return (
     <DashboardShell
       description="Inicia una simulación, revisa tu historial guardado y gestiona los datos de tu cuenta."
-      eyebrow="levio.es / Tu cuenta"
-      title="Tu espacio de decisiones."
+      eyebrow="levio.es / Mi espacio"
+      title="Mi espacio."
     >
-      <section aria-label="Acciones principales" className="dashboard-two-column">
+      <section
+        aria-labelledby="workspace-simulator-title"
+        className="dashboard-workspace-simulator"
+        id="nueva-simulacion"
+      >
+        <div className="dashboard-workspace-simulator__intro">
+          <p className="eyebrow">Nueva simulación</p>
+          <h2 id="workspace-simulator-title">Simula una decisión desde tu espacio.</h2>
+          <p>El resultado permanecerá aquí para que puedas revisarlo y guardarlo en tu historial.</p>
+        </div>
+        <HomeSimulator />
+      </section>
+
+      <section aria-label="Historial y cuenta" className="dashboard-two-column">
         <article className="dashboard-card">
-          <p className="eyebrow">Simulaciones</p>
-          <h2>{hasSavedSimulations ? "Empieza una nueva simulación." : "Aún no tienes simulaciones guardadas."}</h2>
+          <p className="eyebrow">Historial</p>
+          <h2>{hasSavedSimulations ? "Revisa tus simulaciones guardadas." : "Aún no tienes simulaciones guardadas."}</h2>
           <p>
             {hasSavedSimulations
-              ? "Describe otra decisión para generar una nueva simulación y guardarla en tu cuenta."
+              ? "Abre una simulación anterior o gestiona los resultados vinculados a tu cuenta."
               : "Cuando guardes tu primera simulación, aparecerá aquí vinculada a tu cuenta."}
           </p>
-          <Link className="dashboard-action" href="/#simulador" target="_self">
-            Nueva simulación
+          <Link className="dashboard-action" href="/dashboard/simulations">
+            Abrir historial
           </Link>
         </article>
 

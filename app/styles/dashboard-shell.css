@@ -105,6 +105,27 @@
   line-height: 1.55;
 }
 
+.dashboard-sidebar .dashboard-workspace-action {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  border: 1px solid var(--levio-brand);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-brand);
+  color: var(--levio-bg);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+
+.dashboard-sidebar .dashboard-workspace-action:hover {
+  border-color: var(--levio-brand-hover);
+  background: var(--levio-brand-hover);
+}
+
 .dashboard-sidebar nav {
   display: grid;
   gap: 6px;
@@ -323,6 +344,246 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.dashboard-workspace-simulator {
+  min-width: 0;
+  padding: clamp(22px, 3.5vw, 36px);
+  overflow-x: clip;
+  scroll-margin-top: 20px;
+  border: 1px solid var(--levio-border);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-surface);
+}
+
+.dashboard-workspace-simulator__intro {
+  width: min(100%, 760px);
+  margin-inline: auto;
+}
+
+.dashboard-workspace-simulator__intro .eyebrow {
+  margin: 0;
+  color: var(--levio-text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dashboard-workspace-simulator__intro h2 {
+  margin: 12px 0 0;
+  color: var(--levio-text);
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.dashboard-workspace-simulator__intro > p:last-child {
+  margin: 14px 0 0;
+  color: var(--levio-text-secondary);
+  line-height: 1.6;
+}
+
+.dashboard-workspace-simulator > .decision-console {
+  width: 100%;
+  max-width: 760px;
+  margin: 24px auto 0;
+  padding: clamp(22px, 3vw, 32px);
+  overflow: hidden;
+  border-color: var(--levio-border-strong);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-surface-elevated);
+  box-shadow: none;
+  color: var(--levio-text);
+  opacity: 1;
+  transform: none;
+}
+
+.dashboard-workspace-simulator .decision-console form {
+  display: grid;
+  gap: 22px;
+  padding: 2px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.dashboard-workspace-simulator .simulator-field-heading {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.dashboard-workspace-simulator .decision-console label,
+.dashboard-workspace-simulator .simulator-field-heading span {
+  margin: 0;
+  color: var(--levio-text);
+  font-size: 0.94rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.dashboard-workspace-simulator .simulator-field-heading span {
+  flex: none;
+  padding: 4px 8px;
+  border: 1px solid var(--levio-border);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-surface);
+  color: var(--levio-text-muted);
+  font-size: 0.76rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.dashboard-workspace-simulator .simulator-composition {
+  display: block;
+}
+
+.dashboard-workspace-simulator .decision-input-shell {
+  position: relative;
+}
+
+.dashboard-workspace-simulator .decision-input-shell textarea {
+  width: 100%;
+  min-height: 140px;
+  margin: 0;
+  padding: 16px;
+  resize: vertical;
+  border: 1px solid var(--levio-border-strong);
+  border-radius: var(--levio-radius-sm);
+  outline: none;
+  background: var(--levio-bg);
+  box-shadow: none;
+  color: var(--levio-text);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  transition: none;
+}
+
+.dashboard-workspace-simulator .decision-input-shell textarea::placeholder {
+  color: var(--levio-text-muted);
+  opacity: 1;
+}
+
+.dashboard-workspace-simulator .decision-input-shell textarea:focus,
+.dashboard-workspace-simulator .decision-input-shell textarea:focus-visible {
+  border-color: var(--levio-focus-ring);
+  background: var(--levio-bg);
+  box-shadow: none;
+}
+
+.dashboard-workspace-simulator .simulator-criteria {
+  display: grid;
+  gap: 6px;
+}
+
+.dashboard-workspace-simulator .simulator-criteria > strong {
+  color: var(--levio-text);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.dashboard-workspace-simulator .simulator-criteria p {
+  margin: 0;
+  color: var(--levio-text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-workspace-simulator .simulator-action-cluster {
+  display: grid;
+  grid-template-columns: 50px minmax(0, 1fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+.dashboard-workspace-simulator .decision-console button,
+.dashboard-workspace-simulator .decision-console .voice-input-button,
+.dashboard-workspace-simulator .decision-console .primary-simulation-control,
+.dashboard-workspace-simulator .decision-console .simulator-cta-row button {
+  position: static;
+  width: auto;
+  min-width: 0;
+  height: 50px;
+  min-height: 50px;
+  margin: 0;
+  padding: 0 18px;
+  border: 1px solid var(--levio-border-strong);
+  border-radius: var(--levio-radius-sm);
+  background: var(--levio-surface);
+  box-shadow: none;
+  color: var(--levio-text);
+  font-size: 0.9rem;
+  font-weight: 650;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: none;
+  transform: none;
+  transition: none;
+}
+
+.dashboard-workspace-simulator .decision-console button:hover:not(:disabled) {
+  border-color: var(--levio-text-muted);
+  background: var(--levio-surface-elevated);
+  box-shadow: none;
+  color: var(--levio-text);
+  filter: none;
+  transform: none;
+}
+
+.dashboard-workspace-simulator .decision-console button:focus-visible,
+.dashboard-workspace-simulator textarea:focus-visible {
+  outline: 3px solid var(--levio-focus-ring);
+  outline-offset: 3px;
+}
+
+.dashboard-workspace-simulator .decision-console button:disabled {
+  cursor: not-allowed;
+  opacity: 0.52;
+}
+
+.dashboard-workspace-simulator .decision-console .voice-input-button {
+  width: 50px;
+  padding: 0;
+}
+
+.dashboard-workspace-simulator .decision-console .voice-input-button svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+
+.dashboard-workspace-simulator .console-status {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 16px 0 0;
+  color: var(--levio-text-muted);
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.dashboard-workspace-simulator .console-status > span {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  margin-top: 3px;
+  border: 1px solid var(--levio-text-muted);
+  border-radius: var(--levio-radius-sm);
+  background: transparent;
+  box-shadow: none;
+  animation: none;
+}
+
+.dashboard-workspace-simulator .console-status p {
+  margin: 0;
+}
+
 .dashboard-shell--landing .dashboard-card,
 .dashboard-shell--landing .radar-card,
 .dashboard-shell--landing .dashboard-landing-engine {
@@ -489,19 +750,8 @@
   text-decoration: none;
 }
 
-.dashboard-shell--landing .dashboard-action[href="/#simulador"] {
-  border-color: var(--levio-brand);
-  background: var(--levio-brand);
-  color: var(--levio-bg);
-}
-
 .dashboard-shell--landing .dashboard-action:hover {
   border-color: var(--levio-text-muted);
-}
-
-.dashboard-shell--landing .dashboard-action[href="/#simulador"]:hover {
-  border-color: var(--levio-brand-hover);
-  background: var(--levio-brand-hover);
 }
 
 .dashboard-shell--landing .unavailable-action {
@@ -604,6 +854,7 @@
 
   .dashboard-sidebar,
   .dashboard-shell__header,
+  .dashboard-workspace-simulator,
   .dashboard-shell--landing .dashboard-card,
   .dashboard-shell--landing .radar-card,
   .dashboard-landing-engine {
@@ -618,6 +869,14 @@
 
   .dashboard-shell__header h1 {
     font-size: clamp(2.2rem, 11vw, 3.1rem);
+  }
+
+  .dashboard-workspace-simulator .simulator-field-heading {
+    align-items: flex-start;
+  }
+
+  .dashboard-workspace-simulator .decision-input-shell textarea {
+    min-height: 168px;
   }
 
   .dashboard-shell--landing .dashboard-action {

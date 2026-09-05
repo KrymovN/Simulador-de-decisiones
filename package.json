@@ -104,6 +104,7 @@
     "quality:block-b-account-owned-simulation-persistence": "node scripts/block-b-account-owned-simulation-persistence-quality.mjs",
     "quality:block-b-dashboard-simulation-surface": "node scripts/block-b-dashboard-simulation-surface-quality.mjs",
     "quality:authenticated-simulator-continuity": "node scripts/authenticated-simulator-continuity-quality.mjs",
+    "quality:authenticated-workspace-separation": "node scripts/authenticated-workspace-separation-quality.mjs",
     "quality:public-home": "node scripts/public-home-quality.mjs",
     "quality:shared-visual-system-foundation": "node scripts/shared-visual-system-foundation-quality.mjs",
     "quality:public-secondary-surfaces": "node scripts/public-secondary-surfaces-quality.mjs",

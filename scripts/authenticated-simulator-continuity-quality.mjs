@@ -32,11 +32,15 @@ function functionBlock(source, start, end) {
 }
 
 check(
-  "Dashboard Nueva simulación uses same-tab client navigation to the canonical simulator target",
-  dashboard.includes('<Link className="dashboard-action" href="/#simulador" target="_self">') &&
-    dashboard.includes("Nueva simulación"),
+  "Dashboard mounts the canonical simulator inside the authenticated workspace",
+  dashboard.includes('import HomeSimulator from "../../components/HomeSimulator"') &&
+    dashboard.includes('id="nueva-simulacion"') &&
+    dashboard.includes("<HomeSimulator />"),
 );
-check("Dashboard no longer targets the nested textarea hash", !dashboard.includes("/#decision-input"));
+check(
+  "Dashboard no longer targets a public homepage simulator hash",
+  !dashboard.includes("/#decision-input") && !dashboard.includes("/#simulador"),
+);
 check(
   "Dashboard simulator CTA cannot request a new browsing context",
   !dashboard.includes('target="_blank"') &&
@@ -44,10 +48,11 @@ check(
     !dashboard.includes("formTarget"),
 );
 check(
-  "Homepage keeps exactly one canonical HomeSimulator implementation",
+  "Homepage and workspace reuse one canonical HomeSimulator implementation",
   (home.match(/<HomeSimulator \/>/g) ?? []).length === 1 &&
     (home.match(/import HomeSimulator from/g) ?? []).length === 1 &&
-    !dashboard.includes("HomeSimulator"),
+    (dashboard.match(/<HomeSimulator \/>/g) ?? []).length === 1 &&
+    (dashboard.match(/import HomeSimulator from/g) ?? []).length === 1,
 );
 check(
   "Homepage header mounts the existing auth-runtime-aware account link",
@@ -56,9 +61,9 @@ check(
     accountLink.includes("const { identityState } = useAuthRuntime()"),
 );
 check(
-  "Authenticated header exposes Resumen instead of anonymous login",
+  "Authenticated header exposes Mi espacio instead of anonymous login",
   accountLink.includes('identityState === "authenticated"') &&
-    accountLink.includes('? { href: "/dashboard", label: "Resumen" }') &&
+    accountLink.includes('? { href: "/dashboard", label: "Mi espacio" }') &&
     accountLink.includes(': { href: "/login", label: "Iniciar sesión" }') &&
     !accountLink.includes('target="_blank"') &&
     !accountLink.includes("window.open"),
