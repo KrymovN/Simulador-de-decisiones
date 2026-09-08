@@ -21,6 +21,7 @@ const steps = [
   { id: "deterministic-clarification-round-trip", command: npmCommand, args: ["run", "quality:deterministic-clarification-round-trip"] },
   { id: "provider-proof-public-simulator", command: npmCommand, args: ["run", "quality:public-simulator"], providerEvidence: true },
   { id: "voice-recording-transcription", command: npmCommand, args: ["run", "quality:voice-recording-transcription"], voiceProviderEvidence: true },
+  { id: "native-local-stt-adapter", command: npmCommand, args: ["run", "quality:native-local-stt-adapter"], nativeLocalSttProviderEvidence: true },
   { id: "typescript", command: join(rootDir, "node_modules", ".bin", "tsc"), args: ["--noEmit"] },
 ];
 
@@ -71,9 +72,22 @@ function parseVoiceProviderEvidence(output) {
   return JSON.parse(line.slice("LEVIO_VOICE_PROVIDER_OPERATION_EVIDENCE ".length));
 }
 
+function parseNativeLocalSttProviderEvidence(output) {
+  const line = output.split("\n").find((value) =>
+    value.startsWith("LEVIO_NATIVE_LOCAL_STT_PROVIDER_OPERATION_EVIDENCE ")
+  );
+  if (!line) {
+    throw new Error("Provider operation evidence is missing from the native local STT gate.");
+  }
+  return JSON.parse(
+    line.slice("LEVIO_NATIVE_LOCAL_STT_PROVIDER_OPERATION_EVIDENCE ".length),
+  );
+}
+
 const results = [];
 let providerOperations;
 let voiceProviderOperations;
+let nativeLocalSttProviderOperations;
 
 try {
   if (
@@ -95,6 +109,9 @@ try {
     if (step.voiceProviderEvidence) {
       voiceProviderOperations = parseVoiceProviderEvidence(output);
     }
+    if (step.nativeLocalSttProviderEvidence) {
+      nativeLocalSttProviderOperations = parseNativeLocalSttProviderEvidence(output);
+    }
   }
 
   if (
@@ -108,6 +125,12 @@ try {
     Object.values(voiceProviderOperations).some((value) => value !== 0)
   ) {
     throw new Error("Deterministic release validation observed a voice provider operation.");
+  }
+  if (
+    !nativeLocalSttProviderOperations ||
+    Object.values(nativeLocalSttProviderOperations).some((value) => value !== 0)
+  ) {
+    throw new Error("Deterministic release validation observed a native local STT provider operation.");
   }
 
   const repositoryHead = execFileSync("git", ["rev-parse", "HEAD"], {
@@ -131,6 +154,7 @@ try {
     },
     providerOperations,
     voiceProviderOperations,
+    nativeLocalSttProviderOperations,
     deterministicGates: results,
     build: "PASS",
     workingTreeClean,

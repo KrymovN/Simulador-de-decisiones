@@ -126,7 +126,8 @@
     "quality:homepage-safari-iphone-refinement": "node scripts/homepage-safari-iphone-refinement-quality.mjs",
     "quality:homepage-motion-stabilization": "node scripts/homepage-one-time-assembly-refinement-quality.mjs",
     "quality:home-simulator-processing-sequence": "node scripts/home-simulator-processing-sequence-quality.mjs",
-    "quality:voice-recording-transcription": "node scripts/voice-recording-transcription-flow-quality.mjs"
+    "quality:voice-recording-transcription": "node scripts/voice-recording-transcription-flow-quality.mjs",
+    "quality:native-local-stt-adapter": "node scripts/native-local-stt-adapter-quality.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
