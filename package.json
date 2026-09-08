@@ -127,9 +127,11 @@
     "quality:homepage-motion-stabilization": "node scripts/homepage-one-time-assembly-refinement-quality.mjs",
     "quality:home-simulator-processing-sequence": "node scripts/home-simulator-processing-sequence-quality.mjs",
     "quality:voice-recording-transcription": "node scripts/voice-recording-transcription-flow-quality.mjs",
-    "quality:native-local-stt-adapter": "node scripts/native-local-stt-adapter-quality.mjs"
+    "quality:native-local-stt-adapter": "node scripts/native-local-stt-adapter-quality.mjs",
+    "quality:browser-local-whisper-adapter": "node scripts/browser-local-whisper-adapter-quality.mjs"
   },
   "dependencies": {
+    "@huggingface/transformers": "4.2.0",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.108.2",
     "next": "14.2.5",

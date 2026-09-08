@@ -22,6 +22,7 @@ const steps = [
   { id: "provider-proof-public-simulator", command: npmCommand, args: ["run", "quality:public-simulator"], providerEvidence: true },
   { id: "voice-recording-transcription", command: npmCommand, args: ["run", "quality:voice-recording-transcription"], voiceProviderEvidence: true },
   { id: "native-local-stt-adapter", command: npmCommand, args: ["run", "quality:native-local-stt-adapter"], nativeLocalSttProviderEvidence: true },
+  { id: "browser-local-whisper-adapter", command: npmCommand, args: ["run", "quality:browser-local-whisper-adapter"], browserLocalWhisperProviderEvidence: true },
   { id: "typescript", command: join(rootDir, "node_modules", ".bin", "tsc"), args: ["--noEmit"] },
 ];
 
@@ -84,10 +85,23 @@ function parseNativeLocalSttProviderEvidence(output) {
   );
 }
 
+function parseBrowserLocalWhisperProviderEvidence(output) {
+  const line = output.split("\n").find((value) =>
+    value.startsWith("LEVIO_BROWSER_LOCAL_WHISPER_PROVIDER_OPERATION_EVIDENCE ")
+  );
+  if (!line) {
+    throw new Error("Provider operation evidence is missing from the browser-local Whisper gate.");
+  }
+  return JSON.parse(
+    line.slice("LEVIO_BROWSER_LOCAL_WHISPER_PROVIDER_OPERATION_EVIDENCE ".length),
+  );
+}
+
 const results = [];
 let providerOperations;
 let voiceProviderOperations;
 let nativeLocalSttProviderOperations;
+let browserLocalWhisperProviderOperations;
 
 try {
   if (
@@ -112,6 +126,9 @@ try {
     if (step.nativeLocalSttProviderEvidence) {
       nativeLocalSttProviderOperations = parseNativeLocalSttProviderEvidence(output);
     }
+    if (step.browserLocalWhisperProviderEvidence) {
+      browserLocalWhisperProviderOperations = parseBrowserLocalWhisperProviderEvidence(output);
+    }
   }
 
   if (
@@ -131,6 +148,12 @@ try {
     Object.values(nativeLocalSttProviderOperations).some((value) => value !== 0)
   ) {
     throw new Error("Deterministic release validation observed a native local STT provider operation.");
+  }
+  if (
+    !browserLocalWhisperProviderOperations ||
+    Object.values(browserLocalWhisperProviderOperations).some((value) => value !== 0)
+  ) {
+    throw new Error("Deterministic release validation observed a browser-local Whisper provider operation.");
   }
 
   const repositoryHead = execFileSync("git", ["rev-parse", "HEAD"], {
@@ -155,6 +178,7 @@ try {
     providerOperations,
     voiceProviderOperations,
     nativeLocalSttProviderOperations,
+    browserLocalWhisperProviderOperations,
     deterministicGates: results,
     build: "PASS",
     workingTreeClean,
