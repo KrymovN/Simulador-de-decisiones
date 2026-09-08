@@ -1,6 +1,7 @@
 "use client";
 
 export const NATIVE_LOCAL_STT_LANGUAGE = "es-ES" as const;
+export const NATIVE_LOCAL_STT_NO_RESULT_TIMEOUT_MS = 15_000;
 
 export type NativeLocalSttCapabilityState =
   | "unsupported"
@@ -17,6 +18,7 @@ export type NativeLocalSttFailureReason =
   | "permission_denied"
   | "microphone_unavailable"
   | "aborted"
+  | "recognition_timeout"
   | "recognition_failed";
 
 export type NativeLocalSttCapability = {
@@ -312,6 +314,7 @@ export function createNativeLocalSttAdapter(
     activeSessionGeneration = generation;
     let started = false;
     let settled = false;
+    let watchdogTimer: ReturnType<typeof setTimeout> | null = null;
     const finalTranscripts: string[] = [];
     let resolveResult!: (result: NativeLocalSttSessionResult) => void;
     const resultPromise = new Promise<NativeLocalSttSessionResult>((resolve) => {
@@ -319,14 +322,25 @@ export function createNativeLocalSttAdapter(
     });
 
     const isCurrent = () => generation === sessionGeneration;
+    const clearWatchdog = () => {
+      if (watchdogTimer === null) {
+        return;
+      }
+      clearTimeout(watchdogTimer);
+      watchdogTimer = null;
+    };
     const settle = (result: NativeLocalSttSessionResult) => {
       if (settled) {
         return;
       }
       settled = true;
+      clearWatchdog();
       recognition.onresult = null;
       recognition.onerror = null;
       recognition.onend = null;
+      if (isCurrent()) {
+        sessionGeneration += 1;
+      }
       if (activeSessionGeneration === generation) {
         activeSessionGeneration = null;
       }
@@ -351,6 +365,14 @@ export function createNativeLocalSttAdapter(
         if (transcript) {
           finalTranscripts.push(transcript);
         }
+      }
+      const transcript = finalTranscripts.join(" ").trim();
+      if (transcript) {
+        settle({
+          language: NATIVE_LOCAL_STT_LANGUAGE,
+          status: "completed",
+          transcript,
+        });
       }
     };
 
@@ -404,6 +426,20 @@ export function createNativeLocalSttAdapter(
           recognition.start();
         } catch (error) {
           settle(failedSession(normalizeRecognitionFailure(error)));
+        }
+        if (!settled) {
+          watchdogTimer = setTimeout(() => {
+            if (!isCurrent() || settled) {
+              return;
+            }
+            sessionGeneration += 1;
+            try {
+              recognition.abort();
+            } catch {
+              // The timeout still settles with the bounded local failure below.
+            }
+            settle(failedSession("recognition_timeout"));
+          }, NATIVE_LOCAL_STT_NO_RESULT_TIMEOUT_MS);
         }
         return resultPromise;
       },

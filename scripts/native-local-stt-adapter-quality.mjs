@@ -30,6 +30,7 @@ const modulePath = join(
 const moduleSource = readFileSync(modulePath, "utf8");
 const {
   NATIVE_LOCAL_STT_LANGUAGE,
+  NATIVE_LOCAL_STT_NO_RESULT_TIMEOUT_MS,
   createNativeLocalSttAdapter,
 } = require(modulePath);
 
@@ -37,10 +38,42 @@ const checks = [];
 let providerOperations = 0;
 let fetchCalls = 0;
 const originalFetch = globalThis.fetch;
+const originalSetTimeout = globalThis.setTimeout;
+const originalClearTimeout = globalThis.clearTimeout;
+let timerSequence = 0;
+const pendingTimers = new Map();
 globalThis.fetch = async () => {
   fetchCalls += 1;
   throw new Error("Network access is forbidden in native local STT validation.");
 };
+globalThis.setTimeout = (callback, delay = 0, ...args) => {
+  const id = ++timerSequence;
+  pendingTimers.set(id, {
+    callback: () => callback(...args),
+    delay: Number(delay),
+  });
+  return id;
+};
+globalThis.clearTimeout = (id) => {
+  pendingTimers.delete(id);
+};
+
+function fireNextTimer() {
+  const next = pendingTimers.entries().next();
+  if (next.done) {
+    return false;
+  }
+  const [id, timer] = next.value;
+  pendingTimers.delete(id);
+  timer.callback();
+  return true;
+}
+
+function onlyPendingTimerDelay() {
+  return pendingTimers.size === 1
+    ? pendingTimers.values().next().value.delay
+    : null;
+}
 
 function check(name, condition, detail = "") {
   checks.push({ detail, name, passed: Boolean(condition) });
@@ -132,6 +165,10 @@ function createRecognitionHarness({
 
 try {
   check("Spanish locale is fixed to es-ES", NATIVE_LOCAL_STT_LANGUAGE === "es-ES");
+  check(
+    "No-result timeout is bounded to fifteen seconds",
+    NATIVE_LOCAL_STT_NO_RESULT_TIMEOUT_MS === 15_000,
+  );
 
   let remoteConstructorCalls = 0;
   class RemoteOnlyRecognition {
@@ -266,19 +303,42 @@ try {
         recognition.continuous === false &&
         recognition.interimResults === true &&
         recognition.maxAlternatives === 1 &&
-        recognition.startCalls === 1,
+        recognition.startCalls === 1 &&
+        pendingTimers.size === 1 &&
+        onlyPendingTimerDelay() === NATIVE_LOCAL_STT_NO_RESULT_TIMEOUT_MS,
     );
     recognition.emitResults([
       { 0: { transcript: "texto provisional" }, isFinal: false },
       { 0: { transcript: "Texto final confirmado." }, isFinal: true },
     ]);
-    recognition.emitEnd();
     const sessionResult = await sessionResultPromise;
     check(
-      "Interim transcript is isolated and final transcript is returned",
+      "Final result completes the session and clears the watchdog",
       sessionResult.status === "completed" &&
         sessionResult.transcript === "Texto final confirmado." &&
-        !sessionResult.transcript.includes("provisional"),
+        !sessionResult.transcript.includes("provisional") &&
+        pendingTimers.size === 0,
+    );
+    recognition.emitEnd();
+  }
+
+  const endHarness = createRecognitionHarness();
+  const endAdapter = createNativeLocalSttAdapter({
+    recognition: endHarness.Recognition,
+    supportsDictationQuality: false,
+  });
+  await endAdapter.checkAvailability();
+  const endCreation = endAdapter.createSession();
+  check("End-only local session is created", endCreation.status === "ready");
+  if (endCreation.status === "ready") {
+    const endResultPromise = endCreation.session.start();
+    endHarness.instances[0].emitEnd();
+    const endResult = await endResultPromise;
+    check(
+      "Onend without a final result clears the watchdog",
+      endResult.status === "failed" &&
+        endResult.reason === "recognition_failed" &&
+        pendingTimers.size === 0,
     );
   }
 
@@ -300,11 +360,12 @@ try {
     cancelledRecognition.emitEnd();
     const cancelledResult = await cancelledResultPromise;
     check(
-      "Abort settles once and rejects stale results",
+      "Abort settles once, clears the watchdog, and rejects stale results",
       cancelledRecognition.abortCalls === 1 &&
         cancelledResult.status === "failed" &&
         cancelledResult.reason === "aborted" &&
-        cancelledResult.transcript === null,
+        cancelledResult.transcript === null &&
+        pendingTimers.size === 0,
     );
 
     const nextCreation = cancelAdapter.createSession();
@@ -340,6 +401,69 @@ try {
       "Vendor permission error is normalized without message leakage",
       errorResult.status === "failed" && errorResult.reason === "permission_denied",
     );
+    check("Browser error clears the watchdog", pendingTimers.size === 0);
+  }
+
+  const timeoutHarness = createRecognitionHarness();
+  const timeoutAdapter = createNativeLocalSttAdapter({
+    recognition: timeoutHarness.Recognition,
+    supportsDictationQuality: false,
+  });
+  await timeoutAdapter.checkAvailability();
+  const timeoutCreation = timeoutAdapter.createSession();
+  check("Timeout local session is created", timeoutCreation.status === "ready");
+  if (timeoutCreation.status === "ready") {
+    const timeoutResultPromise = timeoutCreation.session.start();
+    const timedOutRecognition = timeoutHarness.instances[0];
+    const staleResultHandler = timedOutRecognition.onresult;
+    check(
+      "Watchdog starts only after recognition start",
+      timedOutRecognition.startCalls === 1 &&
+        pendingTimers.size === 1 &&
+        onlyPendingTimerDelay() === NATIVE_LOCAL_STT_NO_RESULT_TIMEOUT_MS,
+    );
+    const watchdogFired = fireNextTimer();
+    const timeoutResult = await timeoutResultPromise;
+    staleResultHandler?.({
+      resultIndex: 0,
+      results: [{ 0: { transcript: "Resultado final obsoleto" }, isFinal: true }],
+    });
+    timedOutRecognition.emitEnd();
+    check(
+      "No-result watchdog aborts recognition with a bounded timeout reason",
+      watchdogFired &&
+        timedOutRecognition.abortCalls === 1 &&
+        timeoutResult.status === "failed" &&
+        timeoutResult.reason === "recognition_timeout" &&
+        timeoutResult.transcript === null &&
+        pendingTimers.size === 0,
+    );
+    check(
+      "Stale final result after timeout is ignored",
+      timeoutResult.status === "failed" &&
+        timeoutResult.reason === "recognition_timeout" &&
+        timeoutResult.transcript === null,
+    );
+
+    const nextAfterTimeoutCreation = timeoutAdapter.createSession();
+    check(
+      "A timed-out session cannot poison the next session",
+      nextAfterTimeoutCreation.status === "ready",
+    );
+    if (nextAfterTimeoutCreation.status === "ready") {
+      const nextAfterTimeoutPromise = nextAfterTimeoutCreation.session.start();
+      const nextAfterTimeoutRecognition = timeoutHarness.instances[1];
+      nextAfterTimeoutRecognition.emitResults([
+        { 0: { transcript: "Sesión posterior limpia." }, isFinal: true },
+      ]);
+      const nextAfterTimeoutResult = await nextAfterTimeoutPromise;
+      check(
+        "Next session after timeout completes independently",
+        nextAfterTimeoutResult.status === "completed" &&
+          nextAfterTimeoutResult.transcript === "Sesión posterior limpia." &&
+          pendingTimers.size === 0,
+      );
+    }
   }
 
   check(
@@ -352,6 +476,8 @@ try {
   );
 } finally {
   globalThis.fetch = originalFetch;
+  globalThis.setTimeout = originalSetTimeout;
+  globalThis.clearTimeout = originalClearTimeout;
 }
 
 for (const item of checks) {
