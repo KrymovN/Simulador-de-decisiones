@@ -502,7 +502,7 @@
 
 .minimal-home .simulator-action-cluster {
   display: grid;
-  grid-template-columns: 50px minmax(0, 1fr);
+  grid-template-columns: var(--voice-control-size) minmax(0, 1fr);
   gap: 12px;
   align-items: stretch;
 }
@@ -558,11 +558,11 @@
 }
 
 .minimal-home .decision-console .voice-input-button {
-  width: 50px;
-  height: 50px;
-  min-height: 50px;
+  width: var(--voice-control-size);
+  height: var(--voice-control-size);
+  min-height: var(--voice-control-size);
   padding: 0;
-  border-radius: 50%;
+  border-radius: var(--voice-control-radius);
 }
 
 .minimal-home .decision-console .primary-simulation-control {
@@ -602,25 +602,23 @@
 }
 
 .minimal-home .decision-console .voice-recording-interaction button {
-  width: 44px;
-  min-width: 44px;
-  height: 44px;
-  min-height: 44px;
+  width: var(--voice-control-size);
+  min-width: var(--voice-control-size);
+  height: var(--voice-control-size);
+  min-height: var(--voice-control-size);
   padding: 0;
-  border-radius: 50%;
+  border-radius: var(--voice-control-radius);
 }
 
 .minimal-home .decision-console .voice-recording-interaction .voice-confirm-control {
-  width: 48px;
-  min-width: 48px;
-  height: 48px;
-  min-height: 48px;
   border-color: #777777;
   background: #ededed;
   color: #111111;
 }
 
 .minimal-home .voice-processing-indicator {
+  border-color: var(--home-line);
+  background: #0f0f0f;
   color: var(--home-muted-strong);
 }
 
@@ -1512,7 +1510,7 @@
   }
 
   .minimal-home .simulator-action-cluster {
-    grid-template-columns: 50px minmax(0, 1fr);
+    grid-template-columns: var(--voice-control-size) minmax(0, 1fr);
   }
 
   .minimal-home .home-scenario-grid,

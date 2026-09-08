@@ -30,6 +30,10 @@ export const VOICE_MIME_TYPE_PREFERENCES = [
   "audio/ogg;codecs=opus",
 ] as const;
 
+const VOICE_ANALYSER_NOISE_FLOOR = 0.008;
+const VOICE_ANALYSER_SPEECH_CEILING = 0.18;
+const VOICE_WAVEFORM_VISUAL_RANGE = 0.86;
+
 export function selectVoiceRecordingMimeType(
   isTypeSupported: (mimeType: string) => boolean,
 ) {
@@ -68,7 +72,17 @@ export function calculateVoiceAudioLevel(samples: Uint8Array) {
     sumOfSquares += normalized * normalized;
   }
 
-  return Math.min(1, Math.sqrt(sumOfSquares / samples.length) * 2.4);
+  const rms = Math.sqrt(sumOfSquares / samples.length);
+  const normalizedSpeech = Math.min(
+    1,
+    Math.max(
+      0,
+      (rms - VOICE_ANALYSER_NOISE_FLOOR) /
+        (VOICE_ANALYSER_SPEECH_CEILING - VOICE_ANALYSER_NOISE_FLOOR),
+    ),
+  );
+
+  return normalizedSpeech === 0 ? 0 : Math.pow(normalizedSpeech, 0.65);
 }
 
 const VOICE_WAVEFORM_SHAPE = [
@@ -90,7 +104,7 @@ const VOICE_WAVEFORM_SHAPE = [
 export function createVoiceWaveformLevels(audioLevel: number) {
   const boundedLevel = Math.min(1, Math.max(0, audioLevel));
   return VOICE_WAVEFORM_SHAPE.map((weight) =>
-    Math.min(1, 0.08 + boundedLevel * weight),
+    Math.min(1, 0.08 + boundedLevel * VOICE_WAVEFORM_VISUAL_RANGE * weight),
   );
 }
 

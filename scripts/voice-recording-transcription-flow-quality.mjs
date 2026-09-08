@@ -132,18 +132,35 @@ check(
 );
 check("Whitespace transcript cannot erase existing text", appendVoiceTranscript("Conservar", "   ", 1200) === "Conservar");
 
-const quiet = new Uint8Array(32).fill(128);
-const audible = new Uint8Array(32).fill(184);
-check(
-  "Synthetic analyser layer produces a real non-static level",
-  calculateVoiceAudioLevel(quiet) === 0 && calculateVoiceAudioLevel(audible) > 0,
+const alternatingSignal = (amplitude) => Uint8Array.from(
+  { length: 32 },
+  (_, index) => 128 + (index % 2 === 0 ? amplitude : -amplitude),
 );
-const quietWaveform = createVoiceWaveformLevels(calculateVoiceAudioLevel(quiet));
-const audibleWaveform = createVoiceWaveformLevels(calculateVoiceAudioLevel(audible));
+const quiet = new Uint8Array(32).fill(128);
+const moderate = alternatingSignal(12);
+const strong = alternatingSignal(22);
+const quietLevel = calculateVoiceAudioLevel(quiet);
+const moderateLevel = calculateVoiceAudioLevel(moderate);
+const strongLevel = calculateVoiceAudioLevel(strong);
 check(
-  "Waveform bars react to real analyser amplitude",
-  quietWaveform.length >= 12 &&
-    quietWaveform.every((level, index) => level < audibleWaveform[index]),
+  "Synthetic analyser mapping preserves silence and orders real amplitudes",
+  quietLevel === 0 && moderateLevel > quietLevel && strongLevel > moderateLevel && strongLevel <= 1,
+);
+const quietWaveform = createVoiceWaveformLevels(quietLevel);
+const moderateWaveform = createVoiceWaveformLevels(moderateLevel);
+const strongWaveform = createVoiceWaveformLevels(strongLevel);
+check(
+  "Thirteen waveform bars respond perceptibly to moderate and strong real amplitude",
+  quietWaveform.length === 13 &&
+    quietWaveform.every((level, index) =>
+      level === 0.08 && level < moderateWaveform[index] && moderateWaveform[index] < strongWaveform[index]
+    ) &&
+    Math.max(...moderateWaveform) >= 0.55 &&
+    Math.max(...strongWaveform) <= 1,
+);
+check(
+  "Unchanged silence input cannot animate the waveform independently",
+  JSON.stringify(createVoiceWaveformLevels(calculateVoiceAudioLevel(quiet))) === JSON.stringify(quietWaveform),
 );
 check(
   "MIME negotiation prefers a supported cross-browser candidate",
@@ -342,8 +359,12 @@ check(
     (dashboard.match(/<HomeSimulator\s*\/>/g) ?? []).length === 1,
 );
 includes(simulatorCss, "@media (max-width: 480px)", "Voice controls include a mobile layout breakpoint");
-includes(simulatorCss, "grid-template-columns: minmax(0, 1fr) 44px 48px", "Mobile waveform and controls use a bounded no-overflow grid");
-includes(simulatorCss, "min-height: 44px", "Mobile checkmark and cancel keep bounded touch targets");
+includes(simulatorCss, "--voice-control-size: 48px", "Voice states share one control height token");
+includes(simulatorCss, "--voice-control-radius: 14px", "Voice states share one radius family token");
+includes(simulatorCss, "width: calc(96px + var(--voice-control-gap))", "Processing matches the paired recording controls width");
+includes(simulatorCss, "height: var(--voice-control-size)", "Processing matches the shared voice control height");
+includes(simulatorCss, "grid-template-columns: minmax(0, 1fr) repeat(2, var(--voice-control-size))", "Mobile waveform and controls use a bounded no-overflow grid");
+includes(simulatorCss, "min-height: var(--voice-control-size)", "Mobile checkmark and cancel keep bounded touch targets");
 includes(simulatorCss, ".voice-waveform-bar", "Shared simulator CSS renders waveform bars");
 excludes(simulatorCss, ".voice-live-meter progress", "Shared simulator CSS removes the old progress-meter presentation");
 check("Recording limits match the endpoint contract", VOICE_MAX_RECORDING_MS === 120_000 && VOICE_MAX_AUDIO_BYTES === 10 * 1024 * 1024);

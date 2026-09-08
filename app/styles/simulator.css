@@ -1,6 +1,10 @@
 /* Simulator base styles. Imported before globals.css so final cascade locks stay authoritative. */
 
 .decision-console {
+  --voice-control-size: 48px;
+  --voice-control-radius: 14px;
+  --voice-control-gap: 8px;
+
   width: min(100%, 760px);
   padding: 18px;
   border: 1px solid rgba(255, 211, 192, 0.26);
@@ -97,8 +101,8 @@ textarea:focus {
 
 .voice-recording-interaction {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 44px 48px;
-  gap: 8px;
+  grid-template-columns: minmax(0, 1fr) repeat(2, var(--voice-control-size));
+  gap: var(--voice-control-gap);
   align-items: center;
   min-width: 0;
   margin-top: 12px;
@@ -111,9 +115,9 @@ textarea:focus {
   gap: clamp(3px, 1.1vw, 7px);
   width: 100%;
   min-width: 0;
-  height: 48px;
+  height: var(--voice-control-size);
   overflow: hidden;
-  border-radius: 999px;
+  border-radius: var(--voice-control-radius);
   border: 1px solid rgba(200, 255, 211, 0.18);
   background: rgba(4, 10, 7, 0.48);
 }
@@ -133,20 +137,16 @@ textarea:focus {
 .voice-recording-interaction .voice-cancel-control {
   display: grid;
   place-items: center;
-  width: 44px;
-  min-width: 44px;
-  height: 44px;
-  min-height: 44px;
+  width: var(--voice-control-size);
+  min-width: var(--voice-control-size);
+  height: var(--voice-control-size);
+  min-height: var(--voice-control-size);
   margin: 0;
   padding: 0;
-  border-radius: 50%;
+  border-radius: var(--voice-control-radius);
 }
 
 .voice-recording-interaction .voice-confirm-control {
-  width: 48px;
-  min-width: 48px;
-  height: 48px;
-  min-height: 48px;
   border-color: rgba(200, 255, 211, 0.44);
   background: rgba(200, 255, 211, 0.12);
 }
@@ -163,11 +163,15 @@ textarea:focus {
 
 .voice-processing-indicator {
   display: flex;
+  width: calc(96px + var(--voice-control-gap));
+  height: var(--voice-control-size);
   justify-content: center;
   align-items: center;
   gap: 5px;
-  min-height: 48px;
   margin-top: 12px;
+  border: 1px solid rgba(200, 255, 211, 0.18);
+  border-radius: var(--voice-control-radius);
+  background: rgba(4, 10, 7, 0.48);
 }
 
 .voice-processing-indicator span {
@@ -205,8 +209,9 @@ textarea:focus {
 
 @media (max-width: 480px) {
   .voice-recording-interaction {
-    grid-template-columns: minmax(0, 1fr) 44px 48px;
-    gap: 6px;
+    --voice-control-gap: 6px;
+
+    grid-template-columns: minmax(0, 1fr) repeat(2, var(--voice-control-size));
   }
 
   .voice-waveform {
