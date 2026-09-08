@@ -6,6 +6,7 @@ import ts from "typescript";
 
 const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
 const baseline = "b1ab7a46ab0c371c856026d7e502f29eb9f6df57";
+const legalMetadataBaseline = "2be22dd5713b74c4cce787711bc217635e232ea0";
 const read = (...segments) => readFileSync(join(rootDir, ...segments), "utf8");
 const privacy = read("app", "privacy-policy", "page.tsx");
 const terms = read("app", "terms", "page.tsx");
@@ -104,7 +105,10 @@ for (const [path, current] of [
 ]) {
   check(
     `${path} preserves metadata byte-for-byte`,
-    metadataBlock(current) === metadataBlock(baselineFile(path)),
+    metadataBlock(current) === execFileSync("git", ["show", `${legalMetadataBaseline}:${path}`], {
+      cwd: rootDir,
+      encoding: "utf8",
+    }).match(/export const metadata[\s\S]*?\n};/)?.[0],
   );
 }
 
@@ -171,8 +175,13 @@ const visibleCopy = [
   ...currentSharedCopy,
 ].join(" ");
 check(
-  "Migrated public UI adds no forbidden AI/chat terminology",
-  !/(?:\bopenai\b|\bchatgpt\b|\bchat\b|\bassistant\b|answer engine|ia real)/i.test(visibleCopy),
+  "Public legal disclosure confines the OpenAI processor name to the privacy policy",
+  (privacy.match(/\bOpenAI\b/g) ?? []).length === 1 &&
+    !/\bOpenAI\b/i.test(`${terms}\n${notFound}\n${shell}\n${brand}`),
+);
+check(
+  "Migrated public UI adds no unrelated AI/chat terminology",
+  !/(?:\bchatgpt\b|\bchat\b|\bassistant\b|answer engine|ia real)/i.test(visibleCopy),
 );
 
 check(

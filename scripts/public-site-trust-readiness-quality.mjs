@@ -267,7 +267,6 @@ function runPrematurePromiseSourceChecks(sources) {
     "Contraseña actual",
     "Recupera tu entrada al espacio estratégico",
     "runtime de IA real está conectado",
-    "OpenAI",
     "ChatGPT",
     "AI Chat",
     "Answer Engine",
@@ -285,6 +284,20 @@ function runPrematurePromiseSourceChecks(sources) {
   for (const phrase of forbiddenExactPhrases) {
     sourceExcludes(publicSurface, phrase, `Public copy avoids premature promise: ${phrase}`);
   }
+
+  sourceIncludes(
+    sources.privacyPolicy,
+    "servicio externo de transcripción prestado por OpenAI",
+    "Privacy disclosure names the implemented external transcription processor",
+  );
+  sourceExcludes(
+    Object.entries(sources)
+      .filter(([name]) => name !== "privacyPolicy")
+      .map(([, source]) => source)
+      .join("\n"),
+    "OpenAI",
+    "OpenAI processor naming stays confined to the privacy disclosure",
+  );
 
   sourceMatches(
     sources.terms,
@@ -375,7 +388,14 @@ async function runRuntimePublicPageChecks(baseUrl) {
           `${pageCase.path} still renders temporary auth scaffold copy.`,
         );
       }
-      assert(!html.includes("OpenAI"), `${pageCase.path} mentions OpenAI.`);
+      if (pageCase.path === "/privacy-policy") {
+        assert(
+          html.includes("servicio externo de transcripción prestado por OpenAI"),
+          `${pageCase.path} is missing the voice processor disclosure.`,
+        );
+      } else {
+        assert(!html.includes("OpenAI"), `${pageCase.path} mentions OpenAI outside the privacy disclosure.`);
+      }
       assert(!html.includes("ChatGPT"), `${pageCase.path} mentions ChatGPT.`);
       assert(!html.includes("Stripe"), `${pageCase.path} mentions Stripe.`);
       pass(`Runtime public page trust copy: ${pageCase.path}`);

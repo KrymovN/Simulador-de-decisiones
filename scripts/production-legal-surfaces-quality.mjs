@@ -15,6 +15,8 @@ const exportSurface = read("lib", "user-data-controls", "account-data-export-sur
 const draftPersistence = read("lib", "persistence-runtime", "simulation-draft-persistence.ts");
 const draftRetention = read("lib", "user-data-controls", "simulation-draft-retention-enforcement.ts");
 const draftDeletion = read("lib", "user-data-controls", "simulation-draft-deletion-execution.ts");
+const voiceHook = read("components", "use-home-simulator-voice.ts");
+const voiceProvider = read("lib", "voice-transcription", "openai-transcription-adapter.server.ts");
 const releaseEnvironment = read("scripts", "deterministic-release-validation-environment.mjs");
 const normalizedPrivacy = privacy.replace(/\s+/g, " ");
 const normalizedTerms = terms.replace(/\s+/g, " ");
@@ -37,6 +39,37 @@ check("privacy-individual-deletion-fact", privacy.includes("eliminar individualm
 check("privacy-no-account-deletion-overclaim", normalizedPrivacy.includes("no ofrece un control autoservicio para eliminar la cuenta completa"));
 check("privacy-retention-fact", privacy.includes("30 días") && privacy.includes("7 días anteriores"));
 check("privacy-provider-off-fact", privacy.includes("proveedor de IA no está activado") && privacy.includes("no se envían a un proveedor de IA"));
+check(
+  "privacy-voice-user-control-fact",
+  normalizedPrivacy.includes("cuando esté disponible, tú decides cuándo iniciar la grabación") &&
+    normalizedPrivacy.includes("cancelarla o finalizarla"),
+);
+check(
+  "privacy-voice-external-transcription-fact",
+  normalizedPrivacy.includes("servicio externo de transcripción prestado por OpenAI") &&
+    normalizedPrivacy.includes("convertir tu voz en texto"),
+);
+check(
+  "privacy-voice-cancel-no-send-fact",
+  normalizedPrivacy.includes("Si cancelas la grabación antes de iniciar la transcripción, el audio no se envía"),
+);
+check(
+  "privacy-voice-raw-audio-non-persistence-fact",
+  normalizedPrivacy.includes("no guarda el audio original como contenido de una simulación") &&
+    normalizedPrivacy.includes("no lo almacena en Supabase") &&
+    normalizedPrivacy.includes("ni crea registros que contengan ese audio") &&
+    normalizedPrivacy.includes("Dentro de Levio, el audio se mantiene únicamente") &&
+    normalizedPrivacy.includes("se descarta al terminar"),
+);
+check(
+  "privacy-voice-transcript-text-flow-fact",
+  normalizedPrivacy.includes("texto transcrito se añade al campo editable del simulador") &&
+    normalizedPrivacy.includes("se trata como el texto que introduces"),
+);
+check(
+  "privacy-voice-public-off-fact",
+  normalizedPrivacy.includes("La transcripción de voz no está activada en la configuración pública validada"),
+);
 check("privacy-external-legal-handoff", privacy.includes("requieren confirmación del titular y revisión jurídica externa"));
 
 check("terms-decision-support-fact", terms.includes("herramienta de apoyo") && terms.includes("resultados son orientativos"));
@@ -54,7 +87,20 @@ check("implementation-persistence-evidence", savedContracts.includes("ownerScope
 check("implementation-export-evidence", exportSurface.includes('state: "saved" | "archived"') && exportSurface.includes("INTERNAL_CONTENT_KEYS") && exportSurface.includes("sanitizeAccountExportDerivedContent"));
 check("implementation-deletion-evidence", draftDeletion.includes("deleteOwnedSimulationDraft") && draftDeletion.includes('export_eligible !== false'));
 check("implementation-retention-evidence", draftPersistence.includes("SIMULATION_DRAFT_RETENTION_DAYS = 30") && draftRetention.includes("SIMULATION_DRAFT_WARNING_DAYS = 7"));
-check("implementation-provider-off-evidence", releaseEnvironment.includes('LEVIO_REAL_AI_DEV_ENABLED = "false"') && releaseEnvironment.includes('delete environment[key]'));
+check(
+  "implementation-voice-disclosure-evidence",
+  voiceHook.includes('fetch("/api/transcribe"') &&
+    voiceHook.includes("session.cancelled") &&
+    voiceHook.includes("session.chunks = []") &&
+    voiceProvider.includes('OPENAI_VOICE_TRANSCRIPTION_PROVIDER = "openai"') &&
+    voiceProvider.includes("client.audio.transcriptions.create"),
+);
+check(
+  "implementation-provider-off-evidence",
+  releaseEnvironment.includes('LEVIO_REAL_AI_DEV_ENABLED = "false"') &&
+    releaseEnvironment.includes('LEVIO_VOICE_TRANSCRIPTION_ENABLED = "false"') &&
+    releaseEnvironment.includes('delete environment[key]'),
+);
 
 check("navigation-home-legal-links", home.includes('{ label: "Privacidad", href: "/privacy-policy" }') && home.includes('{ label: "Términos", href: "/terms" }'));
 check("navigation-registration-legal-links", register.includes('<Link href="/privacy-policy">') && register.includes('<Link href="/terms">'));
