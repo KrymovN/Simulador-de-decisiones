@@ -128,7 +128,8 @@
     "quality:home-simulator-processing-sequence": "node scripts/home-simulator-processing-sequence-quality.mjs",
     "quality:voice-recording-transcription": "node scripts/voice-recording-transcription-flow-quality.mjs",
     "quality:native-local-stt-adapter": "node scripts/native-local-stt-adapter-quality.mjs",
-    "quality:browser-local-whisper-adapter": "node scripts/browser-local-whisper-adapter-quality.mjs"
+    "quality:browser-local-whisper-adapter": "node scripts/browser-local-whisper-adapter-quality.mjs",
+    "quality:browser-local-whisper-pinned-revision": "node scripts/browser-local-whisper-pinned-revision-quality.mjs"
   },
   "dependencies": {
     "@huggingface/transformers": "4.2.0",

@@ -61,6 +61,7 @@ const {
   BROWSER_LOCAL_WHISPER_SAMPLE_RATE,
   BROWSER_LOCAL_WHISPER_TRANSFORMERS_VERSION,
   isAllowedWhisperAssetRequest,
+  resolveWhisperAssetRequest,
 } = require(protocolPath);
 const {
   createBrowserLocalWhisperAdapter,
@@ -415,7 +416,12 @@ try {
       !workerSource.includes("/api/transcribe") &&
       !workerSource.includes("api.openai.com") &&
       !workerSource.includes("api-inference.huggingface.co") &&
-      workerSource.includes("isAllowedWhisperAssetRequest") &&
+      workerSource.includes("resolveWhisperAssetRequest") &&
+      resolveWhisperAssetRequest(
+        `https://huggingface.co/${BROWSER_LOCAL_WHISPER_MODEL_ID}/resolve/main/config.json`,
+        "GET",
+        applicationOrigin,
+      )?.url.includes(`/resolve/${BROWSER_LOCAL_WHISPER_MODEL_REVISION}/config.json`) &&
       workerSource.includes("audio.fill(0)"),
   );
 } finally {

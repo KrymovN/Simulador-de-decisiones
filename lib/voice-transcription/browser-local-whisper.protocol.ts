@@ -57,6 +57,11 @@ export type BrowserLocalWhisperWorkerResponse =
   | { generation: number; type: "aborted" }
   | { requestId: number; type: "disposed" };
 
+export type BrowserLocalWhisperResolvedAssetRequest = {
+  normalized: boolean;
+  url: string;
+};
+
 export function isAllowedWhisperAssetRequest(
   rawUrl: string,
   method: string,
@@ -92,4 +97,40 @@ export function isAllowedWhisperAssetRequest(
   ) || url.pathname.startsWith(
     `/npm/onnxruntime-web@${BROWSER_LOCAL_WHISPER_ONNX_RUNTIME_VERSION}/`,
   );
+}
+
+export function resolveWhisperAssetRequest(
+  rawUrl: string,
+  method: string,
+  applicationOrigin: string,
+): BrowserLocalWhisperResolvedAssetRequest | null {
+  if (method.toUpperCase() !== "GET") {
+    return null;
+  }
+
+  let url: URL;
+  try {
+    url = new URL(rawUrl, applicationOrigin);
+  } catch {
+    return null;
+  }
+
+  const mutableModelPrefix =
+    `/${BROWSER_LOCAL_WHISPER_MODEL_ID}/resolve/main/`;
+  if (
+    url.origin === "https://huggingface.co" &&
+    url.pathname.startsWith(mutableModelPrefix)
+  ) {
+    const suffix = url.pathname.slice(mutableModelPrefix.length);
+    url.pathname =
+      `/${BROWSER_LOCAL_WHISPER_MODEL_ID}/resolve/` +
+      `${BROWSER_LOCAL_WHISPER_MODEL_REVISION}/${suffix}`;
+    return isAllowedWhisperAssetRequest(url.href, method, applicationOrigin)
+      ? { normalized: true, url: url.href }
+      : null;
+  }
+
+  return isAllowedWhisperAssetRequest(url.href, method, applicationOrigin)
+    ? { normalized: false, url: url.href }
+    : null;
 }

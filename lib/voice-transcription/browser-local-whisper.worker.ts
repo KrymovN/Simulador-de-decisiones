@@ -6,7 +6,7 @@ import {
   BROWSER_LOCAL_WHISPER_MODEL_ID,
   BROWSER_LOCAL_WHISPER_MODEL_REVISION,
   BROWSER_LOCAL_WHISPER_SAMPLE_RATE,
-  isAllowedWhisperAssetRequest,
+  resolveWhisperAssetRequest,
   type BrowserLocalWhisperBackend,
   type BrowserLocalWhisperWorkerRequest,
   type BrowserLocalWhisperWorkerResponse,
@@ -34,14 +34,30 @@ runtimeEnvironment.allowRemoteModels = true;
 runtimeEnvironment.useBrowserCache = true;
 runtimeEnvironment.fetch = async (input, init) => {
   const request = input instanceof Request ? input : new Request(input, init);
-  if (!isAllowedWhisperAssetRequest(
+  const resolved = resolveWhisperAssetRequest(
     request.url,
     request.method,
     workerScope.location.origin,
-  )) {
+  );
+  if (!resolved) {
     throw new Error("Non-static runtime request rejected.");
   }
-  return browserFetch(request);
+  if (!resolved.normalized) {
+    return browserFetch(request);
+  }
+  return browserFetch(new Request(resolved.url, {
+    cache: request.cache,
+    credentials: request.credentials,
+    headers: request.headers,
+    integrity: request.integrity,
+    keepalive: request.keepalive,
+    method: request.method,
+    mode: request.mode,
+    redirect: request.redirect,
+    referrer: request.referrer,
+    referrerPolicy: request.referrerPolicy,
+    signal: request.signal,
+  }));
 };
 
 let transcriber: LocalTranscriber | null = null;

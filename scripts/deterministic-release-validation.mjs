@@ -22,6 +22,7 @@ const steps = [
   { id: "provider-proof-public-simulator", command: npmCommand, args: ["run", "quality:public-simulator"], providerEvidence: true },
   { id: "voice-recording-transcription", command: npmCommand, args: ["run", "quality:voice-recording-transcription"], voiceProviderEvidence: true },
   { id: "native-local-stt-adapter", command: npmCommand, args: ["run", "quality:native-local-stt-adapter"], nativeLocalSttProviderEvidence: true },
+  { id: "browser-local-whisper-pinned-revision", command: npmCommand, args: ["run", "quality:browser-local-whisper-pinned-revision"] },
   { id: "browser-local-whisper-adapter", command: npmCommand, args: ["run", "quality:browser-local-whisper-adapter"], browserLocalWhisperProviderEvidence: true },
   { id: "typescript", command: join(rootDir, "node_modules", ".bin", "tsc"), args: ["--noEmit"] },
 ];
