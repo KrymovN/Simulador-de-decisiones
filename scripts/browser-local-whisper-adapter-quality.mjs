@@ -217,11 +217,12 @@ async function startSession(adapter, worker, blob = new Blob(
 try {
   check(
     "Runtime and multilingual model are immutable-pinned",
-    BROWSER_LOCAL_WHISPER_MODEL_ID === "onnx-community/whisper-tiny" &&
+    BROWSER_LOCAL_WHISPER_MODEL_ID === "onnx-community/whisper-base" &&
+      !BROWSER_LOCAL_WHISPER_MODEL_ID.endsWith(".en") &&
       BROWSER_LOCAL_WHISPER_MODEL_REVISION ===
-        "ff4177021cc41f7db950912b73ea4fdf7d01d8e7" &&
+        "1846881b6b3a3024392c1eea3ad983695bc23925" &&
       BROWSER_LOCAL_WHISPER_DTYPE === "q4" &&
-      BROWSER_LOCAL_WHISPER_ESTIMATED_ASSET_BYTES === 101_000_000 &&
+      BROWSER_LOCAL_WHISPER_ESTIMATED_ASSET_BYTES === 145_144_432 &&
       packageJson.dependencies["@huggingface/transformers"] ===
         BROWSER_LOCAL_WHISPER_TRANSFORMERS_VERSION &&
       packageLock.packages["node_modules/onnxruntime-web"].version ===
@@ -417,6 +418,9 @@ try {
       !workerSource.includes("api.openai.com") &&
       !workerSource.includes("api-inference.huggingface.co") &&
       workerSource.includes("resolveWhisperAssetRequest") &&
+      workerSource.includes("language: BROWSER_LOCAL_WHISPER_LANGUAGE") &&
+      workerSource.includes('task: "transcribe"') &&
+      !workerSource.includes("return_timestamps: true") &&
       resolveWhisperAssetRequest(
         `https://huggingface.co/${BROWSER_LOCAL_WHISPER_MODEL_ID}/resolve/main/config.json`,
         "GET",

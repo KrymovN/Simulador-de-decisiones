@@ -1,13 +1,13 @@
 export const BROWSER_LOCAL_WHISPER_LANGUAGE = "spanish" as const;
 export const BROWSER_LOCAL_WHISPER_SAMPLE_RATE = 16_000;
-export const BROWSER_LOCAL_WHISPER_MODEL_ID = "onnx-community/whisper-tiny" as const;
+export const BROWSER_LOCAL_WHISPER_MODEL_ID = "onnx-community/whisper-base" as const;
 export const BROWSER_LOCAL_WHISPER_MODEL_REVISION =
-  "ff4177021cc41f7db950912b73ea4fdf7d01d8e7" as const;
+  "1846881b6b3a3024392c1eea3ad983695bc23925" as const;
 export const BROWSER_LOCAL_WHISPER_DTYPE = "q4" as const;
 export const BROWSER_LOCAL_WHISPER_TRANSFORMERS_VERSION = "4.2.0" as const;
 export const BROWSER_LOCAL_WHISPER_ONNX_RUNTIME_VERSION =
   "1.26.0-dev.20260416-b7804b056c" as const;
-export const BROWSER_LOCAL_WHISPER_ESTIMATED_ASSET_BYTES = 101_000_000;
+export const BROWSER_LOCAL_WHISPER_ESTIMATED_ASSET_BYTES = 145_144_432;
 
 export type BrowserLocalWhisperBackend = "webgpu" | "wasm";
 

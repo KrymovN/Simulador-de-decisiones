@@ -28,6 +28,8 @@ const protocolPath = join(
   "browser-local-whisper.protocol.ts",
 );
 const {
+  BROWSER_LOCAL_WHISPER_DTYPE,
+  BROWSER_LOCAL_WHISPER_ESTIMATED_ASSET_BYTES,
   BROWSER_LOCAL_WHISPER_MODEL_ID,
   BROWSER_LOCAL_WHISPER_MODEL_REVISION,
   BROWSER_LOCAL_WHISPER_ONNX_RUNTIME_VERSION,
@@ -37,6 +39,8 @@ const {
 } = require(protocolPath);
 
 const applicationOrigin = "https://levio.es";
+const previousTinyModel = "onnx-community/whisper-tiny";
+const previousTinyRevision = "ff4177021cc41f7db950912b73ea4fdf7d01d8e7";
 const mutableBase =
   `https://huggingface.co/${BROWSER_LOCAL_WHISPER_MODEL_ID}/resolve/main/`;
 const pinnedBase =
@@ -59,6 +63,16 @@ function resolvesMutableAssetToPinned(path) {
     !resolved.url.includes("/resolve/main/") &&
     isAllowedWhisperAssetRequest(resolved.url, "GET", applicationOrigin);
 }
+
+check(
+  "The active multilingual q4 contract is Whisper base at the approved revision",
+  BROWSER_LOCAL_WHISPER_MODEL_ID === "onnx-community/whisper-base" &&
+    !BROWSER_LOCAL_WHISPER_MODEL_ID.endsWith(".en") &&
+    BROWSER_LOCAL_WHISPER_MODEL_REVISION ===
+      "1846881b6b3a3024392c1eea3ad983695bc23925" &&
+    BROWSER_LOCAL_WHISPER_DTYPE === "q4" &&
+    BROWSER_LOCAL_WHISPER_ESTIMATED_ASSET_BYTES === 145_144_432,
+);
 
 check(
   "Preliminary config discovery resolves only to the immutable revision",
@@ -93,6 +107,35 @@ check(
 );
 
 check(
+  "Every required pinned base q4 asset is allowed",
+  [
+    "config.json",
+    "generation_config.json",
+    "tokenizer.json",
+    "tokenizer_config.json",
+    "preprocessor_config.json",
+    "onnx/encoder_model_q4.onnx",
+    "onnx/decoder_model_merged_q4.onnx",
+  ].every((path) =>
+    isAllowedWhisperAssetRequest(`${pinnedBase}${path}`, "GET", applicationOrigin)
+  ),
+);
+
+check(
+  "The previous tiny model is rejected for mutable and pinned asset requests",
+  resolveWhisperAssetRequest(
+    `https://huggingface.co/${previousTinyModel}/resolve/main/config.json`,
+    "GET",
+    applicationOrigin,
+  ) === null &&
+    resolveWhisperAssetRequest(
+      `https://huggingface.co/${previousTinyModel}/resolve/${previousTinyRevision}/config.json`,
+      "GET",
+      applicationOrigin,
+    ) === null,
+);
+
+check(
   "Arbitrary models and revisions remain rejected",
   resolveWhisperAssetRequest(
     `https://huggingface.co/other/model/resolve/main/config.json`,
@@ -101,6 +144,11 @@ check(
   ) === null &&
     resolveWhisperAssetRequest(
       `https://huggingface.co/${BROWSER_LOCAL_WHISPER_MODEL_ID}/resolve/master/config.json`,
+      "GET",
+      applicationOrigin,
+    ) === null &&
+    resolveWhisperAssetRequest(
+      "https://huggingface.co/onnx-community/whisper-base.en/resolve/main/config.json",
       "GET",
       applicationOrigin,
     ) === null &&
@@ -114,7 +162,7 @@ check(
 check(
   "Inference endpoints and provider endpoints remain rejected",
   resolveWhisperAssetRequest(
-    "https://api-inference.huggingface.co/models/onnx-community/whisper-tiny",
+    `https://api-inference.huggingface.co/models/${BROWSER_LOCAL_WHISPER_MODEL_ID}`,
     "GET",
     applicationOrigin,
   ) === null &&
