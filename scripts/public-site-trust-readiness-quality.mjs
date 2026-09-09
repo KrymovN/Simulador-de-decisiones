@@ -287,8 +287,8 @@ function runPrematurePromiseSourceChecks(sources) {
 
   sourceIncludes(
     sources.privacyPolicy,
-    "servicio externo de transcripción prestado por OpenAI",
-    "Privacy disclosure names the implemented external transcription processor",
+    "no reenvía ni carga ese audio mediante su infraestructura a OpenAI",
+    "Privacy disclosure states the Voice V1 no-audio-relay boundary",
   );
   sourceExcludes(
     Object.entries(sources)
@@ -296,7 +296,7 @@ function runPrematurePromiseSourceChecks(sources) {
       .map(([, source]) => source)
       .join("\n"),
     "OpenAI",
-    "OpenAI processor naming stays confined to the privacy disclosure",
+    "OpenAI no-send naming stays confined to the privacy disclosure",
   );
 
   sourceMatches(
@@ -390,8 +390,8 @@ async function runRuntimePublicPageChecks(baseUrl) {
       }
       if (pageCase.path === "/privacy-policy") {
         assert(
-          html.includes("servicio externo de transcripción prestado por OpenAI"),
-          `${pageCase.path} is missing the voice processor disclosure.`,
+          html.includes("no reenvía ni carga ese audio mediante su infraestructura a OpenAI"),
+          `${pageCase.path} is missing the Voice V1 no-audio-relay disclosure.`,
         );
       } else {
         assert(!html.includes("OpenAI"), `${pageCase.path} mentions OpenAI outside the privacy disclosure.`);

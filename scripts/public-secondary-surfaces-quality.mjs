@@ -175,7 +175,7 @@ const visibleCopy = [
   ...currentSharedCopy,
 ].join(" ");
 check(
-  "Public legal disclosure confines the OpenAI processor name to the privacy policy",
+  "Public legal disclosure confines the OpenAI no-send statement to the privacy policy",
   (privacy.match(/\bOpenAI\b/g) ?? []).length === 1 &&
     !/\bOpenAI\b/i.test(`${terms}\n${notFound}\n${shell}\n${brand}`),
 );

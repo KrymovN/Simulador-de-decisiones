@@ -29,19 +29,19 @@ export default function PrivacyPolicyPage() {
           para mostrar, reabrir, archivar, exportar o eliminar esos contenidos.
         </p>
 
-        <h2>Entrada de voz y transcripción</h2>
+        <h2>Entrada de voz y reconocimiento del navegador</h2>
         <p>
-          Si utilizas la función de entrada por voz cuando esté disponible, tú decides cuándo iniciar la grabación y
-          cuándo cancelarla o finalizarla. Al finalizarla, Levio envía una única grabación de audio a un servicio externo
-          de transcripción prestado por OpenAI para convertir tu voz en texto. Si cancelas la grabación antes de iniciar
-          la transcripción, el audio no se envía a ese servicio.
+          Si utilizas la entrada por voz, tú decides cuándo iniciar, cancelar o finalizar el dictado. La función básica
+          utiliza las capacidades de reconocimiento de voz disponibles en tu navegador. La forma en que se procesa ese
+          reconocimiento puede depender del navegador, del sistema operativo y de sus proveedores; Levio no afirma que
+          el procesamiento se realice siempre de forma local en tu dispositivo.
         </p>
         <p>
-          Levio no guarda el audio original como contenido de una simulación, no lo almacena en Supabase ni crea registros
-          que contengan ese audio. Dentro de Levio, el audio se mantiene únicamente durante el proceso de captura y
-          transcripción y se descarta al terminar. El texto transcrito se añade al campo editable del simulador y, desde
-          ese momento, se trata como el texto que introduces conforme al flujo descrito en esta política. La transcripción
-          de voz no está activada en la configuración pública validada para esta versión.
+          Levio no reenvía ni carga ese audio mediante su infraestructura a OpenAI, a <code>/api/transcribe</code>, a
+          Whisper ni a otro proveedor de transcripción de Levio. Después del reconocimiento, Levio recibe del navegador
+          el texto resultante y lo añade al campo editable del simulador, donde puedes revisarlo y modificarlo. Solo si
+          después realizas la acción correspondiente, ese texto puede participar en el flujo estándar del Decision Engine
+          o de IA de Levio, de acuerdo con la configuración aplicable.
         </p>
 
         <h2>Cuenta, almacenamiento y acceso</h2>

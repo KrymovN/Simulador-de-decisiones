@@ -16,7 +16,7 @@ const draftPersistence = read("lib", "persistence-runtime", "simulation-draft-pe
 const draftRetention = read("lib", "user-data-controls", "simulation-draft-retention-enforcement.ts");
 const draftDeletion = read("lib", "user-data-controls", "simulation-draft-deletion-execution.ts");
 const voiceHook = read("components", "use-home-simulator-voice.ts");
-const voiceProvider = read("lib", "voice-transcription", "openai-transcription-adapter.server.ts");
+const speechContract = read("components", "browser-speech-recognition.ts");
 const releaseEnvironment = read("scripts", "deterministic-release-validation-environment.mjs");
 const normalizedPrivacy = privacy.replace(/\s+/g, " ");
 const normalizedTerms = terms.replace(/\s+/g, " ");
@@ -41,34 +41,39 @@ check("privacy-retention-fact", privacy.includes("30 días") && privacy.includes
 check("privacy-provider-off-fact", privacy.includes("proveedor de IA no está activado") && privacy.includes("no se envían a un proveedor de IA"));
 check(
   "privacy-voice-user-control-fact",
-  normalizedPrivacy.includes("cuando esté disponible, tú decides cuándo iniciar la grabación") &&
-    normalizedPrivacy.includes("cancelarla o finalizarla"),
+  normalizedPrivacy.includes("tú decides cuándo iniciar, cancelar o finalizar el dictado"),
 );
 check(
-  "privacy-voice-external-transcription-fact",
-  normalizedPrivacy.includes("servicio externo de transcripción prestado por OpenAI") &&
-    normalizedPrivacy.includes("convertir tu voz en texto"),
+  "privacy-voice-browser-recognition-fact",
+  normalizedPrivacy.includes("capacidades de reconocimiento de voz disponibles en tu navegador") &&
+    normalizedPrivacy.includes("puede depender del navegador, del sistema operativo y de sus proveedores"),
 );
 check(
-  "privacy-voice-cancel-no-send-fact",
-  normalizedPrivacy.includes("Si cancelas la grabación antes de iniciar la transcripción, el audio no se envía"),
+  "privacy-voice-no-local-processing-overclaim",
+  normalizedPrivacy.includes("no afirma que el procesamiento se realice siempre de forma local en tu dispositivo"),
 );
 check(
-  "privacy-voice-raw-audio-non-persistence-fact",
-  normalizedPrivacy.includes("no guarda el audio original como contenido de una simulación") &&
-    normalizedPrivacy.includes("no lo almacena en Supabase") &&
-    normalizedPrivacy.includes("ni crea registros que contengan ese audio") &&
-    normalizedPrivacy.includes("Dentro de Levio, el audio se mantiene únicamente") &&
-    normalizedPrivacy.includes("se descarta al terminar"),
+  "privacy-voice-no-levio-audio-relay-fact",
+  normalizedPrivacy.includes("no reenvía ni carga ese audio mediante su infraestructura a OpenAI") &&
+    normalizedPrivacy.includes("/api/transcribe") &&
+    normalizedPrivacy.includes("Whisper") &&
+    normalizedPrivacy.includes("ni a otro proveedor de transcripción de Levio"),
 );
 check(
   "privacy-voice-transcript-text-flow-fact",
-  normalizedPrivacy.includes("texto transcrito se añade al campo editable del simulador") &&
-    normalizedPrivacy.includes("se trata como el texto que introduces"),
+  normalizedPrivacy.includes("recibe del navegador el texto resultante") &&
+    normalizedPrivacy.includes("campo editable del simulador") &&
+    normalizedPrivacy.includes("puedes revisarlo y modificarlo"),
 );
 check(
-  "privacy-voice-public-off-fact",
-  normalizedPrivacy.includes("La transcripción de voz no está activada en la configuración pública validada"),
+  "privacy-voice-later-user-action-fact",
+  normalizedPrivacy.includes("Solo si después realizas la acción correspondiente") &&
+    normalizedPrivacy.includes("flujo estándar del Decision Engine") &&
+    normalizedPrivacy.includes("o de IA de Levio"),
+);
+check(
+  "privacy-voice-no-future-premium-claim",
+  !/(?:Premium|Advanced Voice|transcripción avanzada)/i.test(normalizedPrivacy),
 );
 check("privacy-external-legal-handoff", privacy.includes("requieren confirmación del titular y revisión jurídica externa"));
 
@@ -89,11 +94,13 @@ check("implementation-deletion-evidence", draftDeletion.includes("deleteOwnedSim
 check("implementation-retention-evidence", draftPersistence.includes("SIMULATION_DRAFT_RETENTION_DAYS = 30") && draftRetention.includes("SIMULATION_DRAFT_WARNING_DAYS = 7"));
 check(
   "implementation-voice-disclosure-evidence",
-  voiceHook.includes('fetch("/api/transcribe"') &&
-    voiceHook.includes("session.cancelled") &&
-    voiceHook.includes("session.chunks = []") &&
-    voiceProvider.includes('OPENAI_VOICE_TRANSCRIPTION_PROVIDER = "openai"') &&
-    voiceProvider.includes("client.audio.transcriptions.create"),
+  speechContract.includes("SpeechRecognition?") &&
+    speechContract.includes("webkitSpeechRecognition?") &&
+    voiceHook.includes("recognition.start()") &&
+    voiceHook.includes("recognition.stop()") &&
+    voiceHook.includes("recognition.abort()") &&
+    !voiceHook.includes('fetch("/api/transcribe"') &&
+    !voiceHook.includes("MediaRecorder"),
 );
 check(
   "implementation-provider-off-evidence",
