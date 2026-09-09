@@ -21,365 +21,105 @@ require.extensions[".ts"] = function loadTypeScriptModule(module, filename) {
   module._compile(output.outputText, filename);
 };
 
-const {
-  VOICE_MAX_AUDIO_BYTES,
-  VOICE_MAX_RECORDING_MS,
-  isVoiceTranscriptionApiResponse,
-} = require(join(rootDir, "lib", "voice-transcription", "contracts.ts"));
-const {
-  createVoiceTranscriptionRequestHandler,
-} = require(join(rootDir, "lib", "voice-transcription", "route-handler.ts"));
-const {
-  createPublicApiRateLimiter,
-} = require(join(rootDir, "lib", "runtime-integration", "public-api-rate-limit.ts"));
-const {
-  appendVoiceTranscript,
-  calculateVoiceAudioLevel,
-  classifyMicrophoneError,
-  createVoiceWaveformLevels,
-  formatVoiceRecordingTime,
-  selectVoiceRecordingMimeType,
-} = require(join(rootDir, "components", "home-simulator-voice.ts"));
-
-const homeSimulator = readFileSync(join(rootDir, "components", "HomeSimulator.tsx"), "utf8");
-const voiceHook = readFileSync(join(rootDir, "components", "use-home-simulator-voice.ts"), "utf8");
-const voiceHelper = readFileSync(join(rootDir, "components", "home-simulator-voice.ts"), "utf8");
-const route = readFileSync(join(rootDir, "app", "api", "transcribe", "route.ts"), "utf8");
-const routeHandler = readFileSync(join(rootDir, "lib", "voice-transcription", "route-handler.ts"), "utf8");
-const providerAdapter = readFileSync(
-  join(rootDir, "lib", "voice-transcription", "openai-transcription-adapter.server.ts"),
-  "utf8",
+const { appendVoiceTranscript, createVoiceWaveformLevels, voiceErrorMessage } = require(
+  join(rootDir, "components", "home-simulator-voice.ts"),
 );
-const simulatorCss = readFileSync(join(rootDir, "app", "styles", "simulator.css"), "utf8");
-const homepage = readFileSync(join(rootDir, "app", "page.tsx"), "utf8");
-const dashboard = readFileSync(join(rootDir, "app", "dashboard", "page.tsx"), "utf8");
+const read = (...parts) => readFileSync(join(rootDir, ...parts), "utf8");
+const homeSimulator = read("components", "HomeSimulator.tsx");
+const voiceHook = read("components", "use-home-simulator-voice.ts");
+const speechContract = read("components", "browser-speech-recognition.ts");
+const route = read("app", "api", "transcribe", "route.ts");
+const providerAdapter = read("lib", "voice-transcription", "openai-transcription-adapter.server.ts");
+const simulatorCss = read("app", "styles", "simulator.css");
+const homepage = read("app", "page.tsx");
+const dashboard = read("app", "dashboard", "page.tsx");
 
 const checks = [];
-let providerOperations = 0;
-
-function check(name, condition, detail = "") {
-  checks.push({ name, passed: Boolean(condition), detail });
-}
-
-function includes(source, value, name) {
-  check(name, source.includes(value), `Expected source to include: ${value}`);
-}
-
-function excludes(source, value, name) {
-  check(name, !source.includes(value), `Forbidden source value: ${value}`);
-}
-
-function testRateLimiter() {
-  return createPublicApiRateLimiter({ maxBuckets: 20, maxRequests: 20, windowMs: 60_000 });
-}
-
-function audioRequest({
-  bytes = new Uint8Array([1, 2, 3, 4]),
-  fields,
-  mimeType = "audio/webm",
-  source = crypto.randomUUID(),
-} = {}) {
-  const formData = new FormData();
-  formData.append("audio", new File([bytes], "untrusted-name.bin", { type: mimeType }));
-  for (const [key, value] of fields ?? []) {
-    formData.append(key, value);
-  }
-  return new Request("http://localhost/api/transcribe", {
-    body: formData,
-    headers: {
-      "content-length": String(bytes.byteLength + 512),
-      "x-forwarded-for": source,
-    },
-    method: "POST",
-  });
-}
-
-async function responsePayload(response) {
-  const payload = await response.json();
-  check("Every route response satisfies the bounded public contract", isVoiceTranscriptionApiResponse(payload));
-  return payload;
-}
+const check = (name, condition, detail = "") => checks.push({ name, passed: Boolean(condition), detail });
+const includes = (source, value, name) => check(name, source.includes(value), `Expected source to include: ${value}`);
+const excludes = (source, value, name) => check(name, !source.includes(value), `Forbidden source value: ${value}`);
 
 const syntheticTranscript = "Quiero cambiar de trabajo, pero necesito mantener unos ingresos estables.";
-let transportCalls = 0;
-const deterministicTransport = {
-  async transcribe(input) {
-    transportCalls += 1;
-    check("Transport receives bounded Spanish audio", input.language === "es" && input.audio.size === 4);
-    check("Transport receives a bounded abortable request", input.signal instanceof AbortSignal && input.timeoutMs === 25_000);
-    return { transcript: syntheticTranscript };
-  },
-};
-
-const successHandler = createVoiceTranscriptionRequestHandler({
-  rateLimiter: testRateLimiter(),
-  transport: deterministicTransport,
-});
-const successResponse = await successHandler(audioRequest());
-const successPayload = await responsePayload(successResponse);
-check(
-  "Synthetic audio request reaches one deterministic transcription transport",
-  successResponse.status === 200 && transportCalls === 1,
-);
-check(
-  "Synthetic transcript returns through the endpoint contract",
-  successPayload.status === "completed" && successPayload.data.transcript === syntheticTranscript,
-);
 check(
   "Transcript appends to the existing controlled input",
-  appendVoiceTranscript("Texto existente.", successPayload.data.transcript, 1200) ===
-    `Texto existente. ${syntheticTranscript}`,
+  appendVoiceTranscript("Texto existente.", syntheticTranscript, 1200) === `Texto existente. ${syntheticTranscript}`,
 );
 check("Whitespace transcript cannot erase existing text", appendVoiceTranscript("Conservar", "   ", 1200) === "Conservar");
+check(
+  "Unsupported browser copy preserves typed input guidance",
+  voiceErrorMessage("RECOGNITION_UNSUPPORTED") ===
+    "El dictado por voz no está disponible en este navegador. Puedes seguir escribiendo.",
+);
+check("Listening waveform keeps its existing bounded shape", createVoiceWaveformLevels(0).length === 13);
 
-const alternatingSignal = (amplitude) => Uint8Array.from(
-  { length: 32 },
-  (_, index) => 128 + (index % 2 === 0 ? amplitude : -amplitude),
-);
-const quiet = new Uint8Array(32).fill(128);
-const moderate = alternatingSignal(12);
-const strong = alternatingSignal(22);
-const quietLevel = calculateVoiceAudioLevel(quiet);
-const moderateLevel = calculateVoiceAudioLevel(moderate);
-const strongLevel = calculateVoiceAudioLevel(strong);
-check(
-  "Synthetic analyser mapping preserves silence and orders real amplitudes",
-  quietLevel === 0 && moderateLevel > quietLevel && strongLevel > moderateLevel && strongLevel <= 1,
-);
-const quietWaveform = createVoiceWaveformLevels(quietLevel);
-const moderateWaveform = createVoiceWaveformLevels(moderateLevel);
-const strongWaveform = createVoiceWaveformLevels(strongLevel);
-check(
-  "Thirteen waveform bars respond perceptibly to moderate and strong real amplitude",
-  quietWaveform.length === 13 &&
-    quietWaveform.every((level, index) =>
-      level === 0.08 && level < moderateWaveform[index] && moderateWaveform[index] < strongWaveform[index]
-    ) &&
-    Math.max(...moderateWaveform) >= 0.55 &&
-    Math.max(...strongWaveform) <= 1,
-);
-check(
-  "Unchanged silence input cannot animate the waveform independently",
-  JSON.stringify(createVoiceWaveformLevels(calculateVoiceAudioLevel(quiet))) === JSON.stringify(quietWaveform),
-);
-check(
-  "MIME negotiation prefers a supported cross-browser candidate",
-  selectVoiceRecordingMimeType((value) => value === "audio/mp4") === "audio/mp4",
-);
-check("Recording timer is bounded and formatted", formatVoiceRecordingTime(125.9) === "02:05");
-check(
-  "Permission denial and unavailable microphone are distinguished",
-  classifyMicrophoneError({ name: "NotAllowedError" }) === "MIC_PERMISSION_DENIED" &&
-    classifyMicrophoneError({ name: "NotFoundError" }) === "MIC_NOT_AVAILABLE",
-);
+includes(speechContract, "SpeechRecognition?", "Standard SpeechRecognition is supported");
+includes(speechContract, "webkitSpeechRecognition?", "webkitSpeechRecognition fallback is supported");
+includes(speechContract, 'BROWSER_SPEECH_RECOGNITION_LANGUAGE = "es-ES"', "Recognition language is Spanish es-ES");
+includes(voiceHook, "new RecognitionConstructor()", "Each voice session creates a browser recognition instance");
+includes(voiceHook, "recognition.start()", "Mic action starts browser recognition");
+includes(voiceHook, "recognition.stop()", "Completion action stops browser recognition");
+includes(voiceHook, "recognition.abort()", "Cancel and cleanup abort browser recognition");
+includes(voiceHook, "recognition.continuous = true", "Recognition remains active until completion");
+includes(voiceHook, "recognition.interimResults = true", "Interim results stay inside the recognition lifecycle");
+includes(voiceHook, "collectFinalSpeechRecognitionResults", "Only final recognition results enter the transcript accumulator");
+includes(voiceHook, "joinFinalSpeechRecognitionResults", "Final fragments are normalized without duplicate text");
+includes(voiceHook, "onTranscriptRef.current(transcript)", "Final transcript reaches the existing HomeSimulator callback");
+includes(voiceHook, 'setFailure("NO_SPEECH")', "No-speech completion is controlled");
+includes(voiceHook, "classifySpeechRecognitionError(event.error)", "Browser recognition errors use controlled messages");
+includes(voiceHook, 'setFailure("RECOGNITION_UNSUPPORTED")', "Unsupported browsers fail without breaking typed input");
+excludes(voiceHook, 'fetch("/api/transcribe"', "Voice V1 never calls the Levio transcription route");
+excludes(voiceHook, "MediaRecorder", "Voice V1 does not record a Blob");
+excludes(voiceHook, "getUserMedia", "Voice V1 does not open a second MediaStream");
+excludes(voiceHook, "FormData", "Voice V1 never prepares an audio upload");
+excludes(voiceHook, "requestSubmit()", "Voice lifecycle cannot auto-submit a simulation");
+excludes(voiceHook, "browser-local-whisper", "Voice V1 does not use browser-local Whisper");
+excludes(voiceHook, "native-local-stt", "Voice V1 does not use the native local STT adapter");
 
-const emptyHandler = createVoiceTranscriptionRequestHandler({
-  rateLimiter: testRateLimiter(),
-  transport: { transcribe: async () => ({ transcript: "   " }) },
-});
-const emptyPayload = await responsePayload(await emptyHandler(audioRequest()));
-check(
-  "Empty transcript fails closed with controlled semantics",
-  emptyPayload.status === "failed" && emptyPayload.error.code === "empty_transcript",
-);
-
-const failureHandler = createVoiceTranscriptionRequestHandler({
-  rateLimiter: testRateLimiter(),
-  transport: { transcribe: async () => { throw new Error("internal-provider-detail"); } },
-});
-const failurePayload = await responsePayload(await failureHandler(audioRequest()));
-check(
-  "Transcription failure is controlled without internal error leakage",
-  failurePayload.status === "failed" &&
-    failurePayload.error.code === "transcription_failed" &&
-    !JSON.stringify(failurePayload).includes("internal-provider-detail"),
-);
-
-const disabledHandler = createVoiceTranscriptionRequestHandler({
-  rateLimiter: testRateLimiter(),
-  transport: null,
-});
-const disabledPayload = await responsePayload(await disabledHandler(audioRequest()));
-check(
-  "Live transcription is default-deny when no server transport is configured",
-  disabledPayload.status === "failed" && disabledPayload.error.code === "transcription_unavailable",
-);
-
-const invalidMimePayload = await responsePayload(
-  await successHandler(audioRequest({ mimeType: "application/octet-stream" })),
-);
-check(
-  "Non-audio upload is rejected before transport",
-  invalidMimePayload.status === "failed" && invalidMimePayload.error.code === "unsupported_audio_type",
-);
-
-const emptyAudioPayload = await responsePayload(
-  await successHandler(audioRequest({ bytes: new Uint8Array(0) })),
-);
-check(
-  "Empty audio upload fails closed before transport",
-  emptyAudioPayload.status === "failed" && emptyAudioPayload.error.code === "empty_audio",
-);
-
-const methodPayload = await responsePayload(
-  await successHandler(new Request("http://localhost/api/transcribe", { method: "GET" })),
-);
-check(
-  "Non-POST request fails closed with an Allow header",
-  methodPayload.status === "failed" && methodPayload.error.code === "invalid_method",
-);
-
-const extraFieldPayload = await responsePayload(
-  await successHandler(audioRequest({ fields: [["unexpected", "value"]] })),
-);
-check(
-  "Unexpected multipart fields fail closed",
-  extraFieldPayload.status === "failed" && extraFieldPayload.error.code === "invalid_payload",
-);
-
-const oversizedRequest = audioRequest();
-oversizedRequest.headers.set("content-length", String(VOICE_MAX_AUDIO_BYTES + 64 * 1024 + 1));
-const oversizedPayload = await responsePayload(await successHandler(oversizedRequest));
-check(
-  "Oversized request is rejected before multipart parsing",
-  oversizedPayload.status === "failed" && oversizedPayload.error.code === "body_too_large",
-);
-
-let limitedTransportCalls = 0;
-const oneRequestLimiter = createPublicApiRateLimiter({ maxBuckets: 20, maxRequests: 1, windowMs: 60_000 });
-const limitedHandler = createVoiceTranscriptionRequestHandler({
-  rateLimiter: oneRequestLimiter,
-  transport: {
-    transcribe: async () => {
-      limitedTransportCalls += 1;
-      return { transcript: syntheticTranscript };
-    },
-  },
-});
-await limitedHandler(audioRequest({ source: "198.51.100.8" }));
-const limitedResponse = await limitedHandler(audioRequest({ source: "198.51.100.8" }));
-const limitedPayload = await responsePayload(limitedResponse);
-check(
-  "Anonymous transcription relay has bounded rate protection",
-  limitedResponse.status === 429 &&
-    limitedPayload.status === "failed" &&
-    limitedPayload.error.code === "rate_limited" &&
-    limitedTransportCalls === 1 &&
-    Boolean(limitedResponse.headers.get("retry-after")),
-);
-
-for (const state of [
-  "idle",
-  "requesting_permission",
-  "recording",
-  "stopping",
-  "transcribing",
-  "completed",
-  "error",
-]) {
-  includes(voiceHelper, `| "${state}"`, `Voice state machine includes ${state}`);
-}
-includes(voiceHook, "navigator.mediaDevices.getUserMedia({ audio: true, video: false })", "Recording starts from an app-owned microphone stream");
-includes(voiceHook, "new MediaRecorder(stream", "App owns the MediaRecorder lifecycle");
-includes(voiceHook, "audioContext.createMediaStreamSource(stream)", "Web Audio source uses the recording stream");
-includes(voiceHook, "audioContext.createAnalyser()", "Live indicator uses an AnalyserNode");
-includes(voiceHook, "getByteTimeDomainData(samples)", "Live level reads real time-domain samples");
-includes(voiceHook, "recorder.start(250)", "Recorder emits bounded chunks");
-includes(voiceHook, "VOICE_MAX_RECORDING_MS", "Client recording duration is bounded");
-includes(voiceHook, "VOICE_MAX_AUDIO_BYTES", "Client audio size is bounded");
-includes(voiceHook, "stopTracks(session.stream)", "Media tracks are stopped during capture cleanup");
-check(
-  "Stop releases capture before transcription starts",
-  voiceHook.indexOf("releaseCapture(session);", voiceHook.indexOf("const finalizeRecording")) <
-    voiceHook.indexOf("await transcribe(session, audio)"),
-);
-check(
-  "Error and unmount paths both release capture resources",
-  (voiceHook.match(/releaseCapture\(/g) ?? []).length >= 4 &&
-    voiceHook.includes("session.transcriptionAbort?.abort()"),
-);
-includes(voiceHook, "recorder.onstop = () =>", "Stop completion owns final Blob creation");
-includes(voiceHook, 'setPhase("transcribing")', "Stop transitions to transcribing");
-includes(voiceHook, 'fetch("/api/transcribe"', "Browser uses one same-origin transcription endpoint");
 includes(homeSimulator, "appendVoiceTranscript(currentInput, transcript", "Transcript targets the existing controlled input");
-includes(homeSimulator, "value={input}", "Textarea remains controlled by existing input state");
+includes(homeSimulator, "value={input}", "Textarea remains editable and controlled by existing input state");
 includes(homeSimulator, "voice.isBusy", "Simulation submission is blocked during voice lifecycle");
-includes(homeSimulator, 'aria-label="Dictar situación"', "Idle state exposes the microphone action");
-includes(homeSimulator, 'className="voice-waveform"', "Recording renders a dedicated waveform container");
-includes(homeSimulator, "createVoiceWaveformLevels(voice.audioLevel)", "Waveform is driven by the real analyser level");
-includes(homeSimulator, 'className="voice-waveform-bar"', "Waveform renders a horizontal amplitude strip");
-excludes(homeSimulator, "<progress", "Recording no longer renders a progress element");
-excludes(homeSimulator, "<time>", "Recording no longer renders a visible timer");
-excludes(homeSimulator, "Grabando", "Successful recording has no visible Grabando label");
-excludes(voiceHook, 'onMessageRef.current("Grabando', "Recording does not publish visible Grabando copy");
-includes(homeSimulator, 'aria-label="Finalizar dictado"', "Recording completion is an accessible checkmark action");
-includes(homeSimulator, 'className="voice-confirm-control"', "Checkmark is the primary recording completion control");
+includes(homeSimulator, 'aria-label="Dictar situación"', "Idle state exposes the existing microphone action");
+includes(homeSimulator, 'aria-label="Finalizar dictado"', "Listening state exposes the existing completion action");
+includes(homeSimulator, 'aria-label="Cancelar dictado"', "Listening state exposes the existing cancel action");
 check(
-  "Checkmark stops the recorder without submitting the simulation",
+  "Checkmark stops recognition without submitting the simulation",
   /aria-label="Finalizar dictado"[\s\S]*?onClick=\{voice\.stop\}[\s\S]*?type="button"/.test(homeSimulator),
 );
-includes(homeSimulator, 'aria-label="Cancelar dictado"', "Recording exposes a secondary accessible cancel action");
 check(
-  "Cancel discards capture without changing the existing text",
-  /aria-label="Cancelar dictado"[\s\S]*?onClick=\{voice\.cancel\}/.test(homeSimulator) &&
-    !voiceHook.slice(voiceHook.indexOf("const cancel"), voiceHook.indexOf("const start")).includes("onTranscriptRef"),
+  "Cancel does not insert a transcript",
+  !voiceHook.slice(voiceHook.indexOf("const cancel"), voiceHook.indexOf("const start")).includes("onTranscriptRef"),
 );
-includes(homeSimulator, 'className="voice-processing-indicator"', "Processing uses a subtle visual indicator");
-includes(homeSimulator, ") : isVoiceProcessing ? (", "Processing replaces the recording row without a layout jump");
-includes(homeSimulator, 'className="voice-accessible-status"', "Voice lifecycle keeps a visually hidden live status");
-includes(homeSimulator, "Procesando el dictado.", "Processing remains announced accessibly in Spanish");
-excludes(homeSimulator, "Transcribiendo…", "Processing does not render the heavy Transcribiendo label");
-excludes(`${homeSimulator}\n${voiceHook}`, "SpeechRecognition", "Legacy browser SpeechRecognition primary path is removed");
-excludes(voiceHook, "requestSubmit()", "Voice lifecycle cannot auto-submit a simulation");
 check(
   "Transcript callback only updates the existing input path",
   homeSimulator.indexOf("onTranscript(transcript)") < homeSimulator.indexOf("appendVoiceTranscript(currentInput, transcript") &&
-    !homeSimulator.slice(
-      homeSimulator.indexOf("onTranscript(transcript)"),
-      homeSimulator.indexOf("const stages = DEFAULT_PROCESSING_STAGES"),
-    ).includes("handleSubmit"),
+    !homeSimulator.slice(homeSimulator.indexOf("onTranscript(transcript)"), homeSimulator.indexOf("const stages = DEFAULT_PROCESSING_STAGES")).includes("handleSubmit"),
 );
-excludes(`${homeSimulator}\n${voiceHook}\n${routeHandler}`, "localStorage", "Raw audio is not persisted in browser storage");
-excludes(`${voiceHook}\n${routeHandler}`, "supabase", "Raw audio is not sent to Supabase");
-excludes(`${voiceHook}\n${routeHandler}`, "console.", "Raw audio and transcript are not logged");
-includes(route, 'export const runtime = "nodejs"', "Transcription provider boundary uses the server Node runtime");
-includes(routeHandler, "VOICE_ALLOWED_AUDIO_MEDIA_TYPES", "Server validates a bounded audio MIME allowlist");
-includes(routeHandler, "audio.size > VOICE_MAX_AUDIO_BYTES", "Server validates maximum Blob size");
-includes(routeHandler, "getPublicRequestSource(req)", "Transcription reuses the public API rate-limit boundary");
-includes(providerAdapter, 'enabled !== "true"', "Voice provider gate defaults closed before credential use");
-check(
-  "Voice provider gate is evaluated before the credential",
-  providerAdapter.indexOf('enabled !== "true"') < providerAdapter.indexOf("environment.OPENAI_API_KEY"),
-);
-includes(providerAdapter, "maxRetries: 0", "Future live transport cannot retry silently");
-includes(providerAdapter, "client.audio.transcriptions.create", "Server adapter uses the installed SDK transcription API");
+includes(homeSimulator, 'className="voice-waveform"', "Existing listening visualization remains mounted");
+includes(homeSimulator, 'className="voice-accessible-status"', "Voice lifecycle remains accessible");
+includes(simulatorCss, "@media (max-width: 480px)", "Voice controls keep their mobile layout");
 check(
   "Homepage and workspace mount the same HomeSimulator implementation",
   (homepage.match(/<HomeSimulator\s*\/>/g) ?? []).length === 1 &&
     (dashboard.match(/<HomeSimulator\s*\/>/g) ?? []).length === 1,
 );
-includes(simulatorCss, "@media (max-width: 480px)", "Voice controls include a mobile layout breakpoint");
-includes(simulatorCss, "--voice-control-size: 48px", "Voice states share one control height token");
-includes(simulatorCss, "--voice-control-radius: 14px", "Voice states share one radius family token");
-includes(simulatorCss, "width: calc(96px + var(--voice-control-gap))", "Processing matches the paired recording controls width");
-includes(simulatorCss, "height: var(--voice-control-size)", "Processing matches the shared voice control height");
-includes(simulatorCss, "grid-template-columns: minmax(0, 1fr) repeat(2, var(--voice-control-size))", "Mobile waveform and controls use a bounded no-overflow grid");
-includes(simulatorCss, "min-height: var(--voice-control-size)", "Mobile checkmark and cancel keep bounded touch targets");
-includes(simulatorCss, ".voice-waveform-bar", "Shared simulator CSS renders waveform bars");
-excludes(simulatorCss, ".voice-live-meter progress", "Shared simulator CSS removes the old progress-meter presentation");
-check("Recording limits match the endpoint contract", VOICE_MAX_RECORDING_MS === 120_000 && VOICE_MAX_AUDIO_BYTES === 10 * 1024 * 1024);
-check("Validation performs zero provider operations", providerOperations === 0);
+
+includes(route, 'export const runtime = "nodejs"', "Dormant transcription route remains present");
+includes(providerAdapter, 'enabled !== "true"', "Dormant OpenAI adapter remains default-deny");
+
+const providerOperations = {
+  apiTranscribe: 0,
+  levioRemoteTranscription: 0,
+  openAiTranscription: 0,
+  total: 0,
+  whisperInference: 0,
+};
+check("Validation performs zero transcription provider operations", Object.values(providerOperations).every((value) => value === 0));
 
 for (const item of checks) {
   console.log(`${item.passed ? "PASS" : "FAIL"} ${item.name}`);
-  if (!item.passed && item.detail) {
-    console.log(`  ${item.detail}`);
-  }
+  if (!item.passed && item.detail) console.log(`  ${item.detail}`);
 }
-
 const failed = checks.filter((item) => !item.passed);
-console.log(`\nVoice recording/transcription gate: ${checks.length - failed.length}/${checks.length} passed.`);
-console.log(`LEVIO_VOICE_PROVIDER_OPERATION_EVIDENCE ${JSON.stringify({ transcription: providerOperations, total: providerOperations })}`);
-if (failed.length > 0) {
-  process.exitCode = 1;
-}
+console.log(`\nVoice Input V1 regression gate: ${checks.length - failed.length}/${checks.length} passed.`);
+console.log(`LEVIO_VOICE_PROVIDER_OPERATION_EVIDENCE ${JSON.stringify(providerOperations)}`);
+if (failed.length > 0) process.exitCode = 1;

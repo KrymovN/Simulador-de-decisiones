@@ -20,6 +20,7 @@ const steps = [
   { id: "simulation-response-public-adapter", command: npmCommand, args: ["run", "quality:simulation-response-public-adapter"] },
   { id: "deterministic-clarification-round-trip", command: npmCommand, args: ["run", "quality:deterministic-clarification-round-trip"] },
   { id: "provider-proof-public-simulator", command: npmCommand, args: ["run", "quality:public-simulator"], providerEvidence: true },
+  { id: "browser-speech-recognition", command: npmCommand, args: ["run", "quality:browser-speech-recognition"] },
   { id: "voice-recording-transcription", command: npmCommand, args: ["run", "quality:voice-recording-transcription"], voiceProviderEvidence: true },
   { id: "native-local-stt-adapter", command: npmCommand, args: ["run", "quality:native-local-stt-adapter"], nativeLocalSttProviderEvidence: true },
   { id: "browser-local-whisper-pinned-revision", command: npmCommand, args: ["run", "quality:browser-local-whisper-pinned-revision"] },

@@ -2,39 +2,30 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { isVoiceTranscriptionApiResponse } from "../lib/voice-transcription/contracts";
 import {
-  VOICE_MAX_AUDIO_BYTES,
+  BROWSER_SPEECH_RECOGNITION_LANGUAGE,
+  classifySpeechRecognitionError,
+  collectFinalSpeechRecognitionResults,
+  getBrowserSpeechRecognitionConstructor,
+  joinFinalSpeechRecognitionResults,
+  type BrowserSpeechRecognition,
+  type BrowserSpeechRecognitionEvent,
+} from "./browser-speech-recognition";
+import {
   VOICE_MAX_RECORDING_MS,
-  calculateVoiceAudioLevel,
-  classifyMicrophoneError,
-  fileExtensionForVoiceMimeType,
-  selectVoiceRecordingMimeType,
   type VoiceErrorCode,
   type VoicePhase,
   voiceErrorMessage,
 } from "./home-simulator-voice";
 
-type WebkitAudioWindow = Window & typeof globalThis & {
-  webkitAudioContext?: typeof AudioContext;
-};
-
 type VoiceSession = {
-  analyser: AnalyserNode | null;
-  audioContext: AudioContext | null;
   cancelled: boolean;
-  chunks: Blob[];
   elapsedTimer: ReturnType<typeof setInterval> | null;
-  frame: number | null;
+  failed: boolean;
+  finalResults: Map<number, string>;
   id: number;
   limitTimer: ReturnType<typeof setTimeout> | null;
-  mimeType: string;
-  recorder: MediaRecorder;
-  source: MediaStreamAudioSourceNode | null;
-  stream: MediaStream;
-  tooLarge: boolean;
-  totalBytes: number;
-  transcriptionAbort: AbortController | null;
+  recognition: BrowserSpeechRecognition;
 };
 
 type UseHomeSimulatorVoiceOptions = {
@@ -42,17 +33,7 @@ type UseHomeSimulatorVoiceOptions = {
   onTranscript(transcript: string): void;
 };
 
-function stopTracks(stream: MediaStream) {
-  for (const track of stream.getTracks()) {
-    track.stop();
-  }
-}
-
-function releaseCapture(session: VoiceSession) {
-  if (session.frame !== null) {
-    cancelAnimationFrame(session.frame);
-    session.frame = null;
-  }
+function clearSessionTimers(session: VoiceSession) {
   if (session.elapsedTimer !== null) {
     clearInterval(session.elapsedTimer);
     session.elapsedTimer = null;
@@ -61,24 +42,20 @@ function releaseCapture(session: VoiceSession) {
     clearTimeout(session.limitTimer);
     session.limitTimer = null;
   }
-  session.source?.disconnect();
-  session.analyser?.disconnect();
-  stopTracks(session.stream);
-  if (session.audioContext && session.audioContext.state !== "closed") {
-    void session.audioContext.close();
-  }
-  session.source = null;
-  session.analyser = null;
-  session.audioContext = null;
+}
+
+function detachRecognitionHandlers(recognition: BrowserSpeechRecognition) {
+  recognition.onstart = null;
+  recognition.onresult = null;
+  recognition.onerror = null;
+  recognition.onend = null;
 }
 
 export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
   const [phase, setPhase] = useState<VoicePhase>("idle");
   const [errorCode, setErrorCode] = useState<VoiceErrorCode | null>(null);
-  const [audioLevel, setAudioLevel] = useState(0);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const sessionRef = useRef<VoiceSession | null>(null);
-  const startingRef = useRef(false);
   const nextSessionIdRef = useRef(0);
   const mountedRef = useRef(true);
   const onMessageRef = useRef(options.onMessage);
@@ -87,143 +64,74 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
   onMessageRef.current = options.onMessage;
   onTranscriptRef.current = options.onTranscript;
 
-  const setFailure = useCallback((code: VoiceErrorCode, session?: VoiceSession | null) => {
-    startingRef.current = false;
-    const activeSession = session ?? sessionRef.current;
-    if (activeSession) {
-      activeSession.cancelled = true;
-      activeSession.transcriptionAbort?.abort();
-      releaseCapture(activeSession);
-      activeSession.chunks = [];
-      if (activeSession.recorder.state !== "inactive") {
-        activeSession.recorder.ondataavailable = null;
-        activeSession.recorder.onerror = null;
-        activeSession.recorder.onstop = null;
-        try {
-          activeSession.recorder.stop();
-        } catch {
-          // Capture resources have already been released.
-        }
-      }
-      if (sessionRef.current?.id === activeSession.id) {
-        sessionRef.current = null;
-      }
-    }
-
-    if (mountedRef.current) {
-      setAudioLevel(0);
-      setErrorCode(code);
-      setPhase("error");
-      onMessageRef.current(voiceErrorMessage(code));
+  const releaseSession = useCallback((session: VoiceSession) => {
+    clearSessionTimers(session);
+    detachRecognitionHandlers(session.recognition);
+    if (sessionRef.current?.id === session.id) {
+      sessionRef.current = null;
     }
   }, []);
 
-  const transcribe = useCallback(async (session: VoiceSession, audio: Blob) => {
-    if (!mountedRef.current || session.cancelled || sessionRef.current?.id !== session.id) {
+  const setFailure = useCallback((code: VoiceErrorCode, session?: VoiceSession | null) => {
+    const activeSession = session ?? sessionRef.current;
+    if (activeSession) {
+      activeSession.failed = true;
+      releaseSession(activeSession);
+      try {
+        activeSession.recognition.abort();
+      } catch {
+        // The browser may already have ended the recognition session.
+      }
+      activeSession.finalResults.clear();
+    }
+
+    if (mountedRef.current) {
+      setErrorCode(code);
+      setElapsedSeconds(0);
+      setPhase("error");
+      onMessageRef.current(voiceErrorMessage(code));
+    }
+  }, [releaseSession]);
+
+  const completeSession = useCallback((session: VoiceSession) => {
+    if (
+      !mountedRef.current ||
+      session.cancelled ||
+      session.failed ||
+      sessionRef.current?.id !== session.id
+    ) {
       return;
     }
 
-    setPhase("transcribing");
-    onMessageRef.current("");
-    const abortController = new AbortController();
-    session.transcriptionAbort = abortController;
-    const formData = new FormData();
-    const filename = `grabacion.${fileExtensionForVoiceMimeType(audio.type || session.mimeType)}`;
-    formData.append("audio", audio, filename);
+    const transcript = joinFinalSpeechRecognitionResults(session.finalResults);
+    releaseSession(session);
+    session.finalResults.clear();
 
-    try {
-      const response = await fetch("/api/transcribe", {
-        body: formData,
-        method: "POST",
-        signal: abortController.signal,
-      });
-      const payload: unknown = await response.json().catch(() => null);
-
-      if (!isVoiceTranscriptionApiResponse(payload)) {
-        throw new Error("invalid_transcription_response");
-      }
-      if (payload.status === "failed") {
-        if (payload.error.code === "empty_audio" || payload.error.code === "empty_transcript") {
-          setFailure("EMPTY_RECORDING", session);
-          return;
-        }
-        throw new Error(payload.error.code);
-      }
-
-      const transcript = payload.data.transcript.trim();
-      if (!transcript) {
-        setFailure("EMPTY_RECORDING", session);
-        return;
-      }
-
-      if (!mountedRef.current || session.cancelled || sessionRef.current?.id !== session.id) {
-        return;
-      }
-      onTranscriptRef.current(transcript);
-      session.chunks = [];
-      sessionRef.current = null;
-      setErrorCode(null);
-      setPhase("completed");
-      onMessageRef.current("Dictado añadido. Revisa el texto antes de simular.");
-    } catch (error) {
-      if (abortController.signal.aborted && (!mountedRef.current || session.cancelled)) {
-        return;
-      }
-      setFailure("TRANSCRIPTION_FAILED", session);
-    }
-  }, [setFailure]);
-
-  const finalizeRecording = useCallback(async (session: VoiceSession) => {
-    releaseCapture(session);
-    setAudioLevel(0);
-
-    if (session.cancelled) {
-      session.chunks = [];
-      if (sessionRef.current?.id === session.id) {
-        sessionRef.current = null;
-      }
-      if (mountedRef.current) {
-        setErrorCode(null);
-        setElapsedSeconds(0);
-        setPhase("idle");
-        onMessageRef.current("Grabación cancelada. El texto existente se mantiene.");
-      }
+    if (!transcript) {
+      setFailure("NO_SPEECH");
       return;
     }
 
-    if (session.tooLarge) {
-      setFailure("RECORDING_FAILED", session);
-      return;
-    }
-
-    const mimeType = session.recorder.mimeType || session.mimeType;
-    const audio = new Blob(session.chunks, { type: mimeType });
-    session.chunks = [];
-
-    if (audio.size === 0) {
-      setFailure("EMPTY_RECORDING", session);
-      return;
-    }
-    if (audio.size > VOICE_MAX_AUDIO_BYTES) {
-      setFailure("RECORDING_FAILED", session);
-      return;
-    }
-
-    await transcribe(session, audio);
-  }, [setFailure, transcribe]);
+    onTranscriptRef.current(transcript);
+    setErrorCode(null);
+    setElapsedSeconds(0);
+    setPhase("completed");
+    onMessageRef.current("Dictado añadido. Revisa el texto antes de simular.");
+  }, [releaseSession, setFailure]);
 
   const stop = useCallback(() => {
     const session = sessionRef.current;
-    if (!session || session.recorder.state === "inactive") {
+    if (!session || session.cancelled || session.failed) {
       return;
     }
 
+    clearSessionTimers(session);
     setPhase("stopping");
-    onMessageRef.current("");
+    onMessageRef.current("Finalizando el dictado…");
     try {
-      session.recorder.stop();
+      session.recognition.stop();
     } catch {
-      setFailure("RECORDING_FAILED", session);
+      setFailure("RECOGNITION_FAILED", session);
     }
   }, [setFailure]);
 
@@ -232,219 +140,136 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
     if (!session) {
       return;
     }
-    session.cancelled = true;
-    session.transcriptionAbort?.abort();
 
-    if (session.recorder.state === "inactive") {
-      releaseCapture(session);
-      session.chunks = [];
-      sessionRef.current = null;
-      setAudioLevel(0);
+    session.cancelled = true;
+    releaseSession(session);
+    try {
+      session.recognition.abort();
+    } catch {
+      // The browser may already have ended the recognition session.
+    }
+    session.finalResults.clear();
+
+    if (mountedRef.current) {
       setElapsedSeconds(0);
       setErrorCode(null);
       setPhase("idle");
-      onMessageRef.current("Grabación cancelada. El texto existente se mantiene.");
+      onMessageRef.current("Dictado cancelado. El texto existente se mantiene.");
+    }
+  }, [releaseSession]);
+
+  const start = useCallback(() => {
+    if (sessionRef.current) {
       return;
     }
-
-    setPhase("stopping");
-    onMessageRef.current("Cancelando la grabación…");
-    try {
-      session.recorder.stop();
-    } catch {
-      releaseCapture(session);
-      session.chunks = [];
-      sessionRef.current = null;
-      setPhase("idle");
-    }
-  }, []);
-
-  const start = useCallback(async () => {
-    if (sessionRef.current || startingRef.current) {
-      return;
-    }
-
-    startingRef.current = true;
 
     setErrorCode(null);
-    setAudioLevel(0);
     setElapsedSeconds(0);
     setPhase("requesting_permission");
     onMessageRef.current("Solicitando acceso al micrófono…");
 
-    if (
-      typeof navigator === "undefined" ||
-      !navigator.mediaDevices?.getUserMedia ||
-      typeof MediaRecorder === "undefined"
-    ) {
-      setFailure("RECORDING_UNSUPPORTED");
+    if (typeof window === "undefined") {
+      setFailure("RECOGNITION_UNSUPPORTED");
       return;
     }
 
-    const AudioContextConstructor = window.AudioContext ??
-      (window as WebkitAudioWindow).webkitAudioContext;
-    if (!AudioContextConstructor) {
-      setFailure("RECORDING_UNSUPPORTED");
+    const RecognitionConstructor = getBrowserSpeechRecognitionConstructor(window);
+    if (!RecognitionConstructor) {
+      setFailure("RECOGNITION_UNSUPPORTED");
       return;
     }
 
-    const sessionId = ++nextSessionIdRef.current;
-    let stream: MediaStream;
+    let recognition: BrowserSpeechRecognition;
     try {
-      stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-    } catch (error) {
-      setFailure(classifyMicrophoneError(error));
-      return;
-    }
-
-    if (!mountedRef.current || sessionRef.current) {
-      stopTracks(stream);
-      return;
-    }
-
-    let recorder: MediaRecorder;
-    const selectedMimeType = typeof MediaRecorder.isTypeSupported === "function"
-      ? selectVoiceRecordingMimeType(MediaRecorder.isTypeSupported.bind(MediaRecorder))
-      : "";
-    try {
-      recorder = selectedMimeType
-        ? new MediaRecorder(stream, { mimeType: selectedMimeType })
-        : new MediaRecorder(stream);
+      recognition = new RecognitionConstructor();
     } catch {
-      stopTracks(stream);
-      setFailure("RECORDING_UNSUPPORTED");
+      setFailure("RECOGNITION_FAILED");
       return;
     }
 
     const session: VoiceSession = {
-      analyser: null,
-      audioContext: null,
       cancelled: false,
-      chunks: [],
       elapsedTimer: null,
-      frame: null,
-      id: sessionId,
+      failed: false,
+      finalResults: new Map(),
+      id: ++nextSessionIdRef.current,
       limitTimer: null,
-      mimeType: recorder.mimeType || selectedMimeType,
-      recorder,
-      source: null,
-      stream,
-      tooLarge: false,
-      totalBytes: 0,
-      transcriptionAbort: null,
+      recognition,
     };
     sessionRef.current = session;
-    startingRef.current = false;
 
-    try {
-      const audioContext = new AudioContextConstructor();
-      session.audioContext = audioContext;
-      if (audioContext.state === "suspended") {
-        await audioContext.resume();
-      }
+    recognition.lang = BROWSER_SPEECH_RECOGNITION_LANGUAGE;
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
       if (!mountedRef.current || sessionRef.current?.id !== session.id) {
-        releaseCapture(session);
         return;
       }
-      const source = audioContext.createMediaStreamSource(stream);
-      const analyser = audioContext.createAnalyser();
-      analyser.fftSize = 256;
-      analyser.smoothingTimeConstant = 0.72;
-      source.connect(analyser);
-      session.source = source;
-      session.analyser = analyser;
-
-      const samples = new Uint8Array(analyser.fftSize);
-      const updateAudioLevel = () => {
-        if (
-          !mountedRef.current ||
-          session.cancelled ||
-          sessionRef.current?.id !== session.id ||
-          session.recorder.state === "inactive"
-        ) {
-          return;
-        }
-        analyser.getByteTimeDomainData(samples);
-        setAudioLevel(calculateVoiceAudioLevel(samples));
-        session.frame = requestAnimationFrame(updateAudioLevel);
-      };
-
-      recorder.ondataavailable = (event) => {
-        if (session.cancelled || event.data.size === 0) {
-          return;
-        }
-        session.totalBytes += event.data.size;
-        if (session.totalBytes > VOICE_MAX_AUDIO_BYTES) {
-          session.tooLarge = true;
-          if (recorder.state !== "inactive") {
-            recorder.stop();
-          }
-          return;
-        }
-        session.chunks.push(event.data);
-      };
-      recorder.onerror = () => setFailure("RECORDING_FAILED", session);
-      recorder.onstop = () => {
-        void finalizeRecording(session);
-      };
-
-      recorder.start(250);
       const startedAt = Date.now();
       session.elapsedTimer = setInterval(() => {
         setElapsedSeconds(Math.min(120, (Date.now() - startedAt) / 1000));
       }, 250);
       session.limitTimer = setTimeout(() => {
-        if (sessionRef.current?.id === session.id && recorder.state !== "inactive") {
-          setPhase("stopping");
-          onMessageRef.current("");
-          recorder.stop();
+        if (sessionRef.current?.id === session.id) {
+          stop();
         }
       }, VOICE_MAX_RECORDING_MS);
-      session.frame = requestAnimationFrame(updateAudioLevel);
       setPhase("recording");
       onMessageRef.current("");
+    };
+    recognition.onresult = (event: BrowserSpeechRecognitionEvent) => {
+      if (session.cancelled || session.failed || sessionRef.current?.id !== session.id) {
+        return;
+      }
+      collectFinalSpeechRecognitionResults(event, session.finalResults);
+    };
+    recognition.onerror = (event) => {
+      if (session.cancelled && event.error === "aborted") {
+        return;
+      }
+      setFailure(classifySpeechRecognitionError(event.error), session);
+    };
+    recognition.onend = () => {
+      completeSession(session);
+    };
+
+    try {
+      recognition.start();
     } catch {
-      setFailure("RECORDING_FAILED", session);
+      setFailure("RECOGNITION_FAILED", session);
     }
-  }, [finalizeRecording, setFailure]);
+  }, [completeSession, setFailure, stop]);
 
   useEffect(() => {
     mountedRef.current = true;
     return () => {
       mountedRef.current = false;
-      startingRef.current = false;
       const session = sessionRef.current;
-      sessionRef.current = null;
       if (!session) {
         return;
       }
       session.cancelled = true;
-      session.transcriptionAbort?.abort();
-      session.recorder.ondataavailable = null;
-      session.recorder.onerror = null;
-      session.recorder.onstop = null;
-      if (session.recorder.state !== "inactive") {
-        try {
-          session.recorder.stop();
-        } catch {
-          // Capture resources are released below regardless.
-        }
+      releaseSession(session);
+      try {
+        session.recognition.abort();
+      } catch {
+        // The browser may already have ended the recognition session.
       }
-      releaseCapture(session);
-      session.chunks = [];
+      session.finalResults.clear();
     };
-  }, []);
+  }, [releaseSession]);
 
   return {
-    audioLevel,
+    audioLevel: 0,
     cancel,
     elapsedSeconds,
     errorCode,
     isBusy:
       phase === "requesting_permission" ||
       phase === "recording" ||
-      phase === "stopping" ||
-      phase === "transcribing",
+      phase === "stopping",
     phase,
     start,
     stop,

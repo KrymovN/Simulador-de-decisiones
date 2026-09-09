@@ -970,7 +970,7 @@ export default function HomeSimulator() {
         {voice.phase === "recording" ? (
           <div className="voice-recording-interaction">
             <div
-              aria-label="Nivel de voz en directo"
+              aria-label="Dictado por voz activo"
               className="voice-waveform"
               role="img"
             >

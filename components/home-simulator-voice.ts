@@ -17,6 +17,10 @@ export type VoicePhase =
 export type VoiceErrorCode =
   | "MIC_PERMISSION_DENIED"
   | "MIC_NOT_AVAILABLE"
+  | "RECOGNITION_UNSUPPORTED"
+  | "RECOGNITION_ABORTED"
+  | "NO_SPEECH"
+  | "RECOGNITION_FAILED"
   | "RECORDING_UNSUPPORTED"
   | "RECORDING_FAILED"
   | "EMPTY_RECORDING"
@@ -143,6 +147,14 @@ export function voiceErrorMessage(code: VoiceErrorCode) {
       return "No podemos acceder al micrófono. Revisa los permisos del navegador.";
     case "MIC_NOT_AVAILABLE":
       return "No encontramos un micrófono disponible. Puedes seguir escribiendo.";
+    case "RECOGNITION_UNSUPPORTED":
+      return "El dictado por voz no está disponible en este navegador. Puedes seguir escribiendo.";
+    case "RECOGNITION_ABORTED":
+      return "El dictado se ha interrumpido. Puedes intentarlo de nuevo o seguir escribiendo.";
+    case "NO_SPEECH":
+      return "No hemos detectado voz. Puedes intentarlo de nuevo o seguir escribiendo.";
+    case "RECOGNITION_FAILED":
+      return "No hemos podido completar el dictado. Puedes seguir escribiendo.";
     case "RECORDING_UNSUPPORTED":
       return "La grabación por voz no está disponible en este navegador.";
     case "EMPTY_RECORDING":
