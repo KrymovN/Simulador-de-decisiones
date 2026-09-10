@@ -141,11 +141,14 @@ textarea:focus {
   place-items: center;
   width: var(--voice-control-size);
   min-width: var(--voice-control-size);
+  max-width: var(--voice-control-size);
   height: var(--voice-control-size);
   min-height: var(--voice-control-size);
+  max-height: var(--voice-control-size);
+  aspect-ratio: 1;
   margin: 0;
   padding: 0;
-  border-radius: var(--voice-control-radius);
+  border-radius: 50%;
 }
 
 .voice-recording-interaction .voice-confirm-control {
@@ -203,6 +206,12 @@ textarea:focus {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+.voice-one-shot-hint {
+  margin: 10px 0 0;
+  font-size: 0.8rem;
+  line-height: 1.45;
 }
 
 .voice-capture-status--error {

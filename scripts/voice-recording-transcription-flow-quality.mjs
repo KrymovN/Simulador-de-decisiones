@@ -128,10 +128,51 @@ excludes(voiceHook, "requestSubmit()", "Voice lifecycle cannot auto-submit a sim
 excludes(voiceHook, "browser-local-whisper", "Voice V1 does not use browser-local Whisper");
 excludes(voiceHook, "native-local-stt", "Voice V1 does not use the native local STT adapter");
 
-includes(homeSimulator, "appendVoiceTranscript(currentInput, transcript", "Transcript targets the existing controlled input");
+includes(
+  homeSimulator,
+  "const nextInput = appendVoiceTranscript(",
+  "Transcript targets the existing controlled input",
+);
 includes(homeSimulator, "value={input}", "Textarea remains editable and controlled by existing input state");
 includes(homeSimulator, "voice.isBusy", "Simulation submission is blocked during voice lifecycle");
 includes(homeSimulator, 'aria-label="Dictar situación"', "Idle state exposes the existing microphone action");
+includes(
+  homeSimulator,
+  "!iphoneSafariVoiceOneShotComplete &&",
+  "iPhone Safari microphone is visible before the first successful transcript",
+);
+includes(
+  homeSimulator,
+  "nextInput !== currentInput",
+  "One-shot state requires a transcript that changes the editable input",
+);
+includes(
+  homeSimulator,
+  "isIPhoneSafariBrowser(window.navigator)",
+  "One-shot behavior is restricted to the iPhone Safari compatibility target",
+);
+includes(
+  homeSimulator,
+  "setIphoneSafariVoiceOneShotComplete(true)",
+  "Successful iPhone Safari transcript hides the microphone action",
+);
+includes(
+  homeSimulator,
+  "Puedes seguir completando el texto con el teclado.",
+  "Successful iPhone Safari transcript exposes the keyboard continuation hint",
+);
+includes(
+  homeSimulator,
+  "is-voice-one-shot-complete",
+  "The primary simulation action expands when the microphone is hidden",
+);
+check(
+  "Cancel, no-speech, permission errors, and failed recognition cannot consume the one-shot action",
+  !voiceHook.includes("setIphoneSafariVoiceOneShotComplete") &&
+    homeSimulator.slice(homeSimulator.indexOf("onTranscript(transcript)"), homeSimulator.indexOf("const isVoiceProcessing")).includes("setIphoneSafariVoiceOneShotComplete(true)"),
+);
+excludes(homeSimulator, "localStorage", "One-shot state is not persisted in browser storage");
+excludes(homeSimulator, "Supabase", "One-shot state is not persisted in Supabase");
 includes(homeSimulator, 'aria-label="Finalizar dictado"', "Listening state exposes the existing completion action");
 includes(homeSimulator, 'aria-label="Cancelar dictado"', "Listening state exposes the existing cancel action");
 check(
@@ -144,8 +185,9 @@ check(
 );
 check(
   "Transcript callback only updates the existing input path",
-  homeSimulator.indexOf("onTranscript(transcript)") < homeSimulator.indexOf("appendVoiceTranscript(currentInput, transcript") &&
-    !homeSimulator.slice(homeSimulator.indexOf("onTranscript(transcript)"), homeSimulator.indexOf("const stages = DEFAULT_PROCESSING_STAGES")).includes("handleSubmit"),
+  homeSimulator.indexOf("onTranscript(transcript)") < homeSimulator.indexOf("const nextInput = appendVoiceTranscript(") &&
+    homeSimulator.slice(homeSimulator.indexOf("onTranscript(transcript)"), homeSimulator.indexOf("const isVoiceProcessing")).includes("setInput(nextInput)") &&
+    !homeSimulator.slice(homeSimulator.indexOf("onTranscript(transcript)"), homeSimulator.indexOf("const isVoiceProcessing")).includes("handleSubmit"),
 );
 includes(homeSimulator, 'className="voice-waveform"', "Existing listening visualization remains mounted");
 includes(homeSimulator, "voice.waveformLevels.map", "Waveform renders the running sample history");
@@ -166,6 +208,22 @@ check(
 check(
   "Authenticated workspace microphone is an exact circle",
   /\.dashboard-workspace-simulator \.decision-console \.voice-input-button\s*\{[^}]*aspect-ratio:\s*1;[^}]*border-radius:\s*50%;/s.test(dashboardCss),
+);
+check(
+  "Recording cancel and confirm controls are exact circles",
+  /\.voice-recording-interaction \.voice-confirm-control,\s*\.voice-recording-interaction \.voice-cancel-control\s*\{[^}]*width:\s*var\(--voice-control-size\);[^}]*max-width:\s*var\(--voice-control-size\);[^}]*height:\s*var\(--voice-control-size\);[^}]*max-height:\s*var\(--voice-control-size\);[^}]*aspect-ratio:\s*1;[^}]*border-radius:\s*50%;/s.test(simulatorCss),
+);
+check(
+  "Recording control icons remain centered",
+  /\.voice-recording-interaction \.voice-confirm-control,\s*\.voice-recording-interaction \.voice-cancel-control\s*\{[^}]*display:\s*grid;[^}]*place-items:\s*center;/s.test(simulatorCss),
+);
+check(
+  "Homepage recording controls preserve the circular shape",
+  /\.minimal-home \.decision-console \.voice-recording-interaction button\s*\{[^}]*aspect-ratio:\s*1;[^}]*border-radius:\s*50%;/s.test(homepageCss),
+);
+check(
+  "Authenticated recording controls preserve the circular shape",
+  /\.dashboard-workspace-simulator \.decision-console \.voice-recording-interaction button\s*\{[^}]*aspect-ratio:\s*1;[^}]*border-radius:\s*50%;/s.test(dashboardCss),
 );
 includes(voiceHook, 'event.error === "aborted" && !session.receivedResult', "No-result recognition abort is controlled");
 check(

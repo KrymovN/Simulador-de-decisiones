@@ -498,6 +498,10 @@
   align-items: stretch;
 }
 
+.dashboard-workspace-simulator .simulator-action-cluster.is-voice-one-shot-complete {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .dashboard-workspace-simulator .decision-console button,
 .dashboard-workspace-simulator .decision-console .voice-input-button,
 .dashboard-workspace-simulator .decision-console .primary-simulation-control,
@@ -579,6 +583,10 @@
   color: var(--levio-text-secondary);
 }
 
+.dashboard-workspace-simulator .voice-one-shot-hint {
+  color: var(--levio-text-secondary);
+}
+
 .dashboard-workspace-simulator .voice-waveform {
   border-color: var(--levio-border);
   background: var(--levio-surface);
@@ -588,10 +596,13 @@
 .dashboard-workspace-simulator .decision-console .voice-recording-interaction button {
   width: var(--voice-control-size);
   min-width: var(--voice-control-size);
+  max-width: var(--voice-control-size);
   height: var(--voice-control-size);
   min-height: var(--voice-control-size);
+  max-height: var(--voice-control-size);
+  aspect-ratio: 1;
   padding: 0;
-  border-radius: var(--voice-control-radius);
+  border-radius: 50%;
 }
 
 .dashboard-workspace-simulator .decision-console .voice-recording-interaction .voice-confirm-control {

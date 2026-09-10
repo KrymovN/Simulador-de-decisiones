@@ -20,6 +20,7 @@ import {
   type PublicSimulationApiV2Envelope,
 } from "../lib/runtime-integration/public-simulation-api-v2-contracts";
 import { useAuthRuntime } from "./auth/AuthRuntimeProvider";
+import { isIPhoneSafariBrowser } from "./browser-speech-recognition";
 import {
   IDLE_PROCESSING_STATE,
   PROCESSING_STAGE_TITLES,
@@ -493,7 +494,9 @@ export default function HomeSimulator() {
   const [saveState, setSaveState] = useState<SaveSimulationState | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [iphoneSafariVoiceOneShotComplete, setIphoneSafariVoiceOneShotComplete] = useState(false);
   const consoleRef = useRef<HTMLElement>(null);
+  const inputRef = useRef("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const thinkingPanelRef = useRef<HTMLDivElement>(null);
   const outputRef = useRef<HTMLDivElement>(null);
@@ -503,9 +506,21 @@ export default function HomeSimulator() {
   const voice = useHomeSimulatorVoice({
     onMessage: setMessage,
     onTranscript(transcript) {
-      setInput((currentInput) =>
-        appendVoiceTranscript(currentInput, transcript, MAX_SIMULATION_INPUT_LENGTH),
+      const currentInput = inputRef.current;
+      const nextInput = appendVoiceTranscript(
+        currentInput,
+        transcript,
+        MAX_SIMULATION_INPUT_LENGTH,
       );
+      inputRef.current = nextInput;
+      setInput(nextInput);
+      if (
+        nextInput !== currentInput &&
+        typeof window !== "undefined" &&
+        isIPhoneSafariBrowser(window.navigator)
+      ) {
+        setIphoneSafariVoiceOneShotComplete(true);
+      }
       setErrorState(null);
       setPreviewState(null);
       setProductionResult(null);
@@ -948,6 +963,7 @@ export default function HomeSimulator() {
               id="decision-input"
               ref={textareaRef}
               onChange={(event) => {
+                inputRef.current = event.target.value;
                 setInput(event.target.value);
                 setErrorState(null);
                 setPreviewState(null);
@@ -1012,20 +1028,24 @@ export default function HomeSimulator() {
             <span />
           </div>
         ) : (
-          <div className="simulator-action-cluster">
-            <button
-              aria-label="Dictar situación"
-              className="voice-input-button"
-              disabled={isRunning || Boolean(clarificationState) || voice.isBusy}
-              onClick={voice.start}
-              title="Dictar situación"
-              type="button"
-            >
-              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
-                <path d="M12 15.25a4 4 0 0 0 4-4V6a4 4 0 1 0-8 0v5.25a4 4 0 0 0 4 4Z" />
-                <path d="M5.75 10.75v.5a6.25 6.25 0 0 0 12.5 0v-.5M12 17.5V21M9.25 21h5.5" />
-              </svg>
-            </button>
+          <div
+            className={`simulator-action-cluster${iphoneSafariVoiceOneShotComplete ? " is-voice-one-shot-complete" : ""}`}
+          >
+            {!iphoneSafariVoiceOneShotComplete && (
+              <button
+                aria-label="Dictar situación"
+                className="voice-input-button"
+                disabled={isRunning || Boolean(clarificationState) || voice.isBusy}
+                onClick={voice.start}
+                title="Dictar situación"
+                type="button"
+              >
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                  <path d="M12 15.25a4 4 0 0 0 4-4V6a4 4 0 1 0-8 0v5.25a4 4 0 0 0 4 4Z" />
+                  <path d="M5.75 10.75v.5a6.25 6.25 0 0 0 12.5 0v-.5M12 17.5V21M9.25 21h5.5" />
+                </svg>
+              </button>
+            )}
             <button
               aria-label="Simular decisión"
               className="primary-simulation-control"
@@ -1035,6 +1055,11 @@ export default function HomeSimulator() {
               <span>{isRunning ? "Simulando escenarios" : "Simular escenarios"}</span>
             </button>
           </div>
+        )}
+        {iphoneSafariVoiceOneShotComplete && (
+          <p aria-live="polite" className="voice-one-shot-hint" role="status">
+            Puedes seguir completando el texto con el teclado.
+          </p>
         )}
         <p
           aria-atomic="true"

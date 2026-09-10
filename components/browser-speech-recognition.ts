@@ -48,6 +48,22 @@ type SpeechRecognitionWindow = {
   webkitSpeechRecognition?: BrowserSpeechRecognitionConstructor;
 };
 
+type BrowserNavigatorIdentity = {
+  userAgent?: string;
+};
+
+export function isIPhoneSafariBrowser(
+  browserNavigator: BrowserNavigatorIdentity,
+) {
+  const userAgent = browserNavigator.userAgent ?? "";
+  return /\biPhone\b/i.test(userAgent) &&
+    /AppleWebKit/i.test(userAgent) &&
+    /Version\/[\d.]+/i.test(userAgent) &&
+    /Mobile\/[\w]+/i.test(userAgent) &&
+    /Safari\/[\d.]+/i.test(userAgent) &&
+    !/(?:CriOS|FxiOS|EdgiOS|OPiOS|DuckDuckGo|GSA)\//i.test(userAgent);
+}
+
 export function getBrowserSpeechRecognitionConstructor(
   browserWindow: object,
 ) {

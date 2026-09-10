@@ -507,6 +507,10 @@
   align-items: stretch;
 }
 
+.minimal-home .simulator-action-cluster.is-voice-one-shot-complete {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .minimal-home .decision-console button,
 .minimal-home .decision-console .voice-input-button,
 .minimal-home .decision-console .primary-simulation-control,
@@ -601,6 +605,10 @@
   color: var(--home-muted-strong);
 }
 
+.minimal-home .voice-one-shot-hint {
+  color: var(--home-muted-strong);
+}
+
 .minimal-home .voice-waveform {
   border-color: var(--home-line);
   background: #0f0f0f;
@@ -610,10 +618,13 @@
 .minimal-home .decision-console .voice-recording-interaction button {
   width: var(--voice-control-size);
   min-width: var(--voice-control-size);
+  max-width: var(--voice-control-size);
   height: var(--voice-control-size);
   min-height: var(--voice-control-size);
+  max-height: var(--voice-control-size);
+  aspect-ratio: 1;
   padding: 0;
-  border-radius: var(--voice-control-radius);
+  border-radius: 50%;
 }
 
 .minimal-home .decision-console .voice-recording-interaction .voice-confirm-control {

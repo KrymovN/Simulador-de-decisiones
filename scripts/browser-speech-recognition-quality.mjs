@@ -26,6 +26,7 @@ const {
   classifySpeechRecognitionError,
   collectFinalSpeechRecognitionResults,
   getBrowserSpeechRecognitionConstructor,
+  isIPhoneSafariBrowser,
   joinFinalSpeechRecognitionResults,
 } = require(join(rootDir, "components", "browser-speech-recognition.ts"));
 const { appendVoiceTranscript } = require(join(rootDir, "components", "home-simulator-voice.ts"));
@@ -49,6 +50,32 @@ check(
   getBrowserSpeechRecognitionConstructor({ webkitSpeechRecognition: WebkitRecognition }) === WebkitRecognition,
 );
 check("Unsupported browser returns a controlled null constructor", getBrowserSpeechRecognitionConstructor({}) === null);
+
+const iphoneSafariUserAgent =
+  "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Mobile/15E148 Safari/604.1";
+const macSafariUserAgent =
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15";
+const iphoneChromeUserAgent =
+  "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/140.0.7339.122 Mobile/15E148 Safari/604.1";
+const desktopChromeUserAgent =
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36";
+
+check(
+  "iPhone Safari activates the one-shot compatibility target",
+  isIPhoneSafariBrowser({ userAgent: iphoneSafariUserAgent }),
+);
+check(
+  "Safari macOS remains outside the one-shot compatibility target",
+  !isIPhoneSafariBrowser({ userAgent: macSafariUserAgent }),
+);
+check(
+  "Chrome on iPhone remains outside the one-shot compatibility target",
+  !isIPhoneSafariBrowser({ userAgent: iphoneChromeUserAgent }),
+);
+check(
+  "Desktop Chrome remains outside the one-shot compatibility target",
+  !isIPhoneSafariBrowser({ userAgent: desktopChromeUserAgent }),
+);
 
 const finalResults = new Map();
 const result = (transcript, isFinal) => ({ 0: { confidence: 0.9, transcript }, isFinal, length: 1 });
