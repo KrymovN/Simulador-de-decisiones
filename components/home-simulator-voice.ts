@@ -19,6 +19,7 @@ export type VoiceErrorCode =
   | "MIC_NOT_AVAILABLE"
   | "RECOGNITION_UNSUPPORTED"
   | "RECOGNITION_ABORTED"
+  | "RECOGNITION_NO_RESULT"
   | "NO_SPEECH"
   | "RECOGNITION_FAILED"
   | "RECORDING_UNSUPPORTED"
@@ -36,7 +37,9 @@ export const VOICE_MIME_TYPE_PREFERENCES = [
 
 const VOICE_ANALYSER_NOISE_FLOOR = 0.008;
 const VOICE_ANALYSER_SPEECH_CEILING = 0.18;
-const VOICE_WAVEFORM_VISUAL_RANGE = 0.86;
+const VOICE_WAVEFORM_SILENCE_LEVEL = 0.12;
+
+export const VOICE_WAVEFORM_BAR_COUNT = 28;
 
 export function selectVoiceRecordingMimeType(
   isTypeSupported: (mimeType: string) => boolean,
@@ -89,27 +92,28 @@ export function calculateVoiceAudioLevel(samples: Uint8Array) {
   return normalizedSpeech === 0 ? 0 : Math.pow(normalizedSpeech, 0.65);
 }
 
-const VOICE_WAVEFORM_SHAPE = [
-  0.38,
-  0.62,
-  0.84,
-  0.56,
-  0.92,
-  0.7,
-  1,
-  0.74,
-  0.9,
-  0.58,
-  0.82,
-  0.64,
-  0.4,
-] as const;
-
 export function createVoiceWaveformLevels(audioLevel: number) {
   const boundedLevel = Math.min(1, Math.max(0, audioLevel));
-  return VOICE_WAVEFORM_SHAPE.map((weight) =>
-    Math.min(1, 0.08 + boundedLevel * VOICE_WAVEFORM_VISUAL_RANGE * weight),
+  const visualLevel =
+    VOICE_WAVEFORM_SILENCE_LEVEL +
+    boundedLevel * (1 - VOICE_WAVEFORM_SILENCE_LEVEL);
+  return Array.from(
+    { length: VOICE_WAVEFORM_BAR_COUNT },
+    () => visualLevel,
   );
+}
+
+export function advanceVoiceWaveformHistory(
+  history: number[],
+  audioLevel: number,
+) {
+  const nextHistory = history.length === VOICE_WAVEFORM_BAR_COUNT
+    ? [...history]
+    : createVoiceWaveformLevels(0);
+  const nextLevel = createVoiceWaveformLevels(audioLevel)[0];
+  nextHistory.shift();
+  nextHistory.push(nextLevel);
+  return nextHistory;
 }
 
 export function formatVoiceRecordingTime(elapsedSeconds: number) {
@@ -151,6 +155,8 @@ export function voiceErrorMessage(code: VoiceErrorCode) {
       return "El dictado por voz no está disponible en este navegador. Puedes seguir escribiendo.";
     case "RECOGNITION_ABORTED":
       return "El dictado se ha interrumpido. Puedes intentarlo de nuevo o seguir escribiendo.";
+    case "RECOGNITION_NO_RESULT":
+      return "No se ha podido iniciar correctamente el dictado. Puedes intentarlo de nuevo o seguir escribiendo.";
     case "NO_SPEECH":
       return "No hemos detectado voz. Puedes intentarlo de nuevo o seguir escribiendo.";
     case "RECOGNITION_FAILED":

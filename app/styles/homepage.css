@@ -559,10 +559,16 @@
 
 .minimal-home .decision-console .voice-input-button {
   width: var(--voice-control-size);
+  min-width: var(--voice-control-size);
+  max-width: var(--voice-control-size);
   height: var(--voice-control-size);
   min-height: var(--voice-control-size);
+  max-height: var(--voice-control-size);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
   padding: 0;
-  border-radius: var(--voice-control-radius);
+  border-radius: 50%;
 }
 
 .minimal-home .decision-console .primary-simulation-control {

@@ -112,7 +112,8 @@ textarea:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(3px, 1.1vw, 7px);
+  gap: clamp(2px, 0.7vw, 4px);
+  padding: 0 10px;
   width: 100%;
   min-width: 0;
   height: var(--voice-control-size);
@@ -123,14 +124,15 @@ textarea:focus {
 }
 
 .voice-waveform-bar {
-  flex: 0 1 4px;
-  width: 4px;
+  flex: 1 1 3px;
+  width: 3px;
   min-width: 2px;
-  min-height: 4px;
-  max-height: 32px;
+  max-width: 4px;
+  min-height: 5px;
+  max-height: 34px;
   border-radius: 999px;
   background: currentColor;
-  transition: height 80ms linear;
+  transition: height 55ms linear;
 }
 
 .voice-recording-interaction .voice-confirm-control,
@@ -215,7 +217,7 @@ textarea:focus {
   }
 
   .voice-waveform {
-    gap: 3px;
+    gap: 2px;
     padding: 0 8px;
   }
 }

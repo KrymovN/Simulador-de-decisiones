@@ -12,6 +12,9 @@ import {
   type BrowserSpeechRecognitionEvent,
 } from "./browser-speech-recognition";
 import {
+  advanceVoiceWaveformHistory,
+  calculateVoiceAudioLevel,
+  createVoiceWaveformLevels,
   VOICE_MAX_RECORDING_MS,
   type VoiceErrorCode,
   type VoicePhase,
@@ -19,6 +22,10 @@ import {
 } from "./home-simulator-voice";
 
 type VoiceSession = {
+  analyser: AnalyserNode | null;
+  audioContext: AudioContext | null;
+  audioLevel: number;
+  audioSource: MediaStreamAudioSourceNode | null;
   cancelled: boolean;
   elapsedTimer: ReturnType<typeof setInterval> | null;
   failed: boolean;
@@ -26,6 +33,11 @@ type VoiceSession = {
   id: number;
   limitTimer: ReturnType<typeof setTimeout> | null;
   recognition: BrowserSpeechRecognition;
+  receivedResult: boolean;
+  visualFrame: number | null;
+  visualStream: MediaStream | null;
+  waveformHistory: number[];
+  waveformSampleAt: number;
 };
 
 type UseHomeSimulatorVoiceOptions = {
@@ -51,10 +63,36 @@ function detachRecognitionHandlers(recognition: BrowserSpeechRecognition) {
   recognition.onend = null;
 }
 
+const EMPTY_WAVEFORM_LEVELS = createVoiceWaveformLevels(0);
+const VOICE_WAVEFORM_SAMPLE_INTERVAL_MS = 45;
+
+function cleanupVisualAudio(session: VoiceSession) {
+  if (session.visualFrame !== null) {
+    cancelAnimationFrame(session.visualFrame);
+    session.visualFrame = null;
+  }
+  session.audioSource?.disconnect();
+  session.audioSource = null;
+  session.analyser?.disconnect();
+  session.analyser = null;
+  session.visualStream?.getTracks().forEach((track) => track.stop());
+  session.visualStream = null;
+  if (session.audioContext) {
+    void session.audioContext.close().catch(() => undefined);
+    session.audioContext = null;
+  }
+  session.audioLevel = 0;
+  session.waveformHistory = [...EMPTY_WAVEFORM_LEVELS];
+  session.waveformSampleAt = 0;
+}
+
 export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
   const [phase, setPhase] = useState<VoicePhase>("idle");
   const [errorCode, setErrorCode] = useState<VoiceErrorCode | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [waveformLevels, setWaveformLevels] = useState<number[]>([
+    ...EMPTY_WAVEFORM_LEVELS,
+  ]);
   const sessionRef = useRef<VoiceSession | null>(null);
   const nextSessionIdRef = useRef(0);
   const mountedRef = useRef(true);
@@ -64,11 +102,78 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
   onMessageRef.current = options.onMessage;
   onTranscriptRef.current = options.onTranscript;
 
+  const startVisualAudio = useCallback(async (session: VoiceSession) => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: false,
+      });
+      if (!mountedRef.current || sessionRef.current?.id !== session.id) {
+        stream.getTracks().forEach((track) => track.stop());
+        return;
+      }
+
+      session.visualStream = stream;
+      const audioContext = new AudioContext();
+      session.audioContext = audioContext;
+      const analyser = audioContext.createAnalyser();
+      const source = audioContext.createMediaStreamSource(stream);
+      analyser.fftSize = 512;
+      analyser.smoothingTimeConstant = 0.24;
+      source.connect(analyser);
+      session.analyser = analyser;
+      session.audioSource = source;
+      if (audioContext.state === "suspended") {
+        await audioContext.resume();
+      }
+      if (!mountedRef.current || sessionRef.current?.id !== session.id) {
+        cleanupVisualAudio(session);
+        return;
+      }
+
+      const samples = new Uint8Array(analyser.fftSize);
+      const updateWaveform = (timestamp: number) => {
+        if (!mountedRef.current || sessionRef.current?.id !== session.id) {
+          cleanupVisualAudio(session);
+          return;
+        }
+
+        if (
+          session.waveformSampleAt === 0 ||
+          timestamp - session.waveformSampleAt >= VOICE_WAVEFORM_SAMPLE_INTERVAL_MS
+        ) {
+          analyser.getByteTimeDomainData(samples);
+          const measuredLevel = calculateVoiceAudioLevel(samples);
+          const smoothing = measuredLevel > session.audioLevel ? 0.78 : 0.24;
+          session.audioLevel += (measuredLevel - session.audioLevel) * smoothing;
+          session.waveformHistory = advanceVoiceWaveformHistory(
+            session.waveformHistory,
+            session.audioLevel,
+          );
+          session.waveformSampleAt = timestamp;
+          setWaveformLevels([...session.waveformHistory]);
+        }
+
+        session.visualFrame = requestAnimationFrame(updateWaveform);
+      };
+      session.visualFrame = requestAnimationFrame(updateWaveform);
+    } catch {
+      cleanupVisualAudio(session);
+      if (mountedRef.current && sessionRef.current?.id === session.id) {
+        setWaveformLevels([...EMPTY_WAVEFORM_LEVELS]);
+      }
+    }
+  }, []);
+
   const releaseSession = useCallback((session: VoiceSession) => {
     clearSessionTimers(session);
+    cleanupVisualAudio(session);
     detachRecognitionHandlers(session.recognition);
     if (sessionRef.current?.id === session.id) {
       sessionRef.current = null;
+    }
+    if (mountedRef.current) {
+      setWaveformLevels([...EMPTY_WAVEFORM_LEVELS]);
     }
   }, []);
 
@@ -104,11 +209,12 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
     }
 
     const transcript = joinFinalSpeechRecognitionResults(session.finalResults);
+    const receivedResult = session.receivedResult;
     releaseSession(session);
     session.finalResults.clear();
 
     if (!transcript) {
-      setFailure("NO_SPEECH");
+      setFailure(receivedResult ? "NO_SPEECH" : "RECOGNITION_NO_RESULT");
       return;
     }
 
@@ -188,6 +294,10 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
     }
 
     const session: VoiceSession = {
+      analyser: null,
+      audioContext: null,
+      audioLevel: 0,
+      audioSource: null,
       cancelled: false,
       elapsedTimer: null,
       failed: false,
@@ -195,6 +305,11 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
       id: ++nextSessionIdRef.current,
       limitTimer: null,
       recognition,
+      receivedResult: false,
+      visualFrame: null,
+      visualStream: null,
+      waveformHistory: [...EMPTY_WAVEFORM_LEVELS],
+      waveformSampleAt: 0,
     };
     sessionRef.current = session;
 
@@ -223,24 +338,29 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
       if (session.cancelled || session.failed || sessionRef.current?.id !== session.id) {
         return;
       }
+      session.receivedResult = true;
       collectFinalSpeechRecognitionResults(event, session.finalResults);
     };
     recognition.onerror = (event) => {
       if (session.cancelled && event.error === "aborted") {
         return;
       }
-      setFailure(classifySpeechRecognitionError(event.error), session);
+      const failureCode = event.error === "aborted" && !session.receivedResult
+        ? "RECOGNITION_NO_RESULT"
+        : classifySpeechRecognitionError(event.error);
+      setFailure(failureCode, session);
     };
     recognition.onend = () => {
       completeSession(session);
     };
 
     try {
+      void startVisualAudio(session);
       recognition.start();
     } catch {
       setFailure("RECOGNITION_FAILED", session);
     }
-  }, [completeSession, setFailure, stop]);
+  }, [completeSession, setFailure, startVisualAudio, stop]);
 
   useEffect(() => {
     mountedRef.current = true;
@@ -262,7 +382,7 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
   }, [releaseSession]);
 
   return {
-    audioLevel: 0,
+    audioLevel: Math.max(...waveformLevels),
     cancel,
     elapsedSeconds,
     errorCode,
@@ -273,5 +393,6 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
     phase,
     start,
     stop,
+    waveformLevels,
   };
 }

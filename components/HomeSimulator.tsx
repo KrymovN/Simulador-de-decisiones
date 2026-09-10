@@ -37,7 +37,6 @@ import {
 } from "./home-simulator-processing";
 import {
   appendVoiceTranscript,
-  createVoiceWaveformLevels,
 } from "./home-simulator-voice";
 import { useHomeSimulatorVoice } from "./use-home-simulator-voice";
 
@@ -974,7 +973,7 @@ export default function HomeSimulator() {
               className="voice-waveform"
               role="img"
             >
-              {createVoiceWaveformLevels(voice.audioLevel).map((level, index) => (
+              {voice.waveformLevels.map((level, index) => (
                 <span
                   aria-hidden="true"
                   className="voice-waveform-bar"
