@@ -1,5 +1,5 @@
 import { createRequire } from "node:module";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -101,9 +101,23 @@ includes(voiceHook, "recognition.stop()", "Completion action stops browser recog
 includes(voiceHook, "recognition.abort()", "Cancel and cleanup abort browser recognition");
 includes(voiceHook, "recognition.continuous = true", "Recognition remains active until completion");
 includes(voiceHook, "recognition.interimResults = true", "Interim results stay inside the recognition lifecycle");
-includes(voiceHook, "collectFinalSpeechRecognitionResults", "Only final recognition results enter the transcript accumulator");
-includes(voiceHook, "joinFinalSpeechRecognitionResults", "Final fragments are normalized without duplicate text");
+includes(voiceHook, "collectSpeechRecognitionResults(event, session.transcriptState)", "Final and latest interim recognition results enter the session accumulator");
+includes(
+  voiceHook,
+  "session.safariMacInterimSnapshot\n      ? buildSpeechRecognitionTranscript(session.transcriptState, true, true)\n      : joinFinalSpeechRecognitionResults(session.transcriptState.finalFragments)",
+  "Safari macOS uses interim snapshots while other browsers retain the canonical final-only path",
+);
+includes(voiceHook, "isMacSafariBrowser(window.navigator)", "Interim same-slot replacement is scoped to Safari on macOS");
 includes(voiceHook, "onTranscriptRef.current(transcript)", "Final transcript reaches the existing HomeSimulator callback");
+check(
+  "Logical voice completion has exactly one transcript commit call site",
+  (voiceHook.match(/onTranscriptRef\.current\(transcript\)/g) ?? []).length === 1,
+);
+includes(
+  voiceHook,
+  "const VOICE_RECOGNITION_SAFARI_MAC_TAIL_GRACE_MS = 700",
+  "Safari macOS normal confirmation has a bounded 700ms tail grace",
+);
 includes(
   voiceHook,
   'receivedResult ? "NO_SPEECH" : "RECOGNITION_NO_RESULT"',
@@ -127,6 +141,14 @@ excludes(voiceHook, "FormData", "Voice V1 never prepares an audio upload");
 excludes(voiceHook, "requestSubmit()", "Voice lifecycle cannot auto-submit a simulation");
 excludes(voiceHook, "browser-local-whisper", "Voice V1 does not use browser-local Whisper");
 excludes(voiceHook, "native-local-stt", "Voice V1 does not use the native local STT adapter");
+excludes(voiceHook, "voiceNoAnalyser", "No-analyser query diagnostic is removed from product code");
+excludes(voiceHook, "diagnosticEvents", "Voice lifecycle diagnostic event logging is removed");
+excludes(voiceHook, "runtimeUnavailable", "Unaccepted runtime microphone disable is removed");
+excludes(voiceHook, "isSpeechRecognitionRuntimeFailure", "Unaccepted analyser-driven runtime fallback is removed");
+check(
+  "Standalone browser probe route is removed",
+  !existsSync(join(rootDir, "app", "voice-browser-probe")),
+);
 
 includes(
   homeSimulator,
@@ -184,6 +206,47 @@ check(
   !voiceHook.slice(voiceHook.indexOf("const cancel"), voiceHook.indexOf("const start")).includes("onTranscriptRef"),
 );
 check(
+  "Normal confirmation keeps recognition handlers active while stopping",
+  !voiceHook.slice(voiceHook.indexOf("const stop"), voiceHook.indexOf("const cancel")).includes("detachRecognitionHandlers"),
+);
+check(
+  "Repeated confirmation is ignored after the logical session starts stopping",
+  /if \(\s*!session \|\|\s*session\.cancelled \|\|\s*session\.failed \|\|\s*session\.stopRequested\s*\)/.test(
+    voiceHook.slice(voiceHook.indexOf("const stop"), voiceHook.indexOf("const cancel")),
+  ),
+);
+includes(voiceHook, "session.stopRequested = true", "Normal confirmation marks the logical session as stopping");
+check(
+  "Safari macOS confirmation schedules recognition stop after tail grace",
+  /if \(session\.safariMacInterimSnapshot\) \{[\s\S]*?session\.tailGraceTimer = setTimeout\([\s\S]*?stopRecognition[\s\S]*?VOICE_RECOGNITION_SAFARI_MAC_TAIL_GRACE_MS[\s\S]*?\);/.test(
+    voiceHook.slice(voiceHook.indexOf("const stop"), voiceHook.indexOf("const cancel")),
+  ),
+);
+check(
+  "Other browser paths keep immediate recognition stop",
+  /if \(session\.safariMacInterimSnapshot\) \{[\s\S]*?return;[\s\S]*?\}\s*stopRecognition\(\);/.test(
+    voiceHook.slice(voiceHook.indexOf("const stop"), voiceHook.indexOf("const cancel")),
+  ),
+);
+includes(voiceHook, "VOICE_RECOGNITION_FINALIZATION_MS", "Normal confirmation has a bounded finalization timeout");
+check(
+  "Bounded finalization retires a recognition instance that never emits onend",
+  voiceHook.slice(voiceHook.indexOf("session.finalizationTimer = setTimeout"), voiceHook.indexOf("VOICE_RECOGNITION_FINALIZATION_MS);", voiceHook.indexOf("session.finalizationTimer = setTimeout"))).includes("session.recognition.abort()"),
+);
+check(
+  "Late onresult remains accepted after normal confirmation",
+  !voiceHook.slice(voiceHook.indexOf("recognition.onresult"), voiceHook.indexOf("recognition.onerror")).includes("stopRequested"),
+);
+check(
+  "Cancel bypasses tail grace and cannot commit a transcript",
+  !voiceHook.slice(voiceHook.indexOf("const cancel"), voiceHook.indexOf("const start")).includes("tailGraceTimer = setTimeout") &&
+    !voiceHook.slice(voiceHook.indexOf("const cancel"), voiceHook.indexOf("const start")).includes("onTranscriptRef"),
+);
+check(
+  "Full listening state begins only after the browser onstart event",
+  voiceHook.indexOf('setPhase("recording")') > voiceHook.indexOf("recognition.onstart"),
+);
+check(
   "Transcript callback only updates the existing input path",
   homeSimulator.indexOf("onTranscript(transcript)") < homeSimulator.indexOf("const nextInput = appendVoiceTranscript(") &&
     homeSimulator.slice(homeSimulator.indexOf("onTranscript(transcript)"), homeSimulator.indexOf("const isVoiceProcessing")).includes("setInput(nextInput)") &&
@@ -191,6 +254,8 @@ check(
 );
 includes(homeSimulator, 'className="voice-waveform"', "Existing listening visualization remains mounted");
 includes(homeSimulator, "voice.waveformLevels.map", "Waveform renders the running sample history");
+excludes(homeSimulator, "Diagnostic: visual analyser OFF", "No-analyser diagnostic UI is removed");
+excludes(homeSimulator, "Voice no-analyser A/B trace", "Voice diagnostic event panel is removed");
 includes(homeSimulator, 'className="voice-accessible-status"', "Voice lifecycle remains accessible");
 includes(simulatorCss, "@media (max-width: 480px)", "Voice controls keep their mobile layout");
 check(

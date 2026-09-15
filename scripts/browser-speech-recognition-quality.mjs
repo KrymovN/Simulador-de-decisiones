@@ -23,10 +23,14 @@ require.extensions[".ts"] = function loadTypeScriptModule(module, filename) {
 
 const {
   BROWSER_SPEECH_RECOGNITION_LANGUAGE,
+  buildSpeechRecognitionTranscript,
   classifySpeechRecognitionError,
+  collectSpeechRecognitionResults,
   collectFinalSpeechRecognitionResults,
+  createSpeechRecognitionTranscriptState,
   getBrowserSpeechRecognitionConstructor,
   isIPhoneSafariBrowser,
+  isMacSafariBrowser,
   joinFinalSpeechRecognitionResults,
 } = require(join(rootDir, "components", "browser-speech-recognition.ts"));
 const { appendVoiceTranscript } = require(join(rootDir, "components", "home-simulator-voice.ts"));
@@ -59,6 +63,8 @@ const iphoneChromeUserAgent =
   "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/140.0.7339.122 Mobile/15E148 Safari/604.1";
 const desktopChromeUserAgent =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36";
+const ipadDesktopSafariUserAgent =
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Mobile/15E148 Safari/604.1";
 
 check(
   "iPhone Safari activates the one-shot compatibility target",
@@ -69,12 +75,28 @@ check(
   !isIPhoneSafariBrowser({ userAgent: macSafariUserAgent }),
 );
 check(
+  "Safari macOS activates only the interim-snapshot compatibility target",
+  isMacSafariBrowser({ userAgent: macSafariUserAgent }),
+);
+check(
   "Chrome on iPhone remains outside the one-shot compatibility target",
   !isIPhoneSafariBrowser({ userAgent: iphoneChromeUserAgent }),
 );
 check(
   "Desktop Chrome remains outside the one-shot compatibility target",
   !isIPhoneSafariBrowser({ userAgent: desktopChromeUserAgent }),
+);
+check(
+  "Desktop Chrome remains outside the Safari interim-snapshot target",
+  !isMacSafariBrowser({ userAgent: desktopChromeUserAgent }),
+);
+check(
+  "iPhone Safari remains outside the macOS interim-snapshot target",
+  !isMacSafariBrowser({ userAgent: iphoneSafariUserAgent }),
+);
+check(
+  "iPad desktop-mode Safari remains outside the macOS interim-snapshot target",
+  !isMacSafariBrowser({ userAgent: ipadDesktopSafariUserAgent }),
 );
 
 const finalResults = new Map();
@@ -102,6 +124,166 @@ check(
   ) === "Quiero cambiar de trabajo. Necesito mantener unos ingresos estables.",
 );
 check("Empty transcript preserves existing typed text", appendVoiceTranscript("Texto existente", "   ", 1200) === "Texto existente");
+
+const transcriptState = createSpeechRecognitionTranscriptState();
+collectSpeechRecognitionResults({
+  resultIndex: 0,
+  results: {
+    0: result("Quiero cambiar", false),
+    length: 1,
+  },
+}, transcriptState);
+collectSpeechRecognitionResults({
+  resultIndex: 0,
+  results: {
+    0: result("Quiero cambiar de trabajo", false),
+    length: 1,
+  },
+}, transcriptState);
+check(
+  "New interim hypothesis replaces the previous interim",
+  transcriptState.latestInterim?.transcript === "Quiero cambiar de trabajo",
+);
+collectSpeechRecognitionResults({
+  resultIndex: 0,
+  results: {
+    0: result("Quiero cambiar de trabajo", true),
+    1: result("porque busco", false),
+    length: 2,
+  },
+}, transcriptState);
+collectSpeechRecognitionResults({
+  resultIndex: 1,
+  results: {
+    0: result("Quiero cambiar de trabajo", true),
+    1: result("porque busco más estabilidad", true),
+    length: 2,
+  },
+}, transcriptState);
+collectSpeechRecognitionResults({
+  resultIndex: 0,
+  results: {
+    0: result("Quiero cambiar de trabajo", true),
+    1: result("porque busco más estabilidad", true),
+    2: result("porque busco más estabilidad", true),
+    length: 3,
+  },
+}, transcriptState);
+check(
+  "Final fragments accumulate by resultIndex without duplication",
+  buildSpeechRecognitionTranscript(transcriptState, false) ===
+    "Quiero cambiar de trabajo porque busco más estabilidad",
+);
+
+const interimFallbackState = createSpeechRecognitionTranscriptState();
+collectSpeechRecognitionResults({
+  resultIndex: 0,
+  results: {
+    0: result("Necesito mantener unos ingresos", true),
+    1: result("unos ingresos estables durante el cambio", false),
+    length: 2,
+  },
+}, interimFallbackState);
+check(
+  "Latest interim fallback preserves only non-duplicating trailing words",
+  buildSpeechRecognitionTranscript(interimFallbackState, true) ===
+    "Necesito mantener unos ingresos estables durante el cambio",
+);
+
+const interimOnlyState = createSpeechRecognitionTranscriptState();
+collectSpeechRecognitionResults({
+  resultIndex: 0,
+  results: {
+    0: result("Primeras y últimas palabras", false),
+    length: 1,
+  },
+}, interimOnlyState);
+check(
+  "Meaningful interim can be the bounded terminal fallback when final is empty",
+  buildSpeechRecognitionTranscript(interimOnlyState, true) ===
+    "Primeras y últimas palabras",
+);
+
+const safariCumulativeState = createSpeechRecognitionTranscriptState();
+for (const transcript of [
+  "quiero",
+  "quiero cambiar",
+  "quiero cambiar de trabajo",
+]) {
+  collectSpeechRecognitionResults({
+    resultIndex: 0,
+    results: {
+      0: result(transcript, false),
+      length: 1,
+    },
+  }, safariCumulativeState);
+}
+check(
+  "Safari cumulative interim stream commits only the latest browser hypothesis",
+  buildSpeechRecognitionTranscript(safariCumulativeState, true) ===
+    "quiero cambiar de trabajo",
+);
+
+const safariLateResultState = createSpeechRecognitionTranscriptState();
+collectSpeechRecognitionResults({
+  resultIndex: 0,
+  results: {
+    0: result("quiero cambiar de trabajo porque", true),
+    length: 1,
+  },
+}, safariLateResultState);
+collectSpeechRecognitionResults({
+  resultIndex: 0,
+  results: {
+    0: result("quiero cambiar de trabajo porque necesito estabilidad", false),
+    length: 1,
+  },
+}, safariLateResultState);
+check(
+  "Late interim in the same result slot supersedes an earlier final snapshot",
+  buildSpeechRecognitionTranscript(safariLateResultState, true, true) ===
+    "quiero cambiar de trabajo porque necesito estabilidad",
+);
+check(
+  "Non-Safari paths keep the existing final result priority for the same slot",
+  buildSpeechRecognitionTranscript(safariLateResultState, true, false) ===
+    "quiero cambiar de trabajo porque",
+);
+
+const safariRevisionState = createSpeechRecognitionTranscriptState();
+for (const transcript of [
+  "quiero cambiar de trabajo y necesito estabilidad durante varios meses ahora",
+  "quiero cambiar de empleo y necesito estabilidad durante meses",
+  "quiero cambiar de empleo y necesito estabilidad durante los próximos meses sin perder ingresos",
+]) {
+  collectSpeechRecognitionResults({
+    resultIndex: 0,
+    results: {
+      0: result(transcript, false),
+      length: 1,
+    },
+  }, safariRevisionState);
+}
+check(
+  "Latest valid Safari hypothesis wins by event order rather than maximum prior length",
+  buildSpeechRecognitionTranscript(safariRevisionState, true) ===
+    "quiero cambiar de empleo y necesito estabilidad durante los próximos meses sin perder ingresos",
+);
+
+const finalWithTrailingInterimState = createSpeechRecognitionTranscriptState();
+collectSpeechRecognitionResults({
+  resultIndex: 0,
+  results: {
+    0: result("quiero cambiar de trabajo", true),
+    1: result("de trabajo sin perder estabilidad", false),
+    length: 2,
+  },
+}, finalWithTrailingInterimState);
+check(
+  "Final transcript plus trailing interim keeps only the additional non-duplicating tail",
+  buildSpeechRecognitionTranscript(finalWithTrailingInterimState, true) ===
+    "quiero cambiar de trabajo sin perder estabilidad",
+);
 
 for (const [error, expected] of [
   ["not-allowed", "MIC_PERMISSION_DENIED"],

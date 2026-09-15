@@ -4,12 +4,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   BROWSER_SPEECH_RECOGNITION_LANGUAGE,
+  buildSpeechRecognitionTranscript,
   classifySpeechRecognitionError,
-  collectFinalSpeechRecognitionResults,
+  collectSpeechRecognitionResults,
+  createSpeechRecognitionTranscriptState,
   getBrowserSpeechRecognitionConstructor,
+  isMacSafariBrowser,
   joinFinalSpeechRecognitionResults,
   type BrowserSpeechRecognition,
   type BrowserSpeechRecognitionEvent,
+  type SpeechRecognitionTranscriptState,
 } from "./browser-speech-recognition";
 import {
   advanceVoiceWaveformHistory,
@@ -29,11 +33,15 @@ type VoiceSession = {
   cancelled: boolean;
   elapsedTimer: ReturnType<typeof setInterval> | null;
   failed: boolean;
-  finalResults: Map<number, string>;
+  finalizationTimer: ReturnType<typeof setTimeout> | null;
   id: number;
   limitTimer: ReturnType<typeof setTimeout> | null;
   recognition: BrowserSpeechRecognition;
   receivedResult: boolean;
+  safariMacInterimSnapshot: boolean;
+  stopRequested: boolean;
+  tailGraceTimer: ReturnType<typeof setTimeout> | null;
+  transcriptState: SpeechRecognitionTranscriptState;
   visualFrame: number | null;
   visualStream: MediaStream | null;
   waveformHistory: number[];
@@ -54,6 +62,14 @@ function clearSessionTimers(session: VoiceSession) {
     clearTimeout(session.limitTimer);
     session.limitTimer = null;
   }
+  if (session.finalizationTimer !== null) {
+    clearTimeout(session.finalizationTimer);
+    session.finalizationTimer = null;
+  }
+  if (session.tailGraceTimer !== null) {
+    clearTimeout(session.tailGraceTimer);
+    session.tailGraceTimer = null;
+  }
 }
 
 function detachRecognitionHandlers(recognition: BrowserSpeechRecognition) {
@@ -64,6 +80,8 @@ function detachRecognitionHandlers(recognition: BrowserSpeechRecognition) {
 }
 
 const EMPTY_WAVEFORM_LEVELS = createVoiceWaveformLevels(0);
+const VOICE_RECOGNITION_FINALIZATION_MS = 1200;
+const VOICE_RECOGNITION_SAFARI_MAC_TAIL_GRACE_MS = 700;
 const VOICE_WAVEFORM_SAMPLE_INTERVAL_MS = 45;
 
 function cleanupVisualAudio(session: VoiceSession) {
@@ -187,7 +205,8 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
       } catch {
         // The browser may already have ended the recognition session.
       }
-      activeSession.finalResults.clear();
+      activeSession.transcriptState.finalFragments.clear();
+      activeSession.transcriptState.latestInterim = null;
     }
 
     if (mountedRef.current) {
@@ -208,10 +227,13 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
       return;
     }
 
-    const transcript = joinFinalSpeechRecognitionResults(session.finalResults);
+    const transcript = session.safariMacInterimSnapshot
+      ? buildSpeechRecognitionTranscript(session.transcriptState, true, true)
+      : joinFinalSpeechRecognitionResults(session.transcriptState.finalFragments);
     const receivedResult = session.receivedResult;
     releaseSession(session);
-    session.finalResults.clear();
+    session.transcriptState.finalFragments.clear();
+    session.transcriptState.latestInterim = null;
 
     if (!transcript) {
       setFailure(receivedResult ? "NO_SPEECH" : "RECOGNITION_NO_RESULT");
@@ -227,19 +249,56 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
 
   const stop = useCallback(() => {
     const session = sessionRef.current;
-    if (!session || session.cancelled || session.failed) {
+    if (
+      !session ||
+      session.cancelled ||
+      session.failed ||
+      session.stopRequested
+    ) {
       return;
     }
 
     clearSessionTimers(session);
+    session.stopRequested = true;
     setPhase("stopping");
     onMessageRef.current("Finalizando el dictado…");
-    try {
-      session.recognition.stop();
-    } catch {
-      setFailure("RECOGNITION_FAILED", session);
+
+    const stopRecognition = () => {
+      if (
+        !mountedRef.current ||
+        session.cancelled ||
+        session.failed ||
+        sessionRef.current?.id !== session.id
+      ) {
+        return;
+      }
+
+      session.tailGraceTimer = null;
+      session.finalizationTimer = setTimeout(() => {
+        completeSession(session);
+        try {
+          session.recognition.abort();
+        } catch {
+          // The bounded terminal cleanup may find recognition already ended.
+        }
+      }, VOICE_RECOGNITION_FINALIZATION_MS);
+      try {
+        session.recognition.stop();
+      } catch {
+        setFailure("RECOGNITION_FAILED", session);
+      }
+    };
+
+    if (session.safariMacInterimSnapshot) {
+      session.tailGraceTimer = setTimeout(
+        stopRecognition,
+        VOICE_RECOGNITION_SAFARI_MAC_TAIL_GRACE_MS,
+      );
+      return;
     }
-  }, [setFailure]);
+
+    stopRecognition();
+  }, [completeSession, setFailure]);
 
   const cancel = useCallback(() => {
     const session = sessionRef.current;
@@ -254,7 +313,8 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
     } catch {
       // The browser may already have ended the recognition session.
     }
-    session.finalResults.clear();
+    session.transcriptState.finalFragments.clear();
+    session.transcriptState.latestInterim = null;
 
     if (mountedRef.current) {
       setElapsedSeconds(0);
@@ -301,11 +361,15 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
       cancelled: false,
       elapsedTimer: null,
       failed: false,
-      finalResults: new Map(),
+      finalizationTimer: null,
       id: ++nextSessionIdRef.current,
       limitTimer: null,
       recognition,
       receivedResult: false,
+      safariMacInterimSnapshot: isMacSafariBrowser(window.navigator),
+      stopRequested: false,
+      tailGraceTimer: null,
+      transcriptState: createSpeechRecognitionTranscriptState(),
       visualFrame: null,
       visualStream: null,
       waveformHistory: [...EMPTY_WAVEFORM_LEVELS],
@@ -339,7 +403,7 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
         return;
       }
       session.receivedResult = true;
-      collectFinalSpeechRecognitionResults(event, session.finalResults);
+      collectSpeechRecognitionResults(event, session.transcriptState);
     };
     recognition.onerror = (event) => {
       if (session.cancelled && event.error === "aborted") {
@@ -377,7 +441,8 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
       } catch {
         // The browser may already have ended the recognition session.
       }
-      session.finalResults.clear();
+      session.transcriptState.finalFragments.clear();
+      session.transcriptState.latestInterim = null;
     };
   }, [releaseSession]);
 
