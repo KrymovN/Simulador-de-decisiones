@@ -84,6 +84,15 @@ export function isMacSafariBrowser(
     !/(?:Chrome|Chromium|CriOS|FxiOS|EdgiOS|OPiOS)\//i.test(userAgent);
 }
 
+export function isAndroidChromiumBrowser(
+  browserNavigator: BrowserNavigatorIdentity,
+) {
+  const userAgent = browserNavigator.userAgent ?? "";
+  return /\bAndroid\b/i.test(userAgent) &&
+    /AppleWebKit/i.test(userAgent) &&
+    /(?:Chrome|Chromium)\/[\d.]+/i.test(userAgent);
+}
+
 export function getBrowserSpeechRecognitionConstructor(
   browserWindow: object,
 ) {
@@ -206,6 +215,46 @@ export function joinFinalSpeechRecognitionResults(finalResults: Map<number, stri
       return true;
     })
     .join(" ");
+}
+
+function isCumulativeSpeechRecognitionExpansion(
+  previousTranscript: string,
+  nextTranscript: string,
+) {
+  const previousTokens = previousTranscript.split(/\s+/).map(normalizedTranscriptToken).filter(Boolean);
+  const nextTokens = nextTranscript.split(/\s+/).map(normalizedTranscriptToken).filter(Boolean);
+  return previousTokens.length > 0 &&
+    previousTokens.length <= nextTokens.length &&
+    previousTokens.every((token, index) => token === nextTokens[index]);
+}
+
+export function joinAndroidChromiumFinalSpeechRecognitionResults(
+  finalResults: Map<number, string>,
+) {
+  const seen = new Set<string>();
+  const normalizedFragments: string[] = [];
+
+  for (const [, rawTranscript] of [...finalResults.entries()].sort(
+    ([leftIndex], [rightIndex]) => leftIndex - rightIndex,
+  )) {
+    const transcript = rawTranscript.trim();
+    if (!transcript || seen.has(transcript)) {
+      continue;
+    }
+    seen.add(transcript);
+
+    const previousTranscript = normalizedFragments.at(-1);
+    if (
+      previousTranscript &&
+      isCumulativeSpeechRecognitionExpansion(previousTranscript, transcript)
+    ) {
+      normalizedFragments[normalizedFragments.length - 1] = transcript;
+      continue;
+    }
+    normalizedFragments.push(transcript);
+  }
+
+  return normalizedFragments.join(" ");
 }
 
 export function classifySpeechRecognitionError(error: string): VoiceErrorCode {

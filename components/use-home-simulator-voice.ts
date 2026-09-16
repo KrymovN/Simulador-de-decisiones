@@ -9,7 +9,9 @@ import {
   collectSpeechRecognitionResults,
   createSpeechRecognitionTranscriptState,
   getBrowserSpeechRecognitionConstructor,
+  isAndroidChromiumBrowser,
   isMacSafariBrowser,
+  joinAndroidChromiumFinalSpeechRecognitionResults,
   joinFinalSpeechRecognitionResults,
   type BrowserSpeechRecognition,
   type BrowserSpeechRecognitionEvent,
@@ -26,11 +28,14 @@ import {
 } from "./home-simulator-voice";
 
 type VoiceSession = {
+  androidChromiumCumulativeResults: boolean;
   analyser: AnalyserNode | null;
   audioContext: AudioContext | null;
   audioLevel: number;
   audioSource: MediaStreamAudioSourceNode | null;
   cancelled: boolean;
+  completedSegments: string[];
+  continuationTimer: ReturnType<typeof setTimeout> | null;
   elapsedTimer: ReturnType<typeof setInterval> | null;
   failed: boolean;
   finalizationTimer: ReturnType<typeof setTimeout> | null;
@@ -39,8 +44,12 @@ type VoiceSession = {
   recognition: BrowserSpeechRecognition;
   receivedResult: boolean;
   safariMacInterimSnapshot: boolean;
+  segmentEnded: boolean;
+  segmentGeneration: number;
+  startedAt: number | null;
   stopRequested: boolean;
   tailGraceTimer: ReturnType<typeof setTimeout> | null;
+  terminalReason: "manual" | "limit" | "cancel" | "error" | "cleanup" | null;
   transcriptState: SpeechRecognitionTranscriptState;
   visualFrame: number | null;
   visualStream: MediaStream | null;
@@ -54,6 +63,10 @@ type UseHomeSimulatorVoiceOptions = {
 };
 
 function clearSessionTimers(session: VoiceSession) {
+  if (session.continuationTimer !== null) {
+    clearTimeout(session.continuationTimer);
+    session.continuationTimer = null;
+  }
   if (session.elapsedTimer !== null) {
     clearInterval(session.elapsedTimer);
     session.elapsedTimer = null;
@@ -199,6 +212,7 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
     const activeSession = session ?? sessionRef.current;
     if (activeSession) {
       activeSession.failed = true;
+      activeSession.terminalReason = "error";
       releaseSession(activeSession);
       try {
         activeSession.recognition.abort();
@@ -207,6 +221,7 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
       }
       activeSession.transcriptState.finalFragments.clear();
       activeSession.transcriptState.latestInterim = null;
+      activeSession.completedSegments.length = 0;
     }
 
     if (mountedRef.current) {
@@ -227,13 +242,21 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
       return;
     }
 
+    const currentAndroidSegment = session.androidChromiumCumulativeResults && !session.segmentEnded
+      ? joinAndroidChromiumFinalSpeechRecognitionResults(
+        session.transcriptState.finalFragments,
+      )
+      : "";
     const transcript = session.safariMacInterimSnapshot
       ? buildSpeechRecognitionTranscript(session.transcriptState, true, true)
-      : joinFinalSpeechRecognitionResults(session.transcriptState.finalFragments);
+      : session.androidChromiumCumulativeResults
+        ? [...session.completedSegments, currentAndroidSegment].filter(Boolean).join(" ")
+        : joinFinalSpeechRecognitionResults(session.transcriptState.finalFragments);
     const receivedResult = session.receivedResult;
     releaseSession(session);
     session.transcriptState.finalFragments.clear();
     session.transcriptState.latestInterim = null;
+    session.completedSegments.length = 0;
 
     if (!transcript) {
       setFailure(receivedResult ? "NO_SPEECH" : "RECOGNITION_NO_RESULT");
@@ -260,8 +283,14 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
 
     clearSessionTimers(session);
     session.stopRequested = true;
+    session.terminalReason ??= "manual";
     setPhase("stopping");
     onMessageRef.current("Finalizando el dictado…");
+
+    if (session.androidChromiumCumulativeResults && session.segmentEnded) {
+      completeSession(session);
+      return;
+    }
 
     const stopRecognition = () => {
       if (
@@ -307,6 +336,7 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
     }
 
     session.cancelled = true;
+    session.terminalReason = "cancel";
     releaseSession(session);
     try {
       session.recognition.abort();
@@ -315,6 +345,7 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
     }
     session.transcriptState.finalFragments.clear();
     session.transcriptState.latestInterim = null;
+    session.completedSegments.length = 0;
 
     if (mountedRef.current) {
       setElapsedSeconds(0);
@@ -354,11 +385,14 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
     }
 
     const session: VoiceSession = {
+      androidChromiumCumulativeResults: isAndroidChromiumBrowser(window.navigator),
       analyser: null,
       audioContext: null,
       audioLevel: 0,
       audioSource: null,
       cancelled: false,
+      completedSegments: [],
+      continuationTimer: null,
       elapsedTimer: null,
       failed: false,
       finalizationTimer: null,
@@ -367,8 +401,12 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
       recognition,
       receivedResult: false,
       safariMacInterimSnapshot: isMacSafariBrowser(window.navigator),
+      segmentEnded: false,
+      segmentGeneration: 1,
+      startedAt: null,
       stopRequested: false,
       tailGraceTimer: null,
+      terminalReason: null,
       transcriptState: createSpeechRecognitionTranscriptState(),
       visualFrame: null,
       visualStream: null,
@@ -377,49 +415,113 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
     };
     sessionRef.current = session;
 
-    recognition.lang = BROWSER_SPEECH_RECOGNITION_LANGUAGE;
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognition.maxAlternatives = 1;
+    const configureSegment = (segmentRecognition: BrowserSpeechRecognition, generation: number) => {
+      const isCurrentSegment = () => mountedRef.current &&
+        sessionRef.current?.id === session.id &&
+        session.segmentGeneration === generation &&
+        session.recognition === segmentRecognition &&
+        !session.cancelled &&
+        !session.failed;
 
-    recognition.onstart = () => {
-      if (!mountedRef.current || sessionRef.current?.id !== session.id) {
-        return;
-      }
-      const startedAt = Date.now();
-      session.elapsedTimer = setInterval(() => {
-        setElapsedSeconds(Math.min(120, (Date.now() - startedAt) / 1000));
-      }, 250);
-      session.limitTimer = setTimeout(() => {
-        if (sessionRef.current?.id === session.id) {
-          stop();
+      segmentRecognition.lang = BROWSER_SPEECH_RECOGNITION_LANGUAGE;
+      segmentRecognition.continuous = true;
+      segmentRecognition.interimResults = true;
+      segmentRecognition.maxAlternatives = 1;
+
+      segmentRecognition.onstart = () => {
+        if (!isCurrentSegment()) {
+          return;
         }
-      }, VOICE_MAX_RECORDING_MS);
-      setPhase("recording");
-      onMessageRef.current("");
+        if (session.startedAt === null) {
+          const startedAt = Date.now();
+          session.startedAt = startedAt;
+          session.elapsedTimer = setInterval(() => {
+            setElapsedSeconds(Math.min(120, (Date.now() - startedAt) / 1000));
+          }, 250);
+          session.limitTimer = setTimeout(() => {
+            if (sessionRef.current?.id === session.id && session.terminalReason === null) {
+              session.terminalReason = "limit";
+              stop();
+            }
+          }, VOICE_MAX_RECORDING_MS);
+        }
+        if (!session.stopRequested) {
+          setPhase("recording");
+          onMessageRef.current("");
+        }
+      };
+      segmentRecognition.onresult = (event: BrowserSpeechRecognitionEvent) => {
+        if (!isCurrentSegment() || session.segmentEnded) {
+          return;
+        }
+        session.receivedResult = true;
+        collectSpeechRecognitionResults(event, session.transcriptState);
+      };
+      segmentRecognition.onerror = (event) => {
+        if (!isCurrentSegment()) {
+          return;
+        }
+        if (
+          session.androidChromiumCumulativeResults &&
+          session.stopRequested &&
+          (event.error === "no-speech" || event.error === "aborted")
+        ) {
+          return;
+        }
+        if (session.cancelled && event.error === "aborted") {
+          return;
+        }
+        const failureCode = event.error === "aborted" && !session.receivedResult
+          ? "RECOGNITION_NO_RESULT"
+          : classifySpeechRecognitionError(event.error);
+        setFailure(failureCode, session);
+      };
+      segmentRecognition.onend = () => {
+        if (!isCurrentSegment() || session.segmentEnded) {
+          return;
+        }
+        if (session.androidChromiumCumulativeResults && session.terminalReason === null) {
+          const segmentTranscript = joinAndroidChromiumFinalSpeechRecognitionResults(
+            session.transcriptState.finalFragments,
+          );
+          if (!segmentTranscript) {
+            setFailure(session.receivedResult ? "NO_SPEECH" : "RECOGNITION_NO_RESULT", session);
+            return;
+          }
+
+          session.completedSegments.push(segmentTranscript);
+          session.segmentEnded = true;
+          detachRecognitionHandlers(segmentRecognition);
+          session.continuationTimer = setTimeout(() => {
+            session.continuationTimer = null;
+            if (!isCurrentSegment() || session.terminalReason !== null) {
+              return;
+            }
+            try {
+              const nextRecognition = new RecognitionConstructor();
+              session.recognition = nextRecognition;
+              session.segmentGeneration += 1;
+              session.segmentEnded = false;
+              session.receivedResult = false;
+              session.transcriptState = createSpeechRecognitionTranscriptState();
+              configureSegment(nextRecognition, session.segmentGeneration);
+              nextRecognition.start();
+            } catch {
+              setFailure("RECOGNITION_FAILED", session);
+            }
+          }, 0);
+          return;
+        }
+        completeSession(session);
+      };
     };
-    recognition.onresult = (event: BrowserSpeechRecognitionEvent) => {
-      if (session.cancelled || session.failed || sessionRef.current?.id !== session.id) {
-        return;
-      }
-      session.receivedResult = true;
-      collectSpeechRecognitionResults(event, session.transcriptState);
-    };
-    recognition.onerror = (event) => {
-      if (session.cancelled && event.error === "aborted") {
-        return;
-      }
-      const failureCode = event.error === "aborted" && !session.receivedResult
-        ? "RECOGNITION_NO_RESULT"
-        : classifySpeechRecognitionError(event.error);
-      setFailure(failureCode, session);
-    };
-    recognition.onend = () => {
-      completeSession(session);
-    };
+
+    configureSegment(recognition, session.segmentGeneration);
 
     try {
-      void startVisualAudio(session);
+      if (!isAndroidChromiumBrowser(window.navigator)) {
+        void startVisualAudio(session);
+      }
       recognition.start();
     } catch {
       setFailure("RECOGNITION_FAILED", session);
@@ -435,6 +537,7 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
         return;
       }
       session.cancelled = true;
+      session.terminalReason = "cleanup";
       releaseSession(session);
       try {
         session.recognition.abort();
@@ -443,6 +546,7 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
       }
       session.transcriptState.finalFragments.clear();
       session.transcriptState.latestInterim = null;
+      session.completedSegments.length = 0;
     };
   }, [releaseSession]);
 

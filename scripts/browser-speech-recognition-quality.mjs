@@ -29,8 +29,10 @@ const {
   collectFinalSpeechRecognitionResults,
   createSpeechRecognitionTranscriptState,
   getBrowserSpeechRecognitionConstructor,
+  isAndroidChromiumBrowser,
   isIPhoneSafariBrowser,
   isMacSafariBrowser,
+  joinAndroidChromiumFinalSpeechRecognitionResults,
   joinFinalSpeechRecognitionResults,
 } = require(join(rootDir, "components", "browser-speech-recognition.ts"));
 const { appendVoiceTranscript } = require(join(rootDir, "components", "home-simulator-voice.ts"));
@@ -63,6 +65,10 @@ const iphoneChromeUserAgent =
   "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/140.0.7339.122 Mobile/15E148 Safari/604.1";
 const desktopChromeUserAgent =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36";
+const androidChromeUserAgent =
+  "Mozilla/5.0 (Linux; Android 15; 23127PN0CG) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Mobile Safari/537.36";
+const androidChromiumUserAgent =
+  "Mozilla/5.0 (Linux; Android 15) AppleWebKit/537.36 (KHTML, like Gecko) Chromium/140.0.0.0 Mobile Safari/537.36";
 const ipadDesktopSafariUserAgent =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Mobile/15E148 Safari/604.1";
 
@@ -98,6 +104,26 @@ check(
   "iPad desktop-mode Safari remains outside the macOS interim-snapshot target",
   !isMacSafariBrowser({ userAgent: ipadDesktopSafariUserAgent }),
 );
+check(
+  "Android Chrome activates the visual-capture exclusion target",
+  isAndroidChromiumBrowser({ userAgent: androidChromeUserAgent }),
+);
+check(
+  "Android Chromium activates the visual-capture exclusion target",
+  isAndroidChromiumBrowser({ userAgent: androidChromiumUserAgent }),
+);
+check(
+  "Desktop Chrome remains outside the visual-capture exclusion target",
+  !isAndroidChromiumBrowser({ userAgent: desktopChromeUserAgent }),
+);
+check(
+  "Safari macOS remains outside the visual-capture exclusion target",
+  !isAndroidChromiumBrowser({ userAgent: macSafariUserAgent }),
+);
+check(
+  "iPhone Safari remains outside the visual-capture exclusion target",
+  !isAndroidChromiumBrowser({ userAgent: iphoneSafariUserAgent }),
+);
 
 const finalResults = new Map();
 const result = (transcript, isFinal) => ({ 0: { confidence: 0.9, transcript }, isFinal, length: 1 });
@@ -124,6 +150,51 @@ check(
   ) === "Quiero cambiar de trabajo. Necesito mantener unos ingresos estables.",
 );
 check("Empty transcript preserves existing typed text", appendVoiceTranscript("Texto existente", "   ", 1200) === "Texto existente");
+
+const finalTranscriptState = (transcripts) => {
+  const state = createSpeechRecognitionTranscriptState();
+  const results = { length: transcripts.length };
+  transcripts.forEach((transcript, index) => {
+    results[index] = result(transcript, true);
+  });
+  collectSpeechRecognitionResults({ resultIndex: 0, results }, state);
+  return state;
+};
+
+const androidStaircaseState = finalTranscriptState([
+  "a",
+  "a ver",
+  "a ver qué",
+  "a ver qué tal funciona",
+]);
+check(
+  "Android cumulative staircase keeps only the latest expanding hypothesis",
+  joinAndroidChromiumFinalSpeechRecognitionResults(androidStaircaseState.finalFragments) ===
+    "a ver qué tal funciona",
+);
+
+const androidLongCumulativeState = finalTranscriptState([
+  "quiero",
+  "quiero comprobar",
+  "quiero comprobar si el dictado",
+  "quiero comprobar si el dictado funciona correctamente",
+  "quiero comprobar si el dictado funciona correctamente en mi teléfono Xiaomi",
+]);
+check(
+  "Android long cumulative Spanish transcript keeps the latest complete hypothesis",
+  joinAndroidChromiumFinalSpeechRecognitionResults(androidLongCumulativeState.finalFragments) ===
+    "quiero comprobar si el dictado funciona correctamente en mi teléfono Xiaomi",
+);
+
+const androidIndependentSegmentsState = finalTranscriptState([
+  "Quiero cambiar de trabajo.",
+  "Necesito mantener unos ingresos estables.",
+]);
+check(
+  "Android independent finalized segments remain in order",
+  joinAndroidChromiumFinalSpeechRecognitionResults(androidIndependentSegmentsState.finalFragments) ===
+    "Quiero cambiar de trabajo. Necesito mantener unos ingresos estables.",
+);
 
 const transcriptState = createSpeechRecognitionTranscriptState();
 collectSpeechRecognitionResults({

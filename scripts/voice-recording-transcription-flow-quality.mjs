@@ -99,15 +99,30 @@ includes(voiceHook, "new RecognitionConstructor()", "Each voice session creates 
 includes(voiceHook, "recognition.start()", "Mic action starts browser recognition");
 includes(voiceHook, "recognition.stop()", "Completion action stops browser recognition");
 includes(voiceHook, "recognition.abort()", "Cancel and cleanup abort browser recognition");
-includes(voiceHook, "recognition.continuous = true", "Recognition remains active until completion");
-includes(voiceHook, "recognition.interimResults = true", "Interim results stay inside the recognition lifecycle");
+includes(voiceHook, "segmentRecognition.continuous = true", "Every recognition segment requests continuous results");
+includes(voiceHook, "segmentRecognition.interimResults = true", "Every recognition segment accepts interim results");
 includes(voiceHook, "collectSpeechRecognitionResults(event, session.transcriptState)", "Final and latest interim recognition results enter the session accumulator");
 includes(
   voiceHook,
-  "session.safariMacInterimSnapshot\n      ? buildSpeechRecognitionTranscript(session.transcriptState, true, true)\n      : joinFinalSpeechRecognitionResults(session.transcriptState.finalFragments)",
-  "Safari macOS uses interim snapshots while other browsers retain the canonical final-only path",
+  "session.safariMacInterimSnapshot\n      ? buildSpeechRecognitionTranscript(session.transcriptState, true, true)\n      : session.androidChromiumCumulativeResults",
+  "Safari macOS retains priority over the Android cumulative-result path",
 );
 includes(voiceHook, "isMacSafariBrowser(window.navigator)", "Interim same-slot replacement is scoped to Safari on macOS");
+includes(
+  voiceHook,
+  "androidChromiumCumulativeResults: isAndroidChromiumBrowser(window.navigator)",
+  "Android cumulative-result normalization is scoped by the existing platform helper",
+);
+includes(
+  voiceHook,
+  "joinAndroidChromiumFinalSpeechRecognitionResults(\n        session.transcriptState.finalFragments",
+  "Android Chromium finalizes cumulative result lists through prefix replacement",
+);
+includes(
+  voiceHook,
+  ": joinFinalSpeechRecognitionResults(session.transcriptState.finalFragments)",
+  "Non-Android browsers retain the existing final-fragment join",
+);
 includes(voiceHook, "onTranscriptRef.current(transcript)", "Final transcript reaches the existing HomeSimulator callback");
 check(
   "Logical voice completion has exactly one transcript commit call site",
@@ -129,6 +144,23 @@ excludes(voiceHook, 'fetch("/api/transcribe"', "Voice V1 never calls the Levio t
 excludes(voiceHook, "MediaRecorder", "Voice V1 does not record a Blob");
 includes(voiceHook, "navigator.mediaDevices.getUserMedia", "Waveform opens a local visual microphone stream");
 includes(voiceHook, "createAnalyser()", "Waveform uses an AnalyserNode");
+check(
+  "Android Chromium skips visual capture while browser recognition still starts",
+  /if \(!isAndroidChromiumBrowser\(window\.navigator\)\) \{\s*void startVisualAudio\(session\);\s*\}\s*recognition\.start\(\);/.test(
+    voiceHook,
+  ),
+);
+const visualAudioBlock = voiceHook.slice(
+  voiceHook.indexOf("const startVisualAudio"),
+  voiceHook.indexOf("const releaseSession"),
+);
+check(
+  "Visual getUserMedia, AudioContext, and AnalyserNode creation remain isolated behind the Android guard",
+  visualAudioBlock.includes("navigator.mediaDevices.getUserMedia") &&
+    visualAudioBlock.includes("new AudioContext()") &&
+    visualAudioBlock.includes("audioContext.createAnalyser()") &&
+    (voiceHook.match(/startVisualAudio\(session\)/g) ?? []).length === 1,
+);
 includes(voiceHook, "calculateVoiceAudioLevel(samples)", "Real analyser samples drive waveform history");
 includes(voiceHook, "advanceVoiceWaveformHistory", "Waveform advances through amplitude history");
 includes(voiceHook, "track.stop()", "Visual microphone tracks stop during cleanup");
@@ -235,7 +267,7 @@ check(
 );
 check(
   "Late onresult remains accepted after normal confirmation",
-  !voiceHook.slice(voiceHook.indexOf("recognition.onresult"), voiceHook.indexOf("recognition.onerror")).includes("stopRequested"),
+  !voiceHook.slice(voiceHook.indexOf("segmentRecognition.onresult"), voiceHook.indexOf("segmentRecognition.onerror")).includes("stopRequested"),
 );
 check(
   "Cancel bypasses tail grace and cannot commit a transcript",
@@ -244,7 +276,7 @@ check(
 );
 check(
   "Full listening state begins only after the browser onstart event",
-  voiceHook.indexOf('setPhase("recording")') > voiceHook.indexOf("recognition.onstart"),
+  voiceHook.indexOf('setPhase("recording")') > voiceHook.indexOf("segmentRecognition.onstart"),
 );
 check(
   "Transcript callback only updates the existing input path",
@@ -299,6 +331,340 @@ check(
 
 includes(route, 'export const runtime = "nodejs"', "Dormant transcription route remains present");
 includes(providerAdapter, 'enabled !== "true"', "Dormant OpenAI adapter remains default-deny");
+
+function withVoiceHook(userAgent, test, deferContinuationStartEvent = false) {
+  const originalWindow = globalThis.window;
+  const originalNavigator = Object.getOwnPropertyDescriptor(globalThis, "navigator");
+  const originalSetTimeout = globalThis.setTimeout;
+  const originalClearTimeout = globalThis.clearTimeout;
+  const originalSetInterval = globalThis.setInterval;
+  const originalClearInterval = globalThis.clearInterval;
+  const timers = new Map();
+  const instances = [];
+  const transcripts = [];
+  const stateSlots = [];
+  let slot = 0;
+  let nextTimerId = 0;
+  let cleanup = null;
+  let visualCaptureCalls = 0;
+
+  const react = {
+    useState(initialValue) {
+      const index = slot++;
+      if (!(index in stateSlots)) stateSlots[index] = initialValue;
+      return [stateSlots[index], (value) => {
+        stateSlots[index] = typeof value === "function" ? value(stateSlots[index]) : value;
+      }];
+    },
+    useRef(initialValue) {
+      const index = slot++;
+      if (!(index in stateSlots)) stateSlots[index] = { current: initialValue };
+      return stateSlots[index];
+    },
+    useCallback(callback) {
+      slot++;
+      return callback;
+    },
+    useEffect(effect) {
+      const index = slot++;
+      if (!(index in stateSlots)) {
+        cleanup = effect();
+        stateSlots[index] = true;
+      }
+    },
+  };
+  const loadedHook = { exports: {} };
+  const output = ts.transpileModule(voiceHook, {
+    fileName: "use-home-simulator-voice.ts",
+    compilerOptions: {
+      esModuleInterop: true,
+      module: ts.ModuleKind.CommonJS,
+      moduleResolution: ts.ModuleResolutionKind.NodeJs,
+      target: ts.ScriptTarget.ES2022,
+    },
+  });
+  const hookRequire = (name) => name === "react" ? react : require(join(rootDir, "components", name));
+  new Function("require", "module", "exports", output.outputText)(
+    hookRequire,
+    loadedHook,
+    loadedHook.exports,
+  );
+
+  class MockRecognition {
+    constructor() {
+      this.startCalls = 0;
+      this.stopCalls = 0;
+      this.abortCalls = 0;
+      instances.push(this);
+    }
+    start() {
+      this.startCalls += 1;
+      if (!deferContinuationStartEvent || instances.length === 1) this.onstart?.();
+    }
+    stop() { this.stopCalls += 1; }
+    abort() { this.abortCalls += 1; }
+  }
+  const browserNavigator = {
+    userAgent,
+    mediaDevices: {
+      getUserMedia() {
+        visualCaptureCalls += 1;
+        throw new Error("Visual capture is not needed by this test");
+      },
+    },
+  };
+  const schedule = (callback, delay, repeating) => {
+    const id = ++nextTimerId;
+    timers.set(id, { callback, delay, repeating });
+    return id;
+  };
+
+  try {
+    globalThis.window = { navigator: browserNavigator, SpeechRecognition: MockRecognition };
+    Object.defineProperty(globalThis, "navigator", {
+      configurable: true,
+      value: browserNavigator,
+    });
+    globalThis.setTimeout = (callback, delay) => schedule(callback, delay, false);
+    globalThis.setInterval = (callback, delay) => schedule(callback, delay, true);
+    globalThis.clearTimeout = (id) => timers.delete(id);
+    globalThis.clearInterval = (id) => timers.delete(id);
+
+    const harness = {
+      instances,
+      transcripts,
+      render() {
+        slot = 0;
+        return loadedHook.exports.useHomeSimulatorVoice({
+          onMessage() {},
+          onTranscript(transcript) { transcripts.push(transcript); },
+        });
+      },
+      emitFinal(recognition, fragments) {
+        recognition.onresult?.({
+          resultIndex: 0,
+          results: fragments.map((transcript) => ({
+            0: { confidence: 0.9, transcript },
+            isFinal: true,
+            length: 1,
+          })),
+        });
+      },
+      runTimer(delay) {
+        const entry = [...timers.entries()].find(([, timer]) => timer.delay === delay);
+        if (!entry) return false;
+        const [id, timer] = entry;
+        if (!timer.repeating) timers.delete(id);
+        timer.callback();
+        return true;
+      },
+      countTimers(delay) {
+        return [...timers.values()].filter((timer) => timer.delay === delay).length;
+      },
+      get visualCaptureCalls() { return visualCaptureCalls; },
+      unmount() { cleanup?.(); },
+    };
+    test(harness);
+  } finally {
+    globalThis.window = originalWindow;
+    if (originalNavigator) {
+      Object.defineProperty(globalThis, "navigator", originalNavigator);
+    } else {
+      delete globalThis.navigator;
+    }
+    globalThis.setTimeout = originalSetTimeout;
+    globalThis.clearTimeout = originalClearTimeout;
+    globalThis.setInterval = originalSetInterval;
+    globalThis.clearInterval = originalClearInterval;
+  }
+}
+
+const androidChromeUserAgent =
+  "Mozilla/5.0 (Linux; Android 15; 23127PN0CG) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Mobile Safari/537.36";
+const macSafariUserAgent =
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15";
+const iphoneSafariUserAgent =
+  "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Mobile/15E148 Safari/604.1";
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
+  voice.render().start();
+  const first = voice.instances[0];
+  const staleResult = first.onresult;
+  const staleEnd = first.onend;
+  voice.emitFinal(first, ["a", "a ver", "a ver qué tal funciona"]);
+  first.onend();
+  check("Successful Android onend keeps one recording session without transcript commit",
+    voice.render().phase === "recording" && voice.transcripts.length === 0 && voice.instances.length === 1);
+  check("Android visual capture stays disabled during recognition", voice.visualCaptureCalls === 0);
+  check("Android continuation creates a fresh configured recognition instance",
+    voice.runTimer(0) && voice.instances.length === 2 &&
+    voice.instances[1] !== first && voice.instances[1].lang === "es-ES" &&
+    voice.instances[1].continuous === true && voice.instances[1].interimResults === true &&
+    voice.instances[1].maxAlternatives === 1 && voice.instances[1].startCalls === 1);
+  const second = voice.instances[1];
+  staleResult({ resultIndex: 0, results: [{ 0: { transcript: "stale" }, isFinal: true }] });
+  staleEnd();
+  check("Stale Android callbacks cannot create another segment", voice.instances.length === 2);
+  voice.emitFinal(second, ["Necesito mantener unos ingresos estables."]);
+  voice.render().stop();
+  second.onend();
+  check("Fresh resultIndex zero preserves earlier segment and commits once",
+    voice.transcripts.length === 1 &&
+    voice.transcripts[0] === "a ver qué tal funciona Necesito mantener unos ingresos estables.");
+  check("Old callbacks cannot mutate the committed transcript", voice.transcripts.length === 1);
+});
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
+  voice.render().start();
+  voice.emitFinal(voice.instances[0], ["Primera frase."]);
+  voice.instances[0].onend();
+  voice.runTimer(0);
+  voice.render().stop();
+  voice.instances[1].onerror({ error: "no-speech" });
+  voice.instances[1].onend();
+  check("No-speech during manual stop preserves completed Android segments",
+    voice.transcripts[0] === "Primera frase." && voice.transcripts.length === 1);
+});
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
+  voice.render().start();
+  voice.emitFinal(voice.instances[0], ["Repito esta frase."]);
+  voice.instances[0].onend();
+  voice.runTimer(0);
+  voice.emitFinal(voice.instances[1], ["Repito esta frase."]);
+  voice.render().stop();
+  voice.instances[1].onend();
+  check("Intentional repeated phrases in separate Android segments are retained",
+    voice.transcripts[0] === "Repito esta frase. Repito esta frase.");
+});
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
+  voice.render().start();
+  voice.emitFinal(voice.instances[0], ["Primera frase."]);
+  voice.instances[0].onend();
+  voice.render().stop();
+  check("Manual stop between Android segments commits without creating another instance",
+    voice.transcripts[0] === "Primera frase." && !voice.runTimer(0) && voice.instances.length === 1);
+});
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
+  voice.render().start();
+  voice.emitFinal(voice.instances[0], ["Primera frase."]);
+  voice.instances[0].onend();
+  voice.runTimer(0);
+  voice.render().stop();
+  voice.instances[1].onstart?.();
+  voice.instances[1].onend();
+  check("Manual stop while next Android segment starts prevents recording reset and continuation",
+    voice.transcripts[0] === "Primera frase." && voice.render().phase === "completed" &&
+    voice.instances.length === 2 && !voice.runTimer(0));
+}, true);
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
+  voice.render().start();
+  voice.emitFinal(voice.instances[0], ["Primera frase."]);
+  voice.instances[0].onend();
+  voice.runTimer(0);
+  check("Android continuation retains exactly one 120-second deadline", voice.countTimers(120000) === 1);
+  voice.emitFinal(voice.instances[1], ["Segunda frase."]);
+  const limitFired = voice.runTimer(120000);
+  voice.instances[1].onend();
+  check("120-second limit terminates Android session with one combined commit",
+    limitFired && voice.instances[1].stopCalls === 1 &&
+    voice.transcripts[0] === "Primera frase. Segunda frase." &&
+    voice.transcripts.length === 1 && !voice.runTimer(0));
+});
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
+  voice.render().start();
+  voice.emitFinal(voice.instances[0], ["Primera frase."]);
+  voice.instances[0].onend();
+  const limitFired = voice.runTimer(120000);
+  check("120-second limit between Android segments commits without another instance",
+    limitFired && voice.transcripts[0] === "Primera frase." &&
+    voice.instances.length === 1 && !voice.runTimer(0));
+});
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
+  voice.render().start();
+  voice.emitFinal(voice.instances[0], ["Texto final."]);
+  voice.render().stop();
+  const boundedFinalizationFired = voice.runTimer(1200);
+  check("Android manual stop still commits once after bounded finalization without onend",
+    boundedFinalizationFired && voice.transcripts[0] === "Texto final." &&
+    voice.transcripts.length === 1 && voice.instances[0].abortCalls === 1);
+});
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
+  voice.render().start();
+  voice.instances[0].onend();
+  check("Empty Android segment fails without a continuation loop",
+    voice.render().phase === "error" && voice.instances.length === 1 && !voice.runTimer(0));
+});
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
+  voice.render().start();
+  voice.emitFinal(voice.instances[0], ["Texto previo."]);
+  voice.instances[0].onend();
+  voice.runTimer(0);
+  voice.instances[1].onend();
+  check("Empty continued Android segment fails without retry or partial commit",
+    voice.render().phase === "error" && voice.transcripts.length === 0 &&
+    voice.instances.length === 2 && !voice.runTimer(0));
+});
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
+  voice.render().start();
+  voice.emitFinal(voice.instances[0], ["Texto previo."]);
+  voice.instances[0].onend();
+  voice.runTimer(0);
+  voice.instances[1].onerror({ error: "network" });
+  check("Android recognition error does not retry or commit partial text",
+    voice.render().phase === "error" && voice.transcripts.length === 0 && !voice.runTimer(0));
+});
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
+  voice.render().start();
+  voice.emitFinal(voice.instances[0], ["Texto previo."]);
+  voice.instances[0].onend();
+  voice.render().cancel();
+  check("Cancel during Android transition blocks continuation and commit",
+    voice.transcripts.length === 0 && !voice.runTimer(0) && voice.instances.length === 1);
+});
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
+  voice.render().start();
+  voice.emitFinal(voice.instances[0], ["Texto previo."]);
+  voice.instances[0].onend();
+  voice.unmount();
+  check("Unmount during Android transition blocks continuation and commit",
+    voice.transcripts.length === 0 && !voice.runTimer(0) && voice.instances.length === 1);
+});
+
+for (const [name, userAgent] of [
+  ["Safari Mac", macSafariUserAgent],
+  ["Safari iPhone", iphoneSafariUserAgent],
+]) {
+  withVoiceHook(userAgent, (voice) => {
+    voice.render().start();
+    voice.emitFinal(voice.instances[0], ["Dictado Safari."]);
+    voice.instances[0].onend();
+    check(`${name} still completes on browser onend without continuation`,
+      voice.transcripts[0] === "Dictado Safari." && voice.instances.length === 1 && !voice.runTimer(0));
+  });
+}
+
+withVoiceHook(macSafariUserAgent, (voice) => {
+  voice.render().start();
+  voice.emitFinal(voice.instances[0], ["Dictado Safari."]);
+  voice.render().stop();
+  const stopBeforeGrace = voice.instances[0].stopCalls;
+  const graceFired = voice.runTimer(700);
+  voice.instances[0].onend();
+  check("Safari Mac retains 700 ms pre-stop grace and normal completion",
+    stopBeforeGrace === 0 && graceFired && voice.instances[0].stopCalls === 1 &&
+    voice.transcripts[0] === "Dictado Safari.");
+});
 
 const providerOperations = {
   apiTranscribe: 0,
