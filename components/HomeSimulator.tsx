@@ -44,6 +44,10 @@ import { useHomeSimulatorVoice } from "./use-home-simulator-voice";
 const defaultInput =
   "Aceptar una oferta, lanzar un producto, cambiar de país, invertir en una nueva dirección...";
 const MAX_SIMULATION_INPUT_LENGTH = 1200;
+const ANDROID_VOICE_ACTIVITY_LEVELS = [
+  0.14, 0.18, 0.16, 0.22, 0.2, 0.28, 0.24, 0.35, 0.31, 0.43, 0.38, 0.5, 0.44, 0.56,
+  0.49, 0.42, 0.53, 0.46, 0.39, 0.49, 0.34, 0.28, 0.37, 0.25, 0.2, 0.27, 0.18, 0.14,
+] as const;
 const SIMULATE_API_CONTRACT_VERSION = "simulate-api-v1-mock";
 const DEFAULT_PROCESSING_STAGES = [
   {
@@ -986,17 +990,32 @@ export default function HomeSimulator() {
           <div className="voice-recording-interaction">
             <div
               aria-label="Dictado por voz activo"
-              className="voice-waveform"
+              className={`voice-waveform${voice.androidVoiceActivity !== "inactive" ? " voice-waveform--android" : ""}`}
+              data-voice-activity={voice.androidVoiceActivity !== "inactive" ? voice.androidVoiceActivity : undefined}
               role="img"
             >
-              {voice.waveformLevels.map((level, index) => (
+              {(voice.androidVoiceActivity === "inactive"
+                ? voice.waveformLevels
+                : ANDROID_VOICE_ACTIVITY_LEVELS).map((level, index) => (
+                  <span
+                    aria-hidden="true"
+                    className="voice-waveform-bar"
+                    key={index}
+                    style={voice.androidVoiceActivity === "inactive"
+                      ? { height: `${Math.round(level * 100)}%` }
+                      : {
+                          height: `${Math.round(level * 100)}%`,
+                          animationDelay: `-${(index * 173) % 1300}ms`,
+                        }}
+                  />
+                ))}
+              {voice.androidVoiceActivity !== "inactive" && voice.androidResultPulse > 0 && (
                 <span
                   aria-hidden="true"
-                  className="voice-waveform-bar"
-                  key={index}
-                  style={{ height: `${Math.round(level * 100)}%` }}
+                  className="voice-waveform-result-pulse"
+                  key={voice.androidResultPulse}
                 />
-              ))}
+              )}
             </div>
             <button
               aria-label="Cancelar dictado"

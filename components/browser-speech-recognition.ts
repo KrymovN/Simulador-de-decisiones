@@ -33,9 +33,15 @@ export type BrowserSpeechRecognition = {
   interimResults: boolean;
   lang: string;
   maxAlternatives: number;
+  onaudioend: ((event: Event) => void) | null;
+  onaudiostart: ((event: Event) => void) | null;
   onend: ((event: Event) => void) | null;
   onerror: ((event: BrowserSpeechRecognitionErrorEvent) => void) | null;
   onresult: ((event: BrowserSpeechRecognitionEvent) => void) | null;
+  onsoundend: ((event: Event) => void) | null;
+  onsoundstart: ((event: Event) => void) | null;
+  onspeechend: ((event: Event) => void) | null;
+  onspeechstart: ((event: Event) => void) | null;
   onstart: ((event: Event) => void) | null;
   start(): void;
   stop(): void;

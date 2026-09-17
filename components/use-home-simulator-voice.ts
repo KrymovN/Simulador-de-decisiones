@@ -62,6 +62,8 @@ type UseHomeSimulatorVoiceOptions = {
   onTranscript(transcript: string): void;
 };
 
+type AndroidVoiceActivity = "inactive" | "listening" | "speechActive" | "betweenSegments";
+
 function clearSessionTimers(session: VoiceSession) {
   if (session.continuationTimer !== null) {
     clearTimeout(session.continuationTimer);
@@ -86,7 +88,13 @@ function clearSessionTimers(session: VoiceSession) {
 }
 
 function detachRecognitionHandlers(recognition: BrowserSpeechRecognition) {
+  recognition.onaudioend = null;
+  recognition.onaudiostart = null;
   recognition.onstart = null;
+  recognition.onsoundend = null;
+  recognition.onsoundstart = null;
+  recognition.onspeechend = null;
+  recognition.onspeechstart = null;
   recognition.onresult = null;
   recognition.onerror = null;
   recognition.onend = null;
@@ -121,6 +129,8 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
   const [phase, setPhase] = useState<VoicePhase>("idle");
   const [errorCode, setErrorCode] = useState<VoiceErrorCode | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [androidVoiceActivity, setAndroidVoiceActivity] = useState<AndroidVoiceActivity>("inactive");
+  const [androidResultPulse, setAndroidResultPulse] = useState(0);
   const [waveformLevels, setWaveformLevels] = useState<number[]>([
     ...EMPTY_WAVEFORM_LEVELS,
   ]);
@@ -204,6 +214,8 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
       sessionRef.current = null;
     }
     if (mountedRef.current) {
+      setAndroidVoiceActivity("inactive");
+      setAndroidResultPulse(0);
       setWaveformLevels([...EMPTY_WAVEFORM_LEVELS]);
     }
   }, []);
@@ -284,6 +296,9 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
     clearSessionTimers(session);
     session.stopRequested = true;
     session.terminalReason ??= "manual";
+    if (session.androidChromiumCumulativeResults) {
+      setAndroidVoiceActivity("inactive");
+    }
     setPhase("stopping");
     onMessageRef.current("Finalizando el dictado…");
 
@@ -422,6 +437,15 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
         session.recognition === segmentRecognition &&
         !session.cancelled &&
         !session.failed;
+      const canUpdateAndroidVisual = () => session.androidChromiumCumulativeResults &&
+        isCurrentSegment() &&
+        !session.segmentEnded &&
+        session.terminalReason === null;
+      const setListening = () => {
+        if (canUpdateAndroidVisual()) {
+          setAndroidVoiceActivity((current) => current === "speechActive" ? current : "listening");
+        }
+      };
 
       segmentRecognition.lang = BROWSER_SPEECH_RECOGNITION_LANGUAGE;
       segmentRecognition.continuous = true;
@@ -446,16 +470,36 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
           }, VOICE_MAX_RECORDING_MS);
         }
         if (!session.stopRequested) {
+          setListening();
           setPhase("recording");
           onMessageRef.current("");
         }
       };
+      if (session.androidChromiumCumulativeResults) {
+        segmentRecognition.onaudiostart = setListening;
+        segmentRecognition.onsoundstart = setListening;
+        segmentRecognition.onspeechstart = () => {
+          if (canUpdateAndroidVisual()) {
+            setAndroidVoiceActivity("speechActive");
+          }
+        };
+        segmentRecognition.onspeechend = () => {
+          if (canUpdateAndroidVisual()) {
+            setAndroidVoiceActivity("listening");
+          }
+        };
+        segmentRecognition.onsoundend = segmentRecognition.onspeechend;
+        segmentRecognition.onaudioend = segmentRecognition.onspeechend;
+      }
       segmentRecognition.onresult = (event: BrowserSpeechRecognitionEvent) => {
         if (!isCurrentSegment() || session.segmentEnded) {
           return;
         }
         session.receivedResult = true;
         collectSpeechRecognitionResults(event, session.transcriptState);
+        if (canUpdateAndroidVisual()) {
+          setAndroidResultPulse((pulse) => pulse + 1);
+        }
       };
       segmentRecognition.onerror = (event) => {
         if (!isCurrentSegment()) {
@@ -491,6 +535,7 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
 
           session.completedSegments.push(segmentTranscript);
           session.segmentEnded = true;
+          setAndroidVoiceActivity("betweenSegments");
           detachRecognitionHandlers(segmentRecognition);
           session.continuationTimer = setTimeout(() => {
             session.continuationTimer = null;
@@ -551,6 +596,8 @@ export function useHomeSimulatorVoice(options: UseHomeSimulatorVoiceOptions) {
   }, [releaseSession]);
 
   return {
+    androidResultPulse,
+    androidVoiceActivity,
     audioLevel: Math.max(...waveformLevels),
     cancel,
     elapsedSeconds,

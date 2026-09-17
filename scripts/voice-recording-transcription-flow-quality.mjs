@@ -284,8 +284,20 @@ check(
     homeSimulator.slice(homeSimulator.indexOf("onTranscript(transcript)"), homeSimulator.indexOf("const isVoiceProcessing")).includes("setInput(nextInput)") &&
     !homeSimulator.slice(homeSimulator.indexOf("onTranscript(transcript)"), homeSimulator.indexOf("const isVoiceProcessing")).includes("handleSubmit"),
 );
-includes(homeSimulator, 'className="voice-waveform"', "Existing listening visualization remains mounted");
-includes(homeSimulator, "voice.waveformLevels.map", "Waveform renders the running sample history");
+includes(homeSimulator, 'className={`voice-waveform${', "Existing listening visualization remains mounted");
+check(
+  "Android and Safari share the same 28-bar markup while Safari keeps real waveform levels",
+  /\(voice\.androidVoiceActivity === "inactive"\s*\? voice\.waveformLevels\s*: ANDROID_VOICE_ACTIVITY_LEVELS\)\.map/.test(homeSimulator),
+);
+const androidBarProfile = homeSimulator.match(/const ANDROID_VOICE_ACTIVITY_LEVELS = \[([\s\S]*?)\] as const;/)?.[1] ?? "";
+check("Android activity profile has 28 deterministic, varied bars",
+  (androidBarProfile.match(/0\.\d+/g) ?? []).length === 28 &&
+  new Set(androidBarProfile.match(/0\.\d+/g) ?? []).size > 10);
+includes(homeSimulator, 'animationDelay: `-${(index * 173) % 1300}ms`', "Android bar phases are deterministic and staggered");
+includes(homeSimulator, 'className="voice-waveform-result-pulse"', "Recognition results can gently pulse without live announcements");
+excludes(homeSimulator, 'className="voice-live-line-track"', "Android scanner line is removed");
+excludes(homeSimulator, 'className="voice-live-line-flow"', "Android traveling beam is removed");
+excludes(homeSimulator, 'className="voice-activity-label"', "Android indicator has no visible status label");
 excludes(homeSimulator, "Diagnostic: visual analyser OFF", "No-analyser diagnostic UI is removed");
 excludes(homeSimulator, "Voice no-analyser A/B trace", "Voice diagnostic event panel is removed");
 includes(homeSimulator, 'className="voice-accessible-status"', "Voice lifecycle remains accessible");
@@ -295,9 +307,35 @@ check(
   /\.voice-waveform-bar\s*\{[\s\S]*?width:\s*3px;[\s\S]*?max-height:\s*34px;/.test(simulatorCss),
 );
 check(
-  "Waveform bars have no independent CSS animation",
-  !/\.voice-waveform-bar\s*\{[^}]*animation\s*:/s.test(simulatorCss),
+  "Non-Android waveform bars have no independent CSS animation",
+  !/(?:^|\n)\.voice-waveform-bar\s*\{[^}]*animation\s*:/s.test(simulatorCss),
 );
+check(
+  "Android inherits the same rounded capsule, bar sizing, and spacing as iPhone",
+  /\.voice-waveform\s*\{[^}]*gap:\s*clamp\(2px, 0\.7vw, 4px\);[^}]*border-radius:\s*var\(--voice-control-radius\);[^}]*background:/.test(simulatorCss) &&
+  !/\.voice-waveform--android\s*\{[^}]*(?:border:|background:|padding:)/.test(simulatorCss),
+);
+check(
+  "Android activity motion changes bar transforms, not measured amplitude",
+  simulatorCss.includes('animation: voiceAndroidBarListening') &&
+    simulatorCss.includes('transform: scaleY(') &&
+    !simulatorCss.slice(simulatorCss.indexOf('@keyframes voiceAndroidBarListening'), simulatorCss.indexOf('@media (prefers-reduced-motion: reduce)')).includes('height:'),
+);
+check(
+  "Listening, speech, and between-segment bars keep distinct motion without synchronized rhythm",
+  simulatorCss.includes('--voice-bar-cycle: 1700ms') &&
+    simulatorCss.includes('--voice-bar-cycle: 1050ms') &&
+    simulatorCss.includes('--voice-bar-cycle: 2100ms') &&
+    simulatorCss.includes('animation-name: voiceAndroidBarSpeech') &&
+    simulatorCss.includes('animation-name: voiceAndroidBarBetween') &&
+    simulatorCss.includes('.voice-waveform-bar:nth-child(3n)') &&
+    simulatorCss.includes('.voice-waveform-bar:nth-child(4n + 1)'),
+);
+check(
+  "Reduced motion keeps a static Android waveform shape",
+  /@media \(prefers-reduced-motion: reduce\) \{[\s\S]*?\.voice-waveform--android \.voice-waveform-bar,[\s\S]*?animation: none;[\s\S]*?\.voice-waveform--android \.voice-waveform-bar\s*\{[^}]*transform:\s*scaleY\(0\.78\);/.test(simulatorCss),
+);
+excludes(simulatorCss, "voiceLineTravel", "No horizontal scanner animation remains");
 check(
   "Homepage microphone is an exact circle",
   /\.minimal-home \.decision-console \.voice-input-button\s*\{[^}]*aspect-ratio:\s*1;[^}]*border-radius:\s*50%;/s.test(homepageCss),
@@ -487,6 +525,119 @@ const iphoneSafariUserAgent =
   "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Mobile/15E148 Safari/604.1";
 
 withVoiceHook(androidChromeUserAgent, (voice) => {
+  check("Android visual activity starts inactive", voice.render().androidVoiceActivity === "inactive");
+  voice.render().start();
+  const recognition = voice.instances[0];
+  check("Android onstart enters listening visual state", voice.render().androidVoiceActivity === "listening");
+  recognition.onaudiostart?.();
+  recognition.onsoundstart?.();
+  check("Android audiostart and soundstart retain listening", voice.render().androidVoiceActivity === "listening");
+  recognition.onspeechstart?.();
+  check("Android speechstart strengthens visual state", voice.render().androidVoiceActivity === "speechActive");
+  recognition.onsoundstart?.();
+  recognition.onstart?.();
+  check("Late start/soundstart cannot weaken detected speech", voice.render().androidVoiceActivity === "speechActive");
+  const pulseBeforeResult = voice.render().androidResultPulse;
+  recognition.onresult?.({
+    resultIndex: 0,
+    results: [{ 0: { confidence: 0.9, transcript: "Una" }, isFinal: false, length: 1 }],
+  });
+  check("Android interim result pulses without committing or altering recognition timers",
+    voice.render().androidResultPulse === pulseBeforeResult + 1 &&
+    voice.render().phase === "recording" && voice.transcripts.length === 0 &&
+    voice.instances.length === 1 && voice.countTimers(120000) === 1);
+  recognition.onspeechend?.();
+  check("Android speechend returns to listening", voice.render().androidVoiceActivity === "listening");
+  recognition.onspeechstart?.();
+  recognition.onsoundend?.();
+  check("Android soundend safely returns to listening when speechend is absent",
+    voice.render().androidVoiceActivity === "listening");
+  recognition.onspeechstart?.();
+  recognition.onaudioend?.();
+  check("Android audioend is visual-only and keeps the logical session recording",
+    voice.render().androidVoiceActivity === "listening" && voice.render().phase === "recording");
+  check("Android visual events never start extra microphone capture", voice.visualCaptureCalls === 0);
+});
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
+  voice.render().start();
+  const first = voice.instances[0];
+  first.onspeechstart?.();
+  const staleSpeechStart = first.onspeechstart;
+  const staleAudioStart = first.onaudiostart;
+  const staleResult = first.onresult;
+  voice.emitFinal(first, ["Primera frase."]);
+  first.onend();
+  check("Android browser onend shows betweenSegments without transcript commit",
+    voice.render().androidVoiceActivity === "betweenSegments" &&
+    voice.render().phase === "recording" && voice.transcripts.length === 0);
+  check("Missing speechend/soundend/audioend does not prevent visual continuation",
+    voice.runTimer(0) && voice.render().androidVoiceActivity === "listening");
+  const pulseAfterContinuation = voice.render().androidResultPulse;
+  staleSpeechStart();
+  staleAudioStart();
+  staleResult({ resultIndex: 0, results: [{ 0: { transcript: "stale" }, isFinal: true }] });
+  check("Previous-generation visual callbacks cannot change next-segment activity or pulse",
+    voice.render().androidVoiceActivity === "listening" &&
+    voice.render().androidResultPulse === pulseAfterContinuation);
+  const second = voice.instances[1];
+  second.onspeechstart?.();
+  check("New Android segment can detect speech independently", voice.render().androidVoiceActivity === "speechActive");
+  voice.emitFinal(second, ["Segunda frase."]);
+  voice.render().stop();
+  check("Android manual stop resets visual activity before finalization",
+    voice.render().androidVoiceActivity === "inactive" && voice.render().phase === "stopping");
+  second.onend();
+  check("Android multi-segment transcript still commits exactly once",
+    voice.transcripts.length === 1 && voice.transcripts[0] === "Primera frase. Segunda frase.");
+});
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
+  voice.render().start();
+  voice.instances[0].onspeechstart?.();
+  voice.render().cancel();
+  check("Android cancel resets visual state without transcript commit",
+    voice.render().androidVoiceActivity === "inactive" &&
+    voice.render().phase === "idle" && voice.transcripts.length === 0);
+});
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
+  voice.render().start();
+  voice.instances[0].onspeechstart?.();
+  voice.instances[0].onerror({ error: "network" });
+  check("Android error resets visual state without continuation",
+    voice.render().androidVoiceActivity === "inactive" &&
+    voice.render().phase === "error" && !voice.runTimer(0));
+});
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
+  voice.render().start();
+  const recognition = voice.instances[0];
+  recognition.onspeechstart?.();
+  const lateVisualEvent = recognition.onspeechstart;
+  voice.emitFinal(recognition, ["Hasta el límite."]);
+  const limitFired = voice.runTimer(120000);
+  lateVisualEvent();
+  check("Android 120-second limit resets activity and rejects late visual callbacks",
+    limitFired && voice.render().androidVoiceActivity === "inactive" &&
+    voice.render().phase === "stopping");
+  recognition.onend();
+  check("Android 120-second limit keeps existing single transcript commit",
+    voice.transcripts.length === 1 && voice.transcripts[0] === "Hasta el límite.");
+});
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
+  voice.render().start();
+  const recognition = voice.instances[0];
+  const lateVisualEvent = recognition.onspeechstart;
+  voice.unmount();
+  lateVisualEvent();
+  check("Unmount detaches Android visual callbacks and cannot continue or commit",
+    recognition.onspeechstart === null && voice.transcripts.length === 0 &&
+    voice.instances.length === 1 && !voice.runTimer(0));
+});
+
+withVoiceHook(androidChromeUserAgent, (voice) => {
   voice.render().start();
   const first = voice.instances[0];
   const staleResult = first.onresult;
@@ -651,6 +802,8 @@ for (const [name, userAgent] of [
     voice.instances[0].onend();
     check(`${name} still completes on browser onend without continuation`,
       voice.transcripts[0] === "Dictado Safari." && voice.instances.length === 1 && !voice.runTimer(0));
+    check(`${name} never enters Android visual activity states`,
+      voice.render().androidVoiceActivity === "inactive" && voice.render().androidResultPulse === 0);
   });
 }
 

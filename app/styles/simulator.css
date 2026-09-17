@@ -135,6 +135,52 @@ textarea:focus {
   transition: height 55ms linear;
 }
 
+.voice-waveform--android {
+  --voice-bar-cycle: 1700ms;
+
+  position: relative;
+}
+
+.voice-waveform--android[data-voice-activity="speechActive"] {
+  --voice-bar-cycle: 1050ms;
+}
+
+.voice-waveform--android[data-voice-activity="betweenSegments"] {
+  --voice-bar-cycle: 2100ms;
+}
+
+.voice-waveform--android .voice-waveform-bar {
+  transform-origin: center;
+  transition: none;
+  animation: voiceAndroidBarListening var(--voice-bar-cycle) ease-in-out infinite;
+}
+
+.voice-waveform--android .voice-waveform-bar:nth-child(3n) {
+  animation-duration: calc(var(--voice-bar-cycle) + 190ms);
+}
+
+.voice-waveform--android .voice-waveform-bar:nth-child(4n + 1) {
+  animation-duration: calc(var(--voice-bar-cycle) + 340ms);
+}
+
+.voice-waveform--android[data-voice-activity="speechActive"] .voice-waveform-bar {
+  animation-name: voiceAndroidBarSpeech;
+}
+
+.voice-waveform--android[data-voice-activity="betweenSegments"] .voice-waveform-bar {
+  animation-name: voiceAndroidBarBetween;
+}
+
+.voice-waveform-result-pulse {
+  position: absolute;
+  inset: 6px 10px;
+  border-radius: 999px;
+  background: radial-gradient(ellipse at center, currentColor, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  animation: voiceAndroidBarResult 440ms ease-out forwards;
+}
+
 .voice-recording-interaction .voice-confirm-control,
 .voice-recording-interaction .voice-cancel-control {
   display: grid;
@@ -242,6 +288,70 @@ textarea:focus {
   }
 }
 
+@keyframes voiceAndroidBarListening {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scaleY(0.58);
+  }
+
+  35% {
+    opacity: 0.84;
+    transform: scaleY(0.88);
+  }
+
+  70% {
+    opacity: 0.67;
+    transform: scaleY(0.68);
+  }
+}
+
+@keyframes voiceAndroidBarSpeech {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scaleY(0.72);
+  }
+
+  28% {
+    opacity: 1;
+    transform: scaleY(1.2);
+  }
+
+  62% {
+    opacity: 0.72;
+    transform: scaleY(0.65);
+  }
+
+  82% {
+    opacity: 0.92;
+    transform: scaleY(1.04);
+  }
+}
+
+@keyframes voiceAndroidBarBetween {
+  0%,
+  100% {
+    opacity: 0.46;
+    transform: scaleY(0.52);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scaleY(0.72);
+  }
+}
+
+@keyframes voiceAndroidBarResult {
+  25% {
+    opacity: 0.14;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .voice-waveform-bar {
     transition: none;
@@ -250,6 +360,21 @@ textarea:focus {
   .voice-processing-indicator span {
     animation: none;
     opacity: 0.6;
+  }
+
+  .voice-waveform--android .voice-waveform-bar,
+  .voice-waveform-result-pulse {
+    animation: none;
+  }
+
+  .voice-waveform--android .voice-waveform-bar {
+    opacity: 0.75;
+    transform: scaleY(0.78);
+  }
+
+  .voice-waveform--android[data-voice-activity="speechActive"] .voice-waveform-bar {
+    opacity: 1;
+    transform: scaleY(1);
   }
 }
 
