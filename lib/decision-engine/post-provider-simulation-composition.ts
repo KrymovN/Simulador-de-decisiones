@@ -12,7 +12,7 @@ import {
 } from "./post-provider-boundary";
 import { runSimulationPipeline } from "./pipeline";
 import { validateSimulationResponseV2DraftShape } from "./simulation-response";
-import type { DecisionInput, DecisionIntent, EvidenceRef } from "./types";
+import type { DecisionInput, DecisionIntent, EvidenceRef, ScenarioDependency } from "./types";
 
 export const POST_PROVIDER_SIMULATION_COMPOSITION_VERSION =
   "stage-9-post-provider-simulation-composition.1" as const;
@@ -349,6 +349,84 @@ function controlledEvidence(item: DecisionEngineControlledMaterialItem): Evidenc
   };
 }
 
+function linkedDependencyOptionId(
+  item: DecisionEngineControlledMaterialItem,
+  source: DecisionEngineSimulationSource,
+): string | undefined {
+  if (item.itemType !== "dependency") return undefined;
+
+  const optionIds = new Set(source.decisionContext.options.map((option) => option.id));
+  const linkedIds = [...item.optionIds, ...item.scenarioOptionIds];
+  if (item.sourceProvenanceRef.startsWith("option_") || item.sourceProvenanceRef.startsWith("scenario_")) {
+    if (item.sourceContextEntityIds.length !== 1 || !optionIds.has(item.sourceContextEntityIds[0])) {
+      return undefined;
+    }
+    linkedIds.push(item.sourceContextEntityIds[0]);
+  }
+
+  if (item.sourceProvenanceRef.startsWith("constraint_")) {
+    const constraint = source.decisionContext.constraints.find(
+      (candidate) => item.sourceContextEntityIds.includes(candidate.id),
+    );
+    if (!constraint) return undefined;
+    if (linkedIds.length === 0 && constraint.appliesToOptionIds.length === 1) {
+      linkedIds.push(constraint.appliesToOptionIds[0]);
+    }
+    if (constraint.appliesToOptionIds.length > 0 &&
+        linkedIds.some((id) => !constraint.appliesToOptionIds.includes(id))) {
+      return undefined;
+    }
+  }
+
+  const uniqueIds = new Set(linkedIds);
+  if (uniqueIds.size !== 1) return undefined;
+  const optionId = linkedIds[0];
+  return optionIds.has(optionId) ? optionId : undefined;
+}
+
+function normalizedDependencyContent(content: string): string {
+  return content.normalize("NFKC").trim().replace(/\s+/gu, " ").toLocaleLowerCase("es-ES");
+}
+
+function composeControlledDependencies(
+  response: SimulationResponseV2Draft,
+  source: DecisionEngineSimulationSource,
+  items: DecisionEngineControlledMaterialItem[],
+): SimulationResponseV2Draft {
+  if (!response.analysis) return response;
+
+  const linkedDependencies = items.flatMap((item) => {
+    const optionId = linkedDependencyOptionId(item, source);
+    return optionId ? [{ item, optionId }] : [];
+  });
+  if (linkedDependencies.length === 0) return response;
+
+  const scenarios = response.analysis.scenarios.map((scenario) => {
+    let dependencies = scenario.dependencies;
+    for (const { item, optionId } of linkedDependencies) {
+      if (scenario.optionId !== optionId) continue;
+      const normalized = normalizedDependencyContent(item.content);
+      if (dependencies.some((dependency) =>
+        dependency.id === item.materialItemId ||
+        normalizedDependencyContent(dependency.description) === normalized
+      )) continue;
+
+      const additionalDependency: ScenarioDependency = {
+        id: item.materialItemId,
+        kind: "constraint",
+        sourceEntityId: item.materialItemId,
+        status: "unknown",
+        materiality: "supporting",
+        description: item.content,
+      };
+      dependencies = [...dependencies, additionalDependency];
+    }
+    return dependencies === scenario.dependencies ? scenario : { ...scenario, dependencies };
+  });
+
+  return { ...response, analysis: { ...response.analysis, scenarios } };
+}
+
 function composeControlledTrace(
   response: SimulationResponseV2Draft,
   items: DecisionEngineControlledMaterialItem[],
@@ -420,7 +498,11 @@ export function composePostProviderSimulationResponse(
   }
 
   const composed = composeControlledTrace(
-    { ...response, generatedAt: source.generatedAt },
+    composeControlledDependencies(
+      { ...response, generatedAt: source.generatedAt },
+      source,
+      value.controlledMaterial.items,
+    ),
     value.controlledMaterial.items,
   );
   if (!validateSimulationResponseV2DraftShape(composed)) {

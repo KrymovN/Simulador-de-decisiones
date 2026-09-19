@@ -1,12 +1,26 @@
 import "server-only";
 
-import { validPostProviderDecisionEngineResult } from "./post-provider-boundary-validation";
+import {
+  CANDIDATE_DECISION_MATERIAL_CAPABILITY,
+  CANDIDATE_DECISION_MATERIAL_CONTRACT_VERSION,
+  type CandidateDecisionMaterial,
+  type CandidateDecisionMaterialItem,
+} from "../ai-decision-material/contracts";
+import {
+  composePostProviderDecisionMaterial,
+  type PostProviderDecisionEngineBoundaryResult,
+} from "./post-provider-boundary";
+import {
+  validPostProviderBridgeRequest,
+  validPostProviderDecisionEngineResult,
+} from "./post-provider-boundary-validation";
 import {
   composePostProviderSimulationResponse,
   type PostProviderSimulationCompositionErrorCode,
   type PostProviderSimulationCompositionResult,
 } from "./post-provider-simulation-composition";
 import { validateSimulationResponseV2DraftShape } from "./simulation-response";
+import { mapSimulationResponseV2ToUiModel } from "./simulation-response-v2-ui-mapping";
 
 export type PostProviderSimulationCompositionValidationCase = {
   caseId: string;
@@ -47,6 +61,87 @@ function errorCode(
   return result.status === "rejected" ? result.error.code : undefined;
 }
 
+const CONTROLLED_DEPENDENCY_CONTENT =
+  "La disponibilidad del equipo operativo debe confirmarse antes del piloto.";
+
+function dependencyCandidate(
+  overrides: Partial<CandidateDecisionMaterialItem> = {},
+): CandidateDecisionMaterialItem {
+  return {
+    candidate_id: "candidate_dependency_launch",
+    item_type: "dependency",
+    content: CONTROLLED_DEPENDENCY_CONTENT,
+    provenance: { source: "provider_candidate", source_ref: "question_1" },
+    confidence: "medium",
+    evidence: "provider_inference",
+    option_refs: ["option_1"],
+    scenario_refs: ["scenario_1"],
+    criterion_refs: [],
+    authority: "candidate_only",
+    capability: CANDIDATE_DECISION_MATERIAL_CAPABILITY,
+    contract_version: CANDIDATE_DECISION_MATERIAL_CONTRACT_VERSION,
+    ...overrides,
+  };
+}
+
+function semanticBridgeRequest() {
+  const request = clone(validPostProviderBridgeRequest());
+  request.bridgeId = "stage_9_dependency_semantic_effect";
+  request.decisionContext.options[1].feasible = {
+    status: "known",
+    value: true,
+    evidenceRefs: ["evidence_wait"],
+  };
+  request.decisionContext.constraints[0].severity = "material";
+  request.decisionContext.variables = [{
+    id: "variable_capacity",
+    name: "Available capacity",
+    description: "Known operational capacity.",
+    value: { status: "known", value: "sufficient", evidenceRefs: [] },
+    materiality: "important",
+    volatility: "stable",
+    affectedOptionIds: [],
+  }];
+  request.decisionContext.timeHorizon = {
+    decisionDeadline: { status: "known", value: "30 days", evidenceRefs: [] },
+    shortTermWindow: { status: "known", value: "90 days", evidenceRefs: [] },
+    longTermWindow: { status: "known", value: "12 months", evidenceRefs: [] },
+    delayCost: { status: "known", value: "low", evidenceRefs: [] },
+    reversibilityWindow: { status: "known", value: "90 days", evidenceRefs: [] },
+  };
+  request.decisionContext.assumptions = [{
+    id: "assumption_capacity",
+    statement: "Current capacity remains available.",
+    source: "user",
+    materiality: "important",
+    validationStatus: "validated",
+    affectedEntityIds: [],
+    evidenceRefs: [],
+  }];
+  return request;
+}
+
+function controlledMaterialResult(
+  item: CandidateDecisionMaterialItem,
+): PostProviderDecisionEngineBoundaryResult {
+  const material: CandidateDecisionMaterial = {
+    capability: CANDIDATE_DECISION_MATERIAL_CAPABILITY,
+    contract_version: CANDIDATE_DECISION_MATERIAL_CONTRACT_VERSION,
+    generation_status: "completed",
+    classification: "synthetic_non_personal",
+    items: [item],
+  };
+  return composePostProviderDecisionMaterial({
+    boundaryId: `boundary_${item.candidate_id}`,
+    bridgeRequest: semanticBridgeRequest(),
+    candidateMaterial: material,
+  });
+}
+
+function scenarioProjection(result: PostProviderSimulationCompositionResult) {
+  return result.status === "composed" ? result.response.analysis?.scenarios : undefined;
+}
+
 function validationCase(input: {
   caseId: string;
   kind: "positive" | "negative";
@@ -67,6 +162,37 @@ export function runPostProviderSimulationCompositionValidation(): PostProviderSi
   const controlled = validPostProviderDecisionEngineResult();
   const first = composePostProviderSimulationResponse(controlled);
   const repeated = composePostProviderSimulationResponse(clone(controlled));
+  const semanticBaseline = composePostProviderSimulationResponse(
+    controlledMaterialResult(dependencyCandidate({
+      candidate_id: "candidate_risk_baseline",
+      item_type: "risk_signal",
+      content: "La evidencia inicial puede ser insuficiente.",
+    })),
+  );
+  const linkedDependency = composePostProviderSimulationResponse(
+    controlledMaterialResult(dependencyCandidate()),
+  );
+  const duplicateDependency = composePostProviderSimulationResponse(
+    controlledMaterialResult(dependencyCandidate({
+      candidate_id: "candidate_dependency_duplicate",
+      content: "  STAY inside   the synthetic budget.  ",
+    })),
+  );
+  const unlinkedDependency = composePostProviderSimulationResponse(
+    controlledMaterialResult(dependencyCandidate({
+      candidate_id: "candidate_dependency_unlinked",
+      provenance: { source: "provider_candidate", source_ref: "question_1" },
+      option_refs: [],
+      scenario_refs: [],
+    })),
+  );
+  const ambiguousDependency = composePostProviderSimulationResponse(
+    controlledMaterialResult(dependencyCandidate({
+      candidate_id: "candidate_dependency_ambiguous",
+      option_refs: ["option_1"],
+      scenario_refs: ["scenario_2"],
+    })),
+  );
   const cases = [
     validationCase({
       caseId: "controlled_result_composes_into_simulation_response_v2",
@@ -125,6 +251,99 @@ export function runPostProviderSimulationCompositionValidation(): PostProviderSi
         result.evidence.networkExecutionCount === 0 &&
         !result.evidence.apiRouteIntegrated && !result.evidence.uiIntegrated && !result.evidence.persistenceIntegrated,
       issue: "Provider-specific metadata or runtime integration leaked into SimulationResponseV2Draft.",
+    }),
+    validationCase({
+      caseId: "grounded_dependency_has_option_scoped_semantic_effect",
+      kind: "positive",
+      result: linkedDependency,
+      passed: (result) => {
+        if (semanticBaseline.status !== "composed" || result.status !== "composed") return false;
+        const baselineScenarios = scenarioProjection(semanticBaseline);
+        const composedScenarios = scenarioProjection(result);
+        if (!baselineScenarios || !composedScenarios) return false;
+        const baselineTarget = baselineScenarios.filter((scenario) => scenario.optionId === "option_launch");
+        const composedTarget = composedScenarios.filter((scenario) => scenario.optionId === "option_launch");
+        const baselineOther = baselineScenarios.filter((scenario) => scenario.optionId !== "option_launch");
+        const composedOther = composedScenarios.filter((scenario) => scenario.optionId !== "option_launch");
+        const uiModel = mapSimulationResponseV2ToUiModel(result.response);
+        const targetUiScenarios = uiModel.sections.scenarios.items.filter(
+          (scenario) => scenario.optionId === "option_launch",
+        );
+        const otherUiScenarios = uiModel.sections.scenarios.items.filter(
+          (scenario) => scenario.optionId !== "option_launch",
+        );
+        return baselineTarget.length > 0 &&
+          composedTarget.length === baselineTarget.length &&
+          composedTarget.every((scenario) =>
+            scenario.dependencies.some((dependency) =>
+              dependency.id === "decision_material_1_candidate_dependency_launch" &&
+              dependency.description === CONTROLLED_DEPENDENCY_CONTENT) &&
+            (() => {
+              const baseline = baselineTarget.find((candidate) => candidate.id === scenario.id);
+              if (!baseline) return false;
+              const { dependencies: baselineDependencies, ...baselineRest } = baseline;
+              const { dependencies: composedDependencies, ...composedRest } = scenario;
+              return JSON.stringify(composedRest) === JSON.stringify(baselineRest) &&
+                baselineDependencies.every((dependency) => composedDependencies.some((candidate) =>
+                  JSON.stringify(candidate) === JSON.stringify(dependency)));
+            })()) &&
+          JSON.stringify(composedOther) === JSON.stringify(baselineOther) &&
+          composedScenarios.length === baselineScenarios.length &&
+          JSON.stringify(composedScenarios.map((scenario) => scenario.id)) ===
+            JSON.stringify(baselineScenarios.map((scenario) => scenario.id)) &&
+          JSON.stringify(result.response.analysis?.risks) === JSON.stringify(semanticBaseline.response.analysis?.risks) &&
+          JSON.stringify(result.response.recommendation) === JSON.stringify(semanticBaseline.response.recommendation) &&
+          JSON.stringify(result.response.safety) === JSON.stringify(semanticBaseline.response.safety) &&
+          JSON.stringify(result.response.clarification) === JSON.stringify(semanticBaseline.response.clarification) &&
+          JSON.stringify(result.response.modelQuality) === JSON.stringify(semanticBaseline.response.modelQuality) &&
+          result.response.traceability.evidence.some((evidence) =>
+            evidence.id === "decision_material_1_candidate_dependency_launch" &&
+            evidence.claim === CONTROLLED_DEPENDENCY_CONTENT) &&
+          result.response.traceability.responseMapping.some((entry) =>
+            entry.sourceEntityIds.includes("decision_material_1_candidate_dependency_launch")) &&
+          targetUiScenarios.length === composedTarget.length &&
+          targetUiScenarios.every((scenario) =>
+            scenario.triggerConditions.includes(CONTROLLED_DEPENDENCY_CONTENT)) &&
+          otherUiScenarios.every((scenario) =>
+            !scenario.triggerConditions.includes(CONTROLLED_DEPENDENCY_CONTENT));
+      },
+      issue: "Grounded dependency did not affect every and only deterministic scenario for its linked option.",
+    }),
+    validationCase({
+      caseId: "semantic_duplicate_dependency_is_trace_only",
+      kind: "positive",
+      result: duplicateDependency,
+      passed: (result) => result.status === "composed" && semanticBaseline.status === "composed" &&
+        JSON.stringify(result.response.analysis?.scenarios) === JSON.stringify(semanticBaseline.response.analysis?.scenarios) &&
+        result.response.traceability.evidence.some((evidence) =>
+          evidence.id === "decision_material_1_candidate_dependency_duplicate") &&
+        result.response.traceability.responseMapping.some((entry) =>
+          entry.sourceEntityIds.includes("decision_material_1_candidate_dependency_duplicate")),
+      issue: "Semantically duplicate dependency changed scenarios or lost traceability.",
+    }),
+    validationCase({
+      caseId: "unlinked_dependency_remains_trace_only",
+      kind: "negative",
+      result: unlinkedDependency,
+      passed: (result) => result.status === "composed" && semanticBaseline.status === "composed" &&
+        JSON.stringify(result.response.analysis?.scenarios) === JSON.stringify(semanticBaseline.response.analysis?.scenarios) &&
+        result.response.traceability.evidence.some((evidence) =>
+          evidence.id === "decision_material_1_candidate_dependency_unlinked") &&
+        result.response.traceability.responseMapping.some((entry) =>
+          entry.sourceEntityIds.includes("decision_material_1_candidate_dependency_unlinked")),
+      issue: "Dependency without canonical option linkage changed scenarios or lost traceability.",
+    }),
+    validationCase({
+      caseId: "ambiguous_dependency_linkage_remains_trace_only",
+      kind: "negative",
+      result: ambiguousDependency,
+      passed: (result) => result.status === "composed" && semanticBaseline.status === "composed" &&
+        JSON.stringify(result.response.analysis?.scenarios) === JSON.stringify(semanticBaseline.response.analysis?.scenarios) &&
+        result.response.traceability.evidence.some((evidence) =>
+          evidence.id === "decision_material_1_candidate_dependency_ambiguous") &&
+        result.response.traceability.responseMapping.some((entry) =>
+          entry.sourceEntityIds.includes("decision_material_1_candidate_dependency_ambiguous")),
+      issue: "Ambiguous option linkage changed scenarios or lost traceability.",
     }),
     validationCase({
       caseId: "raw_candidate_material_cannot_bypass_decision_engine",
