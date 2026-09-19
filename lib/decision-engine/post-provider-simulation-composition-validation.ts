@@ -63,6 +63,8 @@ function errorCode(
 
 const CONTROLLED_DEPENDENCY_CONTENT =
   "La disponibilidad del equipo operativo debe confirmarse antes del piloto.";
+const CONTROLLED_RISK_SIGNAL_CONTENT =
+  "La evidencia temprana puede ocultar una adopcion insuficiente del piloto.";
 
 function dependencyCandidate(
   overrides: Partial<CandidateDecisionMaterialItem> = {},
@@ -82,6 +84,30 @@ function dependencyCandidate(
     contract_version: CANDIDATE_DECISION_MATERIAL_CONTRACT_VERSION,
     ...overrides,
   };
+}
+
+function traceOnlyCandidate(
+  overrides: Partial<CandidateDecisionMaterialItem> = {},
+): CandidateDecisionMaterialItem {
+  return dependencyCandidate({
+    candidate_id: "candidate_context_baseline",
+    item_type: "benefit_or_opportunity",
+    content: "El contexto sintetico permanece acotado a las opciones declaradas.",
+    option_refs: [],
+    scenario_refs: [],
+    ...overrides,
+  });
+}
+
+function riskSignalCandidate(
+  overrides: Partial<CandidateDecisionMaterialItem> = {},
+): CandidateDecisionMaterialItem {
+  return dependencyCandidate({
+    candidate_id: "candidate_risk_signal_launch",
+    item_type: "risk_signal",
+    content: CONTROLLED_RISK_SIGNAL_CONTENT,
+    ...overrides,
+  });
 }
 
 function semanticBridgeRequest() {
@@ -122,17 +148,18 @@ function semanticBridgeRequest() {
 }
 
 function controlledMaterialResult(
-  item: CandidateDecisionMaterialItem,
+  input: CandidateDecisionMaterialItem | CandidateDecisionMaterialItem[],
 ): PostProviderDecisionEngineBoundaryResult {
+  const items = Array.isArray(input) ? input : [input];
   const material: CandidateDecisionMaterial = {
     capability: CANDIDATE_DECISION_MATERIAL_CAPABILITY,
     contract_version: CANDIDATE_DECISION_MATERIAL_CONTRACT_VERSION,
     generation_status: "completed",
     classification: "synthetic_non_personal",
-    items: [item],
+    items,
   };
   return composePostProviderDecisionMaterial({
-    boundaryId: `boundary_${item.candidate_id}`,
+    boundaryId: `boundary_${items.length}_${items[0].candidate_id}`,
     bridgeRequest: semanticBridgeRequest(),
     candidateMaterial: material,
   });
@@ -140,6 +167,19 @@ function controlledMaterialResult(
 
 function scenarioProjection(result: PostProviderSimulationCompositionResult) {
   return result.status === "composed" ? result.response.analysis?.scenarios : undefined;
+}
+
+function riskProjection(result: PostProviderSimulationCompositionResult) {
+  return result.status === "composed" ? result.response.analysis?.risks : undefined;
+}
+
+function qualitativeRiskEntries<T extends { detail: string }>(
+  traceEntries: T[],
+  content = CONTROLLED_RISK_SIGNAL_CONTENT,
+): T[] {
+  return traceEntries.filter((entry) =>
+    entry.detail.startsWith("Accepted qualitative risk signal [") && entry.detail.endsWith(`: ${content}`)
+  );
 }
 
 function validationCase(input: {
@@ -163,11 +203,7 @@ export function runPostProviderSimulationCompositionValidation(): PostProviderSi
   const first = composePostProviderSimulationResponse(controlled);
   const repeated = composePostProviderSimulationResponse(clone(controlled));
   const semanticBaseline = composePostProviderSimulationResponse(
-    controlledMaterialResult(dependencyCandidate({
-      candidate_id: "candidate_risk_baseline",
-      item_type: "risk_signal",
-      content: "La evidencia inicial puede ser insuficiente.",
-    })),
+    controlledMaterialResult(traceOnlyCandidate()),
   );
   const linkedDependency = composePostProviderSimulationResponse(
     controlledMaterialResult(dependencyCandidate()),
@@ -192,6 +228,41 @@ export function runPostProviderSimulationCompositionValidation(): PostProviderSi
       option_refs: ["option_1"],
       scenario_refs: ["scenario_2"],
     })),
+  );
+  const linkedRiskSignal = composePostProviderSimulationResponse(
+    controlledMaterialResult([traceOnlyCandidate(), riskSignalCandidate()]),
+  );
+  const duplicateRiskSignal = composePostProviderSimulationResponse(
+    controlledMaterialResult([
+      traceOnlyCandidate(),
+      riskSignalCandidate(),
+      riskSignalCandidate({
+        candidate_id: "candidate_risk_signal_duplicate",
+        content: `  ${CONTROLLED_RISK_SIGNAL_CONTENT.toLocaleUpperCase("es-ES")}  `,
+      }),
+    ]),
+  );
+  const unlinkedRiskSignal = composePostProviderSimulationResponse(
+    controlledMaterialResult([traceOnlyCandidate(), riskSignalCandidate({
+      candidate_id: "candidate_risk_signal_unlinked",
+      option_refs: [],
+      scenario_refs: [],
+    })]),
+  );
+  const conflictingRiskSignal = composePostProviderSimulationResponse(
+    controlledMaterialResult([traceOnlyCandidate(), riskSignalCandidate({
+      candidate_id: "candidate_risk_signal_conflicting",
+      provenance: { source: "provider_candidate", source_ref: "option_1" },
+      option_refs: ["option_2"],
+      scenario_refs: [],
+    })]),
+  );
+  const multipleRiskSignal = composePostProviderSimulationResponse(
+    controlledMaterialResult([traceOnlyCandidate(), riskSignalCandidate({
+      candidate_id: "candidate_risk_signal_multiple",
+      option_refs: ["option_1", "option_2"],
+      scenario_refs: [],
+    })]),
   );
   const cases = [
     validationCase({
@@ -344,6 +415,121 @@ export function runPostProviderSimulationCompositionValidation(): PostProviderSi
         result.response.traceability.responseMapping.some((entry) =>
           entry.sourceEntityIds.includes("decision_material_1_candidate_dependency_ambiguous")),
       issue: "Ambiguous option linkage changed scenarios or lost traceability.",
+    }),
+    validationCase({
+      caseId: "grounded_risk_signal_has_option_scoped_qualitative_effect",
+      kind: "positive",
+      result: linkedRiskSignal,
+      passed: (result) => {
+        if (semanticBaseline.status !== "composed" || result.status !== "composed") return false;
+        const baselineRisks = riskProjection(semanticBaseline);
+        const composedRisks = riskProjection(result);
+        if (!baselineRisks || !composedRisks) return false;
+        const baselineTarget = baselineRisks.filter((risk) => risk.optionId === "option_launch");
+        const composedTarget = composedRisks.filter((risk) => risk.optionId === "option_launch");
+        const baselineOther = baselineRisks.filter((risk) => risk.optionId !== "option_launch");
+        const composedOther = composedRisks.filter((risk) => risk.optionId !== "option_launch");
+        const materialItemId = "decision_material_2_candidate_risk_signal_launch";
+        const addedEntries = composedTarget.flatMap((risk) => qualitativeRiskEntries(risk.traceEntries));
+
+        return baselineTarget.length === 3 &&
+          composedTarget.length === baselineTarget.length &&
+          composedTarget.every((risk) => {
+            const baseline = baselineTarget.find((candidate) => candidate.id === risk.id);
+            if (!baseline) return false;
+            const { traceEntries: baselineTrace, ...baselineDeterministicRisk } = baseline;
+            const { traceEntries: composedTrace, ...composedDeterministicRisk } = risk;
+            const signalEntries = qualitativeRiskEntries(composedTrace);
+            return JSON.stringify(composedDeterministicRisk) === JSON.stringify(baselineDeterministicRisk) &&
+              baselineTrace.every((entry) => composedTrace.some((candidate) =>
+                JSON.stringify(candidate) === JSON.stringify(entry))) &&
+              signalEntries.length === 1 &&
+              signalEntries[0].detail.includes("evidence=provider_inference") &&
+              signalEntries[0].detail.includes("confidence=medium") &&
+              signalEntries[0].detail.includes("provenance=question_1") &&
+              signalEntries[0].detail.includes("deterministic_calculation=false") &&
+              signalEntries[0].sourceEntityIds.includes(risk.id) &&
+              signalEntries[0].sourceEntityIds.includes(risk.scenarioId) &&
+              signalEntries[0].sourceEntityIds.includes("option_launch") &&
+              signalEntries[0].sourceEntityIds.includes(materialItemId) &&
+              signalEntries[0].sourceEntityIds.includes("decision_post_provider");
+          }) &&
+          JSON.stringify(composedOther) === JSON.stringify(baselineOther) &&
+          composedRisks.length === baselineRisks.length &&
+          JSON.stringify(composedRisks.map((risk) => risk.id)) === JSON.stringify(baselineRisks.map((risk) => risk.id)) &&
+          addedEntries.length === composedTarget.length &&
+          addedEntries.every((entry) => result.response.traceability.risks.some((candidate) =>
+            JSON.stringify(candidate) === JSON.stringify(entry))) &&
+          semanticBaseline.response.traceability.risks.every((entry) =>
+            result.response.traceability.risks.some((candidate) => JSON.stringify(candidate) === JSON.stringify(entry))) &&
+          result.response.traceability.evidence.some((entry) =>
+            entry.id === materialItemId &&
+            entry.claim === CONTROLLED_RISK_SIGNAL_CONTENT &&
+            entry.source === "engine_inference" &&
+            entry.reliability === "low" &&
+            entry.userConfirmed === false) &&
+          result.response.traceability.responseMapping.some((entry) =>
+            entry.sourceEntityIds.includes(materialItemId) &&
+            entry.sourceEntityIds.includes("option_launch") &&
+            entry.detail.includes("provenance question_1")) &&
+          JSON.stringify(result.response.analysis?.scenarios) ===
+            JSON.stringify(semanticBaseline.response.analysis?.scenarios) &&
+          JSON.stringify(result.response.recommendation) === JSON.stringify(semanticBaseline.response.recommendation) &&
+          JSON.stringify(result.response.safety) === JSON.stringify(semanticBaseline.response.safety) &&
+          JSON.stringify(result.response.clarification) === JSON.stringify(semanticBaseline.response.clarification) &&
+          JSON.stringify(result.response.modelQuality) === JSON.stringify(semanticBaseline.response.modelQuality);
+      },
+      issue: "Grounded risk signal did not affect every and only existing risk for its linked option.",
+    }),
+    validationCase({
+      caseId: "semantic_duplicate_risk_signal_is_added_once_per_target_risk",
+      kind: "positive",
+      result: duplicateRiskSignal,
+      passed: (result) => result.status === "composed" &&
+        result.response.analysis?.risks.filter((risk) => risk.optionId === "option_launch").length === 3 &&
+        result.response.analysis.risks
+          .filter((risk) => risk.optionId === "option_launch")
+          .every((risk) => risk.traceEntries.filter((entry) =>
+            entry.detail.startsWith("Accepted qualitative risk signal [")).length === 1) &&
+        result.response.traceability.risks.filter((entry) =>
+          entry.detail.startsWith("Accepted qualitative risk signal [")).length === 3,
+      issue: "Normalized duplicate risk signal created duplicate qualitative risk trace entries.",
+    }),
+    validationCase({
+      caseId: "unlinked_risk_signal_remains_trace_only",
+      kind: "negative",
+      result: unlinkedRiskSignal,
+      passed: (result) => result.status === "composed" && semanticBaseline.status === "composed" &&
+        JSON.stringify(result.response.analysis?.risks) === JSON.stringify(semanticBaseline.response.analysis?.risks) &&
+        result.response.traceability.evidence.some((entry) =>
+          entry.id === "decision_material_2_candidate_risk_signal_unlinked") &&
+        result.response.traceability.responseMapping.some((entry) =>
+          entry.sourceEntityIds.includes("decision_material_2_candidate_risk_signal_unlinked")),
+      issue: "Risk signal without canonical option linkage changed risks or lost traceability.",
+    }),
+    validationCase({
+      caseId: "conflicting_risk_signal_linkage_remains_trace_only",
+      kind: "negative",
+      result: conflictingRiskSignal,
+      passed: (result) => result.status === "composed" && semanticBaseline.status === "composed" &&
+        JSON.stringify(result.response.analysis?.risks) === JSON.stringify(semanticBaseline.response.analysis?.risks) &&
+        result.response.traceability.evidence.some((entry) =>
+          entry.id === "decision_material_2_candidate_risk_signal_conflicting") &&
+        result.response.traceability.responseMapping.some((entry) =>
+          entry.sourceEntityIds.includes("decision_material_2_candidate_risk_signal_conflicting")),
+      issue: "Risk signal with conflicting provenance and option linkage changed risks or lost traceability.",
+    }),
+    validationCase({
+      caseId: "multiple_risk_signal_linkage_remains_trace_only",
+      kind: "negative",
+      result: multipleRiskSignal,
+      passed: (result) => result.status === "composed" && semanticBaseline.status === "composed" &&
+        JSON.stringify(result.response.analysis?.risks) === JSON.stringify(semanticBaseline.response.analysis?.risks) &&
+        result.response.traceability.evidence.some((entry) =>
+          entry.id === "decision_material_2_candidate_risk_signal_multiple") &&
+        result.response.traceability.responseMapping.some((entry) =>
+          entry.sourceEntityIds.includes("decision_material_2_candidate_risk_signal_multiple")),
+      issue: "Risk signal linked to multiple options changed risks or lost traceability.",
     }),
     validationCase({
       caseId: "raw_candidate_material_cannot_bypass_decision_engine",

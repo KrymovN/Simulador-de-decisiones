@@ -12,7 +12,14 @@ import {
 } from "./post-provider-boundary";
 import { runSimulationPipeline } from "./pipeline";
 import { validateSimulationResponseV2DraftShape } from "./simulation-response";
-import type { DecisionInput, DecisionIntent, EvidenceRef, ScenarioDependency } from "./types";
+import type {
+  DecisionInput,
+  DecisionIntent,
+  DeterministicRiskAssessment,
+  EvidenceRef,
+  RiskTraceEntry,
+  ScenarioDependency,
+} from "./types";
 
 export const POST_PROVIDER_SIMULATION_COMPOSITION_VERSION =
   "stage-9-post-provider-simulation-composition.1" as const;
@@ -427,6 +434,119 @@ function composeControlledDependencies(
   return { ...response, analysis: { ...response.analysis, scenarios } };
 }
 
+function linkedRiskSignalOptionId(
+  item: DecisionEngineControlledMaterialItem,
+  source: DecisionEngineSimulationSource,
+): string | undefined {
+  if (item.itemType !== "risk_signal") return undefined;
+
+  const optionIds = new Set(source.decisionContext.options.map((option) => option.id));
+  const linkedIds = [...item.optionIds, ...item.scenarioOptionIds];
+  if (item.sourceProvenanceRef.startsWith("option_") || item.sourceProvenanceRef.startsWith("scenario_")) {
+    if (item.sourceContextEntityIds.length !== 1 || !optionIds.has(item.sourceContextEntityIds[0])) {
+      return undefined;
+    }
+    linkedIds.push(item.sourceContextEntityIds[0]);
+  }
+
+  if (item.sourceProvenanceRef.startsWith("constraint_")) {
+    const constraint = source.decisionContext.constraints.find(
+      (candidate) => item.sourceContextEntityIds.includes(candidate.id),
+    );
+    if (!constraint) return undefined;
+    if (linkedIds.length === 0 && constraint.appliesToOptionIds.length === 1) {
+      linkedIds.push(constraint.appliesToOptionIds[0]);
+    }
+    if (constraint.appliesToOptionIds.length > 0 &&
+        linkedIds.some((id) => !constraint.appliesToOptionIds.includes(id))) {
+      return undefined;
+    }
+  }
+
+  const uniqueIds = new Set(linkedIds);
+  if (uniqueIds.size !== 1) return undefined;
+  const optionId = linkedIds[0];
+  return optionIds.has(optionId) ? optionId : undefined;
+}
+
+const QUALITATIVE_RISK_SIGNAL_PREFIX = "Accepted qualitative risk signal [";
+
+function normalizedRiskSignalContent(content: string): string {
+  return content.normalize("NFKC").trim().replace(/\s+/gu, " ").toLocaleLowerCase("es-ES");
+}
+
+function qualitativeRiskSignalContent(entry: RiskTraceEntry): string | undefined {
+  if (entry.rule !== "risk_classification" || !entry.detail.startsWith(QUALITATIVE_RISK_SIGNAL_PREFIX)) {
+    return undefined;
+  }
+  const metadataEnd = entry.detail.indexOf("]: ");
+  return metadataEnd === -1 ? undefined : entry.detail.slice(metadataEnd + 3);
+}
+
+function qualitativeRiskTraceEntry(
+  item: DecisionEngineControlledMaterialItem,
+  risk: DeterministicRiskAssessment,
+): RiskTraceEntry {
+  return {
+    rule: "risk_classification",
+    detail: `${QUALITATIVE_RISK_SIGNAL_PREFIX}evidence=${item.evidenceClassification}; confidence=${item.confidence}; provenance=${item.sourceProvenanceRef}; deterministic_calculation=false]: ${item.content}`,
+    sourceEntityIds: [...new Set([
+      risk.id,
+      risk.scenarioId,
+      risk.optionId,
+      item.materialItemId,
+      ...item.sourceContextEntityIds,
+    ])],
+  };
+}
+
+function composeControlledRiskSignals(
+  response: SimulationResponseV2Draft,
+  source: DecisionEngineSimulationSource,
+  items: DecisionEngineControlledMaterialItem[],
+): SimulationResponseV2Draft {
+  if (!response.analysis) return response;
+
+  const linkedSignals = items.flatMap((item) => {
+    const optionId = linkedRiskSignalOptionId(item, source);
+    return optionId ? [{ item, optionId }] : [];
+  });
+  if (linkedSignals.length === 0) return response;
+
+  const addedTraceEntries: RiskTraceEntry[] = [];
+  const risks = response.analysis.risks.map((risk) => {
+    let traceEntries = risk.traceEntries;
+    const existingSignalContent = new Set(
+      traceEntries
+        .map(qualitativeRiskSignalContent)
+        .filter((content): content is string => content !== undefined)
+        .map(normalizedRiskSignalContent),
+    );
+
+    for (const { item, optionId } of linkedSignals) {
+      if (risk.optionId !== optionId) continue;
+      const normalized = normalizedRiskSignalContent(item.content);
+      if (existingSignalContent.has(normalized)) continue;
+
+      const entry = qualitativeRiskTraceEntry(item, risk);
+      traceEntries = [...traceEntries, entry];
+      existingSignalContent.add(normalized);
+      addedTraceEntries.push(entry);
+    }
+    return traceEntries === risk.traceEntries ? risk : { ...risk, traceEntries };
+  });
+
+  if (addedTraceEntries.length === 0) return response;
+  return {
+    ...response,
+    analysis: { ...response.analysis, risks },
+    traceability: {
+      ...response.traceability,
+      risks: [...response.traceability.risks, ...addedTraceEntries],
+    },
+  };
+}
+
 function composeControlledTrace(
   response: SimulationResponseV2Draft,
   items: DecisionEngineControlledMaterialItem[],
@@ -498,8 +618,12 @@ export function composePostProviderSimulationResponse(
   }
 
   const composed = composeControlledTrace(
-    composeControlledDependencies(
-      { ...response, generatedAt: source.generatedAt },
+    composeControlledRiskSignals(
+      composeControlledDependencies(
+        { ...response, generatedAt: source.generatedAt },
+        source,
+        value.controlledMaterial.items,
+      ),
       source,
       value.controlledMaterial.items,
     ),
