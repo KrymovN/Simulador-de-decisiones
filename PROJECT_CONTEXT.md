@@ -1,6 +1,61 @@
 # PROJECT CONTEXT
 
-## Current authorized state — 4 October 2026
+## Current authorized state — Task 6 closure — 4 October 2026
+
+Source: completed Task 6 evidence and the Project Owner's documentation-only
+synchronization instruction. This section supersedes older current/next-task
+assertions only; earlier dated snapshots and acceptance records remain
+historical evidence, and other approved workstream states remain unchanged.
+
+- Current Stage: `Stage 15 — Scale / final readiness`; Stage 15 remains
+  `IN_PROGRESS` and the aggregate Scale verdict remains `NOT READY`.
+- Task 5 — Operational Readiness:
+  `CLOSED BY OWNER ACCEPTANCE OF DOCUMENTED RESIDUAL RISKS`.
+- Task 6 — Production Release Candidate Validation:
+  `CLOSED / PASS — RC QUALIFIED`.
+- Current Task: `Task 7 — AI Production Scope Decision`.
+- Task 7: `NOT STARTED`; a separate Project Owner decision is required.
+- Task 8 — Final GO / NO-GO: `NOT PERFORMED`; explicit Production Release
+  approval is still required after Task 8.
+- Production AI: `OFF`; no automatic AI activation is authorized.
+- Production Release: `NOT APPROVED`.
+- Commercial Launch: `NOT APPROVED`.
+
+### Task 6 closure evidence
+
+- Exact RC / deployed Git SHA:
+  `81be8217c7922467f6e7bbbd8124edc16a0b6fbd`.
+- Effective production deployment: `dpl_58Nj7jVaeewCm9qpR43Rb84iJA5R`;
+  target `production`, state `READY`; `levio.es` points to this deployment.
+  RC / Production commit match: `YES`.
+- Deterministic release validation: `npm run release:validate:deterministic`
+  — `PASS`, all 11 deterministic gates `PASS`, provider operations `0`.
+  Existing exact-RC evidence was generated at `2026-10-04T13:37:05.860Z`;
+  the suite is not rerun by this documentation synchronization.
+- Production AI was explicitly enforced `OFF` through an owner-authorized
+  update of Production-only Sensitive `LEVIO_REAL_AI_DEV_ENABLED`,
+  ID `MeKjvrQ2iQ4zNfaI`, confirmed at `2026-10-04T14:08:08.383Z`.
+  The OFF setting was applied by redeploying
+  `dpl_FWS1bdDPRvcGXrbjo11kzYbENA89` at the exact RC to the deployment above.
+  The source enables Real AI only on exact `"true"`; no Sensitive plaintext
+  readback is claimed. Provider operations during enforcement: `0`.
+- Historical Task 6 verdict `PARTIAL` reflected the initially unverifiable
+  live AI-OFF setting. Subsequent authorized enforcement closed that blocker;
+  final Task 6 verdict: `PASS — RC QUALIFIED`.
+
+Task 5 monitoring/alerting, authenticated health-cron, backup, and restore
+residual risks remain carried forward and `UNVERIFIED`; no guarantee against
+inactivity pause or production data loss is introduced. Monitoring, backup,
+and restore risks must be reassessed before Task 8. Security/performance
+advisor findings remain `UNRESOLVED`; no critical privacy, ownership, or
+security failure is waived. Operational runbook/control evidence and the
+external legal-owner handoff remain unchanged.
+
+This synchronization does not start Task 7, choose AI production scope, approve
+provider activation, change the public AI contract, or perform Task 8. It does
+not approve Production Release or Commercial Launch.
+
+## Historical authorized state — Task 5 closure / Task 6 entry — 4 October 2026
 
 Source: explicit Project Owner approval of Task 5 closure and transition to
 Task 6, synchronized at repository checkpoint
