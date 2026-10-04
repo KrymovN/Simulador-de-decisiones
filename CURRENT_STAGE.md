@@ -1,5 +1,51 @@
 # CURRENT STAGE
 
+## Current authorized state — 4 October 2026
+
+Source: explicit Project Owner approval of Task 5 closure and transition to
+Task 6, synchronized at repository checkpoint
+`9ace4f32ed044203f4ef189c71f4570ad0198262`. This section supersedes older
+current/next-task assertions only. Earlier dated snapshots and acceptance
+records remain historical evidence; other approved workstream states remain
+unchanged.
+
+- Current Stage: `Stage 15 — Scale / final readiness`; Stage 15 remains
+  `IN_PROGRESS` and the aggregate Scale verdict remains `NOT READY`.
+- Task 5 — Operational Readiness:
+  `CLOSED BY OWNER ACCEPTANCE OF DOCUMENTED RESIDUAL RISKS`.
+- Current Task: `Task 6 — Production Release Candidate Validation`.
+- Task 6 is authorized only as the next validation stage: `NOT PERFORMED`;
+  Release Candidate: `NOT ACCEPTED`.
+- Production Release: `NOT APPROVED`.
+- Commercial Launch: `NOT APPROVED`.
+- Production AI: `OFF`.
+
+Task 5 closure authorizes transition to Task 6 only. It does not declare
+Production Ready, fully operational status, or all controls closed. Remaining
+operational gaps are `UNVERIFIED`; closure does not promote monitoring,
+backup, restore, or health-cron controls to `VERIFIED`. It does not waive
+critical privacy, ownership, or security failures.
+
+### Accepted residual risks — Task 6 transition only
+
+1. Application/runtime/Auth/persistence failures may be detected late because
+   automated monitoring/alerting is incomplete.
+2. Successful authenticated health-cron execution is not evidenced, and
+   prevention of Supabase Free inactivity pause is not guaranteed.
+3. A regular recoverable backup point is not evidenced; production data loss
+   remains a risk.
+4. A complete backup restore drill is not evidenced.
+5. Security/performance advisor findings remain `UNRESOLVED` and require
+   reassessment in Release Candidate review; they are not automatically fixed.
+6. Monitoring, backup, and restore risks must be reconsidered before
+   `Task 8 — Final GO / NO-GO`.
+
+The operational runbook's control evidence and `PARTIAL` launch-critical
+assessment remain unchanged. The external legal-owner handoff, Task 7 AI
+Production Scope Decision, and Task 8 Final GO / NO-GO remain separate gates.
+This documentation synchronization does not execute Task 6 validation,
+activate an operational control, or change deferred work.
+
 ## V1 canonical state reconciliation — 27 August 2026
 
 At starting checkpoint `f2865976c5c04e3868c8f7df059028775b710f88`, the
