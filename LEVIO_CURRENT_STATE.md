@@ -1,6 +1,115 @@
 # LEVIO CURRENT STATE
 
-## Current authorized state — Task 7 closure / Option A — 4 October 2026
+## Current authorized state — Task 8 closure / Owner GO — 4 October 2026
+
+Source: explicit final GO and Production Release approval by the Project
+Owner, acting also as the responsible legal/trust owner, for checkpoint
+`695aa971a594784d65821fde0c839171e1076cf0`. This section supersedes older
+current/next-task and initial-release approval assertions only. Earlier
+dated decisions, reviews, and acceptance evidence remain historical.
+
+- Current Stage: `Stage 15 — Scale / final readiness`, the final official
+  Stage of the existing 15-Stage roadmap.
+- Stage 15 release path: `COMPLETED` for the initial deterministic
+  Production Release only. Aggregate Scale verdict: `NOT READY`;
+  Scale Execution is not approved and broader deferred work is not closed.
+- Task 5 — Operational Readiness:
+  `CLOSED BY OWNER ACCEPTANCE OF DOCUMENTED RESIDUAL RISKS`.
+- Task 6 — Production Release Candidate Validation:
+  `CLOSED / PASS — RC QUALIFIED`.
+- Task 7 — AI Production Scope Decision:
+  `CLOSED / PASS — OWNER APPROVED OPTION A`.
+- Task 8 — Final GO / NO-GO: `CLOSED / GO — OWNER APPROVED`.
+- Production Release: `APPROVED`; release scope: `initial deterministic-only`.
+- Commercial Launch: `NOT APPROVED`.
+- Production AI: `OFF`; Real AI: `DEFERRED`.
+- Ultimate `Levio V1 Complete`: `NOT ACHIEVED`.
+- Current Task: none remaining in the completed initial release path;
+  post-release hardening and deferred work require separate Owner authorization.
+
+### Initial release, ultimate target, and authorization boundary
+
+Option A remains the approved initial production scope. The ultimate
+`Levio V1 Complete` target still includes Real AI as an internal Decision
+Engine component; it is neither removed nor cancelled. This bounded release
+does not complete that target or the whole project. No new Stage, roadmap,
+commercial authorization, or architectural exception is introduced.
+Production AI remains OFF; AI activation and provider calls are not authorized.
+Post-release hardening, deferred AI, commercial work, and Scale remain
+separate from the completed initial release path.
+
+### Preserved release artifact and evidence chain
+
+The approved release checkpoint is
+`695aa971a594784d65821fde0c839171e1076cf0`. Task 6 qualified code baseline
+`81be8217c7922467f6e7bbbd8124edc16a0b6fbd` and its validation evidence remain
+unchanged; subsequent checkpoints `0cc3b6ce72f09174c12cd1ed685f2771b38023e4`
+and the approved checkpoint contain canonical documentation changes only.
+The recorded read-only Task 8 review on 4 October 2026 confirmed production
+deployment `dpl_GGmmiYypdcpVcVtf17U5eSdP3nM9`, target `production`, state
+`READY`, at the approved checkpoint, with `levio.es` bound to it. The Git
+integration deployment was automatic; qualified code was unchanged and the
+recorded Production AI-OFF enforcement remained in effect.
+No Task 6 rerun, new live deployment/env verification, or production action
+is performed or claimed by this documentation synchronization.
+
+### Accepted residual risks — bounded initial release
+
+Internal technical Privacy/Terms review remains `PASS`. External legal
+handoff remains `UNRESOLVED`, not CLOSED or VERIFIED. The responsible
+legal/trust Owner explicitly accepts the current technical review and
+unfinished external handoff as a residual risk for this bounded release.
+This is not a legal opinion or full legal/regulatory compliance certification;
+it does not cancel legal duties or waive critical privacy, security, or
+ownership failures.
+
+Task 5 remains closed by Owner acceptance, not reopened. The final Owner GO
+preserves the following accepted operational residual risks:
+
+1. Incomplete application/runtime/Auth/persistence monitoring and alerting
+   may delay failure detection.
+2. Successful authenticated health-cron execution is not evidenced; protection
+   against Supabase Free inactivity pause is not guaranteed.
+3. A regular recoverable backup point is not evidenced; production data loss
+   remains a risk.
+4. A complete backup restore drill is not evidenced.
+5. Single-owner operational dependency and other previously explicitly
+   accepted Task 5 residual risks remain carried forward.
+
+The monitoring, health-cron, backup, and restore evidence gaps remain
+`UNVERIFIED`; no operational control is promoted to VERIFIED by Owner GO.
+Known non-critical security/performance advisor findings remain `UNRESOLVED`,
+not fixed: mutable function search paths, leaked-password protection
+(not applicable to the current passwordless flow), the unindexed composite
+foreign key, RLS initplan warnings, and unused indexes. The Task 8 review
+classified these as residual/hardening or scope-not-applicable findings, not
+mandatory release blockers. Owner GO does not waive a critical failure;
+new contradictory evidence must still be assessed. Constitution, runbook,
+operational evidence, and historical qualification records are unchanged.
+
+### Historical Task 8 review — Conditional GO before Owner approval
+
+The preceding read-only final review at the approved checkpoint returned
+`CONDITIONAL GO`. It reassessed monitoring, health-cron, backup, restore,
+single-owner dependency, and advisor findings without promoting unresolved
+controls to VERIFIED. No new critical privacy, ownership, or security blocker
+was identified. The remaining decision condition was explicit legal/trust
+Owner acceptance of the unfinished external legal handoff for the bounded
+initial release, together with separate Production Release approval.
+
+### Final Owner GO decision — subsequent to Conditional GO
+
+The Project Owner and responsible legal/trust owner explicitly approved
+`Task 8 — GO` and `Production Release: APPROVED` at the checkpoint above
+for `initial deterministic-only`, accepting the legal/trust residual risk
+and preserving Task 5 risks and unresolved non-critical advisor findings.
+Commercial Launch remains NOT APPROVED; Production AI remains OFF; Real AI
+remains DEFERRED; ultimate V1 completion is not declared. This decision does
+not require or automatically authorize a new deploy/redeploy. This patch
+records that prior decision only; separate Owner acceptance of the diff is
+required before any separately authorized Git checkpoint.
+
+## Historical authorized state — Task 7 closure / Option A — 4 October 2026
 
 Source: explicit Project Owner approval of
 `Decision A — Production AI remains OFF for Levio V1`, following the Task 7
