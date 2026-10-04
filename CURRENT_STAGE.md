@@ -1,6 +1,76 @@
 # CURRENT STAGE
 
-## Current authorized state — Task 6 closure — 4 October 2026
+## Current authorized state — Task 7 closure / Option A — 4 October 2026
+
+Source: explicit Project Owner approval of
+`Decision A — Production AI remains OFF for Levio V1`, following the Task 7
+decision review at canonical checkpoint
+`0cc3b6ce72f09174c12cd1ed685f2771b38023e4`. This section supersedes older
+current/next-task assertions and initial-release AI scope only; earlier dated
+snapshots, review alternatives, and acceptance evidence remain historical.
+
+- Current Stage: `Stage 15 — Scale / final readiness`; Stage 15 remains
+  `IN_PROGRESS` and the aggregate Scale verdict remains `NOT READY`.
+- Task 5 — Operational Readiness:
+  `CLOSED BY OWNER ACCEPTANCE OF DOCUMENTED RESIDUAL RISKS`.
+- Task 6 — Production Release Candidate Validation:
+  `CLOSED / PASS — RC QUALIFIED`.
+- Task 7 — AI Production Scope Decision:
+  `CLOSED / PASS — OWNER APPROVED OPTION A`.
+- Approved scope: `Initial Levio V1 production release = deterministic-only`.
+- Production AI: `OFF`; Real AI: `DEFERRED`.
+- Current Task: `Task 8 — Final GO / NO-GO`.
+- Task 8: `NOT STARTED`; transition is authorized by this synchronization,
+  but Final GO / NO-GO is not performed here.
+- Production Release: `NOT APPROVED`.
+- Commercial Launch: `NOT APPROVED`.
+
+### Initial release versus ultimate target
+
+The initial deterministic-only production release may proceed to Task 8.
+The existing ultimate `Levio V1 Complete` target, including Real AI as an
+internal Decision Engine component, is preserved. Real AI remains a separate
+future goal; this initial release does not achieve or declare the complete
+ultimate AI target. No new roadmap, Stage, or architectural exception is added.
+
+### AI governance and preserved release evidence
+
+OpenAI provider activation is not authorized. The production
+`LEVIO_REAL_AI_DEV_ENABLED` flag must remain OFF. This decision does not
+authorize provider calls, AI env/key/provider changes, or a public AI contract
+change. Option B activation requirements remain unmet and are not closed or
+waived by Option A; they are not imported as deterministic Task 8 blockers
+unless the applicable canon independently requires them.
+
+Task 6 exact-RC evidence for
+`81be8217c7922467f6e7bbbd8124edc16a0b6fbd`, including its recorded deployment
+and AI-OFF enforcement, is retained unchanged in the historical Task 6 section
+below. No validation rerun or live deployment/env recheck is claimed here.
+Task 5 monitoring/alerting, authenticated health-cron, backup, and restore
+residual risks remain carried forward and `UNVERIFIED`; the existing
+requirement to reassess monitoring, backup, and restore risks before Task 8
+is retained, not executed by this synchronization.
+Security/performance advisor findings remain `UNRESOLVED`. No critical
+privacy, ownership, or security failure is waived. The operational runbook,
+control evidence, and external legal-owner handoff remain unchanged.
+
+This documentation synchronization does not execute Task 8, approve
+Production Release or Commercial Launch, or activate any production control.
+
+### Historical Task 7 decision review — before Owner selection
+
+The preceding `TASK 7 DECISION REVIEW: PASS` considered both options:
+Option A was constitutionally compatible for an explicitly deterministic
+initial release, without satisfying the ultimate Real AI target. Option B
+considered bounded OpenAI Responses API / `gpt-5.6-terra` execution through
+the existing controlled public simulation path and Decision Engine boundaries.
+Its data-class/privacy, aggregate cost-control, production configuration
+evidence, and separate authorization gaps remained open; qualified Stage 9
+integration did not imply activation approval. The technical recommendation
+was Option A. The later Owner selection above closes the scope decision only;
+it does not rewrite that review or approve Option B.
+
+## Historical authorized state — Task 6 closure — 4 October 2026
 
 Source: completed Task 6 evidence and the Project Owner's documentation-only
 synchronization instruction. This section supersedes older current/next-task
