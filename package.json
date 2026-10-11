@@ -131,7 +131,8 @@
     "quality:native-local-stt-adapter": "node scripts/native-local-stt-adapter-quality.mjs",
     "quality:browser-local-whisper-adapter": "node scripts/browser-local-whisper-adapter-quality.mjs",
     "quality:browser-local-whisper-pinned-revision": "node scripts/browser-local-whisper-pinned-revision-quality.mjs",
-    "quality:supabase-operational-health": "node scripts/supabase-operational-health-quality.mjs"
+    "quality:supabase-operational-health": "node scripts/supabase-operational-health-quality.mjs",
+    "quality:controlled-ai-shadow-semantic-delta": "node scripts/controlled-ai-shadow-semantic-delta-quality.mjs"
   },
   "dependencies": {
     "@huggingface/transformers": "4.2.0",
