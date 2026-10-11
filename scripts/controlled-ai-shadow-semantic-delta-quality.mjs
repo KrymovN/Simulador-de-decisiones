@@ -83,7 +83,9 @@ try {
   }
   const read = (path) => readFileSync(join(root, path), "utf8");
   const allowed = new Set([
-    "package.json", "lib/ai-quality/shadow-semantic-delta-fixtures.ts",
+    "lib/decision-engine/post-provider-simulation-composition.ts",
+    "lib/decision-engine/post-provider-simulation-composition-validation.ts",
+    "lib/ai-quality/shadow-semantic-delta-fixtures.ts",
     "lib/ai-quality/shadow-semantic-delta-evaluator.ts", "lib/ai-quality/shadow-semantic-delta-validation.ts",
     "scripts/controlled-ai-shadow-semantic-delta-quality.mjs",
   ]);
@@ -98,15 +100,29 @@ try {
   const boundary = read("lib/decision-engine/post-provider-boundary.ts");
   const adapter = read("lib/ai-provider/openai-decision-material-adapter.ts");
   const home = read("components/HomeSimulator.tsx");
+  const fixturePath = "lib/ai-quality/shadow-semantic-delta-fixtures.ts";
+  const checkpointFixtures = new Module(join(root, fixturePath));
+  checkpointFixtures.filename = join(root, fixturePath);
+  checkpointFixtures.paths = Module._nodeModulePaths(dirname(checkpointFixtures.filename));
+  checkpointFixtures._compile(ts.transpileModule(readGit(["show", `HEAD:${fixturePath}`]), {
+    compilerOptions: { esModuleInterop: true, module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+  }).outputText, checkpointFixtures.filename);
+  const fixtures = require(join(root, fixturePath));
+  const corpusInputs = (source) => source.createShadowSemanticDeltaCorpus().map(({ caseId, group, candidateType, packet }) =>
+    ({ caseId, group, candidateType, packet }));
   const invariants = [
     { id: "offline-guards-zero-attempts", passed: Object.values(attempts).every((count) => count === 0) },
     { id: "authorized-write-set-only", passed: changed.every((path) => allowed.has(path)), paths: changed },
     { id: "package-script-only-change", passed: evaluator.normalizedShadowJson(currentPackage) === evaluator.normalizedShadowJson(headPackage) },
+    { id: "same-corpus-packets-and-canonical-input-as-checkpoint", passed:
+      evaluator.normalizedShadowJson(corpusInputs(fixtures)) === evaluator.normalizedShadowJson(corpusInputs(checkpointFixtures.exports)) &&
+      evaluator.normalizedShadowJson(fixtures.shadowCanonicalRequest()) === evaluator.normalizedShadowJson(checkpointFixtures.exports.shadowCanonicalRequest()) },
     { id: "home-rendering-scope-matches-current-component", passed:
       home.includes("productionResult.uiModel.sections.scenarios.items.map") &&
       !/productionResult\.uiModel\.sections\.(?:notices|risks|consequences|recommendation|traceability)/.test(home) },
-    { id: "contradiction-gap-observed-not-fixed", passed: boundary.includes("contradictory_candidate_ids: []") &&
-      report.cases.find((item) => item.limitation === "contradiction_runtime_gap")?.traceOnly === true },
+    { id: "bounded-contradiction-destination-without-general-detector", passed: boundary.includes("contradictory_candidate_ids: []") &&
+      report.cases.find((item) => item.limitation === "bounded_contradiction_destination")?.structuredContradictionIds.length === 1 &&
+      report.cases.find((item) => item.limitation === "bounded_contradiction_destination")?.simulationDelta.substantive === true },
     { id: "unknown-grounding-mismatch-observed-not-fixed", passed:
       adapter.includes("use a concrete allowed gap reference when one exists") &&
       adapter.includes('item.evidence === "unknown" && item.provenance.source_ref !== "unknown"') &&

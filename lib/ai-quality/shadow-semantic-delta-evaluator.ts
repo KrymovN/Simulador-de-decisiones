@@ -85,7 +85,7 @@ function simulationStructure(response: SimulationResponseV2Draft) {
 }
 
 function protectedCalculations(response: SimulationResponseV2Draft) {
-  const { generatedAt: _clock, traceability: _trace, notices: _notices, ...rest } = response;
+  const { generatedAt: _clock, traceability: _trace, notices: _notices, contradictions: _contradictions, ...rest } = response;
   return { ...rest, analysis: rest.analysis && {
     ...rest.analysis,
     scenarios: rest.analysis.scenarios.map(({ dependencies: _dependencies, ...scenario }) => scenario),
@@ -125,9 +125,33 @@ export function shadowProtectedInvariants(baseline: SimulationResponseV2Draft,
   if (!replay) return {
     assessed: false, recommendationPreserved: true, numericPreserved: true,
     safetyPreserved: true, deterministicCalculationsPreserved: true, qualitativeAdditionsOnly: true,
+    boundedContradictionAdditionsOnly: true,
   };
   const scenarios = baseline.analysis?.scenarios ?? [];
   const risks = baseline.analysis?.risks ?? [];
+  const newContradictions = replay.contradictions.filter((entry) => !baseline.contradictions.some((original) =>
+    normalizedShadowJson(original) === normalizedShadowJson(entry)));
+  const newContradictionTraces = replay.traceability.contradictions.filter((entry) => !baseline.traceability.contradictions.some((original) =>
+    normalizedShadowJson(original) === normalizedShadowJson(entry)));
+  const boundedContradictionAdditionsOnly = containsOriginalEntries(baseline.contradictions, replay.contradictions) &&
+    containsOriginalEntries(baseline.traceability.contradictions, replay.traceability.contradictions) &&
+    new Set(newContradictions.map((entry) => entry.id)).size === newContradictions.length &&
+    newContradictionTraces.length === newContradictions.length && newContradictions.every((entry) => {
+        const item = controlled.find((candidate) => entry.id === `contradiction_${candidate.materialItemId}`);
+        const optionIds = item ? [...new Set([...item.optionIds, ...item.scenarioOptionIds])] : [];
+        return item?.itemType === "contradiction" && /^constraint_[1-9]\d*$/.test(item.sourceProvenanceRef) &&
+          item.sourceContextEntityIds.length === 1 && optionIds.length <= 1 &&
+          entry.code === "contradiction_detected" && entry.category === "contradiction" &&
+          entry.severity === "optional" && entry.recommendationImpact === "no_material_change" &&
+          entry.resolution === "unresolved" && entry.description === item.content &&
+          normalizedShadowJson(entry.affectedEntityIds) === normalizedShadowJson([
+            ...item.sourceContextEntityIds, ...optionIds, item.materialItemId,
+          ]) && entry.reason.includes(`provenance=${item.sourceProvenanceRef};`) &&
+          entry.reason.includes("independently_verified=false") && entry.reason.includes("deterministic_calculation=false") &&
+          replay.traceability.contradictions.some((trace) => normalizedShadowJson(trace) === normalizedShadowJson(entry));
+      }) && newContradictionTraces.every((entry) =>
+        replay.contradictions.some((contradiction) => normalizedShadowJson(contradiction) === normalizedShadowJson(entry)),
+      );
   const qualitativeAdditionsOnly = scenarios.every((scenario) => {
     const target = replay.analysis?.scenarios.find((item) => item.id === scenario.id);
     if (!target || !containsOriginalEntries(scenario.dependencies, target.dependencies)) return false;
@@ -157,8 +181,9 @@ export function shadowProtectedInvariants(baseline: SimulationResponseV2Draft,
     numericPreserved: shadowFingerprint(numericMetrics(baseline)) === shadowFingerprint(numericMetrics(replay)),
     safetyPreserved: shadowFingerprint({ safety: baseline.safety, status: baseline.status }) ===
       shadowFingerprint({ safety: replay.safety, status: replay.status }),
-    deterministicCalculationsPreserved: shadowFingerprint(protectedCalculations(baseline)) === shadowFingerprint(protectedCalculations(replay)),
-    qualitativeAdditionsOnly,
+    deterministicCalculationsPreserved: boundedContradictionAdditionsOnly &&
+      shadowFingerprint(protectedCalculations(baseline)) === shadowFingerprint(protectedCalculations(replay)),
+    qualitativeAdditionsOnly, boundedContradictionAdditionsOnly,
   };
 }
 
@@ -172,6 +197,7 @@ export type ShadowCandidateAccounting = {
   ledgerTraceMarker: string | null;
   mergedIntoCandidateId: string | null;
   controlledMaterialIds: string[];
+  structuredContradictionIds: string[];
   downstreamRefs: string[];
   simulationPaths: string[];
   uiPaths: string[];
@@ -211,6 +237,9 @@ function candidateAccounting(packet: unknown, ledger: SemanticPreservationLedger
     const savePaths = afterSave ? paths(beforeSave, afterSave) : [];
     const tracePresent = Boolean(replay && replay.traceability.evidence.some((item) => ids.includes(item.id)));
     const noticePresent = Boolean(replay && mapped.some((item) => replay.notices.some((notice) => notice.message === item.content)));
+    const structuredContradictionIds = replay?.contradictions.filter((entry) =>
+      ids.some((id) => entry.affectedEntityIds.includes(id)),
+    ).map((entry) => entry.id) ?? [];
     const disposition: CandidateDisposition = failure ? "packet_failure"
       : entry?.disposition === "merged_as_duplicate" ? "duplicate"
       : entry?.disposition.startsWith("rejected") || entry?.disposition === "controlled_failure" ? "rejected"
@@ -219,7 +248,7 @@ function candidateAccounting(packet: unknown, ledger: SemanticPreservationLedger
       ...candidate, disposition, validationReason: failure?.reason ?? entry?.reason ?? "missing_disposition",
       ledgerDisposition: entry?.disposition ?? null, ledgerTraceMarker: entry?.traceability_marker ?? null,
       mergedIntoCandidateId: entry?.disposition === "merged_as_duplicate" ? targetId : null,
-      controlledMaterialIds: ids, downstreamRefs: entry?.downstream_mapping.target_refs ?? [],
+      controlledMaterialIds: ids, structuredContradictionIds, downstreamRefs: entry?.downstream_mapping.target_refs ?? [],
       simulationPaths, uiPaths, homePaths, savePaths, tracePresent, noticePresent,
       traceOnly: !failure && ids.length > 0 && tracePresent && simulationPaths.length === 0,
     };
@@ -296,6 +325,7 @@ export async function evaluateShadowFixture(fixture: ShadowFixture) {
     baselineFingerprint: shadowFingerprint(baseline), canonicalInputFingerprint: inputFingerprint,
     replayInputFingerprint, candidateIds: accounting.map((item) => item.candidateId),
     accounting, packetFailure: failure, fakeTransportCalls: fakeCalls,
+    structuredContradictionIds: [...new Set(accounting.flatMap((item) => item.structuredContradictionIds))],
     identicalTransportRequest: requests.length === 2 && requests[0] === requests[1],
     simulationDelta: { comparable: Boolean(replay), substantive: replay ? simulationPaths.length > 0 : null, paths: simulationPaths },
     recommendationDelta: { comparable: Boolean(replay), changed: replay ? !invariants.recommendationPreserved : null },
@@ -328,6 +358,7 @@ export function summarizeShadowCases(cases: ShadowCaseReport[]) {
     packetFailures: cases.filter((item) => item.packetFailure).length,
     packetFailureCandidates: accounting.filter((item) => item.disposition === "packet_failure").length,
     substantiveSimulationDeltas: cases.filter((item) => item.simulationDelta.substantive).length,
+    structuredContradictionCases: cases.filter((item) => item.structuredContradictionIds.length > 0).length,
     uiVisibleDeltas: cases.filter((item) => item.uiVisibility.materialVisible).length,
     homeRenderedDeltas: cases.filter((item) => item.uiVisibility.homeRendered).length,
     saveRetainedDeltas: cases.filter((item) => item.saveRetention.materialRetained).length,
@@ -336,7 +367,7 @@ export function summarizeShadowCases(cases: ShadowCaseReport[]) {
     unauthorizedNumericChanges: cases.filter((item) => !item.protectedInvariants.numericPreserved).length,
     unauthorizedSafetyChanges: cases.filter((item) => !item.protectedInvariants.safetyPreserved).length,
     unauthorizedDeterministicChanges: cases.filter((item) => !item.protectedInvariants.deterministicCalculationsPreserved ||
-      !item.protectedInvariants.qualitativeAdditionsOnly).length,
+      !item.protectedInvariants.qualitativeAdditionsOnly || !item.protectedInvariants.boundedContradictionAdditionsOnly).length,
   };
 }
 
@@ -347,7 +378,7 @@ export async function runShadowSemanticDeltaEvaluation() {
     type, ...summarizeShadowCases(cases.filter((item) => item.group === "semantic" && item.candidateType === type)),
   }));
   return {
-    version: "controlled-ai-shadow-semantic-delta.1", execution: "offline_synthetic_replay_only",
+    version: "controlled-ai-shadow-semantic-delta.2", execution: "offline_synthetic_replay_only",
     providerQualityAssessed: false, productionAiActivated: false,
     providerOperations: 0, networkRequests: 0, credentialReads: 0,
     uiVisibilityScope: "existing_v2_mapping; home_rendering_reported_separately",

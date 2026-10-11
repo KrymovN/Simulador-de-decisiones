@@ -1,6 +1,6 @@
 import "server-only";
 
-import { DECISION_MATERIAL_ITEM_TYPES, VALUE_ADD_TRANSFORMATIONS } from "../ai-decision-material/contracts";
+import { DECISION_MATERIAL_ITEM_TYPES, VALUE_ADD_TRANSFORMATIONS, type CandidateDecisionMaterialItem } from "../ai-decision-material/contracts";
 import { bridgeDecisionEngineToPromptContext } from "../ai-integration/decision-engine-prompt-context-bridge";
 import { PROMPT_CONTEXT_LOCALES } from "../prompt-context/contracts";
 import type { SimulationResponseV2Draft } from "./contracts";
@@ -15,6 +15,7 @@ import { validateSimulationResponseV2DraftShape } from "./simulation-response";
 import type {
   DecisionInput,
   DecisionIntent,
+  DetectedCriticalGap,
   DeterministicRiskAssessment,
   EvidenceRef,
   RiskTraceEntry,
@@ -583,6 +584,74 @@ function composeControlledTrace(
   };
 }
 
+/** Reference mapping only, not a general detector or semantic truth oracle. */
+function groundedContradictionTargets(
+  item: DecisionEngineControlledMaterialItem,
+  source: DecisionEngineSimulationSource,
+  acceptedItems: CandidateDecisionMaterialItem[],
+): string[] | undefined {
+  if (item.itemType !== "contradiction" || item.sourceCandidateIds.length !== 1) return undefined;
+  const accepted = acceptedItems.find((candidate) => candidate.candidate_id === item.sourceCandidateIds[0]);
+  if (!accepted || accepted.item_type !== "contradiction" || accepted.content !== item.content ||
+      accepted.provenance.source_ref !== item.sourceProvenanceRef ||
+      accepted.evidence !== item.evidenceClassification || accepted.confidence !== item.confidence ||
+      JSON.stringify(accepted.criterion_refs) !== JSON.stringify(item.criterionRefs)) return undefined;
+  const match = /^constraint_([1-9]\d*)$/.exec(item.sourceProvenanceRef);
+  if (!match) return undefined;
+  const constraint = source.decisionContext.constraints[Number(match[1]) - 1];
+  if (!constraint || item.sourceContextEntityIds.length !== 1 || item.sourceContextEntityIds[0] !== constraint.id) return undefined;
+  const optionIds = [...new Set([...item.optionIds, ...item.scenarioOptionIds])];
+  if (optionIds.length > 1 || optionIds.some((id) =>
+    !source.decisionContext.options.some((option) => option.id === id) ||
+    (constraint.appliesToOptionIds.length > 0 && !constraint.appliesToOptionIds.includes(id))
+  )) return undefined;
+  const acceptedOptionIds = [...new Set([...accepted.option_refs, ...accepted.scenario_refs].map((ref) =>
+    source.decisionContext.options[Number(ref.slice(ref.lastIndexOf("_") + 1)) - 1]?.id,
+  ))];
+  if (acceptedOptionIds.length !== optionIds.length || acceptedOptionIds.some((id) => !optionIds.includes(id))) return undefined;
+  return [constraint.id, ...optionIds];
+}
+
+function composeControlledContradictions(
+  response: SimulationResponseV2Draft,
+  source: DecisionEngineSimulationSource,
+  items: DecisionEngineControlledMaterialItem[],
+  acceptedItems: CandidateDecisionMaterialItem[],
+): SimulationResponseV2Draft {
+  const canonicalIds = new Set([
+    ...source.decisionContext.constraints.map((item) => item.id),
+    ...source.decisionContext.options.map((item) => item.id),
+  ]);
+  const key = (content: string, targets: string[]) => JSON.stringify([
+    content.normalize("NFKC").trim().replace(/\s+/gu, " ").toLocaleLowerCase("es-ES").replace(/[.,;:!?]+$/gu, ""),
+    [...targets].sort(),
+  ]);
+  const existing = new Set(response.contradictions.map((entry) =>
+    key(entry.description, entry.affectedEntityIds.filter((id) => canonicalIds.has(id))),
+  ));
+  const additions: DetectedCriticalGap[] = [];
+  for (const item of items) {
+    const targets = groundedContradictionTargets(item, source, acceptedItems);
+    if (!targets) continue;
+    const duplicateKey = key(item.content, targets);
+    if (existing.has(duplicateKey)) continue;
+    additions.push({
+      id: `contradiction_${item.materialItemId}`,
+      code: "contradiction_detected", category: "contradiction", description: item.content,
+      severity: "optional", recommendationImpact: "no_material_change", resolution: "unresolved",
+      affectedEntityIds: [...targets, item.materialItemId],
+      reason: `Accepted candidate-described contradiction [evidence=${item.evidenceClassification}; confidence=${item.confidence}; provenance=${item.sourceProvenanceRef}; source_material=${item.materialItemId}; independently_verified=false; deterministic_calculation=false; recommendation_effect=none].`,
+    });
+    existing.add(duplicateKey);
+  }
+  if (additions.length === 0) return response;
+  return {
+    ...response,
+    contradictions: [...response.contradictions, ...additions],
+    traceability: { ...response.traceability, contradictions: [...response.traceability.contradictions, ...additions] },
+  };
+}
+
 /**
  * Composes only a completed post-provider Decision Engine result into the
  * existing deterministic SimulationResponseV2Draft contract.
@@ -618,14 +687,19 @@ export function composePostProviderSimulationResponse(
   }
 
   const composed = composeControlledTrace(
-    composeControlledRiskSignals(
-      composeControlledDependencies(
-        { ...response, generatedAt: source.generatedAt },
+    composeControlledContradictions(
+      composeControlledRiskSignals(
+        composeControlledDependencies(
+          { ...response, generatedAt: source.generatedAt },
+          source,
+          value.controlledMaterial.items,
+        ),
         source,
         value.controlledMaterial.items,
       ),
       source,
       value.controlledMaterial.items,
+      value.acceptance.accepted_material.items,
     ),
     value.controlledMaterial.items,
   );

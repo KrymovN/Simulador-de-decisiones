@@ -64,6 +64,12 @@ export function inspectShadowSemanticDeltaReport(report: ShadowSemanticDeltaRepo
       item.accounting.filter((candidate) => candidate.savePaths.length > 0).map((candidate) => candidate.candidateId)), `${id}:save_candidate_accounting`);
     check(item.packetFailure ? !item.saveRetention.projectionAvailable : item.saveRetention.projectionAvailable, `${id}:projection_availability`);
     check(item.limitation === (fixture.limitation ?? null), `${id}:known_limitation_missing`);
+    const expectedContradictions = fixture.candidateType === "contradiction" && fixture.expected.substantive ? 1 : 0;
+    check(item.structuredContradictionIds.length === expectedContradictions &&
+      normalizedShadowJson(item.structuredContradictionIds) === normalizedShadowJson(
+        [...new Set(item.accounting.flatMap((candidate) => candidate.structuredContradictionIds))]), `${id}:structured_contradiction_accounting`);
+    check(item.accounting.every((candidate) => candidate.structuredContradictionIds.length === 0 ||
+      (candidate.candidateType === "contradiction" && candidate.simulationPaths.some((path) => path.startsWith("$.contradictions[")))), `${id}:structured_destination_paths`);
     if (item.packetFailure) {
       check(!item.simulationDelta.comparable && !item.uiVisibility.comparable && !item.protectedInvariants.assessed, `${id}:failure_claims_comparison`);
       check(item.accounting.every((candidate) => candidate.disposition === "packet_failure" &&
@@ -127,6 +133,15 @@ export function runShadowSemanticDeltaValidation(report: ShadowSemanticDeltaRepo
   mutation("packet_failure_material_escape_fails", (value) => {
     value.cases.find((item) => item.caseId === "unknown_concrete_gap_reference")!.accounting[0].tracePresent = true;
   });
+  mutation("missing_structured_contradiction_destination_fails", (value) => {
+    value.cases.find((item) => item.limitation === "bounded_contradiction_destination")!.structuredContradictionIds = [];
+  });
+  mutation("unattributed_structured_contradiction_fails", (value) => {
+    value.cases.find((item) => item.limitation === "bounded_contradiction_destination")!.accounting[0].structuredContradictionIds = [];
+  });
+  mutation("contradiction_authority_violation_fails", (value) => {
+    value.cases.find((item) => item.limitation === "bounded_contradiction_destination")!.protectedInvariants.boundedContradictionAdditionsOnly = false;
+  });
 
   const request = shadowCanonicalRequest();
   const baseline = runSimulationPipeline({
@@ -161,6 +176,38 @@ export function runShadowSemanticDeltaValidation(report: ShadowSemanticDeltaRepo
       Object.entries(shadowProtectedInvariants(baseline, composed.response, boundary.controlledMaterial.items))
         .every(([key, value]) => key === "assessed" || value === true) });
   } else checks.push({ id: "real_dependency_addition_allowed", passed: false });
+  const contradictionFixture = createShadowSemanticDeltaCorpus().find((item) => item.limitation === "bounded_contradiction_destination")!;
+  const contradictionBoundary = composePostProviderDecisionMaterial({
+    boundaryId: "shadow_validation_contradiction", bridgeRequest: request,
+    candidateMaterial: contradictionFixture.packet as CandidateDecisionMaterial,
+  });
+  if (contradictionBoundary.status === "composed") {
+    const composed = composePostProviderSimulationResponse(contradictionBoundary);
+    checks.push({ id: "real_bounded_contradiction_addition_allowed", passed: composed.status === "composed" &&
+      composed.response.contradictions.length > baseline.contradictions.length &&
+      Object.entries(shadowProtectedInvariants(baseline, composed.response, contradictionBoundary.controlledMaterial.items))
+        .every(([key, value]) => key === "assessed" || value === true) });
+    if (composed.status === "composed") {
+      for (const [id, change] of [
+        ["contradiction_cannot_become_blocking", (entry) => { entry.severity = "critical"; }],
+        ["contradiction_cannot_gain_recommendation_authority", (entry) => { entry.recommendationImpact = "could_reverse"; }],
+        ["contradiction_cannot_invent_entities", (entry) => { entry.affectedEntityIds = ["invented_entity"]; }],
+      ] as const) {
+        const altered = structuredClone(composed.response);
+        change(altered.contradictions[altered.contradictions.length - 1]);
+        checks.push({ id, passed: !shadowProtectedInvariants(baseline, altered,
+          contradictionBoundary.controlledMaterial.items).boundedContradictionAdditionsOnly });
+      }
+      const duplicate = structuredClone(composed.response);
+      duplicate.contradictions.push(structuredClone(duplicate.contradictions[duplicate.contradictions.length - 1]));
+      checks.push({ id: "duplicated_structured_contradiction_detected", passed:
+        !shadowProtectedInvariants(baseline, duplicate, contradictionBoundary.controlledMaterial.items).boundedContradictionAdditionsOnly });
+      const lostTrace = structuredClone(composed.response);
+      lostTrace.traceability.contradictions = [];
+      checks.push({ id: "lost_structured_contradiction_trace_detected", passed:
+        !shadowProtectedInvariants(baseline, lostTrace, contradictionBoundary.controlledMaterial.items).boundedContradictionAdditionsOnly });
+    }
+  } else checks.push({ id: "real_bounded_contradiction_addition_allowed", passed: false });
   checks.push({ id: "normalization_preserves_numeric_values", passed: shadowFingerprint({ score: 1 }) !== shadowFingerprint({ score: 2 }) });
   const corpusFailures = report.cases.filter((item) => errors.some((error) => error.startsWith(`${item.caseId}:`))).map((item) => item.caseId);
   return { passed: checks.every((item) => item.passed), total: checks.length,

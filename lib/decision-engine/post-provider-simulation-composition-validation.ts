@@ -149,6 +149,7 @@ function semanticBridgeRequest() {
 
 function controlledMaterialResult(
   input: CandidateDecisionMaterialItem | CandidateDecisionMaterialItem[],
+  bridgeRequest = semanticBridgeRequest(),
 ): PostProviderDecisionEngineBoundaryResult {
   const items = Array.isArray(input) ? input : [input];
   const material: CandidateDecisionMaterial = {
@@ -160,7 +161,7 @@ function controlledMaterialResult(
   };
   return composePostProviderDecisionMaterial({
     boundaryId: `boundary_${items.length}_${items[0].candidate_id}`,
-    bridgeRequest: semanticBridgeRequest(),
+    bridgeRequest,
     candidateMaterial: material,
   });
 }
@@ -196,6 +197,99 @@ function validationCase(input: {
     passed,
     ...(passed ? {} : { issue: input.issue }),
   };
+}
+
+function structuredContradictionValidationCases(): PostProviderSimulationCompositionValidationCase[] {
+  const cases: PostProviderSimulationCompositionValidationCase[] = [];
+  const check = (caseId: string, passed: boolean, kind: "positive" | "negative" = "positive") => {
+    cases.push({ caseId, kind, passed, ...(passed ? {} : { issue: "Bounded contradiction composition invariant failed." }) });
+  };
+  const contradiction = (overrides: Partial<CandidateDecisionMaterialItem> = {}) => dependencyCandidate({
+    candidate_id: "candidate_contradiction_budget", item_type: "contradiction",
+    content: "El presupuesto declarado está en tensión con el alcance del piloto sintético.",
+    provenance: { source: "provider_candidate", source_ref: "constraint_1" },
+    option_refs: [], scenario_refs: [], ...overrides,
+  });
+  const compose = (items: CandidateDecisionMaterialItem | CandidateDecisionMaterialItem[], request = semanticBridgeRequest()) =>
+    composePostProviderSimulationResponse(controlledMaterialResult(items, request));
+  const entries = (result: PostProviderSimulationCompositionResult) => result.status === "composed"
+    ? result.response.contradictions.filter((entry) => entry.reason.startsWith("Accepted candidate-described contradiction [")) : [];
+  const baseline = compose(traceOnlyCandidate());
+  const constraintInput = controlledMaterialResult(contradiction());
+  const inputBefore = JSON.stringify(constraintInput);
+  const constraintOnly = composePostProviderSimulationResponse(constraintInput);
+  const entry = entries(constraintOnly)[0];
+  const materialId = "decision_material_1_candidate_contradiction_budget";
+  check("grounded_constraint_contradiction_has_existing_typed_destination", constraintOnly.status === "composed" &&
+    entries(constraintOnly).length === 1 && validateSimulationResponseV2DraftShape(constraintOnly.response) &&
+    entry?.code === "contradiction_detected" && entry.category === "contradiction" && entry.description === contradiction().content &&
+    entry.severity === "optional" && entry.recommendationImpact === "no_material_change" && entry.resolution === "unresolved" &&
+    JSON.stringify(entry.affectedEntityIds) === JSON.stringify(["constraint_budget", materialId]));
+  const withOption = compose(contradiction({ option_refs: ["option_1"], scenario_refs: ["scenario_1"] }));
+  check("grounded_option_and_constraint_contradiction_maps_exact_entities", entries(withOption).length === 1 &&
+    JSON.stringify(entries(withOption)[0].affectedEntityIds) === JSON.stringify(["constraint_budget", "option_launch", materialId]));
+  const ambiguous = compose(contradiction({ option_refs: ["option_1", "option_2"], scenario_refs: ["scenario_1", "scenario_2"] }));
+  check("ambiguous_contradiction_linkage_remains_trace_only", ambiguous.status === "composed" && entries(ambiguous).length === 0 &&
+    ambiguous.response.traceability.evidence.some((evidence) => evidence.id === materialId), "negative");
+  const unanchored = compose(contradiction({ provenance: { source: "provider_candidate", source_ref: "question_1" } }));
+  check("contradiction_without_explicit_constraint_remains_trace_only", unanchored.status === "composed" && entries(unanchored).length === 0, "negative");
+  const invalid = controlledMaterialResult(contradiction({ provenance: { source: "provider_candidate", source_ref: "constraint_999" } }));
+  check("invalid_contradiction_reference_uses_existing_rejection", invalid.status === "rejected" &&
+    invalid.error.code === "candidate_grounding_invalid" && composePostProviderSimulationResponse(invalid).status === "rejected", "negative");
+  const duplicateInput = controlledMaterialResult([
+    contradiction(), contradiction({ candidate_id: "candidate_contradiction_duplicate", content: `  ${contradiction().content}  ` }),
+  ]);
+  const duplicate = composePostProviderSimulationResponse(duplicateInput);
+  check("duplicate_contradiction_has_one_entry_and_two_ledger_dispositions", entries(duplicate).length === 1 &&
+    duplicateInput.status === "composed" && duplicateInput.acceptance.ledger.length === 2 &&
+    duplicateInput.acceptance.ledger.some((item) => item.disposition === "merged_as_duplicate" &&
+      item.normalized_or_merged_item_id === "candidate_contradiction_budget"));
+  const normalizedDuplicateInput = controlledMaterialResult([
+    contradiction({ content: "Budget constraint conflict." }),
+    contradiction({ candidate_id: "candidate_contradiction_unicode_duplicate", content: "Ｂｕｄｇｅｔ constraint conflict." }),
+  ]);
+  const normalizedDuplicate = composePostProviderSimulationResponse(normalizedDuplicateInput);
+  check("composition_normalized_duplicate_has_one_entry_and_preserves_both_sources", normalizedDuplicateInput.status === "composed" &&
+    normalizedDuplicateInput.acceptance.accepted_material.items.length === 2 && normalizedDuplicate.status === "composed" &&
+    entries(normalizedDuplicate).length === 1 && normalizedDuplicateInput.controlledMaterial.items.every((item) =>
+      normalizedDuplicate.response.traceability.evidence.some((evidence) => evidence.id === item.materialItemId) &&
+      normalizedDuplicate.response.traceability.responseMapping.some((trace) => trace.sourceEntityIds.includes(item.materialItemId))));
+  const recommendation = controlledMaterialResult(contradiction({ content: "I recommend the best option: launch the synthetic pilot." }));
+  check("recommendation_disguised_as_contradiction_is_rejected", recommendation.status === "rejected" &&
+    recommendation.error.code === "candidate_safety_invalid" && composePostProviderSimulationResponse(recommendation).status === "rejected", "negative");
+  const narrowRequest = semanticBridgeRequest();
+  narrowRequest.decisionContext.constraints[0].appliesToOptionIds = ["option_launch"];
+  const conflictingOption = compose(contradiction({ option_refs: ["option_2"], scenario_refs: ["scenario_2"] }), narrowRequest);
+  check("contradiction_option_outside_constraint_scope_is_not_structured", conflictingOption.status === "composed" &&
+    entries(conflictingOption).length === 0, "negative");
+  const criterion = compose(contradiction({ criterion_refs: ["criterion_1"] }));
+  check("validated_criterion_provenance_does_not_invent_canonical_entities", criterion.status === "composed" &&
+    entries(criterion).length === 1 && JSON.stringify(entries(criterion)[0].affectedEntityIds) === JSON.stringify(["constraint_budget", materialId]));
+  const forgedEntity = structuredClone(constraintInput);
+  if (forgedEntity.status === "composed") forgedEntity.controlledMaterial.items[0].sourceContextEntityIds = ["option_launch"];
+  check("contradiction_provenance_entity_mismatch_is_not_structured", entries(composePostProviderSimulationResponse(forgedEntity)).length === 0, "negative");
+  const forgedText = structuredClone(constraintInput);
+  if (forgedText.status === "composed") forgedText.controlledMaterial.items[0].content = "Content absent from accepted candidate material.";
+  check("unaccepted_controlled_text_cannot_create_contradiction", entries(composePostProviderSimulationResponse(forgedText)).length === 0, "negative");
+  check("contradiction_composition_preserves_original_context_and_ledger", JSON.stringify(constraintInput) === inputBefore);
+  check("contradiction_composition_preserves_numeric_recommendation_and_safety", baseline.status === "composed" &&
+    constraintOnly.status === "composed" && ["decision", "modelQuality", "gaps", "clarification", "analysis", "recommendation", "safety", "availability", "status"]
+      .every((key) => JSON.stringify(baseline.response[key]) === JSON.stringify(constraintOnly.response[key])));
+  check("structured_contradiction_has_trace_and_unverified_provenance", constraintOnly.status === "composed" && Boolean(entry) &&
+    constraintOnly.response.traceability.contradictions.some((trace) => JSON.stringify(trace) === JSON.stringify(entry)) &&
+    constraintOnly.response.traceability.evidence.some((evidence) => evidence.id === materialId && evidence.userConfirmed === false) &&
+    entry.reason.includes("provenance=constraint_1") && entry.reason.includes(`source_material=${materialId}`) &&
+    entry.reason.includes("independently_verified=false") && entry.reason.includes("deterministic_calculation=false"));
+  const originalContradictionRequest = semanticBridgeRequest();
+  originalContradictionRequest.decisionContext.assumptions[0].validationStatus = "contradicted";
+  const original = compose(traceOnlyCandidate(), originalContradictionRequest);
+  const augmented = compose(contradiction(), originalContradictionRequest);
+  check("original_deterministic_contradictions_and_refusal_state_preserved", original.status === "composed" &&
+    augmented.status === "composed" && original.response.contradictions.length > 0 &&
+    original.response.contradictions.every((oldEntry) => augmented.response.contradictions.some((newEntry) => JSON.stringify(oldEntry) === JSON.stringify(newEntry))) &&
+    ["modelQuality", "gaps", "clarification", "analysis", "recommendation", "safety", "availability", "status"]
+      .every((key) => JSON.stringify(original.response[key]) === JSON.stringify(augmented.response[key])));
+  return cases;
 }
 
 export function runPostProviderSimulationCompositionValidation(): PostProviderSimulationCompositionValidationResult {
@@ -658,6 +752,7 @@ export function runPostProviderSimulationCompositionValidation(): PostProviderSi
       issue: "Empty controlled material was presented as a Simulator result.",
     }),
   ];
+  cases.push(...structuredContradictionValidationCases());
   const passed = cases.filter((item) => item.passed).length;
   return {
     passed: passed === cases.length,

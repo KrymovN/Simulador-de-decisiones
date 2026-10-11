@@ -19,7 +19,7 @@ export type ShadowFixture = {
   group: "semantic" | "boundary";
   candidateType: ShadowSemanticType;
   packet: unknown;
-  limitation?: "contradiction_runtime_gap" | "unknown_grounding_mismatch";
+  limitation?: "bounded_contradiction_destination" | "unknown_grounding_mismatch";
   expected: {
     accepted: number;
     duplicate: number;
@@ -127,7 +127,8 @@ export function createShadowSemanticDeltaCorpus(): ShadowFixture[] {
     }
     return [firstFixture, fixture(`${type}_limited_destination`, "semantic", type, [second], {
       uiMaterial: notice, saveMaterial: notice,
-    }, type === "contradiction" ? "contradiction_runtime_gap" : undefined)];
+      ...(type === "contradiction" ? { substantive: true, traceOnly: false } : {}),
+    }, type === "contradiction" ? "bounded_contradiction_destination" : undefined)];
   });
   const duplicate = candidate("dependency", "duplicate_a");
   const failureExpected = { accepted: 0, traceOnly: false };
