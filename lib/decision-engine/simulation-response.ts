@@ -11,6 +11,7 @@ import type {
   DeterministicRecommendation,
   EvidenceRef,
 } from "./types";
+import { validatePresentDecisionConsequences } from "./consequence-validation";
 
 export type SimulationResponseV2MappingOptions = {
   generatedAt?: string;
@@ -378,6 +379,7 @@ export function validateSimulationResponseV2DraftShape(value: unknown): value is
     clarificationInvariant &&
     analysisReadyInvariant &&
     cannotRecommendInvariant &&
-    failedInvariant
+    failedInvariant &&
+    validatePresentDecisionConsequences(value)
   );
 }

@@ -1,6 +1,9 @@
 import "server-only";
 
+import { createHash } from "node:crypto";
+
 import { DECISION_MATERIAL_ITEM_TYPES, VALUE_ADD_TRANSFORMATIONS, type CandidateDecisionMaterialItem } from "../ai-decision-material/contracts";
+import { inspectCandidateDecisionMaterialContract } from "../ai-decision-material/acceptance";
 import { bridgeDecisionEngineToPromptContext } from "../ai-integration/decision-engine-prompt-context-bridge";
 import { PROMPT_CONTEXT_LOCALES } from "../prompt-context/contracts";
 import type { SimulationResponseV2Draft } from "./contracts";
@@ -12,9 +15,11 @@ import {
 } from "./post-provider-boundary";
 import { runSimulationPipeline } from "./pipeline";
 import { validateSimulationResponseV2DraftShape } from "./simulation-response";
+import { boundedConsequenceRef, consequenceSemanticKey } from "./consequence-validation";
 import type {
   DecisionInput,
   DecisionIntent,
+  DecisionConsequence,
   DetectedCriticalGap,
   DeterministicRiskAssessment,
   EvidenceRef,
@@ -652,6 +657,83 @@ function composeControlledContradictions(
   };
 }
 
+function groundedConsequenceOption(
+  item: DecisionEngineControlledMaterialItem,
+  source: DecisionEngineSimulationSource,
+  acceptedItems: CandidateDecisionMaterialItem[],
+): string | undefined {
+  if (!["short_term_consequence", "long_term_consequence"].includes(item.itemType) || item.sourceCandidateIds.length !== 1) return undefined;
+  const accepted = acceptedItems.find((candidate) => candidate.candidate_id === item.sourceCandidateIds[0]);
+  if (!accepted || accepted.item_type !== item.itemType || accepted.content !== item.content ||
+      accepted.provenance.source_ref !== item.sourceProvenanceRef || accepted.evidence !== item.evidenceClassification ||
+      accepted.confidence !== item.confidence || JSON.stringify(accepted.criterion_refs) !== JSON.stringify(item.criterionRefs)) return undefined;
+  const inspection = inspectCandidateDecisionMaterialContract({
+    capability: accepted.capability, contract_version: accepted.contract_version,
+    generation_status: "completed", classification: "synthetic_non_personal", items: [accepted],
+  });
+  if (!inspection.schemaValid || !inspection.safetyValid) return undefined;
+  const context = source.decisionContext;
+  const optionRefs = (refs: string[]) => refs.map((ref) => context.options[Number(ref.slice(ref.lastIndexOf("_") + 1)) - 1]?.id);
+  if (JSON.stringify(optionRefs(accepted.option_refs)) !== JSON.stringify(item.optionIds) ||
+      JSON.stringify(optionRefs(accepted.scenario_refs)) !== JSON.stringify(item.scenarioOptionIds)) return undefined;
+  const match = /^(option|scenario|constraint)_([1-9]\d*)$/.exec(item.sourceProvenanceRef);
+  const expectedSource = ["objective_1", "question_1"].includes(item.sourceProvenanceRef) ? context.decisionId
+    : match?.[1] === "constraint" ? context.constraints[Number(match[2]) - 1]?.id
+    : match ? context.options[Number(match[2]) - 1]?.id : undefined;
+  if (!expectedSource || !boundedConsequenceRef(expectedSource) ||
+      JSON.stringify(item.sourceContextEntityIds) !== JSON.stringify([expectedSource])) return undefined;
+  const links = [...item.optionIds, ...item.scenarioOptionIds];
+  if (match && match[1] !== "constraint") links.push(expectedSource);
+  const unique = [...new Set(links)];
+  if (unique.length !== 1 || !boundedConsequenceRef(unique[0]) || !context.options.some((option) => option.id === unique[0])) return undefined;
+  if (match?.[1] === "constraint") {
+    const constraint = context.constraints[Number(match[2]) - 1];
+    if (constraint.appliesToOptionIds.length > 0 && !constraint.appliesToOptionIds.includes(unique[0])) return undefined;
+  }
+  return unique[0];
+}
+
+/** Appends qualitative statements after all authority-bearing calculations.
+ * Positional scenario refs prove an option only, never a concrete perspective. */
+function composeControlledConsequences(
+  response: SimulationResponseV2Draft,
+  source: DecisionEngineSimulationSource,
+  items: DecisionEngineControlledMaterialItem[],
+  acceptedItems: CandidateDecisionMaterialItem[],
+): SimulationResponseV2Draft {
+  if (!response.analysis) return response;
+  const entries = new Map((response.analysis.consequences ?? []).map((entry) => [consequenceSemanticKey(entry), entry]));
+  let changed = false;
+  // Keep the original accepted spelling, selecting it independently of packet order.
+  const ordered = [...items].sort((a, b) => a.content.localeCompare(b.content, "en") ||
+    a.sourceCandidateIds[0].localeCompare(b.sourceCandidateIds[0], "en"));
+  for (const item of ordered) {
+    const optionId = groundedConsequenceOption(item, source, acceptedItems);
+    if (!optionId) continue;
+    const horizon = item.itemType === "short_term_consequence" ? "short_term" : "long_term";
+    const key = consequenceSemanticKey({ optionId, horizon, description: item.content });
+    const origin = { source: "controlled_material" as const, materialItemId: item.materialItemId, sourceRef: item.sourceProvenanceRef };
+    const existing = entries.get(key);
+    if (existing) {
+      if (existing.provenance.origins.some((entry) => JSON.stringify(entry) === JSON.stringify(origin))) continue;
+      entries.set(key, { ...existing,
+        sourceEntityIds: [...new Set([...existing.sourceEntityIds, ...item.sourceContextEntityIds])].sort(),
+        provenance: { independentlyVerified: false, origins: [...existing.provenance.origins, origin] },
+      });
+    } else {
+      entries.set(key, {
+        id: `consequence_${createHash("sha256").update(JSON.stringify([source.requestId, source.decisionContext.decisionId, key])).digest("hex")}`,
+        description: item.content, horizon, optionId, sourceEntityIds: [...item.sourceContextEntityIds],
+        provenance: { origins: [origin], independentlyVerified: false },
+      });
+    }
+    changed = true;
+  }
+  return changed ? { ...response, analysis: { ...response.analysis,
+    consequences: [...entries.values()].sort((a, b) => a.id.localeCompare(b.id, "en")),
+  } } : response;
+}
+
 /**
  * Composes only a completed post-provider Decision Engine result into the
  * existing deterministic SimulationResponseV2Draft contract.
@@ -686,7 +768,7 @@ export function composePostProviderSimulationResponse(
     );
   }
 
-  const composed = composeControlledTrace(
+  const traced = composeControlledTrace(
     composeControlledContradictions(
       composeControlledRiskSignals(
         composeControlledDependencies(
@@ -703,6 +785,8 @@ export function composePostProviderSimulationResponse(
     ),
     value.controlledMaterial.items,
   );
+  const composed = composeControlledConsequences(traced, source, value.controlledMaterial.items,
+    value.acceptance.accepted_material.items);
   if (!validateSimulationResponseV2DraftShape(composed)) {
     return rejected(
       "simulation_response_invalid",

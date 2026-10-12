@@ -116,9 +116,16 @@ function normalizedContent(value: string): string {
 }
 
 function normalizedDuplicateKey(item: CandidateDecisionMaterialItem): string {
-  return `${item.item_type}:${normalizedContent(item.content)
+  const contentKey = `${item.item_type}:${normalizedContent(item.content)
     .toLocaleLowerCase("es-ES")
     .replace(/[.,;:!?]+$/g, "")}`;
+  if (item.item_type !== "short_term_consequence" && item.item_type !== "long_term_consequence") return contentKey;
+  // Different consequence scopes/origins must reach composition intact. Exact
+  // duplicate sources still share one controlled receipt and retain the ledger.
+  return `${contentKey}:${JSON.stringify([
+    [...item.option_refs].sort(), [...item.scenario_refs].sort(), [...item.criterion_refs].sort(),
+    item.provenance.source_ref, item.evidence, item.confidence,
+  ])}`;
 }
 
 function emptyAcceptedMaterial(): AcceptedDecisionMaterial {

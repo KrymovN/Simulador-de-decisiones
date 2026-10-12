@@ -272,6 +272,26 @@ export type Consequence = {
   evidenceRefs: EntityId[];
 };
 
+export type ConsequenceOrigin =
+  | { source: "controlled_material"; materialItemId: EntityId; sourceRef: string }
+  | { source: "deterministic_rule"; ruleId: string }
+  | { source: "manual"; evidenceRefId: EntityId };
+
+/** Qualitative material only: neither a prediction nor an input to scoring. */
+export type DecisionConsequence = {
+  id: EntityId;
+  description: string;
+  horizon: "short_term" | "long_term";
+  optionId: EntityId;
+  /** Present only for a proven concrete scenario, never a provider seed ref. */
+  scenarioId?: EntityId;
+  sourceEntityIds: EntityId[];
+  provenance: {
+    origins: [ConsequenceOrigin, ...ConsequenceOrigin[]];
+    independentlyVerified: false;
+  };
+};
+
 export type RiskAssessment = {
   id: EntityId;
   description: string;

@@ -107,10 +107,11 @@ export function createShadowSemanticDeltaCorpus(): ShadowFixture[] {
       evidence: "unknown", provenance: { source: "provider_candidate", source_ref: "unknown" },
     } : {});
     const notice = type === "unknown" || type === "clarification_need";
+    const consequence = type === "short_term_consequence" || type === "long_term_consequence";
     const firstFixture = fixture(`${type}_linked`, "semantic", type, [first], {
-      substantive: type === "dependency", uiMaterial: type === "dependency" || notice,
+      substantive: type === "dependency" || consequence, uiMaterial: type === "dependency" || notice,
       homeMaterial: type === "dependency", saveMaterial: type === "dependency" || notice,
-      traceOnly: type !== "dependency",
+      traceOnly: type !== "dependency" && !consequence,
     });
     if (type === "unknown") {
       return [firstFixture, fixture("unknown_concrete_gap_reference", "semantic", type, [

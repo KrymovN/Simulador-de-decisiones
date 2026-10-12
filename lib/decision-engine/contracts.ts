@@ -9,6 +9,7 @@ import type {
   DecisionEngineInputValidation,
   DecisionEngineOrchestratorTraceEntry,
   DecisionContext,
+  DecisionConsequence,
   DecisionEngineTrace,
   DecisionInput,
   DetectedCriticalGap,
@@ -105,6 +106,8 @@ export type SimulationResponseV2Draft = {
     assumptions: NonNullable<DecisionContext["assumptions"]>;
     scenarios: DeterministicScenario[];
     risks: DeterministicRiskAssessment[];
+    /** Optional foundation; UI rendering and durable save are deferred. */
+    consequences?: DecisionConsequence[];
   };
   recommendation?: DeterministicRecommendation;
   safety: {

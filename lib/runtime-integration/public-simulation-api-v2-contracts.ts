@@ -1,5 +1,6 @@
 import type { SimulationResponseV2Draft } from "../decision-engine/contracts";
 import type { SimulationResponseV2UiModel } from "../decision-engine/simulation-response-v2-ui-mapping-contracts";
+import { validatePresentDecisionConsequences } from "../decision-engine/consequence-validation";
 
 export const PUBLIC_SIMULATION_API_V2_CONTRACT_VERSION = "simulate-api-v2" as const;
 export const PUBLIC_SIMULATION_API_V2_RESPONSE_MODE = "production_v2" as const;
@@ -102,5 +103,6 @@ export function isPublicSimulationApiV2Envelope(
     record(value.data) &&
     value.data.contractVersion === "2.0" &&
     value.data.requestId === value.requestId &&
+    validatePresentDecisionConsequences(value.data) &&
     validUiModel(value.uiModel, false);
 }

@@ -23,6 +23,7 @@ export function inspectShadowSemanticDeltaReport(report: ShadowSemanticDeltaRepo
   check(new Set(report.cases.map((item) => item.caseId)).size === 24, "unique_case_ids");
   check(report.providerOperations === 0 && report.networkRequests === 0 && report.credentialReads === 0, "offline_evidence");
   check(report.productionAiActivated === false && report.providerQualityAssessed === false, "scope_claims");
+  check(report.consequencePersistence === "PERSISTENCE DEFERRED", "consequence_persistence_claim");
   check(report.matrix.length === 9 && report.matrix.every((row, index) => row.type === SHADOW_SEMANTIC_TYPES[index]), "type_matrix");
   check(new Set(report.cases.map((item) => item.baselineFingerprint)).size === 1, "identical_baseline");
   for (const fixture of fixtures) {
@@ -70,6 +71,16 @@ export function inspectShadowSemanticDeltaReport(report: ShadowSemanticDeltaRepo
         [...new Set(item.accounting.flatMap((candidate) => candidate.structuredContradictionIds))]), `${id}:structured_contradiction_accounting`);
     check(item.accounting.every((candidate) => candidate.structuredContradictionIds.length === 0 ||
       (candidate.candidateType === "contradiction" && candidate.simulationPaths.some((path) => path.startsWith("$.contradictions[")))), `${id}:structured_destination_paths`);
+    const isConsequence = ["short_term_consequence", "long_term_consequence"].includes(fixture.candidateType);
+    check(item.structuredConsequenceIds.length === (isConsequence && fixture.expected.substantive ? 1 : 0) &&
+      normalizedShadowJson(item.structuredConsequenceIds) === normalizedShadowJson(
+        [...new Set(item.accounting.flatMap((candidate) => candidate.structuredConsequenceIds))]), `${id}:structured_consequence_accounting`);
+    check(item.accounting.every((candidate) => candidate.structuredConsequenceIds.length === 0 ||
+      (["short_term_consequence", "long_term_consequence"].includes(candidate.candidateType) &&
+       candidate.simulationPaths.some((path) => path.startsWith("$.analysis.consequences[")))), `${id}:consequence_destination_paths`);
+    if (isConsequence) check(Boolean(item.packetFailure) || (item.consequenceFoundation.uiMappingUnchanged === true &&
+      item.consequenceFoundation.saveProjectionUnchanged === true && !item.uiVisibility.materialVisible &&
+      !item.saveRetention.materialRetained && !item.uiVisibility.homeRendered), `${id}:UI_and_PERSISTENCE_DEFERRED`);
     if (item.packetFailure) {
       check(!item.simulationDelta.comparable && !item.uiVisibility.comparable && !item.protectedInvariants.assessed, `${id}:failure_claims_comparison`);
       check(item.accounting.every((candidate) => candidate.disposition === "packet_failure" &&
@@ -142,6 +153,18 @@ export function runShadowSemanticDeltaValidation(report: ShadowSemanticDeltaRepo
   mutation("contradiction_authority_violation_fails", (value) => {
     value.cases.find((item) => item.limitation === "bounded_contradiction_destination")!.protectedInvariants.boundedContradictionAdditionsOnly = false;
   });
+  mutation("missing_structured_consequence_destination_fails", (value) => {
+    value.cases.find((item) => item.caseId === "short_term_consequence_linked")!.structuredConsequenceIds = [];
+  });
+  mutation("unattributed_structured_consequence_fails", (value) => {
+    value.cases.find((item) => item.caseId === "long_term_consequence_linked")!.accounting[0].structuredConsequenceIds = [];
+  });
+  mutation("consequence_authority_violation_fails", (value) => {
+    value.cases.find((item) => item.caseId === "short_term_consequence_linked")!.protectedInvariants.boundedConsequenceAdditionsOnly = false;
+  });
+  mutation("consequence_durability_claim_fails", (value) => {
+    value.cases.find((item) => item.caseId === "short_term_consequence_linked")!.saveRetention.materialRetained = true;
+  });
 
   const request = shadowCanonicalRequest();
   const baseline = runSimulationPipeline({
@@ -208,6 +231,30 @@ export function runShadowSemanticDeltaValidation(report: ShadowSemanticDeltaRepo
         !shadowProtectedInvariants(baseline, lostTrace, contradictionBoundary.controlledMaterial.items).boundedContradictionAdditionsOnly });
     }
   } else checks.push({ id: "real_bounded_contradiction_addition_allowed", passed: false });
+  const consequenceFixture = createShadowSemanticDeltaCorpus().find((item) => item.caseId === "short_term_consequence_linked")!;
+  const consequenceBoundary = composePostProviderDecisionMaterial({ boundaryId: "shadow_validation_consequence", bridgeRequest: request,
+    candidateMaterial: consequenceFixture.packet as CandidateDecisionMaterial });
+  if (consequenceBoundary.status === "composed") {
+    const composed = composePostProviderSimulationResponse(consequenceBoundary);
+    checks.push({ id: "real_bounded_consequence_addition_allowed", passed: composed.status === "composed" &&
+      composed.response.analysis?.consequences?.length === 1 &&
+      Object.entries(shadowProtectedInvariants(baseline, composed.response, consequenceBoundary.controlledMaterial.items))
+        .every(([key, value]) => key === "assessed" || value === true) });
+    if (composed.status === "composed") {
+      const mutation = (id: string, change: (value: SimulationResponseV2Draft) => void) => {
+        const altered = structuredClone(composed.response); change(altered);
+        checks.push({ id, passed: !shadowProtectedInvariants(baseline, altered,
+          consequenceBoundary.controlledMaterial.items).boundedConsequenceAdditionsOnly });
+      };
+      mutation("lost_consequence_destination_detected", (value) => { delete value.analysis!.consequences; });
+      mutation("lost_consequence_origin_detected", (value) => { value.analysis!.consequences![0].provenance.origins = [] as never; });
+      mutation("consequence_wrong_horizon_detected", (value) => { value.analysis!.consequences![0].horizon = "long_term"; });
+      mutation("consequence_wrong_option_detected", (value) => { value.analysis!.consequences![0].optionId = "option_wait"; });
+      mutation("consequence_fake_source_detected", (value) => { value.analysis!.consequences![0].sourceEntityIds = ["invented_entity"]; });
+      mutation("duplicated_consequence_detected", (value) => { value.analysis!.consequences!.push(structuredClone(value.analysis!.consequences![0])); });
+      mutation("unaccepted_rephrased_consequence_detected", (value) => { value.analysis!.consequences![0].description = "Unaccepted replacement."; });
+    }
+  } else checks.push({ id: "real_bounded_consequence_addition_allowed", passed: false });
   checks.push({ id: "normalization_preserves_numeric_values", passed: shadowFingerprint({ score: 1 }) !== shadowFingerprint({ score: 2 }) });
   const corpusFailures = report.cases.filter((item) => errors.some((error) => error.startsWith(`${item.caseId}:`))).map((item) => item.caseId);
   return { passed: checks.every((item) => item.passed), total: checks.length,
