@@ -110,7 +110,7 @@ export function createShadowSemanticDeltaCorpus(): ShadowFixture[] {
     const consequence = type === "short_term_consequence" || type === "long_term_consequence";
     const firstFixture = fixture(`${type}_linked`, "semantic", type, [first], {
       substantive: type === "dependency" || consequence, uiMaterial: type === "dependency" || notice,
-      homeMaterial: type === "dependency", saveMaterial: type === "dependency" || notice,
+      homeMaterial: type === "dependency", saveMaterial: type === "dependency" || notice || consequence,
       traceOnly: type !== "dependency" && !consequence,
     });
     if (type === "unknown") {

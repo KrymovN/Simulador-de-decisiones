@@ -7,6 +7,7 @@ import {
 } from "../runtime-integration/public-simulation-api-v2-contracts";
 import type { SimulationResponse } from "../simulationEngine";
 import type { SimulationRecordRow } from "./contracts";
+import { projectDecisionConsequences, validateStoredDecisionConsequences } from "./consequence-snapshot";
 import {
   initializePersistenceRuntimeWiring,
   type PersistenceRuntimeWiring,
@@ -207,6 +208,9 @@ export function buildSimulationRecordInsertPayload(input: {
       return null;
     }
 
+    const analysis = { scenarios, risks, ...projectDecisionConsequences(response) };
+    if (!validateStoredDecisionConsequences({ status: response.status, decision, analysis })) return null;
+
     return {
       owner_principal_id: input.ownerPrincipalId,
       owner_principal_type: "registered_user",
@@ -226,10 +230,7 @@ export function buildSimulationRecordInsertPayload(input: {
         decision,
         modelQuality,
         ...(clarification ? { clarification } : {}),
-        analysis: {
-          scenarios,
-          risks,
-        },
+        analysis,
         ...(recommendation ? { recommendation } : {}),
         safety,
         notices,
@@ -388,7 +389,7 @@ export async function saveSimulationRecordFromSimulationResponse(
 
   const record = await saveProvider.saveSimulationRecord(payload);
 
-  if (!record) {
+  if (!record || !validateStoredDecisionConsequences(record.deterministic_output_snapshot)) {
     return blocked(
       "simulation_record_save_failed",
       "Simulation record provider failed to save the record.",

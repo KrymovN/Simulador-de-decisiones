@@ -1,4 +1,5 @@
 import type { LevioAuthRuntimeContext } from "../auth/types";
+import type { DecisionConsequence } from "../decision-engine/types";
 import type {
   JsonObject,
   PersistenceRuntimeWiring,
@@ -71,6 +72,7 @@ export type SavedDecisionSimulationsBlockedReason =
   | "record_id_invalid"
   | "record_not_found"
   | "record_owner_scope_failed"
+  | "record_payload_invalid"
   | "record_archive_failed"
   | "record_delete_failed"
   | "record_delete_restricted"
@@ -131,6 +133,8 @@ export type DecisionSimulationDomainModel = {
     simulationResponseVersion: string;
     decisionContractVersion: string;
     deterministicOutputSnapshot: JsonObject;
+    /** Validated semantic restore; absence is not a claim of no consequences. */
+    consequences?: DecisionConsequence[];
     confidenceSummary: JsonObject | null;
   };
   aiMetadata: {

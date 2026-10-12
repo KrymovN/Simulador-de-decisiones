@@ -23,7 +23,7 @@ export function inspectShadowSemanticDeltaReport(report: ShadowSemanticDeltaRepo
   check(new Set(report.cases.map((item) => item.caseId)).size === 24, "unique_case_ids");
   check(report.providerOperations === 0 && report.networkRequests === 0 && report.credentialReads === 0, "offline_evidence");
   check(report.productionAiActivated === false && report.providerQualityAssessed === false, "scope_claims");
-  check(report.consequencePersistence === "PERSISTENCE DEFERRED", "consequence_persistence_claim");
+  check(report.consequencePersistence === "VALIDATED SNAPSHOT DURABILITY", "consequence_persistence_claim");
   check(report.matrix.length === 9 && report.matrix.every((row, index) => row.type === SHADOW_SEMANTIC_TYPES[index]), "type_matrix");
   check(new Set(report.cases.map((item) => item.baselineFingerprint)).size === 1, "identical_baseline");
   for (const fixture of fixtures) {
@@ -79,8 +79,9 @@ export function inspectShadowSemanticDeltaReport(report: ShadowSemanticDeltaRepo
       (["short_term_consequence", "long_term_consequence"].includes(candidate.candidateType) &&
        candidate.simulationPaths.some((path) => path.startsWith("$.analysis.consequences[")))), `${id}:consequence_destination_paths`);
     if (isConsequence) check(Boolean(item.packetFailure) || (item.consequenceFoundation.uiMappingUnchanged === true &&
-      item.consequenceFoundation.saveProjectionUnchanged === true && !item.uiVisibility.materialVisible &&
-      !item.saveRetention.materialRetained && !item.uiVisibility.homeRendered), `${id}:UI_and_PERSISTENCE_DEFERRED`);
+      item.consequenceFoundation.saveAuthorityUnchanged === true && item.consequenceFoundation.storedConsequencesPreserved === true &&
+      item.saveRetention.materialRetained === fixture.expected.saveMaterial && !item.uiVisibility.materialVisible &&
+      !item.uiVisibility.homeRendered), `${id}:validated_DURABILITY_and_UI_DEFERRED`);
     if (item.packetFailure) {
       check(!item.simulationDelta.comparable && !item.uiVisibility.comparable && !item.protectedInvariants.assessed, `${id}:failure_claims_comparison`);
       check(item.accounting.every((candidate) => candidate.disposition === "packet_failure" &&
@@ -162,8 +163,8 @@ export function runShadowSemanticDeltaValidation(report: ShadowSemanticDeltaRepo
   mutation("consequence_authority_violation_fails", (value) => {
     value.cases.find((item) => item.caseId === "short_term_consequence_linked")!.protectedInvariants.boundedConsequenceAdditionsOnly = false;
   });
-  mutation("consequence_durability_claim_fails", (value) => {
-    value.cases.find((item) => item.caseId === "short_term_consequence_linked")!.saveRetention.materialRetained = true;
+  mutation("consequence_durability_loss_fails", (value) => {
+    value.cases.find((item) => item.caseId === "short_term_consequence_linked")!.consequenceFoundation.storedConsequencesPreserved = false;
   });
 
   const request = shadowCanonicalRequest();

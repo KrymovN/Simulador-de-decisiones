@@ -71,6 +71,10 @@ try {
     ["post-provider-boundary", "lib/decision-engine/post-provider-boundary-validation.ts", "runPostProviderDecisionEngineBoundaryValidation"],
     ["dependency-and-risk-composition", "lib/decision-engine/post-provider-simulation-composition-validation.ts", "runPostProviderSimulationCompositionValidation"],
     ["consequence-foundation", "lib/decision-engine/consequence-foundation-validation.ts", "runConsequenceFoundationValidation"],
+    ["consequence-durability", "lib/persistence-runtime/consequence-durability-validation.ts", "runConsequenceDurabilityValidation"],
+    ["saved-simulation-reopen", "lib/saved-decision-simulations/runtime-validation.ts", "runSavedDecisionSimulationsRuntimeValidation"],
+    ["saved-simulation-surface", "lib/saved-decision-simulations/product-surface-validation.ts", "runSavedSimulationsProductSurfaceValidation"],
+    ["supabase-provider-guards", "lib/persistence-runtime/supabase-provider-validation.ts", "runSupabasePersistenceProviderValidation"],
     ["public-adapter", "lib/decision-engine/simulation-response-public-adapter-validation.ts", "runSimulationResponsePublicAdapterValidation"],
     ["v2-ui-mapping", "lib/decision-engine/simulation-response-v2-ui-mapping-validation.ts", "runSimulationResponseV2UiMappingValidation"],
     ["persistence-projection", "lib/persistence-runtime/simulation-record-persistence-validation.ts", "runSimulationRecordPersistenceValidation"],
@@ -84,12 +88,10 @@ try {
   }
   const read = (path) => readFileSync(join(root, path), "utf8");
   const allowed = new Set([
-    "lib/ai-decision-material/acceptance.ts",
-    "lib/decision-engine/types.ts", "lib/decision-engine/contracts.ts", "lib/decision-engine/simulation-response.ts",
-    "lib/decision-engine/consequence-validation.ts", "lib/decision-engine/consequence-foundation-validation.ts",
-    "lib/runtime-integration/public-simulation-api-v2-contracts.ts",
-    "lib/decision-engine/post-provider-simulation-composition.ts",
-    "lib/decision-engine/post-provider-simulation-composition-validation.ts",
+    "lib/persistence-runtime/consequence-snapshot.ts", "lib/persistence-runtime/consequence-durability-validation.ts",
+    "lib/persistence-runtime/simulation-record-persistence.ts", "lib/persistence-runtime/supabase-provider.ts",
+    "lib/saved-decision-simulations/contracts.ts", "lib/saved-decision-simulations/runtime.ts",
+    "lib/decision-engine/consequence-foundation-validation.ts",
     "lib/ai-quality/shadow-semantic-delta-fixtures.ts",
     "lib/ai-quality/shadow-semantic-delta-evaluator.ts", "lib/ai-quality/shadow-semantic-delta-validation.ts",
     "scripts/controlled-ai-shadow-semantic-delta-quality.mjs",
@@ -131,14 +133,16 @@ try {
     { id: "bounded-contradiction-destination-without-general-detector", passed: boundary.includes("contradictory_candidate_ids: []") &&
       report.cases.find((item) => item.limitation === "bounded_contradiction_destination")?.structuredContradictionIds.length === 1 &&
       report.cases.find((item) => item.limitation === "bounded_contradiction_destination")?.simulationDelta.substantive === true },
-    { id: "consequence-foundation-with-UI-and-PERSISTENCE-DEFERRED", passed:
-      report.consequencePersistence === "PERSISTENCE DEFERRED" &&
+    { id: "consequence-durability-with-UI-DEFERRED", passed:
+      report.consequencePersistence === "VALIDATED SNAPSHOT DURABILITY" &&
       ["short_term_consequence", "long_term_consequence"].every((type) => {
         const cases = report.cases.filter((item) => item.candidateType === type);
         return cases.some((item) => item.structuredConsequenceIds.length === 1 && item.simulationDelta.substantive) &&
           cases.every((item) => item.consequenceFoundation.uiMappingUnchanged === true &&
-            item.consequenceFoundation.saveProjectionUnchanged === true && !item.uiVisibility.homeRendered && !item.saveRetention.materialRetained);
-      }) && regressions.find((item) => item.id === "consequence-foundation")?.passed === true },
+            item.consequenceFoundation.saveAuthorityUnchanged === true && item.consequenceFoundation.storedConsequencesPreserved === true &&
+            !item.uiVisibility.homeRendered && item.saveRetention.materialRetained === Boolean(item.structuredConsequenceIds.length));
+      }) && regressions.find((item) => item.id === "consequence-foundation")?.passed === true &&
+        regressions.find((item) => item.id === "consequence-durability")?.passed === true },
     { id: "unknown-grounding-mismatch-observed-not-fixed", passed:
       adapter.includes("use a concrete allowed gap reference when one exists") &&
       adapter.includes('item.evidence === "unknown" && item.provenance.source_ref !== "unknown"') &&

@@ -9,6 +9,7 @@ import {
   type SupabaseSimulationRecordDeleteProvider,
   type SupabaseSimulationRecordReadProvider,
 } from "../persistence-runtime";
+import { decodeStoredDecisionConsequences, validateStoredDecisionConsequences } from "../persistence-runtime/consequence-snapshot";
 import {
   DECISION_SIMULATION_DOMAIN_MODEL_VERSION,
   SAVED_DECISION_SIMULATIONS_RUNTIME_VERSION,
@@ -379,6 +380,8 @@ export function mapSimulationRecordToDecisionSimulation(
     ownerVerifiedAt?: string;
   } = {},
 ): DecisionSimulationDomainModel {
+  const restored = decodeStoredDecisionConsequences(record.deterministic_output_snapshot);
+  if (!restored.valid) throw new Error("Saved consequence snapshot is invalid.");
   const decisionContext = decisionContextSnapshot(record);
   const generatedScenarios = generatedScenariosSnapshot(record);
   const ownerVerifiedAt = options.ownerVerifiedAt ?? record.updated_at;
@@ -423,6 +426,7 @@ export function mapSimulationRecordToDecisionSimulation(
       simulationResponseVersion: record.simulation_response_version,
       decisionContractVersion: record.decision_contract_version,
       deterministicOutputSnapshot: record.deterministic_output_snapshot,
+      ...(restored.consequences === undefined ? {} : { consequences: restored.consequences }),
       confidenceSummary: record.confidence_summary,
     },
     aiMetadata: {
@@ -570,6 +574,10 @@ export async function saveDecisionSimulation(
     );
   }
 
+  if (!validateStoredDecisionConsequences(result.record.deterministic_output_snapshot)) {
+    return blocked("record_payload_invalid", "Saved consequence snapshot is invalid.");
+  }
+
   return {
     status: "saved",
     version: SAVED_DECISION_SIMULATIONS_RUNTIME_VERSION,
@@ -641,6 +649,10 @@ export async function loadDecisionSimulation(
     );
   }
 
+  if (!validateStoredDecisionConsequences(record.deterministic_output_snapshot)) {
+    return blocked("record_payload_invalid", "Saved consequence snapshot is invalid.");
+  }
+
   return {
     status: "loaded",
     version: SAVED_DECISION_SIMULATIONS_RUNTIME_VERSION,
@@ -700,6 +712,10 @@ export async function listDecisionSimulations(
       "record_owner_scope_failed",
       "Saved decision simulation records include data outside the authenticated owner scope.",
     );
+  }
+
+  if (!records.every((record) => validateStoredDecisionConsequences(record.deterministic_output_snapshot))) {
+    return blocked("record_payload_invalid", "Saved consequence snapshot is invalid.");
   }
 
   return {
@@ -808,6 +824,10 @@ export async function archiveDecisionSimulation(
       "record_archive_failed",
       "Saved decision simulation archive result did not remain inside the owner scope.",
     );
+  }
+
+  if (!validateStoredDecisionConsequences(record.deterministic_output_snapshot)) {
+    return blocked("record_payload_invalid", "Saved consequence snapshot is invalid.");
   }
 
   return {

@@ -18,6 +18,7 @@ import { mapSimulationResponseV2ToUiModel } from "../decision-engine/simulation-
 import { validateSimulationResponseV2DraftShape } from "../decision-engine/simulation-response";
 import { consequenceSemanticKey, normalizeConsequenceDescription } from "../decision-engine/consequence-validation";
 import { buildSimulationRecordInsertPayload } from "../persistence-runtime/simulation-record-persistence";
+import { decodeStoredDecisionConsequences } from "../persistence-runtime/consequence-snapshot";
 import type { PublicSimulationApiV2Envelope } from "../runtime-integration/public-simulation-api-v2-contracts";
 import {
   createShadowSemanticDeltaCorpus, shadowCanonicalRequest, SHADOW_FIXED_TIME,
@@ -372,6 +373,14 @@ export async function evaluateShadowFixture(fixture: ShadowFixture) {
   const numericPaths = replay ? changedPaths(numericMetrics(baseline), numericMetrics(replay)) : [];
   const withoutConsequences = replay ? structuredClone(replay) : null;
   if (withoutConsequences?.analysis) delete withoutConsequences.analysis.consequences;
+  const projected = replay ? shadowSaveProjection(replay) : null;
+  const restored = projected ? decodeStoredDecisionConsequences(projected.deterministic_output_snapshot) : null;
+  const withoutStoredConsequences = projected ? structuredClone(projected) : null;
+  if (withoutStoredConsequences) {
+    const analysis = withoutStoredConsequences.deterministic_output_snapshot.analysis as Record<string, unknown>;
+    delete analysis.consequences;
+    delete analysis.consequenceReferences;
+  }
   const result = {
     caseId: fixture.caseId, group: fixture.group, candidateType: fixture.candidateType,
     baselineFingerprint: shadowFingerprint(baseline), canonicalInputFingerprint: inputFingerprint,
@@ -386,8 +395,10 @@ export async function evaluateShadowFixture(fixture: ShadowFixture) {
     consequenceFoundation: {
       uiMappingUnchanged: replay && withoutConsequences ? shadowFingerprint(mapSimulationResponseV2ToUiModel(replay)) ===
         shadowFingerprint(mapSimulationResponseV2ToUiModel(withoutConsequences)) : null,
-      saveProjectionUnchanged: replay && withoutConsequences ? shadowFingerprint(shadowSaveProjection(replay)) ===
+      saveAuthorityUnchanged: replay && withoutConsequences ? shadowFingerprint(withoutStoredConsequences) ===
         shadowFingerprint(shadowSaveProjection(withoutConsequences)) : null,
+      storedConsequencesPreserved: replay ? restored?.valid === true &&
+        normalizedShadowJson(restored.consequences) === normalizedShadowJson(replay.analysis?.consequences) : null,
     },
     uiVisibility: { comparable: Boolean(replay), mappingChanged: replay ? uiPaths.length > 0 : null,
       materialVisible: replay ? accounting.some((item) => item.uiPaths.length > 0) : null,
@@ -439,12 +450,12 @@ export async function runShadowSemanticDeltaEvaluation() {
     type, ...summarizeShadowCases(cases.filter((item) => item.group === "semantic" && item.candidateType === type)),
   }));
   return {
-    version: "controlled-ai-shadow-semantic-delta.3", execution: "offline_synthetic_replay_only",
+    version: "controlled-ai-shadow-semantic-delta.4", execution: "offline_synthetic_replay_only",
     providerQualityAssessed: false, productionAiActivated: false,
     providerOperations: 0, networkRequests: 0, credentialReads: 0,
     uiVisibilityScope: "existing_v2_mapping; home_rendering_reported_separately",
     saveRetentionScope: "pure_payload_projection_only; no_database_save_or_restore_claim",
-    consequencePersistence: "PERSISTENCE DEFERRED",
+    consequencePersistence: "VALIDATED SNAPSHOT DURABILITY",
     summary: summarizeShadowCases(cases), matrix, cases,
   };
 }

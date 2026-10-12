@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { validateStoredDecisionConsequences } from "./consequence-snapshot";
 import type {
   LevioPrincipalRow,
   PersistenceProviderAdapter,
@@ -681,6 +682,7 @@ function isSimulationRecordRow(value: unknown): value is SimulationRecordRow {
     nullableString(row.user_note) &&
     isJsonObject(row.user_input_snapshot) &&
     isJsonObject(row.deterministic_output_snapshot) &&
+    validateStoredDecisionConsequences(row.deterministic_output_snapshot) &&
     isJsonObject(row.metadata) &&
     isJsonObject(row.safety_flags) &&
     (isJsonObject(row.clarification_snapshot) || row.clarification_snapshot === null) &&
@@ -1077,7 +1079,7 @@ export function createSupabasePersistenceProviderAdapter(input: {
     async saveSimulationRecord(
       payload: SupabaseSimulationRecordInsertPayload,
     ): Promise<SimulationRecordRow | null> {
-      if (!isServerRuntime()) {
+      if (!isServerRuntime() || !validateStoredDecisionConsequences(payload.deterministic_output_snapshot)) {
         return null;
       }
 

@@ -3,7 +3,7 @@ import "server-only";
 import { createHash } from "node:crypto";
 import type { CandidateDecisionMaterial, CandidateDecisionMaterialItem } from "../ai-decision-material/contracts";
 import { createShadowSemanticDeltaCorpus, shadowCanonicalRequest } from "../ai-quality/shadow-semantic-delta-fixtures";
-import { shadowSaveProjection } from "../ai-quality/shadow-semantic-delta-evaluator";
+import { normalizedShadowJson, shadowSaveProjection } from "../ai-quality/shadow-semantic-delta-evaluator";
 import { mapSimulationRecordToDecisionSimulation } from "../saved-decision-simulations/runtime";
 import type { SimulationRecordRow } from "../persistence-runtime/contracts";
 import { adaptControlledProductionAiResultToPublicV2Envelope } from "../runtime-integration/public-simulation-api-v2-adapter.server";
@@ -110,8 +110,9 @@ export function runConsequenceFoundationValidation() {
   empty.analysis!.consequences = [];
   check("present_empty_consequence_list_is_valid", validateSimulationResponseV2DraftShape(empty));
   check("existing_ui_mapping_unchanged", JSON.stringify(mapSimulationResponseV2ToUiModel(short)) === JSON.stringify(mapSimulationResponseV2ToUiModel(old)));
-  check("PERSISTENCE_DEFERRED_projection_unchanged", JSON.stringify(shadowSaveProjection(short)) === JSON.stringify(shadowSaveProjection(old)) &&
-    (shadowSaveProjection(short)?.deterministic_output_snapshot.analysis as Record<string, unknown>).consequences === undefined);
+  check("validated_consequences_retained_in_save_projection",
+    normalizedShadowJson((shadowSaveProjection(short)?.deterministic_output_snapshot.analysis as Record<string, unknown>).consequences) ===
+    normalizedShadowJson(short.analysis!.consequences));
   const projected = shadowSaveProjection(short)!;
   const saved = { ...projected, record_id: "synthetic_saved_record", schema_version: 1,
     created_at: short.generatedAt, updated_at: short.generatedAt, archived_at: null, deleted_at: null,
@@ -119,8 +120,8 @@ export function runConsequenceFoundationValidation() {
     export_eligible: true, legal_hold_reason: null,
   } as SimulationRecordRow;
   const reopened = mapSimulationRecordToDecisionSimulation(saved, { lifecycleState: "reopened" });
-  check("PERSISTENCE_DEFERRED_reopened_snapshot_does_not_invent_consequences",
-    (reopened.decisionEngineOutput.deterministicOutputSnapshot.analysis as Record<string, unknown>).consequences === undefined);
+  check("typed_reopen_restores_validated_consequences",
+    normalizedShadowJson(reopened.decisionEngineOutput.consequences) === normalizedShadowJson(short.analysis!.consequences));
   const wrap = (response: SimulationResponseV2Draft) => adaptControlledProductionAiResultToPublicV2Envelope({
     selectedPath: "controlled_production_ai_v2", runtimeSource: "production_ai", fallback: { used: false }, response,
   } as ControlledServerRuntimeSelectionResult, {
@@ -211,5 +212,5 @@ export function runConsequenceFoundationValidation() {
   manual.traceability.evidence = manual.traceability.evidence.filter((entry) => entry.id !== "synthetic_manual_receipt");
   check("missing_manual_evidence_rejected", !validateSimulationResponseV2DraftShape(manual));
   return { passed: cases.every((entry) => entry.passed), cases,
-    persistenceStatus: "PERSISTENCE DEFERRED", providerOperations: 0, networkRequests: 0 };
+    persistenceStatus: "VALIDATED SNAPSHOT DURABILITY", providerOperations: 0, networkRequests: 0 };
 }
