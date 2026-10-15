@@ -66,6 +66,12 @@ try {
   const repeated = await evaluator.runShadowSemanticDeltaEvaluation();
   const validation = validator.runShadowSemanticDeltaValidation(report, repeated);
   const regressionEntries = [
+    ["information-gap-foundation", "lib/decision-engine/information-gap-observations-validation.ts", "runInformationGapObservationsValidation"],
+    ["deterministic-clarification-round-trip", "lib/decision-engine/deterministic-clarification-round-trip-validation.ts", "runDeterministicClarificationRoundTripValidation"],
+    ["core-gap-completeness-clarification", "lib/decision-engine/runtime-validation.ts", "runDecisionEngineRuntimeValidation"],
+    ["context-builder", "lib/decision-engine/context-builder-validation.ts", "runDecisionContextBuilderValidation"],
+    ["canonical-prompt-bridge", "lib/ai-integration/decision-engine-prompt-context-bridge.validation.ts", "runDecisionEnginePromptContextBridgeValidation"],
+    ["production-orchestrator-offline", "lib/ai-integration/production-decision-simulation-orchestrator.validation.ts", "runProductionDecisionSimulationOrchestratorValidation"],
     ["deterministic-simulation", "lib/decision-engine/simulation-pipeline-runner-validation.ts", "runSimulationPipelineRunnerValidation"],
     ["provider-adapter", "lib/ai-provider/openai-decision-material-adapter-validation.ts", "runStage9OpenAIDecisionMaterialAdapterValidation"],
     ["post-provider-boundary", "lib/decision-engine/post-provider-boundary-validation.ts", "runPostProviderDecisionEngineBoundaryValidation"],
@@ -88,11 +94,11 @@ try {
   }
   const read = (path) => readFileSync(join(root, path), "utf8");
   const allowed = new Set([
-    "lib/persistence-runtime/consequence-snapshot.ts", "lib/persistence-runtime/consequence-durability-validation.ts",
-    "lib/persistence-runtime/simulation-record-persistence.ts", "lib/persistence-runtime/supabase-provider.ts",
-    "lib/saved-decision-simulations/contracts.ts", "lib/saved-decision-simulations/runtime.ts",
-    "lib/decision-engine/consequence-foundation-validation.ts",
-    "lib/ai-quality/shadow-semantic-delta-fixtures.ts",
+    "lib/decision-engine/information-gap-observations.ts", "lib/decision-engine/information-gap-observations-validation.ts",
+    "lib/ai-quality/information-gap-shadow-fixtures.ts", "lib/ai-decision-material/acceptance.ts",
+    "lib/ai-integration/decision-engine-prompt-context-bridge.ts", "lib/ai-integration/production-decision-simulation-orchestrator.ts",
+    "lib/ai-provider/openai-decision-material-adapter.ts", "lib/decision-engine/post-provider-boundary.ts",
+    "lib/decision-engine/post-provider-simulation-composition.ts",
     "lib/ai-quality/shadow-semantic-delta-evaluator.ts", "lib/ai-quality/shadow-semantic-delta-validation.ts",
     "scripts/controlled-ai-shadow-semantic-delta-quality.mjs",
   ]);
@@ -117,6 +123,17 @@ try {
   const fixtures = require(join(root, fixturePath));
   const corpusInputs = (source) => source.createShadowSemanticDeltaCorpus().map(({ caseId, group, candidateType, packet }) =>
     ({ caseId, group, candidateType, packet }));
+  const unchanged = (paths) => paths.every((path) => read(path) === readGit(["show", `HEAD:${path}`]));
+  const providerDefinitions = (source) => {
+    const ast = ts.createSourceFile("adapter.ts", source, ts.ScriptTarget.ES2022, true);
+    const names = new Set(["providerContext", "CANDIDATE_DECISION_MATERIAL_OUTPUT_SCHEMA", "CANDIDATE_DECISION_MATERIAL_PROVIDER_INSTRUCTIONS",
+      "OPENAI_DECISION_MATERIAL_MODEL", "OPENAI_DECISION_MATERIAL_LIMITS", "buildCandidateDecisionMaterialProviderRequest", "buildDecisionMaterialProviderRequest"]);
+    return ast.statements.flatMap((node) => {
+      if (ts.isFunctionDeclaration(node) && names.has(node.name?.text)) return [node.getText(ast)];
+      if (ts.isVariableStatement(node)) return node.declarationList.declarations.filter((entry) => names.has(entry.name.getText(ast))).map((entry) => entry.getText(ast));
+      return [];
+    });
+  };
   const invariants = [
     { id: "offline-guards-zero-attempts", passed: Object.values(attempts).every((count) => count === 0) },
     { id: "client-safe-consequence-present-field-guard", passed: !/\brequire\s*\(/.test(ts.transpileModule(
@@ -143,16 +160,34 @@ try {
             !item.uiVisibility.homeRendered && item.saveRetention.materialRetained === Boolean(item.structuredConsequenceIds.length));
       }) && regressions.find((item) => item.id === "consequence-foundation")?.passed === true &&
         regressions.find((item) => item.id === "consequence-durability")?.passed === true },
-    { id: "unknown-grounding-mismatch-observed-not-fixed", passed:
+    { id: "unknown-grounding-narrow-canonical-target-exception", passed:
       adapter.includes("use a concrete allowed gap reference when one exists") &&
       adapter.includes('item.evidence === "unknown" && item.provenance.source_ref !== "unknown"') &&
-      report.cases.find((item) => item.limitation === "unknown_grounding_mismatch")?.packetFailure?.reason === "unknown_evidence_requires_unknown_source" },
+      report.cases.find((item) => item.limitation === "unknown_grounding_mismatch")?.packetFailure?.reason === "unknown_evidence_requires_unknown_source" &&
+      report.informationGapCases.find((item) => item.caseId === "gap_unknown_grounded")?.informationGaps.observations.length === 1 &&
+      report.informationGapCases.find((item) => item.caseId === "gap_clarification_grounded")?.informationGaps.observations.length === 1 },
+    { id: "provider-payload-instructions-schema-model-limits-unchanged", passed:
+      providerDefinitions(adapter).length === 7 && evaluator.normalizedShadowJson(providerDefinitions(adapter)) ===
+        evaluator.normalizedShadowJson(providerDefinitions(readGit(["show", "HEAD:lib/ai-provider/openai-decision-material-adapter.ts"]))) },
+    { id: "public-core-clarification-ui-persistence-platform-unchanged", passed: unchanged([
+      "lib/decision-engine/types.ts", "lib/decision-engine/contracts.ts", "lib/decision-engine/gaps.ts",
+      "lib/decision-engine/completeness.ts", "lib/decision-engine/clarification.ts", "lib/decision-engine/context-builder.ts",
+      "lib/decision-engine/deterministic-clarification-round-trip.ts", "app/api/simulate/route.ts", "components/HomeSimulator.tsx",
+      "lib/runtime-integration/public-simulation-api-v2-contracts.ts", "lib/ai-decision-material/contracts.ts",
+      "lib/persistence-runtime/consequence-snapshot.ts", "lib/persistence-runtime/simulation-record-persistence.ts",
+      "lib/persistence-runtime/supabase-provider.ts", "lib/saved-decision-simulations/runtime.ts", "vercel.json", "package.json",
+    ]) },
+    { id: "gap-lifecycle-authority-zero-deltas", passed: report.informationGapCases.every((item) =>
+      item.informationGaps.questionsCreated === 0 && item.informationGaps.lifecycleTransitions === 0 &&
+      (item.packetFailure || (item.clarificationLifecycleUnchanged && !item.recommendationDelta.changed &&
+        !item.numericMetricDelta.changed && item.protectedInvariants.safetyPreserved))) },
   ];
   const passed = validation.passed && regressions.every((item) => item.passed) && invariants.every((item) => item.passed);
   const result = {
     passed, normalizedReportSha256: evaluator.shadowFingerprint(report),
     determinism: "two_sequential_runs_compared", validation, regressions, invariants, offlineGuardAttempts: attempts,
-    ...(!process.argv.includes("--report") ? { summary: report.summary, matrix: report.matrix } : { report }),
+    ...(!process.argv.includes("--report") ? { summary: report.summary, matrix: report.matrix,
+      informationGapMatrix: report.informationGapMatrix } : { report }),
   };
   process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
   if (!passed) process.exitCode = 1;

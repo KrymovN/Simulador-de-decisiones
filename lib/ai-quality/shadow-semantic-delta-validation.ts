@@ -1,4 +1,5 @@
 import "server-only";
+import { createHash } from "node:crypto";
 
 import { runSimulationPipeline } from "../decision-engine/pipeline";
 import { composePostProviderDecisionMaterial } from "../decision-engine/post-provider-boundary";
@@ -9,9 +10,11 @@ import {
   createShadowSemanticDeltaCorpus, shadowCanonicalRequest, SHADOW_SEMANTIC_TYPES,
 } from "./shadow-semantic-delta-fixtures";
 import {
-  normalizedShadowJson, shadowFingerprint, shadowProtectedInvariants, summarizeShadowCases,
+  normalizedShadowJson, shadowFingerprint, shadowProtectedInvariants, summarizeShadowCases, summarizeInformationGapCases,
   type ShadowSemanticDeltaReport,
 } from "./shadow-semantic-delta-evaluator";
+import { createInformationGapShadowFixtures } from "./information-gap-shadow-fixtures";
+import { createInformationGapTargetCatalog, informationGapSemanticKey } from "../decision-engine/information-gap-observations";
 
 export function inspectShadowSemanticDeltaReport(report: ShadowSemanticDeltaReport): string[] {
   const errors: string[] = [];
@@ -110,6 +113,78 @@ export function inspectShadowSemanticDeltaReport(report: ShadowSemanticDeltaRepo
     check(normalizedShadowJson(counts) === normalizedShadowJson(summarizeShadowCases(
       report.cases.filter((item) => item.group === "semantic" && item.candidateType === type))), `matrix:${type}:aggregate`);
   }
+  const gapFixtures = createInformationGapShadowFixtures();
+  check(report.informationGapCases.length === gapFixtures.length &&
+    new Set(report.informationGapCases.map((item) => item.caseId)).size === gapFixtures.length, "gap_corpus_identity");
+  for (const { fixture, request, expected } of gapFixtures) {
+    const item = report.informationGapCases.find((entry) => entry.caseId === fixture.caseId);
+    const id = fixture.caseId;
+    if (!item) { errors.push(`${id}:missing_gap_case`); continue; }
+    const packet = fixture.packet as CandidateDecisionMaterial;
+    const gaps = item.informationGaps;
+    const catalog = createInformationGapTargetCatalog(request)!;
+    const active = gaps.observations.filter((entry) => entry.resolution === "ACTIVE");
+    check(item.canonicalInputFingerprint === item.replayInputFingerprint &&
+      item.canonicalInputFingerprint === shadowFingerprint(request), `${id}:gap_input_identity`);
+    check(item.identicalTransportRequest && item.fakeTransportCalls.tokenCount === 1 && item.fakeTransportCalls.generation === 1, `${id}:gap_offline_transport`);
+    check(item.candidateType === fixture.candidateType && item.group === fixture.group &&
+      normalizedShadowJson(item.candidateIds) === normalizedShadowJson(packet.items.map((entry) => entry.candidate_id)), `${id}:gap_candidate_identity`);
+    check((item.packetFailure?.reason ?? null) === expected.failure, `${id}:gap_failure_reason`);
+    check(gaps.status === "evaluated" && gaps.questionsCreated === 0 && gaps.lifecycleTransitions === 0 &&
+      item.clarificationLifecycleUnchanged === (expected.failure ? null : true), `${id}:no_clarification_lifecycle_change`);
+    check(active.length === expected.active &&
+      gaps.observations.filter((entry) => entry.resolution === "SUPPRESSED_ALREADY_KNOWN").length === expected.known &&
+      gaps.accounting.filter((entry) => entry.disposition === "DUPLICATE_MERGED").length === expected.merged &&
+      gaps.accounting.filter((entry) => entry.disposition.startsWith("TRACE_ONLY")).length === expected.traceOnly, `${id}:gap_counts`);
+    check(normalizedShadowJson(active.map((entry) => entry.materiality).sort()) === normalizedShadowJson([...expected.materialities].sort()) &&
+      active.filter((entry) => entry.wouldRequireClarification).length === expected.wouldClarify, `${id}:gap_materiality`);
+    check(item.recommendationDelta.changed === (expected.failure ? null : false) &&
+      item.numericMetricDelta.changed === (expected.failure ? null : false) &&
+      Object.entries(item.protectedInvariants).every(([key, value]) => key === "assessed" || value === true), `${id}:gap_authority`);
+    check(item.simulationDelta.substantive === (expected.failure ? null : false) &&
+      item.uiVisibility.homeRendered === (expected.failure ? null : false), `${id}:internal_not_public_capability`);
+    check(gaps.accounting.length === (expected.failure ? 0 : packet.items.length) &&
+      item.accounting.length === packet.items.length &&
+      item.accounting.filter((entry) => entry.traceOnly).length === expected.traceOnly, `${id}:gap_accounting_complete`);
+    check(new Set(gaps.observations.map((entry) => entry.semanticKey)).size === gaps.observations.length &&
+      new Set(gaps.observations.map((entry) => entry.id)).size === gaps.observations.length, `${id}:gap_deduplication`);
+    for (const observation of gaps.observations) {
+      const target = catalog.entries.find((entry) => entry.semanticKey === observation.semanticKey);
+      check(Boolean(target) && normalizedShadowJson(target!.target) === normalizedShadowJson(observation.target) &&
+        observation.semanticKey === informationGapSemanticKey(observation.target) &&
+        observation.id === `gap_observation_${createHash("sha256").update(JSON.stringify(observation.target)).digest("hex")}`, `${id}:canonical_target`);
+      if (!target) continue;
+      const known = target?.valueStatus === "known", notApplicable = target?.valueStatus === "not_applicable";
+      check(observation.resolution === (known ? "SUPPRESSED_ALREADY_KNOWN" : notApplicable ? "SUPPRESSED_NOT_APPLICABLE" : "ACTIVE") &&
+        observation.materiality === (known || notApplicable ? "non_material" : target?.classification.materiality) &&
+        observation.wouldRequireClarification === (known || notApplicable ? false : target?.classification.wouldRequireClarification) &&
+        observation.ruleEvidence.ruleId === (known ? "canonical_value_known" : notApplicable ? "canonical_value_not_applicable" : target?.classification.ruleEvidence.ruleId) &&
+        observation.ruleEvidence.entityId === observation.target.entityId, `${id}:deterministic_rule_evidence`);
+      check(normalizedShadowJson(Object.keys(observation).sort()) === normalizedShadowJson([
+        "id", "semanticKey", "target", "kinds", "origins", "resolution", "materiality", "ruleEvidence", "wouldRequireClarification",
+      ].sort()), `${id}:no_extra_gap_authority_fields`);
+      const accounts = gaps.accounting.filter((entry) => entry.observationId === observation.id);
+      check(observation.origins.length === accounts.length && observation.origins.length > 0 && observation.origins.length <= 64 &&
+        new Set(observation.origins.map((entry) => entry.candidateId)).size === observation.origins.length &&
+        normalizedShadowJson([...new Set(observation.origins.map((entry) => entry.kind))].sort()) === normalizedShadowJson(observation.kinds), `${id}:gap_origins_complete`);
+      for (const origin of observation.origins) {
+        const source = packet.items.find((entry) => entry.candidate_id === origin.candidateId);
+        check(Boolean(source) && origin.source === "controlled_material" && origin.kind === source?.item_type &&
+          origin.sourceRef === source?.provenance.source_ref && target!.sourceRefs.includes(origin.sourceRef) &&
+          accounts.some((entry) => entry.candidateId === origin.candidateId && entry.materialItemId === origin.materialItemId) &&
+          normalizedShadowJson(Object.keys(origin).sort()) === normalizedShadowJson(["source", "candidateId", "materialItemId", "kind", "sourceRef"].sort()), `${id}:grounded_gap_origin`);
+      }
+    }
+    for (const account of item.accounting) {
+      const receipt = gaps.accounting.find((entry) => entry.candidateId === account.candidateId);
+      const observation = gaps.observations.find((entry) => entry.id === receipt?.observationId);
+      check(account.gapTargetBound === (receipt?.targetBound ?? false) &&
+        account.gapKnownSuppressed === (observation?.resolution === "SUPPRESSED_ALREADY_KNOWN") &&
+        account.gapDuplicateMerged === (receipt?.disposition === "DUPLICATE_MERGED") &&
+        normalizedShadowJson(account.structuredInformationGapIds) === normalizedShadowJson(observation?.resolution === "ACTIVE" ? [observation.id] : []), `${id}:candidate_gap_measurement`);
+    }
+  }
+  check(normalizedShadowJson(report.informationGapMatrix) === normalizedShadowJson(summarizeInformationGapCases(report.informationGapCases)), "gap_matrix_recomputed");
   return errors;
 }
 
@@ -166,6 +241,26 @@ export function runShadowSemanticDeltaValidation(report: ShadowSemanticDeltaRepo
   mutation("consequence_durability_loss_fails", (value) => {
     value.cases.find((item) => item.caseId === "short_term_consequence_linked")!.consequenceFoundation.storedConsequencesPreserved = false;
   });
+  const gapMutation = (id: string, update: (value: ShadowSemanticDeltaReport["informationGapCases"][number]) => void,
+    caseId = "gap_unknown_grounded") => mutation(id, (value) => update(value.informationGapCases.find((entry) => entry.caseId === caseId)!));
+  gapMutation("missing_structured_gap_detected", (value) => { value.informationGaps.observations = []; });
+  gapMutation("forged_gap_target_detected", (value) => { value.informationGaps.observations[0].target.entityId = "invented_entity"; });
+  gapMutation("forged_gap_identity_detected", (value) => { value.informationGaps.observations[0].id = `gap_observation_${"0".repeat(64)}`; });
+  gapMutation("forged_semantic_key_detected", (value) => { value.informationGaps.observations[0].semanticKey = "invented_target"; });
+  gapMutation("provider_blocking_escalation_detected", (value) => { value.informationGaps.observations[0].materiality = "blocking"; });
+  gapMutation("forged_rule_evidence_detected", (value) => { value.informationGaps.observations[0].ruleEvidence.ruleId = "provider_critical"; });
+  gapMutation("known_suppression_loss_detected", (value) => { value.informationGaps.observations[0].resolution = "ACTIVE"; }, "gap_known_unknown_suppressed");
+  gapMutation("merged_gap_origin_loss_detected", (value) => { value.informationGaps.observations[0].origins.pop(); }, "gap_mixed_kinds_merge");
+  gapMutation("gap_origin_source_mismatch_detected", (value) => { value.informationGaps.observations[0].origins[0].sourceRef = "criterion_999"; });
+  gapMutation("gap_question_creation_detected", (value) => { value.informationGaps.questionsCreated = 1 as never; });
+  gapMutation("gap_lifecycle_transition_detected", (value) => { value.informationGaps.lifecycleTransitions = 1 as never; });
+  gapMutation("clarification_result_delta_detected", (value) => { value.clarificationLifecycleUnchanged = false; });
+  gapMutation("gap_recommendation_delta_detected", (value) => { value.recommendationDelta.changed = true; });
+  gapMutation("gap_numeric_delta_detected", (value) => { value.numericMetricDelta.changed = true; });
+  gapMutation("gap_safety_delta_detected", (value) => { value.protectedInvariants.safetyPreserved = false; });
+  gapMutation("missing_gap_accounting_detected", (value) => { value.informationGaps.accounting = []; });
+  gapMutation("gap_candidate_measurement_tamper_detected", (value) => { value.accounting[0].structuredInformationGapIds = []; });
+  mutation("gap_matrix_tamper_detected", (value) => { value.informationGapMatrix[0].structuredGaps++; });
 
   const request = shadowCanonicalRequest();
   const baseline = runSimulationPipeline({
@@ -258,7 +353,9 @@ export function runShadowSemanticDeltaValidation(report: ShadowSemanticDeltaRepo
   } else checks.push({ id: "real_bounded_consequence_addition_allowed", passed: false });
   checks.push({ id: "normalization_preserves_numeric_values", passed: shadowFingerprint({ score: 1 }) !== shadowFingerprint({ score: 2 }) });
   const corpusFailures = report.cases.filter((item) => errors.some((error) => error.startsWith(`${item.caseId}:`))).map((item) => item.caseId);
+  const gapCorpusFailures = report.informationGapCases.filter((item) => errors.some((error) => error.startsWith(`${item.caseId}:`))).map((item) => item.caseId);
   return { passed: checks.every((item) => item.passed), total: checks.length,
     corpus: { total: report.cases.length, passed: report.cases.length - corpusFailures.length, failures: corpusFailures },
+    informationGapCorpus: { total: report.informationGapCases.length, passed: report.informationGapCases.length - gapCorpusFailures.length, failures: gapCorpusFailures },
     passedChecks: checks.filter((item) => item.passed).length, checks };
 }

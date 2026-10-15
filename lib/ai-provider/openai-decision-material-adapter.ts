@@ -19,6 +19,8 @@ import { createAIProviderBoundary } from "./boundary";
 import { createAIProviderRuntimeSelection } from "./runtime";
 import { createAIProviderAdapter } from "./validation";
 import type { PromptContextOutput } from "../prompt-context/contracts";
+import type { DecisionEnginePromptContextBridgeRequest } from "../ai-integration/contracts";
+import { createInformationGapTargetCatalog, informationGapCatalogMatchesPrompt, registeredInformationGapSourceRef } from "../decision-engine/information-gap-observations";
 import {
   DEFAULT_PROMPT_CONTEXT_POLICY,
   DEFAULT_PROMPT_CONTEXT_RISK_BOUNDARY,
@@ -555,12 +557,15 @@ function providerBoundaryPreflight(input: PromptContextOutput, requestedAt: stri
 export function validateMaterialGrounding(
   material: CandidateDecisionMaterial,
   input: PromptContextOutput,
+  canonicalGapSource?: DecisionEnginePromptContextBridgeRequest,
 ): DecisionMaterialGroundingValidationResult {
   const context = providerContext(input);
   const sourceRefs = new Set(context.allowed_refs.source_refs);
   const optionRefs = new Set(context.allowed_refs.option_refs);
   const scenarioRefs = new Set(context.allowed_refs.scenario_refs);
   const criterionRefs = new Set(context.allowed_refs.criterion_refs);
+  const proposedCatalog = canonicalGapSource ? createInformationGapTargetCatalog(canonicalGapSource) : null;
+  const gapCatalog = informationGapCatalogMatchesPrompt(proposedCatalog, input) ? proposedCatalog : null;
 
   for (const [itemIndex, item] of material.items.entries()) {
     if (!sourceRefs.has(item.provenance.source_ref)) {
@@ -631,7 +636,8 @@ export function validateMaterialGrounding(
       };
     }
 
-    if (item.evidence === "unknown" && item.provenance.source_ref !== "unknown") {
+    if (item.evidence === "unknown" && item.provenance.source_ref !== "unknown" &&
+        !(["unknown", "clarification_need"].includes(item.item_type) && registeredInformationGapSourceRef(item.provenance.source_ref, gapCatalog))) {
       return {
         valid: false,
         failure: {
@@ -746,6 +752,7 @@ function transportFailure(error: unknown): {
 export async function executeCandidateDecisionMaterial(
   promptContext: unknown,
   config: DecisionMaterialAdapterExecutionConfig,
+  canonicalGapSource?: DecisionEnginePromptContextBridgeRequest,
 ): Promise<DecisionMaterialAdapterResult> {
   const now = config.now ?? Date.now;
   const startedAt = now();
@@ -837,7 +844,7 @@ export async function executeCandidateDecisionMaterial(
   if (!inspection.safetyValid) {
     return failed("failed", "provider_safety_invalid", providerRequests, elapsed());
   }
-  const grounding = validateMaterialGrounding(parsed, validated.value);
+  const grounding = validateMaterialGrounding(parsed, validated.value, canonicalGapSource);
   if (grounding.valid === false) {
     return failed(
       "failed",

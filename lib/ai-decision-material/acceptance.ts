@@ -119,6 +119,14 @@ function normalizedDuplicateKey(item: CandidateDecisionMaterialItem): string {
   const contentKey = `${item.item_type}:${normalizedContent(item.content)
     .toLocaleLowerCase("es-ES")
     .replace(/[.,;:!?]+$/g, "")}`;
+  if (item.item_type === "unknown" || item.item_type === "clarification_need") {
+    // Preserve distinct gap scopes through acceptance; semantic target dedupe
+    // and merged provenance belong to the internal observation evaluator.
+    return `${contentKey}:${JSON.stringify([
+      [...item.option_refs].sort(), [...item.scenario_refs].sort(), [...item.criterion_refs].sort(),
+      item.provenance.source_ref, item.evidence,
+    ])}`;
+  }
   if (item.item_type !== "short_term_consequence" && item.item_type !== "long_term_consequence") return contentKey;
   // Different consequence scopes/origins must reach composition intact. Exact
   // duplicate sources still share one controlled receipt and retain the ledger.

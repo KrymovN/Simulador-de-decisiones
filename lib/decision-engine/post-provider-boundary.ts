@@ -18,6 +18,7 @@ import type {
   DecisionEnginePromptContextBridgeRequest,
 } from "../ai-integration/contracts";
 import type { DecisionContext, EntityId, SafetyBoundary } from "./types";
+import { bindInformationGapTarget, createInformationGapTargetCatalog, registeredInformationGapSourceRef, type InformationGapTargetCatalog } from "./information-gap-observations";
 
 export const POST_PROVIDER_DECISION_ENGINE_BOUNDARY_VERSION =
   "stage-9-post-provider-decision-engine-boundary.1" as const;
@@ -196,11 +197,13 @@ function allowedSourceRefs(optionCount: number, constraintCount: number, criteri
 function provenanceIsGrounded(
   material: CandidateDecisionMaterial,
   sourceRefs: Set<string>,
+  gapCatalog: InformationGapTargetCatalog | null,
 ): boolean {
   return material.items.every((item) =>
     sourceRefs.has(item.provenance.source_ref) &&
     (item.evidence !== "provider_inference" || item.provenance.source_ref !== "unknown") &&
-    (item.evidence !== "unknown" || item.provenance.source_ref === "unknown") &&
+    (item.evidence !== "unknown" || item.provenance.source_ref === "unknown" ||
+      (["unknown", "clarification_need"].includes(item.item_type) && registeredInformationGapSourceRef(item.provenance.source_ref, gapCatalog))) &&
     (!["user_fact_reference", "user_assumption_reference"].includes(item.evidence) ||
       item.provenance.source_ref !== "unknown")
   );
@@ -247,7 +250,12 @@ function mapOptionRefs(refs: string[], context: DecisionContext): EntityId[] {
 function sourceContextEntityIds(
   item: CandidateDecisionMaterialItem,
   context: DecisionContext,
+  gapCatalog: InformationGapTargetCatalog | null,
 ): EntityId[] {
+  if (["unknown", "clarification_need"].includes(item.item_type) && gapCatalog) {
+    const bound = bindInformationGapTarget(item, gapCatalog, context);
+    if (bound.status === "bound") return [bound.entry.target.entityId];
+  }
   const source = item.provenance.source_ref;
   if (source === "objective_1" || source === "question_1") return [context.decisionId];
   if (source.startsWith("option_") || source.startsWith("scenario_")) {
@@ -278,6 +286,7 @@ function controlledItem(
   item: CandidateDecisionMaterialItem,
   index: number,
   context: DecisionContext,
+  gapCatalog: InformationGapTargetCatalog | null,
 ): DecisionEngineControlledMaterialItem {
   return {
     materialItemId: `decision_material_${index + 1}_${item.candidate_id}`,
@@ -287,7 +296,7 @@ function controlledItem(
     evidenceClassification: item.evidence,
     confidence: item.confidence,
     sourceProvenanceRef: item.provenance.source_ref,
-    sourceContextEntityIds: sourceContextEntityIds(item, context),
+    sourceContextEntityIds: sourceContextEntityIds(item, context, gapCatalog),
     optionIds: mapOptionRefs(item.option_refs, context),
     scenarioOptionIds: mapOptionRefs(item.scenario_refs, context),
     criterionRefs: [...item.criterion_refs],
@@ -339,6 +348,7 @@ export function composePostProviderDecisionMaterial(
   const request = value.bridgeRequest as DecisionEnginePromptContextBridgeRequest;
   const context = request.decisionContext;
   const frame = bridge.promptContextOutput.contextFrame;
+  const gapCatalog = createInformationGapTargetCatalog(request);
   const optionRefs = positionalRefs("option", frame.scenarioSeeds.length);
   const scenarioRefs = positionalRefs("scenario", frame.scenarioSeeds.length);
   const criterionRefs = positionalRefs("criterion", frame.tradeoffFocus.length);
@@ -348,7 +358,7 @@ export function composePostProviderDecisionMaterial(
     frame.tradeoffFocus.length,
   );
 
-  if (!provenanceIsGrounded(material, sourceRefs)) {
+  if (!provenanceIsGrounded(material, sourceRefs, gapCatalog)) {
     return rejected({
       boundaryId,
       code: "candidate_grounding_invalid",
@@ -403,7 +413,7 @@ export function composePostProviderDecisionMaterial(
     });
   }
 
-  const items = acceptance.accepted_material.items.map((item, index) => controlledItem(item, index, context));
+  const items = acceptance.accepted_material.items.map((item, index) => controlledItem(item, index, context, gapCatalog));
   const compositionEvidence: DecisionCompositionEvidence = {
     items: items.map((item) => ({
       composition_item_id: item.materialItemId,

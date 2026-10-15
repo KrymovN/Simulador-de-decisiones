@@ -19,6 +19,8 @@ import { validateSimulationResponseV2DraftShape } from "../decision-engine/simul
 import { consequenceSemanticKey, normalizeConsequenceDescription } from "../decision-engine/consequence-validation";
 import { buildSimulationRecordInsertPayload } from "../persistence-runtime/simulation-record-persistence";
 import { decodeStoredDecisionConsequences } from "../persistence-runtime/consequence-snapshot";
+import type { InformationGapEvaluation } from "../decision-engine/information-gap-observations";
+import { createInformationGapShadowFixtures } from "./information-gap-shadow-fixtures";
 import type { PublicSimulationApiV2Envelope } from "../runtime-integration/public-simulation-api-v2-contracts";
 import {
   createShadowSemanticDeltaCorpus, shadowCanonicalRequest, SHADOW_FIXED_TIME,
@@ -247,6 +249,10 @@ export type ShadowCandidateAccounting = {
   controlledMaterialIds: string[];
   structuredContradictionIds: string[];
   structuredConsequenceIds: string[];
+  structuredInformationGapIds: string[];
+  gapTargetBound: boolean;
+  gapKnownSuppressed: boolean;
+  gapDuplicateMerged: boolean;
   downstreamRefs: string[];
   simulationPaths: string[];
   uiPaths: string[];
@@ -269,7 +275,7 @@ function observedCandidates(packet: unknown): { candidateId: string; candidateTy
 
 function candidateAccounting(packet: unknown, ledger: SemanticPreservationLedgerEntry[],
   controlled: DecisionEngineControlledMaterialItem[], baseline: SimulationResponseV2Draft,
-  replay: SimulationResponseV2Draft | null, failure: PacketFailure | null): ShadowCandidateAccounting[] {
+  replay: SimulationResponseV2Draft | null, failure: PacketFailure | null, gaps: InformationGapEvaluation): ShadowCandidateAccounting[] {
   const baselineUi = mapSimulationResponseV2ToUiModel(baseline);
   const replayUi = replay ? mapSimulationResponseV2ToUiModel(replay) : null;
   const beforeSave = shadowSaveProjection(baseline), afterSave = replay ? shadowSaveProjection(replay) : null;
@@ -291,6 +297,9 @@ function candidateAccounting(packet: unknown, ledger: SemanticPreservationLedger
     ).map((entry) => entry.id) ?? [];
     const structuredConsequenceIds = replay?.analysis?.consequences?.filter((entry) => entry.provenance.origins.some((origin) =>
       origin.source === "controlled_material" && ids.includes(origin.materialItemId))).map((entry) => entry.id) ?? [];
+    const gapReceipt = gaps.accounting.find((item) => item.candidateId === candidate.candidateId);
+    const gap = gaps.observations.find((item) => item.id === gapReceipt?.observationId);
+    const structuredInformationGapIds = gap?.resolution === "ACTIVE" ? [gap.id] : [];
     const disposition: CandidateDisposition = failure ? "packet_failure"
       : entry?.disposition === "merged_as_duplicate" ? "duplicate"
       : entry?.disposition.startsWith("rejected") || entry?.disposition === "controlled_failure" ? "rejected"
@@ -299,15 +308,17 @@ function candidateAccounting(packet: unknown, ledger: SemanticPreservationLedger
       ...candidate, disposition, validationReason: failure?.reason ?? entry?.reason ?? "missing_disposition",
       ledgerDisposition: entry?.disposition ?? null, ledgerTraceMarker: entry?.traceability_marker ?? null,
       mergedIntoCandidateId: entry?.disposition === "merged_as_duplicate" ? targetId : null,
-      controlledMaterialIds: ids, structuredContradictionIds, structuredConsequenceIds, downstreamRefs: entry?.downstream_mapping.target_refs ?? [],
+      controlledMaterialIds: ids, structuredContradictionIds, structuredConsequenceIds, structuredInformationGapIds,
+      gapTargetBound: gapReceipt?.targetBound ?? false, gapKnownSuppressed: gap?.resolution === "SUPPRESSED_ALREADY_KNOWN",
+      gapDuplicateMerged: gapReceipt?.disposition === "DUPLICATE_MERGED", downstreamRefs: entry?.downstream_mapping.target_refs ?? [],
       simulationPaths, uiPaths, homePaths, savePaths, tracePresent, noticePresent,
-      traceOnly: !failure && ids.length > 0 && tracePresent && simulationPaths.length === 0,
+      traceOnly: !failure && ids.length > 0 && tracePresent && simulationPaths.length === 0 && !gapReceipt?.targetBound,
     };
   });
 }
 
-export async function evaluateShadowFixture(fixture: ShadowFixture) {
-  const request = shadowCanonicalRequest();
+export async function evaluateShadowFixture(fixture: ShadowFixture, canonicalRequest = shadowCanonicalRequest()) {
+  const request = structuredClone(canonicalRequest);
   const inputFingerprint = shadowFingerprint(request);
   const input = {
     contractVersion: "2.0" as const, requestId: request.bridgeId,
@@ -336,8 +347,9 @@ export async function evaluateShadowFixture(fixture: ShadowFixture) {
   const adapter = await executeCandidateDecisionMaterial(bridge.promptContextOutput, {
     enabled: true, apiKeyAvailable: true, provider: OPENAI_DECISION_MATERIAL_PROVIDER,
     transport, requestedAt: SHADOW_FIXED_TIME, now: () => 0,
-  });
+  }, request);
   let replay: SimulationResponseV2Draft | null = null;
+  let informationGaps: InformationGapEvaluation = { status: "evaluated", observations: [], accounting: [], questionsCreated: 0, lifecycleTransitions: 0 };
   let controlled: DecisionEngineControlledMaterialItem[] = [];
   let ledger: SemanticPreservationLedgerEntry[] = [];
   let failure: PacketFailure | null = null;
@@ -361,10 +373,10 @@ export async function evaluateShadowFixture(fixture: ShadowFixture) {
       controlled = boundary.controlledMaterial.items;
       const composed = composePostProviderSimulationResponse(boundary);
       if (composed.status !== "composed") failure = { stage: "simulation_composition", category: composed.error.code, reason: composed.error.code };
-      else replay = fixedResponse(composed.response);
+      else { replay = fixedResponse(composed.response); informationGaps = composed.informationGaps; }
     }
   }
-  const accounting = candidateAccounting(fixture.packet, ledger, controlled, baseline, replay, failure);
+  const accounting = candidateAccounting(fixture.packet, ledger, controlled, baseline, replay, failure, informationGaps);
   const invariants = shadowProtectedInvariants(baseline, replay, controlled);
   const simulationPaths = replay ? changedPaths(simulationStructure(baseline), simulationStructure(replay)) : [];
   const uiPaths = replay ? changedPaths(mapSimulationResponseV2ToUiModel(baseline), mapSimulationResponseV2ToUiModel(replay)) : [];
@@ -388,6 +400,9 @@ export async function evaluateShadowFixture(fixture: ShadowFixture) {
     accounting, packetFailure: failure, fakeTransportCalls: fakeCalls,
     structuredContradictionIds: [...new Set(accounting.flatMap((item) => item.structuredContradictionIds))],
     structuredConsequenceIds: [...new Set(accounting.flatMap((item) => item.structuredConsequenceIds))],
+    informationGaps,
+    clarificationLifecycleUnchanged: replay ? normalizedShadowJson(baseline.clarification) === normalizedShadowJson(replay.clarification) &&
+      baseline.status === replay.status : null,
     identicalTransportRequest: requests.length === 2 && requests[0] === requests[1],
     simulationDelta: { comparable: Boolean(replay), substantive: replay ? simulationPaths.length > 0 : null, paths: simulationPaths },
     recommendationDelta: { comparable: Boolean(replay), changed: replay ? !invariants.recommendationPreserved : null },
@@ -449,15 +464,40 @@ export async function runShadowSemanticDeltaEvaluation() {
   const matrix = SHADOW_SEMANTIC_TYPES.map((type: ShadowSemanticType) => ({
     type, ...summarizeShadowCases(cases.filter((item) => item.group === "semantic" && item.candidateType === type)),
   }));
+  const informationGapCases: ShadowCaseReport[] = [];
+  for (const { fixture, request } of createInformationGapShadowFixtures()) informationGapCases.push(await evaluateShadowFixture(fixture, request));
   return {
-    version: "controlled-ai-shadow-semantic-delta.4", execution: "offline_synthetic_replay_only",
+    version: "controlled-ai-shadow-semantic-delta.5", execution: "offline_synthetic_replay_only",
     providerQualityAssessed: false, productionAiActivated: false,
     providerOperations: 0, networkRequests: 0, credentialReads: 0,
     uiVisibilityScope: "existing_v2_mapping; home_rendering_reported_separately",
     saveRetentionScope: "pure_payload_projection_only; no_database_save_or_restore_claim",
     consequencePersistence: "VALIDATED SNAPSHOT DURABILITY",
     summary: summarizeShadowCases(cases), matrix, cases,
+    informationGapCases, informationGapMatrix: summarizeInformationGapCases(informationGapCases),
   };
+}
+
+export function summarizeInformationGapCases(cases: ShadowCaseReport[]) {
+  return (["unknown", "clarification_need"] as const).map((kind) => {
+    const accounts = cases.flatMap((item) => item.accounting.filter((entry) => entry.candidateType === kind));
+    const observations = cases.flatMap((item) => item.informationGaps.observations.filter((entry) => entry.kinds.includes(kind)));
+    return { type: kind, accepted: accounts.filter((entry) => entry.disposition.startsWith("accepted_")).length,
+      targetBound: accounts.filter((entry) => entry.gapTargetBound).length,
+      structuredGaps: observations.filter((entry) => entry.resolution === "ACTIVE").length,
+      knownSuppressed: observations.filter((entry) => entry.resolution === "SUPPRESSED_ALREADY_KNOWN").length,
+      duplicateMerged: accounts.filter((entry) => entry.gapDuplicateMerged).length,
+      materiality: { nonMaterial: observations.filter((entry) => entry.resolution === "ACTIVE" && entry.materiality === "non_material").length,
+        material: observations.filter((entry) => entry.resolution === "ACTIVE" && entry.materiality === "material").length,
+        blocking: observations.filter((entry) => entry.resolution === "ACTIVE" && entry.materiality === "blocking").length },
+      wouldRequireClarification: observations.filter((entry) => entry.resolution === "ACTIVE" && entry.wouldRequireClarification).length,
+      clarificationTriggered: cases.reduce((count, entry) => count + entry.informationGaps.lifecycleTransitions, 0),
+      recommendationDelta: cases.filter((entry) => entry.accounting.some((item) => item.candidateType === kind) && entry.recommendationDelta.changed).length,
+      numericDelta: cases.filter((entry) => entry.accounting.some((item) => item.candidateType === kind) && entry.numericMetricDelta.changed).length,
+      safetyDelta: cases.filter((entry) => entry.accounting.some((item) => item.candidateType === kind) && !entry.protectedInvariants.safetyPreserved).length,
+      traceOnly: accounts.filter((entry) => entry.traceOnly).length,
+    };
+  });
 }
 
 export type ShadowSemanticDeltaReport = Awaited<ReturnType<typeof runShadowSemanticDeltaEvaluation>>;

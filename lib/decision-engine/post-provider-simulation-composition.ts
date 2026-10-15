@@ -16,6 +16,8 @@ import {
 import { runSimulationPipeline } from "./pipeline";
 import { validateSimulationResponseV2DraftShape } from "./simulation-response";
 import { boundedConsequenceRef, consequenceSemanticKey } from "./consequence-validation";
+import { createInformationGapTargetCatalog, evaluateInformationGapObservations, registeredInformationGapSourceRef, type InformationGapEvaluation } from "./information-gap-observations";
+import type { DecisionEnginePromptContextBridgeRequest } from "../ai-integration/contracts";
 import type {
   DecisionInput,
   DecisionIntent,
@@ -84,6 +86,8 @@ export type PostProviderSimulationCompositionResult =
       version: typeof POST_PROVIDER_SIMULATION_COMPOSITION_VERSION;
       boundaryId: string;
       response: SimulationResponseV2Draft;
+      /** Internal sidecar only; never copied into the public response or save. */
+      informationGaps: InformationGapEvaluation;
       evidence: PostProviderSimulationCompositionEvidence;
     }
   | {
@@ -230,7 +234,13 @@ function controlledItemIsValid(
   return value.optionIds.every((id) => allowedOptionIds.has(id)) &&
     allowedProvenanceRefs.has(value.sourceProvenanceRef) &&
     (value.evidenceClassification !== "provider_inference" || value.sourceProvenanceRef !== "unknown") &&
-    (value.evidenceClassification !== "unknown" || value.sourceProvenanceRef === "unknown") &&
+    (value.evidenceClassification !== "unknown" || value.sourceProvenanceRef === "unknown" ||
+      (["unknown", "clarification_need"].includes(String(value.itemType)) &&
+        registeredInformationGapSourceRef(value.sourceProvenanceRef as string, createInformationGapTargetCatalog({
+          bridgeId: source.requestId, submittedAt: source.generatedAt,
+          locale: source.inputLanguage as DecisionEnginePromptContextBridgeRequest["locale"], decisionContext: context,
+          ...(source.safety ? { safety: source.safety } : {}),
+        })))) &&
     value.scenarioOptionIds.every((id) => allowedOptionIds.has(id)) &&
     value.sourceContextEntityIds.every((id) => allowedSourceIds.has(id)) &&
     value.criterionRefs.every((ref) => /^criterion_[1-9]\d*$/.test(ref)) &&
@@ -755,6 +765,15 @@ export function composePostProviderSimulationResponse(
   if (!simulationSourceIsValid(source)) {
     return rejected("simulation_source_invalid", "Canonical simulation source is invalid.");
   }
+  const informationGaps = evaluateInformationGapObservations({
+    request: { bridgeId: source.requestId, submittedAt: source.generatedAt,
+      locale: source.inputLanguage as DecisionEnginePromptContextBridgeRequest["locale"], decisionContext: source.decisionContext,
+      ...(source.safety ? { safety: source.safety } : {}) },
+    controlled: value.controlledMaterial.items, accepted: value.acceptance.accepted_material.items, ledger: value.acceptance.ledger,
+  });
+  if (informationGaps.status === "rejected") {
+    return rejected("controlled_result_incompatible", "Internal information-gap receipts could not be verified.");
+  }
   const response = runSimulationPipeline(decisionInput(source), {
     context: structuredClone(source.decisionContext),
     ...(source.safety ? { safety: structuredClone(source.safety) } : {}),
@@ -801,6 +820,7 @@ export function composePostProviderSimulationResponse(
     version: POST_PROVIDER_SIMULATION_COMPOSITION_VERSION,
     boundaryId: value.boundaryId,
     response: composed,
+    informationGaps,
     evidence: compositionEvidence({
       deterministicPipelineUsed: true,
       decisionEngineAuthorityPreserved: true,

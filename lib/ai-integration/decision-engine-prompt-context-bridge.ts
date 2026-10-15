@@ -203,7 +203,7 @@ function unique(values: string[]): string[] {
   return [...new Set(values.map(normalize).filter(Boolean))];
 }
 
-function readableKnownValue(label: string, value: KnownValue<unknown>): string {
+export function readableKnownValue(label: string, value: KnownValue<unknown>): string {
   if (value.status === "known") {
     const rendered = Array.isArray(value.value) ? value.value.join(", ") : String(value.value);
     return `${label}: ${rendered}`;

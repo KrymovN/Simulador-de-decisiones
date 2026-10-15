@@ -257,6 +257,7 @@ export async function executeProductionDecisionSimulationFlow(
     const provider = await executeCandidateDecisionMaterial(
       bridge.promptContextOutput,
       dependencies,
+      value.bridgeRequest as DecisionEnginePromptContextBridgeRequest,
     );
     if (provider.status !== "completed") {
       return stageFailure({
